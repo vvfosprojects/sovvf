@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Classi.Emergenza;
 using SO115App.Models.Classi.NotificheNavbar;
+using SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEmergenza;
 using SO115App.SignalR.Utility;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneEmergenze
@@ -12,12 +15,15 @@ namespace SO115App.SignalR.Sender.GestioneEmergenze
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IUpDateEmergenza _upDateEmergenza;
 
         public NotificationUpDateEmergenza(IHubContext<NotificationHub> notificationHubContext,
-                                           GetGerarchiaToSend getGerarchiaToSend)
+                                           GetGerarchiaToSend getGerarchiaToSend,
+                                           IUpDateEmergenza upDateEmergenza)
         {
             _notificationHubContext = notificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _upDateEmergenza = upDateEmergenza;
         }
 
         void INotifyUpDateEmergenza.Send(Emergenza emergenza)
@@ -40,6 +46,57 @@ namespace SO115App.SignalR.Sender.GestioneEmergenze
                 });
             }
             );
+
+
+            if (emergenza.ListaModuliImmediata != null)
+            {
+                foreach(var modulo in  emergenza.ListaModuliImmediata.FindAll(c => !c.SedeAllertata).ToList())
+                {
+                    modulo.SedeAllertata = true;
+                    //NOTIFICA NAVBAR
+                    _notificationHubContext.Clients.Group(modulo.CodComando).SendAsync("NotifyNavBar", new Notifica()
+                    {
+                        Titolo = "Richiesto Modulo per Emergenza",
+                        Descrizione = $"E' stato richiesto il modulo {modulo.NomeModulo} da parte del comando {emergenza.CodComandoRichiedente} per l'emergenza {emergenza.CodEmergenza}",
+                        Tipo = TipoNotifica.UpDateEmergenza,
+                        Data = DateTime.Now
+                    });
+                }
+            }
+
+            if (emergenza.ListaModuliPotInt != null)
+            {
+                foreach (var modulo in emergenza.ListaModuliPotInt.FindAll(c => !c.SedeAllertata).ToList())
+                {
+                    modulo.SedeAllertata = true;
+                    //NOTIFICA NAVBAR
+                    _notificationHubContext.Clients.Group(modulo.CodComando).SendAsync("NotifyNavBar", new Notifica()
+                    {
+                        Titolo = "Richiesto Modulo per Emergenza",
+                        Descrizione = $"E' stato richiesto il modulo {modulo.NomeModulo} da parte del comando {emergenza.CodComandoRichiedente} per l'emergenza {emergenza.CodEmergenza}",
+                        Tipo = TipoNotifica.UpDateEmergenza,
+                        Data = DateTime.Now
+                    });
+                }
+            }
+
+            if (emergenza.ListaModuliConsolidamento != null)
+            {
+                foreach (var modulo in emergenza.ListaModuliConsolidamento.FindAll(c => !c.SedeAllertata).ToList())
+                {
+                    modulo.SedeAllertata = true;
+                    //NOTIFICA NAVBAR
+                    _notificationHubContext.Clients.Group(modulo.CodComando).SendAsync("NotifyNavBar", new Notifica()
+                    {
+                        Titolo = "Richiesto Modulo per Emergenza",
+                        Descrizione = $"E' stato richiesto il modulo {modulo.NomeModulo} da parte del comando {emergenza.CodComandoRichiedente} per l'emergenza {emergenza.CodEmergenza}",
+                        Tipo = TipoNotifica.UpDateEmergenza,
+                        Data = DateTime.Now
+                    });
+                }
+            }
+
+            _upDateEmergenza.Update(emergenza);
         }
     }
 }
