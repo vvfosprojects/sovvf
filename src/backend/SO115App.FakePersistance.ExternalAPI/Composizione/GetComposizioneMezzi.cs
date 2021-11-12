@@ -50,7 +50,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             if (query.CodiciSedi.Contains("00") || query.CodiciSedi.Contains("001"))
                 query.CodiciSedi = lstSedi.Result.Select(s => s.Codice).ToArray();
 
-            var lstSquadre = Task.Run(() => query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0])).SelectMany(shift => shift.Result.Squadre).ToList());  
+            var lstSquadre = Task.Run(() => new ConcurrentBag<Models.Classi.ServiziEsterni.OPService.Squadra>(query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0])).SelectMany(shift => shift?.Result?.Squadre).ToList()));  
+
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiciSedi.ToList())); 
             var lstSquadrePreaccoppiate = Task.Run(() => lstSquadre.Result.Where(s => s.CodiciMezziPreaccoppiati != null).ToList());
 
@@ -81,18 +82,18 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Distaccamento = new Sede(lstSedi.Result.Find(sede => sede.Codice == s.CodiceSede).Descrizione),
                         Nome = s.IdSquadra,
                         Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
-                        Membri = lstSquadre.Result.Find(sq => sq.Codice.Equals(s.IdSquadra)).Membri.Select(m => new Componente()
+                        Membri = lstSquadre.Result.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra)).Membri.Select(m => new Componente()
                         {
                             CodiceFiscale = m.CodiceFiscale,
                             DescrizioneQualifica = m.Ruolo,
                             Nominativo = $"{m.FirstName} {m.LastName}",
                             Ruolo = m.Ruolo
                         }).ToList(),
-                        Turno = lstSquadre.Result.Find(sq => sq.Codice.Equals(s.IdSquadra)).TurnoAttuale.ToCharArray()[0],
+                        Turno = lstSquadre.Result.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra)).TurnoAttuale.ToCharArray()[0],
                     }).ToList());
 
                     m.PreAccoppiato = lstSqPreacc.Result?.Count > 0;
-                    m.IdRichiesta = statiOperativiMezzi.Result.Find(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
+                    m.IdRichiesta = statiOperativiMezzi.Result.FirstOrDefault(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
 
                     var mc = new ComposizioneMezzi()
                     {
