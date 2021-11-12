@@ -6,11 +6,13 @@ export interface ZonaEmergenzaForm {
     longitudine: number;
     tipologia: string;
     descrizione: string;
+    dirigenti?: string[];
     id?: string;
     codEmergenza?: string;
     codComandoRichiedente?: string;
     listaEventi?: any[];
     annullata?: boolean;
+    allertata?: boolean;
     listaModuliImmediata?: ModuloColonnaMobile[];
     listaModuliConsolidamento?: ModuloColonnaMobile[];
     listaModuliPotInt?: ModuloColonnaMobile[];

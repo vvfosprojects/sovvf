@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TipologiaEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 import Locator from '@arcgis/core/tasks/Locator';
-import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
 
 @Component({
     selector: 'app-zona-emergenza-modal',
@@ -62,11 +61,13 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             tipologia: [null, [Validators.required]],
             descrizione: [null, [Validators.required]],
+            dirigenti: [null],
             id: [null],
             codEmergenza: [null],
             codComandoRichiedente: [null],
             listaEventi: [null],
             annullata: [null],
+            allertata: [null],
             listaModuliImmediata: [null],
             listaModuliConsolidamento: [null],
             listaModuliPotInt: [null]
@@ -88,11 +89,13 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             longitudine: this.zonaEmergenzaEdit.localita.coordinate.longitudine,
             tipologia: this.zonaEmergenzaEdit.tipologia.emergenza[0],
             descrizione: this.zonaEmergenzaEdit.descrizione,
+            dirigenti: this.zonaEmergenzaEdit.dirigenti,
             id: this.zonaEmergenzaEdit.id,
             codEmergenza: this.zonaEmergenzaEdit.codEmergenza,
             codComandoRichiedente: this.zonaEmergenzaEdit.codComandoRichiedente,
             listaEventi: this.zonaEmergenzaEdit.listaEventi,
             annullata: this.zonaEmergenzaEdit.annullata,
+            allertata: this.zonaEmergenzaEdit.allertata,
             listaModuliImmediata: this.zonaEmergenzaEdit.listaModuliImmediata,
             listaModuliConsolidamento: this.zonaEmergenzaEdit.listaModuliConsolidamento,
             listaModuliPotInt: this.zonaEmergenzaEdit.listaModuliPotInt,
