@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddInterventoCommand.cs" company="CNVVF">
+// <copyright file="AddInterventoFromSurvey123Validator.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using CQRS.Commands.Validators;
+using SO115App.Models.Classi.Utility;
+using System.Collections.Generic;
+using ValidationResult = CQRS.Validation.ValidationResult;
 
-namespace DomainModel.CQRS.Commands.AddIntervento
+namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
 {
-    public class AddInterventoCommand
+    public class AddInterventoFromSurvey123Validator : ICommandValidator<AddInterventoFromSurvey123Command>
     {
-        public Intervento Chiamata { get; set; }
-
-        public string CodiceSede { get; set; }
-
-        public string CodUtente { get; set; }
-
-        public RichiestaAssistenza Intervento { get; set; }
-
-        public SintesiRichiesta sintesi { get; set; }
-
-        public string[] CodCompetenze { get; set; }
+        public IEnumerable<ValidationResult> Validate(AddInterventoFromSurvey123Command command)
+        {
+            // Controlli sul richiedente
+            if (command.Chiamata.Richiedente.Nominativo.Length > 0)
+            {
+                if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nominativo))
+                {
+                    yield return new ValidationResult(Costanti.NominativoNonPresente);
+                }
+            }
+        }
     }
 }

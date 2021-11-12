@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.AddIntervento;
+using DomainModel.CQRS.Commands.AddInterventoFromSurvey123;
 using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly ICommandHandler<AddInterventoCommand> _Addhandler;
-
+        private readonly ICommandHandler<AddInterventoFromSurvey123Command> _addFromSurvey123Handler;
         private readonly ICommandHandler<UpDateInterventoCommand> _Updatehandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
@@ -50,10 +51,12 @@ namespace SO115App.API.Controllers
         /// <param name="handler">L'handler iniettato del servizio</param>
         public ChiamataController(
             ICommandHandler<AddInterventoCommand> Addhandler,
+            ICommandHandler<AddInterventoFromSurvey123Command> AddFromSurvey123handler,
             ICommandHandler<UpDateInterventoCommand> Updatehandler,
             IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice)
         {
             _Addhandler = Addhandler;
+            _addFromSurvey123Handler = AddFromSurvey123handler;
             _Updatehandler = Updatehandler;
             _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
         }
@@ -75,6 +78,32 @@ namespace SO115App.API.Controllers
             {
                 _Addhandler.Handle(command);
                 return Ok(_getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("AddFromSurvey123")]
+        public async Task<IActionResult> AddFromSurvey123([FromBody] ChiamataFromSurvey123 chiamata)
+        {
+            var codiceSede = Request.Headers["codicesede"];
+            var idUtente = Request.Headers["IdUtente"];
+
+            var command = new AddInterventoFromSurvey123Command()
+            {
+                Chiamata = chiamata,
+                CodiceSede = codiceSede.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)[0],
+                CodUtente = idUtente
+            };
+
+            try
+            {
+                _addFromSurvey123Handler.Handle(command);
+                return Ok(command.Chiamata.Codice);
             }
             catch (Exception ex)
             {
