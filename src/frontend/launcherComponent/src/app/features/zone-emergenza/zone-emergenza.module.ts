@@ -31,7 +31,7 @@ import { ZoneEmergenzaRouting } from './zone-emergenza.routing';
  */
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
-import { PcaModalComponent } from './sedi-zona-emergenza/pca-modal/pca-modal.component';
+// import { PcaModalComponent } from './sedi-zona-emergenza/pca-modal/pca-modal.component';
 
 const ngWizardConfig: NgWizardConfig = {
     theme: THEME.default
@@ -49,7 +49,7 @@ const ngWizardConfig: NgWizardConfig = {
         ZonaEmergenzaModalComponent,
         SediZonaEmergenzaComponent,
         DoaModalComponent,
-        PcaModalComponent
+        // PcaModalComponent
     ],
     imports: [
         CommonModule,
