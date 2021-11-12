@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NotificaInterface } from '../../interface/notifica.interface';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { TipoNotifica } from '../../enum/tipo-notifica.enum';
 
 @Component({
     selector: 'app-notifiche',
@@ -13,8 +12,10 @@ export class NotificheComponent implements OnInit {
 
     @Input() listaNotifiche: NotificaInterface[];
     @Input() nuoveNotifiche: number;
+    @Input() nightMode: boolean;
 
     @Output() notificheLette: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() notificaSelezionata: EventEmitter<NotificaInterface> = new EventEmitter<NotificaInterface>();
 
     active: number;
 
@@ -52,9 +53,6 @@ export class NotificheComponent implements OnInit {
     }
 
     onSelezione(notifica: NotificaInterface): void {
-        switch (notifica.tipo) {
-            case TipoNotifica.TrasferimentoChiamata:
-                return;
-        }
+        this.notificaSelezionata.emit(notifica);
     }
 }

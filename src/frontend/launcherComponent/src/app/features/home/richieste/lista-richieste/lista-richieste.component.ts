@@ -207,7 +207,7 @@ export class ListaRichiesteComponent implements OnChanges {
                 }
             } else if (ultimaRichiestaEspansa) {
                 // controllo se la richiesta espansa è l'ultima della lista
-                output = 'translate-mod';
+                output = 'translate-mod-5';
                 if (!this.boxAttivi) {
                     output = 'translate-mod-2';
                 }

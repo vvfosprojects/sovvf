@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AllertaCommand.cs" company="CNVVF">
+// <copyright file="EntityMap.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,18 +17,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
 using SO115App.Models.Classi.Emergenza;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta
+namespace SO115App.Persistence.MongoDB.Mappings
 {
-    public class AllertaCommand
+    internal static class CraMap
     {
-        public string CodOperatore { get; set; }
-        public string CodSede { get; set; }
-        public string DescrizioneEmergenza { get; set; }
-        public string[] Dirigenti { get; set; }
-        public string Id { get; set; }
-        public Emergenza InfoEmergenza { get; set; }
+        public static void Map()
+        {
+            BsonClassMap.RegisterClassMap<CraModel>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id)
+                    .SetIdGenerator(StringObjectIdGenerator.Instance)
+                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
+        }
     }
 }

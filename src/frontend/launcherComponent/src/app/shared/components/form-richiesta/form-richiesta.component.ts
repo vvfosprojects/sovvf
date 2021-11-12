@@ -36,7 +36,13 @@ import { Sede } from '../../model/sede.model';
 import { TriageChiamataModalComponent } from '../../modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { ToggleModifica } from '../../../features/home/store/actions/view/view.actions';
 import { ChiudiRichiestaModifica, ClearRichiestaModifica, ModificaIndirizzo } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
-import { ClearDettaglioTipologiaTriageChiamata, ClearDettagliTipologie, ClearTipologiaTriageChiamata, ClearTriageChiamata, GetDettagliTipologieByCodTipologia } from '../../store/actions/triage-modal/triage-modal.actions';
+import {
+    ClearDettaglioTipologiaTriageChiamata,
+    ClearDettagliTipologie,
+    ClearTipologiaTriageChiamata,
+    ClearTriageChiamata,
+    GetDettagliTipologieByCodTipologia
+} from '../../store/actions/triage-modal/triage-modal.actions';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ClearPosTriageSummary, ClearTriageSummary, SetPosTriageSummary, SetTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
@@ -262,6 +268,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             urgenza: this.richiestaModifica.chiamataUrgente,
             esercitazione: this.richiestaModifica.esercitazione
         });
+
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
         savePosTriageSummary(this.store, this.richiestaModifica?.dettaglioTipologia?.pos);
 
@@ -701,6 +708,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 }
 
             } else if (this.modifica) {
+                if (this.richiestaModifica && this.richiestaModifica.tipologie[0] && this.f.codTipologia && (this.richiestaModifica.tipologie[0].codice !== this.f.codTipologia.value)) {
+                    clearTriageSummary(this.store);
+                    clearTriageChiamataModalData(this.store);
+                    clearPosTriageSummary(this.store);                }
                 this.reducerSchedaTelefonata('modificata', azione);
             }
         }

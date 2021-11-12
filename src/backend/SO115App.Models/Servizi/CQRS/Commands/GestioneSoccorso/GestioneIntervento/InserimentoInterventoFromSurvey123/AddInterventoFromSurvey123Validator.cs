@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AllertaCommand.cs" company="CNVVF">
+// <copyright file="AddInterventoFromSurvey123Validator.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,18 +17,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using CQRS.Commands.Validators;
+using SO115App.Models.Classi.Utility;
+using System.Collections.Generic;
+using ValidationResult = CQRS.Validation.ValidationResult;
 
-using SO115App.Models.Classi.Emergenza;
-
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta
+namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
 {
-    public class AllertaCommand
+    public class AddInterventoFromSurvey123Validator : ICommandValidator<AddInterventoFromSurvey123Command>
     {
-        public string CodOperatore { get; set; }
-        public string CodSede { get; set; }
-        public string DescrizioneEmergenza { get; set; }
-        public string[] Dirigenti { get; set; }
-        public string Id { get; set; }
-        public Emergenza InfoEmergenza { get; set; }
+        public IEnumerable<ValidationResult> Validate(AddInterventoFromSurvey123Command command)
+        {
+            // Controlli sul richiedente
+            if (command.Chiamata.Richiedente.Nominativo.Length > 0)
+            {
+                if (string.IsNullOrWhiteSpace(command.Chiamata.Richiedente.Nominativo))
+                {
+                    yield return new ValidationResult(Costanti.NominativoNonPresente);
+                }
+            }
+        }
     }
 }

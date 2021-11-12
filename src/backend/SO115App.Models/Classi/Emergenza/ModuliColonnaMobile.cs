@@ -12,5 +12,6 @@ namespace SO115App.Models.Classi.Emergenza
         public string CodComando { get; set; }
         public List<MembroComposizione> Componenti { get; set; }
         public List<Mezzo> Mezzi { get; set; }
+        public bool SedeAllertata { get; set; }
     }
 }

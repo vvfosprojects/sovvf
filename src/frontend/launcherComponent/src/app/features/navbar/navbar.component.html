@@ -80,7 +80,9 @@
                         </button>
                         <app-notifiche [listaNotifiche]="listaNotifiche$ | async"
                                        [nuoveNotifiche]="nuoveNotifiche$ | async"
-                                       (notificheLette)="setNotificheLette()">
+                                       [nightMode]="nightMode"
+                                       (notificheLette)="setNotificheLette()"
+                                       (notificaSelezionata)="onNotificaSelezionata($event)">
                         </app-notifiche>
                     </div>
                 </div>

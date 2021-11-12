@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AllertaCommand.cs" company="CNVVF">
+// <copyright file="AddInterventoFromSurvey123.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,18 +17,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 
-using SO115App.Models.Classi.Emergenza;
-
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta
+namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
 {
-    public class AllertaCommand
+    public class AddInterventoFromSurvey123Command
     {
-        public string CodOperatore { get; set; }
-        public string CodSede { get; set; }
-        public string DescrizioneEmergenza { get; set; }
-        public string[] Dirigenti { get; set; }
-        public string Id { get; set; }
-        public Emergenza InfoEmergenza { get; set; }
+        public ChiamataFromSurvey123 Chiamata { get; set; }
+
+        public string CodiceSede { get; set; }
+
+        public string CodUtente { get; set; }
+
+        public RichiestaAssistenza Intervento { get; set; }
+
+        public string[] CodCompetenze { get; set; }
     }
 }
