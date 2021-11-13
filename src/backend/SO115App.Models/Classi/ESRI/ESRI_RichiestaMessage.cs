@@ -16,28 +16,28 @@ namespace SO115App.Models.Classi.ESRI
 
     public class attributes
     {
-        [JsonProperty(PropertyName = "codiceRichiesta")]
+        [JsonProperty(PropertyName = "codicerichiesta")]
         public string codicerichiesta { get; set; }
 
         [JsonProperty(PropertyName = "stato")]
         public string stato { get; set; }
 
-        [JsonProperty(PropertyName = "operatoreCodiceFiscale")]
+        [JsonProperty(PropertyName = "operatorecodicefiscale")]
         public string operatorecodicefiscale { get; set; }
 
-        [JsonProperty(PropertyName = "istanteRicezioneRichiesta")]
-        public DateTime istantericezionerichiesta { get; set; }
+        [JsonProperty(PropertyName = "istantericezionerichiesta")]
+        public string istantericezionerichiesta { get; set; }
 
-        [JsonProperty(PropertyName = "tipologiaCodice")]
+        [JsonProperty(PropertyName = "tipologiacodice")]
         public int tipologiacodice { get; set; }
 
-        [JsonProperty(PropertyName = "tipologiaDettaglio")]
+        [JsonProperty(PropertyName = "tipologiadettaglio")]
         public string tipologiadettaglio { get; set; }
 
-        [JsonProperty(PropertyName = "richiedenteTelefono")]
+        [JsonProperty(PropertyName = "richiedentetelefono")]
         public string richiedentetelefono { get; set; }
 
-        [JsonProperty(PropertyName = "richiedenteNominativo")]
+        [JsonProperty(PropertyName = "richiedentenominativo")]
         public string richiedentenominativo { get; set; }
 
         [JsonProperty(PropertyName = "indirizzo")]
@@ -58,22 +58,22 @@ namespace SO115App.Models.Classi.ESRI
         [JsonProperty(PropertyName = "piano")]
         public string piano { get; set; }
 
-        [JsonProperty(PropertyName = "rilevanteGrave")]
+        [JsonProperty(PropertyName = "rilevantegrave")]
         public int rilevantegrave { get; set; }
 
-        [JsonProperty(PropertyName = "listaEnti")]
+        [JsonProperty(PropertyName = "listaenti")]
         public string listaenti { get; set; }
 
-        [JsonProperty(PropertyName = "chiamataUrgente")]
+        [JsonProperty(PropertyName = "chiamataurgente")]
         public int chiamataurgente { get; set; }
 
         [JsonProperty(PropertyName = "esercitazione")]
         public int esercitazione { get; set; }
 
-        [JsonProperty(PropertyName = "listaUtentiPresaInCarico")]
+        [JsonProperty(PropertyName = "listautentipresaincarico")]
         public string listautentipresaincarico { get; set; }
 
-        [JsonProperty(PropertyName = "tipologiaCategoria")]
+        [JsonProperty(PropertyName = "tipologiacategoria")]
         public string tipologiacategoria { get; set; }
 
         [JsonProperty(PropertyName = "objectid")]
