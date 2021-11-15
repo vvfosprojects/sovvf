@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
@@ -11,7 +10,6 @@ using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSedi;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
@@ -24,7 +22,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 {
     public class GetSedi : IGetDirezioni, IGetSedi, IGetAlberaturaUnitaOperative, IGetListaDistaccamentiByPinListaSedi, 
         IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede,
-        IGetSediMarker, IGetCoordinateByCodSede, IGetCompetenzeByCoordinateIntervento
+        IGetSediMarker, IGetCoordinateByCodSede
     {
 
         private string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
@@ -338,19 +336,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         Coordinate IGetCoordinateByCodSede.Get(string codiceSede)
         {
             return GetInfoSede(codiceSede).Result.Coordinate;
-        }
-
-        public string[] GetCompetenzeByCoordinateIntervento(Coordinate coordinate)
-        {
-            var lstSedi = GetAll();
-
-            var sede = lstSedi.Result.FirstOrDefault(s => s.Coordinate.Equals(coordinate));
-
-            return sede != null ? new string[2] 
-            { 
-                sede.Coordinate.Latitudine.ToString(), 
-                sede.Coordinate.Longitudine.ToString() 
-            } : new string[2] { "0,0", "0,0" };
         }
     }
 }
