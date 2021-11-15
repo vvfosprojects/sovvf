@@ -10,6 +10,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDocumentale;
 using SO115App.Models.Servizi.Infrastruttura.GestioneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSedi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
@@ -23,6 +24,7 @@ using SO115App.Persistence.MongoDB.GestioneEmergenza;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.GestionePOS;
+using SO115App.Persistence.MongoDB.GestioneSedi;
 using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
 using SO115App.Persistence.MongoDB.GestioneTriage;
 using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
@@ -305,6 +307,12 @@ namespace SO115App.CompositionRoot
             container.Register<IGetEmergenzaById, GetEmergenzeById>();
             container.Register<IGetTipologieIntervento, GetTipologieEmergenza>();
             #endregion Emergenza
+
+            #region UnitaOperativa MongoDb
+            container.Register<IGetAllSediAlberate, GetListaSediAlberata>(); 
+            container.Register<ISetSediAlberate, SetListaSediAlberate>();
+            #endregion
+
         }
     }
 }

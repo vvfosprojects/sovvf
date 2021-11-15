@@ -29,7 +29,14 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
             {
                 try
                 {
-                    return new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
+                    if (coordinate != null)
+                    {
+                        if (coordinate.Contains(","))
+                            return new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
+                        else
+                            return new Coordinate();
+                    }else
+                        return new Coordinate();
                 }
                 catch (System.Exception e)
                 {

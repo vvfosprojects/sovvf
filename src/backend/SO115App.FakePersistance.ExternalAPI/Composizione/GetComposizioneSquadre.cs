@@ -87,7 +87,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Result.FindAll(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).ToList()));
 
             Task<List<MezzoDTO>> lstMezziPreaccoppiati = null;
-            Task<List<MembroComposizione>> lstAnagrafiche = null;
+            //Task<List<MembroComposizione>> lstAnagrafiche = null;
 
             //TODO GESTIRE CAMPO SPOTTYPE QUANDO HA VALUE "MODULE" (GESTIRE MODULI COLONNA MOBILE)
             //TODO GESTIRE SQUADRE CHE STANNO PER FINIRE IL TURNO (5M) (considerare che non tutte finiscono allo stesso orario)
@@ -134,11 +134,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 var codMezziPreaccoppiati = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList();
                 lstMezziPreaccoppiati = _getMezzi.GetInfo(codMezziPreaccoppiati);
 
-                lstAnagrafiche = Task.Run(() => _getAnagrafiche.Get(workshift.Where(w => w != null).SelectMany(s => s.Squadre.SelectMany(ss => ss.Membri.Select(m => m.CodiceFiscale)).Distinct()).ToList()).Result.Dati.Select(a => new MembroComposizione()
-                {
-                    Nominativo = $"{a?.Nome} {a?.Cognome}",
-                    CodiceFiscale = a?.CodFiscale
-                }).ToList());
+                //lstAnagrafiche = Task.Run(() => _getAnagrafiche.Get(workshift.Where(w => w != null).SelectMany(s => s.Squadre.SelectMany(ss => ss.Membri.Select(m => m.CodiceFiscale)).Distinct()).ToList()).Result.Dati.Select(a => new MembroComposizione()
+                //{
+                //    Nominativo = $"{a?.Nome} {a?.Cognome}",
+                //    CodiceFiscale = a?.CodFiscale
+                //}).ToList());
 
                 return lstSquadre.ToList();
             })
@@ -156,13 +156,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Nome = squadra.Descrizione,
                         DiEmergenza = squadra.Emergenza,
                         Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione() ?? null,
-                        Membri = lstAnagrafiche.Result.Where(a => squadra.Membri.Any(m => m.CodiceFiscale.Equals(a.CodiceFiscale))).Select(a => new MembroComposizione()
-                        {
-                            CodiceFiscale = a.CodiceFiscale,
-                            Nominativo = a.Nominativo,
-                            DescrizioneQualifica = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.Ruolo,
-                            Qualifications = squadra.Membri.FirstOrDefault(m => m.CodiceFiscale.ToUpper().Equals(a.CodiceFiscale.ToUpper()))?.qualifications,
-                        }).ToList(),
+                        Membri = MappaMembriOPInSO(squadra.Membri),
                         MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Count() > 0 ? lstMezziPreaccoppiati.Result?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new MezzoPreaccoppiato()
                         {
                             Codice = m.CodiceMezzo,
@@ -226,6 +220,23 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var result = lstSquadreComposizione.Result.ToList();
 
             return result;
+        }
+
+        private List<MembroComposizione> MappaMembriOPInSO(Membro[] membri)
+        {
+            List<MembroComposizione> ListaMembriComposizione = new List<MembroComposizione>();
+            foreach(var membro in membri)
+            {
+                MembroComposizione membroComposizione = new MembroComposizione()
+                {
+                    Nominativo = membro.FirstName + " " + membro.LastName,
+                    Qualifications = membro.qualifications,
+                    DescrizioneQualifica = membro.Ruolo
+                };
+                ListaMembriComposizione.Add(membroComposizione);
+            }
+
+            return ListaMembriComposizione;
         }
 
         private static StatoSquadraComposizione MappaStato(string statoMezzo) => statoMezzo switch
