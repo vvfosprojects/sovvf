@@ -346,11 +346,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var sede = lstSedi.Result.FirstOrDefault(s => s.Coordinate.Equals(coordinate));
 
-            return new string[2] 
+            return sede != null ? new string[2] 
             { 
                 sede.Coordinate.Latitudine.ToString(), 
                 sede.Coordinate.Longitudine.ToString() 
-            };
+            } : new string[2] { "0,0", "0,0" };
         }
     }
 }
