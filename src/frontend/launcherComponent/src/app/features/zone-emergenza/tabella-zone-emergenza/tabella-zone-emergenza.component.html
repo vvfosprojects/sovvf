@@ -37,7 +37,7 @@
                     (click)="onEdit(zE)">
                 <i class="fas fa-edit"></i>
             </button>
-            <button *ngIf="isDirRegionale"
+            <button *ngIf="isDirRegionale && !isCON"
                     class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"

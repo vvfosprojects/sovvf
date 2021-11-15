@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
@@ -11,11 +10,11 @@ using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSedi;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +23,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 {
     public class GetSedi : IGetDirezioni, IGetSedi, IGetAlberaturaUnitaOperative, IGetListaDistaccamentiByPinListaSedi, 
         IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede,
-        IGetSediMarker, IGetCoordinateByCodSede, IGetCompetenzeByCoordinateIntervento
+        IGetSediMarker, IGetCoordinateByCodSede
     {
 
         private string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
@@ -276,11 +275,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public List<SedeMarker> GetListaSediMarker(AreaMappa Filtro)
         {
-            var listaSediMarker = new List<SedeMarker>();
+            var listaSediMarker = new ConcurrentBag<SedeMarker>();
 
             var listaSedi = GetAll();
 
-            Parallel.ForEach(listaSedi.Result, sede =>
+            Parallel.ForEach(listaSedi.Result, sede => 
             {
                 var sedeMarker = new SedeMarker();
 
@@ -303,7 +302,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 }
             });
 
-            return listaSediMarker;
+            return listaSediMarker.ToList();
         }
 
         private string GetTipoSede(Sede sede)
@@ -318,12 +317,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         Coordinate IGetCoordinateByCodSede.Get(string codiceSede)
         {
-            return new Coordinate(41.89996, 12.49104);
-        }
-
-        public string[] GetCompetenzeByCoordinateIntervento(Coordinate coordinate)
-        {
-            return new string[] { "RM.1000", "RM.1001", "RM.1004" };
+            return GetInfoSede(codiceSede).Result.Coordinate;
         }
     }
 }
