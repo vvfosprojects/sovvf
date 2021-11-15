@@ -14,6 +14,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -293,11 +294,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public List<SedeMarker> GetListaSediMarker(AreaMappa Filtro)
         {
-            var listaSediMarker = new List<SedeMarker>();
+            var listaSediMarker = new ConcurrentBag<SedeMarker>();
 
             var listaSedi = GetAll();
 
-            Parallel.ForEach(listaSedi.Result, sede =>
+            Parallel.ForEach(listaSedi.Result, sede => 
             {
                 var sedeMarker = new SedeMarker();
 
@@ -320,7 +321,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 }
             });
 
-            return listaSediMarker;
+            return listaSediMarker.ToList();
         }
 
         private string GetTipoSede(Sede sede)
