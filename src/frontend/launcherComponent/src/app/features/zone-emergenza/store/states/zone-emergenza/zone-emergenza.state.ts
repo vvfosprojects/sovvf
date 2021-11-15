@@ -43,6 +43,8 @@ import { Cra } from '../../../interface/cra.interface';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { PcaForm } from '../../../interface/pca-zona-emergenza-form.interface';
 import { DoaForm } from '../../../interface/doa-form.interface';
+import { Navigate } from '@ngxs/router-plugin';
+import { RoutesPath } from '../../../../../shared/enum/routes-path.enum';
 
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
@@ -219,10 +221,17 @@ export class ZoneEmergenzaState {
         dispatch(new StartLoadingZoneEmergenza());
         const idZonaEmergenza = action.id;
         this.zoneEmergenzaService.getById(idZonaEmergenza).subscribe((response: { emergenza: ZonaEmergenza }) => {
-            dispatch([
-                new SetZonaEmergenzaById(response.emergenza),
-                new StopLoadingZoneEmergenza()
-            ]);
+            if (response?.emergenza) {
+                dispatch([
+                    new SetZonaEmergenzaById(response.emergenza),
+                    new StopLoadingZoneEmergenza()
+                ]);
+            } else {
+                dispatch([
+                    new Navigate(['/' + RoutesPath.ZoneEmergenza]),
+                    new StopLoadingZoneEmergenza()
+                ]);
+            }
         }, () => {
             dispatch(new StopLoadingZoneEmergenza());
         });
@@ -672,7 +681,7 @@ export class ZoneEmergenzaState {
             nome: craZonaEmergenzaFormValue.nome,
             coordinate: new Coordinate(+craZonaEmergenzaFormValue.latitudine, +craZonaEmergenzaFormValue.longitudine),
             indirizzo: craZonaEmergenzaFormValue.indirizzo,
-            listaDoa: [] // TODO: aggiungere listaDoa
+            listaDoa: state.doa?.length ? state.doa : []
         } as Cra;
 
         const zonaEmergenzaValue = state.zonaEmergenzaById;
@@ -709,7 +718,8 @@ export class ZoneEmergenzaState {
         this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
             dispatch([
                 new GetZoneEmergenza(),
-                new StopLoadingZoneEmergenza()
+                new StopLoadingZoneEmergenza(),
+                new Navigate(['/' + RoutesPath.ZoneEmergenza]),
             ]);
         }, () => {
             dispatch([

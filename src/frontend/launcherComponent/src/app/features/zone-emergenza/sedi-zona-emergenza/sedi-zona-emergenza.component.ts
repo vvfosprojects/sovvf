@@ -16,6 +16,8 @@ import { Doa } from '../interface/doa.interface';
 import { DoaModalComponent } from './doa-modal/doa-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DoaForm } from '../interface/doa-form.interface';
+import { roundToDecimal } from '../../../shared/helper/function-generiche';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
     selector: 'app-sedi-zona-emergenza',
@@ -37,18 +39,7 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
         theme: THEME.default,
         selected: 0,
         lang: { next: 'Avanti', previous: 'Indietro' },
-        cycleSteps: false,
-        toolbarSettings: {
-            toolbarExtraButtons: [
-                {
-                    text: 'SALVA MODIFICHE',
-                    class: 'btn btn-success',
-                    event: () => {
-                        this.saveCraZonaEmergenza();
-                    }
-                }
-            ],
-        }
+        cycleSteps: false
     };
 
     craZonaEmergenzaForm: FormGroup;
@@ -60,15 +51,14 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
                 private store: Store,
                 private formBuilder: FormBuilder,
                 private modalService: NgbModal) {
-        this.getDoubleMonitorMode();
-        this.getZonaEmergenzaById();
-        this.getDoa();
-
         this.idZonaEmergenza = this.route.snapshot.paramMap.get('id');
         if (!this.idZonaEmergenza) {
             this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza]));
         }
-        this.store.dispatch(new GetZonaEmergenzaById(this.idZonaEmergenza));
+
+        this.getDoubleMonitorMode();
+        this.getZonaEmergenzaById();
+        this.getDoa();
         this.initForm();
     }
 
@@ -78,6 +68,7 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.store.dispatch([
+            new GetZonaEmergenzaById(this.idZonaEmergenza),
             new SetSediNavbarVisible(false),
             new StopBigLoading()
         ]);
@@ -103,6 +94,9 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
             this.zonaEmergenzaById$.subscribe((zonaEmergenza: ZonaEmergenza) => {
                 if (zonaEmergenza) {
                     this.zonaEmergenzaById = zonaEmergenza;
+                    if (this.zonaEmergenzaById.dirigenti?.length) {
+                        this.patchDirigentiForm();
+                    }
                     if (this.zonaEmergenzaById.cra) {
                         this.patchForm();
                     }
@@ -140,21 +134,48 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
             indirizzo: this.zonaEmergenzaById.cra.indirizzo,
             latitudine: this.zonaEmergenzaById.cra.coordinate?.latitudine,
             longitudine: this.zonaEmergenzaById.cra.coordinate?.longitudine,
+            listaDoa: this.zonaEmergenzaById.cra.listaDoa,
+        });
+    }
+
+    patchDirigentiForm(): void {
+        this.craZonaEmergenzaForm.patchValue({
             comandanteRegionale: this.zonaEmergenzaById.dirigenti[0],
             responsabileDistrettoAreaColpita: this.zonaEmergenzaById.dirigenti[1],
             responsabile: this.zonaEmergenzaById.dirigenti[2],
             responsabileCampiBaseMezziOperativi: this.zonaEmergenzaById.dirigenti[3],
             responsabileGestionePersonaleContratti: this.zonaEmergenzaById.dirigenti[4],
-            listaDoa: this.zonaEmergenzaById.cra.listaDoa,
         });
+        this.f.comandanteRegionale.disable();
+        this.f.responsabileDistrettoAreaColpita.disable();
+        this.f.responsabile.disable();
+        this.f.responsabileCampiBaseMezziOperativi.disable();
+        this.f.responsabileGestionePersonaleContratti.disable();
     }
 
     onAddDoa(): void {
         const inserisciDoaModal = this.modalService.open(DoaModalComponent, {
             windowClass: 'modal-holder',
-            size: 'lg',
+            size: 'xl',
             centered: true
         });
+
+        const moduliMobImmediataZonaEmergenza = this.zonaEmergenzaById.listaModuliImmediata;
+        const moduliMobPotIntZonaEmergenza = this.zonaEmergenzaById.listaModuliPotInt;
+        const moduliMobConsolidamentoZonaEmergenza = this.zonaEmergenzaById.listaModuliConsolidamento;
+        const moduli = [];
+        if (moduliMobImmediataZonaEmergenza) {
+            moduli.push(...moduliMobImmediataZonaEmergenza);
+        }
+        if (moduliMobPotIntZonaEmergenza) {
+            moduli.push(...moduliMobPotIntZonaEmergenza);
+        }
+        if (moduliMobConsolidamentoZonaEmergenza) {
+            moduli.push(...moduliMobConsolidamentoZonaEmergenza);
+        }
+
+        console.log('moduli', moduli);
+        inserisciDoaModal.componentInstance.moduli = moduli;
 
         inserisciDoaModal.result.then((result: { esito: string, doa: DoaForm }) => {
             switch (result.esito) {
@@ -169,6 +190,16 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
         });
     }
 
+    onSetIndirizzo(candidate: AddressCandidate): void {
+        console.log('onSetIndirizzo', candidate);
+        const lat = roundToDecimal(candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidate.location.longitude, 6);
+
+        this.f.indirizzo.patchValue(candidate.address);
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lng);
+    }
+
     addDoa(doa: DoaForm): void {
         this.store.dispatch(new AddDoa(doa));
     }
@@ -181,5 +212,9 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
         if (this.craZonaEmergenzaForm.valid) {
             this.store.dispatch(new SaveCraZonaEmergenza());
         }
+    }
+
+    goToGestioneEmergenze(): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza]));
     }
 }

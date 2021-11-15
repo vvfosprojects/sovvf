@@ -71,4 +71,7 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
         );
     }
 
+    goToGestioneEmergenze(): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza]));
+    }
 }

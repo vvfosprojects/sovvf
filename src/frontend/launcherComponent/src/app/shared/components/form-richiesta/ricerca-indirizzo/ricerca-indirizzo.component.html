@@ -2,7 +2,8 @@
     <label for="indirizzo"
            class="d-none">Indirizzo</label>
     <input id="indirizzo"
-           class="form-control required-field"
+           class="form-control"
+           [class.required-field]="requiredFieldClass"
            [(ngModel)]="indirizzo"
            [class.is-invalid]="invalid"
            type="text"
