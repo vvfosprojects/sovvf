@@ -337,7 +337,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         Coordinate IGetCoordinateByCodSede.Get(string codiceSede)
         {
-            return new Coordinate(41.89996, 12.49104);
+            return GetInfoSede(codiceSede).Result.Coordinate;
         }
 
         public string[] GetCompetenzeByCoordinateIntervento(Coordinate coordinate)
