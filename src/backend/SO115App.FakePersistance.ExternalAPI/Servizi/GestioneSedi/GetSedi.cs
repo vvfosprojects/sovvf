@@ -26,6 +26,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede,
         IGetSediMarker, IGetCoordinateByCodSede, IGetCompetenzeByCoordinateIntervento
     {
+
+        private string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
         private readonly IHttpRequestManager<List<SedeUC>> _serviceDirezioni;
         private readonly IHttpRequestManager<DistaccamentoUC> _serviceSedi;
         private readonly IConfiguration _config;
@@ -50,7 +52,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<List<SedeUC>> GetDirezioniProvinciali(string codSede = null)
         {
-            var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+            var baseurl = URLProvvisorio; //_config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             if (codSede != null)
             {
                 var url = new Uri(baseurl + "/GetComandiProvinciali" + "?codSede=" + codSede);
@@ -69,7 +71,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<List<SedeUC>> GetDirezioniRegionali(string codSede = null)
         {
-            var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+            var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetDirezioniRegionali" + "?codSede=" + codSede);
 
             _serviceDirezioni.SetCache(url.AbsoluteUri);
@@ -81,7 +83,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<List<SedeUC>> GetFigli(string codSede = null)
         {
-            var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+            var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetChildSede" + "?codSede=" + codSede);
 
             _serviceDirezioni.SetCache(url.AbsoluteUri);
@@ -93,7 +95,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<DistaccamentoUC> GetInfoSede(string codSede)
         {
-            var baseurl = _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+            var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
 
             _serviceSedi.SetCache(url.AbsoluteUri);
