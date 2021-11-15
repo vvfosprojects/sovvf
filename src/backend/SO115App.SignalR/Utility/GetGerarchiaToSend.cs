@@ -51,6 +51,15 @@ namespace SO115App.SignalR.Utility
                             ListaCodiciSediInteressate.Add(comune.Codice);
                             ListaCodiciSediInteressate.Add(unitaperativa.Codice);
                         }
+                        foreach(var distaccamento in comune.Figli)
+                        {
+                            if (distaccamento.Equals(unitaperativa))
+                            {
+                                ListaCodiciSediInteressate.Add(direzioneRegionale.Codice);
+                                ListaCodiciSediInteressate.Add(comune.Codice);
+                                ListaCodiciSediInteressate.Add(distaccamento.Codice);
+                            }
+                        }
                     }
                 }
             }
