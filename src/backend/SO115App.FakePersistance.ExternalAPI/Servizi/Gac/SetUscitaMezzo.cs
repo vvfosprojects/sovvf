@@ -30,7 +30,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         public void Set(UscitaGAC uscita)
         {
             //OTTENGO PROVINCIA E COMUNE
-            if (uscita.comune.descrizione.Length > 0)
+            if (uscita.comune != null)
             {
                 var territorio = _comuneService.GetComuneBy(uscita.comune.descrizione).Result;
                 uscita.comune.codice = territorio.FirstOrDefault(x => x.descrizione.ToLower().Contains(uscita.comune.descrizione.ToLower()))?.codice;
