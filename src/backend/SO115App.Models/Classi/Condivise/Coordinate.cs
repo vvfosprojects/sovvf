@@ -18,6 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Coordinate
@@ -32,11 +35,13 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Latitudine
         /// </summary>
+        [BsonRepresentation(BsonType.Double, AllowTruncation = true)]
         public double Latitudine { get; set; }
 
         /// <summary>
         ///   Latitudine
         /// </summary>
+        [BsonRepresentation(BsonType.Double, AllowTruncation = true)]
         public double Longitudine { get; set; }
     }
 }

@@ -194,38 +194,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                         var info = GetInfoSede(provinciale.id).Result;
 
                         if(info != null) { 
-                        if(provinciale.id.Equals("CA"))
-                        {
-
-                        }
-
-
-                        var lstComunali = GetFigli(provinciale.id).Result
+                            var lstComunali = GetFigli(provinciale.id).Result
                             .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione, comunale.Coordinate)).ToHashSet().ToList();
 
-                        var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
+                            var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
 
                             if (centrale != null)
                             {
                                 lstComunali.Remove(centrale);
 
-                                if (centrale.Codice.Equals("GO.1000"))
-                                {
-
-                                }
-
-                                try
-                                {
-                                    var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, info.Coordinate);
-                                    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
-                                    result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?
-                                        .AddFiglio(unitaComunali);
-                                }
-                                catch (Exception ex)
-                                {
-
-                                }
-
+                                var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, info.Coordinate);
+                                lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+                                result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?
+                                    .AddFiglio(unitaComunali);
 
                             }
                         }
