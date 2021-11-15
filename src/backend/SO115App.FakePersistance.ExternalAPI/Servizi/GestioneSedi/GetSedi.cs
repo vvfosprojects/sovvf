@@ -342,7 +342,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public string[] GetCompetenzeByCoordinateIntervento(Coordinate coordinate)
         {
-            return new string[] { "RM.1000", "RM.1001", "RM.1004" };
+            var lstSedi = GetAll();
+
+            var sede = lstSedi.Result.FirstOrDefault(s => s.Coordinate.Equals(coordinate));
+
+            return new string[2] 
+            { 
+                sede.Coordinate.Latitudine.ToString(), 
+                sede.Coordinate.Longitudine.ToString() 
+            };
         }
     }
 }
