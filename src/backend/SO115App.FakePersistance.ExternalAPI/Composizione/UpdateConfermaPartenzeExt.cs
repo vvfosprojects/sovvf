@@ -67,7 +67,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         /// <param name="command">il command in ingresso</param>
         /// <returns>ConfermaPartenze</returns>
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
-        {
+        {  
             var codiceSede = command.ConfermaPartenze.CodiceSede.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
