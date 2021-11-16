@@ -233,6 +233,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             else
             {
 
+                if (ListaSediAlberate == null)
+                    _memoryCache.Remove("ListaSediAlberate");
+
                 return ListaSediAlberate;
             }
         }
