@@ -350,6 +350,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
+        EsriConfig.apiKey = 'AAPK36ded91859154c2cad9002a686434a34Jt_FmrqMObHesjY_bYHlJu-HZZrTDGJzsQMKnxd8f4TmYY_Vi-f8-4y-7G6WbcVf';
 
         const portalItem = new PortalItem({
             id: '55fdd15730524dedbff72e285cba3795'
