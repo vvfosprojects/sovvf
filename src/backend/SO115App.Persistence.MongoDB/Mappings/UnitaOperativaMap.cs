@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Coordinate.cs" company="CNVVF">
+// <copyright file="EntityMap.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,31 +17,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
+using SO115App.API.Models.Classi.Organigramma;
 
-namespace SO115App.API.Models.Classi.Condivise
+namespace SO115App.Persistence.MongoDB.Mappings
 {
-    public class Coordinate
+    internal static class UnitaOperativaMap
     {
-
-        public Coordinate(double Latitudine = 0.0, double Longitudine = 0.0)
+        public static void Map()
         {
-            this.Latitudine = Latitudine;
-            this.Longitudine = Longitudine;
+            BsonClassMap.RegisterClassMap<UnitaOperativa>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id)
+                    .SetIdGenerator(StringObjectIdGenerator.Instance)
+                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
         }
-
-        /// <summary>
-        ///   Latitudine
-        /// </summary>
-        [BsonRepresentation(BsonType.Double, AllowTruncation = true)]
-        public double Latitudine { get; set; }
-
-        /// <summary>
-        ///   Latitudine
-        /// </summary>
-        [BsonRepresentation(BsonType.Double, AllowTruncation = true)]
-        public double Longitudine { get; set; }
     }
 }

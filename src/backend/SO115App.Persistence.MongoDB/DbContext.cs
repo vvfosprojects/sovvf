@@ -23,6 +23,7 @@ using MongoDB.Driver;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Filtri;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
@@ -149,9 +150,17 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaPotInt>();
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaConsolidamento>();
 
-            
+            UnitaOperativaMap.Map();
+
         }
 
+        public IMongoCollection<UnitaOperativa> ListaSediCollection
+        {
+            get
+            {
+                return database.GetCollection<UnitaOperativa>("unitaOperative");
+            }
+        }
         public IMongoCollection<TipologiaEmergenza> TipologieEmergenzaCollection
         {
             get

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using System;
 using System.Collections.Concurrent;
@@ -53,10 +54,11 @@ namespace SO115App.API.Models.Classi.Organigramma
             this.Figli = new ConcurrentBag<UnitaOperativa>();
         }
 
+        public string Id { get; set; }
         /// <summary>
         ///   Codice dell'unità operativa
         /// </summary>
-        public string Codice { get; private set; }
+        public string Codice { get; set; }
 
         private string _nome;
         /// <summary>

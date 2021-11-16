@@ -18,6 +18,7 @@ import locatorSuggestLocationsParams = __esri.locatorSuggestLocationsParams;
 export class RicercaIndirizzoComponent implements OnInit {
 
     @Input() indirizzo: string;
+    @Input() requiredFieldClass = true;
     @Input() invalid: boolean;
     @Input() spatialReference: SpatialReference;
 

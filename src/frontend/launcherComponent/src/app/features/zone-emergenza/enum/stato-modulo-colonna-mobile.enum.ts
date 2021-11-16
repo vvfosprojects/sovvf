@@ -1,4 +1,5 @@
 export enum StatoModuloColonnaMobile {
-    Disponibile = 'In Sede',
-    Occupato = 'Occupato'
+    InSede = 'In Sede',
+    InViaggio = 'In Viaggio',
+    SulPosto = 'Sul Posto'
 }

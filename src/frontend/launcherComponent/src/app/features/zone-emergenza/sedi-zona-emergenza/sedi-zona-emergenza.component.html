@@ -5,8 +5,8 @@
              [class.col-6]="doubleMonitor">
             <div class="col-12">
                 <h4>
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Gestione Emergenze - Sedi Emergenza {{ zonaEmergenzaById?.codEmergenza }}
+                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    <span class="font-weight-bold cursor-pointer" (click)="goToGestioneEmergenze()">Gestione Emergenze</span> - CRA, DOA e PCA Emergenza {{ zonaEmergenzaById?.codEmergenza }}
                 </h4>
             </div>
             <hr>
@@ -62,12 +62,11 @@
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="indirizzo">Indirizzo</label>
-                                                    <input id="indirizzo"
-                                                           class="form-control"
-                                                           type="text"
-                                                           placeholder="Indirizzo"
-                                                           formControlName="indirizzo"/>
+                                                    <label for="latitudine">Indirizzo</label>
+                                                    <app-ricerca-indirizzo [indirizzo]="f.indirizzo?.value"
+                                                                           [requiredFieldClass]="false"
+                                                                           (selectCandidate)="onSetIndirizzo($event)">
+                                                    </app-ricerca-indirizzo>
                                                 </div>
                                             </div>
                                             <div class="col-3">
@@ -140,8 +139,8 @@
                             </div>
                         </ng-wizard-step>
                         <ng-wizard-step
-                                [title]="'DOA'"
-                                [description]="'Componi i DOA'"
+                                [title]="'DOA e PCA'"
+                                [description]="'Componi i DOA e i PCA'"
                                 [canEnter]="craZonaEmergenzaForm.valid"
                                 [canExit]="craZonaEmergenzaForm.valid">
                             <div class="row py-2 px-3">
@@ -169,6 +168,32 @@
                                             </ngb-panel>
                                         </ngb-accordion>
                                     </ng-container>
+                                    <ng-container *ngIf="f?.listaDoa?.length">
+                                        <ngb-accordion>
+                                            <ngb-panel *ngFor="let d of f?.listaDoa"
+                                                       [id]="d.codice"
+                                                       [title]="d.nome">
+                                                <ng-container *ngIf="!doa?.length">
+                                                    <div class="alert alert-danger">
+                                                        Nessun DOA Creato per il CRA {{ f.nome.value }}
+                                                    </div>
+                                                </ng-container>
+                                            </ngb-panel>
+                                        </ngb-accordion>
+                                    </ng-container>
+                                </div>
+                                <div class="col-12">
+                                    <hr>
+                                </div>
+                                <div class="col-12">
+                                    <div class="clearfix">
+                                        <div class="float-right">
+                                            <button class="btn btn-success"
+                                                    (click)="saveCraZonaEmergenza()">
+                                                Salva Modifiche
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </ng-wizard-step>

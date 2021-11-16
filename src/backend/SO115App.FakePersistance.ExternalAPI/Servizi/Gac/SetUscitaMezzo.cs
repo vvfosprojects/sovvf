@@ -30,11 +30,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         public void Set(UscitaGAC uscita)
         {
             //OTTENGO PROVINCIA E COMUNE
-            var territorio = _comuneService.GetComuneBy(uscita.comune.descrizione).Result;
-
-            uscita.comune.codice = territorio.FirstOrDefault(x => x.descrizione.ToLower().Contains(uscita.comune.descrizione.ToLower()))?.codice;
-            uscita.provincia.codice = territorio.FirstOrDefault(x => x.provincia.descrizione.ToLower().Contains(uscita.provincia.descrizione.ToLower()))?.codice;
-
+            //if (uscita.comune != null)
+            //{
+            //    var territorio = _comuneService.GetComuneBy(uscita.comune.descrizione).Result;
+            //    uscita.comune.codice = territorio.FirstOrDefault(x => x.descrizione.ToLower().Contains(uscita.comune.descrizione.ToLower()))?.codice;
+            //    uscita.provincia.codice = territorio.FirstOrDefault(x => x.provincia.descrizione.ToLower().Contains(uscita.provincia.descrizione.ToLower()))?.codice;
+            //}
             //USCITA GAC
             var lstUscite = new List<UscitaGAC>() { uscita };
             var jsonString = JsonConvert.SerializeObject(lstUscite);

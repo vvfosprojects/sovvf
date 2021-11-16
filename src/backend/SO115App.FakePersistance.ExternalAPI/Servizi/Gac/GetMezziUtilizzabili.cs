@@ -188,14 +188,30 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         private Mezzo MapMezzo(MezzoDTO mezzoDto)
         {
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             try
             {
-                var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoDto.CodiceDistaccamento).Result; //
+                List<PinNodo> pinNodi = new List<PinNodo>();
+                pinNodi.Add(new PinNodo(mezzoDto.CodiceDistaccamento, true));
 
-                var sede = new Sede(mezzoDto.CodiceDistaccamento, distaccamento?.DescDistaccamento ?? "", distaccamento?.Indirizzo ?? "", distaccamento?.Coordinate ?? null);
+                string descSede = "";
+                string IndirizzoSede = "";
+                Coordinate coordinate = null;
+
+
+                foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
+                {
+                    if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento))
+                    {
+                        descSede = figlio.Nome;
+                        coordinate = figlio.Coordinate;
+                    }
+                }
+
+                var sede = new Sede(mezzoDto.CodiceDistaccamento, descSede ?? "", IndirizzoSede ?? "", coordinate ?? null);
 
                 return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
-                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(distaccamento?.Coordinate?.Latitudine ?? 0.0, distaccamento?.Coordinate?.Longitudine ?? 0.0))
+                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(coordinate.Latitudine, coordinate.Longitudine))
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
                 };

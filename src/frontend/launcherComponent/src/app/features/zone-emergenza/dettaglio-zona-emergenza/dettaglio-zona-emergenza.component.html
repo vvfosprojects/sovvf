@@ -5,8 +5,10 @@
              [class.col-6]="doubleMonitor">
             <div class="col-12">
                 <h4>
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Gestione Emergenze - Dettaglio Emergenza {{ zonaEmergenzaById?.codEmergenza }}
+                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    <span class="font-weight-bold cursor-pointer"
+                          (click)="goToGestioneEmergenze()">Gestione Emergenze</span> - Dettaglio
+                    Emergenza {{ zonaEmergenzaById?.codEmergenza }}
                 </h4>
             </div>
             <hr>
@@ -37,6 +39,38 @@
                     </span>
                     {{ zonaEmergenzaById.descrizione }}
                 </h5>
+                <ng-container *ngIf="zonaEmergenzaById?.dirigenti?.length">
+                    <h5>
+                        <span class="text-muted">
+                            Comandante Regionale di Area Colpita:
+                        </span>
+                        {{ zonaEmergenzaById.dirigenti[0] }}
+                    </h5>
+                    <h5>
+                        <span class="text-muted">
+                            Responsabile del Distretto Operativo di Area Colpita:
+                        </span>
+                        {{ zonaEmergenzaById.dirigenti[1] }}
+                    </h5>
+                    <h5>
+                        <span class="text-muted">
+                            Responsabile:
+                        </span>
+                        {{ zonaEmergenzaById.dirigenti[2] }}
+                    </h5>
+                    <h5>
+                        <span class="text-muted">
+                            Responsabile generale dei campi base e dei mezzi operativi:
+                        </span>
+                        {{ zonaEmergenzaById.dirigenti[3] }}
+                    </h5>
+                    <h5>
+                        <span class="text-muted">
+                           Responsabile per la gestione del personale e dei contratti:
+                        </span>
+                        {{ zonaEmergenzaById.dirigenti[4] }}
+                    </h5>
+                </ng-container>
             </div>
             <hr>
             <div class="col-12">

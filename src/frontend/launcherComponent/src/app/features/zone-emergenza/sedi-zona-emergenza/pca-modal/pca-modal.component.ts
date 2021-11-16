@@ -4,20 +4,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Doa } from '../../interface/doa.interface';
 import { Store } from '@ngxs/store';
 import { ResetDoaForm } from '../../store/actions/zone-emergenza/zone-emergenza.actions';
-import { roundToDecimal } from '../../../../shared/helper/function-generiche';
-import { ModuloColonnaMobile } from '../../interface/modulo-colonna-mobile.interface';
-import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
-    selector: 'app-doa-modal',
-    templateUrl: './doa-modal.component.html',
-    styleUrls: ['./doa-modal.component.css']
+    selector: 'app-pca-modal',
+    templateUrl: './pca-modal.component.html',
+    styleUrls: ['./pca-modal.component.css']
 })
-export class DoaModalComponent implements OnDestroy {
+export class PcaModalComponent implements OnDestroy {
 
     doaForm: FormGroup;
-
-    moduli: ModuloColonnaMobile[];
 
     constructor(public modal: NgbActiveModal,
                 private formBuilder: FormBuilder,
@@ -45,16 +40,6 @@ export class DoaModalComponent implements OnDestroy {
             listaComuniInteressati: [null, [Validators.required]],
             listaPca: [null]
         });
-    }
-
-    onSetIndirizzo(candidate: AddressCandidate): void {
-        console.log('onSetIndirizzo', candidate);
-        const lat = roundToDecimal(candidate.location.latitude, 6);
-        const lng = roundToDecimal(candidate.location.longitude, 6);
-
-        this.f.indirizzo.patchValue(candidate.address);
-        this.f.latitudine.patchValue(lat);
-        this.f.longitudine.patchValue(lng);
     }
 
     onInserisciDoa(): void {
