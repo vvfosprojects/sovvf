@@ -64,6 +64,8 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             workshift.RemoveAll(w => w == null);
 
+            var box = workshift.SelectMany(w => w.Squadre).Where(s => codiciSede.Contains(s.Distaccamento)).ToList();
+
             var result = new BoxPersonale
             {
                 Funzionari = new ConteggioFunzionari
