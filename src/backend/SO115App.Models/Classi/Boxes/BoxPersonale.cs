@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Boxes
@@ -25,12 +26,10 @@ namespace SO115App.API.Models.Classi.Boxes
     public class BoxPersonale
     {
         public ConteggioPersonale PersonaleTotale { get; set; }
-
         public ConteggioFunzionari Funzionari { get; set; }
-
         public ConteggioPersonale SquadreServizio { get; set; }
-
         public int SquadreAssegnate { get; set; }
+        public List<WorkShift> workShift { get; set; }
     }
 
     public class ConteggioFunzionari

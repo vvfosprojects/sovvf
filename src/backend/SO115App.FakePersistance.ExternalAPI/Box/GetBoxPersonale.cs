@@ -102,7 +102,8 @@ namespace SO115App.ExternalAPI.Fake.Box
                     Next = workshift.SelectMany(w => w?.Successivo?.Squadre).Count(),
                     Previous = workshift.SelectMany(w => w?.Precedente?.Squadre).Count()
                 },
-                SquadreAssegnate = statoSquadre.Count
+                SquadreAssegnate = statoSquadre.Count,
+                workShift = workshift
             };
 
             return result;
