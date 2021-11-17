@@ -86,17 +86,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             InfoIstogramma info = new InfoIstogramma();
             info.ListaCodaChiamate = new List<Istogramma>();
 
-            var boxPersonale = _getBoxPersonale.Get(listaSedi.Select(s=>s.Codice).ToArray());
+            var boxPersonale = _getBoxPersonale.Get(listaSedi.Select(s => s.Codice).ToArray());
             var listaAttuale = boxPersonale.workShift.Select(s => s.Attuale).ToList();
             foreach (var unita in listaSedi)
             {
                 if (!unita.Nome.Equals("Centro Operativo Nazionale"))
                 {
-                    var listaSquadre = new List<Squadra>(); 
+                    var listaSquadre = new List<Squadra>();
                     listaSquadre = listaAttuale[0].Squadre.Where(s => s.Distaccamento.Equals(unita.Codice)).ToList();
 
 
-                    var statoSquadre = _getStatoSquadra.Get(new List<string> {unita.Codice});
+                    var statoSquadre = _getStatoSquadra.Get(new List<string> { unita.Codice });
 
                     //
                     var infoDistaccamento = new Istogramma()
