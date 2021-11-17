@@ -29,14 +29,14 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
     internal class GetSchedeFiltrateQueryHandler : IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult>
     {
         private readonly IGetSchedeFiltrate _getSchedeFiltrate;
-        private readonly IGetUtenteById _getUtenteBy;
-        private readonly IGetSchedeContatto_WSNUE _getSchedeContatto_WSNUE;
+        //private readonly IGetUtenteById _getUtenteBy;
+        //private readonly IGetSchedeContatto_WSNUE _getSchedeContatto_WSNUE;
 
-        public GetSchedeFiltrateQueryHandler(IGetSchedeFiltrate getSchedeFiltrate, IGetUtenteById getUtenteBy, IGetSchedeContatto_WSNUE getSchedeContatto_WSNUE)
+        public GetSchedeFiltrateQueryHandler(IGetSchedeFiltrate getSchedeFiltrate/*, IGetUtenteById getUtenteBy, IGetSchedeContatto_WSNUE getSchedeContatto_WSNUE*/)
         {
             _getSchedeFiltrate = getSchedeFiltrate;
-            _getUtenteBy = getUtenteBy;
-            _getSchedeContatto_WSNUE = getSchedeContatto_WSNUE;
+            //_getUtenteBy = getUtenteBy;
+            //_getSchedeContatto_WSNUE = getSchedeContatto_WSNUE;
         }
 
         public GetSchedeFiltrateResult Handle(GetSchedeFiltrateQuery query)
@@ -48,7 +48,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
             query.CodiciSede.ToList().ForEach(codice =>
                 listaSchedeContatto.AddRange(_getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, codiceFiscale, query.Filters.RangeVisualizzazione, codice, query.Filters.Classificazione, query.CodiciSede[0])));
 
-            var result = listaSchedeContatto.OrderByDescending(x => !x.Gestita).ThenByDescending(x => x.Priorita).ThenBy(x => x.DataInserimento).ToList();
+            var result = listaSchedeContatto;
 
             var lista = new List<SchedaContatto>();
 
@@ -63,7 +63,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
 
             return new GetSchedeFiltrateResult()
             {
-                DataArray = lista,
+                DataArray = lista.OrderByDescending(s => s.DataInserimento).ToList(),
 
                 Pagination = new Classi.Condivise.Paginazione()
                 {
