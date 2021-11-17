@@ -192,7 +192,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     {
                         var info = GetInfoSede(provinciale.id).Result;
 
-                        if(info != null) { 
+                        //if(info != null) { 
                             var lstComunali = GetFigli(provinciale.id).Result
                             .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione, comunale.Coordinate)).ToHashSet().ToList();
 
@@ -202,13 +202,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                             {
                                 lstComunali.Remove(centrale);
 
+                            try
+                            {
                                 var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, info.Coordinate);
                                 lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
                                 result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?
                                     .AddFiglio(unitaComunali);
+                            }
+                            catch
+                            {
 
                             }
-                        }
+
+                            }
+                        //}
                     };
 
                     ListaSediAlberate = result;
@@ -221,11 +228,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 catch (Exception e)
                 {
                     var sedi = _getAllSediAlberate.GetSediAlberate();
-                    var cacheEntryOptionsBk = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
-                    _memoryCache.Set("ListaSediAlberate", sedi, cacheEntryOptionsBk);
 
-                    return sedi;
-                    //throw new Exception("Errore costruzione alberatura sedi di servizio.");
+                    if (sedi != null)
+                    {
+                        var cacheEntryOptionsBk = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
+                        _memoryCache.Set("ListaSediAlberate", sedi, cacheEntryOptionsBk);
+                        return sedi;
+                    }else
+                        throw new Exception("Errore costruzione alberatura sedi di servizio.");
                 }
 
 
