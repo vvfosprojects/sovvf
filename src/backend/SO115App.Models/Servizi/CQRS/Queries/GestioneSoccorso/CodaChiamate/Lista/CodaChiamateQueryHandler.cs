@@ -18,11 +18,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.CodaChiamate;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
@@ -40,14 +43,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetTurno _getTurno;
         private readonly IGetBoxPersonale _getBoxPersonale;
+        private readonly IGetStatoSquadra _getStatoSquadra;
 
         public CodaChiamateQueryHandler(IGetListaSintesi iGetListaSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-                                        IGetTurno getTurno, IGetBoxPersonale getBoxPersonale)
+                                        IGetTurno getTurno, IGetBoxPersonale getBoxPersonale, IGetStatoSquadra getStatoSquadra)
         {
             _iGetListaSintesi = iGetListaSintesi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getTurno = getTurno;
             _getBoxPersonale = getBoxPersonale;
+            _getStatoSquadra = getStatoSquadra;
         }
 
         /// <summary>
@@ -81,18 +86,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             InfoIstogramma info = new InfoIstogramma();
             info.ListaCodaChiamate = new List<Istogramma>();
 
+            var boxPersonale = _getBoxPersonale.Get(listaSedi.Select(s=>s.Codice).ToArray());
+
             foreach (var unita in listaSedi)
             {
                 if (!unita.Nome.Equals("Centro Operativo Nazionale"))
                 {
-                    var boxPersonale = _getBoxPersonale.Get(new string[1] { unita.Codice });
+                    //var listaSquadre = new List<Squadra>();
+                    var listaSquadre = boxPersonale.workShift.Select(s =>s.Attuale.Squadre);
+                    listaSquadre = listaSquadre.Where(s => s.Any(o => o.Distaccamento.Equals(unita.Codice)));
+
+
+                    var statoSquadre = _getStatoSquadra.Get(new List<string> {unita.Codice});
+
+                    //
                     var infoDistaccamento = new Istogramma()
                     {
                         codDistaccamento = unita.Codice,
                         descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
                         numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
-                        squadreLibere = boxPersonale != null ? boxPersonale.SquadreServizio.Current - boxPersonale.SquadreAssegnate : 0,
-                        squadreOccupate = boxPersonale != null ? boxPersonale.SquadreAssegnate : 0
+                        squadreLibere = listaSquadre != null ? listaSquadre.Count() - statoSquadre.Count : 0,
+                        squadreOccupate = statoSquadre.Count
                     };
 
                     info.ListaCodaChiamate.Add(infoDistaccamento);
