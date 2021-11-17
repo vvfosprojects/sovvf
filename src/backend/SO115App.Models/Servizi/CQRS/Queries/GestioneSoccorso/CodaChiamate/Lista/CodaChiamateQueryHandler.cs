@@ -87,14 +87,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             info.ListaCodaChiamate = new List<Istogramma>();
 
             var boxPersonale = _getBoxPersonale.Get(listaSedi.Select(s=>s.Codice).ToArray());
-
+            var listaAttuale = boxPersonale.workShift.Select(s => s.Attuale).ToList();
             foreach (var unita in listaSedi)
             {
                 if (!unita.Nome.Equals("Centro Operativo Nazionale"))
                 {
-                    //var listaSquadre = new List<Squadra>();
-                    var listaSquadre = boxPersonale.workShift.Select(s =>s.Attuale.Squadre);
-                    listaSquadre = listaSquadre.Where(s => s.Any(o => o.Distaccamento.Equals(unita.Codice)));
+                    var listaSquadre = new List<Squadra>(); 
+                    listaSquadre = listaAttuale[0].Squadre.Where(s => s.Distaccamento.Equals(unita.Codice)).ToList();
 
 
                     var statoSquadre = _getStatoSquadra.Get(new List<string> {unita.Codice});
@@ -103,7 +102,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                     var infoDistaccamento = new Istogramma()
                     {
                         codDistaccamento = unita.Codice,
-                        descDistaccamento = unita.Codice.Contains("1000") ? "Sede Centrale" : unita.Nome,
+                        descDistaccamento = unita.Codice.Contains("1000") ? "Centrale" : unita.Nome,
                         numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
                         squadreLibere = listaSquadre != null ? listaSquadre.Count() - statoSquadre.Count : 0,
                         squadreOccupate = statoSquadre.Count
