@@ -49,7 +49,7 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
             var listaPin = new List<PinNodo>();
             foreach (var ruolo in ruoli.FindAll(x => x.Descrizione.Equals(ruoloNecessario)))
             {
-                listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
+                listaPin.Add(new PinNodo(ruolo.CodSede.ToLower().Replace("con","00"), ruolo.Ricorsivo));
             }
             foreach (var unita in listaSediAlberate.Result?.GetSottoAlbero(listaPin))
             {
