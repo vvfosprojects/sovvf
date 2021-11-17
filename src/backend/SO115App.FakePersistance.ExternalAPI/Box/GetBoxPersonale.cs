@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CodaChiamateQueryHandler.cs" company="CNVVF">
+// <copyright file="GetPersonale.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,105 +17,98 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
+
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Organigramma;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Classi.CodaChiamate;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using SO115App.Models.Servizi.Infrastruttura.Turni;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
+namespace SO115App.ExternalAPI.Fake.Box
 {
-    /// <summary>
-    ///   Servizio che restituisce tutti i valori della Navbar.
-    /// </summary>
-    public class CodaChiamateQueryHandler : IQueryHandler<CodaChiamateQuery, CodaChiamateResult>
+    public class GetBoxPersonale : IGetBoxPersonale
     {
-        private readonly IGetListaSintesi _iGetListaSintesi;
-        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IGetTurno _getTurno;
-        private readonly IGetBoxPersonale _getBoxPersonale;
         private readonly IGetStatoSquadra _getStatoSquadra;
+        private readonly IGetSquadre _getSquadre;
+        private readonly IGetSedi _sedi;
 
-        public CodaChiamateQueryHandler(IGetListaSintesi iGetListaSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-                                        IGetTurno getTurno, IGetBoxPersonale getBoxPersonale, IGetStatoSquadra getStatoSquadra)
+        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre, IGetSedi sedi)
         {
-            _iGetListaSintesi = iGetListaSintesi;
-            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _getTurno = getTurno;
-            _getBoxPersonale = getBoxPersonale;
             _getStatoSquadra = getStatoSquadra;
+            _getSquadre = getSquadre;
+            _sedi = sedi;
         }
 
-        /// <summary>
-        ///   Query che estrae tutti i parametri iniziali della Home Page
-        /// </summary>
-        /// <param name="query">Filtri utilizzati per l'estrazione</param>
-        /// <returns>Tutti i parametri iniziali della Home Page</returns>
-        public CodaChiamateResult Handle(CodaChiamateQuery query)
+        public BoxPersonale Get(string[] codiciSede)
         {
-            var turnoCorrente = _getTurno.Get().Codice.Substring(0, 1);
-            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            var pinNodi = new List<PinNodo>();
-
-            foreach (var sede in query.CodiciSede)
+            if (codiciSede.Any(s => s == "00" || s == "001"))
             {
-                pinNodi.Add(new PinNodo(sede, true));
-            }
-            var listaSedi = listaSediAlberate.Result.GetSottoAlbero(pinNodi);
-            foreach (var figlio in listaSedi)
-            {
-                pinNodi.Add(new PinNodo(figlio.Codice, true));
+                codiciSede = _sedi.GetAll().Result.Select(s => s.Codice).ToArray();
             }
 
-            query.Filtro = new FiltroRicercaRichiesteAssistenza();
-            query.Filtro.UnitaOperative = pinNodi.ToHashSet();
-            query.Filtro.IncludiRichiesteAperte = true;
-            query.Filtro.IncludiRichiesteChiuse = false;
+            var statoSquadre = _getStatoSquadra.Get(codiciSede.ToList());
 
-            var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
+            var lstCodici = codiciSede.Select(cod => cod.Split('.')[0]).Distinct();
 
-            InfoIstogramma info = new InfoIstogramma();
-            info.ListaCodaChiamate = new List<Istogramma>();
+            var workshift = new List<WorkShift>();
 
-            var boxPersonale = _getBoxPersonale.Get(listaSedi.Select(s => s.Codice).ToArray());
-            var listaAttuale = boxPersonale.workShift.Select(s => s.Attuale).ToList();
-            foreach (var unita in listaSedi)
+            Parallel.ForEach(lstCodici, codice => workshift.Add(_getSquadre.GetAllByCodiceDistaccamento(codice).Result));
+
+            workshift.RemoveAll(w => w == null);
+
+            var box = workshift.SelectMany(w => w.Squadre).Where(s => codiciSede.Contains(s.Distaccamento)).ToList();
+
+            var result = new BoxPersonale
             {
-                if (!unita.Nome.Equals("Centro Operativo Nazionale"))
+                Funzionari = new ConteggioFunzionari
                 {
-                    var listaSquadre = new List<Squadra>();
-                    listaSquadre = listaAttuale[0].Squadre.Where(s => s.Distaccamento.Equals(unita.Codice)).ToList();
-
-
-                    var statoSquadre = _getStatoSquadra.Get(new List<string> { unita.Codice });
-
-                    //
-                    var infoDistaccamento = new Istogramma()
+                    Current = workshift.SelectMany(w => w.Attuale?.Funzionari?.Select(m => new Componente
                     {
-                        codDistaccamento = unita.Codice,
-                        descDistaccamento = unita.Codice.Contains("1000") ? "Centrale" : unita.Nome,
-                        numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
-                        squadreLibere = listaSquadre != null ? listaSquadre.Count() - statoSquadre.Count : 0,
-                        squadreOccupate = statoSquadre.Count
-                    };
-
-                    info.ListaCodaChiamate.Add(infoDistaccamento);
-                }
-            }
-
-            return new CodaChiamateResult()
-            {
-                infoIstogramma = info.ListaCodaChiamate.OrderByDescending(x => x.numRichieste).OrderBy(x => x.codDistaccamento).ToList()
+                        CodiceFiscale = m.CodiceFiscale,
+                        DescrizioneQualifica = m.Ruolo,
+                        Nominativo = $"{m.Nome} {m.Cognome}",
+                        Ruolo = m.Ruolo
+                    }))?.ToList(),
+                    Next = workshift.SelectMany(w => w.Successivo?.Funzionari?.Select(m => new Componente
+                    {
+                        CodiceFiscale = m.CodiceFiscale,
+                        DescrizioneQualifica = m.Ruolo,
+                        Nominativo = $"{m.Nome} {m.Cognome}",
+                        Ruolo = m.Ruolo
+                    }))?.ToList(),
+                    Previous = workshift.SelectMany(w => w.Precedente?.Funzionari?.Select(m => new Componente
+                    {
+                        CodiceFiscale = m.CodiceFiscale,
+                        DescrizioneQualifica = m.Ruolo,
+                        Nominativo = $"{m.Nome} {m.Cognome}",
+                        Ruolo = m.Ruolo
+                    }))?.ToList()
+                },
+                PersonaleTotale = new ConteggioPersonale
+                {
+                    Current = workshift.Select(w => w.Attuale?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First())).Count(),
+                    Next = workshift.Select(w => w.Successivo?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First())).Count(),
+                    Previous = workshift.Select(w => w.Precedente?.Squadre.SelectMany(s => s.Membri).GroupBy(m => m.CodiceFiscale).Select(m => m.First())).Count(),
+                },
+                SquadreServizio = new ConteggioPersonale
+                {
+                    Current = workshift.SelectMany(w => w?.Attuale?.Squadre).Count(),
+                    Next = workshift.SelectMany(w => w?.Successivo?.Squadre).Count(),
+                    Previous = workshift.SelectMany(w => w?.Precedente?.Squadre).Count()
+                },
+                SquadreAssegnate = statoSquadre.Count,
+                workShift = workshift
             };
+
+            return result;
         }
     }
 }
