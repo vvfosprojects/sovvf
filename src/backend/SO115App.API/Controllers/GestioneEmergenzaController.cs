@@ -2,6 +2,7 @@
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using SO115App.Models.Classi.Emergenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta;
@@ -64,6 +65,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error("Errore InsertEmergenza: {0}", ex.Message);
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
@@ -86,6 +88,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error("Errore UpDateEmergenza: {0}", ex.Message);
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
@@ -104,6 +107,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error("Errore AnnullaEmergenza: {0}", ex.Message);
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
@@ -142,6 +146,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error("Errore GetTipologieEmergenza: {0}", ex.Message);
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
@@ -163,6 +168,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error("Errore GetEmergenzaById: {0}", ex.Message);
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
@@ -181,6 +187,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error("Errore GetListaEmergenzeByCodSede: {0}", ex.Message);
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
