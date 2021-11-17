@@ -15,9 +15,8 @@ namespace SO115App.Persistence.MongoDB.Marker
         {
             var coordinate = _service.Get(codiceSede);
 
-            //coordinate.Latitudine = Convert.ToDouble(coordinate.Latitudine.ToString().Replace('.',','));
-            //coordinate.Longitudine = Convert.ToDouble(coordinate.Longitudine.ToString().Replace('.', ','));
-
+            coordinate.Latitudine = double.Parse(coordinate.Latitudine.ToString().Replace('.', ','));
+            coordinate.Longitudine = double.Parse(coordinate.Longitudine.ToString().Replace('.', ','));
 
             var centroMappa = new CentroMappa()
             {
