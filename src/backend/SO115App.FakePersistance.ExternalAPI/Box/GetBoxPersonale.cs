@@ -49,7 +49,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
         public BoxPersonale Get(string[] codiciSede)
         {
-            if(codiciSede.Any(s => s == "00" || s == "001"))
+            if (codiciSede.Any(s => s == "00" || s == "001"))
             {
                 codiciSede = _sedi.GetAll().Result.Select(s => s.Codice).ToArray();
             }
