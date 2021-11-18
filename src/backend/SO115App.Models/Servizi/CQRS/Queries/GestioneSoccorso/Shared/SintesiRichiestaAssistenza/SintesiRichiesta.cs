@@ -385,5 +385,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public bool Esercitazione { get; set; }
 
         public ESRI Esri_Param { get; set; }
+
+        /// <summary>
+        ///   Questo parametro viene usato per il calcolo della distanza tra un intervento ed un altro
+        ///   GetInterventiInProssimita.cs
+        /// </summary>
+        public double Distance { get; set; }
     }
 }
