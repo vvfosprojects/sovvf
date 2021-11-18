@@ -636,8 +636,10 @@ namespace SO115App.API.Models.Classi.Soccorso
                     {
                         var partenzeAperte = partenze.ToList().FindAll(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
 
-                        if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Viaggio")).Count > 0 &&
-                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count == 0)
+                        if ((partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Viaggio")).Count > 0 ||
+                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Rientro")).Count > 0 ) &&
+                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count == 0
+                            )
                             return new Assegnata();
                         else if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count > 0)
                             return new Presidiata();

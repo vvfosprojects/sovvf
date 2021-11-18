@@ -37,7 +37,6 @@ export class PartenzaComponent implements OnInit {
 
     statoRichiestaEnum = StatoRichiesta;
     listaEventiMezzo: EventoMezzo[] = [];
-    dateDiff: number;
 
     constructor(config: NgbDropdownConfig, private store: Store, private richiesteService: SintesiRichiesteService) {
         config.placement = 'bottom-left';
@@ -45,9 +44,6 @@ export class PartenzaComponent implements OnInit {
 
     ngOnInit(): void {
         this.checkListaEventiMezzo();
-        // if (this.dateDiffMezzi) {
-        //     this.dateDiffMezzi.forEach(x => x.codMezzo === this.partenza.mezzo.codice ? this.dateDiff = x.secondsDiff : null);
-        // }
     }
 
     onAnnullaStato(idMezzo: string): void {

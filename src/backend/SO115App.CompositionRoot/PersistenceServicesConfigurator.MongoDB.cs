@@ -65,7 +65,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSintesiRichiestaAssistenzaByCodice, GetRichiesta>();
 
             container.Register<SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi, GetListaEventiByCodiceRichiesta>();
-
+            container.Register<IGetInterventiInProssimita,GetInterventiInProssimita>();
             #endregion Gestione richiesta di assistenza
 
             #region BOX
