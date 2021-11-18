@@ -93,7 +93,7 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
             var utentiInLavorazione = intervento.ListaUtentiInLavorazione?.Select(u => u.Nominativo).ToList();
             var utentiPresaInCarico = intervento.ListaUtentiPresaInCarico?.Select(u => u.Nominativo).ToList();
 
-            command.Chiamata.Localita.prova();
+            command.Chiamata.Localita.SplitIndirizzo();
 
 
             var richiesta = new RichiestaAssistenza()

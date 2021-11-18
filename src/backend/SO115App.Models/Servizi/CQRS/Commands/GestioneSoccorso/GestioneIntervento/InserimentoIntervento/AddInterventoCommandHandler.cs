@@ -81,7 +81,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             //var localita = new Localita(command.Chiamata.Localita.Coordinate, command.Chiamata.Localita.Indirizzo, command.Chiamata.Localita.Note);
             //command.Chiamata.Localita = localita;
 
-            command.Chiamata.Localita.prova();
+            command.Chiamata.Localita.SplitIndirizzo();
 
 
             var richiesta = new RichiestaAssistenza()
