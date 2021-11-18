@@ -35,13 +35,13 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Latitudine
         /// </summary>
-        [BsonRepresentation(BsonType.Double, AllowTruncation = true)]
+        [BsonRepresentation(BsonType.String)]
         public double Latitudine { get; set; }
 
         /// <summary>
         ///   Latitudine
         /// </summary>
-        [BsonRepresentation(BsonType.Double, AllowTruncation = true)]
+        [BsonRepresentation(BsonType.String)]
         public double Longitudine { get; set; }
     }
 }
