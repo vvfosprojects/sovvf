@@ -89,13 +89,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             var listaChiamateInCorso = _listaChiamateInCorsoMarkerHandler.Get(pinNodi);
             var ListaZoneEmergenza = _getZoneEmergenza.GetAll();
+            var rubrica = _getRurbica.Get(query.CodiceSede);
 
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
                 ListaChiamateInCorso = listaChiamateInCorso,
                 ListaFiltri = filtri,
                 ZoneEmergenza = ListaZoneEmergenza,
-                Rubrica = new List<SO115App.Models.Classi.RubricaDTO.EnteDTO>()
+                Rubrica = rubrica
             };
 
             Log.Debug("Fine elaborazione Welcome Handler");
