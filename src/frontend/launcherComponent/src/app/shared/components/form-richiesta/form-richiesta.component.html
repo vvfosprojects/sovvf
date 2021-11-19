@@ -315,7 +315,7 @@
                 <div class="row mb-5">
                     <div class="col-8">
                         <div class="row">
-                            <div class="col-4 mb-2 pr-2">
+                            <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 mb-2 pr-2">
                                 <div class="input-group">
                                     <label class="d-none" for="boschi">Boschi</label>
                                     <input id="boschi"
@@ -330,7 +330,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-4 text-center px-1">
+                            <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 text-center px-1">
                                 <div class="input-group">
                                     <label class="d-none" for="campi">Campi</label>
                                     <input id="campi"
@@ -345,7 +345,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-4 text-center pl-2">
+                            <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 text-center pl-2">
                                 <div class="input-group">
                                     <label class="d-none" for="sterpaglie">Sterpaglie</label>
                                     <input id="sterpaglie"
