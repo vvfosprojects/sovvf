@@ -15,8 +15,9 @@
         <div class="position-absolute pt-1 w-100"
              style="top: 40px; left: 0; z-index: 99999">
             <ul class="list-unstyled">
-                <li *ngFor="let candidate of addressCandidates"
+                <li *ngFor="let candidate of addressCandidates; let i = index"
                     class="item-lista-indirizzo"
+                    [class.item-lista-indirizzo-selected-key]="indexSelectedAddressCandidate === i"
                     (click)="onSelectCandidate(candidate)">
                     {{ candidate?.address }}
                 </li>

@@ -28,9 +28,26 @@ export class RicercaIndirizzoComponent implements OnInit {
     mapProperties: { spatialReference?: SpatialReference };
 
     addressCandidates: AddressCandidate[];
+    indexSelectedAddressCandidate = 0;
 
     constructor(private changeDetectorRef: ChangeDetectorRef,
                 private store: Store) {
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
+            switch (e.key) {
+                case 'ArrowDown':
+                    const newIndexValueDown = this.indexSelectedAddressCandidate + 1;
+                    this.setIndexSelectedAddressCandidate(newIndexValueDown);
+                    break;
+                case 'ArrowUp':
+                    const newIndexValueUp = this.indexSelectedAddressCandidate - 1;
+                    this.setIndexSelectedAddressCandidate(newIndexValueUp);
+                    break;
+                case 'Enter':
+                    e.preventDefault();
+                    const candidate = this.addressCandidates[this.indexSelectedAddressCandidate];
+                    this.onSelectCandidate(candidate);
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -38,6 +55,8 @@ export class RicercaIndirizzoComponent implements OnInit {
     }
 
     onChangeIndirizzo(): boolean {
+        this.setIndexSelectedAddressCandidate(0);
+
         if (!this.indirizzo) {
             this.addressCandidates = [];
             return false;
@@ -88,6 +107,12 @@ export class RicercaIndirizzoComponent implements OnInit {
                 return true;
             });
         });
+    }
+
+    setIndexSelectedAddressCandidate(i: number): void {
+        if (i >= 0 && i <= (this.addressCandidates?.length - 1)) {
+            this.indexSelectedAddressCandidate = i;
+        }
     }
 
     onSelectCandidate(candidate: AddressCandidate): void {
