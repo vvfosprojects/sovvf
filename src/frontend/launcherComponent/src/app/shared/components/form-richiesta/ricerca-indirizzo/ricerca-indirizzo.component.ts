@@ -22,18 +22,21 @@ export class RicercaIndirizzoComponent implements OnInit {
     @Input() invalid: boolean;
     @Input() spatialReference: SpatialReference;
 
-    @Output() changeIndirizzo: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() changeIndirizzo: EventEmitter<string> = new EventEmitter<string>();
     @Output() selectCandidate: EventEmitter<AddressCandidate> = new EventEmitter<AddressCandidate>();
 
     mapProperties: { spatialReference?: SpatialReference };
 
+    hideAddressCandidates = false;
     addressCandidates: AddressCandidate[];
     indexSelectedAddressCandidate = 0;
 
     @HostListener('document:click', ['$event'])
     clickOutside(event): void {
         if (!this.eRef.nativeElement.contains(event.target)) {
-            this.resetAddressCandidates();
+            this.hideAddressCandidates = true;
+        } else {
+            this.hideAddressCandidates = false;
         }
     }
 
@@ -63,58 +66,60 @@ export class RicercaIndirizzoComponent implements OnInit {
     }
 
     onChangeIndirizzo(): boolean {
-        this.setIndexSelectedAddressCandidate(0);
+        if (this.requiredFieldClass) {
+            this.setIndexSelectedAddressCandidate(0);
 
-        if (!this.indirizzo) {
-            this.addressCandidates = [];
-            return false;
-        }
-
-        const indirizzo = this.indirizzo;
-        const urlServiceGeocode = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer';
-
-        const sedeUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser)?.sede;
-        let location: Point;
-        let paramsSuggestLocation: locatorSuggestLocationsParams;
-
-        if (sedeUtenteLoggato) {
-            const latitude = sedeUtenteLoggato.coordinate.latitudine;
-            const longitude = sedeUtenteLoggato.coordinate.longitudine;
-            location = new Point({
-                latitude,
-                longitude
-            });
-        }
-        paramsSuggestLocation = {
-            url: urlServiceGeocode,
-            location,
-            text: indirizzo
-        } as locatorSuggestLocationsParams;
-        Locator.suggestLocations(urlServiceGeocode, paramsSuggestLocation).then(async (suggestionResults: SuggestionResult[]) => {
-            this.addressCandidates = [];
-            const addressToLocationsPromises = [];
-
-            for (const suggestionResult of suggestionResults) {
-                const paramsAddressToLocations = {
-                    url: urlServiceGeocode,
-                    magicKey: suggestionResult.magicKey,
-                    address: indirizzo
-                } as locatorAddressToLocationsParams;
-                addressToLocationsPromises.push(
-                    Locator.addressToLocations(urlServiceGeocode, paramsAddressToLocations).then(async (addressCandidates: AddressCandidate[]) => {
-                        return addressCandidates;
-                    })
-                );
+            if (!this.indirizzo) {
+                this.addressCandidates = [];
+                return false;
             }
 
-            Promise.all(addressToLocationsPromises).then((promisesResult: any[]) => {
-                for (const promiseResult of promisesResult) {
-                    this.addressCandidates.push(promiseResult[0]);
-                    this.changeDetectorRef.detectChanges();
+            const indirizzo = this.indirizzo;
+            const urlServiceGeocode = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer';
+
+            const sedeUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser)?.sede;
+            let location: Point;
+            let paramsSuggestLocation: locatorSuggestLocationsParams;
+
+            if (sedeUtenteLoggato) {
+                const latitude = sedeUtenteLoggato.coordinate.latitudine;
+                const longitude = sedeUtenteLoggato.coordinate.longitudine;
+                location = new Point({
+                    latitude,
+                    longitude
+                });
+            }
+            paramsSuggestLocation = {
+                url: urlServiceGeocode,
+                location,
+                text: indirizzo
+            } as locatorSuggestLocationsParams;
+            Locator.suggestLocations(urlServiceGeocode, paramsSuggestLocation).then(async (suggestionResults: SuggestionResult[]) => {
+                this.addressCandidates = [];
+                const addressToLocationsPromises = [];
+
+                for (const suggestionResult of suggestionResults) {
+                    const paramsAddressToLocations = {
+                        url: urlServiceGeocode,
+                        magicKey: suggestionResult.magicKey,
+                        address: indirizzo
+                    } as locatorAddressToLocationsParams;
+                    addressToLocationsPromises.push(
+                        Locator.addressToLocations(urlServiceGeocode, paramsAddressToLocations).then(async (addressCandidates: AddressCandidate[]) => {
+                            return addressCandidates;
+                        })
+                    );
                 }
-                return true;
+
+                Promise.all(addressToLocationsPromises).then((promisesResult: any[]) => {
+                    for (const promiseResult of promisesResult) {
+                        this.addressCandidates.push(promiseResult[0]);
+                        this.changeDetectorRef.detectChanges();
+                    }
+                    return true;
+                });
             });
-        });
+        }
     }
 
     setIndexSelectedAddressCandidate(i: number): void {
@@ -133,6 +138,6 @@ export class RicercaIndirizzoComponent implements OnInit {
     }
 
     getSelectIndirizzoOpen(): boolean {
-        return !!(this.addressCandidates?.length);
+        return !!(this.addressCandidates?.length) && !this.hideAddressCandidates;
     }
 }

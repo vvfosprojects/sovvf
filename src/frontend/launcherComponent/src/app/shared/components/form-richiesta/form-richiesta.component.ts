@@ -20,9 +20,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
 import {
+    ClearCompetenze,
     ReducerSchedaTelefonata,
     SetCompetenze,
-    StartChiamata, StopLoadingDettagliTipologia
+    StartChiamata,
+    StopLoadingDettagliTipologia
 } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
@@ -34,7 +36,6 @@ import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interfa
 import { EnteInterface } from 'src/app/shared/interface/ente.interface';
 import { ConfirmModalComponent } from '../../modal/confirm-modal/confirm-modal.component';
 import { ListaSchedeContattoModalComponent } from '../../modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
-import { InterventiProssimitaModalComponent } from '../../modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 import { Sede } from '../../model/sede.model';
 import { TriageChiamataModalComponent } from '../../modal/triage-chiamata-modal/triage-chiamata-modal.component';
 import { ToggleModifica } from '../../../features/home/store/actions/view/view.actions';
@@ -58,9 +59,9 @@ import { PosInterface } from '../../interface/pos.interface';
 import { makeIdChiamata } from '../../helper/function-richieste';
 import { TipoTerreno } from '../../model/tipo-terreno';
 import { TipoTerrenoEnum } from '../../enum/tipo-terreno.enum';
-import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { SchedaTelefonataState } from '../../../features/home/store/states/form-richiesta/scheda-telefonata.state';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -132,6 +133,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
         this.richiestaForm = this.createAndGetForm();
+        this.f.indirizzo.setValidators([Validators.required]);
     }
 
     ngOnInit(): void {
@@ -211,12 +213,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             codice: [null],
             codiceRichiesta: [null],
             operatore: [null],
-            codTipologia: [null, Validators.required],
+            codTipologia: [null, [Validators.required]],
             dettaglioTipologia: [null],
             istanteRicezioneRichiesta: [new Date(new Date().getTime() + OFFSET_SYNC_TIME[0])],
-            nominativo: [null, Validators.required],
-            telefono: [null, Validators.required], // Inserire se necessario => Validators.pattern('^(\\+?)[0-9]+$')
-            indirizzo: [null, Validators.required],
+            nominativo: [null, [Validators.required]],
+            telefono: [null, [Validators.required]], // Inserire se necessario => Validators.pattern('^(\\+?)[0-9]+$')
+            indirizzo: [null],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             codSchedaContatto: [{ value: null, disabled: true }],
@@ -236,7 +238,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             sterpaglie: [null],
             descrizione: [null],
             zoneEmergenza: [null],
-            prioritaRichiesta: [3, Validators.required],
+            prioritaRichiesta: [3, [Validators.required]],
             stato: [StatoRichiesta.Chiamata],
             urgenza: [false],
             esercitazione: [false],
@@ -282,6 +284,13 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
         this.store.dispatch(new StopLoadingDettagliTipologia());
+
+        const lat = roundToDecimal(this.f.latitudine.value, 6);
+        const lng = roundToDecimal(this.f.longitudine.value, 6);
+        if (lat && lng) {
+            this.onChangeCoordinate();
+            this.f.indirizzo.setValidators([]);
+        }
 
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
         savePosTriageSummary(this.store, this.richiestaModifica?.dettaglioTipologia?.pos);
@@ -373,7 +382,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onSetIndirizzo(candidate: AddressCandidate): void {
-        console.log('onSetIndirizzo', candidate);
+        const indirizzo = candidate.address ? candidate.address : null;
         const lat = roundToDecimal(candidate.location.latitude, 6);
         const lng = roundToDecimal(candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
@@ -381,11 +390,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.idChiamata,
             `${this.operatore.nome} ${this.operatore.cognome}`,
             `${this.operatore.sede.codice}`,
-            new Localita(coordinate ? coordinate : null, candidate.address),
+            new Localita(coordinate ? coordinate : null, indirizzo),
             null
         );
 
-        this.f.indirizzo.patchValue(candidate.address);
+        this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
 
@@ -415,25 +424,36 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onModificaIndirizzo(candidate: AddressCandidate): void {
+        const indirizzo = candidate.address ? candidate.address : null;
         const lat = roundToDecimal(candidate.location.latitude, 6);
         const lng = roundToDecimal(candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
-        const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, candidate.address);
+        const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, indirizzo);
 
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
-        this.f.indirizzo.patchValue(candidate.address);
+        this.f.indirizzo.patchValue(indirizzo);
 
         this.store.dispatch([
             new ModificaIndirizzo(nuovoIndirizzo),
-            new SetCompetenze(coordinate, candidate.address, this.chiamataMarker)
+            new SetCompetenze(coordinate, indirizzo, null)
         ]);
     }
 
-    modificaIndirizzo(): void {
-        if (this.richiestaModifica) {
-            this.f.latitudine.patchValue(null);
-            this.f.longitudine.patchValue(null);
+    modificaIndirizzo(indirizzo: string): void {
+        this.f.indirizzo.patchValue(indirizzo);
+        const lat = roundToDecimal(this.f.latitudine.value, 6);
+        const lng = roundToDecimal(this.f.longitudine.value, 6);
+        if (!indirizzo && (lat && lng)) {
+            this.f.indirizzo.setValidators([]);
+
+            // TODO: risolvere glitch
+            this.f.indirizzo.patchValue(' ');
+            setTimeout(() => {
+                this.f.indirizzo.patchValue('');
+            }, 1);
+        } else if (!lat || !lng) {
+            this.f.indirizzo.setValidators([Validators.required]);
         }
     }
 
@@ -452,8 +472,42 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         return msg;
     }
 
+    onChangeCoordinate(): void {
+        const indirizzoInserito = !!(this.f.indirizzo.value);
+        const indirizzo = indirizzoInserito ? this.f.indirizzo.value : null;
+        const lat = roundToDecimal(this.f.latitudine.value, 6);
+        const lng = roundToDecimal(this.f.longitudine.value, 6);
+
+        if (lat && lng) {
+            const coordinate = new Coordinate(lat, lng);
+            if (!this.richiestaModifica) {
+                this.chiamataMarker = new ChiamataMarker(
+                    this.idChiamata,
+                    `${this.operatore.nome} ${this.operatore.cognome}`,
+                    `${this.operatore.sede.codice}`,
+                    new Localita(coordinate ? coordinate : null, indirizzo),
+                    null
+                );
+            }
+            this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
+
+            if (!indirizzoInserito) {
+                this.f.indirizzo.setValidators([]);
+
+                // TODO: risolvere glitch
+                this.f.indirizzo.patchValue(' ');
+                setTimeout(() => {
+                    this.f.indirizzo.patchValue('');
+                }, 1);
+            }
+        } else {
+            this.store.dispatch(new ClearCompetenze());
+            this.f.indirizzo.setValidators([Validators.required]);
+        }
+    }
+
     // TODO: controllare utilizzo effettivo
-    onShowInterventiProssimita(): void {
+    /* onShowInterventiProssimita(): void {
         let modalInterventiProssimita;
         modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
             windowClass: 'modal-holder',
@@ -478,7 +532,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
-    }
+    } */
 
     openModalSchedeContatto(): void {
         let modalOptions: any;
@@ -739,7 +793,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     formIsInvalid(): boolean {
-        return !!this.richiestaForm.invalid;
+        return !!(this.richiestaForm.invalid);
     }
 
     checkSubmit(): boolean {

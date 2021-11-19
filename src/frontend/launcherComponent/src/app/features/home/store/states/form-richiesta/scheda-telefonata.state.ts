@@ -3,7 +3,7 @@ import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
     AnnullaChiamata,
     CestinaChiamata,
-    ClearChiamata,
+    ClearChiamata, ClearCompetenze,
     ClearIndirizzo,
     ClearMarkerChiamata,
     InsertChiamata,
@@ -258,36 +258,51 @@ export class SchedaTelefonataState {
                 return c.codice;
             });
             dispatch([
-                new MarkerChiamata(action.markerChiamata, codCompetenze),
                 new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
                 new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
                 new StopLoadingCompetenze()
             ]);
+
+            if (action.markerChiamata) {
+                dispatch(new MarkerChiamata(action.markerChiamata, codCompetenze));
+            }
+
             patchState({
                 competenze
             });
         });
     }
 
+    @Action(ClearCompetenze)
+    clearCompetenze({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            competenze: SchedaTelefonataStateDefaults.competenze
+        });
+    }
+
     @Action(SetCountInterventiProssimita)
     setCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
         this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: CountInterventiProssimitaResponse) => {
-            patchState({
-                countInterventiProssimita: res.count,
-                countInterventiStessaVia: res.countStessaVia,
-                countInterventiChiusiStessoIndirizzo: res.countInterventiChiusiStessoIndirizzo
-            });
+            if (res) {
+                patchState({
+                    countInterventiProssimita: res.count,
+                    countInterventiStessaVia: res.countStessaVia,
+                    countInterventiChiusiStessoIndirizzo: res.countInterventiChiusiStessoIndirizzo
+                });
+            }
         });
     }
 
     @Action(SetInterventiProssimita)
     setInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
         this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: InterventiProssimitaResponse) => {
-            patchState({
-                interventiProssimita: res.dataArray,
-                interventiStessaVia: res.dataArrayStessaVia,
-                interventiChiusiStessoIndirizzo: res.dataArrayInterventiChiusiStessoIndirizzo
-            });
+            if (res) {
+                patchState({
+                    interventiProssimita: res.dataArray,
+                    interventiStessaVia: res.dataArrayStessaVia,
+                    interventiChiusiStessoIndirizzo: res.dataArrayInterventiChiusiStessoIndirizzo
+                });
+            }
         });
     }
 

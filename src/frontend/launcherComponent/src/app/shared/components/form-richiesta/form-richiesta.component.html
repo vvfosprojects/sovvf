@@ -85,8 +85,9 @@
                         <ng-container *ngIf="!apertoFromMappa">
                             <app-ricerca-indirizzo
                                     [indirizzo]="f?.indirizzo?.value"
+                                    [requiredFieldClass]="f?.indirizzo?._rawValidators[0]?.name === 'required'"
                                     [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
-                                    (changeIndirizzo)="modificaIndirizzo()"
+                                    (changeIndirizzo)="modificaIndirizzo($event)"
                                     (selectCandidate)="reducerIndirizzo($event)">
                             </app-ricerca-indirizzo>
                         </ng-container>
@@ -117,6 +118,9 @@
                                    type="tel"
                                    placeholder="Latitudine"
                                    formControlName="latitudine"
+                                   appDebounceKeyUp
+                                   [debounceTime]="1000"
+                                   (debounceKeyUp)="onChangeCoordinate()"
                                    (keypress)="checkInputPattern($event, 'LAT_LON')"
                                    (paste)="checkInputPattern($event, 'LAT_LON')"/>
                             <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
@@ -133,6 +137,9 @@
                                    type="tel"
                                    placeholder="Longitudine"
                                    formControlName="longitudine"
+                                   appDebounceKeyUp
+                                   [debounceTime]="1000"
+                                   (debounceKeyUp)="onChangeCoordinate()"
                                    (keypress)="checkInputPattern($event, 'LAT_LON')"
                                    (paste)="checkInputPattern($event, 'LAT_LON')"/>
                             <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
@@ -167,15 +174,6 @@
                             <div class="font-xlarge pl-2 pt-1">
                                 <i class="fas fa-spinner fa-spin mr-2"></i>
                                 Recupero Competenze
-                            </div>
-                        </ng-template>
-                        <!-- COMPETENZE RICHIESTA MODIFICA -->
-                        <ng-template
-                                [ngIf]="!loadingCompetenze && !competenze?.length && richiestaModifica?.competenze?.length">
-                            <div class="float-left"
-                                 style="font-size: xx-large">
-                                <app-competenza *ngFor="let c of richiestaModifica?.competenze; let i = index"
-                                                [competenza]="c" [i]="i"></app-competenza>
                             </div>
                         </ng-template>
                     </div>
@@ -568,7 +566,7 @@
 
     <div class="col-4 h-100 scroll-y py-3"
          [class.bg-resoconto-triage]="!apertoFromMappa">
-         <div class="px-2 mb-2 bg-secondary font-weight-bold" style="color: #ffffff">INFO AGGIUNTIVE</div>
+        <div class="px-2 mb-2 bg-secondary font-weight-bold" style="color: #ffffff">INFO AGGIUNTIVE</div>
         <div>
             <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
                                 [dettaglioTipologia]="f.dettaglioTipologia?.value"

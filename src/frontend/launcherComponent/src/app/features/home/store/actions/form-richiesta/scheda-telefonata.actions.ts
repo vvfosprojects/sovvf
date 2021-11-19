@@ -21,8 +21,12 @@ export class MarkerChiamata {
 export class SetCompetenze {
     static readonly type = '[SchedaTelefonata] Set Competenze';
 
-    constructor(public coordinate: Coordinate, public indirizzo: string, public markerChiamata: ChiamataMarker) {
+    constructor(public coordinate: Coordinate, public indirizzo: string, public markerChiamata?: ChiamataMarker) {
     }
+}
+
+export class ClearCompetenze {
+    static readonly type = '[SchedaTelefonata] Clear Competenze';
 }
 
 export class SetCountInterventiProssimita {
