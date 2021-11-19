@@ -522,7 +522,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     setSchedaContatto(scheda: SchedaContatto): void {
-        console.log('setSchedaContatto', scheda);
         const f = this.f;
         f.codSchedaContatto.patchValue(scheda.codiceScheda);
         f.nominativo.patchValue(scheda.richiedente.nominativo);
@@ -711,7 +710,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 if (this.richiestaModifica && this.richiestaModifica.tipologie[0] && this.f.codTipologia && (this.richiestaModifica.tipologie[0].codice !== this.f.codTipologia.value)) {
                     clearTriageSummary(this.store);
                     clearTriageChiamataModalData(this.store);
-                    clearPosTriageSummary(this.store);                }
+                    clearPosTriageSummary(this.store);
+                }
                 this.reducerSchedaTelefonata('modificata', azione);
             }
         }

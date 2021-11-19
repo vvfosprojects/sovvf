@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../../../store/states/app/app.state';
 import { AuthState } from '../../../../features/auth/store/auth.state';
@@ -30,8 +30,16 @@ export class RicercaIndirizzoComponent implements OnInit {
     addressCandidates: AddressCandidate[];
     indexSelectedAddressCandidate = 0;
 
-    constructor(private changeDetectorRef: ChangeDetectorRef,
-                private store: Store) {
+    @HostListener('document:click', ['$event'])
+    clickOutside(event): void {
+        if (!this.eRef.nativeElement.contains(event.target)) {
+            this.resetAddressCandidates();
+        }
+    }
+
+    constructor(private store: Store,
+                private changeDetectorRef: ChangeDetectorRef,
+                private eRef: ElementRef) {
         document.addEventListener('keydown', (e: KeyboardEvent) => {
             switch (e.key) {
                 case 'ArrowDown':
@@ -122,5 +130,9 @@ export class RicercaIndirizzoComponent implements OnInit {
 
     resetAddressCandidates(): void {
         this.addressCandidates = null;
+    }
+
+    getSelectIndirizzoOpen(): boolean {
+        return !!(this.addressCandidates?.length);
     }
 }
