@@ -99,3 +99,11 @@ export class StartLoadingCompetenze {
 export class StopLoadingCompetenze {
     static readonly type = '[SchedaTelefonata] Stop Loading Competenze';
 }
+
+export class StartLoadingDettagliTipologia {
+    static readonly type = '[SchedaTelefonata] Start Loading Dettagli Tipologia';
+}
+
+export class StopLoadingDettagliTipologia {
+    static readonly type = '[SchedaTelefonata] Stop Loading Dettagli Tipologia';
+}

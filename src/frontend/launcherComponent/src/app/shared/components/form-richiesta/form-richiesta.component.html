@@ -36,14 +36,42 @@
                                     <small>Almeno una tipologia è richiesta</small>
                                 </div>
                             </div>
-                            <ng-template [ngIf]="f.codTipologia.value && !modifica">
-                                <div class="float-left w-25 px-2">
-                                    <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()">
-                                        {{ 'Inizia Triage' | uppercase }}
-                                    </button>
-                                </div>
-                            </ng-template>
+                            <div class="float-left w-25 px-2">
+                                <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()"
+                                        [disabled]="!f.dettaglioTipologia.value || modifica">
+                                    {{ 'Inizia Triage' | uppercase }}
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div *ngIf="!loadingDettagliTipologia" class="form-group mb-1">
+                        <div class="clearfix">
+                            <div class="float-left w-75">
+                                <label class="d-none">Dettaglio tipologia</label>
+                                <div class="">
+                                    <ng-select class="border"
+                                               bindLabel="descrizione"
+                                               clearAllText="Clear"
+                                               placeholder="Seleziona Dettaglio Tipologia"
+                                               formControlName="dettaglioTipologia"
+                                               [notFoundText]="'Nessun dettaglio tipologia trovato'"
+                                               [items]="dettagliTipologia"
+                                               [multiple]="false"
+                                               [closeOnSelect]="true"
+                                               [searchable]="false"
+                                               [hideSelected]="true"
+                                               [readonly]="!f.codTipologia.value"
+                                               (change)="onChangeDettaglioTipologia($event)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="loadingDettagliTipologia" class="font-xlarge pl-2 pt-1">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Recupero Dettaglio Tipologia
                     </div>
                 </div>
             </div>
@@ -541,7 +569,7 @@
     <div class="col-4 h-100 scroll-y py-3"
          [class.bg-resoconto-triage]="!apertoFromMappa">
          <div class="px-2 mb-2 bg-secondary font-weight-bold" style="color: #ffffff">INFO AGGIUNTIVE</div>
-        <div class="px-3">
+        <div>
             <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
                                 [dettaglioTipologia]="f.dettaglioTipologia?.value"
                                 [codSchedaContatto]="schedaContatto?.codiceScheda"

@@ -1,5 +1,4 @@
 import {
-    ChangeDetectionStrategy,
     Component,
     EventEmitter,
     Input,
@@ -16,15 +15,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SchedaTelefonataInterface } from '../../interface/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../../features/maps/maps-model/chiamata-marker.model';
 import { AzioneChiamataEnum } from '../../enum/azione-chiamata.enum';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
-import { ReducerSchedaTelefonata, SetCompetenze, StartChiamata } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
+import {
+    ReducerSchedaTelefonata,
+    SetCompetenze,
+    StartChiamata, StopLoadingDettagliTipologia
+} from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
 import { Priorita, SintesiRichiesta } from '../../model/sintesi-richiesta.model';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { DelChiamataMarker } from '../../../features/maps/store/actions/chiamate-markers.actions';
 import { Tipologia } from '../../model/tipologia.model';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
@@ -56,15 +59,22 @@ import { makeIdChiamata } from '../../helper/function-richieste';
 import { TipoTerreno } from '../../model/tipo-terreno';
 import { TipoTerrenoEnum } from '../../enum/tipo-terreno.enum';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
+import { SchedaTelefonataState } from '../../../features/home/store/states/form-richiesta/scheda-telefonata.state';
 
 @Component({
     selector: 'app-form-richiesta',
     templateUrl: './form-richiesta.component.html',
     styleUrls: ['./form-richiesta.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    encapsulation: ViewEncapsulation.None
 })
 export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
+
+    @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
+    dettagliTipologia: DettaglioTipologia[];
+
+    @Select(SchedaTelefonataState.loadingDettagliTipologia) loadingDettagliTipologia$: Observable<boolean>;
+    loadingDettagliTipologia: boolean;
 
     @Input() tipologie: Tipologia[];
     @Input() operatore: Utente;
@@ -128,6 +138,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         if (this.apertoFromMappa) {
             this.setIndirizzoFromMappa(this.lat, this.lon, this.address);
         }
+        this.getDettagliTipologia();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -269,6 +280,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             esercitazione: this.richiestaModifica.esercitazione
         });
 
+        this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
+        this.store.dispatch(new StopLoadingDettagliTipologia());
+
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
         savePosTriageSummary(this.store, this.richiestaModifica?.dettaglioTipologia?.pos);
 
@@ -290,8 +304,29 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onChangeTipologia(codTipologia: string): void {
+        // Ripulisco eventuali info triage e dettaglio tipologia presenti
+        this.f.dettaglioTipologia.patchValue(null);
+        clearTriageSummary(this.store);
+        clearTriageChiamataModalData(this.store);
+        clearPosTriageSummary(this.store);
         if (codTipologia && !this.richiestaModifica) {
-            this.openTriage();
+            // Prendo i dettagli tipologia
+            this.store.dispatch(new GetDettagliTipologieByCodTipologia(+codTipologia));
+        }
+    }
+
+    onChangeDettaglioTipologia(dettaglioTipologia: DettaglioTipologia): void {
+        if (dettaglioTipologia && !this.richiestaModifica) {
+            // Trovo il dettaglio tipologia nella lista dei dettagli e aggiorno il valore
+            const dettaglio = this.dettagliTipologia.filter(x => x.codiceDettaglioTipologia === dettaglioTipologia.codiceDettaglioTipologia)[0];
+            this.f.dettaglioTipologia.patchValue(dettaglio);
+        }
+        if (!dettaglioTipologia) {
+            // Ripulisco eventuali info triage e dettaglio tipologia presenti
+            this.f.dettaglioTipologia.patchValue(null);
+            clearTriageSummary(this.store);
+            clearTriageChiamataModalData(this.store);
+            clearPosTriageSummary(this.store);
         }
     }
 
@@ -301,6 +336,24 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     checkTipologie(): boolean {
         return !!(this.f.codTipologia.value);
+    }
+
+    getDettagliTipologia(): void {
+        this.subscription.add(
+            this.loadingDettagliTipologia$.subscribe((loading: boolean) => {
+                if (loading) {
+                    this.loadingDettagliTipologia = loading;
+                }
+            })
+        );
+        this.subscription.add(
+            this.dettagliTipologia$.subscribe((dettagliTipologia: DettaglioTipologia[]) => {
+                if (dettagliTipologia) {
+                    this.dettagliTipologia = dettagliTipologia;
+                    this.loadingDettagliTipologia = false;
+                }
+            })
+        );
     }
 
     getTipologia(codTipologia: string): Tipologia {
@@ -439,7 +492,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     openTriage(): void {
         const codTipologia = this.f.codTipologia.value;
-        this.store.dispatch(new GetDettagliTipologieByCodTipologia(+codTipologia));
         let modalOptions: any;
         modalOptions = {
             windowClass: 'modal-holder',

@@ -1,6 +1,6 @@
 <ng-template [ngIf]="dettaglioTipologia">
     <div class="h3 font-weight-bolder text-center mb-4">
-        {{ dettaglioTipologia?.descrizione && tipologia?.descrizione && triageSummary ? dettaglioTipologia.descrizione : null | uppercase }}
+        {{ dettaglioTipologia?.descrizione && tipologia?.descrizione && triageSummary ? dettaglioTipologia.descrizione.toUpperCase() : null }}
     </div>
 </ng-template>
 <ngb-accordion [closeOthers]="true" activeIds="riepilogo-triage">
