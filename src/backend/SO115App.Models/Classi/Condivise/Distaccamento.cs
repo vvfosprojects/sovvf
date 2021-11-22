@@ -11,5 +11,6 @@ namespace SO115App.Models.Classi.Condivise
         public string Indirizzo { get; set; }
         public string Cap { get; set; }
         public Coordinate Coordinate { get; set; }
+        public string[] CoordinateString { get; set; }
     }
 }

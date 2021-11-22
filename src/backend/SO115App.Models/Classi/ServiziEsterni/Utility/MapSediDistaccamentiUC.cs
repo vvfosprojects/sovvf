@@ -31,7 +31,8 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             CodSede = distaccamento.CodDistaccamento,
             Coordinate = distaccamento.Coordinate,
             DescDistaccamento = distaccamento.Descrizione,
-            Indirizzo = distaccamento.Indirizzo
+            Indirizzo = distaccamento.Indirizzo,
+            CoordinateString = distaccamento.coordinate.Split(',')
         };
 
         public static Distaccamento MapDistaccamento(this Sede sede) => new Distaccamento()
