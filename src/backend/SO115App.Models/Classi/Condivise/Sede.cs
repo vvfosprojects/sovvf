@@ -73,5 +73,8 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Indirizzo della Sede
         /// </summary>
         public string Indirizzo { get; set; }
+
+        public string[] CoordinateString { get; set; }
+
     }
 }
