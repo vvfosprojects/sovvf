@@ -29,8 +29,10 @@ export class DebounceKeyUpDirective implements OnInit, OnDestroy {
 
     @HostListener('keyup', ['$event'])
     keyUpEvent(event): void {
-        event.preventDefault();
-        event.stopPropagation();
-        this.keyUps.next(event);
+        if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp' && event.key !== 'Enter') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.keyUps.next(event);
+        }
     }
 }
