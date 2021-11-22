@@ -70,7 +70,7 @@ export class CentroMappaState {
      * @param: action
      */
     @Action(SetCentroMappa)
-    setCentroMappa({ patchState }: StateContext<CentroMappaStateModel>, action: SetCentroMappa): void {
+    setCentroMappa({ getState, patchState }: StateContext<CentroMappaStateModel>, action: SetCentroMappa): void {
         patchState({
             centroMappa: action.centroMappa
         });

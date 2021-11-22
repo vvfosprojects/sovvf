@@ -192,7 +192,7 @@ export class RichiesteState {
             dispatch(new ClearRichiestaHover());
             const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
             if (richiestaGestione) {
-                dispatch(new ClearRichiestaGestione(richiestaGestione.id));
+                dispatch(new ClearRichiestaGestione());
             }
         }
     }

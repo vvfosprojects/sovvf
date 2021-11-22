@@ -92,7 +92,8 @@ export class RicercaIndirizzoComponent implements OnInit {
             paramsSuggestLocation = {
                 url: urlServiceGeocode,
                 location,
-                text: indirizzo
+                text: indirizzo,
+                countryCode: 'IT'
             } as locatorSuggestLocationsParams;
             Locator.suggestLocations(urlServiceGeocode, paramsSuggestLocation).then(async (suggestionResults: SuggestionResult[]) => {
                 this.addressCandidates = [];
