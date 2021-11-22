@@ -193,7 +193,7 @@
                              style="width: 33%">
                             <i class="guida fas fa-map-marker-alt fa-fw mr-1" style="font-size: 140%"
                                ngbTooltip="Località"></i>
-                            <ng-container *ngIf="richiesta?.localita?.coordinate">
+                            <ng-container *ngIf="!richiesta?.localita?.indirizzo && richiesta?.localita?.coordinate">
                                 <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
                                       class="font-xxlarge">
                                       Lat: {{ richiesta.localita.coordinate?.latitudine }} -
@@ -392,9 +392,9 @@
                                                placement="right">
                                             </i>
                                             S. NUE
-                                            <div class="d-inline-block font-weight-bold">
+                                            <span class="d-inline-block font-weight-bold">
                                                 {{ richiesta?.codiceSchedaNue }}
-                                            </div>
+                                            </span>
                                         </h4>
                                         <ng-template #nessunCodiceNue>
                                             <h4>Nessuna scheda NUE</h4>
@@ -516,9 +516,9 @@
                                         <div class="text-right">
                                             <h4>
                                                 <b>{{ richiesta?.complessita?.indice }}</b>
-                                                <div class="badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">
+                                                <span class="badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">
                                                     {{ richiesta?.complessita?.descrizione }}
-                                                </div>
+                                                </span>
                                                 <i class="guida fas fa-cogs fa-fw ml-1" ngbTooltip="Complessità"
                                                    placement="left"></i>
                                             </h4>
