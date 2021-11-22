@@ -59,15 +59,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         {
             var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede)).ToList();
             var ListaSchede = _getSchedeContatto_WSNUE.GetAllSchedeContatto(codiceSede);
-
-            //string json;
-
-            //using (var r = new StreamReader(SchedeContattoJson))
-            //{
-            //    json = r.ReadToEnd();
-            //}
-            //var ListaSchede = JsonConvert.DeserializeObject<List<SchedaContatto>>(json);
-
             List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
 
             foreach (SchedaContatto scheda in ListaSchede)
