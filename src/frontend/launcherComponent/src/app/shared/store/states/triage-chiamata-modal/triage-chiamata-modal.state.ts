@@ -17,6 +17,7 @@ import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.inter
 import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../../interface/item-triage-data.interface';
 import { PosInterface } from '../../../interface/pos.interface';
+import { StartLoadingDettagliTipologia, StopLoadingDettagliTipologia } from '../../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 
 export interface TriageChiamataModalStateModel {
     dettagliTipologia: DettaglioTipologia[];
@@ -75,11 +76,13 @@ export class TriageChiamataModalState {
     @Action(GetDettagliTipologieByCodTipologia)
     getDettagliTipologieByCodTipologia({ patchState, dispatch }: StateContext<TriageChiamataModalStateModel>, action: GetDettagliTipologieByCodTipologia): void {
         dispatch(new StartLoadingTriageChiamata());
+        dispatch(new StartLoadingDettagliTipologia());
         this.detttagliTipologieService.getDettaglioTipologiaByCodTipologia(action.codTipologia).subscribe((response: GetDettaglioTipologiaByCodTipologiaDto) => {
             patchState({
                 dettagliTipologia: response.listaDettaglioTipologie
             });
             dispatch(new StopLoadingTriageChiamata());
+            dispatch(new StopLoadingDettagliTipologia());
         });
     }
 

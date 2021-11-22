@@ -20,7 +20,11 @@ import { ViewComponentState } from '../home/store/states/view/view.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { SetAreaMappa } from './store/actions/area-mappa.actions';
 import { RouterState } from '@ngxs/router-plugin';
+import { RichiestaSelezionataState } from '../home/store/states/richieste/richiesta-selezionata.state';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
+import { RichiestaModificaState } from '../home/store/states/form-richiesta/richiesta-modifica.state';
+import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
+import { RichiestaGestioneState } from '../home/store/states/richieste/richiesta-gestione.state';
 
 @Component({
     selector: 'app-maps',
@@ -42,6 +46,12 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<boolean>;
     @Select(MapsDirectionState.direction) direction$: Observable<DirectionInterface>;
 
+    // Richiesta Selezionata
+    @Select(RichiestaSelezionataState.idRichiestaSelezionata) idRichiestaSelezionata$: Observable<string>;
+    // Richiesta Modifica
+    @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
+    // Richiesta Gestione
+    @Select(RichiestaGestioneState.richiestaGestione) richiestaGestione$: Observable<SintesiRichiesta>;
     // Filtri Richieste Selezionati
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     // Status "Schede Contatto"

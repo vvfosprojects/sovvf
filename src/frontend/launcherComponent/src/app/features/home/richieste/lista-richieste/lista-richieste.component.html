@@ -17,6 +17,7 @@
                     <app-partial-loader *ngIf="actionRichiestaArray.includes(r.id)"></app-partial-loader>
                     <app-sintesi-richiesta class="non-fissata"
                                            [richiesta]="r"
+                                           [selezionata]="r.id === idRichiestaSelezionata"
                                            [fissata]="false"
                                            [fissabile]="true"
                                            [boxAzioni]="true"

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../../../store/states/app/app.state';
 import { AuthState } from '../../../../features/auth/store/auth.state';
@@ -22,15 +22,43 @@ export class RicercaIndirizzoComponent implements OnInit {
     @Input() invalid: boolean;
     @Input() spatialReference: SpatialReference;
 
-    @Output() changeIndirizzo: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() changeIndirizzo: EventEmitter<string> = new EventEmitter<string>();
     @Output() selectCandidate: EventEmitter<AddressCandidate> = new EventEmitter<AddressCandidate>();
 
     mapProperties: { spatialReference?: SpatialReference };
 
+    hideAddressCandidates = false;
     addressCandidates: AddressCandidate[];
+    indexSelectedAddressCandidate = 0;
 
-    constructor(private changeDetectorRef: ChangeDetectorRef,
-                private store: Store) {
+    @HostListener('document:click', ['$event'])
+    clickOutside(event): void {
+        if (!this.eRef.nativeElement.contains(event.target)) {
+            this.hideAddressCandidates = true;
+        } else {
+            this.hideAddressCandidates = false;
+        }
+    }
+
+    constructor(private store: Store,
+                private changeDetectorRef: ChangeDetectorRef,
+                private eRef: ElementRef) {
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
+            switch (e.key) {
+                case 'ArrowDown':
+                    const newIndexValueDown = this.indexSelectedAddressCandidate + 1;
+                    this.setIndexSelectedAddressCandidate(newIndexValueDown);
+                    break;
+                case 'ArrowUp':
+                    const newIndexValueUp = this.indexSelectedAddressCandidate - 1;
+                    this.setIndexSelectedAddressCandidate(newIndexValueUp);
+                    break;
+                case 'Enter':
+                    e.preventDefault();
+                    const candidate = this.addressCandidates[this.indexSelectedAddressCandidate];
+                    this.onSelectCandidate(candidate);
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -38,56 +66,67 @@ export class RicercaIndirizzoComponent implements OnInit {
     }
 
     onChangeIndirizzo(): boolean {
-        if (!this.indirizzo) {
-            this.addressCandidates = [];
-            return false;
-        }
+        if (this.requiredFieldClass) {
+            this.setIndexSelectedAddressCandidate(0);
 
-        const indirizzo = this.indirizzo;
-        const urlServiceGeocode = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer';
-
-        const sedeUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser)?.sede;
-        let location: Point;
-        let paramsSuggestLocation: locatorSuggestLocationsParams;
-
-        if (sedeUtenteLoggato) {
-            const latitude = sedeUtenteLoggato.coordinate.latitudine;
-            const longitude = sedeUtenteLoggato.coordinate.longitudine;
-            location = new Point({
-                latitude,
-                longitude
-            });
-        }
-        paramsSuggestLocation = {
-            url: urlServiceGeocode,
-            location,
-            text: indirizzo
-        } as locatorSuggestLocationsParams;
-        Locator.suggestLocations(urlServiceGeocode, paramsSuggestLocation).then(async (suggestionResults: SuggestionResult[]) => {
-            this.addressCandidates = [];
-            const addressToLocationsPromises = [];
-
-            for (const suggestionResult of suggestionResults) {
-                const paramsAddressToLocations = {
-                    url: urlServiceGeocode,
-                    magicKey: suggestionResult.magicKey,
-                    address: indirizzo
-                } as locatorAddressToLocationsParams;
-                addressToLocationsPromises.push(
-                    Locator.addressToLocations(urlServiceGeocode, paramsAddressToLocations).then(async (addressCandidates: AddressCandidate[]) => {
-                        return addressCandidates;
-                    })
-                );
+            if (!this.indirizzo) {
+                this.addressCandidates = [];
+                return false;
             }
 
-            Promise.all(addressToLocationsPromises).then((promisesResult: any[]) => {
-                for (const promiseResult of promisesResult) {
-                    this.addressCandidates.push(promiseResult[0]);
-                    this.changeDetectorRef.detectChanges();
+            const indirizzo = this.indirizzo;
+            const urlServiceGeocode = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer';
+
+            const sedeUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser)?.sede;
+            let location: Point;
+            let paramsSuggestLocation: locatorSuggestLocationsParams;
+
+            if (sedeUtenteLoggato) {
+                const latitude = sedeUtenteLoggato.coordinate.latitudine;
+                const longitude = sedeUtenteLoggato.coordinate.longitudine;
+                location = new Point({
+                    latitude,
+                    longitude
+                });
+            }
+            paramsSuggestLocation = {
+                url: urlServiceGeocode,
+                location,
+                text: indirizzo,
+                countryCode: 'IT'
+            } as locatorSuggestLocationsParams;
+            Locator.suggestLocations(urlServiceGeocode, paramsSuggestLocation).then(async (suggestionResults: SuggestionResult[]) => {
+                this.addressCandidates = [];
+                const addressToLocationsPromises = [];
+
+                for (const suggestionResult of suggestionResults) {
+                    const paramsAddressToLocations = {
+                        url: urlServiceGeocode,
+                        magicKey: suggestionResult.magicKey,
+                        address: indirizzo
+                    } as locatorAddressToLocationsParams;
+                    addressToLocationsPromises.push(
+                        Locator.addressToLocations(urlServiceGeocode, paramsAddressToLocations).then(async (addressCandidates: AddressCandidate[]) => {
+                            return addressCandidates;
+                        })
+                    );
                 }
-                return true;
+
+                Promise.all(addressToLocationsPromises).then((promisesResult: any[]) => {
+                    for (const promiseResult of promisesResult) {
+                        this.addressCandidates.push(promiseResult[0]);
+                        this.changeDetectorRef.detectChanges();
+                    }
+                    return true;
+                });
             });
-        });
+        }
+    }
+
+    setIndexSelectedAddressCandidate(i: number): void {
+        if (i >= 0 && i <= (this.addressCandidates?.length - 1)) {
+            this.indexSelectedAddressCandidate = i;
+        }
     }
 
     onSelectCandidate(candidate: AddressCandidate): void {
@@ -97,5 +136,9 @@ export class RicercaIndirizzoComponent implements OnInit {
 
     resetAddressCandidates(): void {
         this.addressCandidates = null;
+    }
+
+    getSelectIndirizzoOpen(): boolean {
+        return !!(this.addressCandidates?.length) && !this.hideAddressCandidates;
     }
 }
