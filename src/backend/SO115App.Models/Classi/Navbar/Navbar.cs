@@ -32,5 +32,8 @@ namespace SO115App.API.Models.Classi.NavBar
         public CentroMappa CentroMappaMarker { get; set; }
         public string UserESRI { get; set; }
         public string PwESRI { get; set; }
+        public string[] CentroMappaString { get; set; }
+
+
     }
 }
