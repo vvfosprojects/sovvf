@@ -24,6 +24,7 @@ using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Linq;
@@ -39,19 +40,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
         private readonly IConfiguration _configuration;
+        private readonly IGetStringCoordinateByCodSede _getStringCoordinateByCodSede;
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
+        
 
         public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO,
                                   IGetConteggioSchede getConteggioSchedeHandler,
                                   IGetUtenteById getUtenteById,
                                   IGetCentroMappaMarker centroMappaMarkerHandler,
-                                  IConfiguration configuration)
+                                  IConfiguration configuration,
+                                  IGetStringCoordinateByCodSede getStringCoordinateByCodSede)
         {
             _alberaturaUO = alberaturaUO;
             _getConteggioSchedeHandler = getConteggioSchedeHandler;
             _getUtenteById = getUtenteById;
             _centroMappaMarkerHandler = centroMappaMarkerHandler;
             _configuration = configuration;
+            _getStringCoordinateByCodSede = getStringCoordinateByCodSede;
         }
 
         /// <summary>
@@ -64,6 +69,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
             Log.Debug("Inizio elaborazione Informazioni Navbar Handler");
 
             var centroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodSedi[0]);
+            var centroMappaString = _getStringCoordinateByCodSede.Get(query.CodSedi[0]);
+
             var lstSedi = _alberaturaUO.ListaSediAlberata();
 
             var navbars = new Classi.NavBar.Navbar
@@ -73,7 +80,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
                 infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi),
                 CentroMappaMarker = centroMappaMarker,
                 UserESRI = _configuration.GetSection("ESRI").GetSection("User").Value,
-                PwESRI = _configuration.GetSection("ESRI").GetSection("Password").Value
+                PwESRI = _configuration.GetSection("ESRI").GetSection("Password").Value,
+                CentroMappaString = centroMappaString
             };
 
             Log.Debug("Fine elaborazione Informazioni Navbar Handler");

@@ -30,10 +30,10 @@ import { ClearDirection } from '../../../../maps/store/actions/maps-direction.ac
 import { GetInitCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
 import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../../../maps/store/actions/area-mappa.actions';
+import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
-import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;

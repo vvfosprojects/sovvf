@@ -23,6 +23,7 @@ import { ModificaEntiModalComponent } from './modal/modifica-enti-modal/modifica
 import { DebounceClickDirective } from './directive/debounce-click';
 import { DebounceKeyUpDirective } from './directive/debounce-keyup';
 import { ClickStopPropagationDirective } from './directive/click-stop-propagation';
+import { MosuePositionDirective } from './directive/mouse-position';
 import { ComponenteComponent } from './components/componente/componente.component';
 import { CompetenzaComponent } from './components/competenza/competenza.component';
 import { MezzoComponent } from './components/mezzo/mezzo.component';
@@ -82,10 +83,12 @@ import { DocumentoAreaDocumentaleModalComponent } from './modal/documento-area-d
 import { FiltroComponent } from './components/filtro/filtro.component';
 import { AzioniAreaDocumentaleModalComponent } from './modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
 
+
 const COMPONENTS = [
     DebounceClickDirective,
     DebounceKeyUpDirective,
     ClickStopPropagationDirective,
+    MosuePositionDirective,
     ComponenteComponent,
     CompetenzaComponent,
     MezzoComponent,
