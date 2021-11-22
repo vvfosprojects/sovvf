@@ -28,6 +28,7 @@ namespace SO115App.API.Models.Classi.Boxes
         public int Presidiati { get; set; }
 
         public int Chiusi { get; set; }
+        public int Sospesi { get; set; }
 
         public int Totale { get; set; }
 

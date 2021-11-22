@@ -4,6 +4,9 @@
             <app-partial-loader *ngIf="areaMappaLoading$ | async"></app-partial-loader>
             <app-map-esri [activeRoute]="activeRoute"
                           [pCenter]="centroMappa"
+                          [idRichiestaSelezionata]="idRichiestaSelezionata$ | async"
+                          [richiestaModifica]="richiestaModifica$ | async"
+                          [richiestaGestione]="richiestaGestione$ | async"
                           [chiamateMarkers]="chiamataMarkers$ | async"
                           [sediMarkers]="sediMarkers$ | async"
                           [direction]="direction$ | async"

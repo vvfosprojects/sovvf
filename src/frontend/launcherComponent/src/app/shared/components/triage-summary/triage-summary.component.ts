@@ -44,7 +44,14 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     noteOperatore: string[];
     methods = new HelperSintesiRichiesta();
     live = true;
-    descrizioneDettaglioTipologia: string;
+    infoAggiuntive = {
+        pos: false,
+        triage: true,
+        noteNue: false,
+        interventiInProssimita: false,
+        interventiStessaVia: false,
+        interventiChiusiStessoIndirizzo: false,
+    };
 
     private subscription: Subscription = new Subscription();
 
@@ -68,11 +75,6 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.schedaContatto?.currentValue) {
             const schedaContatto = changes?.schedaContatto?.currentValue;
             this.schedaContatto = schedaContatto;
-        }
-        if (changes?.dettaglioTipologia) {
-            this.dettaglioTipologia && this.dettaglioTipologia.descrizione ? this.descrizioneDettaglioTipologia = this.dettaglioTipologia.descrizione : null;
-        } else if (!changes?.tipologia?.currentValue) {
-            this.descrizioneDettaglioTipologia = '';
         }
     }
 
@@ -129,5 +131,10 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
         } else {
             console.error('CodSede utente non trovato');
         }
+    }
+
+    onShowInfoAggiuntive(sezione: string): void {
+        const keys = Object.keys(this.infoAggiuntive);
+        keys.forEach(x => x !== sezione ? this.infoAggiuntive[x] = false : this.infoAggiuntive[x] = !this.infoAggiuntive[x]);
     }
 }

@@ -1102,6 +1102,9 @@ namespace SO115App.API.Models.Classi.Soccorso
 
         [BsonIgnore]
         public DateTime dataOraInserimento => Telefonate.First().DataOraInserimento;
+
+        public string NoteNue { get; set; }
+
     }
 
     public class ESRI

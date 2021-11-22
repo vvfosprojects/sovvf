@@ -3,7 +3,6 @@ import { SetRichiestaSelezionata, ClearRichiestaSelezionata } from '../../action
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { Injectable } from '@angular/core';
-import { SetCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 
 export interface RichiestaSelezionataStateModel {
     idRichiestaSelezionata: string;
@@ -34,7 +33,7 @@ export class RichiestaSelezionataState {
         // controlli per rimuovere, se presente, la richiesta in gestione
         const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
         if (state.idRichiestaSelezionata && richiestaGestione && state.idRichiestaSelezionata === richiestaGestione.id) {
-            dispatch(new ClearRichiestaGestione(state.idRichiestaSelezionata));
+            dispatch(new ClearRichiestaGestione());
         }
         // imposto la richiesta selezionata
         patchState({
