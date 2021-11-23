@@ -85,6 +85,8 @@ export class SignalRService {
         this.hubNotification = new HubConnectionBuilder()
             .withUrl(HUB_URL)
             .build();
+
+        this.hubNotification.serverTimeoutInMilliseconds = 28800000;
     }
 
     private startSubscriptionConnection(): void {
@@ -439,19 +441,12 @@ export class SignalRService {
          * Disconnessione SignalR
          */
         this.hubNotification.onclose((error: Error) => {
-            console.log('Hub Subscription Disconnesso');
+            console.error('Hub Subscription Disconnesso', error);
 
-            console.error('ERROR Subscription Disconnesso', error);
-            const is1006Error = error?.message?.indexOf('1006') !== -1;
-            if (!is1006Error) {
-                this.connectionEstablished.next(false);
-                setTimeout(() => {
-                    this.store.dispatch(new SignalRHubDisconnesso());
-                }, 100);
-            } else {
-                console.error('is1006Error');
-                this.startSubscriptionConnection();
-            }
+            this.connectionEstablished.next(false);
+            setTimeout(() => {
+                this.store.dispatch(new SignalRHubDisconnesso());
+            }, 100);
         });
     }
 

@@ -180,7 +180,7 @@ export class RichiestaModificaState {
                     f.istantePrimaAssegnazione,
                     f.rilevanzaGrave,
                     f.codSchedaContatto ? f.codSchedaContatto : null,
-                    f.zoneEmergenza?.length > 1 ? f.zoneEmergenza.split(' ') : null,
+                    f.zoneEmergenza ? f.zoneEmergenza : null,
                     f.fonogramma,
                     f.partenze,
                     (f.etichette && f.etichette.length) ? f.etichette : null,
