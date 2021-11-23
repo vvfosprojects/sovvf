@@ -68,9 +68,14 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
         public void Handle(AddInterventoFromSurvey123Command command)
         {
 
+            List<Tipologia> listaTipologie = new List<Tipologia>()
+            {
+                new Tipologia("364","Verifiche statiche speditive (TRIAGE)","")
+            };
+
             var intervento = new Intervento()
             {
-                Tipologie = command.Chiamata.Tipologie,
+                Tipologie = listaTipologie,
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 Descrizione = command.Chiamata.Descrizione,
                 Richiedente = command.Chiamata.Richiedente,
