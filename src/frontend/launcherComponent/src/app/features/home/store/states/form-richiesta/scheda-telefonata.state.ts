@@ -3,7 +3,8 @@ import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
     AnnullaChiamata,
     CestinaChiamata,
-    ClearChiamata, ClearCompetenze,
+    ClearChiamata,
+    ClearCompetenze,
     ClearIndirizzo,
     ClearMarkerChiamata,
     InsertChiamata,
@@ -13,9 +14,14 @@ import {
     ResetChiamata,
     SetCompetenze,
     SetCountInterventiProssimita,
-    SetInterventiProssimita, SetRedirectComposizionePartenza,
-    StartChiamata, StartLoadingCompetenze, StartLoadingDettagliTipologia,
-    StartLoadingSchedaRichiesta, StopLoadingCompetenze, StopLoadingDettagliTipologia,
+    SetInterventiProssimita,
+    SetRedirectComposizionePartenza,
+    StartChiamata,
+    StartLoadingCompetenze,
+    StartLoadingDettagliTipologia,
+    StartLoadingSchedaRichiesta,
+    StopLoadingCompetenze,
+    StopLoadingDettagliTipologia,
     StopLoadingSchedaRichiesta
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
@@ -262,23 +268,30 @@ export class SchedaTelefonataState {
     setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
         dispatch(new StartLoadingCompetenze());
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
-            const competenze = res.dataArray as Sede[];
-            const codCompetenze = competenze.map((c: Sede) => {
-                return c.codice;
-            });
-            dispatch([
-                new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
-                new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
-                new StopLoadingCompetenze()
-            ]);
+            if (res?.dataArray) {
+                const competenze = res.dataArray as Sede[];
+                const codCompetenze = competenze.map((c: Sede) => {
+                    return c.codice;
+                });
+                dispatch([
+                    new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
+                    new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
+                    new StopLoadingCompetenze()
+                ]);
 
-            if (action.markerChiamata) {
-                dispatch(new MarkerChiamata(action.markerChiamata, codCompetenze));
+                if (action.markerChiamata) {
+                    dispatch(new MarkerChiamata(action.markerChiamata, codCompetenze));
+                }
+
+                patchState({
+                    competenze
+                });
+            } else {
+                dispatch([
+                    new ClearCompetenze(),
+                    new StopLoadingCompetenze()
+                ]);
             }
-
-            patchState({
-                competenze
-            });
         });
     }
 
@@ -386,7 +399,7 @@ export class SchedaTelefonataState {
                 f.istantePrimaAssegnazione,
                 f.rilevanzaGrave,
                 f.codSchedaContatto ? f.codSchedaContatto : null,
-                f.zoneEmergenza?.length ? f.zoneEmergenza.split(' ') : null,
+                f.zoneEmergenza ? f.zoneEmergenza : null,
                 f.fonogramma,
                 f.partenze,
                 (f.etichette && f.etichette.length) ? f.etichette : null,
