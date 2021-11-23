@@ -63,7 +63,9 @@ const SIGNALR_BYPASS = !environment.signalR;
     providedIn: 'root'
 })
 export class SignalRService {
+
     connectionEstablished = new Subject<boolean>();
+
     private hubNotification: HubConnection;
 
     constructor(private store: Store) {
@@ -439,7 +441,8 @@ export class SignalRService {
         this.hubNotification.onclose((error: Error) => {
             console.log('Hub Subscription Disconnesso');
 
-            const is1006Error = error.message.indexOf('1006') !== -1;
+            console.error('ERROR Subscription Disconnesso', error);
+            const is1006Error = error?.message?.indexOf('1006') !== -1;
             if (!is1006Error) {
                 this.connectionEstablished.next(false);
                 setTimeout(() => {
