@@ -34,6 +34,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
 
         public string Codice { get; set; }
 
+        public string CodiceRichiesta { get; set; }
+
         public List<Tipologia> Tipologie { get; set; }
 
         public TipologiaDettaglio DettaglioTipologia { get; set; }
