@@ -436,13 +436,19 @@ export class SignalRService {
         /**
          * Disconnessione SignalR
          */
-        this.hubNotification.onclose(() => {
+        this.hubNotification.onclose((error: Error) => {
             console.log('Hub Subscription Disconnesso');
-            this.connectionEstablished.next(false);
-            setTimeout(() => {
-                this.store.dispatch(new SignalRHubDisconnesso());
-            }, 100);
-            this.startSubscriptionConnection();
+
+            const is1006Error = error.message.indexOf('1006') !== -1;
+            if (!is1006Error) {
+                this.connectionEstablished.next(false);
+                setTimeout(() => {
+                    this.store.dispatch(new SignalRHubDisconnesso());
+                }, 100);
+            } else {
+                console.error('is1006Error');
+                this.startSubscriptionConnection();
+            }
         });
     }
 
