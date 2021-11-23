@@ -41,6 +41,16 @@ namespace SO115App.API.Models.Classi.Condivise
         [Required]
         public Coordinate Coordinate { get; set; }
 
+        public string[] CoordinateString {
+            get
+            {
+                string[] coordinate = new string[2];
+                coordinate[0] = this.Coordinate.Latitudine.ToString().Replace(",",".");
+                coordinate[1] = this.Coordinate.Longitudine.ToString().Replace(",", ".");
+                return coordinate;
+            }
+        }
+
         public string Indirizzo { get; set; }
         public string Citta { get; set; }
         public string Provincia { get; set; }

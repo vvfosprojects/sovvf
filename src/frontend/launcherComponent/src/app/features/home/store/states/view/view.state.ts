@@ -212,7 +212,11 @@ export class ViewComponentState {
                 column: newState.column
             });
         } else {
-            const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
+            let lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
+            // Check se dopo creazione chiamata devo tornare home
+            if (action.homeViewRequest) {
+                lastState = stateDefault;
+            }
             patchState({
                 ...state,
                 view: lastState.view,

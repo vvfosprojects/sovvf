@@ -34,9 +34,7 @@ import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/o
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
-import { SetRichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
-import { ToggleComposizione } from '../../actions/view/view.actions';
-import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -57,6 +55,7 @@ import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/functi
 import { getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function-fonogramma';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi } from '../../../../../shared/store/actions/loading/loading.actions';
+import { SetRedirectComposizionePartenza } from '../../actions/form-richiesta/scheda-telefonata.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -300,11 +299,12 @@ export class RichiesteState {
     }
 
     @Action(StartInviaPartenzaFromChiamata)
-    startInviaPartenzaFromChiamata({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: StartInviaPartenzaFromChiamata): void {
+    startInviaPartenzaFromChiamata({ dispatch }: StateContext<RichiesteStateModel>, action: StartInviaPartenzaFromChiamata): void {
         dispatch([
             new ClearIdChiamataInviaPartenza(),
-            new ToggleComposizione(Composizione.Avanzata),
-            new SetRichiestaComposizione(action.richiesta)
+            // new ToggleComposizione(Composizione.Avanzata),
+            // new SetRichiestaComposizione(action.richiesta),
+            new SetRedirectComposizionePartenza(false),
         ]);
     }
 
@@ -336,13 +336,13 @@ export class RichiesteState {
     eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: EliminaPartenzaRichiesta): void {
         // TODO: DA RIMUOVERE POICHè IL BTN ASSOCIATO è STATO RIMOSSO
         dispatch(new StartLoadingEliminaPartenza());
-        const obj = {
-            idRichiesta: action.idRichiesta,
-            targaMezzo: action.targaMezzo,
-            codMotivazione: action.motivazione.codMotivazione,
-            testoMotivazione: action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
-            codRichiestaSubentrata: action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
-        };
+        // const obj = {
+        //     idRichiesta: action.idRichiesta,
+        //     targaMezzo: action.targaMezzo,
+        //     codMotivazione: action.motivazione.codMotivazione,
+        //     testoMotivazione: action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
+        //     codRichiestaSubentrata: action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
+        // };
         // this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
         //     dispatch(new StopLoadingEliminaPartenza());
         // }, error => dispatch(new StopLoadingEliminaPartenza()));
