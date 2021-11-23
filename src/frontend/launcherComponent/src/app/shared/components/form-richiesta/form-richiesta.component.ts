@@ -22,7 +22,7 @@ import { ClearClipboard } from '../../../features/home/store/actions/form-richie
 import {
     ClearCompetenze,
     ReducerSchedaTelefonata,
-    SetCompetenze,
+    SetCompetenze, SetRedirectComposizionePartenza,
     StartChiamata,
     StopLoadingDettagliTipologia
 } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
@@ -489,6 +489,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     null
                 );
             }
+
             this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
 
             if (!indirizzoInserito) {
@@ -630,13 +631,16 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     setSchedaContatto(scheda: SchedaContatto): void {
         const f = this.f;
         f.codSchedaContatto.patchValue(scheda.codiceScheda);
-        f.nominativo.patchValue(scheda.richiedente.nominativo);
-        f.telefono.patchValue(scheda.richiedente.telefono);
-        f.indirizzo.patchValue(scheda.localita.indirizzo);
+        f.nominativo.patchValue(scheda.richiedente?.nominativo);
+        f.telefono.patchValue(scheda.richiedente?.telefono);
+        f.indirizzo.patchValue(scheda.localita?.indirizzo);
 
-        const lat = scheda.localita.coordinate.latitudine;
-        const lng = scheda.localita.coordinate.longitudine;
+        // const lat = scheda.localita.coordinate.latitudine;
+        // const lng = scheda.localita.coordinate.longitudine;
+        const lat = +scheda.localita.coordinateString[0];
+        const lng = +scheda.localita.coordinateString[1];
         const coordinate = new Coordinate(lat, lng);
+
         this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
             new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo), null
         );
@@ -828,10 +832,16 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             tipo,
             markerChiamata: this.chiamataMarker
         };
+
         if (azione) {
             schedaTelefonata.azioneChiamata = azione;
+            if (azione === AzioneChiamataEnum.InviaPartenza) {
+                // Controllo se ho premuto 'Conferma e Invia Partenza'
+                this.store.dispatch(new SetRedirectComposizionePartenza(true));
+            }
         }
         const urgente = options?.urgente;
+
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata, {
             urgente,
             fromMappa: !!(this.apertoFromMappa)

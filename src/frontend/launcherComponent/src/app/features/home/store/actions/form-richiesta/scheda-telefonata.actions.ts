@@ -65,6 +65,12 @@ export class InsertChiamataSuccess {
     }
 }
 
+export class SetRedirectComposizionePartenza {
+    static readonly type = '[SchedaTelefonata] Set Redirect Composizione Partenza';
+
+    constructor(public redirect: boolean) {
+    }
+}
 
 export class AnnullaChiamata {
     static readonly type = '[SchedaTelefonata] Annulla chiamata';

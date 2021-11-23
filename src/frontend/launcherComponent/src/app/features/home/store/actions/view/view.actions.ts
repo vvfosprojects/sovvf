@@ -1,6 +1,5 @@
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { ViewComponentStateModel } from '../../../../../shared/interface/view.interface';
 
 export class ChangeView {
     static readonly type = '[ChangeView] Update visualizzazione';
@@ -16,7 +15,7 @@ export class ToggleCodaChiamate {
 export class ToggleChiamata {
     static readonly type = '[Chiamata] Toggle chiamata';
 
-    constructor(public toggle?: boolean) {
+    constructor(public toggle?: boolean, public homeViewRequest?: boolean) {
     }
 }
 
