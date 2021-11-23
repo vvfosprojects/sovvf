@@ -63,6 +63,7 @@ import { FiltriAreaDocumentaleState } from './shared/store/states/filtri-area-do
 import { TastoChiamataMappaState } from './features/maps/store/states/tasto-chiamata-mappa.state';
 import { SchedaTelefonataState } from './features/home/store/states/form-richiesta/scheda-telefonata.state';
 import { TastoZonaEmergenzaMappaState } from './features/zone-emergenza/store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
+import { SganciamentoMezziState } from './shared/store/states/sganciamento-mezzi/sganciamento-mezzi.state';
 /**
  * Route
  */
@@ -142,7 +143,8 @@ import { CustomDatepickerI18nService } from './core/service/custom-datepicker-i1
                 SchedaTelefonataState,
                 FiltriAreaDocumentaleState,
                 TastoChiamataMappaState,
-                TastoZonaEmergenzaMappaState
+                TastoZonaEmergenzaMappaState,
+                SganciamentoMezziState
             ],
             { developmentMode: !environment.production }
         ),

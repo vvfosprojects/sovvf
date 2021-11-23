@@ -9,11 +9,11 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 })
 export class SganciamentoMezzoModalComponent {
 
-    @Input() icona: any;
-    @Input() titolo: string;
-    @Input() bottoni: any[];
-    @Input() richiestaDa: SintesiRichiesta;
-    @Input() idDaSganciare = '';
+    icona: any;
+    titolo: string;
+    bottoni: any[];
+    richiestaDa: SintesiRichiesta;
+    idDaSganciare: string;
 
     constructor(public modal: NgbActiveModal) {
     }
