@@ -18,20 +18,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.Gac;
-using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
@@ -40,17 +37,22 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private readonly IGetStatoMezzi _getStatoMezzi;
-        private readonly IGetTipologieByCodice _getTipologie;
+
+        private readonly ISetStatoOperativoMezzo _setStatoMezzo;
+        private readonly ISetStatoSquadra _setStatoSquadra;
 
         private readonly ISendSTATRIItem _statri;
         private readonly ICheckCongruitaPartenze _check;
 
+        private readonly IGetTipologieByCodice _getTipologie;
         private readonly IModificaInterventoChiuso _modificaGAC;
 
         public AnnullaPartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze,
                                              IGetStatoMezzi getStatoMezzi, ISendSTATRIItem statri, ICheckCongruitaPartenze check,
-                                             IModificaInterventoChiuso modificaGAC)
+                                             IModificaInterventoChiuso modificaGAC, ISetStatoOperativoMezzo setStatoMezzo, ISetStatoSquadra setStatoSquadra)
         {
+            _setStatoMezzo = setStatoMezzo;
+            _setStatoSquadra = setStatoSquadra;
             _updateStatoPartenze = updateStatoPartenze;
             _getStatoMezzi = getStatoMezzi;
             _statri = statri;
@@ -72,21 +74,34 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(statoMezzo))
             {
-                string nuovoStatoMezzo = Costanti.MezzoInRientro;
-                string nomeAzione = "AnnullamentoPartenza";
+                string nuovoStatoMezzo = null;
 
-                new AnnullamentoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, nomeAzione, command.CodicePartenza);
-
-                partenza.Partenza.PartenzaAnnullata = true;
-
-                command.Richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                switch (statoMezzo) //TODO EVENTO PRECEDENTE
                 {
-                    Istante = date,
-                    CodMezzo = command.TargaMezzo,
-                    Stato = nuovoStatoMezzo
-                }, _statri, _check);
+                    case Costanti.MezzoSulPosto: nuovoStatoMezzo = Costanti.MezzoInViaggio; break;
+                    case Costanti.MezzoInRientro: nuovoStatoMezzo = Costanti.MezzoSulPosto; break;
+                }
 
-                var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+                //TODO AGGIUNGERE NOTE
+                new AnnullamentoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, "AnnullamentoPartenza", command.CodicePartenza);
+
+                //partenza.Partenza.PartenzaAnnullata = true;
+
+                //command.Richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                //{
+                //    Istante = date,
+                //    CodMezzo = command.TargaMezzo,
+                //    Stato = nuovoStatoMezzo
+                //}, _statri, _check, partenza.CodicePartenza);
+
+                var mezzo = partenza.Partenza.Mezzo;
+                var squadre = partenza.Partenza.Squadre;
+
+                _setStatoMezzo.Set(mezzo.Distaccamento.Codice, mezzo.Codice, nuovoStatoMezzo, command.Richiesta.Codice);
+
+                squadre.ForEach(squadra => _setStatoSquadra.SetStato(squadra.Id, command.Richiesta.Codice, nuovoStatoMezzo, squadra.Distaccamento.Codice, mezzo.Codice));
+
+                //var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
 
                 //SEGNALO LA MODIFICA A GAC
                 //var movimento = new ModificaMovimentoGAC()
