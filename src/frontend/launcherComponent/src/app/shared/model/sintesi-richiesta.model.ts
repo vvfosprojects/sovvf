@@ -194,7 +194,11 @@ export class SintesiRichiesta {
         /**
          * eventi richiesta relativi a mezzi e velivoli
          */
-        public eventi?: any
+        public eventi?: any,
+        /**
+         * Info Note NUE
+         */
+        public noteNue?: string
     ) {
     }
 }
