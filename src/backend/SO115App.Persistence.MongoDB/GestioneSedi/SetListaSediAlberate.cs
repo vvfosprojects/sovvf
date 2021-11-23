@@ -21,7 +21,10 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
         {
             var filter = Builders<UnitaOperativa>.Filter.Eq(s => s.Codice, "00");
 
-            _dbContext.ListaSediCollection.ReplaceOne(filter, unitaOperativa);
+            if (_dbContext.ListaSediCollection.CountDocuments(filter) > 0)
+                _dbContext.ListaSediCollection.ReplaceOne(filter, unitaOperativa);
+            else
+                _dbContext.ListaSediCollection.InsertOne(unitaOperativa);
         }
     }
 }
