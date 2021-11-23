@@ -68,9 +68,14 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
         public void Handle(AddInterventoFromSurvey123Command command)
         {
 
+            List<Tipologia> listaTipologie = new List<Tipologia>()
+            {
+                new Tipologia("364","Verifiche statiche speditive (TRIAGE)","")
+            };
+
             var intervento = new Intervento()
             {
-                Tipologie = command.Chiamata.Tipologie,
+                Tipologie = listaTipologie,
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 Descrizione = command.Chiamata.Descrizione,
                 Richiedente = command.Chiamata.Richiedente,
@@ -88,6 +93,7 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
                 throw new Exception(Costanti.CoordinateErrate);
 
             intervento.Codice = _generaCodiceRichiesta.GeneraCodiceChiamata(command.CodiceSede, DateTime.UtcNow.Year);
+            intervento.CodiceRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(command.CodiceSede, DateTime.UtcNow.Year);
 
             var listaCodiciTipologie = command.Chiamata.Tipologie?.Select(t => t.Codice).ToList();
             var utentiInLavorazione = intervento.ListaUtentiInLavorazione?.Select(u => u.Nominativo).ToList();

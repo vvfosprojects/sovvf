@@ -18,7 +18,12 @@ export interface AppSettingsAPI {
     ruoliUtLoggato: Ruolo[];
     utente: Utente;
     infoNue: ContatoriSchedeContatto;
-    centroMappaMarker: CentroMappa;
+    centroMappaMarker: CentroMappaNavbar;
     pwESRI: string;
     userESRI: string;
+}
+
+export interface CentroMappaNavbar {
+    coordinateCentro: string[];
+    zoom?: number;
 }

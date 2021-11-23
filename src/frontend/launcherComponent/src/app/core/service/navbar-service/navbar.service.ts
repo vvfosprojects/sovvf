@@ -6,6 +6,7 @@ import { AppSettings, AppSettingsAPI } from '../../../shared/interface/app-setti
 import { Observable } from 'rxjs';
 import { SetContatoriSchedeContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { Store } from '@ngxs/store';
+import { Coordinate } from '../../../shared/model/coordinate.model';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_NAVBAR = BASE_URL + environment.apiUrl.navbar;
@@ -36,6 +37,13 @@ export class NavbarService {
             });
             return {
                 ...data,
+                centroMappaMarker: {
+                    coordinateCentro: new Coordinate(
+                        +data.centroMappaMarker.coordinateCentro[0],
+                        +data.centroMappaMarker.coordinateCentro[1]
+                    ),
+                    zoom: data.centroMappaMarker.zoom
+                },
                 listaSedi: {
                     text: data.listaSedi.nome,
                     value: data.listaSedi.codice,

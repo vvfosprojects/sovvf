@@ -13,13 +13,13 @@ import {
     ResetChiamata,
     SetCompetenze,
     SetCountInterventiProssimita,
-    SetInterventiProssimita,
+    SetInterventiProssimita, SetRedirectComposizionePartenza,
     StartChiamata, StartLoadingCompetenze, StartLoadingDettagliTipologia,
     StartLoadingSchedaRichiesta, StopLoadingCompetenze, StopLoadingDettagliTipologia,
     StopLoadingSchedaRichiesta
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
-import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
+import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../../../maps/store/actions/chiamate-markers.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
@@ -50,6 +50,8 @@ import { InterventiProssimitaResponse } from '../../../../../shared/interface/re
 import { ViewComponentState } from '../view/view.state';
 import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
 import { TipoTerrenoEnum } from 'src/app/shared/enum/tipo-terreno.enum';
+import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -73,6 +75,7 @@ export interface SchedaTelefonataStateModel {
     loadingSchedaRichiesta: boolean;
     loadingCompetenze: boolean;
     loadingDettagliTipologia: boolean;
+    redirectComposizionePartenza: boolean;
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
@@ -96,7 +99,8 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     resetChiamata: true,
     loadingSchedaRichiesta: false,
     loadingCompetenze: false,
-    loadingDettagliTipologia: false
+    loadingDettagliTipologia: false,
+    redirectComposizionePartenza: false,
 };
 
 @Injectable()
@@ -176,6 +180,11 @@ export class SchedaTelefonataState {
     @Selector()
     static loadingDettagliTipologia(state: SchedaTelefonataStateModel): boolean {
         return state.loadingDettagliTipologia;
+    }
+
+    @Selector()
+    static redirectComposizionePartenza(state: SchedaTelefonataStateModel): boolean {
+        return state.redirectComposizionePartenza;
     }
 
     @Action(ReducerSchedaTelefonata)
@@ -436,6 +445,7 @@ export class SchedaTelefonataState {
             }
         }, () => {
             dispatch(new StopLoadingSchedaRichiesta());
+            dispatch(new SetRedirectComposizionePartenza(false));
             patchState({
                 nuovaRichiesta: null,
                 azioneChiamata: null
@@ -459,11 +469,18 @@ export class SchedaTelefonataState {
             dispatch(new SetNeedRefresh(true));
         }
         if (idUtenteLoggato === action.nuovaRichiesta.operatore.id && !action.options?.trasferimento) {
-            dispatch(new StopLoadingSchedaRichiesta());
             const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
-            if (chiamataStatus) {
-                dispatch(new ToggleChiamata());
+            const redirectComposizionePartenza = this.store.selectSnapshot(SchedaTelefonataState.redirectComposizionePartenza);
+            if (chiamataStatus && !redirectComposizionePartenza) {
+                dispatch(new ToggleChiamata(false, true));
+            } else if (chiamataStatus && redirectComposizionePartenza) {
+                // Se 'Conferma e Invia Partenza' allora lancio il toggle della composizione avanzata
+                dispatch([
+                    new SetRichiestaComposizione(action.nuovaRichiesta),
+                    new ToggleComposizione(Composizione.Avanzata)
+                ]);
             }
+            dispatch(new StopLoadingSchedaRichiesta());
         } else if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
@@ -580,6 +597,13 @@ export class SchedaTelefonataState {
     stopLoadingDettagliTipologia({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
             loadingDettagliTipologia: false
+        });
+    }
+
+    @Action(SetRedirectComposizionePartenza)
+    setRedirectComposizionePartenza({ patchState }: StateContext<SchedaTelefonataStateModel>, action: any): void {
+        patchState({
+            redirectComposizionePartenza: action.redirect
         });
     }
 }

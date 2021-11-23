@@ -29,7 +29,9 @@ namespace SO115App.API.Models.Classi.Geo
         /// <summary>
         ///   Restituisce le coordinate del centro mappa
         /// </summary>
-        public Coordinate CoordinateCentro { get; set; }
+        //public Coordinate CoordinateCentro { get; set; }
+        public string[] CoordinateCentro { get; set; }
+
 
         /// <summary>
         ///   Restituisce il livello di Zoom utilizzato sulla mappa

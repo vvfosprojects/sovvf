@@ -38,6 +38,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCompetenze
                 {
                     var Distaccamento = _getCodiciDistaccamenti.Get(codCompetenza).Result;
                     Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate);
+                    sede.CoordinateString = Distaccamento.CoordinateString;
 
                     if (sede != null)
                         listaSedi.Add(sede);
