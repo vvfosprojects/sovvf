@@ -3,7 +3,7 @@ import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
     AnnullaChiamata,
     CestinaChiamata,
-    ClearChiamata,
+    ClearChiamata, ClearCompetenze,
     ClearIndirizzo,
     ClearMarkerChiamata,
     InsertChiamata,
@@ -14,8 +14,8 @@ import {
     SetCompetenze,
     SetCountInterventiProssimita,
     SetInterventiProssimita,
-    StartChiamata, StartLoadingCompetenze,
-    StartLoadingSchedaRichiesta, StopLoadingCompetenze,
+    StartChiamata, StartLoadingCompetenze, StartLoadingDettagliTipologia,
+    StartLoadingSchedaRichiesta, StopLoadingCompetenze, StopLoadingDettagliTipologia,
     StopLoadingSchedaRichiesta
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
@@ -72,6 +72,7 @@ export interface SchedaTelefonataStateModel {
     resetChiamata: boolean;
     loadingSchedaRichiesta: boolean;
     loadingCompetenze: boolean;
+    loadingDettagliTipologia: boolean;
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
@@ -94,7 +95,8 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     idChiamataMarker: null,
     resetChiamata: true,
     loadingSchedaRichiesta: false,
-    loadingCompetenze: false
+    loadingCompetenze: false,
+    loadingDettagliTipologia: false
 };
 
 @Injectable()
@@ -171,11 +173,19 @@ export class SchedaTelefonataState {
         return state.loadingCompetenze;
     }
 
+    @Selector()
+    static loadingDettagliTipologia(state: SchedaTelefonataStateModel): boolean {
+        return state.loadingDettagliTipologia;
+    }
+
     @Action(ReducerSchedaTelefonata)
     reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
 
         const state = getState();
-        const coordinate = action.schedaTelefonata?.markerChiamata?.localita?.coordinate ? action.schedaTelefonata.markerChiamata.localita.coordinate : { latitudine: state.richiestaForm?.model?.latitudine, longitudine: state.richiestaForm?.model?.longitudine };
+        const coordinate = action.schedaTelefonata?.markerChiamata?.localita?.coordinate ? action.schedaTelefonata.markerChiamata.localita.coordinate : {
+            latitudine: state.richiestaForm?.model?.latitudine,
+            longitudine: state.richiestaForm?.model?.longitudine
+        };
 
         function getCooordinate(): Coordinate {
             return coordinate;
@@ -248,36 +258,51 @@ export class SchedaTelefonataState {
                 return c.codice;
             });
             dispatch([
-                new MarkerChiamata(action.markerChiamata, codCompetenze),
                 new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
                 new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
                 new StopLoadingCompetenze()
             ]);
+
+            if (action.markerChiamata) {
+                dispatch(new MarkerChiamata(action.markerChiamata, codCompetenze));
+            }
+
             patchState({
                 competenze
             });
         });
     }
 
+    @Action(ClearCompetenze)
+    clearCompetenze({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            competenze: SchedaTelefonataStateDefaults.competenze
+        });
+    }
+
     @Action(SetCountInterventiProssimita)
     setCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
         this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: CountInterventiProssimitaResponse) => {
-            patchState({
-                countInterventiProssimita: res.count,
-                countInterventiStessaVia: res.countStessaVia,
-                countInterventiChiusiStessoIndirizzo: res.countInterventiChiusiStessoIndirizzo
-            });
+            if (res) {
+                patchState({
+                    countInterventiProssimita: res.count,
+                    countInterventiStessaVia: res.countStessaVia,
+                    countInterventiChiusiStessoIndirizzo: res.countInterventiChiusiStessoIndirizzo
+                });
+            }
         });
     }
 
     @Action(SetInterventiProssimita)
     setInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
         this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: InterventiProssimitaResponse) => {
-            patchState({
-                interventiProssimita: res.dataArray,
-                interventiStessaVia: res.dataArrayStessaVia,
-                interventiChiusiStessoIndirizzo: res.dataArrayInterventiChiusiStessoIndirizzo
-            });
+            if (res) {
+                patchState({
+                    interventiProssimita: res.dataArray,
+                    interventiStessaVia: res.dataArrayStessaVia,
+                    interventiChiusiStessoIndirizzo: res.dataArrayInterventiChiusiStessoIndirizzo
+                });
+            }
         });
     }
 
@@ -541,6 +566,20 @@ export class SchedaTelefonataState {
     stopLoadingCompetenze({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
             loadingCompetenze: false
+        });
+    }
+
+    @Action(StartLoadingDettagliTipologia)
+    startLoadingDettagliTipologia({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingDettagliTipologia: true
+        });
+    }
+
+    @Action(StopLoadingDettagliTipologia)
+    stopLoadingDettagliTipologia({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingDettagliTipologia: false
         });
     }
 }

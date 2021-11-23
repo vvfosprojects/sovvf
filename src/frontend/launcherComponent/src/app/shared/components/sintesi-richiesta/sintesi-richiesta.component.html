@@ -1,5 +1,5 @@
 <div class="py-2 px-3"
-     style="max-height: 297px;overflow-y: auto;"
+     style="max-height: 297px; overflow-y: auto"
      [class.border-top-richiesta]="borderTop"
      [class.text-moon]="nightMode"
      [class.moon-card-light]="nightMode"
@@ -14,12 +14,14 @@
                     <div *ngIf="richiesta?.stato === StatoRichiesta.Sospesa"
                          [ngStyle]="{'left':  richiesta?.esercitazione ? '25px' : '20px' }"
                          class="d-inline-block text-danger font-weight-bolder h4"
-                         style="position: absolute; top:22px">S
+                         style="position: absolute; top:22px">
+                        S
                     </div>
                     <!-- Icona Richiesta Esercitazione -->
                     <div *ngIf="richiesta?.esercitazione"
                          class="d-inline-block text-primary font-weight-bolder h4"
-                         style="position: absolute; left: 5px; top:22px">E
+                         style="position: absolute; left: 5px; top:22px">
+                        E
                     </div>
                     <!-- PRIMA RIGA -->
                     <div class="row">
@@ -121,7 +123,8 @@
                                                 tabindex="0"
                                                 placement="bottom-right"
                                                 (click)="$event.stopPropagation()">
-                                            <i class="guida fas fa-users fa-fw ml-2 mr-1" ngbTooltip="Numero Squadre"></i>
+                                            <i class="guida fas fa-users fa-fw ml-2 mr-1"
+                                               ngbTooltip="Numero Squadre"></i>
                                             <span>{{ squadre?.length }}</span>
                                         </button>
                                         <ng-template #popSquadre>
@@ -190,13 +193,20 @@
                              style="width: 33%">
                             <i class="guida fas fa-map-marker-alt fa-fw mr-1" style="font-size: 140%"
                                ngbTooltip="Località"></i>
-                            <span>
-                              <span ngbTooltip="{{ richiesta?.localita?.indirizzo }}"
-                                    class="font-xxlarge"
-                                    [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
+                            <ng-container *ngIf="!richiesta?.localita?.indirizzo && richiesta?.localita?.coordinate">
+                                <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
+                                      class="font-xxlarge">
+                                      Lat: {{ richiesta.localita.coordinate?.latitudine }} -
+                                      Lon: {{ richiesta.localita.coordinate?.longitudine }}
+                              </span>
+                            </ng-container>
+                            <ng-container *ngIf="richiesta?.localita?.indirizzo">
+                                <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
+                                      class="font-xxlarge"
+                                      [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
                                   {{ richiesta?.localita?.indirizzo | truncate:30 }}
                               </span>
-                            </span>
+                            </ng-container>
                             <span *ngIf="!partenza"
                                   class="list-inline list-unstyled m-0 ml-2 font-xxlarge"
                                   style="vertical-align: text-bottom;">
@@ -257,7 +267,7 @@
                                         ngbTooltip="Gestisci"
                                         [disabled]="disabledGestisciRichiesta"
                                         [class.cursor-not-allowed]="disabledGestisciRichiesta"
-                                        (click)="onGestioneRichiesta()">
+                                        (click)="onGestioneRichiesta($event)">
                                     <i class="fas fa-fw "
                                        [ngClass]="methods.toggleGestioneClass(inGestione)"></i>
                                 </button>
@@ -382,9 +392,9 @@
                                                placement="right">
                                             </i>
                                             S. NUE
-                                            <div class="d-inline-block font-weight-bold">
+                                            <span class="d-inline-block font-weight-bold">
                                                 {{ richiesta?.codiceSchedaNue }}
-                                            </div>
+                                            </span>
                                         </h4>
                                         <ng-template #nessunCodiceNue>
                                             <h4>Nessuna scheda NUE</h4>
@@ -426,7 +436,8 @@
                             <!-- II colonna Triage -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) <= 0"
                                  class="col-8">
-                                <div *ngIf="richiesta?.triageSummary?.length" style="max-height: 170px;overflow-y: auto;">
+                                <div *ngIf="richiesta?.triageSummary?.length"
+                                     style="max-height: 170px;overflow-y: auto;">
                                     <app-triage-summary-sintesi-richiesta [triageSummary]="richiesta?.triageSummary"
                                                                           [pos]="richiesta?.dettaglioTipologia?.pos">
                                     </app-triage-summary-sintesi-richiesta>
@@ -505,9 +516,9 @@
                                         <div class="text-right">
                                             <h4>
                                                 <b>{{ richiesta?.complessita?.indice }}</b>
-                                                <div class="badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">
+                                                <span class="badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">
                                                     {{ richiesta?.complessita?.descrizione }}
-                                                </div>
+                                                </span>
                                                 <i class="guida fas fa-cogs fa-fw ml-1" ngbTooltip="Complessità"
                                                    placement="left"></i>
                                             </h4>

@@ -67,7 +67,6 @@ export class ListaRichiesteComponent implements OnChanges {
     methods = new HelperSintesiRichiesta();
     scrolling = false;
     statoRichiesta = StatoRichiesta;
-    idRichiestaGestione: string;
 
     actionRichiestaArray: any[] = [];
 
@@ -86,7 +85,7 @@ export class ListaRichiesteComponent implements OnChanges {
     richiestaClick(richiesta: SintesiRichiesta): void {
         if (richiesta?.id !== this.idRichiestaSelezionata) {
             this.selezione.emit({ idRichiesta: richiesta.id, coordinate: richiesta.localita.coordinate });
-        } else {
+        } else if (richiesta?.id !== this.richiestaGestione?.id) {
             this.deselezione.emit(true);
         }
     }
@@ -137,18 +136,17 @@ export class ListaRichiesteComponent implements OnChanges {
     }
 
     onGestioneRichiesta(richiesta: SintesiRichiesta): void {
-        this.idRichiestaGestione = richiesta.id;
         this.gestioneRichiesta.emit(richiesta);
     }
 
     translatePositionRichiesta(r: SintesiRichiesta, index: number): string {
         // TODO: Possibile ottimizzazione
         let output = '';
-        const richiestaNonEspansa = this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione !== r.id);
-        const richiestaEspansa = this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione === r.id);
-        const terzultimaRichiestaEspansa = this.richieste.length >= 3 && index === this.richieste.length - 3 && this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione === r.id);
-        const penultimaRichiestaEspansa = this.richieste.length >= 4 && index === this.richieste.length - 2 && this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione === r.id);
-        const ultimaRichiestaEspansa = this.richieste.length >= 6 && index === this.richieste.length - 1 && this.richiestaGestione && this.idRichiestaGestione && (this.idRichiestaGestione === r.id);
+        const richiestaNonEspansa = this.richiestaGestione && this.richiestaGestione?.id && (this.richiestaGestione?.id !== r.id);
+        const richiestaEspansa = this.richiestaGestione && this.richiestaGestione?.id && (this.richiestaGestione?.id === r.id);
+        const terzultimaRichiestaEspansa = this.richieste.length >= 3 && index === this.richieste.length - 3 && this.richiestaGestione && this.richiestaGestione?.id && (this.richiestaGestione?.id === r.id);
+        const penultimaRichiestaEspansa = this.richieste.length >= 4 && index === this.richieste.length - 2 && this.richiestaGestione && this.richiestaGestione?.id && (this.richiestaGestione?.id === r.id);
+        const ultimaRichiestaEspansa = this.richieste.length >= 6 && index === this.richieste.length - 1 && this.richiestaGestione && this.richiestaGestione?.id && (this.richiestaGestione?.id === r.id);
 
         // Se non c'è richiesta espansa allora non c'è variazione
         if (!this.richiestaGestione || (this.richiestaGestione && this.richiestaFissata && this.richiestaGestione.id === this.richiestaFissata.id)) {

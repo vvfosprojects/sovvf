@@ -38,6 +38,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     @Input() idDaSganciare = '';
     @Input() richiesta: SintesiRichiesta;
+    @Input() selezionata: boolean;
     @Input() fissata: boolean;
     @Input() boxAzioni: boolean;
     @Input() fissabile: boolean;
@@ -174,8 +175,11 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         this.modificaRichiesta.emit(this.richiesta);
     }
 
-    onGestioneRichiesta(): void {
+    onGestioneRichiesta(event: any): void {
         this.gestioneRichiesta.emit(this.richiesta);
+        if (this.selezionata) {
+            event.stopPropagation();
+        }
     }
 
     getPresaInCaricoTooltip(utentiPresaInCaricoValue: any): any {

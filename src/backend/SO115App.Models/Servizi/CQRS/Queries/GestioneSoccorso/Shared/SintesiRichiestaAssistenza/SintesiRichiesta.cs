@@ -391,5 +391,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   GetInterventiInProssimita.cs
         /// </summary>
         public double Distance { get; set; }
+
+        public string NoteNue { get; set; }
+
     }
 }

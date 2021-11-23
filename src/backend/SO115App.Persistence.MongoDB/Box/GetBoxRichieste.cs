@@ -62,6 +62,7 @@ namespace SO115App.Persistence.MongoDB
                     && !x.Chiusa && !x.Sospesa);
                 interventi.Presidiati = listaSintesi.Count(x => x.Presidiata);
                 interventi.Chiusi = listaSintesi.Count(x => x.Chiusa);
+                interventi.Sospesi = listaSintesi.Count(x => x.Sospesa);
 
                 interventi.TotAnnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year && x.Chiusa);
                 interventi.AnnoCorrente = DateTime.Now.Year;

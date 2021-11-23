@@ -203,5 +203,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         ///   Flag che indica se l'intervento è per una esercitazione oppure no Di dafault è FALSE
         /// </summary>
         public bool Esercitazione { get; set; } = false;
+
+        public string NoteNue { get; set; }
+
     }
 }

@@ -37,22 +37,16 @@ export class RichiestaGestioneState {
     setRichiestaGestione({ getState, patchState, dispatch }: StateContext<RichiestaGestioneStateModel>, action: SetRichiestaGestione): void {
         const state = getState();
         if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id && !action.toggle) {
-            dispatch(new ClearRichiestaGestione(action.richiesta.id));
+            dispatch(new ClearRichiestaGestione());
         } else {
             patchState({
                 richiestaGestione: action.richiesta
             });
-            dispatch(new GetInitCentroMappa());
         }
     }
 
     @Action(ClearRichiestaGestione)
-    clearRichiestaGestione({ patchState, dispatch, getState }: StateContext<RichiestaGestioneStateModel>, action: ClearRichiestaGestione): void {
-        const idRichiestaFissata = this.store.selectSnapshot(RichiestaFissataState.idRichiestaFissata);
-        // se la richiesta non è fissata deseleziono il marker della richiesta in gestione e centro la mappa
-        if (idRichiestaFissata !== action.idRichiesta) {
-            dispatch(new GetInitCentroMappa());
-        }
+    clearRichiestaGestione({ patchState }: StateContext<RichiestaGestioneStateModel>): void {
         patchState(RichiestaGestioneStateDefaults);
     }
 }

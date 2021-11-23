@@ -17,6 +17,10 @@ export class BoxInterventi {
          */
         public chiusi: number,
         /**
+         * Interventi sospesi
+         */
+        public sospesi: number,
+        /**
          * totale degli interventi in corso
          */
         public totale: number,
