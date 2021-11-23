@@ -110,6 +110,7 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
                 Codice = intervento.Codice,
+                CodRichiesta = intervento.CodiceRichiesta,
                 TrnInsChiamata = _getTurno.Get().Codice,
                 TipoTerreno = intervento.TipoTerreno,
                 ObiettivoSensibile = intervento.ObiettivoSensibile,
@@ -163,6 +164,7 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
 
             //Salvo l'intervento nel command per usarlo nella notifica
             command.Chiamata.Codice = intervento.Codice;
+            command.Chiamata.CodiceRichiesta = intervento.CodiceRichiesta;
             command.Intervento = richiesta;
         }
     }

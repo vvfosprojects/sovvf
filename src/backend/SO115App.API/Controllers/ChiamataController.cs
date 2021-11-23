@@ -103,7 +103,7 @@ namespace SO115App.API.Controllers
             try
             {
                 _addFromSurvey123Handler.Handle(command);
-                return Ok(command.Chiamata.Codice);
+                return Ok(command.Chiamata.CodiceRichiesta);
             }
             catch (Exception ex)
             {
