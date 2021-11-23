@@ -23,7 +23,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 {
     public class GetSedi : IGetDirezioni, IGetSedi, IGetAlberaturaUnitaOperative, IGetListaDistaccamentiByPinListaSedi, 
         IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede,
-        IGetSediMarker, IGetCoordinateByCodSede
+        IGetSediMarker, IGetCoordinateByCodSede, IGetStringCoordinateByCodSede
     {
 
         private string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
@@ -332,5 +332,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             return GetInfoSede(codiceSede).Result.Coordinate;
         }
+
+        string[] IGetStringCoordinateByCodSede.Get(string codiceSede)
+        {
+            return GetInfoSede(codiceSede).Result.coordinate.Split(',');
+        }
+
+
     }
 }

@@ -297,6 +297,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC, GetSedi>();
 
+            container.Register<
+                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetStringCoordinateByCodSede, GetSedi>();
+
+
             #endregion Distaccamenti
 
             #region Tipologie
