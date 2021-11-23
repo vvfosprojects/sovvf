@@ -99,8 +99,9 @@ export class SintesiRichiesta {
         public codiceSchedaNue?: string,
         /**
          * descrizione delle zone di emergenza
+         * // TODO: diventerà un string[] quando verrà implementato nel form della chiamata/intervento
          */
-        public zoneEmergenza?: string[],
+        public zoneEmergenza?: string,
         /**
          * codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare,
          * 2 = Inviato). Utile a calcolare il colore della segnalazione.
