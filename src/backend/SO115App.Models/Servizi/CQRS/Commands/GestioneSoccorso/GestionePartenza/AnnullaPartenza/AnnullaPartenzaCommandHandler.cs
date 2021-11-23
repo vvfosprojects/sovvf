@@ -66,6 +66,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var date = DateTime.UtcNow;
             var partenza = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().ToList().Find(p => p.CodicePartenza.Equals(command.CodicePartenza));
             var ultimoMovimento = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().ToList().Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
+            int codPartenza = int.Parse(partenza.CodicePartenza.Substring(2));
 
             if (date >= ultimoMovimento.Istante.AddMinutes(1))
                 throw new Exception($"Annullamento non più disponibile per il mezzo {partenza.CodiceMezzo}.");
@@ -76,23 +77,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 string nuovoStatoMezzo = null;
 
-                switch (statoMezzo) //TODO EVENTO PRECEDENTE
+                var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza) && e.DataOraInserimento < command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Last().DataOraInserimento).Last().TipoEvento;
+
+                switch (eventoPrecedente)
                 {
-                    case Costanti.MezzoSulPosto: nuovoStatoMezzo = Costanti.MezzoInViaggio; break;
-                    case Costanti.MezzoInRientro: nuovoStatoMezzo = Costanti.MezzoSulPosto; break;
+                    case Costanti.ArrivoSulPosto: nuovoStatoMezzo = Costanti.MezzoSulPosto; break;
+                    case Costanti.ComposizionePartenza: nuovoStatoMezzo = Costanti.MezzoInViaggio; break;
                 }
 
                 //TODO AGGIUNGERE NOTE
                 new AnnullamentoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, "AnnullamentoPartenza", command.CodicePartenza);
-
-                //partenza.Partenza.PartenzaAnnullata = true;
-
-                //command.Richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
-                //{
-                //    Istante = date,
-                //    CodMezzo = command.TargaMezzo,
-                //    Stato = nuovoStatoMezzo
-                //}, _statri, _check, partenza.CodicePartenza);
 
                 var mezzo = partenza.Partenza.Mezzo;
                 var squadre = partenza.Partenza.Squadre;
@@ -100,6 +94,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 _setStatoMezzo.Set(mezzo.Distaccamento.Codice, mezzo.Codice, nuovoStatoMezzo, command.Richiesta.Codice);
 
                 squadre.ForEach(squadra => _setStatoSquadra.SetStato(squadra.Id, command.Richiesta.Codice, nuovoStatoMezzo, squadra.Distaccamento.Codice, mezzo.Codice));
+
+                #region Chiamata GAC
 
                 //var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
 
@@ -136,6 +132,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 //};
 
                 //_modificaGAC.Send(movimento);
+
+                #endregion
 
                 //AGGIORNO STATO MEZZO E RICHIESTA
                 var commandStatoMezzo = new AggiornaStatoMezzoCommand()
