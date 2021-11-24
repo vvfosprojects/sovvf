@@ -1,4 +1,4 @@
-import { Action, NgxsOnChanges, NgxsSimpleChange, Selector, State, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import {
     SetCodiceSede,
     SetConnectionId,
@@ -16,11 +16,6 @@ import { ToastrType } from '../../../shared/enum/toastr';
 import { SignalRNotification } from '../model/signalr-notification.model';
 import { SignalRService } from '../signalR.service';
 import { difference } from 'lodash';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SignalROfflineComponent } from '../signal-r-offline/signal-r-offline.component';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
-import { Navigate } from '@ngxs/router-plugin';
-import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { AuthState } from '../../../features/auth/store/auth.state';
 import { Injectable } from '@angular/core';
 import { LSNAME } from '../../settings/config';
@@ -49,9 +44,7 @@ export const SignalRStateDefaults: SignalRStateModel = {
     defaults: SignalRStateDefaults
 })
 
-export class SignalRState implements NgxsOnChanges {
-
-    private modalInstance: NgbModalRef;
+export class SignalRState {
 
     @Selector()
     static connectionIdSignalR(state: SignalRStateModel): string {
@@ -73,19 +66,8 @@ export class SignalRState implements NgxsOnChanges {
         return state.idUtente;
     }
 
-    constructor(private signalR: SignalRService, private store: Store,
-                private modalService: NgbModal) {
-    }
-
-    ngxsOnChanges(change: NgxsSimpleChange): void {
-        const currentValue = change.currentValue;
-        const previousValue = change.previousValue;
-        if (!currentValue.disconnected && currentValue.reconnected && previousValue.reconnected) {
-            this.modalInstance.close();
-            this.store.dispatch(new Navigate([`/${RoutesPath.Logged}`]));
-        } else if (currentValue.disconnected) {
-            this.openModal();
-        }
+    constructor(private signalR: SignalRService,
+                private store: Store) {
     }
 
     @Action(SignalRHubConnesso)
@@ -93,10 +75,10 @@ export class SignalRState implements NgxsOnChanges {
         const state = getState();
         const reconnected = state.disconnected ? true : null;
         if (reconnected) {
-            dispatch([
-                new ShowToastr(ToastrType.Clear),
-                new ShowToastr(ToastrType.Success, 'signalR', 'Sei di nuovo online!', 5, null, true)
-            ]);
+            // dispatch([
+            //     new ShowToastr(ToastrType.Clear),
+            //     new ShowToastr(ToastrType.Success, 'signalR', 'Sei di nuovo online!', 5, null, true)
+            // ]);
             if (state.codiciSede && state.codiciSede.length > 0) {
                 let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
                 if (cS) {
@@ -186,9 +168,9 @@ export class SignalRState implements NgxsOnChanges {
         if (codiciSede && codiciSede.length > 0) {
             const utente = this.store.selectSnapshot(AuthState.currentUser);
             this.signalR.removeToGroup(new SignalRNotification(
-                codiciSede,
-                utente.id,
-                `${utente.nome} ${utente.cognome}`
+                    codiciSede,
+                    utente.id,
+                    `${utente.nome} ${utente.cognome}`
                 )
             );
         }
@@ -220,33 +202,4 @@ export class SignalRState implements NgxsOnChanges {
     clearIdUtente({ patchState }: StateContext<SignalRStateModel>): void {
         patchState({ idUtente: SignalRStateDefaults.idUtente });
     }
-
-    openModal(): void {
-        if (this.modalService.hasOpenModals()) {
-            this.modalService.dismissAll();
-        }
-        const innerWidth = window.innerWidth;
-        if (innerWidth && innerWidth > 3700) {
-            this.modalInstance = this.modalService.open(SignalROfflineComponent, {
-                windowClass: 'modal-holder modal-left',
-                centered: true,
-                size: 'lg',
-                backdropClass: 'backdrop-custom-black',
-                backdrop: 'static',
-                keyboard: false
-            });
-            this.modalInstance.result.then();
-        } else {
-            this.modalInstance = this.modalService.open(SignalROfflineComponent, {
-                windowClass: 'modal-holder',
-                centered: true,
-                size: 'lg',
-                backdropClass: 'backdrop-custom-black',
-                backdrop: 'static',
-                keyboard: false
-            });
-            this.modalInstance.result.then();
-        }
-    }
-
 }

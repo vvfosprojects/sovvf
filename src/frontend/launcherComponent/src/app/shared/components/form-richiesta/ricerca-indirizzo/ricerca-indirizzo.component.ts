@@ -53,8 +53,10 @@ export class RicercaIndirizzoComponent implements OnInit {
                     break;
                 case 'Enter':
                     e.preventDefault();
-                    const candidate = this.addressCandidates[this.indexSelectedAddressCandidate];
-                    this.onSelectCandidate(candidate);
+                    if (this.addressCandidates?.length) {
+                        const candidate = this.addressCandidates[this.indexSelectedAddressCandidate];
+                        this.onSelectCandidate(candidate);
+                    }
             }
         });
     }

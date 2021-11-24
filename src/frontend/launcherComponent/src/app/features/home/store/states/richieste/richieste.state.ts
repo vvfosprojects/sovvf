@@ -34,7 +34,7 @@ import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/o
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
-import { UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { SetRichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -56,6 +56,9 @@ import { getStatoFonogrammaEnumByName } from '../../../../../shared/helper/funct
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi } from '../../../../../shared/store/actions/loading/loading.actions';
 import { SetRedirectComposizionePartenza } from '../../actions/form-richiesta/scheda-telefonata.actions';
+import { ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
+import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { SchedaTelefonataState } from '../form-richiesta/scheda-telefonata.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -259,6 +262,17 @@ export class RichiesteState {
                 ]);
             } else {
                 dispatch(new SetNeedRefresh(true));
+            }
+            // Controllo se 'Conferma e Invia Partenza' e faccio il redirect della view
+            const redirectComposizionePartenza = this.store.selectSnapshot(SchedaTelefonataState.redirectComposizionePartenza);
+            if (redirectComposizionePartenza) {
+                dispatch([
+                    new SetRichiestaComposizione(action.richiesta),
+                    new ToggleComposizione(Composizione.Avanzata),
+                    new SetRedirectComposizionePartenza(false),
+                ]);
+            } else {
+                dispatch( new ToggleModifica(false, true));
             }
         }
     }
