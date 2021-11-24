@@ -20,7 +20,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
 import {
-    ClearCompetenze,
+    ClearCompetenze, ClearCountInterventiProssimita, ClearInterventiProssimita,
     ReducerSchedaTelefonata,
     SetCompetenze, SetRedirectComposizionePartenza,
     StartChiamata,
@@ -502,7 +502,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 }, 1);
             }
         } else {
-            this.store.dispatch(new ClearCompetenze());
+            this.store.dispatch([
+                new ClearCompetenze(),
+                new ClearCountInterventiProssimita(),
+                new ClearInterventiProssimita()
+            ]);
             this.f.indirizzo.setValidators([Validators.required]);
         }
     }

@@ -4,8 +4,8 @@ import {
     AnnullaChiamata,
     CestinaChiamata,
     ClearChiamata,
-    ClearCompetenze,
-    ClearIndirizzo,
+    ClearCompetenze, ClearCountInterventiProssimita,
+    ClearIndirizzo, ClearInterventiProssimita,
     ClearMarkerChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
@@ -315,6 +315,15 @@ export class SchedaTelefonataState {
         });
     }
 
+    @Action(ClearCountInterventiProssimita)
+    clearCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            countInterventiProssimita: 0,
+            countInterventiStessaVia: 0,
+            countInterventiChiusiStessoIndirizzo: 0
+        });
+    }
+
     @Action(SetInterventiProssimita)
     setInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
         this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: InterventiProssimitaResponse) => {
@@ -325,6 +334,15 @@ export class SchedaTelefonataState {
                     interventiChiusiStessoIndirizzo: res.dataArrayInterventiChiusiStessoIndirizzo
                 });
             }
+        });
+    }
+
+    @Action(ClearInterventiProssimita)
+    clearInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            interventiProssimita: null,
+            interventiStessaVia: null,
+            interventiChiusiStessoIndirizzo: null
         });
     }
 
