@@ -113,8 +113,8 @@
         </ngb-panel>
     </ng-template>
     <!-- NOTE NUE -->
-    <ng-template [ngIf]="schedaContatto">
-        <ngb-panel id="note-nue" [disabled]="!schedaContatto">
+    <ng-template [ngIf]="schedaContatto || dettaglioSchedaContatto">
+        <ngb-panel id="note-nue" [disabled]="!schedaContatto && !dettaglioSchedaContatto">
             <ng-template ngbPanelTitle>
                 <div class="font-weight-bold text-white d-inline-flex" (click)="onShowInfoAggiuntive('noteNue')">
                     <span *ngIf="infoAggiuntive.noteNue" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
@@ -124,7 +124,7 @@
             </ng-template>
             <ng-template ngbPanelContent>
                 <div>
-                    {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : 'Nessuna Nota Disponibile' }}
+                    {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : (dettaglioSchedaContatto ? dettaglioSchedaContatto : 'Nessuna Nota Disponibile' )}}
                 </div>
             </ng-template>
         </ngb-panel>

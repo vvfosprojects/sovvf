@@ -38,6 +38,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     @Input() triageSummary: TriageSummary[];
     @Input() pos: PosInterface[];
     @Input() schedaContatto: SchedaContatto;
+    @Input() dettaglioSchedaContatto: string;
 
     contatoreGeneriMezzo: number;
     generiMezzo: string[];

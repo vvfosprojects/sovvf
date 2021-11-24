@@ -12,6 +12,7 @@ import { FiltriEventiRichiestaComponent } from './filtri-eventi-richiesta/filtri
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AddEventoRichiestaComponent } from './add-evento-richiesta/add-evento-richiesta.component';
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
         EventiRichiestaComponent,
         EventoRichiestaComponent,
         ListaEventiRichiestaComponent,
-        FiltriEventiRichiestaComponent
+        FiltriEventiRichiestaComponent,
+        AddEventoRichiestaComponent
     ],
     exports: [
         EventiRichiestaComponent
