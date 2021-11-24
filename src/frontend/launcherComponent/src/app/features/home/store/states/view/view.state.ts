@@ -244,7 +244,8 @@ export class ViewComponentState {
                 view: newState.view,
                 column: newState.column
             });
-        } else {
+        }
+        else if (action.homeViewRequest) {
             dispatch(new GetInitCentroMappa());
             const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
             const newState = turnOffModifica(currentState, lastState);
