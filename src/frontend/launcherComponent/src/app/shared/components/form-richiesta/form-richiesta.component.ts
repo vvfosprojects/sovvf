@@ -154,6 +154,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 const schedaContatto = changes.schedaContatto.currentValue;
                 if (schedaContatto && schedaContatto.codiceScheda) {
                     this.setSchedaContatto(schedaContatto);
+                    this.f.noteNue.patchValue(schedaContatto.dettaglio);
                 }
                 // Controllo scorciatoia numero da Scheda Contatto
                 const telefono = schedaContatto.richiedente.telefono;
@@ -242,6 +243,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             stato: [StatoRichiesta.Chiamata],
             urgenza: [false],
             esercitazione: [false],
+            noteNue: [null]
         });
     }
 
@@ -279,7 +281,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             prioritaRichiesta: this.richiestaModifica.prioritaRichiesta,
             stato: StatoRichiesta.Chiamata,
             urgenza: this.richiestaModifica.chiamataUrgente,
-            esercitazione: this.richiestaModifica.esercitazione
+            esercitazione: this.richiestaModifica.esercitazione,
+            noteNue: this.richiestaModifica.noteNue
         });
 
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));

@@ -439,7 +439,8 @@ export class SchedaTelefonataState {
                 f.codSOCompetente,
                 f.urgenza || urgente,
                 f.esercitazione,
-                triageSummary?.length ? triageSummary : null
+                triageSummary?.length ? triageSummary : null,
+                f.noteNue
             );
         }
 

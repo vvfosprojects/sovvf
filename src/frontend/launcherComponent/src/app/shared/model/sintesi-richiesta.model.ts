@@ -192,13 +192,13 @@ export class SintesiRichiesta {
          */
         public triageSummary?: TriageSummary[],
         /**
-         * eventi richiesta relativi a mezzi e velivoli
-         */
-        public eventi?: any,
-        /**
          * Info Note NUE
          */
-        public noteNue?: string
+        public noteNue?: string,
+        /**
+         * eventi richiesta relativi a mezzi e velivoli
+         */
+        public eventi?: any
     ) {
     }
 }
