@@ -1,4 +1,4 @@
-import { State, Selector, Action, StateContext, Select, Store } from '@ngxs/store';
+import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
 import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
 import { MezziInServizioService } from '../../../../../core/service/mezzi-in-servizio-service/mezzi-in-servizio.service';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
@@ -123,13 +123,13 @@ export class MezziInServizioState {
                 const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
                 if (mezziInServizioActive) {
                     dispatch([
-                        new SetMezziInServizio(response.dataArray),
-                        new PatchPagination(response.pagination)
+                        new SetMezziInServizio(response?.dataArray),
+                        new PatchPagination(response?.pagination)
                     ]);
                 }
                 dispatch(new StopLoadingMezziInServizio());
             },
-            error => dispatch(new StopLoadingMezziInServizio())
+            () => dispatch(new StopLoadingMezziInServizio())
         );
     }
 
@@ -185,7 +185,7 @@ export class MezziInServizioState {
     }
 
     @Action(ClearMezzoInServizioHover)
-    clearMezzoInServizioHover({ patchState, dispatch }: StateContext<MezziInServizioStateModel>): void {
+    clearMezzoInServizioHover({ patchState }: StateContext<MezziInServizioStateModel>): void {
         patchState({
             idMezzoInServizioHover: null
         });
@@ -204,7 +204,7 @@ export class MezziInServizioState {
     }
 
     @Action(ClearMezzoInServizioSelezionato)
-    clearMezzoInServizioSelezionato({ patchState, dispatch }: StateContext<MezziInServizioStateModel>): void {
+    clearMezzoInServizioSelezionato({ patchState }: StateContext<MezziInServizioStateModel>): void {
         patchState({
             idMezzoInServizioSelezionato: null
         });
