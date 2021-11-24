@@ -11,7 +11,8 @@
             <span *ngIf="!iconeNomeClasseEvento">Visualizza icone</span>
         </button>
     </div>
-    <div class="float-right">
+    <div *ngIf="listaTargaMezzo?.length"
+         class="float-right">
         <form [formGroup]="form">
             <ng-select [items]="targheSelezionateUnique"
                        bindLabel="targa"

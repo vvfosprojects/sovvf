@@ -52,8 +52,8 @@ export class RicercaIndirizzoComponent implements OnInit {
                     this.setIndexSelectedAddressCandidate(newIndexValueUp);
                     break;
                 case 'Enter':
-                    e.preventDefault();
                     if (this.addressCandidates?.length) {
+                        e.preventDefault();
                         const candidate = this.addressCandidates[this.indexSelectedAddressCandidate];
                         this.onSelectCandidate(candidate);
                     }

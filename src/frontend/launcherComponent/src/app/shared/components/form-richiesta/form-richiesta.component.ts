@@ -21,8 +21,11 @@ import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
 import {
     ClearCompetenze,
+    ClearCountInterventiProssimita,
+    ClearInterventiProssimita,
     ReducerSchedaTelefonata,
-    SetCompetenze, SetRedirectComposizionePartenza,
+    SetCompetenze,
+    SetRedirectComposizionePartenza,
     StartChiamata,
     StopLoadingDettagliTipologia
 } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
@@ -154,6 +157,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 const schedaContatto = changes.schedaContatto.currentValue;
                 if (schedaContatto && schedaContatto.codiceScheda) {
                     this.setSchedaContatto(schedaContatto);
+                    this.f.noteNue.patchValue(schedaContatto.dettaglio);
                 }
                 // Controllo scorciatoia numero da Scheda Contatto
                 const telefono = schedaContatto.richiedente.telefono;
@@ -200,10 +204,16 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
         this.store.dispatch([
             new ClearClipboard(),
-            new DelChiamataMarker(this.idChiamata)
+            new DelChiamataMarker(this.idChiamata),
+            new ClearCompetenze(),
+            new ClearCountInterventiProssimita(),
+            new ClearInterventiProssimita()
         ]);
         clearSummaryData(this.store);
         clearPosTriageSummary(this.store);
+        clearTriageSummary(this.store);
+        clearTriageChiamataModalData(this.store);
+
         this.reducerSchedaTelefonata('reset');
     }
 
@@ -242,6 +252,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             stato: [StatoRichiesta.Chiamata],
             urgenza: [false],
             esercitazione: [false],
+            noteNue: [null]
         });
     }
 
@@ -279,7 +290,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             prioritaRichiesta: this.richiestaModifica.prioritaRichiesta,
             stato: StatoRichiesta.Chiamata,
             urgenza: this.richiestaModifica.chiamataUrgente,
-            esercitazione: this.richiestaModifica.esercitazione
+            esercitazione: this.richiestaModifica.esercitazione,
+            noteNue: this.richiestaModifica.noteNue
         });
 
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
@@ -502,7 +514,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 }, 1);
             }
         } else {
-            this.store.dispatch(new ClearCompetenze());
+            this.store.dispatch([
+                new ClearCompetenze(),
+                new ClearCountInterventiProssimita(),
+                new ClearInterventiProssimita()
+            ]);
             this.f.indirizzo.setValidators([Validators.required]);
         }
     }
@@ -745,7 +761,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     onChiudiModifica(): void {
         this.store.dispatch([
             new ClearRichiestaModifica(),
-            new ToggleModifica()
+            new ToggleModifica(true, true)
         ]);
     }
 

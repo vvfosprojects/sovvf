@@ -60,4 +60,5 @@ export interface RichiestaForm {
     motivazione: string;
     listaUtentiPresaInCarico: AttivitaUtente[];
     codUOCompetenza: string[];
+    noteNue: string;
 }

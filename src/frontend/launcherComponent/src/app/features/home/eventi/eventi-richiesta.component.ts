@@ -4,7 +4,7 @@ import { EventiRichiestaState } from '../store/states/eventi-richiesta/eventi-ri
 import { Observable, Subscription } from 'rxjs';
 import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { FiltroTargaMezzo } from './interface/filtro-targa-mezzo.interface';
-import { SetFiltroTargaMezzo, ToggleIconeNomeClasseEvento } from '../store/actions/eventi-richiesta/eventi-richiesta.actions';
+import { ClearEventiRichiesta, SetFiltroTargaMezzo, ToggleIconeNomeClasseEvento } from '../store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { ImpostazioniState } from '../../../shared/store/states/impostazioni/impostazioni.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -37,6 +37,7 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         console.log('Componente Eventi Richiesta Distrutto');
+        this.store.dispatch(new ClearEventiRichiesta());
         this.subscription.unsubscribe();
     }
 
