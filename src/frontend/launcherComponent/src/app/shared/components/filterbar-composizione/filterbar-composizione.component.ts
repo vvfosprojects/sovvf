@@ -90,16 +90,21 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
 
     checkDistaccamenti(): void {
         const distaccamentiDefault = [];
-        this.richiesta.competenze.forEach(x => distaccamentiDefault.push(x.codice));
-        JSON.stringify(distaccamentiDefault) === JSON.stringify(this.distaccamentiSelezionati) ? this.disableDefaultDistaccamenti = true : this.disableDefaultDistaccamenti = false;
+        if ( this.richiesta &&  this.richiesta.competenze) {
+            this.richiesta.competenze.forEach(x => distaccamentiDefault.push(x.codice));
+            JSON.stringify(distaccamentiDefault) === JSON.stringify(this.distaccamentiSelezionati) ? this.disableDefaultDistaccamenti = true : this.disableDefaultDistaccamenti = false;
+        }
     }
 
     setDistaccamentiDefault(): void {
         this.distaccamentiSelezionati = [];
-        this.richiesta.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
         const distaccamentiDefault = [];
-        this.richiesta.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
-        this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+
+        if ( this.richiesta &&  this.richiesta.competenze) {
+            this.richiesta.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
+            this.richiesta.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
+            this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+        }
     }
 
     setGenereMezzoDefault(): void {
