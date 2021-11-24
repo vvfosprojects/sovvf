@@ -105,7 +105,7 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
             var richiesta = new RichiestaAssistenza()
             {
                 Tipologie = listaCodiciTipologie,
-                CodZoneEmergenza = intervento.ZoneEmergenza,
+                //CodZoneEmergenza = intervento.ZoneEmergenza,
                 Richiedente = command.Chiamata.Richiedente,
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,

@@ -47,7 +47,7 @@ export class SwitchComposizione {
 export class ToggleModifica {
     static readonly type = '[Modifica] Toggle modifica';
 
-    constructor(public toggle?: boolean) {
+    constructor(public toggle?: boolean, public homeViewRequest?: boolean) {
     }
 }
 

@@ -109,12 +109,12 @@ export class SignalRService {
         this.hubNotification.on('NotifyLogIn', (data: string) => {
             console.log('NotifyLogIn', data);
             // avvisa gli altri client che un utente si è collegato alla sua stessa sede
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente collegato:', data, 3, null, true));
+            // this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente collegato:', data, 3, null, true));
         });
         this.hubNotification.on('NotifyLogOut', (data: string) => {
             console.log('NotifyLogOut', data);
             // avvisa gli altri client che un utente si è scollegato alla sua stessa sede
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente disconnesso:', data, 3, null, true));
+            // this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente disconnesso:', data, 3, null, true));
         });
 
         /**
@@ -442,11 +442,9 @@ export class SignalRService {
          */
         this.hubNotification.onclose((error: Error) => {
             console.error('Hub Subscription Disconnesso', error);
-
             this.connectionEstablished.next(false);
-            setTimeout(() => {
-                this.store.dispatch(new SignalRHubDisconnesso());
-            }, 100);
+            this.store.dispatch(new SignalRHubDisconnesso());
+            setTimeout(() => this.startSubscriptionConnection(), 1);
         });
     }
 
