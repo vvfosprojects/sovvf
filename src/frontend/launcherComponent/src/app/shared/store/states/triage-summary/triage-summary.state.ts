@@ -46,6 +46,11 @@ export class TriageSummaryState {
     }
 
     @Selector()
+    static schedaContattoDettaglio(state: TriageSummaryStateModel): string {
+        return state.schedaContatto.dettaglio;
+    }
+
+    @Selector()
     static pos(state: TriageSummaryStateModel): PosInterface[] {
         return state.pos;
     }
