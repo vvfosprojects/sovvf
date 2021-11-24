@@ -201,10 +201,16 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
         this.store.dispatch([
             new ClearClipboard(),
-            new DelChiamataMarker(this.idChiamata)
+            new DelChiamataMarker(this.idChiamata),
+            new ClearCompetenze(),
+            new ClearCountInterventiProssimita(),
+            new ClearInterventiProssimita()
         ]);
         clearSummaryData(this.store);
         clearPosTriageSummary(this.store);
+        clearTriageSummary(this.store);
+        clearTriageChiamataModalData(this.store);
+
         this.reducerSchedaTelefonata('reset');
     }
 
