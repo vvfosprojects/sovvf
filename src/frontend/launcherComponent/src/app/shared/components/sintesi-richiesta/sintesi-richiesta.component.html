@@ -395,6 +395,12 @@
                                             <span class="d-inline-block font-weight-bold">
                                                 {{ richiesta?.codiceSchedaNue }}
                                             </span>
+
+                                            <!-- Note Nue -->
+                                            <i *ngIf="richiesta?.noteNue" class="fa-fw fas fa-sticky-note guida ml-1"
+                                               [ngbTooltip]="richiesta.noteNue"
+                                               placement="right">
+                                            </i>
                                         </h4>
                                         <ng-template #nessunCodiceNue>
                                             <h4>Nessuna scheda NUE</h4>
@@ -509,16 +515,6 @@
                                         </ng-template>
                                         <i class="guida fas fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"
                                            placement="left"></i>
-                                    </div>
-
-                                    <!-- note nue -->
-                                    <div *ngIf="richiesta?.noteNue" class="text-right">
-                                        <h4>
-                                            <i class="fa-fw fas fa-clipboard guida ml-1"
-                                               [ngbTooltip]="richiesta.noteNue"
-                                               placement="left">
-                                            </i>
-                                        </h4>
                                     </div>
 
                                     <!-- complessità -->

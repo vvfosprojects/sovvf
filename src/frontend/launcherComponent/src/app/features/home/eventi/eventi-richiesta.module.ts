@@ -24,7 +24,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
         SharedModule.forRoot(),
         NgxsModule.forFeature([
             EventiRichiestaState
-        ])
+        ]),
+        SharedModule
     ],
     declarations: [
         EventiRichiestaComponent,
