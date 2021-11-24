@@ -103,9 +103,9 @@ export class SignalRState {
     signalRDisconnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>): void {
         const state = getState();
         const disconnected = state.connected ? true : null;
-        if (disconnected) {
-            dispatch(new ShowToastr(ToastrType.Error, 'signalR', 'Sei disconnesso!', 0, false, true));
-        }
+        // if (disconnected) {
+        //     dispatch(new ShowToastr(ToastrType.Error, 'signalR', 'Sei disconnesso!', 0, false, true));
+        // }
         patchState({
             connected: SignalRStateDefaults.connected,
             reconnected: false,
