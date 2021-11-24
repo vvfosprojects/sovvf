@@ -48,7 +48,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
             query.CodiciSede.ToList().ForEach(codice =>
                 listaSchedeContatto.AddRange(_getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, codiceFiscale, query.Filters.RangeVisualizzazione, codice, query.Filters.Classificazione, query.CodiciSede[0])));
 
-            var result = listaSchedeContatto;
+            var result = listaSchedeContatto.OrderByDescending(x=> x.DataInserimento).ToList();
 
             var lista = new List<SchedaContatto>();
 
