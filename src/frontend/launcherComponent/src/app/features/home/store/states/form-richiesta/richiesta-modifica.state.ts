@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
-import { ToggleModifica } from '../../actions/view/view.actions';
+import { ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import produce from 'immer';
 import {
@@ -27,7 +27,9 @@ import { SchedaTelefonataState } from './scheda-telefonata.state';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { TipoTerrenoEnum } from 'src/app/shared/enum/tipo-terreno.enum';
 import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
-import { StartLoadingSchedaRichiesta, StopLoadingSchedaRichiesta } from '../../actions/form-richiesta/scheda-telefonata.actions';
+import { SetRedirectComposizionePartenza, StartLoadingSchedaRichiesta, StopLoadingSchedaRichiesta } from '../../actions/form-richiesta/scheda-telefonata.actions';
+import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
@@ -208,10 +210,22 @@ export class RichiestaModificaState {
         }
         dispatch(new StartLoadingSchedaRichiesta());
         this.richiesteService.patchRichiesta(sintesiRichiesta).subscribe(() => {
-            dispatch([
-                new SuccessRichiestaModifica(),
-                new StopLoadingSchedaRichiesta()
-            ]);
+            const redirectComposizionePartenza = this.store.selectSnapshot(SchedaTelefonataState.redirectComposizionePartenza);
+            if (redirectComposizionePartenza) {
+                dispatch([
+                    new SuccessRichiestaModifica(),
+                    new StopLoadingSchedaRichiesta(),
+                    new SetRichiestaComposizione(sintesiRichiesta),
+                    new ToggleComposizione(Composizione.Avanzata),
+                    new SetRedirectComposizionePartenza(false),
+                ]);
+            } else {
+                dispatch([
+                    new SuccessRichiestaModifica(true),
+                    new StopLoadingSchedaRichiesta()
+                ]);
+            }
+
         }, () => {
             dispatch([
                 new ClearIndirizzo(),
@@ -241,19 +255,26 @@ export class RichiestaModificaState {
     }
 
     @Action(SuccessRichiestaModifica)
-    successModifica({ patchState, dispatch }: StateContext<RichiestaModificaStateModel>): void {
+    successModifica({ patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: SuccessRichiestaModifica): void {
         patchState({
             successModifica: true
         });
-        dispatch(new ChiudiRichiestaModifica());
+        dispatch(new ChiudiRichiestaModifica(action.homeViewRequest));
     }
 
     @Action(ChiudiRichiestaModifica)
-    chiudiRichiestaModifica({ dispatch }: StateContext<RichiestaModificaStateModel>): void {
-        dispatch([
-            new ToggleModifica(true),
-            new ClearRichiestaModifica()
-        ]);
+    chiudiRichiestaModifica({ dispatch }: StateContext<RichiestaModificaStateModel>, action: ChiudiRichiestaModifica): void {
+        if (!action.homeViewRequest) {
+            dispatch([
+                new ToggleModifica(true),
+                new ClearRichiestaModifica()
+            ]);
+        } else {
+            dispatch([
+                new ToggleModifica(true, true),
+                new ClearRichiestaModifica()
+            ]);
+        }
     }
 
     @Action(ClearRichiestaModifica)
