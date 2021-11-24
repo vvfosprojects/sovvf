@@ -752,7 +752,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     onChiudiModifica(): void {
         this.store.dispatch([
             new ClearRichiestaModifica(),
-            new ToggleModifica()
+            new ToggleModifica(true, true)
         ]);
     }
 
