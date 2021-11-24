@@ -313,6 +313,11 @@ namespace SO115App.CompositionRoot
             container.Register<ISetSediAlberate, SetListaSediAlberate>();
             #endregion
 
+            #region Ricerca Full Text         
+            container.Register<IRicercaFullText, GetSintesiByRicercaFullText>();
+            #endregion
+
+
         }
     }
 }
