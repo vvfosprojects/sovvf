@@ -5,29 +5,28 @@
         </i>
     </div>
     <div *ngIf="!visualizzaIconeNomeClasseEvento">
-        <span>{{formatNomeClasseEvento(eventoRichiesta.nomeClasseEvento) | eventi}}</span>
+        <span>{{ formatNomeClasseEvento(eventoRichiesta.nomeClasseEvento) | eventi }}</span>
     </div>
 </td>
 <td>
   <span *ngIf="eventoRichiesta.istanteEvento"
-        ngbTooltip="Data Evento">{{eventoRichiesta.istanteEvento | friendlyDate}}
-      {{eventoRichiesta.istanteEvento | friendlyHour : true}}</span>
+        ngbTooltip="Data Evento">{{ eventoRichiesta.istanteEvento | friendlyDate }}
+      {{ eventoRichiesta.istanteEvento | friendlyHour : true }}</span>
 </td>
 <td>
     <small *ngIf="eventoRichiesta.targa" class="cursor-pointer" (click)="filtroTarga.emit(eventoRichiesta.targa)"
            ngbTooltip="Clicca qui per ricercare gli eventi">
-        <i class="fas fa-hashtag font-xlarge"></i>
-        {{eventoRichiesta.targa}}
+        {{ eventoRichiesta.targa }}
     </small>
 </td>
 <td>
   <span *ngIf="operatore"
         [ngbTooltip]="eventoRichiesta?.sedeOperatore ? eventoRichiesta?.sedeOperatore : 'Sede operatore non disponibile'">
-      {{eventoRichiesta.operatore | uppercase}}
+      {{ eventoRichiesta.operatore | uppercase }}
   </span>
 </td>
 <td>
   <span *ngIf="eventoRichiesta.note">
-      {{eventoRichiesta.note}}
+      {{ eventoRichiesta.note }}
   </span>
 </td>
