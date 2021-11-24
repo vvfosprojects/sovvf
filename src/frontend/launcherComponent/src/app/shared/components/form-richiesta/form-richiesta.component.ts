@@ -20,9 +20,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
 import {
-    ClearCompetenze, ClearCountInterventiProssimita, ClearInterventiProssimita,
+    ClearCompetenze,
+    ClearCountInterventiProssimita,
+    ClearInterventiProssimita,
     ReducerSchedaTelefonata,
-    SetCompetenze, SetRedirectComposizionePartenza,
+    SetCompetenze,
+    SetRedirectComposizionePartenza,
     StartChiamata,
     StopLoadingDettagliTipologia
 } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';

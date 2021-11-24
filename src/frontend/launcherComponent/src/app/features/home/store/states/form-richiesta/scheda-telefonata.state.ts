@@ -219,9 +219,7 @@ export class SchedaTelefonataState {
             case 'cerca':
                 const markerChiamata = action.schedaTelefonata.markerChiamata;
                 const indirizzo = action.schedaTelefonata.markerChiamata.localita.indirizzo;
-                dispatch([
-                    new SetCompetenze(getCooordinate(), indirizzo, markerChiamata)
-                ]);
+                dispatch(new SetCompetenze(getCooordinate(), indirizzo, markerChiamata));
                 break;
             case 'inserita':
                 const urgente = action.options?.urgente;
@@ -417,7 +415,7 @@ export class SchedaTelefonataState {
                 f.istantePrimaAssegnazione,
                 f.rilevanzaGrave,
                 f.codSchedaContatto ? f.codSchedaContatto : null,
-                f.zoneEmergenza ? f.zoneEmergenza : null,
+                null,
                 f.fonogramma,
                 f.partenze,
                 (f.etichette && f.etichette.length) ? f.etichette : null,
