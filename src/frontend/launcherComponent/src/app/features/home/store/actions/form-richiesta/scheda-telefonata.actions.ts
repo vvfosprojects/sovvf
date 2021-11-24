@@ -36,11 +36,19 @@ export class SetCountInterventiProssimita {
     }
 }
 
+export class ClearCountInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Clear Count Interventi Vicinanze';
+}
+
 export class SetInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Set Interventi Vicinanze';
 
     constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze: string[]) {
     }
+}
+
+export class ClearInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Clear Interventi Vicinanze';
 }
 
 export class ClearMarkerChiamata {

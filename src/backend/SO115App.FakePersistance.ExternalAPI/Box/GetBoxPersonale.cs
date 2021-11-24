@@ -28,6 +28,7 @@ using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,12 +40,14 @@ namespace SO115App.ExternalAPI.Fake.Box
         private readonly IGetStatoSquadra _getStatoSquadra;
         private readonly IGetSquadre _getSquadre;
         private readonly IGetSedi _sedi;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
 
-        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre, IGetSedi sedi)
+        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre, IGetSedi sedi, IGetSottoSediByCodSede getSottoSediByCodSede)
         {
             _getStatoSquadra = getStatoSquadra;
             _getSquadre = getSquadre;
             _sedi = sedi;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
         }
 
         public BoxPersonale Get(string[] codiciSede)
@@ -54,9 +57,11 @@ namespace SO115App.ExternalAPI.Fake.Box
                 codiciSede = _sedi.GetAll().Result.Select(s => s.Codice).ToArray();
             }
 
-            var statoSquadre = _getStatoSquadra.Get(codiciSede.ToList());
+            var listaCodiciSedeConSottoSedi = _getSottoSediByCodSede.Get(codiciSede);
 
-            var lstCodici = codiciSede.Select(cod => cod.Split('.')[0]).Distinct();
+            var statoSquadre = _getStatoSquadra.Get(listaCodiciSedeConSottoSedi);
+
+            var lstCodici = listaCodiciSedeConSottoSedi.Select(cod => cod.Split('.')[0]).Distinct();
 
             var workshift = new List<WorkShift>();
 
@@ -64,7 +69,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             workshift.RemoveAll(w => w == null);
 
-            var box = workshift.SelectMany(w => w.Squadre).Where(s => codiciSede.Contains(s.Distaccamento)).ToList();
+            var box = workshift.SelectMany(w => w.Squadre).Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento)).ToList();
 
             var result = new BoxPersonale
             {

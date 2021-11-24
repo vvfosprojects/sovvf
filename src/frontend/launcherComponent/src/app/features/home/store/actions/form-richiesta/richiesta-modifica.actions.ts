@@ -43,10 +43,16 @@ export class PatchEntiIntervenutiRichiesta {
 
 export class SuccessRichiestaModifica {
     static readonly type = '[RichiestaModifica] Modifica Richiesta Success';
+
+    constructor(public homeViewRequest?: boolean) {
+    }
 }
 
 export class ChiudiRichiestaModifica {
     static readonly type = '[RichiestaModifica] Modifica Richiesta Chiudi';
+
+    constructor(public homeViewRequest?: boolean) {
+    }
 }
 
 export class ClearIndirizzo {

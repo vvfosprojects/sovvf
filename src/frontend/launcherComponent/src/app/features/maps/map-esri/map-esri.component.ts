@@ -22,6 +22,7 @@ import { ZoneEmergenzaState } from '../../zone-emergenza/store/states/zone-emerg
 import { AddZonaEmergenza, ResetZonaEmergenzaForm } from '../../zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { RichiesteState } from '../../home/store/states/richieste/richieste.state';
+import { GetInitCentroMappa, SetCentroMappa } from '../store/actions/centro-mappa.actions';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -46,10 +47,10 @@ import RouteResult from '@arcgis/core/tasks/support/RouteResult';
 import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
-import { GetInitCentroMappa, SetCentroMappa, SetZoomCentroMappa } from '../store/actions/centro-mappa.actions';
 
 @Component({
     selector: 'app-map-esri',
@@ -144,6 +145,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     ];
                     for (const lShutdown of layersToShutdown) {
                         this.toggleLayer(lShutdown, false).then();
+                    }
+
+                    // Se ci sono aggiungo i markers chiamata
+                    if (this.chiamateMarkers?.length) {
+                        this.addChiamateMarkersToLayer(this.chiamateMarkers, true).then();
                     }
 
                     // Gestisco l'evento "click"
@@ -539,7 +545,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     async addChiamateMarkersToLayer(chiamateMarkers: ChiamataMarker[], applyEdits?: boolean): Promise<any> {
         if (this.chiamateMarkersGraphics?.length) {
             const query = { where: '1=1' };
-            this.chiamateInCorsoFeatureLayer.queryFeatures(query).then((results) => {
+            this.chiamateInCorsoFeatureLayer.queryFeatures(query).then((results: supportFeatureSet) => {
                 const deleteFeatures = results.features;
                 this.chiamateInCorsoFeatureLayer.applyEdits({ deleteFeatures });
                 this.chiamateInCorsoFeatureLayer.refresh();

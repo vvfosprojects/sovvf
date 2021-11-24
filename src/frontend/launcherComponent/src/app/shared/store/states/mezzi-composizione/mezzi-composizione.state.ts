@@ -24,7 +24,6 @@ import {
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
-import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddBoxPartenza, AddMezzoBoxPartenzaSelezionato, UpdateMezzoBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { calcolaTimeout, mezzoComposizioneBusy } from '../../../helper/function-composizione';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
@@ -231,7 +230,6 @@ export class MezziComposizioneState {
         const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
         const mezzoComp = action.mezzoComp;
-        const mezzo = action.mezzoComp.mezzo;
 
         if (getMezzoCompNonPrenotato(state, mezzoComp.id)) {
             let addBoxPartenza = false;
@@ -269,7 +267,6 @@ export class MezziComposizioneState {
         const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
         const mezzoComp = action.mezzoComp;
-        const mezzo = action.mezzoComp.mezzo;
 
         if (getMezzoCompNonPrenotato(state, mezzoComp.id)) {
             let addBoxPartenza = false;
@@ -374,7 +371,7 @@ export class MezziComposizioneState {
     }
 
     @Action(HoverOutMezzoComposizione)
-    hoverOutMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>): void {
+    hoverOutMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>): void {
         patchState({
             idMezzoComposizioneHover: null
         });
@@ -458,9 +455,17 @@ export class MezziComposizioneState {
                     { type: 'ko', descrizione: 'annulla', colore: 'danger' },
                     { type: 'ok', descrizione: 'conferma sganciamento', colore: 'success' },
                 ];
-                let idRichiesta = this.store.selectSnapshot(x => x.composizionePartenza.richiesta) ? this.store.selectSnapshot(x => x.composizionePartenza.richiesta).codice : null;
-                if (!idRichiesta) {
+
+                let idRichiesta = null;
+                const richiestaComposizione = this.store.selectSnapshot(x => x.composizionePartenza.richiesta);
+                const modificaPartenzaCodRichiesta = this.store.selectSnapshot(ModificaPartenzaModalState.codRichiesta);
+
+                if (richiestaComposizione) {
+                    idRichiesta = richiestaComposizione?.codice;
+                } else if (modificaPartenzaCodRichiesta) {
                     idRichiesta = this.store.selectSnapshot(ModificaPartenzaModalState.codRichiesta);
+                } else if (action.sganciamentoObj?.idRichiesta) {
+                    idRichiesta = action.sganciamentoObj.idRichiesta;
                 }
                 modalSganciamento.result.then((val) => {
                     switch (val) {

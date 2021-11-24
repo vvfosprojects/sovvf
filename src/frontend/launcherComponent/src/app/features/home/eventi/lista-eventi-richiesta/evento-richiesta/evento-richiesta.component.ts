@@ -33,7 +33,8 @@ export class EventoRichiestaComponent implements OnInit {
 
     initIconeClassiEvento(): void {
         this.iconeClassiEvento = [
-            ['Telefonata', ['fa-phone-square']],
+            ['Telefonata', ['fa-phone-alt']],
+            ['Modificata', ['fa-edit']],
             ['InizioPresaInCarico', ['fa-user', 'fa-wrench']],
             ['AnnullamentoPresaInCarico', ['fa-user', 'fa-times']],
             ['RiaperturaRichiesta', ['fa-refresh']],
