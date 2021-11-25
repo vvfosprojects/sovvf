@@ -13,11 +13,17 @@ import {
     FiltraEventiRichiesta,
     ToggleIconeNomeClasseEvento,
     StartLoadingEventiRichiesta,
-    StopLoadingEventiRichiesta
+    StopLoadingEventiRichiesta, AddEvento
 } from '../../actions/eventi-richiesta/eventi-richiesta.actions';
 import { Injectable } from '@angular/core';
 
 export interface EventiRichiestaStateModel {
+    eventoForm: {
+        model: any,
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
     codiceRichiesta: string;
     eventi: EventoRichiesta[];
     listaEventiFiltrata: EventoRichiesta[];
@@ -28,6 +34,12 @@ export interface EventiRichiestaStateModel {
 }
 
 export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
+    eventoForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
     codiceRichiesta: null,
     eventi: null,
     listaEventiFiltrata: null,
@@ -108,6 +120,17 @@ export class EventiRichiestaState {
         const state = getState();
         if (state.filtroTargaMezzo && state.filtroTargaMezzo.length > 0) {
             dispatch(new FiltraEventiRichiesta());
+        }
+    }
+
+    @Action(AddEvento)
+    addEvento({ getState, dispatch }: StateContext<EventiRichiestaStateModel>): void {
+        const state = getState();
+        const nuovoEvento = state?.eventoForm.model;
+        if (nuovoEvento) {
+            this.eventiRichiesta.addEventoRichiesta(nuovoEvento).subscribe((evento: EventoRichiesta) => {
+                dispatch(new GetEventiRichiesta());
+            });
         }
     }
 

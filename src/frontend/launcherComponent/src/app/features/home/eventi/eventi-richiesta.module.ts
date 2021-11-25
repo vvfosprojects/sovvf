@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AddEventoRichiestaComponent } from './add-evento-richiesta/add-evento-richiesta.component';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { AddEventoRichiestaComponent } from './add-evento-richiesta/add-evento-r
         NgxsModule.forFeature([
             EventiRichiestaState
         ]),
-        SharedModule
+        SharedModule,
+        NgxsFormPluginModule
     ],
     declarations: [
         EventiRichiestaComponent,

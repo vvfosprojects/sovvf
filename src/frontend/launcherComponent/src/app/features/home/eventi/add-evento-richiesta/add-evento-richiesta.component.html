@@ -1,18 +1,24 @@
 <div class="clearfix mb-3">
     <div class="float-left">
-        <form class="form-inline">
+        <form [formGroup]="eventoForm"
+              ngxsForm="eventiRichiesta.eventoForm"
+              class="form-inline"
+              (ngSubmit)="onSubmit()">
             <div class="form-group mr-3">
                 <label for="evento" class="mr-3">Nuovo Evento</label>
                 <textarea id="evento"
                           class="form-control"
                           placeholder="Scrivi qui il nuovo evento"
                           style="min-width: 400px"
-                          [value]="''">
+                          formControlName="text">
                 </textarea>
             </div>
-            <button type="submit" class="btn btn-outline-primary">
-                Aggiungi
-            </button>
+            <ng-container *ngIf="eventoForm.valid">
+                <button type="submit"
+                        class="btn btn-light">
+                    Crea Evento
+                </button>
+            </ng-container>
         </form>
     </div>
 </div>
