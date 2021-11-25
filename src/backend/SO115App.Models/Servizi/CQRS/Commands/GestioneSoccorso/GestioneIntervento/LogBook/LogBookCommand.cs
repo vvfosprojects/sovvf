@@ -25,7 +25,7 @@ namespace DomainModel.CQRS.Commands.HLogBook
 {
     public class LogBookCommand
     {
-        public string CodiceRichiesta { get; set; }
+        public string codice { get; set; }
         public string Text { get; set; }
         public string CodUtente { get; set; }
         public RichiestaAssistenza Richiesta { get; set; }
