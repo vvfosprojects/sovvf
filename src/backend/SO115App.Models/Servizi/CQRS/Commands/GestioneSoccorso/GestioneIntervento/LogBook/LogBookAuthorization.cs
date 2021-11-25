@@ -48,7 +48,7 @@ namespace DomainModel.CQRS.Commands.HLogBook
 
         public IEnumerable<AuthorizationResult> Authorize(LogBookCommand command)
         {
-            command.Richiesta = _getRichiestaById.GetByCodiceRichiesta(command.CodiceRichiesta);
+            command.Richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
 
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
