@@ -459,12 +459,12 @@
                             <i class="fas fa-circle mr-1"></i>
                           </span>
                           </ng-template>
-                          <div style="width: max-content; display: inline-grid; margin-left: 8px">
-                            <span>Alta</span>
-                            <span>Media</span>
-                            <span>Bassa</span>
-                            <span>Nessuna</span>
-                          </div>
+                          <span style="width: max-content; display: inline-grid; margin-left: 8px">
+                              <span>Alta</span>
+                              <span>Media</span>
+                              <span>Bassa</span>
+                              <span>Nessuna</span>
+                          </span>
                         </span>
                             <span *ngIf="submitted && f.prioritaRichiesta.errors"
                                   class="form-text small">
@@ -512,7 +512,7 @@
                     <ng-template [ngIf]="modifica">
                         <button class="btn btn-primary btn-no-hover mr-3 btn-xlarge"
                                 style="min-width: 100px"
-                                [disabled]="disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="loadingCompetenze || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
@@ -521,7 +521,7 @@
                         </button>
                         <button class="btn btn-success btn-no-hover btn-xlarge"
                                 style="min-width: 100px"
-                                [disabled]="formIsInvalid()"
+                                [disabled]="loadingCompetenze || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
                                 ngbTooltip="Conferma Modifica"
                                 placement="top">
@@ -571,6 +571,7 @@
             <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
                                 [dettaglioTipologia]="f.dettaglioTipologia?.value"
                                 [codSchedaContatto]="schedaContatto?.codiceScheda"
+                                [dettaglioSchedaContatto]="schedaContattoDettaglio"
                                 [countInterventiProssimita]="countInterventiProssimita"
                                 [interventiProssimita]="interventiProssimita"
                                 [countInterventiStessaVia]="countInterventiStessaVia"

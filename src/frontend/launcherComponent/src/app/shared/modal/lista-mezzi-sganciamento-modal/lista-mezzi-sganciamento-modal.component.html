@@ -1,0 +1,46 @@
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title font-weight-bold text-uppercase" id="modal-basic-title">
+            {{ 'Seleziona un Mezzo da sganciare' | uppercase }}
+        </h4>
+        <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+                (click)="modal.dismiss('cross')">
+            <span class="text-danger"><i class="fas fa-times"></i></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-partial-loader *ngIf="loadingMezzi"></app-partial-loader>
+        <ng-container *ngIf="mezzi?.length && !loadingMezzi">
+            <div *ngFor="let m of mezzi; let i = index"
+                 class="mezzo-sganciamento"
+                 [class.border-bottom]="i !== (mezzi.length - 1)">
+                <div class="clearfix px-2 py-3">
+                    <div class="float-left">
+                        <app-mezzo [mezzo]="m.mezzo.mezzo"></app-mezzo>
+                    </div>
+                    <div class="float-right">
+                        <button class="btn btn-outline-danger btn-no-hover"
+                                (click)="onSganciamento(m.mezzo.mezzo)">
+                            {{ 'Sgancia mezzo' | uppercase }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="!mezzi?.length && !loadingMezzi">
+            <div class="alert alert-danger mb-0">
+                {{ 'Nessun Mezzo disponibile' }}
+            </div>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <div class="clearfix">
+            <div class="float-right">
+                <button class="btn btn-lg btn-secondary btn-no-hover"
+                        (click)="close('ko')">
+                    {{ 'Chiudi' | uppercase }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

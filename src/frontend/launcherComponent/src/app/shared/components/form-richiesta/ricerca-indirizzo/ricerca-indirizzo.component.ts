@@ -21,23 +21,21 @@ export class RicercaIndirizzoComponent implements OnInit {
     @Input() requiredFieldClass = true;
     @Input() invalid: boolean;
     @Input() spatialReference: SpatialReference;
-
     @Output() changeIndirizzo: EventEmitter<string> = new EventEmitter<string>();
-    @Output() selectCandidate: EventEmitter<AddressCandidate> = new EventEmitter<AddressCandidate>();
 
+    @Output() selectCandidate: EventEmitter<AddressCandidate> = new EventEmitter<AddressCandidate>();
     mapProperties: { spatialReference?: SpatialReference };
 
-    hideAddressCandidates = false;
+    indirizzoBackup: string;
+    loadingAddressCandidates: boolean;
+
+    hideAddressCandidates: boolean;
     addressCandidates: AddressCandidate[];
     indexSelectedAddressCandidate = 0;
 
     @HostListener('document:click', ['$event'])
     clickOutside(event): void {
-        if (!this.eRef.nativeElement.contains(event.target)) {
-            this.hideAddressCandidates = true;
-        } else {
-            this.hideAddressCandidates = false;
-        }
+        this.hideAddressCandidates = !this.eRef.nativeElement.contains(event.target);
     }
 
     constructor(private store: Store,
@@ -54,9 +52,11 @@ export class RicercaIndirizzoComponent implements OnInit {
                     this.setIndexSelectedAddressCandidate(newIndexValueUp);
                     break;
                 case 'Enter':
-                    e.preventDefault();
-                    const candidate = this.addressCandidates[this.indexSelectedAddressCandidate];
-                    this.onSelectCandidate(candidate);
+                    if (this.addressCandidates?.length) {
+                        e.preventDefault();
+                        const candidate = this.addressCandidates[this.indexSelectedAddressCandidate];
+                        this.onSelectCandidate(candidate);
+                    }
             }
         });
     }
@@ -65,7 +65,18 @@ export class RicercaIndirizzoComponent implements OnInit {
         this.mapProperties = this.store.selectSnapshot(AppState.mapProperties);
     }
 
-    onChangeIndirizzo(): boolean {
+    onKeyUp(): void {
+        this.changeIndirizzo.emit(this.indirizzo);
+
+
+        if (this.requiredFieldClass && this.indirizzo !== this.indirizzoBackup) {
+            this.loadingAddressCandidates = true;
+        }
+
+        this.indirizzoBackup = this.indirizzo;
+    }
+
+    onKeyUpDebounce(): boolean {
         if (this.requiredFieldClass) {
             this.setIndexSelectedAddressCandidate(0);
 
@@ -117,6 +128,7 @@ export class RicercaIndirizzoComponent implements OnInit {
                         this.addressCandidates.push(promiseResult[0]);
                         this.changeDetectorRef.detectChanges();
                     }
+                    this.loadingAddressCandidates = false;
                     return true;
                 });
             });

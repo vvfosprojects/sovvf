@@ -114,10 +114,13 @@ export class EventiRichiestaState {
     @Action(SetListaTarghe)
     setListaTarghe({ getState, patchState }: StateContext<EventiRichiestaStateModel>): void {
         const state = getState();
-        const listaTarghe: FiltroTargaMezzo[] = [];
+        let listaTarghe: FiltroTargaMezzo[];
         if (state && state.eventi) {
             state.eventi.forEach(evento => {
                 if (evento.targa && evento.targa.length > 0) {
+                    if (!listaTarghe?.length) {
+                        listaTarghe = [];
+                    }
                     listaTarghe.push({ targa: evento.targa });
                 }
             });

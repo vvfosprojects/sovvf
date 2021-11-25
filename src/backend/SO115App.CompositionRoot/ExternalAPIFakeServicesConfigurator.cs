@@ -37,6 +37,7 @@ using SO115App.ExternalAPI.Fake.Servizi.Qualifiche;
 using SO115App.ExternalAPI.Fake.Servizi.Rubrica;
 using SO115App.ExternalAPI.Fake.Servizi.STATRI;
 using SO115App.ExternalAPI.Fake.Territorio;
+using SO115App.ExternalAPI.Fake.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
@@ -56,6 +57,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Rubrica;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System;
 using System.Linq;
 
@@ -338,6 +340,11 @@ namespace SO115App.CompositionRoot
             container.Register<IGetCompetenzeByCoordinateIntervento, GetCompetenzeByCoordinateIntervento>();
 
             #endregion ESRI
+
+            #region Utility
+            container.Register<IGetSottoSediByCodSede, GetSottoSediByCodSede>();
+            #endregion
+
         }
     }
 }

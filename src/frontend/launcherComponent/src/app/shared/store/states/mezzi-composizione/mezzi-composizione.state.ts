@@ -24,13 +24,11 @@ import {
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
-import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddBoxPartenza, AddMezzoBoxPartenzaSelezionato, UpdateMezzoBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { calcolaTimeout, mezzoComposizioneBusy } from '../../../helper/function-composizione';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Partenza } from 'src/app/shared/model/partenza.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SganciamentoMezzoModalComponent } from '../../../modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { ConfermaPartenze } from '../../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
 import { TurnoState } from 'src/app/features/navbar/store/states/turno.state';
 import { ConfirmPartenze } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
@@ -43,6 +41,7 @@ import { ComposizionePartenzaState } from '../../../../features/home/store/state
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ModificaPartenzaModalState } from '../modifica-partenza-modal/modifica-partenza-modal.state';
 import { ClearSelectedSquadreComposizione, SelectSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
+import { SganciamentoMezzoModalComponent } from '../../../modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -231,7 +230,6 @@ export class MezziComposizioneState {
         const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
         const mezzoComp = action.mezzoComp;
-        const mezzo = action.mezzoComp.mezzo;
 
         if (getMezzoCompNonPrenotato(state, mezzoComp.id)) {
             let addBoxPartenza = false;
@@ -269,7 +267,6 @@ export class MezziComposizioneState {
         const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
         const mezzoComp = action.mezzoComp;
-        const mezzo = action.mezzoComp.mezzo;
 
         if (getMezzoCompNonPrenotato(state, mezzoComp.id)) {
             let addBoxPartenza = false;
@@ -374,7 +371,7 @@ export class MezziComposizioneState {
     }
 
     @Action(HoverOutMezzoComposizione)
-    hoverOutMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>): void {
+    hoverOutMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>): void {
         patchState({
             idMezzoComposizioneHover: null
         });
@@ -412,7 +409,6 @@ export class MezziComposizioneState {
         let partenzaDaSganciare = {} as Partenza;
         this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
             partenzaDaSganciare = richiestaDa.partenze && richiestaDa.partenze.length > 0 ? richiestaDa.partenze.filter(x => x.partenza.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
-
             if (richiestaDa && partenzaDaSganciare) {
                 const partenza = partenzaDaSganciare.partenza;
                 const obj = {
@@ -446,31 +442,30 @@ export class MezziComposizioneState {
                     obj.squadre = [];
                 }
                 let modalSganciamento;
-                const innerWidth = window.innerWidth;
-                if (innerWidth && innerWidth > 3700) {
-                    modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, {
-                        windowClass: 'xxlModal modal-holder modal-left',
-                        backdropClass: 'light-blue-backdrop',
-                        centered: true,
-                    });
-                } else {
-                    modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, {
-                        windowClass: 'xxlModal modal-holder',
-                        backdropClass: 'light-blue-backdrop',
-                        centered: true
-                    });
-                }
+                modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, {
+                    windowClass: 'xxlModal modal-holder',
+                    backdropClass: 'light-blue-backdrop',
+                    centered: true
+                });
                 modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
                 modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
                 modalSganciamento.componentInstance.richiestaDa = richiestaDa;
                 modalSganciamento.componentInstance.idDaSganciare = action.sganciamentoObj.descrizione;
                 modalSganciamento.componentInstance.bottoni = [
-                    { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-                    { type: 'ok', descrizione: 'Sgancia', colore: 'success' },
+                    { type: 'ko', descrizione: 'annulla', colore: 'danger' },
+                    { type: 'ok', descrizione: 'conferma sganciamento', colore: 'success' },
                 ];
-                let idRichiesta = this.store.selectSnapshot(x => x.composizionePartenza.richiesta) ? this.store.selectSnapshot(x => x.composizionePartenza.richiesta).codice : null;
-                if (!idRichiesta) {
+
+                let idRichiesta = null;
+                const richiestaComposizione = this.store.selectSnapshot(x => x.composizionePartenza.richiesta);
+                const modificaPartenzaCodRichiesta = this.store.selectSnapshot(ModificaPartenzaModalState.codRichiesta);
+
+                if (richiestaComposizione) {
+                    idRichiesta = richiestaComposizione?.codice;
+                } else if (modificaPartenzaCodRichiesta) {
                     idRichiesta = this.store.selectSnapshot(ModificaPartenzaModalState.codRichiesta);
+                } else if (action.sganciamentoObj?.idRichiesta) {
+                    idRichiesta = action.sganciamentoObj.idRichiesta;
                 }
                 modalSganciamento.result.then((val) => {
                     switch (val) {

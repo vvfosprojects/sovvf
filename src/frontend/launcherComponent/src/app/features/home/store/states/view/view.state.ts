@@ -212,7 +212,11 @@ export class ViewComponentState {
                 column: newState.column
             });
         } else {
-            const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
+            let lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
+            // Check se dopo creazione chiamata devo tornare home
+            if (action.homeViewRequest) {
+                lastState = stateDefault;
+            }
             patchState({
                 ...state,
                 view: lastState.view,
@@ -240,7 +244,8 @@ export class ViewComponentState {
                 view: newState.view,
                 column: newState.column
             });
-        } else {
+        }
+        else if (action.homeViewRequest) {
             dispatch(new GetInitCentroMappa());
             const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
             const newState = turnOffModifica(currentState, lastState);
