@@ -5,6 +5,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+using Serilog;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System;
 using System.IO;
@@ -14,7 +15,6 @@ namespace SO115App.Persistence.File.PDFManagement
 {
     internal sealed class PDFTemplateManager<TemplateModelForm> : IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
-        private readonly string _path;
         private PdfPage _page;
         private XGraphics _gfx;
         private double _y = _minY;
@@ -34,13 +34,15 @@ namespace SO115App.Persistence.File.PDFManagement
         public PDFTemplateManager(IConfiguration config)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            _path = config.GetValue<string>("PathTempateStampe");
             _config = config;
         }
 
         public MemoryStream GenerateAndDownload(TemplateModelForm template, string fileName, string requestFolder)
         {
+            Log.Information($"Dettaglio QH - 1 **************** DENTRO GenerateAndDownload ************************");
             var path = _config.GetSection("GenericSettings").GetSection("PathTempateStampe").Value;
+
+            Log.Information($"Dettaglio QH - 1 **************** Path {path} ************************");
 
             switch (template)
             {

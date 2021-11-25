@@ -1,4 +1,5 @@
 ﻿using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -42,6 +43,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
         {
             MemoryStream stream;
 
+            Log.Information($"Dettaglio QH - 1 **************** INIZIO ************************");
             var richiesta = _getRichiesta.GetByCodice(query.CodiceRichiesta) ?? _getRichiesta.GetByCodiceRichiesta(query.CodiceRichiesta);
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
 
@@ -65,6 +67,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                 TitoloDistaccamento = richiesta.Competenze.First().Descrizione
             };
 
+            Log.Information($"Dettaglio QH - 1 **************** CHIAMATA ************************");
             if (string.IsNullOrEmpty(richiesta.CodRichiesta)) // CHIAMATA
             {
                 var filename = "dettaglio_chiamata_" + query.CodiceRichiesta + ".pdf";
@@ -95,6 +98,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                         //OraAss = DateTime.Now
                     })).ToList()
                 };
+
+                Log.Information($"Dettaglio QH - 1 **************** CHIAMATA GenerateAndDownload ************************");
 
                 if (query.ContentType == "application/pdf")
                     stream = _PDFdettInterventoManager.GenerateAndDownload(form, filename, "DettagliInterventi");
