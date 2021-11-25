@@ -17,9 +17,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
         public string IdOperatore { get; set; }
 
         /// <summary>
-        /// E' il codice della chiamata o dell'intervento (Richiesta)
+        ///   E' il codice della chiamata o dell'intervento (Richiesta)
         /// </summary>
         public string CodiceRichiesta { get; set; }
+
         public string ContentType { get; set; }
+
+        public string BaseUrl { get; set; }
     }
 }
