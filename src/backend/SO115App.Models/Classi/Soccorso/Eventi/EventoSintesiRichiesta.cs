@@ -1,6 +1,7 @@
 ﻿using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,12 @@ namespace SO115App.Models.Classi.Soccorso.Eventi
         /// </summary>
         /// <param name="eventi"></param>
         /// <returns></returns>
-        public static List<EventoSintesiRichiesta> ToEventiSintesi(this IEnumerable<Evento> eventi)
+        public static List<EventoSintesiRichiesta> ToEventiSintesi(this IEnumerable<Evento> eventi, IGetStatoMezzi _getSatoMezzi)
         {
-            return eventi.Select(e => e.ToEventoSintesi()).Where(e => e != null).ToList();
+            return eventi.Select(e => e.ToEventoSintesi(_getSatoMezzi)).Where(e => e != null).ToList();
         }
 
-        private static EventoSintesiRichiesta ToEventoSintesi(this Evento evento)
+        private static EventoSintesiRichiesta ToEventoSintesi(this Evento evento, IGetStatoMezzi _getSatoMezzi)
         {
             var EventoSintesi = new EventoSintesiRichiesta(evento.Istante);
 
@@ -69,7 +70,7 @@ namespace SO115App.Models.Classi.Soccorso.Eventi
             else if (evento is ComposizionePartenze)
             {
                 EventoSintesi.CodiceMezzo = ((ComposizionePartenze)evento).Partenza.Mezzo.Codice;
-                EventoSintesi.Stato = Costanti.MezzoInViaggio;
+                EventoSintesi.Stato = _getSatoMezzi.Get(evento.SedeOperatore, EventoSintesi.CodiceMezzo).FirstOrDefault()?.StatoOperativo ?? Costanti.MezzoInSede;
                 EventoSintesi.CodicePartenza = ((ComposizionePartenze)evento).CodicePartenza;
             }
             //else if (evento is UscitaPartenza)
@@ -80,25 +81,25 @@ namespace SO115App.Models.Classi.Soccorso.Eventi
             else if (evento is ArrivoSulPosto)
             {
                 EventoSintesi.CodiceMezzo = ((ArrivoSulPosto)evento).CodiceMezzo;
-                EventoSintesi.Stato = Costanti.MezzoSulPosto;
+                EventoSintesi.Stato = _getSatoMezzi.Get(evento.SedeOperatore, EventoSintesi.CodiceMezzo).FirstOrDefault()?.StatoOperativo ?? Costanti.MezzoInSede;
                 EventoSintesi.CodicePartenza = ((ArrivoSulPosto)evento).CodicePartenza;
             }
             else if (evento is PartenzaInRientro)
             {
                 EventoSintesi.CodiceMezzo = ((PartenzaInRientro)evento).CodiceMezzo;
-                EventoSintesi.Stato = Costanti.MezzoInRientro;
+                EventoSintesi.Stato = _getSatoMezzi.Get(evento.SedeOperatore, EventoSintesi.CodiceMezzo).FirstOrDefault()?.StatoOperativo ?? Costanti.MezzoInSede;
                 EventoSintesi.CodicePartenza = ((PartenzaInRientro)evento).CodicePartenza;
             }
             else if (evento is PartenzaRientrata)
             {
                 EventoSintesi.CodiceMezzo = ((PartenzaRientrata)evento).CodiceMezzo;
-                EventoSintesi.Stato = Costanti.MezzoRientrato;
+                EventoSintesi.Stato = _getSatoMezzi.Get(evento.SedeOperatore, EventoSintesi.CodiceMezzo).FirstOrDefault()?.StatoOperativo ?? Costanti.MezzoInSede;
                 EventoSintesi.CodicePartenza = ((PartenzaRientrata)evento).CodicePartenza;
             }
             else if (evento is SostituzionePartenzaFineTurno)
             {
                 EventoSintesi.CodiceMezzo = ((SostituzionePartenzaFineTurno)evento).CodiceMezzo;
-                EventoSintesi.Stato = Costanti.SostituzionePartenza;
+                EventoSintesi.Stato = _getSatoMezzi.Get(evento.SedeOperatore, EventoSintesi.CodiceMezzo).FirstOrDefault()?.StatoOperativo ?? Costanti.MezzoInSede;
                 EventoSintesi.CodicePartenza = ((SostituzionePartenzaFineTurno)evento).CodicePartenza;
             }
 

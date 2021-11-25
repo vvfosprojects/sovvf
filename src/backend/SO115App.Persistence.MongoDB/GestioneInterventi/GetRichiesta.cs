@@ -112,7 +112,24 @@ namespace SO115App.Persistence.MongoDB
 
             var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi);
 
-            var lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate).ToEnumerable();
+            var lstRichieste = new List<RichiestaAssistenza>();
+            if (filtro.SearchKey == null || filtro.SearchKey.Length == 0)
+            {
+                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate).ToList();
+            }
+            else
+            {
+                var filtroFullText = Builders<RichiestaAssistenza>.Filter.Text(filtro.SearchKey);
+
+                var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
+
+                List<CreateIndexModel<RichiestaAssistenza>> indexes = new List<CreateIndexModel<RichiestaAssistenza>>();
+                indexes.Add(indexWildcardTextSearch);
+
+                _dbContext.RichiestaAssistenzaCollection.Indexes.CreateMany(indexes);
+                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText & (filtroSediCompetenti | filtriSediAllertate)).ToList();
+
+            }
 
             if (filtro == null)
                 return lstRichieste.Select(r => _mapperSintesi.Map(r)).ToList();
