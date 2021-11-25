@@ -50,6 +50,7 @@ export class SintesiRichiesteService {
             chiuse: chiuse && chiuse.length ? chiuse : null,
             periodoChiuseChiamate: periodoChiuseChiamate.da || periodoChiuseChiamate.data || periodoChiuseChiamate.turno ? periodoChiuseChiamate : null,
             periodoChiusiInterventi: periodoChiusiInterventi.da || periodoChiusiInterventi.data || periodoChiusiInterventi.turno ? periodoChiusiInterventi : null,
+            searchKey: filters.search
         };
         return this.http.post(API_URL_RICHIESTE, obj);
     }

@@ -152,9 +152,10 @@ export class RichiesteState {
             dispatch(new StartLoadingRichieste());
             const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
             const richiestaFissata = this.store.selectSnapshot(RichiestaFissataState.richiestaFissata);
+            const ricerca = this.store.selectSnapshot(RicercaFilterbarState.ricerca);
             let richiestePerPagina;
             const filters = {
-                search: this.store.selectSnapshot(RicercaFilterbarState.ricerca),
+                search: ricerca,
                 others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati),
                 statiRichiesta: this.store.selectSnapshot(FiltriRichiesteState.filtriStatoRichiestaSelezionati)
             };
