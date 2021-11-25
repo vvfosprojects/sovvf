@@ -199,12 +199,12 @@ export class FiltriRichiesteState {
     }
 
     @Selector()
-    static periodoChiuseChiamate(state: FiltriRichiesteStateModel): any {
+    static periodoChiuseChiamate(state: FiltriRichiesteStateModel): FiltroPeriodoChiuse {
         return state.periodoChiuseChiamate;
     }
 
     @Selector()
-    static periodoChiusiInterventi(state: FiltriRichiesteStateModel): any {
+    static periodoChiusiInterventi(state: FiltriRichiesteStateModel): FiltroPeriodoChiuse {
         return state.periodoChiusiInterventi;
     }
 
@@ -286,7 +286,7 @@ export class FiltriRichiesteState {
     }
 
     @Action(ClearFiltroSenzaEsecuzione)
-    clearFiltroSenzaEsecuzione({ getState, setState }: StateContext<FiltriRichiesteStateModel>, action: ClearFiltroSelezionatoRichieste): void {
+    clearFiltroSenzaEsecuzione({ getState, setState }: StateContext<FiltriRichiesteStateModel>): void {
         const state = getState();
         const filtroStaticoSelezionato = state.filtriRichiesteSelezionati && state.filtriRichiesteSelezionati.filter((f: VoceFiltro) => f.categoria !== 'AltriFiltri' && f.categoria !== 'StatiRichiesta' && f.categoria !== 'Chiuse')[0];
         if (filtroStaticoSelezionato && filtroStaticoSelezionato.categoria) {
