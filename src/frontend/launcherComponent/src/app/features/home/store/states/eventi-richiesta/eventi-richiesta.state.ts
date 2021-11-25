@@ -13,9 +13,11 @@ import {
     FiltraEventiRichiesta,
     ToggleIconeNomeClasseEvento,
     StartLoadingEventiRichiesta,
-    StopLoadingEventiRichiesta, AddEvento
+    StopLoadingEventiRichiesta,
+    AddEvento
 } from '../../actions/eventi-richiesta/eventi-richiesta.actions';
 import { Injectable } from '@angular/core';
+import { ResetForm } from '@ngxs/form-plugin';
 
 export interface EventiRichiestaStateModel {
     eventoForm: {
@@ -33,7 +35,7 @@ export interface EventiRichiestaStateModel {
     loadingEventiRichiesta: boolean;
 }
 
-export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
+export const EventiRichiestaStateDefaults: EventiRichiestaStateModel = {
     eventoForm: {
         model: undefined,
         dirty: false,
@@ -52,7 +54,7 @@ export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
 @Injectable()
 @State<EventiRichiestaStateModel>({
     name: 'eventiRichiesta',
-    defaults: eventiRichiestaStateDefaults
+    defaults: EventiRichiestaStateDefaults
 })
 export class EventiRichiestaState {
 
@@ -127,10 +129,20 @@ export class EventiRichiestaState {
     addEvento({ getState, dispatch }: StateContext<EventiRichiestaStateModel>): void {
         const state = getState();
         const nuovoEvento = state?.eventoForm.model;
+        dispatch(new StartLoadingEventiRichiesta());
         if (nuovoEvento) {
-            this.eventiRichiesta.addEventoRichiesta(nuovoEvento).subscribe((evento: EventoRichiesta) => {
-                dispatch(new GetEventiRichiesta());
-            });
+            this.eventiRichiesta.addEventoRichiesta(nuovoEvento).subscribe(() => {
+                    dispatch([
+                        new StopLoadingEventiRichiesta(),
+                        new ResetForm({ path: 'eventiRichiesta.eventoForm' }),
+                        new GetEventiRichiesta()
+                    ]);
+                },
+                () => {
+                    dispatch(new StopLoadingEventiRichiesta());
+                });
+        } else {
+            dispatch(new StopLoadingEventiRichiesta());
         }
     }
 
@@ -185,7 +197,7 @@ export class EventiRichiestaState {
 
     @Action(ClearEventiRichiesta)
     clearEventiRichiesta({ patchState }: StateContext<EventiRichiestaStateModel>): void {
-        patchState(eventiRichiestaStateDefaults);
+        patchState(EventiRichiestaStateDefaults);
     }
 
     @Action(ToggleIconeNomeClasseEvento)

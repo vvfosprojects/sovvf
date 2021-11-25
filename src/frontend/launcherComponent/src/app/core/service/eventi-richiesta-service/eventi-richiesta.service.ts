@@ -18,9 +18,8 @@ export class EventiRichiestaService {
         return this.http.get<EventoRichiesta[]>(`${API_URL_EVENTI}?id=${codice}`);
     }
 
-    // TODO creare interfaccia eventoPayload
-    addEventoRichiesta(eventoPayload: any): Observable<EventoRichiesta> {
-        return this.http.post<EventoRichiesta>(API_URL_GESTIONE_RICHIESTA + '/AddLogBook', eventoPayload);
+    addEventoRichiesta(eventoPayload: { codice: string, text: string }): Observable<any> {
+        return this.http.post<any>(API_URL_GESTIONE_RICHIESTA + '/AddLogBook', eventoPayload);
     }
 
 }
