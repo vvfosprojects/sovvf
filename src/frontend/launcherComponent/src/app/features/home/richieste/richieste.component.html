@@ -18,6 +18,9 @@
     </app-richiesta-fissata>
 </ng-template>
 
+<ng-template [ngIf]="ricerca">
+    <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
+</ng-template>
 <app-lista-richieste [nightMode]="nightMode"
                      [richieste]="richieste"
                      [ricerca]="ricerca"

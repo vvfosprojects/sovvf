@@ -6,6 +6,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDocumentale;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEntiIntervenuti;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
@@ -111,6 +112,8 @@ namespace SO115App.CompositionRoot
             container.Register<INotifyModificaPartenza, NotificationModificaPartenza>();
 
             container.Register<INotifyAddEntiIntervenuti, NotificationAddEntiIntervenuti>();
+
+            container.Register<INotificationLogBook, NotificationLogBook>();
 
             #endregion Notifiche
 

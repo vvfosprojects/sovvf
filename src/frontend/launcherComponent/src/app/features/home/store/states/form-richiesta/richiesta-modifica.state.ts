@@ -204,7 +204,8 @@ export class RichiestaModificaState {
                     f.codSOCompetente,
                     f.urgenza,
                     f.esercitazione,
-                    triageSummary?.length ? triageSummary : null
+                    triageSummary?.length ? triageSummary : null,
+                    f.noteNue
                 );
             }
         }

@@ -1,23 +1,16 @@
 <!-- DEBOUNCE INPUT -->
-<div class="input-group">
-    <input *ngIf="debounce"
-           id="ricercaDebounce"
-           type="text"
-           name="ricercaDebounce"
-           class="form-control"
-           appDebounceKeyUp
-           [(ngModel)]="ricerca"
-           [debounceTime]="600"
-           [placeholder]="placeholder ? placeholder : ''"
-           (debounceKeyUp)="onSearch()"
-           [disabled]="disableSearch"
-           [class.cursor-not-allowed]="disableSearch">
-    <div class="input-group-append">
-        <span class="input-group-text">
-            <i class="fas fa-search"></i>
-        </span>
-    </div>
-</div>
+<input *ngIf="debounce"
+       id="ricercaDebounce"
+       type="text"
+       name="ricercaDebounce"
+       class="form-control"
+       appDebounceKeyUp
+       [(ngModel)]="ricerca"
+       [debounceTime]="600"
+       [placeholder]="placeholder ? placeholder : ''"
+       (debounceKeyUp)="onSearch()"
+       [disabled]="disableSearch"
+       [class.cursor-not-allowed]="disableSearch">
 <!-- NO DEBOUNCE INPUT -->
 <input *ngIf="!debounce"
        class="form-control"

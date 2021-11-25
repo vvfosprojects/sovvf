@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+using Serilog;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System;
 using System.IO;
@@ -13,7 +15,6 @@ namespace SO115App.Persistence.File.PDFManagement
 {
     internal sealed class PDFTemplateManager<TemplateModelForm> : IPDFTemplateManager<TemplateModelForm> where TemplateModelForm : class
     {
-        private readonly string _path;
         private PdfPage _page;
         private XGraphics _gfx;
         private double _y = _minY;
@@ -23,7 +24,7 @@ namespace SO115App.Persistence.File.PDFManagement
         private static readonly XFont _smallField = new XFont("Arial", 8);
         private static readonly XFont _xsmallField = new XFont("Arial", 7.5);
         private static readonly XPen _pen = new XPen(XColors.DarkGray, 0.5);
-
+        private readonly IConfiguration _config;
         private const int _fieldHeight = 35;
         private const double _minY = 100;
         private const string _footer = "Stato dell'Intervento (S): A = Aperto C = Chiuso *Orari: Uscita - Arrivo sul posto - Partenza dal posto - Rientro Sigla mezzo andata e sigla mezzo ritorno N° Int : R = scheda ricevuta da altro comando T = scheda trasmessa ad altro comando Tipo Partenza(TP) M = Manuale I = Importata N = Normale Scheda Annullata = Informazioni barrate";
@@ -33,21 +34,26 @@ namespace SO115App.Persistence.File.PDFManagement
         public PDFTemplateManager(IConfiguration config)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            _path = config.GetValue<string>("FileTemplateAbsolutePath");
+            _config = config;
         }
 
         public MemoryStream GenerateAndDownload(TemplateModelForm template, string fileName, string requestFolder)
         {
+            Log.Information($"Dettaglio QH - 1 **************** DENTRO GenerateAndDownload ************************");
+            var path = _config.GetSection("GenericSettings").GetSection("PathTempateStampe").Value;
+
+            Log.Information($"Dettaglio QH - 1 **************** Path {path} ************************");
+
             switch (template)
             {
                 case DettaglioChiamataModelForm model:
 
-                    _document = PdfReader.Open($"{_path}\\PDFManagement\\Templates\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
+                    _document = PdfReader.Open($"{path}/dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
                     generaDettaglioCihamataPDF(model); break;
 
                 case DettaglioInterventoModelForm model:
 
-                    _document = PdfReader.Open($"{_path}\\PDFManagement\\Templates\\dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
+                    _document = PdfReader.Open($"{path}/dettaglio_chiamata.pdf", PdfDocumentOpenMode.Modify);
                     generaDettaglioInterventoPDF(model); break;
 
                 case RiepilogoInterventiModelForm model:
@@ -68,7 +74,7 @@ namespace SO115App.Persistence.File.PDFManagement
         {
             Func<int, double> altezza = partenze => _fieldHeight + 25 * (partenze - 1);
 
-            if(model.lstRiepiloghi.Count == 0)
+            if (model.lstRiepiloghi.Count == 0)
                 checkNewPage(model, _y);
 
             model.lstRiepiloghi.ForEach(async riepilogo =>
@@ -246,8 +252,6 @@ namespace SO115App.Persistence.File.PDFManagement
                 _gfx.DrawString(partenza.OraAss.ToString("HH:mm") ?? "", field, XBrushes.Black, 450, _y);
             });
         }
-
-
 
         //ELIMIARE
         private double AlignY(int x) => x;

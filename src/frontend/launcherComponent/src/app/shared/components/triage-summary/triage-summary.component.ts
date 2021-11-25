@@ -17,6 +17,7 @@ import { PosInterface } from '../../interface/pos.interface';
 import { HttpEventType } from '@angular/common/http';
 import { PosService } from '../../../core/service/pos-service/pos.service';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
+import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-triage-summary',
@@ -38,6 +39,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     @Input() triageSummary: TriageSummary[];
     @Input() pos: PosInterface[];
     @Input() schedaContatto: SchedaContatto;
+    @Input() dettaglioSchedaContatto: string;
 
     contatoreGeneriMezzo: number;
     generiMezzo: string[];
@@ -46,7 +48,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     live = true;
     infoAggiuntive = {
         pos: false,
-        triage: true,
+        riepilogoTriage: true,
         noteNue: false,
         interventiInProssimita: false,
         interventiStessaVia: false,
@@ -102,7 +104,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
                         document.body.removeChild(a);
                         break;
                 }
-            }, error => console.log('Errore Stampa POS'));
+            }, () => console.log('Errore Stampa POS'));
         } else {
             console.error('CodSede utente non trovato');
         }
@@ -127,14 +129,15 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
                         document.body.removeChild(a);
                         break;
                 }
-            }, error => console.log('Errore visualizzazione POS'));
+            }, () => console.log('Errore visualizzazione POS'));
         } else {
             console.error('CodSede utente non trovato');
         }
     }
 
-    onShowInfoAggiuntive(sezione: string): void {
-        const keys = Object.keys(this.infoAggiuntive);
-        keys.forEach(x => x !== sezione ? this.infoAggiuntive[x] = false : this.infoAggiuntive[x] = !this.infoAggiuntive[x]);
+    onShowInfoAggiuntive(event: NgbPanelChangeEvent): void {
+        if (event) {
+            Object.keys(this.infoAggiuntive).forEach(x => x === event.panelId ? this.infoAggiuntive[x] = !this.infoAggiuntive[x] : this.infoAggiuntive[x] = false);
+        }
     }
 }

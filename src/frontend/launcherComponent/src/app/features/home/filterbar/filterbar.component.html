@@ -47,7 +47,6 @@
                         [ricerca]="ricerca$ | async"
                         [debounce]="true"
                         [placeholder]="getRicercaPlaceholder()"
-                        [disableSearch]="!!(richiesteStatus$ | async)"
                         (search)="onSearch($event)">
                 </app-ricerca>
             </div>

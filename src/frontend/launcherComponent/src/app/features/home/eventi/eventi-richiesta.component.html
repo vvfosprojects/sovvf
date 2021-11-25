@@ -12,6 +12,9 @@
 </div>
 <div class="modal-body">
     <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
+    <app-add-evento-richiesta [codiceRichiesta]="codiceRichiesta$ | async"
+                              (addEvento)="onAddEvento()">
+    </app-add-evento-richiesta>
     <app-lista-eventi-richiesta [elencoEventi]="eventiRichiesta$ | async"
                                 [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
                                 [loading]="loading$ | async"

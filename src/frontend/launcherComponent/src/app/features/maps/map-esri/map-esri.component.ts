@@ -108,7 +108,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         this.configModal.keyboard = false;
         this.mapService.getRefresh().subscribe(() => {
             // TODO: implementare logica refresh layer Interventi
-            console.log('refresh');
         });
     }
 

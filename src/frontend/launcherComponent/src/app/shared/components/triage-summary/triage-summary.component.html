@@ -3,12 +3,12 @@
         {{ dettaglioTipologia?.descrizione && tipologia?.descrizione && triageSummary ? dettaglioTipologia.descrizione.toUpperCase() : null }}
     </div>
 </ng-template>
-<ngb-accordion [closeOthers]="true" activeIds="riepilogo-triage">
+<ngb-accordion [closeOthers]="true" activeIds="riepilogoTriage" (panelChange)="onShowInfoAggiuntive($event)">
     <!-- POS -->
     <ng-template [ngIf]="pos?.length">
         <ngb-panel id="pos" [disabled]="!pos?.length">
             <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex" (click)="onShowInfoAggiuntive('pos')">
+                <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.pos" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
                     <span *ngIf="!infoAggiuntive.pos" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
                     <span>P.O.S. ({{ pos?.length }})</span>
@@ -39,15 +39,14 @@
     </ng-template>
     <!-- RIEPILOGO TRIAGE -->
     <ng-template [ngIf]="triageSummary?.length">
-        <ngb-panel id="riepilogo-triage" [disabled]="!triageSummary">
+        <ngb-panel id="riepilogoTriage" [disabled]="!triageSummary">
             <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex" (click)="onShowInfoAggiuntive('triage')">
-                    <span *ngIf="infoAggiuntive.triage" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
-                    <span *ngIf="!infoAggiuntive.triage" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
+                <div class="font-weight-bold text-white d-inline-flex">
+                    <span *ngIf="infoAggiuntive.riepilogoTriage" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
+                    <span *ngIf="!infoAggiuntive.riepilogoTriage" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
                     <span>RIEPILOGO TRIAGE</span>
                 </div>
             </ng-template>
-
             <ng-template ngbPanelContent>
                 <!-- RISPOSTE -->
                 <h5 class="text-danger">
@@ -113,10 +112,10 @@
         </ngb-panel>
     </ng-template>
     <!-- NOTE NUE -->
-    <ng-template [ngIf]="schedaContatto">
-        <ngb-panel id="note-nue" [disabled]="!schedaContatto">
+    <ng-template [ngIf]="schedaContatto || dettaglioSchedaContatto">
+        <ngb-panel id="noteNue" [disabled]="!schedaContatto && !dettaglioSchedaContatto">
             <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex" (click)="onShowInfoAggiuntive('noteNue')">
+                <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.noteNue" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
                     <span *ngIf="!infoAggiuntive.noteNue" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
                     <span> NOTE NUE</span>
@@ -124,16 +123,16 @@
             </ng-template>
             <ng-template ngbPanelContent>
                 <div>
-                    {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : 'Nessuna Nota Disponibile' }}
+                    {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : (dettaglioSchedaContatto ? dettaglioSchedaContatto : 'Nessuna Nota Disponibile' )}}
                 </div>
             </ng-template>
         </ngb-panel>
     </ng-template>
     <!-- INTERVENTI IN PROSSIMITA' -->
-    <ng-template [ngIf]="countInterventiProssimita || interventiProssimita?.length">
-        <ngb-panel id="interventi-prossimita" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
+    <ng-template [ngIf]="countInterventiProssimita || interventiProssimita?.length" >
+        <ngb-panel id="interventiInProssimita" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
             <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex" (click)="onShowInfoAggiuntive('interventiInProssimita')">
+                <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.interventiInProssimita" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
                     <span *ngIf="!infoAggiuntive.interventiInProssimita" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
                     <span>INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }})</span>
@@ -183,9 +182,9 @@
     </ng-template>
     <!-- INTERVENTI STESSA VIA -->
     <ng-template [ngIf]="countInterventiStessaVia || interventiStessaVia?.length">
-        <ngb-panel id="interventi-stessa-via" [disabled]="!countInterventiStessaVia || !interventiStessaVia?.length">
+        <ngb-panel id="interventiStessaVia" [disabled]="!countInterventiStessaVia || !interventiStessaVia?.length">
             <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex" (click)="onShowInfoAggiuntive('interventiStessaVia')">
+                <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.interventiStessaVia" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
                     <span *ngIf="!infoAggiuntive.interventiStessaVia" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
                     <span>INTERVENTI STESSA VIA ({{ countInterventiStessaVia ? countInterventiStessaVia : 0 }})</span>
@@ -235,10 +234,10 @@
     </ng-template>
     <!-- INTERVENTI CHIUSI CON STESSO INDIRIZZO -->
     <ng-template [ngIf]="countInterventiChiusiStessoIndirizzo || interventiChiusiStessoIndirizzo?.length">
-        <ngb-panel id="interventi-chiusi-stesso-indirizzo"
+        <ngb-panel id="interventiChiusiStessoIndirizzo"
                    [disabled]="!countInterventiChiusiStessoIndirizzo || !interventiChiusiStessoIndirizzo?.length">
             <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex" (click)="onShowInfoAggiuntive('interventiChiusiStessoIndirizzo')">
+                <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.interventiChiusiStessoIndirizzo" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
                     <span *ngIf="!infoAggiuntive.interventiChiusiStessoIndirizzo" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
                     <span>INTERVENTI CHIUSI CON STESSO INDIRIZZO
