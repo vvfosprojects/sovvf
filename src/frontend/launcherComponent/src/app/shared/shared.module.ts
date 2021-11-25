@@ -23,6 +23,7 @@ import { ModificaEntiModalComponent } from './modal/modifica-enti-modal/modifica
 import { DebounceClickDirective } from './directive/debounce-click';
 import { DebounceKeyUpDirective } from './directive/debounce-keyup';
 import { ClickStopPropagationDirective } from './directive/click-stop-propagation';
+import { MosuePositionDirective } from './directive/mouse-position';
 import { ComponenteComponent } from './components/componente/componente.component';
 import { CompetenzaComponent } from './components/competenza/competenza.component';
 import { MezzoComponent } from './components/mezzo/mezzo.component';
@@ -43,7 +44,6 @@ import { MezzoActionsModalComponent } from './modal/mezzo-actions-modal/mezzo-ac
 import { TastoCompPartenzaComponent } from './components/tasto-comp-partenza/tasto-comp-partenza.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { BoxAnteprimaPartenzaComponent } from './components/box-anteprima-partenza/box-anteprima-partenza.component';
-import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { TimeagoVVFFormatter } from './helper/timago-custom-formatter';
 import { SintesiRichiestaComponent } from './components/sintesi-richiesta/sintesi-richiesta.component';
@@ -81,11 +81,15 @@ import { ChiamataService } from '../core/service/chiamata-service/chiamata.servi
 import { DocumentoAreaDocumentaleModalComponent } from './modal/documento-area-documentale-modal/documento-area-documentale-modal.component';
 import { FiltroComponent } from './components/filtro/filtro.component';
 import { AzioniAreaDocumentaleModalComponent } from './modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
+import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
+import { ListaMezziSganciamentoModalComponent } from './modal/lista-mezzi-sganciamento-modal/lista-mezzi-sganciamento-modal.component';
+
 
 const COMPONENTS = [
     DebounceClickDirective,
     DebounceKeyUpDirective,
     ClickStopPropagationDirective,
+    MosuePositionDirective,
     ComponenteComponent,
     CompetenzaComponent,
     MezzoComponent,
@@ -154,7 +158,8 @@ const COMPONENTS = [
     TriageSummarySintesiRichiestaComponent,
     FormRichiestaComponent,
     RicercaIndirizzoComponent,
-    AzioniAreaDocumentaleModalComponent
+    AzioniAreaDocumentaleModalComponent,
+    ListaMezziSganciamentoModalComponent
 ];
 const MODULES = [
     PipeModule

@@ -12,8 +12,6 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { EntiState } from '../../../shared/store/states/enti/enti.state';
 import { EnteInterface } from '../../../shared/interface/ente.interface';
 import { RichiestaModificaState } from '../../home/store/states/form-richiesta/richiesta-modifica.state';
-import { DettagliTipologieState } from '../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
-import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
 import { PosInterface } from '../../../shared/interface/pos.interface';
@@ -38,16 +36,13 @@ export class ModalNuovaChiamataComponent implements OnDestroy {
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedaTelefonataState.loadingSchedaRichiesta) loadingSchedaRichiesta$: Observable<boolean>;
     loadingSchedaRichiesta: boolean;
-    @Select(SchedaTelefonataState.loadingCompetenze) loadingCompetenze$: Observable<boolean>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
+    @Select(SchedaTelefonataState.loadingCompetenze) loadingCompetenze$: Observable<boolean>;
 
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
-
-    // Dettagli Tipologie
-    @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
 
     // Triage Summary
     @Select(TriageSummaryState.summary) triageSummary$: Observable<TriageSummary[]>;

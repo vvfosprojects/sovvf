@@ -34,9 +34,7 @@ import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/o
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
-import { SetRichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
-import { ToggleComposizione } from '../../actions/view/view.actions';
-import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -57,6 +55,8 @@ import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/functi
 import { getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function-fonogramma';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi } from '../../../../../shared/store/actions/loading/loading.actions';
+import { SetRedirectComposizionePartenza } from '../../actions/form-richiesta/scheda-telefonata.actions';
+import { FiltroZoneEmergenzaState } from '../filterbar/filtro-zone-emergenza.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -153,13 +153,23 @@ export class RichiesteState {
             dispatch(new StartLoadingRichieste());
             const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
             const richiestaFissata = this.store.selectSnapshot(RichiestaFissataState.richiestaFissata);
-            let richiestePerPagina;
+            const ricerca = this.store.selectSnapshot(RicercaFilterbarState.ricerca);
+            const filtroStato = this.store.selectSnapshot(FiltriRichiesteState.selezioneStatoRichiesta);
+            const zoneEmergenza = this.store.selectSnapshot(FiltroZoneEmergenzaState.filtriZoneEmergenzaSelezionate);
+            const chiuse = this.store.selectSnapshot(FiltriRichiesteState.chiuse);
+            const periodoChiuseChiamate = this.store.selectSnapshot(FiltriRichiesteState.periodoChiuseChiamate);
+            const periodoChiusiInterventi = this.store.selectSnapshot(FiltriRichiesteState.periodoChiusiInterventi);
+            const richiestePerPagina = boxesVisibili ? 7 : 8;
             const filters = {
-                search: this.store.selectSnapshot(RicercaFilterbarState.ricerca),
+                search: ricerca,
                 others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati),
-                statiRichiesta: this.store.selectSnapshot(FiltriRichiesteState.filtriStatoRichiestaSelezionati)
+                statiRichiesta: this.store.selectSnapshot(FiltriRichiesteState.filtriStatoRichiestaSelezionati),
+                filtroStato,
+                zoneEmergenza,
+                chiuse,
+                periodoChiuseChiamate,
+                periodoChiusiInterventi
             };
-            boxesVisibili ? richiestePerPagina = 7 : richiestePerPagina = 8;
             const pagination = {
                 page: action.options && action.options.page ? action.options.page : 1,
                 pageSize: richiestePerPagina,
@@ -192,7 +202,7 @@ export class RichiesteState {
             dispatch(new ClearRichiestaHover());
             const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
             if (richiestaGestione) {
-                dispatch(new ClearRichiestaGestione(richiestaGestione.id));
+                dispatch(new ClearRichiestaGestione());
             }
         }
     }
@@ -300,11 +310,10 @@ export class RichiesteState {
     }
 
     @Action(StartInviaPartenzaFromChiamata)
-    startInviaPartenzaFromChiamata({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: StartInviaPartenzaFromChiamata): void {
+    startInviaPartenzaFromChiamata({ dispatch }: StateContext<RichiesteStateModel>): void {
         dispatch([
             new ClearIdChiamataInviaPartenza(),
-            new ToggleComposizione(Composizione.Avanzata),
-            new SetRichiestaComposizione(action.richiesta)
+            new SetRedirectComposizionePartenza(false),
         ]);
     }
 
@@ -322,27 +331,27 @@ export class RichiesteState {
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
                 this.store.dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                setTimeout(x => {
+                setTimeout(() => {
                     this.store.dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
                 }, 60000);
 
                 dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
             },
-            error => dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice))
+            () => dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice))
         );
     }
 
+    // TODO: Rimuovere (con relativi riferimenti nei componenti) poichè la funzionalità è stata rimossa
     @Action(EliminaPartenzaRichiesta)
-    eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: EliminaPartenzaRichiesta): void {
-        // TODO: DA RIMUOVERE POICHè IL BTN ASSOCIATO è STATO RIMOSSO
+    eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>): void {
         dispatch(new StartLoadingEliminaPartenza());
-        const obj = {
-            idRichiesta: action.idRichiesta,
-            targaMezzo: action.targaMezzo,
-            codMotivazione: action.motivazione.codMotivazione,
-            testoMotivazione: action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
-            codRichiestaSubentrata: action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
-        };
+        // const obj = {
+        //     idRichiesta: action.idRichiesta,
+        //     targaMezzo: action.targaMezzo,
+        //     codMotivazione: action.motivazione.codMotivazione,
+        //     testoMotivazione: action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
+        //     codRichiestaSubentrata: action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
+        // };
         // this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
         //     dispatch(new StopLoadingEliminaPartenza());
         // }, error => dispatch(new StopLoadingEliminaPartenza()));
@@ -354,7 +363,7 @@ export class RichiesteState {
         const obj = action.richiestaAction;
         console.log('ActionRichiesta Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        }, error => dispatch(new StopLoadingActionRichiesta(action.richiestaAction.idRichiesta)));
+        }, () => dispatch(new StopLoadingActionRichiesta(action.richiestaAction.idRichiesta)));
     }
 
     @Action(ModificaStatoFonogramma)
@@ -369,7 +378,7 @@ export class RichiesteState {
         };
         this.richiesteService.modificaStatoFonogrammaRichiesta(obj).subscribe(() => {
             dispatch(new StopLoadingModificaFonogramma());
-        }, error => dispatch(new StopLoadingModificaFonogramma()));
+        }, () => dispatch(new StopLoadingModificaFonogramma()));
     }
 
     @Action(AllertaSede)

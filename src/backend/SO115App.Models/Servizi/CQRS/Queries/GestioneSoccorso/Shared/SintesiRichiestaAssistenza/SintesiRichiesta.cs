@@ -23,11 +23,8 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Fonogramma;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Fonogramma;
-using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Triage;
@@ -391,5 +388,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   GetInterventiInProssimita.cs
         /// </summary>
         public double Distance { get; set; }
+
+        public string NoteNue { get; set; }
+
     }
 }

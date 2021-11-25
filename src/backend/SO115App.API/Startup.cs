@@ -132,6 +132,7 @@ namespace SO115App.API
                 .AddHubOptions<NotificationHub>(options =>
                 {
                     options.EnableDetailedErrors = true;
+                    options.ClientTimeoutInterval = TimeSpan.FromMinutes(480);
                 });
             IntegrateSimpleInjector(services);
         }

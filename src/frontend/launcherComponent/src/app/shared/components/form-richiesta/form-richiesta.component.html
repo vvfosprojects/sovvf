@@ -36,14 +36,42 @@
                                     <small>Almeno una tipologia è richiesta</small>
                                 </div>
                             </div>
-                            <ng-template [ngIf]="f.codTipologia.value && !modifica">
-                                <div class="float-left w-25 px-2">
-                                    <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()">
-                                        {{ 'Inizia Triage' | uppercase }}
-                                    </button>
-                                </div>
-                            </ng-template>
+                            <div class="float-left w-25 px-2">
+                                <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()"
+                                        [disabled]="!f.dettaglioTipologia.value || modifica">
+                                    {{ 'Inizia Triage' | uppercase }}
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div *ngIf="!loadingDettagliTipologia" class="form-group mb-1">
+                        <div class="clearfix">
+                            <div class="float-left w-75">
+                                <label class="d-none">Dettaglio tipologia</label>
+                                <div class="">
+                                    <ng-select class="border"
+                                               bindLabel="descrizione"
+                                               clearAllText="Clear"
+                                               placeholder="Seleziona Dettaglio Tipologia"
+                                               formControlName="dettaglioTipologia"
+                                               [notFoundText]="'Nessun dettaglio tipologia trovato'"
+                                               [items]="dettagliTipologia"
+                                               [multiple]="false"
+                                               [closeOnSelect]="true"
+                                               [searchable]="false"
+                                               [hideSelected]="true"
+                                               [readonly]="!f.codTipologia.value"
+                                               (change)="onChangeDettaglioTipologia($event)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="loadingDettagliTipologia" class="font-xlarge pl-2 pt-1">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        Recupero Dettaglio Tipologia
                     </div>
                 </div>
             </div>
@@ -57,8 +85,9 @@
                         <ng-container *ngIf="!apertoFromMappa">
                             <app-ricerca-indirizzo
                                     [indirizzo]="f?.indirizzo?.value"
+                                    [requiredFieldClass]="f?.indirizzo?._rawValidators[0]?.name === 'required'"
                                     [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
-                                    (changeIndirizzo)="modificaIndirizzo()"
+                                    (changeIndirizzo)="modificaIndirizzo($event)"
                                     (selectCandidate)="reducerIndirizzo($event)">
                             </app-ricerca-indirizzo>
                         </ng-container>
@@ -89,6 +118,9 @@
                                    type="tel"
                                    placeholder="Latitudine"
                                    formControlName="latitudine"
+                                   appDebounceKeyUp
+                                   [debounceTime]="1000"
+                                   (debounceKeyUp)="onChangeCoordinate()"
                                    (keypress)="checkInputPattern($event, 'LAT_LON')"
                                    (paste)="checkInputPattern($event, 'LAT_LON')"/>
                             <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
@@ -105,6 +137,9 @@
                                    type="tel"
                                    placeholder="Longitudine"
                                    formControlName="longitudine"
+                                   appDebounceKeyUp
+                                   [debounceTime]="1000"
+                                   (debounceKeyUp)="onChangeCoordinate()"
                                    (keypress)="checkInputPattern($event, 'LAT_LON')"
                                    (paste)="checkInputPattern($event, 'LAT_LON')"/>
                             <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
@@ -139,15 +174,6 @@
                             <div class="font-xlarge pl-2 pt-1">
                                 <i class="fas fa-spinner fa-spin mr-2"></i>
                                 Recupero Competenze
-                            </div>
-                        </ng-template>
-                        <!-- COMPETENZE RICHIESTA MODIFICA -->
-                        <ng-template
-                                [ngIf]="!loadingCompetenze && !competenze?.length && richiestaModifica?.competenze?.length">
-                            <div class="float-left"
-                                 style="font-size: xx-large">
-                                <app-competenza *ngFor="let c of richiestaModifica?.competenze; let i = index"
-                                                [competenza]="c" [i]="i"></app-competenza>
                             </div>
                         </ng-template>
                     </div>
@@ -315,7 +341,7 @@
                 <div class="row mb-5">
                     <div class="col-8">
                         <div class="row">
-                            <div class="col-4 mb-2 pr-2">
+                            <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 mb-2 pr-2">
                                 <div class="input-group">
                                     <label class="d-none" for="boschi">Boschi</label>
                                     <input id="boschi"
@@ -330,7 +356,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-4 text-center px-1">
+                            <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 text-center px-1">
                                 <div class="input-group">
                                     <label class="d-none" for="campi">Campi</label>
                                     <input id="campi"
@@ -345,7 +371,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-4 text-center pl-2">
+                            <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 text-center pl-2">
                                 <div class="input-group">
                                     <label class="d-none" for="sterpaglie">Sterpaglie</label>
                                     <input id="sterpaglie"
@@ -433,12 +459,12 @@
                             <i class="fas fa-circle mr-1"></i>
                           </span>
                           </ng-template>
-                          <div style="width: max-content; display: inline-grid; margin-left: 8px">
-                            <span>Alta</span>
-                            <span>Media</span>
-                            <span>Bassa</span>
-                            <span>Nessuna</span>
-                          </div>
+                          <span style="width: max-content; display: inline-grid; margin-left: 8px">
+                              <span>Alta</span>
+                              <span>Media</span>
+                              <span>Bassa</span>
+                              <span>Nessuna</span>
+                          </span>
                         </span>
                             <span *ngIf="submitted && f.prioritaRichiesta.errors"
                                   class="form-text small">
@@ -486,7 +512,7 @@
                     <ng-template [ngIf]="modifica">
                         <button class="btn btn-primary btn-no-hover mr-3 btn-xlarge"
                                 style="min-width: 100px"
-                                [disabled]="disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="loadingCompetenze || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
@@ -495,7 +521,7 @@
                         </button>
                         <button class="btn btn-success btn-no-hover btn-xlarge"
                                 style="min-width: 100px"
-                                [disabled]="formIsInvalid()"
+                                [disabled]="loadingCompetenze || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
                                 ngbTooltip="Conferma Modifica"
                                 placement="top">
@@ -540,11 +566,12 @@
 
     <div class="col-4 h-100 scroll-y py-3"
          [class.bg-resoconto-triage]="!apertoFromMappa">
-         <div class="px-2 mb-2 bg-secondary font-weight-bold" style="color: #ffffff">INFO AGGIUNTIVE</div>
-        <div class="px-3">
+        <div class="px-2 mb-2 bg-secondary font-weight-bold" style="color: #ffffff">INFO AGGIUNTIVE</div>
+        <div>
             <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
                                 [dettaglioTipologia]="f.dettaglioTipologia?.value"
                                 [codSchedaContatto]="schedaContatto?.codiceScheda"
+                                [dettaglioSchedaContatto]="schedaContattoDettaglio"
                                 [countInterventiProssimita]="countInterventiProssimita"
                                 [interventiProssimita]="interventiProssimita"
                                 [countInterventiStessaVia]="countInterventiStessaVia"

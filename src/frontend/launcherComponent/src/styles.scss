@@ -84,6 +84,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   background-color: $SO-dark $SO-i;
 }
 
+.close {
+  text-shadow: none !important;
+}
+
 // Single Monitor Styles
 .single-monitor {
   font-size: $SO-font-xlarge;
@@ -180,6 +184,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 .sun-mode {
   background-color: $SO-white $SO-i;
   color: $SO-black $SO-i;
+
+  .mezzo-sganciamento:hover {
+    background-color: #e2e2e2 $SO-i;
+  }
 
   .bg-whitesmoke {
     background: whitesmoke $SO-i;
@@ -279,6 +287,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     text {
       fill: $SO-white $SO-i;
     }
+  }
+
+  .mezzo-sganciamento:hover {
+    background-color: $SO-dark-light $SO-i;
   }
 
   .card-header {
@@ -1430,8 +1442,6 @@ tag-input {
 }
 
 .box-azione {
-  position: relative;
-  min-width: 0;
   word-wrap: break-word;
   background-clip: border-box;
   border: $SO-card-border $SO-muted $SO-i;

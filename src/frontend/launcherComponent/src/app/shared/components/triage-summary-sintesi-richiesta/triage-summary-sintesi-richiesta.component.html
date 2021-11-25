@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table class="table table-striped mb-0">
     <thead>
     <tr>
         <th scope="col" style="width:33%">
@@ -17,7 +17,7 @@
     </thead>
     <tbody>
     <tr>
-        <td style="width:33%" class="align-middle">
+        <td style="width:33%">
             <ng-template [ngIf]="triageSummary?.length">
                 <ul class="list-group px-3 mb-0">
                     <li *ngFor="let s of triageSummary, let i = index" class="font-weight-bold">
@@ -34,12 +34,12 @@
 
             </ng-template>
         </td>
-        <td style="width:33%" class="align-middle">
+        <td style="width:33%">
             <ng-template [ngIf]="pos?.length">
                 <div *ngFor="let p of pos; let i = index"
                      class="clearfix"
                      [class.mb-2]="(i + 1) < pos.length">
-                    <div class="float-left pt-2">
+                    <div class="float-left cursor-pointer pt-2">
                         <h5 class="mb-0" (click)="onViewPos(p)">{{ p.descrizionePos }}</h5>
                     </div>
                     <div class="float-right">
@@ -60,7 +60,7 @@
 
             </ng-template>
         </td>
-        <td style="width:33%" class="align-middle">
+        <td style="width:33%">
 
         </td>
     </tr>

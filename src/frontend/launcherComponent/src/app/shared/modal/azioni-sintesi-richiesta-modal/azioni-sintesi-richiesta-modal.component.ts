@@ -25,6 +25,7 @@ import { RichiestaActionInterface } from '../../interface/richiesta-action.inter
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
 import { HttpEventType } from '@angular/common/http';
+import { ListaMezziSganciamentoModalComponent } from '../lista-mezzi-sganciamento-modal/lista-mezzi-sganciamento-modal.component';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -66,6 +67,26 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             this.user$.subscribe((user: Utente) => {
                 this.utente = user;
             })
+        );
+    }
+
+    onSganciamentoMezzo(richiesta: SintesiRichiesta): void {
+        let sganciamentoMezziModal;
+        sganciamentoMezziModal = this.modalService.open(ListaMezziSganciamentoModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        sganciamentoMezziModal.componentInstance.richiesta = richiesta;
+        sganciamentoMezziModal.result.then(
+            (result: string) => {
+                if (result === 'ok') {
+                    this.chiudiModalAzioniSintesi('ok');
+                }
+            }, (err: any) => {
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
         );
     }
 
@@ -300,12 +321,15 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             centered: true,
             backdrop: true
         });
-        modal.result.then(() => {},
+        modal.result.then(() => {
+            },
             () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
     chiudiModalAzioniSintesi(closeRes: string): void {
         if (closeRes) {
+            this.modal.close({ status: closeRes });
+        } else {
             this.modal.close({ status: 'ko' });
         }
     }

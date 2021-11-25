@@ -105,12 +105,12 @@
                     <div class="float-left">
                         <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2"
                                 (click)="saveTriage()">
-                            {{ 'Salva Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                            {{ 'Salva Triage' | uppercase }}
                         </button>
                         <ng-template [ngIf]="tItemsBackup">
                             <button class="btn btn-lg btn-no-hover btn-danger font-weight-bolder"
                                     (click)="removeTriage()">
-                                {{ 'Elimina Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                                {{ 'Elimina Triage' | uppercase }}
                             </button>
                         </ng-template>
                     </div>
@@ -118,7 +118,7 @@
                         <ng-template [ngIf]="tItemsBackup">
                             <button class="btn btn-lg btn-no-hover btn-secondary font-weight-bolder"
                                     (click)="resetTriage()">
-                                {{ 'Reset Triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
+                                {{ 'Reset Triage' | uppercase }}
                             </button>
                         </ng-template>
                     </div>

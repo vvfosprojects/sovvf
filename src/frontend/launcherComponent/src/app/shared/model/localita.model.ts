@@ -38,7 +38,11 @@ export class Localita {
         /**
          * regione
          */
-        public regione?: string
+        public regione?: string,
+        /**
+         * Latitidine [0] e Longitudine [1]
+         */
+        public coordinateString?: string[]
     ) {
     }
 }

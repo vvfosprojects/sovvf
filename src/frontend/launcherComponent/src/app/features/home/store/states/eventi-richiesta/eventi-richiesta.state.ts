@@ -13,11 +13,19 @@ import {
     FiltraEventiRichiesta,
     ToggleIconeNomeClasseEvento,
     StartLoadingEventiRichiesta,
-    StopLoadingEventiRichiesta
+    StopLoadingEventiRichiesta,
+    AddEvento
 } from '../../actions/eventi-richiesta/eventi-richiesta.actions';
 import { Injectable } from '@angular/core';
+import { ResetForm } from '@ngxs/form-plugin';
 
 export interface EventiRichiestaStateModel {
+    eventoForm: {
+        model: any,
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
     codiceRichiesta: string;
     eventi: EventoRichiesta[];
     listaEventiFiltrata: EventoRichiesta[];
@@ -27,7 +35,13 @@ export interface EventiRichiestaStateModel {
     loadingEventiRichiesta: boolean;
 }
 
-export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
+export const EventiRichiestaStateDefaults: EventiRichiestaStateModel = {
+    eventoForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
     codiceRichiesta: null,
     eventi: null,
     listaEventiFiltrata: null,
@@ -40,7 +54,7 @@ export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
 @Injectable()
 @State<EventiRichiestaStateModel>({
     name: 'eventiRichiesta',
-    defaults: eventiRichiestaStateDefaults
+    defaults: EventiRichiestaStateDefaults
 })
 export class EventiRichiestaState {
 
@@ -111,13 +125,37 @@ export class EventiRichiestaState {
         }
     }
 
+    @Action(AddEvento)
+    addEvento({ getState, dispatch }: StateContext<EventiRichiestaStateModel>): void {
+        const state = getState();
+        const nuovoEvento = state?.eventoForm.model;
+        dispatch(new StartLoadingEventiRichiesta());
+        if (nuovoEvento) {
+            this.eventiRichiesta.addEventoRichiesta(nuovoEvento).subscribe(() => {
+                    dispatch([
+                        new StopLoadingEventiRichiesta(),
+                        new ResetForm({ path: 'eventiRichiesta.eventoForm' }),
+                        new GetEventiRichiesta()
+                    ]);
+                },
+                () => {
+                    dispatch(new StopLoadingEventiRichiesta());
+                });
+        } else {
+            dispatch(new StopLoadingEventiRichiesta());
+        }
+    }
+
     @Action(SetListaTarghe)
     setListaTarghe({ getState, patchState }: StateContext<EventiRichiestaStateModel>): void {
         const state = getState();
-        const listaTarghe: FiltroTargaMezzo[] = [];
+        let listaTarghe: FiltroTargaMezzo[];
         if (state && state.eventi) {
             state.eventi.forEach(evento => {
                 if (evento.targa && evento.targa.length > 0) {
+                    if (!listaTarghe?.length) {
+                        listaTarghe = [];
+                    }
                     listaTarghe.push({ targa: evento.targa });
                 }
             });
@@ -159,7 +197,7 @@ export class EventiRichiestaState {
 
     @Action(ClearEventiRichiesta)
     clearEventiRichiesta({ patchState }: StateContext<EventiRichiestaStateModel>): void {
-        patchState(eventiRichiestaStateDefaults);
+        patchState(EventiRichiestaStateDefaults);
     }
 
     @Action(ToggleIconeNomeClasseEvento)

@@ -39,7 +39,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         /// </summary>
         public Intervento()
         {
-            this.ZoneEmergenza = new string[0];
+            //this.ZoneEmergenza = new string[0];
             this.Tags = new string[0];
             this.Competenze = new List<Sede>();
         }
@@ -171,7 +171,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         /// <summary>
         ///   Descrizione delle zone di emergenza
         /// </summary>
-        public string[] ZoneEmergenza { get; set; }
+        public string ZoneEmergenza { get; set; }
 
         /// <summary>
         ///   Etichette associate all'intervento (per es. aPagamento, imp, ecc.)
@@ -203,5 +203,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         ///   Flag che indica se l'intervento è per una esercitazione oppure no Di dafault è FALSE
         /// </summary>
         public bool Esercitazione { get; set; } = false;
+
+        public string NoteNue { get; set; }
+
     }
 }

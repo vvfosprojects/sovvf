@@ -32,7 +32,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
                     if (coordinate != null)
                     {
                         if (coordinate.Contains(","))
-                            return new Coordinate(double.Parse(coordinate.Split(',')[0]), double.Parse(coordinate.Split(',')[1]));
+                            return new Coordinate(double.Parse(coordinate.Split(',')[0].Replace(".",",")), double.Parse(coordinate.Split(',')[1].Replace(".", ",")));
                         else
                             return new Coordinate();
                     }else

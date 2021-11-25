@@ -4,7 +4,10 @@ import {
     AnnullaChiamata,
     CestinaChiamata,
     ClearChiamata,
+    ClearCompetenze,
+    ClearCountInterventiProssimita,
     ClearIndirizzo,
+    ClearInterventiProssimita,
     ClearMarkerChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
@@ -14,12 +17,17 @@ import {
     SetCompetenze,
     SetCountInterventiProssimita,
     SetInterventiProssimita,
-    StartChiamata, StartLoadingCompetenze,
-    StartLoadingSchedaRichiesta, StopLoadingCompetenze,
+    SetRedirectComposizionePartenza,
+    StartChiamata,
+    StartLoadingCompetenze,
+    StartLoadingDettagliTipologia,
+    StartLoadingSchedaRichiesta,
+    StopLoadingCompetenze,
+    StopLoadingDettagliTipologia,
     StopLoadingSchedaRichiesta
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
-import { ToggleChiamata, ToggleModifica } from '../../actions/view/view.actions';
+import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../../../maps/store/actions/chiamate-markers.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
@@ -50,6 +58,8 @@ import { InterventiProssimitaResponse } from '../../../../../shared/interface/re
 import { ViewComponentState } from '../view/view.state';
 import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
 import { TipoTerrenoEnum } from 'src/app/shared/enum/tipo-terreno.enum';
+import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -72,6 +82,8 @@ export interface SchedaTelefonataStateModel {
     resetChiamata: boolean;
     loadingSchedaRichiesta: boolean;
     loadingCompetenze: boolean;
+    loadingDettagliTipologia: boolean;
+    redirectComposizionePartenza: boolean;
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
@@ -94,7 +106,9 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     idChiamataMarker: null,
     resetChiamata: true,
     loadingSchedaRichiesta: false,
-    loadingCompetenze: false
+    loadingCompetenze: false,
+    loadingDettagliTipologia: false,
+    redirectComposizionePartenza: false,
 };
 
 @Injectable()
@@ -171,11 +185,24 @@ export class SchedaTelefonataState {
         return state.loadingCompetenze;
     }
 
+    @Selector()
+    static loadingDettagliTipologia(state: SchedaTelefonataStateModel): boolean {
+        return state.loadingDettagliTipologia;
+    }
+
+    @Selector()
+    static redirectComposizionePartenza(state: SchedaTelefonataStateModel): boolean {
+        return state.redirectComposizionePartenza;
+    }
+
     @Action(ReducerSchedaTelefonata)
     reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
 
         const state = getState();
-        const coordinate = action.schedaTelefonata?.markerChiamata?.localita?.coordinate ? action.schedaTelefonata.markerChiamata.localita.coordinate : { latitudine: state.richiestaForm?.model?.latitudine, longitudine: state.richiestaForm?.model?.longitudine };
+        const coordinate = action.schedaTelefonata?.markerChiamata?.localita?.coordinate ? action.schedaTelefonata.markerChiamata.localita.coordinate : {
+            latitudine: state.richiestaForm?.model?.latitudine,
+            longitudine: state.richiestaForm?.model?.longitudine
+        };
 
         function getCooordinate(): Coordinate {
             return coordinate;
@@ -194,9 +221,7 @@ export class SchedaTelefonataState {
             case 'cerca':
                 const markerChiamata = action.schedaTelefonata.markerChiamata;
                 const indirizzo = action.schedaTelefonata.markerChiamata.localita.indirizzo;
-                dispatch([
-                    new SetCompetenze(getCooordinate(), indirizzo, markerChiamata)
-                ]);
+                dispatch(new SetCompetenze(getCooordinate(), indirizzo, markerChiamata));
                 break;
             case 'inserita':
                 const urgente = action.options?.urgente;
@@ -243,41 +268,81 @@ export class SchedaTelefonataState {
     setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
         dispatch(new StartLoadingCompetenze());
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
-            const competenze = res.dataArray as Sede[];
-            const codCompetenze = competenze.map((c: Sede) => {
-                return c.codice;
-            });
-            dispatch([
-                new MarkerChiamata(action.markerChiamata, codCompetenze),
-                new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
-                new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
-                new StopLoadingCompetenze()
-            ]);
-            patchState({
-                competenze
-            });
+            if (res?.dataArray) {
+                const competenze = res.dataArray as Sede[];
+                const codCompetenze = competenze.map((c: Sede) => {
+                    return c.codice;
+                });
+                dispatch([
+                    new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
+                    new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
+                    new StopLoadingCompetenze()
+                ]);
+
+                if (action.markerChiamata) {
+                    dispatch(new MarkerChiamata(action.markerChiamata, codCompetenze));
+                }
+
+                patchState({
+                    competenze
+                });
+            } else {
+                dispatch([
+                    new ClearCompetenze(),
+                    new StopLoadingCompetenze()
+                ]);
+            }
+        });
+    }
+
+    @Action(ClearCompetenze)
+    clearCompetenze({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            competenze: SchedaTelefonataStateDefaults.competenze
         });
     }
 
     @Action(SetCountInterventiProssimita)
     setCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
         this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: CountInterventiProssimitaResponse) => {
-            patchState({
-                countInterventiProssimita: res.count,
-                countInterventiStessaVia: res.countStessaVia,
-                countInterventiChiusiStessoIndirizzo: res.countInterventiChiusiStessoIndirizzo
-            });
+            if (res) {
+                patchState({
+                    countInterventiProssimita: res.count,
+                    countInterventiStessaVia: res.countStessaVia,
+                    countInterventiChiusiStessoIndirizzo: res.countInterventiChiusiStessoIndirizzo
+                });
+            }
+        });
+    }
+
+    @Action(ClearCountInterventiProssimita)
+    clearCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            countInterventiProssimita: 0,
+            countInterventiStessaVia: 0,
+            countInterventiChiusiStessoIndirizzo: 0
         });
     }
 
     @Action(SetInterventiProssimita)
     setInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
         this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: InterventiProssimitaResponse) => {
-            patchState({
-                interventiProssimita: res.dataArray,
-                interventiStessaVia: res.dataArrayStessaVia,
-                interventiChiusiStessoIndirizzo: res.dataArrayInterventiChiusiStessoIndirizzo
-            });
+            if (res) {
+                patchState({
+                    interventiProssimita: res.dataArray,
+                    interventiStessaVia: res.dataArrayStessaVia,
+                    interventiChiusiStessoIndirizzo: res.dataArrayInterventiChiusiStessoIndirizzo
+                });
+            }
+        });
+    }
+
+    @Action(ClearInterventiProssimita)
+    clearInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            interventiProssimita: null,
+            interventiStessaVia: null,
+            interventiChiusiStessoIndirizzo: null
         });
     }
 
@@ -352,7 +417,7 @@ export class SchedaTelefonataState {
                 f.istantePrimaAssegnazione,
                 f.rilevanzaGrave,
                 f.codSchedaContatto ? f.codSchedaContatto : null,
-                f.zoneEmergenza?.length ? f.zoneEmergenza.split(' ') : null,
+                null,
                 f.fonogramma,
                 f.partenze,
                 (f.etichette && f.etichette.length) ? f.etichette : null,
@@ -374,7 +439,8 @@ export class SchedaTelefonataState {
                 f.codSOCompetente,
                 f.urgenza || urgente,
                 f.esercitazione,
-                triageSummary?.length ? triageSummary : null
+                triageSummary?.length ? triageSummary : null,
+                f.noteNue
             );
         }
 
@@ -411,6 +477,7 @@ export class SchedaTelefonataState {
             }
         }, () => {
             dispatch(new StopLoadingSchedaRichiesta());
+            dispatch(new SetRedirectComposizionePartenza(false));
             patchState({
                 nuovaRichiesta: null,
                 azioneChiamata: null
@@ -434,11 +501,18 @@ export class SchedaTelefonataState {
             dispatch(new SetNeedRefresh(true));
         }
         if (idUtenteLoggato === action.nuovaRichiesta.operatore.id && !action.options?.trasferimento) {
-            dispatch(new StopLoadingSchedaRichiesta());
             const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
-            if (chiamataStatus) {
-                dispatch(new ToggleChiamata());
+            const redirectComposizionePartenza = this.store.selectSnapshot(SchedaTelefonataState.redirectComposizionePartenza);
+            if (chiamataStatus && !redirectComposizionePartenza) {
+                dispatch(new ToggleChiamata(false, true));
+            } else if (chiamataStatus && redirectComposizionePartenza) {
+                // Se 'Conferma e Invia Partenza' allora lancio il toggle della composizione avanzata
+                dispatch([
+                    new SetRichiestaComposizione(action.nuovaRichiesta),
+                    new ToggleComposizione(Composizione.Avanzata)
+                ]);
             }
+            dispatch(new StopLoadingSchedaRichiesta());
         } else if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
@@ -541,6 +615,27 @@ export class SchedaTelefonataState {
     stopLoadingCompetenze({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
             loadingCompetenze: false
+        });
+    }
+
+    @Action(StartLoadingDettagliTipologia)
+    startLoadingDettagliTipologia({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingDettagliTipologia: true
+        });
+    }
+
+    @Action(StopLoadingDettagliTipologia)
+    stopLoadingDettagliTipologia({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingDettagliTipologia: false
+        });
+    }
+
+    @Action(SetRedirectComposizionePartenza)
+    setRedirectComposizionePartenza({ patchState }: StateContext<SchedaTelefonataStateModel>, action: any): void {
+        patchState({
+            redirectComposizionePartenza: action.redirect
         });
     }
 }

@@ -20,7 +20,7 @@
                     </div>
                     <div *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
                          class="float-left">
-                        <div class="d-inline mr-2">
+                        <div class="d-inline mr-4 ml-3">
                             <app-tasto-schede-contatto
                                     [active]="schedeContattoStatus$ | async"
                                     [contatoriSchedeContatto]="contatoriSchedeContatto$ | async"
@@ -47,7 +47,6 @@
                         [ricerca]="ricerca$ | async"
                         [debounce]="true"
                         [placeholder]="getRicercaPlaceholder()"
-                        [disableSearch]="!!(richiesteStatus$ | async)"
                         (search)="onSearch($event)">
                 </app-ricerca>
             </div>

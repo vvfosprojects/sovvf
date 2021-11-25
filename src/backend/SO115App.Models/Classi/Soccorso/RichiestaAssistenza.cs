@@ -115,7 +115,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
-        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check)
+        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string codicePartenza = null)
         {
             bool cambioOrarioUscita = partenza.Mezzo.Stato == stato.Stato;
 
@@ -144,7 +144,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     var dataComposizione = cambioOrarioUscita == true ? stato.Istante : stato.Istante.AddMinutes(1);
 
-                    new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
+                    if(codicePartenza == null)
+                        new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
@@ -154,7 +155,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoSulPosto:
 
-                    new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
+                    if (codicePartenza == null)
+                        new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
@@ -1102,6 +1104,9 @@ namespace SO115App.API.Models.Classi.Soccorso
 
         [BsonIgnore]
         public DateTime dataOraInserimento => Telefonate.First().DataOraInserimento;
+
+        public string NoteNue { get; set; }
+
     }
 
     public class ESRI

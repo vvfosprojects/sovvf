@@ -20,6 +20,9 @@ import { ZonaEmergenzaModalComponent } from '../../zone-emergenza/zona-emergenza
 import { SetZonaEmergenzaFromMappaActiveValue } from '../../zone-emergenza/store/actions/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { ZoneEmergenzaState } from '../../zone-emergenza/store/states/zone-emergenza/zone-emergenza.state';
 import { AddZonaEmergenza, ResetZonaEmergenzaForm } from '../../zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { RichiesteState } from '../../home/store/states/richieste/richieste.state';
+import { GetInitCentroMappa, SetCentroMappa } from '../store/actions/centro-mappa.actions';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -44,6 +47,7 @@ import RouteResult from '@arcgis/core/tasks/support/RouteResult';
 import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
+import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
@@ -57,6 +61,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() activeRoute: string;
     @Input() pCenter: CentroMappa;
+    @Input() idRichiestaSelezionata: string;
+    @Input() richiestaModifica: SintesiRichiesta;
+    @Input() richiestaGestione: SintesiRichiesta;
     @Input() chiamateMarkers: ChiamataMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() direction: DirectionInterface;
@@ -138,6 +145,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     ];
                     for (const lShutdown of layersToShutdown) {
                         this.toggleLayer(lShutdown, false).then();
+                    }
+
+                    // Se ci sono aggiungo i markers chiamata
+                    if (this.chiamateMarkers?.length) {
+                        this.addChiamateMarkersToLayer(this.chiamateMarkers, true).then();
                     }
 
                     // Gestisco l'evento "click"
@@ -254,6 +266,38 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 this.clearDirection();
             }
         }
+
+        // Controllo il valore di "idRichiestaSelezionata"
+        if (changes?.idRichiestaSelezionata?.currentValue && this.map && this.view?.ready) {
+            const richieste = this.store.selectSnapshot(RichiesteState.richieste);
+            const idRichiestaSelezionata = changes?.idRichiestaSelezionata?.currentValue;
+            const richiestaSelezionata = richieste.filter((r: SintesiRichiesta) => r.id === idRichiestaSelezionata)[0];
+            const coordinateCentro = richiestaSelezionata.localita.coordinate;
+            const zoom = 16;
+            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
+        }
+
+        // Controllo il valore di "richiestaModifica"
+        if (changes?.richiestaModifica?.currentValue && this.map && this.view?.ready) {
+            const richiestaModifica = changes?.richiestaModifica?.currentValue;
+            const coordinateCentro = richiestaModifica.localita.coordinate;
+            const zoom = 16;
+            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        } else if (changes?.richiestaModifica?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
+        }
+
+        // Controllo il valore di "richiestaGestione"
+        // if (changes?.richiestaGestione?.currentValue && this.map && this.view?.ready) {
+        //     const richiestaGestione = changes?.richiestaGestione?.currentValue;
+        //     const coordinateCentro = richiestaGestione.localita.coordinate;
+        //     const zoom = 16;
+        //     this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        // } else if (changes?.richiestaGestione?.currentValue === null && changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
+        //         this.store.dispatch(new GetInitCentroMappa());
+        // }
 
         // Controllo il valore di "filtriRichiesteSelezionati"
         if (changes?.filtriRichiesteSelezionati?.currentValue) {
@@ -501,7 +545,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     async addChiamateMarkersToLayer(chiamateMarkers: ChiamataMarker[], applyEdits?: boolean): Promise<any> {
         if (this.chiamateMarkersGraphics?.length) {
             const query = { where: '1=1' };
-            this.chiamateInCorsoFeatureLayer.queryFeatures(query).then((results) => {
+            this.chiamateInCorsoFeatureLayer.queryFeatures(query).then((results: supportFeatureSet) => {
                 const deleteFeatures = results.features;
                 this.chiamateInCorsoFeatureLayer.applyEdits({ deleteFeatures });
                 this.chiamateInCorsoFeatureLayer.refresh();

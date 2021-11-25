@@ -20,10 +20,12 @@
 using CQRS.Commands;
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.AllertaAltreSedi;
+using DomainModel.CQRS.Commands.HLogBook;
 using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.RicercaFullText;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
@@ -50,6 +52,8 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<GetCountInterventiVicinanzeQuery, GetCountInterventiVicinanzeResult> _getCountInterventiVicinanze;
         private readonly IQueryHandler<GetInterventiVicinanzeQuery, GetInterventiVicinanzeResult> _getInterventiVicinanze;
         private readonly ICommandHandler<AllertaAltreSediCommand> _allertaSediHandler;
+        private readonly IQueryHandler<RicercaFullTextQuery, RicercaFullTextResult> _ricercaFullTextHandler;
+        private readonly ICommandHandler<LogBookCommand> _logBookHandler;
 
         public GestioneRichiestaController(
             ICommandHandler<UpDateStatoRichiestaCommand> addhandler,
@@ -58,7 +62,9 @@ namespace SO115App.API.Controllers
             IQueryHandler<GetCodiciRichiesteAssistenzaQuery, GetCodiciRichiesteAssistenzaResult> getCodiciRichiesta,
             IQueryHandler<GetCountInterventiVicinanzeQuery, GetCountInterventiVicinanzeResult> getCountInterventiVicinanze,
             IQueryHandler<GetInterventiVicinanzeQuery, GetInterventiVicinanzeResult> getInterventiVicinanze,
-            ICommandHandler<AllertaAltreSediCommand> allertaSediHandler
+            ICommandHandler<AllertaAltreSediCommand> allertaSediHandler,
+            IQueryHandler<RicercaFullTextQuery, RicercaFullTextResult> ricercaFullTextHandler,
+            ICommandHandler<LogBookCommand> LogBookHandler
             )
         {
             _addhandler = addhandler;
@@ -66,6 +72,8 @@ namespace SO115App.API.Controllers
             _getSingolaRichiesta = getSingolaRichiesta;
             _getCodiciRichiesta = getCodiciRichiesta;
             _allertaSediHandler = allertaSediHandler;
+            _ricercaFullTextHandler = ricercaFullTextHandler;
+            _logBookHandler = LogBookHandler;
             _getCountInterventiVicinanze = getCountInterventiVicinanze;
             _getInterventiVicinanze = getInterventiVicinanze;
         }
@@ -135,6 +143,29 @@ namespace SO115App.API.Controllers
             try
             {
                 return Ok(_getSingolaRichiesta.Handle(sintesiQuery).SintesiRichiesta);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("GetRichiesteByFullText")]
+        public async Task<IActionResult> GetRichiesteByFullText(string TextToSearch)
+        {
+            var sintesiQuery = new RicercaFullTextQuery
+            {
+                TextSearch = TextToSearch,
+                CodSedi = Request.Headers["codiceSede"].ToString().Split(','),
+                IdUtente = Request.Headers["idUtente"]
+            };
+
+            try
+            {
+                return Ok(_ricercaFullTextHandler.Handle(sintesiQuery));
             }
             catch (Exception ex)
             {
@@ -231,6 +262,26 @@ namespace SO115App.API.Controllers
             try
             {
                 this._allertaSediHandler.Handle(parametri);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("AddLogBook")]
+        public async Task<IActionResult> AddLogBook([FromBody] LogBookCommand parametri)
+        {
+            var idOperatore = Request.Headers["IdUtente"];
+            parametri.CodUtente = idOperatore;
+
+            try
+            {
+                this._logBookHandler.Handle(parametri);
                 return Ok();
             }
             catch (Exception ex)

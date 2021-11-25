@@ -96,16 +96,16 @@
                 <div class="row">
                 <div class="col pr-0">
                   <ul class="list-unstyled m-0">
-                    <li><span class="d-inline-block n-li-box h6" ngbTooltip="Richieste chiuse" placement="bottom">Chiusi</span></li>
+                    <li><span class="d-inline-block n-li-box h6" ngbTooltip="Richieste sospese" placement="bottom">Sospesi</span></li>
                   </ul>
                 </div>
                 <div class="col px-0 text-center">
                   <ul class="list-unstyled m-0">
-                    <li [ngClass]="checkDiff('chiusi')"><span
+                    <li [ngClass]="checkDiff('sospesi')"><span
                       class="position-relative badge badge-mod-secondary text-light h6 w-75"
                       ><i *ngIf="interventiDiff"
                            class="blink-i-aggregate fas"
-                           [ngClass]="realDiff('chiusi')"></i>{{interventi.chiusi}}</span>
+                           [ngClass]="realDiff('sospesi')"></i>{{interventi.sospesi}}</span>
                     </li>
                   </ul>
                 </div>

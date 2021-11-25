@@ -17,6 +17,7 @@ import { PosInterface } from '../../interface/pos.interface';
 import { HttpEventType } from '@angular/common/http';
 import { PosService } from '../../../core/service/pos-service/pos.service';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
+import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-triage-summary',
@@ -38,13 +39,21 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     @Input() triageSummary: TriageSummary[];
     @Input() pos: PosInterface[];
     @Input() schedaContatto: SchedaContatto;
+    @Input() dettaglioSchedaContatto: string;
 
     contatoreGeneriMezzo: number;
     generiMezzo: string[];
     noteOperatore: string[];
     methods = new HelperSintesiRichiesta();
     live = true;
-    descrizioneDettaglioTipologia: string;
+    infoAggiuntive = {
+        pos: false,
+        riepilogoTriage: true,
+        noteNue: false,
+        interventiInProssimita: false,
+        interventiStessaVia: false,
+        interventiChiusiStessoIndirizzo: false,
+    };
 
     private subscription: Subscription = new Subscription();
 
@@ -68,11 +77,6 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.schedaContatto?.currentValue) {
             const schedaContatto = changes?.schedaContatto?.currentValue;
             this.schedaContatto = schedaContatto;
-        }
-        if (changes?.dettaglioTipologia) {
-            this.dettaglioTipologia && this.dettaglioTipologia.descrizione ? this.descrizioneDettaglioTipologia = this.dettaglioTipologia.descrizione : null;
-        } else if (!changes?.tipologia?.currentValue) {
-            this.descrizioneDettaglioTipologia = '';
         }
     }
 
@@ -100,7 +104,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
                         document.body.removeChild(a);
                         break;
                 }
-            }, error => console.log('Errore Stampa POS'));
+            }, () => console.log('Errore Stampa POS'));
         } else {
             console.error('CodSede utente non trovato');
         }
@@ -125,9 +129,15 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
                         document.body.removeChild(a);
                         break;
                 }
-            }, error => console.log('Errore visualizzazione POS'));
+            }, () => console.log('Errore visualizzazione POS'));
         } else {
             console.error('CodSede utente non trovato');
+        }
+    }
+
+    onShowInfoAggiuntive(event: NgbPanelChangeEvent): void {
+        if (event) {
+            Object.keys(this.infoAggiuntive).forEach(x => x === event.panelId ? this.infoAggiuntive[x] = !this.infoAggiuntive[x] : this.infoAggiuntive[x] = false);
         }
     }
 }

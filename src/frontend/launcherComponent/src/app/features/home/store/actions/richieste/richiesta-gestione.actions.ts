@@ -9,7 +9,4 @@ export class SetRichiestaGestione {
 
 export class ClearRichiestaGestione {
     static readonly type = '[RichiestaGestione] Clear Richiesta Gestione';
-
-    constructor(public idRichiesta: string) {
-    }
 }

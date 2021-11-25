@@ -128,6 +128,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.TriageSummary = command.Chiamata.TriageSummary;
             richiesta.ChiamataUrgente = command.Chiamata.ChiamataUrgente;
             richiesta.Esercitazione = command.Chiamata.Esercitazione;
+            richiesta.NoteNue = command.Chiamata.NoteNue;
 
             if (command.Chiamata.Tags != null)
                 richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);

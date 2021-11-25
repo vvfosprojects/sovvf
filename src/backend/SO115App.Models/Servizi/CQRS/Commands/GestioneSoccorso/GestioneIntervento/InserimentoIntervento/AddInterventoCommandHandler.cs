@@ -87,7 +87,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var richiesta = new RichiestaAssistenza()
             {
                 Tipologie = listaCodiciTipologie,
-                CodZoneEmergenza = command.Chiamata.ZoneEmergenza,
+                //CodZoneEmergenza = command.Chiamata.ZoneEmergenza,
                 Richiedente = command.Chiamata.Richiedente,
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
@@ -107,7 +107,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 TriageSummary = command.Chiamata.TriageSummary,
                 ChiamataUrgente = command.Chiamata.ChiamataUrgente,
-                Esercitazione = command.Chiamata.Esercitazione
+                Esercitazione = command.Chiamata.Esercitazione,
+                NoteNue = command.Chiamata.NoteNue
             };
 
             //Aggiungo le competenze alla chiamata per la gestione delle notifiche di CodaChiamate
