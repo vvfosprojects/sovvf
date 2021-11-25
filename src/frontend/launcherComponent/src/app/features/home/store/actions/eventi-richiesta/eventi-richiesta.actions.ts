@@ -18,6 +18,10 @@ export class SetEventiRichiesta {
     }
 }
 
+export class AddEvento {
+    static readonly type = '[EventiRichiesta] Add Evento';
+}
+
 export class SetListaTarghe {
     static readonly type = '[EventiRichiesta] Set Eventi Lista Targhe';
 }

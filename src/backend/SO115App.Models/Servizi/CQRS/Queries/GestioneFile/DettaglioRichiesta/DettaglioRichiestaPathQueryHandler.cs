@@ -74,7 +74,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     Chiamata = chiamata
                 };
 
-                if(query.ContentType == "application/pdf")
+                if (query.ContentType == "application/pdf")
                     stream = _PDFdettChiamataManager.GenerateAndDownload(form, filename, "DettagliChiamate");
                 else
                     stream = _CSVdettChiamataManager.GenerateAndDownload(form, filename, "DettagliChiamate");
@@ -96,7 +96,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                     })).ToList()
                 };
 
-                if(query.ContentType == "application/pdf")
+                if (query.ContentType == "application/pdf")
                     stream = _PDFdettInterventoManager.GenerateAndDownload(form, filename, "DettagliInterventi");
                 else
                     stream = _CSVdettInterventoManager.GenerateAndDownload(form, filename, "DettagliInterventi");

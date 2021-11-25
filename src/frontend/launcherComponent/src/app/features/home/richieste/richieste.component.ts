@@ -32,6 +32,7 @@ import { EntiState } from '../../../shared/store/states/enti/enti.state';
 import { EnteInterface } from '../../../shared/interface/ente.interface';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { Coordinate } from '../../../shared/model/coordinate.model';
+import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -44,7 +45,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Input() nightMode: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
-    ricerca: { descrizione: '' };
+    ricerca: string;
 
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
     richieste: SintesiRichiesta[] = [];
@@ -109,7 +110,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
         this.store.dispatch([
             new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
-            new ClearRichieste()
+            new ClearRichieste(),
+            new ClearRicercaFilterbar()
         ]);
         console.log('Componente Richieste distrutto');
     }
@@ -199,7 +201,10 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         // Restituisce la stringa di ricerca
         this.subscription.add(
             this.ricerca$.subscribe((ricerca: any) => {
-                this.ricerca = ricerca;
+                if (ricerca || ricerca === '') {
+                    this.ricerca = ricerca;
+                    this.store.dispatch(new GetListaRichieste());
+                }
             })
         );
     }

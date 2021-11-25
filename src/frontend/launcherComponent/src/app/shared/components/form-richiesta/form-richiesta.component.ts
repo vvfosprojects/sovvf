@@ -52,7 +52,7 @@ import {
 } from '../../store/actions/triage-modal/triage-modal.actions';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
-import { ClearPosTriageSummary, ClearTriageSummary, SetPosTriageSummary, SetTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
+import { ClearPosTriageSummary, ClearTriageSummary, SetPosTriageSummary, SetSchedaContattoTriageSummary, SetTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
 import { getPrioritaTriage } from '../../helper/function-triage';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
@@ -95,6 +95,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Input() loadingSchedaRichiesta: boolean;
     @Input() loadingCompetenze: boolean;
     @Input() schedaContatto: SchedaContatto;
+    @Input() schedaContattoDettaglio: string;
 
     // Modifica
     @Input() modifica: boolean;
@@ -144,6 +145,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.setIndirizzoFromMappa(this.lat, this.lon, this.address);
         }
         this.getDettagliTipologia();
+        if (this.richiestaModifica && this.richiestaModifica.codiceSchedaNue) {
+            this.store.dispatch(new SetSchedaContattoTriageSummary(this.richiestaModifica.codiceSchedaNue));
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -184,6 +188,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 if (triageSummary) {
                     setPrioritaByTriageSummary(this.f, triageSummary);
                 }
+            }
+            if (changes.schedaContattoDettaglio?.currentValue) {
+                this.f.noteNue.patchValue(this.schedaContattoDettaglio);
             }
         }
     }
@@ -291,7 +298,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             stato: StatoRichiesta.Chiamata,
             urgenza: this.richiestaModifica.chiamataUrgente,
             esercitazione: this.richiestaModifica.esercitazione,
-            noteNue: this.richiestaModifica.noteNue
+            noteNue: this.richiestaModifica.noteNue,
         });
 
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
