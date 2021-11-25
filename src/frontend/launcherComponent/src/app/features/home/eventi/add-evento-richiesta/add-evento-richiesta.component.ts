@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
+import { Component, Input, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-add-evento-richiesta',
@@ -7,20 +7,35 @@ import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model
     styleUrls: ['./add-evento-richiesta.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddEventoRichiestaComponent {
+export class AddEventoRichiestaComponent implements OnInit {
 
+    @Input() codiceRichiesta: string;
     @Input() loading: boolean;
-    @Input() elencoEventi: EventoRichiesta[];
-    @Input() iconeNomeClasseEvento: boolean;
 
-    @Output() targheSelezionate = new EventEmitter<string[]>();
+    @Output() addEvento: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor() {
+    eventoForm: FormGroup;
+
+    constructor(private formBuilder: FormBuilder) {
+        this.initForm();
     }
 
-    setRicercaTargaMezzo(targa: string): void {
-        if (targa) {
-            this.targheSelezionate.emit([targa]);
-        }
+    ngOnInit(): void {
+        this.f.codice.patchValue(this.codiceRichiesta);
+    }
+
+    initForm(): void {
+        this.eventoForm = this.formBuilder.group({
+            codice: [null, Validators.required],
+            text: [null, Validators.required]
+        });
+    }
+
+    get f(): any {
+        return this.eventoForm.controls;
+    }
+
+    onSubmit(): void {
+        this.addEvento.emit();
     }
 }
