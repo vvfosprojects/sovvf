@@ -32,6 +32,7 @@ namespace SO115App.API.Controllers
             {
                 var query = new DettaglioRichiestaPathQuery()
                 {
+                    BaseUrl = HttpContext.Request.Host.Host,
                     CodiceRichiesta = codice,
 
                     ContentType = contentType,

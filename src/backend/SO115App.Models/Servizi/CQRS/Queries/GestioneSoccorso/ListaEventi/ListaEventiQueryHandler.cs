@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.ELogBook;
 using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Soccorso.Eventi.Statri;
@@ -150,6 +151,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case AllertaEmergenza _:
                     return ((AllertaEmergenza)evento).DescrizioneEmergenza;
+
+                case LogBook _:
+                    return ((LogBook)evento).Note;
+
                 default:
                     return "";
             }
@@ -329,10 +334,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case InserimentoModuliColonnaMobileEmergenzaImmediata _:
                     return Costanti.EmergenzaInserimentoModuliColonnaMobiliImmediata;
-                
+
                 case InserimentoModuliColonnaMobileEmergenzaPotInt _:
                     return Costanti.EmergenzaInserimentoModuliColonnaMobiliPotInt;
-                
+
                 case InserimentoModuliColonnaMobileEmergenzaConsolidamento _:
                     return Costanti.EmergenzaInserimentoModuliColonnaMobiliConsolidamento;
 

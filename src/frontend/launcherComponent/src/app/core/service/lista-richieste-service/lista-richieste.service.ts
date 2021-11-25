@@ -6,10 +6,7 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
-import { Store } from '@ngxs/store';
-import { FiltroZoneEmergenzaState } from '../../../features/home/store/states/filterbar/filtro-zone-emergenza.state';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
-import { FiltriRichiesteState } from '../../../features/home/store/states/filterbar/filtri-richieste.state';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_RICHIESTE = BASE_URL + environment.apiUrl.rigaElencoRichieste;
@@ -24,7 +21,7 @@ const API_ENTI = BASE_URL + environment.apiUrl.enti;
 })
 export class SintesiRichiesteService {
 
-    constructor(private http: HttpClient, private store: Store) {
+    constructor(private http: HttpClient) {
     }
 
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
@@ -33,23 +30,19 @@ export class SintesiRichiesteService {
         if (filtriTipologieRichiesta?.length) {
             filtriTipologia = filtriTipologieRichiesta[0]?.codice;
         }
-        const filtroStato = this.store.selectSnapshot(FiltriRichiesteState.selezioneStatoRichiesta);
-        const zoneEmergenza = this.store.selectSnapshot(FiltroZoneEmergenzaState.filtriZoneEmergenzaSelezionate);
-        const chiuse = this.store.selectSnapshot(FiltriRichiesteState.chiuse);
-        const periodoChiuseChiamate = this.store.selectSnapshot(FiltriRichiesteState.periodoChiuseChiamate);
-        const periodoChiusiInterventi = this.store.selectSnapshot(FiltriRichiesteState.periodoChiusiInterventi);
         const obj = {
             page: pagination.page,
             pageSize: pagination.pageSize || 30,
+            searchKey: filters.search,
             includiRichiesteAperte: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
             includiRichiesteChiuse: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
             filtriTipologie: null,
-            statiRichiesta: filtroStato && filtroStato.length ? filtroStato : null,
+            statiRichiesta: filters?.filtroStato.length ? filters.filtroStato : null,
             tipologiaRichiesta: filtriTipologia ? filtriTipologia : null,
-            zoneEmergenza: zoneEmergenza && zoneEmergenza.length ? zoneEmergenza : null,
-            chiuse: chiuse && chiuse.length ? chiuse : null,
-            periodoChiuseChiamate: periodoChiuseChiamate.da || periodoChiuseChiamate.data || periodoChiuseChiamate.turno ? periodoChiuseChiamate : null,
-            periodoChiusiInterventi: periodoChiusiInterventi.da || periodoChiusiInterventi.data || periodoChiusiInterventi.turno ? periodoChiusiInterventi : null,
+            zoneEmergenza: filters?.zoneEmergenza.length ? filters.zoneEmergenza : null,
+            chiuse: filters?.chiuse.length ? filters.chiuse : null,
+            periodoChiuseChiamate: filters?.periodoChiuseChiamate.da || filters?.periodoChiuseChiamate.data || filters?.periodoChiuseChiamate.turno ? filters?.periodoChiuseChiamate : null,
+            periodoChiusiInterventi: filters?.periodoChiusiInterventi.da || filters?.periodoChiusiInterventi.data || filters?.periodoChiusiInterventi.turno ? filters?.periodoChiusiInterventi : null
         };
         return this.http.post(API_URL_RICHIESTE, obj);
     }
