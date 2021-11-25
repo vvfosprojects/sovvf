@@ -32,11 +32,8 @@ namespace SO115App.API.Controllers
             {
                 var query = new DettaglioRichiestaPathQuery()
                 {
-                    BaseUrl = HttpContext.Request.Host.Host,
                     CodiceRichiesta = codice,
-
                     ContentType = contentType,
-
                     IdOperatore = Request.Headers["IdUtente"],
                     IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
                 };
@@ -63,9 +60,7 @@ namespace SO115App.API.Controllers
                 var query = new RiepilogoInterventiPathQuery()
                 {
                     Filtri = filtri,
-
                     ContentType = contentType,
-
                     IdOperatore = Request.Headers["IdUtente"],
                     IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
                 };
