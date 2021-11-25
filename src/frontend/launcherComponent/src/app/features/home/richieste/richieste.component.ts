@@ -95,10 +95,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.store.dispatch([
-            new ClearRicercaFilterbar(),
-            new GetListaRichieste()
-        ]);
+        this.store.dispatch(new GetListaRichieste());
         this.getRichiestaFissata();
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
@@ -113,7 +110,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
         this.store.dispatch([
             new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
-            new ClearRichieste()
+            new ClearRichieste(),
+            new ClearRicercaFilterbar()
         ]);
         console.log('Componente Richieste distrutto');
     }
