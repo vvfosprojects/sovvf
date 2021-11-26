@@ -39,10 +39,10 @@ namespace SO115App.Persistence.File.PDFManagement
 
         public MemoryStream GenerateAndDownload(TemplateModelForm template, string fileName, string requestFolder)
         {
-            Log.Information($"Dettaglio QH - 1 **************** DENTRO GenerateAndDownload ************************");
+            Log.Error($"Dettaglio QH - 1 **************** DENTRO GenerateAndDownload ************************");
             var path = _config.GetSection("GenericSettings").GetSection("PathTempateStampe").Value;
 
-            Log.Information($"Dettaglio QH - 1 **************** Path {path} ************************");
+            Log.Error($"Dettaglio QH - 1 **************** Path {path} ************************");
 
             switch (template)
             {
