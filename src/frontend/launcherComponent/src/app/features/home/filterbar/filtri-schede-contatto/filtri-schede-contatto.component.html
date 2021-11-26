@@ -36,8 +36,9 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-outline-secondary p-1 altri-filtri" (click)="eliminaFiltriAttivi()"
-            [disabled]="disableFilters">
-        <i class="fas fa-undo text-dark px-1" [class.text-moon]="nightMode"></i>
+    <button class="btn btn-outline-secondary p-1"
+            [disabled]="disableFilters"
+            (click)="eliminaFiltriAttivi()">
+        <i class="fas fa-undo px-1"></i>
     </button>
 </div>

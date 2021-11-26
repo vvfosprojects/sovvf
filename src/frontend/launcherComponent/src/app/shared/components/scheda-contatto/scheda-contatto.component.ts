@@ -83,6 +83,10 @@ export class SchedaContattoComponent implements OnChanges {
         return cardClasses;
     }
 
+    isVisible(): boolean {
+        return this.idVisualizzati?.length ? this.idVisualizzati.includes(this.scheda.codiceScheda) : true;
+    }
+
     getCheckboxState(scheda: SchedaContatto): CheckboxInterface {
         let checkBox: CheckboxInterface;
         if (this.disableRaggruppamento) {

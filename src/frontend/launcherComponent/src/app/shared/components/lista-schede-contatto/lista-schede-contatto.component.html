@@ -116,22 +116,29 @@
     <div class="clearfix">
         <div class="float-left">
             <ng-template [ngIf]="!hideRaggruppa">
-                <button *ngIf="statoModalita" class="btn btn-lg btn-outline-danger mr-3" [disabled]="loading"
+                <button *ngIf="statoModalita" class="btn btn-lg mr-3"
+                        [class.btn-outline-danger]="!nightMode"
+                        [class.btn-outline-light]="nightMode"
+                        [disabled]="loading"
                         (click)="onToggleModalitaMerge()">
                     <i class="fas fa-undo mr-1"></i>
                     Annulla
                 </button>
                 <button *ngIf="statoModalita"
                         class="btn btn-lg mr-3"
-                        [class.btn-outline-success]="idSelezionatiMerge?.length <= 1 || loading"
-                        [class.btn-success]="idSelezionatiMerge?.length > 1 && !loading"
+                        [class.btn-outline-success]="(idSelezionatiMerge?.length <= 1 || loading) && !nightMode"
+                        [class.btn-success]="(idSelezionatiMerge?.length > 1 && !loading) && !nightMode"
+                        [class.btn-outline-light]="(idSelezionatiMerge?.length <= 1 || loading) && nightMode"
+                        [class.btn-light]="(idSelezionatiMerge?.length > 1 && !loading) && nightMode"
                         [disabled]="idSelezionatiMerge.length <= 1 || loading"
                         (click)="onSaveMerge()">
                     <i class="fas fa-save mr-1"></i>
-                    Raggruppa selezionate
+                    Raggruppa selezionate <span *ngIf="idSelezionatiMerge?.length">({{ idSelezionatiMerge.length }})</span>
                 </button>
                 <button *ngIf="!statoModalita"
-                        class="btn btn-lg btn-outline-primary mr-3"
+                        class="btn btn-lg mr-3"
+                        [class.btn-outline-primary]="!nightMode"
+                        [class.btn-outline-light]="nightMode"
                         (click)="onToggleModalitaMerge()">
                     <i class="fas fa-object-group mr-1"></i>
                     Raggruppa

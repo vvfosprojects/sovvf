@@ -1,6 +1,7 @@
 <div class="btn-group w-100">
     <div ngbDropdown autoClose="outside">
-        <button ngbDropdownToggle class="btn btn-block btn-secondary"
+        <button ngbDropdownToggle
+                class="btn btn-block btn-secondary"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
@@ -93,7 +94,9 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-outline-secondary p-1" (click)="resetFiltri()" [disabled]="disableFilters">
+    <button class="btn btn-outline-secondary p-1"
+            [disabled]="disableFilters"
+            (click)="resetFiltri()">
         <i class="fas fa-undo px-1" style="font-size: 20px"></i>
     </button>
 </div>

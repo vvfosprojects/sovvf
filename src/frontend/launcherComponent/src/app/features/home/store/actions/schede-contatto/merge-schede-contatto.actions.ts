@@ -23,6 +23,13 @@ export class SetMergeSchedaId {
     }
 }
 
+export class AddSchedaId {
+    static readonly type = '[Merge Schede Contatto] Add Scheda Contatto ID';
+
+    constructor(public payload: string) {
+    }
+}
+
 export class RemoveSchedaId {
     static readonly type = '[Merge Schede Contatto] Remove Scheda Contatto ID';
 
@@ -30,10 +37,17 @@ export class RemoveSchedaId {
     }
 }
 
-export class AddSchedaId {
-    static readonly type = '[Merge Schede Contatto] Add Scheda Contatto ID';
+export class AddScheda {
+    static readonly type = '[Merge Schede Contatto] Add Scheda Contatto';
 
-    constructor(public payload: string) {
+    constructor(public payload: SchedaContatto) {
+    }
+}
+
+export class RemoveScheda {
+    static readonly type = '[Merge Schede Contatto] Remove Scheda Contatto';
+
+    constructor(public payload: SchedaContatto) {
     }
 }
 
