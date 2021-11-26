@@ -344,6 +344,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case AllertaEmergenza _:
                     return Costanti.EmergenzaAllerta;
 
+                case LogBook _:
+                    return Costanti.LogBook;
+
                 default:
                     return Costanti.EventoGenerico;
             }
