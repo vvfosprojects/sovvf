@@ -13,24 +13,33 @@ namespace SO115App.Persistence.MongoDB.Marker
 
         public GetCentroMappa(IGetCoordinateByCodSede service,
                               IGetStringCoordinateByCodSede getStringCoordinateByCodSede)
-        { 
+        {
             _service = service;
             _getStringCoordinateByCodSede = getStringCoordinateByCodSede;
         }
 
-
         public CentroMappa GetCentroMappaMarker(string codiceSede)
         {
-            //var coordinate = _service.Get(codiceSede);
-            var coordinate = _getStringCoordinateByCodSede.Get(codiceSede);
-            //coordinate.Latitudine = Convert.ToDouble(coordinate.Latitudine);
-            //coordinate.Longitudine = Convert.ToDouble(coordinate.Longitudine);
+            var centroMappa = new CentroMappa();
 
-            var centroMappa = new CentroMappa()
+            if (!codiceSede.Equals("00"))
             {
-                CoordinateCentro = coordinate,
-                Zoom = 10
-            };
+                var coordinate = _getStringCoordinateByCodSede.Get(codiceSede);
+                centroMappa = new CentroMappa()
+                {
+                    CoordinateCentro = coordinate,
+                    Zoom = 10
+                };
+            }
+            else
+            {
+                string[] coordinate = new string[2] { "42.28313392189123", "11.682171591796926" };
+                centroMappa = new CentroMappa()
+                {
+                    CoordinateCentro = coordinate,
+                    Zoom = 6
+                };
+            }
 
             return centroMappa;
         }
