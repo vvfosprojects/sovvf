@@ -45,7 +45,7 @@ export class EventoRichiestaComponent implements OnInit {
             ['RichiestaSospesa', ['fa-stop']],
             ['MezzoRientrato', ['fa-truck', 'fa-hand-o-left']],
             ['MezzoInRientro', ['fa-truck', 'fa-handshake-o']],
-            ['AssegnataRichiesta', ['fa-tty']],
+            ['Assegnata', ['fa-tty']],
             ['AssegnataPriorita', ['fa-thermometer-half']],
             ['MarcaRilevante', ['fa-warning', 'fa-check']],
             ['Sospesa', ['fa-pause']],
