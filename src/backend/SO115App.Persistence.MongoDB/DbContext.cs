@@ -37,6 +37,7 @@ using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.ELogBook;
 using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Soccorso.Eventi.Statri;
@@ -151,6 +152,8 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaConsolidamento>();
 
             UnitaOperativaMap.Map();
+
+            BsonClassMap.RegisterClassMap<LogBook>(); 
 
         }
 
