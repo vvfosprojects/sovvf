@@ -48,11 +48,25 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
         /// </summary>
         /// <param name="codiceSede">opzionale, rappresenta il codice sede delle squadre</param>
         /// <returns>una lista di stati operativi</returns>
-        public List<StatoOperativoSquadra> Get(List<string> codiciSede = null)
+        public List<StatoOperativoSquadra> Get(string turno, List<string> codiciSede = null)
         {
             if (codiciSede != null)
-                return _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.In(x => x.CodiceSede, codiciSede)).ToList();
-            return _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.Empty).ToList();
+            {
+                var lista = _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.In(x => x.CodiceSede, codiciSede)).ToList();
+
+                if (turno.Trim().Length == 0)
+                {
+                    return lista;
+                }
+                return lista.FindAll(x => x.Turno.Equals(turno));
+            }
+
+            var listaAll = _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.Empty).ToList();
+            if (turno.Trim().Length == 0)
+            {
+                return listaAll;
+            }
+            return listaAll.FindAll(x => x.Turno.Equals(turno));
         }
     }
 }

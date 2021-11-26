@@ -14,5 +14,6 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
         public RichiestaAssistenza Richiesta { get; set; }
         public RichiestaAssistenza RichiestaDaSganciare { get; set; }
         public Utente Utente { get; set; }
+        public string TurnoPartenza { get; set; }
     }
 }
