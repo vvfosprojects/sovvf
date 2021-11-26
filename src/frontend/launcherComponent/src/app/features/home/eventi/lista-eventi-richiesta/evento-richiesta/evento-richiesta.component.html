@@ -1,6 +1,6 @@
 <td>
     <div *ngIf="visualizzaIconeNomeClasseEvento">
-        <i *ngFor="let ii of iconeClasseEventoCorrente" class="fas {{ii}} fa-fw font-xlarge" aria-hidden="true"
+        <i *ngFor="let icona of iconeClasseEventoCorrente" class="fas {{icona}} fa-fw font-xlarge" aria-hidden="true"
            [ngbTooltip]="formatNomeClasseEvento(eventoRichiesta.nomeClasseEvento) | eventi">
         </i>
     </div>
