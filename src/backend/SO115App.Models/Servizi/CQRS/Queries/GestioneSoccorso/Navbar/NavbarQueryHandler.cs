@@ -42,7 +42,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         private readonly IConfiguration _configuration;
         private readonly IGetStringCoordinateByCodSede _getStringCoordinateByCodSede;
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
-        
 
         public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO,
                                   IGetConteggioSchede getConteggioSchedeHandler,
@@ -69,6 +68,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
             Log.Debug("Inizio elaborazione Informazioni Navbar Handler");
 
             var centroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodSedi[0]);
+
+            //Se il centromappa riguarda il CON metto Zoom fisso a 6
+            if (query.CodSedi[0].Equals("00"))
+                centroMappaMarker.Zoom = 6;
+
             var lstSedi = _alberaturaUO.ListaSediAlberata();
 
             var navbars = new Classi.NavBar.Navbar
