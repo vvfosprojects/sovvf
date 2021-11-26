@@ -33,7 +33,7 @@
                                             </div>
                                             <div class="float-right">
                                                 <div *ngFor="let opzione of impostazione?.opzioni"
-                                                     class="clearfix px-3">
+                                                     [class.min-width-select]="opzione?.select">
                                                     <ng-template [ngIf]="opzione?.singleValue">
                                                         <label [for]="opzione?.label"
                                                                class="d-none">{{ opzione?.label }}</label>
@@ -52,6 +52,8 @@
                                                                    [items]="opzione?.select?.itemsSelect"
                                                                    [multiple]="false"
                                                                    [clearable]="false"
+                                                                   [searchable]="false"
+                                                                   [hideSelected]="true"
                                                                    (ngModelChange)="setImpostazione(impostazione?.tipo, opzione.label, $event)">
                                                         </ng-select>
                                                     </ng-template>
