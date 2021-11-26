@@ -61,7 +61,7 @@ export class EventoRichiestaComponent implements OnInit {
             ['AllertaAltreSedi', ['fa-exclamation-triangle']],
             ['RichiestaSoccorsoAereo', ['fa-plane']],
             ['AnnullamentoRichiestaSoccorsoAereo', ['fa-plane', 'fa-times']],
-            ['LogBook', ['']],
+            ['Log book', ['fa-clipboard']],
 
             // Default per gli eventi-richiesta-richiesta non gestiti
             ['EventoGenerico', ['fa-question-circle']],
