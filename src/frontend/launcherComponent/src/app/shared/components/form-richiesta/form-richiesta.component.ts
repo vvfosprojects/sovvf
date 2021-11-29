@@ -141,6 +141,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.clearFormDisconnection();
         if (this.apertoFromMappa) {
             this.setIndirizzoFromMappa(this.lat, this.lon, this.address);
         }
