@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { SetRicercaFilterbar } from '../../../features/home/store/actions/filterbar/ricerca-richieste.actions';
 
 @Component({
     selector: 'app-risultati-ricerca',
@@ -10,7 +12,11 @@ export class RisultatiRicercaComponent {
 
     @Input() ricerca: string;
 
-    constructor() {
+    constructor(private store: Store) {
+    }
+
+    resetRicerca(): void {
+        this.store.dispatch(new SetRicercaFilterbar(''));
     }
 
 }

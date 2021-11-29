@@ -28,6 +28,7 @@ using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,13 +42,15 @@ namespace SO115App.ExternalAPI.Fake.Box
         private readonly IGetSquadre _getSquadre;
         private readonly IGetSedi _sedi;
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IGetTurno _getTurno;
 
-        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre, IGetSedi sedi, IGetSottoSediByCodSede getSottoSediByCodSede)
+        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre, IGetSedi sedi, IGetSottoSediByCodSede getSottoSediByCodSede, IGetTurno getTurno)
         {
             _getStatoSquadra = getStatoSquadra;
             _getSquadre = getSquadre;
             _sedi = sedi;
             _getSottoSediByCodSede = getSottoSediByCodSede;
+            _getTurno = getTurno;
         }
 
         public BoxPersonale Get(string[] codiciSede)
@@ -59,7 +62,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var listaCodiciSedeConSottoSedi = _getSottoSediByCodSede.Get(codiciSede);
 
-            var statoSquadre = _getStatoSquadra.Get(listaCodiciSedeConSottoSedi);
+            var statoSquadre = _getStatoSquadra.Get(_getTurno.Get().Codice, listaCodiciSedeConSottoSedi);
 
             var lstCodici = listaCodiciSedeConSottoSedi.Select(cod => cod.Split('.')[0]).Distinct();
 

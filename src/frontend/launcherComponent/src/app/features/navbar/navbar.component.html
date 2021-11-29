@@ -20,9 +20,10 @@
                         <button class="btn btn-light mr-2"
                                 ngbTooltip="Visualizza Mezzi in Servizio"
                                 placement="right"
-                                [class.cursor-not-allowed]="disabledMezziInServizio"
                                 [class.btn-nav-selected]="(mezziInServizioStatus$ | async) && url === '/home'"
+                                [class.cursor-not-allowed]="disabledMezziInServizio"
                                 [disabled]="disabledMezziInServizio"
+                                [disableTooltip]="disabledMezziInServizio"
                                 (click)="toggleMezziInSerivizo()">
                             <i class="fas fa-truck"></i>
                         </button>
@@ -68,7 +69,10 @@
                                 ngbTooltip="Visualizza Gestione Emergenze"
                                 [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
                                 [class.btn-nav-selected]="url.indexOf('/zone-emergenza') !== -1"
-                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']"
+                                [class.cursor-not-allowed]="disabledZoneEmergenza"
+                                [disabled]="disabledZoneEmergenza"
+                                [disableTooltip]="disabledZoneEmergenza">
                             <i class="fas fa-exclamation-triangle"></i>
                         </button>
                         <button class="btn btn-light mr-2"
