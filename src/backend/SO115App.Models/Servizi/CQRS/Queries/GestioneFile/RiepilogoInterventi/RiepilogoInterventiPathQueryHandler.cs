@@ -48,7 +48,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             {
                 Stato = char.Parse(i.TestoStatoRichiesta),
                 Data = i.Eventi.OfType<Telefonata>().First().DataOraInserimento,
-                //Turno = (i.Partenze != null && i.Partenze.Count > 0) ? string.Concat(i?.Partenze?.LastOrDefault()?.Partenza.Squadre.Select(s => s.Turno)) : "",
+                Turno = (i.Partenze != null && i.Partenze.Count > 0) ? string.Concat(i?.Partenze?.LastOrDefault()?.Partenza.Squadre.Select(s => s.Turno)) : "",
                 Indirizzo = i.Localita?.Indirizzo,
                 X = "X: " + i.Localita.Coordinate.Latitudine,
                 Y = "Y: " + i.Localita.Coordinate.Longitudine,
