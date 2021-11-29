@@ -22,6 +22,7 @@ using Newtonsoft.Json;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -320,12 +321,19 @@ namespace SO115App.Persistence.MongoDB
             var lstsq = new List<string> { filtri.Squadra };
             var squadre = string.IsNullOrEmpty(filtri.Squadra) ? empty : Builders<RichiestaAssistenza>.Filter.AnyIn(r => r.lstSquadre, lstsq);
 
-            var periodoDa = Builders<RichiestaAssistenza>.Filter.Gte(r => r.dataOraInserimento, filtri.Da);
-            var periodoA = Builders<RichiestaAssistenza>.Filter.Lte(r => r.dataOraInserimento, filtri.A);
+            //var periodoDa = Builders<RichiestaAssistenza>.Filter.Gte(r => r.dataOraInserimento, filtri.Da);
+            //var periodoA = Builders<RichiestaAssistenza>.Filter.Lte(r => r.dataOraInserimento, filtri.A);
 
-            var trasmessi = (filtri.AltriFiltri?.Trasmessi ?? false) ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.Fonogramma, null) : empty;
+            //var trasmessi = (filtri.AltriFiltri?.Trasmessi ?? false) ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.Fonogramma, null) : empty;
 
-            return _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno & squadre & trasmessi & periodoDa & periodoA).ToList();
+            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno & squadre /*& trasmessi*/ /*& periodoDa & periodoA*/).ToList();
+
+            if (filtri.AltriFiltri?.Trasmessi ?? false)
+                result = result.Where(r => r.ListaEventi.OfType<FonogrammaInviato>().Count() > 0).ToList();
+
+            result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
+
+            return result;
         }
     }
 }
