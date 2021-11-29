@@ -325,7 +325,7 @@ namespace SO115App.Persistence.MongoDB
 
             var trasmessi = (filtri.AltriFiltri?.Trasmessi ?? false) ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.Fonogramma, null) : empty;
 
-            return _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno /*& squadre & trasmessi & periodoDa & periodoA*/).ToList();
+            return _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno & squadre & trasmessi & periodoDa & periodoA).ToList();
         }
     }
 }
