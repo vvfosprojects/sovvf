@@ -20,7 +20,9 @@
     <button class="btn border-secondary btn-light btn-block btn-no-hover mt-5"
             [routerLink]="['/' + RoutesPath.GestioneUtenti]"
             [class.btn-sidebar-selected]="url === '/gestione-utenti'"
-            [routerLinkActive]="['text-dark']">
+            [routerLinkActive]="['text-dark']"
+            [class.cursor-not-allowed]="disabledGestioneUtenti"
+            [disabled]="disabledGestioneUtenti">
         <i class="fas fa-users mr-1"></i>
         Gestione Utenti
     </button>
@@ -40,7 +42,9 @@
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.ImpostazioniSede]"
             [class.btn-sidebar-selected]="url === '/impostazioni-sede'"
-            [routerLinkActive]="['text-dark']">
+            [routerLinkActive]="['text-dark']"
+            [class.cursor-not-allowed]="disabledImpostazioniSede"
+            [disabled]="disabledImpostazioniSede">
         <i class="fas fa-building mr-1"></i>
         Impostazioni Sede
     </button>

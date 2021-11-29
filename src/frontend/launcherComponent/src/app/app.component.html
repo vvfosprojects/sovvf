@@ -11,6 +11,8 @@
         <app-sidebar [user]="user"
                      [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
                      [url]="url"
+                     [disabledGestioneUtenti]="permissionFeatures.GestioneUtenti | checkPermission"
+                     [disabledImpostazioniSede]="permissionFeatures.ImpostazioniSede | checkPermission"
                      (logout)="onLogout()">
         </app-sidebar>
     </ng-sidebar>
@@ -24,6 +26,7 @@
                             [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
                             [colorButtonView]="colorButton$ | async"
                             [disabledMezziInServizio]="permissionFeatures.MezziInServizio | checkPermission"
+                            [disabledZoneEmergenza]="permissionFeatures.ZoneEmergenza | checkPermission"
                             (toggleSidebar)="getSidebarOpened()">
                 </app-navbar>
                 <router-outlet></router-outlet>
