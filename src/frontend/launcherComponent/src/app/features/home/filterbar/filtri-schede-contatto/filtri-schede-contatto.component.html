@@ -1,6 +1,9 @@
 <div class="btn-group w-100">
     <div ngbDropdown autoClose="outside" class="btn-group w-100" placement="bottom">
-        <button ngbDropdownToggle class="btn btn-block btn-secondary"
+        <button ngbDropdownToggle
+                class="btn btn-block"
+                [class.btn-outline-secondary]="!filtriSelezionati?.length"
+                [class.btn-secondary]="filtriSelezionati?.length"
                 type="button"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"

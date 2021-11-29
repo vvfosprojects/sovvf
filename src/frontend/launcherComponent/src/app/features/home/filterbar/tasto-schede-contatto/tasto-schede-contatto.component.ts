@@ -20,14 +20,16 @@ export class TastoSchedeContattoComponent {
     }
 
     coloreTasto(): string {
-        let returnClass = '';
         if (this.active) {
-            returnClass = 'btn-nav-selected';
+            return 'btn-light btn-nav-selected';
+        } else if (!this.active) {
+            return 'btn-outline-secondary';
         }
+
         if (this.disabled) {
-            returnClass = 'btn-secondary cursor-not-allowed';
+            return 'cursor-not-allowed';
         }
-        return returnClass;
+        return '';
     }
 
     coloreBadgeContatore(): string {
