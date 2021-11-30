@@ -39,7 +39,7 @@ export class UpdateSquadraComposizione {
 export class SelectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Select Squadra Composizione';
 
-    constructor(public squadraComp: SquadraComposizione, public dividiSquadra?: boolean) {
+    constructor(public squadraComp: SquadraComposizione, public dividiSquadra?: boolean, public preaccoppiato?: boolean) {
     }
 }
 
