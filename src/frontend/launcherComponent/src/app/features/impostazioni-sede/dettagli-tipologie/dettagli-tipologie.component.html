@@ -15,7 +15,8 @@
         </ng-select>
     </div>
     <div class="col text-right">
-        <app-ricerca-dettagli-tipologie [loading]="loading$ | async"
+        <app-ricerca-dettagli-tipologie [ricerca]="ricerca"
+                                        [loading]="loading$ | async"
                                         (ricercaChange)="onRicercaDettagliTipologie($event)">
         </app-ricerca-dettagli-tipologie>
     </div>
