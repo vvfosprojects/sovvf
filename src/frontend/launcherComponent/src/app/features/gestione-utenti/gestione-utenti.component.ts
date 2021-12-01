@@ -253,7 +253,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
-                if (ricerca !== null) {
+                if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetUtentiGestione());
                 }

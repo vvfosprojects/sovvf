@@ -19,8 +19,9 @@
                             </button>
                         </div>
                         <div class="col-4">
-                            <app-ricerca-pos [loading]="loading$ | async"
-                                            (ricercaChange)="onRicercaPos($event)">
+                            <app-ricerca-pos [ricerca]="ricerca"
+                                             [loading]="loading$ | async"
+                                             (ricercaChange)="onRicercaPos($event)">
                             </app-ricerca-pos>
                         </div>
                     </div>
@@ -31,19 +32,19 @@
                 </div>
                 <div class="col-12 col-md-9 mx-auto">
                     <app-tabella-pos [pos]="pos$ | async"
-                                    [tipologie]="tipologie"
-                                    [dettagliTipologie]="dettagliTipologie"
-                                    [page]="page$ | async"
-                                    [pageSize]="pageSize$ | async"
-                                    [pageSizes]="pageSizes$ | async"
-                                    [totalItems]="totalItems$ | async"
-                                    [loading]="loading$ | async"
-                                    (download)="onDownloadPos($event)"
-                                    (view)="onViewPos($event)"
-                                    (editPos)="onEditPos($event)"
-                                    (deletePos)="onDeletePos($event)"
-                                    (pageChange)="onPageChange($event)"
-                                    (pageSizeChange)="onPageSizeChange($event)">
+                                     [tipologie]="tipologie"
+                                     [dettagliTipologie]="dettagliTipologie"
+                                     [page]="page$ | async"
+                                     [pageSize]="pageSize$ | async"
+                                     [pageSizes]="pageSizes$ | async"
+                                     [totalItems]="totalItems$ | async"
+                                     [loading]="loading$ | async"
+                                     (download)="onDownloadPos($event)"
+                                     (view)="onViewPos($event)"
+                                     (editPos)="onEditPos($event)"
+                                     (deletePos)="onDeletePos($event)"
+                                     (pageChange)="onPageChange($event)"
+                                     (pageSizeChange)="onPageSizeChange($event)">
                     </app-tabella-pos>
                 </div>
             </div>

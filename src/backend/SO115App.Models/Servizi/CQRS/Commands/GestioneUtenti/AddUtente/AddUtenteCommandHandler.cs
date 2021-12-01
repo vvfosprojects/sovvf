@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="AddUtenteCommandHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -94,7 +94,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             var utenteVVF = new Utente(command.CodFiscale, personale.accountDipvvf.Split(".")[0], personale.accountDipvvf.Split(".")[1])
             {
                 Ruoli = command.Ruoli,
-                Username = personale.nome.Replace(" ", "").ToLower(),
+                Username = $"{personale.nome.Trim().ToLower()}.{personale.cognome.Trim().ToLower()}",
                 Password = "test",
                 Sede = new Sede($"{distaccamento.CodSede}", distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate)
             };

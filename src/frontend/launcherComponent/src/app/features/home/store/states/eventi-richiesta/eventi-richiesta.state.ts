@@ -17,7 +17,7 @@ import {
     AddEvento
 } from '../../actions/eventi-richiesta/eventi-richiesta.actions';
 import { Injectable } from '@angular/core';
-import { ResetForm } from '@ngxs/form-plugin';
+import { ResetForm, UpdateFormValue } from '@ngxs/form-plugin';
 
 export interface EventiRichiestaStateModel {
     eventoForm: {
@@ -129,12 +129,14 @@ export class EventiRichiestaState {
     addEvento({ getState, dispatch }: StateContext<EventiRichiestaStateModel>): void {
         const state = getState();
         const nuovoEvento = state?.eventoForm.model;
+        const codiceRichiesta = state?.codiceRichiesta;
         dispatch(new StartLoadingEventiRichiesta());
         if (nuovoEvento) {
             this.eventiRichiesta.addEventoRichiesta(nuovoEvento).subscribe(() => {
                     dispatch([
                         new StopLoadingEventiRichiesta(),
                         new ResetForm({ path: 'eventiRichiesta.eventoForm' }),
+                        new UpdateFormValue({ value: { codice: codiceRichiesta }, path: 'eventiRichiesta.eventoForm' }),
                         new GetEventiRichiesta()
                     ]);
                 },

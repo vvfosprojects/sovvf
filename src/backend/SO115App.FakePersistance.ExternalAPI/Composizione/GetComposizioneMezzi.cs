@@ -52,10 +52,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstSquadre = Task.Run(() => new ConcurrentBag<Models.Classi.ServiziEsterni.OPService.Squadra>(query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0])).SelectMany(shift => shift?.Result?.Squadre).ToList()));
 
-            var lstStatiSquadre = _getStatoSquadre.Get(query.CodiciSedi.ToList()); //Task.Run(() => _getStatoSquadre.Get(query.CodiciSedi.ToList())); 
-            var lstSquadrePreaccoppiate = lstSquadre.Result.Where(s => s.CodiciMezziPreaccoppiati != null).ToList(); //Task.Run(() => lstSquadre.Result.Where(s => s.CodiciMezziPreaccoppiati != null).ToList());
+            var lstStatiSquadre = _getStatoSquadre.Get("", query.CodiciSedi.ToList());
+            var lstSquadrePreaccoppiate = lstSquadre.Result.Where(s => s.CodiciMezziPreaccoppiati != null).ToList();
 
-            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi); //Task.Run(() => _getMezziPrenotati.Get(query.CodiciSedi));
+            var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
@@ -67,9 +67,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     var lstSqPreacc = Task.Run(() => lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new SquadraSemplice()
                     {
                         Codice = sq.Codice,
-                        //Stato = (StatoSquadraComposizione)Enum.Parse(typeof(StatoSquadraComposizione), lstStatiSquadre?.FirstOrDefault(s => s.CodMezzo.Equals(m.Codice))?.StatoSquadra ?? Costanti.MezzoInSede),
-                        //Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(lstStatiSquadre.Result?.FirstOrDefault(stato => stato.IdSquadra.Equals(sq.Codice))?.StatoSquadra),
-                        //Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(sq.Stato),
                         Nome = sq.Descrizione,
                         //Membri =
                         Distaccamento = new Sede(sq.Distaccamento),
@@ -106,9 +103,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         TempoPercorrenza = "7"
                     };
 
-                    //var indice = _ordinamento.GetIndiceOrdinamento(query.Richiesta, mc);
-
-                    
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
 
                     if (statoMezzo != null)
@@ -117,10 +111,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                         switch (mc.Mezzo.Stato)
                         {
-                            //case Costanti.MezzoInSede:
-                            //    mc.Mezzo.Stato = statiOperativiMezzi.Result?.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice)).StatoOperativo;
-                            //    break;
-
                             case Costanti.MezzoInViaggio:
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                                 break;
@@ -135,7 +125,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 break;
                         }
                     }
-                    //mc.IndiceOrdinamento = indice.Result;
 
                     lstMezzi.Add(mc);
                 });

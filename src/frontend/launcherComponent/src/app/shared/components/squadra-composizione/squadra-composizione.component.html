@@ -58,7 +58,7 @@
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
-                                [disabled]="disableBtnFeature || loadingMezzi"
+                                [disabled]="disableBtnFeature || loadingMezzi || itemSelezionato"
                                 (click)="onClick(false, true); $event.stopPropagation()">
                             <div class="d-inline-block font-weight-bold"
                                  style="font-weight: 500">

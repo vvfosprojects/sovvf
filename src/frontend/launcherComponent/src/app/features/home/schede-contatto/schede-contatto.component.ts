@@ -31,6 +31,7 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
+import { ConfermaMergeModalComponent } from './conferma-merge-modal/conferma-merge-modal.component';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -189,7 +190,25 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     onSaveMerge(): void {
-        this.store.dispatch(new InitSaveMergeSchedeContatto());
+        const modalConfermaMerge = this.modal.open(ConfermaMergeModalComponent,
+            {
+                windowClass: 'xxlModal modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                backdrop: true,
+            }
+        );
+        modalConfermaMerge.componentInstance.schedeContatto = this.store.selectSnapshot(MergeSchedeContattoState.schedeSelezionate);
+
+        modalConfermaMerge.result.then((esito: string) => {
+            switch (esito) {
+                case 'ok':
+                    this.store.dispatch(new InitSaveMergeSchedeContatto());
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 
     onPageChange(page: number): void {
@@ -214,8 +233,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Annulla Raggruppamento';
-        modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare il raggruppamento delle schede contatto selezionate?';
-        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Il raggruppamento sarà eliminato.';
+        modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare il raggruppamento?';
 
         modalConfermaAnnulla.result.then(
             (val) => {

@@ -16,12 +16,15 @@ import { ZoneEmergenzaComponent } from './zone-emergenza.component';
 import { TabellaZoneEmergenzaComponent } from './tabella-zone-emergenza/tabella-zone-emergenza.component';
 import { ModuliColonnaMobileModalComponent } from './moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
 import { AnnullaZonaEmergenzaModalComponent } from './annulla-zona-emergenza-modal/annulla-zona-emergenza-modal.component';
-import { ModuloColonnaMobileComponent } from './moduli-colonna-mobile-modal/modulo-colonna-mobile/modulo-colonna-mobile.component';
+import { ModuloColonnaMobileComponent } from './shared/modulo-colonna-mobile/modulo-colonna-mobile.component';
 import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
 import { DettaglioZonaEmergenzaComponent } from './dettaglio-zona-emergenza/dettaglio-zona-emergenza.component';
 import { ZonaEmergenzaModalComponent } from './zona-emergenza-modal/zona-emergenza-modal.component';
 import { SediZonaEmergenzaComponent } from './sedi-zona-emergenza/sedi-zona-emergenza.component';
 import { DoaModalComponent } from './sedi-zona-emergenza/doa-modal/doa-modal.component';
+import { PcaModalComponent } from './sedi-zona-emergenza/pca-modal/pca-modal.component';
+import { DoaComponent } from './sedi-zona-emergenza/doa/doa.component';
+import { PcaComponent } from './sedi-zona-emergenza/pca/pca.component';
 /**
  * Routing
  */
@@ -31,7 +34,6 @@ import { ZoneEmergenzaRouting } from './zone-emergenza.routing';
  */
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
-import { PcaModalComponent } from './sedi-zona-emergenza/pca-modal/pca-modal.component';
 
 const ngWizardConfig: NgWizardConfig = {
     theme: THEME.default
@@ -49,7 +51,9 @@ const ngWizardConfig: NgWizardConfig = {
         ZonaEmergenzaModalComponent,
         SediZonaEmergenzaComponent,
         DoaModalComponent,
-        PcaModalComponent
+        PcaModalComponent,
+        DoaComponent,
+        PcaComponent
     ],
     imports: [
         CommonModule,

@@ -82,7 +82,18 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         {
             var lstSedi = _getSedi.GetAll();
 
-            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
+            var codiceTurno = "";
+            switch (query.Filtro.Turno) //FILTRO PER TURNO
+            {
+                case TurnoRelativo.Precedente: codiceTurno = TurnoPrecedente.Codice; break;
+
+                case TurnoRelativo.Successivo: codiceTurno = TurnoPrecedente.Codice; break;
+
+                case null: codiceTurno = TurnoAttuale.Codice; break;
+            }
+
+
+            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno, query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
             var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
             var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Result.FindAll(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).ToList()));
 

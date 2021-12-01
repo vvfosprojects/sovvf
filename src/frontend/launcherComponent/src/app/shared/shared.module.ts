@@ -68,7 +68,6 @@ import { IconaStatoComponent } from './components/icona-stato/icona-stato.compon
 import { VersioneComponent } from './components/versione/versione.component';
 import { TipologiaSintesiRichiestaComponent } from './components/tipologia-sintesi-richiesta/tipologia-sintesi-richiesta.component';
 import { RiepilogoInterventiModalComponent } from './modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { OperatoreComponent } from './components/operatore/operatore.component';
 import { RouterModule } from '@angular/router';
 import { PosModalComponent } from './modal/pos-modal/pos-modal.component';
@@ -150,7 +149,6 @@ const COMPONENTS = [
     VersioneComponent,
     TipologiaSintesiRichiestaComponent,
     OperatoreComponent,
-    SidebarComponent,
     TipologiaSintesiRichiestaComponent,
     RiepilogoInterventiModalComponent,
     PosModalComponent,

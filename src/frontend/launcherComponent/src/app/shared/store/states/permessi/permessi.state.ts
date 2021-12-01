@@ -77,6 +77,14 @@ export const PermessiStateDefaults: PermessiStateModel = {
         {
             feature: PermissionFeatures.Triage,
             roles: [Role.Amministratore]
+        },
+        {
+            feature: PermissionFeatures.ZoneEmergenza,
+            roles: [Role.Amministratore]
+        },
+        {
+            feature: PermissionFeatures.ImpostazioniSede,
+            roles: [Role.Amministratore]
         }
     ]
 };

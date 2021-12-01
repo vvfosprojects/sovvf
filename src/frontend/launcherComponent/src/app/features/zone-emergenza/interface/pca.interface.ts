@@ -5,5 +5,4 @@ export interface Pca {
     nome: string;
     coordinate: Coordinate;
     indirizzo: string;
-    dirigenti: string[];
 }

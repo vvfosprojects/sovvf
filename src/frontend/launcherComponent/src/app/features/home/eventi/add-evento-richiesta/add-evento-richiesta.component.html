@@ -1,24 +1,31 @@
-<div class="clearfix mb-3">
-    <div class="float-left">
-        <form [formGroup]="eventoForm"
-              ngxsForm="eventiRichiesta.eventoForm"
-              class="form-inline"
-              (ngSubmit)="onSubmit()">
-            <div class="form-group mr-3">
-                <label for="evento" class="mr-3">Nuovo Evento</label>
-                <textarea id="evento"
-                          class="form-control"
-                          placeholder="Scrivi qui il nuovo evento"
-                          style="min-width: 400px"
-                          formControlName="text">
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">{{ 'log book' | uppercase }}</span>
+    </div>
+    <div class="card-body">
+        <div class="clearfix">
+            <div class="float-left">
+                <form [formGroup]="eventoForm"
+                      ngxsForm="eventiRichiesta.eventoForm"
+                      class="form-inline"
+                      (ngSubmit)="onSubmit()">
+                    <div class="form-group mr-3">
+                        <label for="evento" class="mr-3">Nuovo Evento</label>
+                        <textarea id="evento"
+                                  class="form-control"
+                                  placeholder="Scrivi qui il nuovo evento"
+                                  style="min-width: 400px"
+                                  formControlName="text">
                 </textarea>
+                    </div>
+                    <ng-container *ngIf="eventoForm.valid">
+                        <button type="submit"
+                                class="btn btn-light">
+                            Crea Evento
+                        </button>
+                    </ng-container>
+                </form>
             </div>
-            <ng-container *ngIf="eventoForm.valid">
-                <button type="submit"
-                        class="btn btn-light">
-                    Crea Evento
-                </button>
-            </ng-container>
-        </form>
+        </div>
     </div>
 </div>

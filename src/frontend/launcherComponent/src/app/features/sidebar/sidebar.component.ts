@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { RoutesPath } from '../../enum/routes-path.enum';
-import { Ruolo, Utente } from '../../model/utente.model';
+import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { Ruolo, Utente } from '../../shared/model/utente.model';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { RiepilogoInterventiModalComponent } from '../../modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
-import { NavbarState } from '../../../features/navbar/store/states/navbar.state';
-import { ToggleSidebarOpened } from '../../../features/navbar/store/actions/navbar.actions';
+import { RiepilogoInterventiModalComponent } from '../../shared/modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
+import { NavbarState } from '../navbar/store/states/navbar.state';
+import { ToggleSidebarOpened } from '../navbar/store/actions/navbar.actions';
 import { Store } from '@ngxs/store';
-import { AzioniAreaDocumentaleModalComponent } from '../../modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
-import { FiltriAreaDocumentaleState } from '../../store/states/filtri-area-documentale/filtri-area-documentale.state';
+import { AzioniAreaDocumentaleModalComponent } from '../../shared/modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
+import { FiltriAreaDocumentaleState } from '../../shared/store/states/filtri-area-documentale/filtri-area-documentale.state';
 
 @Component({
     selector: 'app-sidebar',
@@ -19,6 +19,8 @@ export class SidebarComponent {
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
     @Input() url: string;
+    @Input() disabledGestioneUtenti: boolean;
+    @Input() disabledImpostazioniSede: boolean;
 
     @Output() logout = new EventEmitter();
 
@@ -68,8 +70,7 @@ export class SidebarComponent {
             } as NgbModalOptions;
         }
         const modal = this.modalService.open(AzioniAreaDocumentaleModalComponent, modalOptions);
-        const filtriAreaDocumentale = this.store.selectSnapshot(FiltriAreaDocumentaleState.filtriAreaDocumentale);
-        modal.componentInstance.filtriAreaDocumentale = filtriAreaDocumentale;
+        modal.componentInstance.filtriAreaDocumentale = this.store.selectSnapshot(FiltriAreaDocumentaleState.filtriAreaDocumentale);
     }
 
     onToggleSidebar(): void {

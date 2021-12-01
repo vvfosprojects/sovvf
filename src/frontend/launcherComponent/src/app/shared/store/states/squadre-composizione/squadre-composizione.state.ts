@@ -151,7 +151,7 @@ export class SquadreComposizioneState {
             );
         }
 
-        if (richiestaComposizione) {
+        if (richiestaComposizione && !action.preaccoppiato) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (!richiestaComposizione) {
             dispatch(new GetListaMezziSquadre());

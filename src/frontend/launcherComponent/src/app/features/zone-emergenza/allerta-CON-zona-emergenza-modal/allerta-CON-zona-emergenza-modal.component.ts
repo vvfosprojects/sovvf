@@ -30,11 +30,6 @@ export class AllertaCONZonaEmergenzaModalComponent implements OnInit {
     initForm(): void {
         this.allertaCONZonaEmergenzaForm = this.formBuilder.group({
             id: [null, Validators.required],
-            comandanteRegionale: [null, [Validators.required]],
-            responsabileDistrettoAreaColpita: [null, [Validators.required]],
-            responsabile: [null, [Validators.required]],
-            responsabileCampiBaseMezziOperativi: [null, [Validators.required]],
-            responsabileGestionePersonaleContratti: [null, [Validators.required]],
             descrizioneEmergenza: [null, Validators.required]
         });
     }
