@@ -156,7 +156,7 @@
                                     </button>
                                     <ng-container *ngIf="!f?.listaDoa?.value?.length">
                                         <div class="alert alert-danger">
-                                            Nessun DOA Creato per il CRA {{ f.nome.value }}
+                                            Nessun DOA Creato per {{ f.nome.value | uppercase }}
                                         </div>
                                     </ng-container>
                                     <ng-container *ngIf="f?.listaDoa?.value?.length">

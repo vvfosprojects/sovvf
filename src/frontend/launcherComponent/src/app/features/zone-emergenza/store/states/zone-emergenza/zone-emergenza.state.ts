@@ -514,8 +514,19 @@ export class ZoneEmergenzaState {
     }
 
     @Action(UpdateModuliMobConsolidamentoZonaEmergenza)
-    updateModuliMobConsolidamentoZonaEmergenza({ dispatch }: StateContext<ZoneEmergenzaStateModel>, action: UpdateModuliMobConsolidamentoZonaEmergenza): void {
+    updateModuliMobConsolidamentoZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>, action: UpdateModuliMobConsolidamentoZonaEmergenza): void {
         dispatch(new StartLoadingZoneEmergenza());
+        const state = getState();
+
+        // Costruzione oggetto CRA
+        const craZonaEmergenzaFormValue = state.craZonaEmergenzaForm.model as CraZonaEmergenzaForm;
+        const cra = {
+            nome: craZonaEmergenzaFormValue.nome,
+            coordinate: new Coordinate(+craZonaEmergenzaFormValue.latitudine, +craZonaEmergenzaFormValue.longitudine),
+            indirizzo: craZonaEmergenzaFormValue.indirizzo,
+            listaDoa: craZonaEmergenzaFormValue.listaDoa
+        } as Cra;
+
         const zonaEmergenzaValue = action.zonaEmergenza;
         const moduliMobConsolidamento = action.moduliMobConsolidamento;
         const zonaEmergenza = new ZonaEmergenza(
@@ -545,7 +556,8 @@ export class ZoneEmergenzaState {
             zonaEmergenzaValue.dirigenti,
             zonaEmergenzaValue.listaModuliImmediata,
             moduliMobConsolidamento,
-            zonaEmergenzaValue.listaModuliPotInt
+            zonaEmergenzaValue.listaModuliPotInt,
+            cra
         );
         this.zoneEmergenzaService.edit(zonaEmergenza).subscribe(() => {
             dispatch([

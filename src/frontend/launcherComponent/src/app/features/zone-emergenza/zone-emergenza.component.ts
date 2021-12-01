@@ -133,6 +133,7 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     onChangeVisualizzazione(): void {
         if (this.mappaActive) {
             this.store.dispatch(new SetMappaActiveValue(false));
+            this.onSetZonaEmergenzaFromMappaActiveValue();
         } else if (!this.mappaActive) {
             this.store.dispatch(new SetMappaActiveValue(true));
         }
