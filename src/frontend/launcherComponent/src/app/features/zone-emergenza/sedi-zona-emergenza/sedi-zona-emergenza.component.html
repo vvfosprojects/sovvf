@@ -5,7 +5,7 @@
              [class.col-6]="doubleMonitor">
             <div class="col-12">
                 <h4>
-                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    <i class="fas fa-arrow-left mr-2"></i>
                     <span class="font-weight-bold cursor-pointer"
                           (click)="goToGestioneEmergenze()">Gestione Emergenze</span> - CRA, DOA e PCA
                     Emergenza {{ zonaEmergenzaById?.codEmergenza }}
@@ -150,7 +150,7 @@
                             <div class="row py-2 px-3">
                                 <div class="col-12">
                                     <button class="btn btn-primary mb-3"
-                                            (click)="onAddDoa()">
+                                            (click)="onAddDoa(zonaEmergenzaById)">
                                         <i class="fas fa-plus"></i>
                                         Inserisci DOA
                                     </button>
