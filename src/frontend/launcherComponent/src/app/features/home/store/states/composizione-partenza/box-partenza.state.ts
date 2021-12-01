@@ -241,7 +241,7 @@ export class BoxPartenzaState {
                 }
                 if (box.squadreComposizione.length > 0) {
                     box.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                        dispatch(new SelectSquadraComposizione(squadra));
+                        dispatch(new SelectSquadraComposizione(squadra, false, true));
                     });
                 }
             }
