@@ -8,6 +8,7 @@ using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -22,14 +23,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         private readonly IGetMezziUtilizzabili _getMezzi;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetStatoSquadra _getStatoSquadre;
+        private readonly IGetTurno _getTurno;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
 
-        public GetPreAccoppiati(IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSedeUC, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezzi, IGetStatoMezzi getStatoMezzi, IGetStatoSquadra getStatoSquadre)
+        public GetPreAccoppiati(IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSedeUC, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezzi,
+                                IGetStatoMezzi getStatoMezzi, IGetStatoSquadra getStatoSquadre, IGetTurno getTurno)
         {
             _getSquadre = getSquadre;
             _getMezzi = getMezzi;
             _getStatoMezzi = getStatoMezzi;
             _getStatoSquadre = getStatoSquadre;
+            _getTurno = getTurno;
             _getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
         }
 
@@ -37,7 +41,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         {
             Task<List<MezzoDTO>> lstMezzi = null;
             var lstStatoMezzi = Task.Run(() => _getStatoMezzi.Get(query.CodiceSede));
-            var lstStatoSquadre = Task.Run(() => _getStatoSquadre.Get(query.CodiceSede.ToList()));
+            var lstStatoSquadre = Task.Run(() => _getStatoSquadre.Get(_getTurno.Get().Codice, query.CodiceSede.ToList()));
 
             return await Task.Run(() => //OTTENGO I DATI
             {

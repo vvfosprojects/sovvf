@@ -71,12 +71,19 @@ export class ModalRichiesteChiuseComponent implements OnInit, OnDestroy {
         );
     }
 
-    formatDate(date: any): any {
+    formatDate(date: any, from?: boolean, to?: boolean): any {
         date.month = date.month - 1;
         const day = date.day;
         const month = date.month;
         const year = date.year;
-        const dateFormatted = new Date(year, month, day, 10, 0, 0, 0);
+        let dateFormatted;
+        if (from) {
+            dateFormatted = new Date(year, month, day, 1, 0, 0, 0);
+        } else if (to) {
+            dateFormatted = new Date(year, month, day + 1, 0, 59, 59, 0);
+        } else {
+            dateFormatted = new Date(year, month, day, 10, 0, 0, 0);
+        }
         return dateFormatted;
     }
 
@@ -113,8 +120,8 @@ export class ModalRichiesteChiuseComponent implements OnInit, OnDestroy {
                 this.modal.close({
                     status: 'ok',
                     result: {
-                        da: this.prefix['DaA'] ? this.formatDate(this.fromDate) : null,
-                        a: this.prefix['DaA'] ? this.formatDate(this.toDate) : null,
+                        da: this.prefix['DaA'] ? this.formatDate(this.fromDate, true) : null,
+                        a: this.prefix['DaA'] ? this.formatDate(this.toDate, false, true) : null,
                         data: this.prefix['Del'] ? this.formatDate(this.todayDate) : null,
                         turno: this.prefix['Turno'] ? this.turnoCalendario.corrente : null,
                     },

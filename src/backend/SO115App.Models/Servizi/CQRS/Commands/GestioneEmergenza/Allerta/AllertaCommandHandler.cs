@@ -39,7 +39,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta
         public void Handle(AllertaCommand command)
         {
             command.InfoEmergenza = _getEmergenzaById.Get(command.Id);
-            command.InfoEmergenza.Dirigenti = command.Dirigenti;
             command.InfoEmergenza.Allertata = true;
             command.InfoEmergenza.AddEvento(new AllertaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.DescrizioneEmergenza, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
             _upDateEmergenza.Update(command.InfoEmergenza);

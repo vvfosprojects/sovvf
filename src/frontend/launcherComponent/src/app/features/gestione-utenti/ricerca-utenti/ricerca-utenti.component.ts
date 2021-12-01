@@ -9,10 +9,10 @@ import { Ruolo } from '../../../shared/model/utente.model';
 })
 export class RicercaUtentiComponent {
 
+    @Input() ricerca: string;
     @Input() loading: boolean;
     @Input() sediFiltro: Ruolo[];
     @Input() sediFiltroSelezionate: string[];
-    ricerca: string;
 
     @Output() ricercaChange = new EventEmitter<any>();
     @Output() filtroChange = new EventEmitter<string>();

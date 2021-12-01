@@ -15,5 +15,7 @@ export enum PermissionFeatures {
     EliminazioneRaggruppamentoSchedeContatto,
     ListaTrasferimentiChiamate,
     GestionePos,
-    Triage
+    Triage,
+    ZoneEmergenza,
+    ImpostazioniSede
 }

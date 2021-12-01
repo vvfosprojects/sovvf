@@ -16,6 +16,7 @@ import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.compo
 import { ClockComponent } from './clock/clock.component';
 import { NavbarComponent } from './navbar.component';
 import { TurnoComponent } from './turno/turno.component';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 /**
  * Module
  */
@@ -53,9 +54,13 @@ import { SediTreeviewI18n } from '../../shared/store/states/sedi-treeview/sedi-t
         NavbarComponent,
         TurnoComponent,
         ClockComponent,
-        UnitaOperativaComponent
+        UnitaOperativaComponent,
+        SidebarComponent
     ],
-    exports: [NavbarComponent],
+    exports: [
+        NavbarComponent,
+        SidebarComponent
+    ],
     providers: [
         { provide: TurnoExtraService, useClass: TurnoExtraServiceFake },
         { provide: TreeviewI18n, useClass: SediTreeviewI18n }

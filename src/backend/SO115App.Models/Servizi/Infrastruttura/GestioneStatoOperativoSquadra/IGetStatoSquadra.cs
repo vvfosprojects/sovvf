@@ -32,6 +32,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra
         /// </summary>
         /// <param name="codiceSede"></param>
         /// <returns>Una Lista di stati Operativi</returns>
-        public List<StatoOperativoSquadra> Get(List<string> codiceSede = null);
+        public List<StatoOperativoSquadra> Get(string Turno, List<string> codiceSede = null);
     }
 }

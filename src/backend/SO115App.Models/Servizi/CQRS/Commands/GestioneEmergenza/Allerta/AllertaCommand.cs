@@ -27,8 +27,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta
         public string CodOperatore { get; set; }
         public string CodSede { get; set; }
         public string DescrizioneEmergenza { get; set; }
-        public string[] Dirigenti { get; set; }
+
+        //public string[] Dirigenti { get; set; }
         public string Id { get; set; }
+
         public Emergenza InfoEmergenza { get; set; }
     }
 }

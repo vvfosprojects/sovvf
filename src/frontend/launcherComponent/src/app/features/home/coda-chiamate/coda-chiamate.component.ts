@@ -12,10 +12,10 @@ import { Observable } from 'rxjs';
 })
 export class CodaChiamateComponent implements OnInit {
 
+    @Input() boxAttivi: boolean;
+
     @Select(CodaChiamateState.dataGrafico) dataGrafico$: Observable<ItemChart[]>;
     @Select(CodaChiamateState.loading) loading$: Observable<boolean>;
-
-    @Input() boxAttivi: boolean;
 
     constructor(private store: Store) {
     }
@@ -27,14 +27,6 @@ export class CodaChiamateComponent implements OnInit {
     onSelect(data: ItemChartEmit): void {
         this.store.dispatch(new OpenModalDettaglioDistaccamento(data));
         // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-    }
-
-    onActivate(data: ItemChartEmit): void {
-        // console.log('Activate', JSON.parse(JSON.stringify(data)));
-    }
-
-    onDeactivate(data: ItemChartEmit): void {
-        // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
     }
 
     heightCodaChiamate(): string {

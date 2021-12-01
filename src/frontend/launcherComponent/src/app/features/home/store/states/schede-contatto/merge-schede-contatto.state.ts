@@ -1,9 +1,11 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import {
+    AddScheda,
     AddSchedaId,
     CheckboxError,
     ClearMergeSchedeContatto,
     InitSaveMergeSchedeContatto,
+    RemoveScheda,
     RemoveSchedaId,
     SetMergeClassificazione,
     SetMergeSchedaId,
@@ -15,17 +17,20 @@ import { SaveMergeSchedeContatto } from '../../actions/schede-contatto/schede-co
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { Injectable } from '@angular/core';
+import { SchedaContatto } from '../../../../../shared/interface/scheda-contatto.interface';
 
 export interface MergeSchedeContattoStateModel {
     statoModalita: boolean;
     classificazione: ClassificazioneSchedaContatto;
     schedeSelezionateId: string[];
+    schedeSelezionate: SchedaContatto[];
 }
 
 export const MergeSchedeContattoStateDefaults: MergeSchedeContattoStateModel = {
     statoModalita: false,
     classificazione: null,
-    schedeSelezionateId: []
+    schedeSelezionateId: [],
+    schedeSelezionate: []
 };
 
 @Injectable()
@@ -50,6 +55,11 @@ export class MergeSchedeContattoState {
         return state.schedeSelezionateId;
     }
 
+    @Selector()
+    static schedeSelezionate(state: MergeSchedeContattoStateModel): SchedaContatto[] {
+        return state.schedeSelezionate;
+    }
+
     @Action(ToggleModalitaMerge)
     toggleModalitaMerge({ getState, patchState, dispatch }: StateContext<MergeSchedeContattoStateModel>): void {
         if (getState().statoModalita) {
@@ -63,11 +73,18 @@ export class MergeSchedeContattoState {
 
     @Action(SetMergeSchedaId)
     setMergeSchedaId({ getState, patchState, dispatch }: StateContext<MergeSchedeContattoStateModel>, action: SetMergeSchedaId): void {
-        const codiceScheda = action.scheda.codiceScheda;
+        const scheda = action.scheda;
+        const codiceScheda = scheda.codiceScheda;
         if (getState().schedeSelezionateId.includes(codiceScheda)) {
-            dispatch(new RemoveSchedaId(codiceScheda));
+            dispatch([
+                new RemoveScheda(scheda),
+                new RemoveSchedaId(codiceScheda)
+            ]);
         } else {
-            dispatch(new AddSchedaId(codiceScheda));
+            dispatch([
+                new AddScheda(scheda),
+                new AddSchedaId(codiceScheda)
+            ]);
         }
         dispatch(new SetMergeClassificazione(action.scheda.classificazione));
     }
@@ -85,6 +102,15 @@ export class MergeSchedeContattoState {
         }
     }
 
+    @Action(AddSchedaId)
+    addSchedaId({ setState }: StateContext<MergeSchedeContattoStateModel>, { payload }: AddSchedaId): void {
+        setState(
+            patch({
+                schedeSelezionateId: insertItem(payload)
+            })
+        );
+    }
+
     @Action(RemoveSchedaId)
     removeSchedaId({ setState }: StateContext<MergeSchedeContattoStateModel>, { payload }: RemoveSchedaId): void {
         setState(
@@ -94,11 +120,20 @@ export class MergeSchedeContattoState {
         );
     }
 
-    @Action(AddSchedaId)
-    addSchedaId({ setState }: StateContext<MergeSchedeContattoStateModel>, { payload }: AddSchedaId): void {
+    @Action(AddScheda)
+    addScheda({ setState }: StateContext<MergeSchedeContattoStateModel>, { payload }: AddScheda): void {
         setState(
             patch({
-                schedeSelezionateId: insertItem(payload)
+                schedeSelezionate: insertItem(payload)
+            })
+        );
+    }
+
+    @Action(RemoveScheda)
+    removeScheda({ setState }: StateContext<MergeSchedeContattoStateModel>, { payload }: RemoveScheda): void {
+        setState(
+            patch({
+                schedeSelezionate: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === payload.codiceScheda)
             })
         );
     }

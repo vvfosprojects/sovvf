@@ -68,7 +68,8 @@ const appRoutes: Routes = [
     {
         path: RoutesPath.ImpostazioniSede,
         loadChildren: () => import('./features/impostazioni-sede/impostazioni-sede.module').then(m => m.ImpostazioniSedeModule),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Amministratore] }
     },
     {
         path: RoutesPath.POS,
@@ -82,13 +83,14 @@ const appRoutes: Routes = [
     },
     {
         path: RoutesPath.DashboardPortale,
-        canActivate: [AuthGuard],
         loadChildren: () => import('./features/dashboard-portale/dashboard-portale.module').then(m => m.DashboardPortaleModule),
+        canActivate: [AuthGuard]
     },
     {
         path: RoutesPath.ZoneEmergenza,
-        canActivate: [AuthGuard],
         loadChildren: () => import('./features/zone-emergenza/zone-emergenza.module').then(m => m.ZoneEmergenzaModule),
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Amministratore] }
     },
     {
         path: RoutesPath.Profilo,

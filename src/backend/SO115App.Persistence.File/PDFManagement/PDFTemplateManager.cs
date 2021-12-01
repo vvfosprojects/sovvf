@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Drawing.Layout;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
+﻿using Microsoft.Extensions.Configuration;
+using PdfSharpCore;
+using PdfSharpCore.Drawing;
+using PdfSharpCore.Drawing.Layout;
+using PdfSharpCore.Pdf;
+using PdfSharpCore.Pdf.IO;
 using Serilog;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System;

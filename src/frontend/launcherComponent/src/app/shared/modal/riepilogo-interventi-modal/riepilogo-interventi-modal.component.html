@@ -12,8 +12,12 @@
     <!-- FILTRI SUGLI INTERVENTI -->
     <div class="clearfix w-100 badge badge-secondary my-2" style="font-size: 25px; border-radius: 0">
         <span class="float-left">Filtri sugli interventi</span>
-        <span *ngIf="showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
-        <span *ngIf="!showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
+        <span *ngIf="showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer">
+            <i class="fas fa-chevron-down"></i>
+        </span>
+        <span *ngIf="!showFiltriInterventi" (click)="onShowFiltriInterventi()" class="float-right cursor-pointer">
+            <i class="fas fa-chevron-up"></i>
+        </span>
     </div>
     <div *ngIf="showFiltriInterventi" class="row px-4 pt-1 pb-3">
         <div class="col" style="justify-content: center; font-size: x-large">
@@ -27,18 +31,18 @@
             <form *ngIf="prefix['DaA']" class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
+                        <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+                                        outsideDays="hidden">
                         </ngb-datepicker>
-
                         <ng-template #t let-date let-focused="focused">
-          <span class="custom-day"
-                [class.focused]="focused"
-                [class.range]="isRange(date)"
-                [class.faded]="isHovered(date) || isInside(date)"
-                (mouseenter)="hoveredDate = date"
-                (mouseleave)="hoveredDate = null">
-            {{ date.day }}
-          </span>
+                              <span class="custom-day"
+                                    [class.focused]="focused"
+                                    [class.range]="isRange(date)"
+                                    [class.faded]="isHovered(date) || isInside(date)"
+                                    (mouseenter)="hoveredDate = date"
+                                    (mouseleave)="hoveredDate = null">
+                                {{ date.day }}
+                              </span>
                         </ng-template>
                     </div>
                 </div>
@@ -49,8 +53,10 @@
     <!-- FILTRI AGGIUNTIVI SULLA SQUADRA -->
     <div class="clearfix w-100 badge badge-secondary my-2" style="font-size: 25px; border-radius: 0">
         <span class="float-left">Filtri aggiuntivi sulla squadra</span>
-        <span *ngIf="showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
-        <span *ngIf="!showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
+        <span *ngIf="showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i
+                class="fas fa-chevron-down"></i></span>
+        <span *ngIf="!showFiltriSquadre" (click)="onShowFiltriSquadre()" class="float-right cursor-pointer"><i
+                class="fas fa-chevron-up"></i></span>
     </div>
     <div *ngIf="showFiltriSquadre" class="row px-4 pt-2 pb">
         <div class="col-4" style="justify-content: center; font-size: x-large">
@@ -72,7 +78,8 @@
                        (change)="onPatchFiltriSquadre($event, 'distaccamenti')"
                        placeholder="Seleziona Distaccamento">
                 <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                    <input type="checkbox" [checked]="distaccamentoSelezionati && distaccamentoSelezionati?.includes(item.codice)"/>
+                    <input type="checkbox"
+                           [checked]="distaccamentoSelezionati && distaccamentoSelezionati?.includes(item.codice)"/>
                     {{item.descrizione}}
                 </ng-template>
             </ng-select>
@@ -134,24 +141,41 @@
     <!-- ALTRI FILTRI -->
     <div class="clearfix w-100 badge badge-secondary my-2" style="font-size: 25px; border-radius: 0">
         <span class="float-left">Altri filtri</span>
-        <span *ngIf="showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fas fa-chevron-down"></i></span>
-        <span *ngIf="!showAltriFiltri" (click)="onShowAltriFiltri()" class="float-right cursor-pointer"><i class="fas fa-chevron-up"></i></span>
+        <span *ngIf="showAltriFiltri"
+              class="float-right cursor-pointer"
+              (click)="onShowAltriFiltri()">
+            <i class="fas fa-chevron-down"></i>
+        </span>
+        <span *ngIf="!showAltriFiltri"
+              class="float-right cursor-pointer"
+              (click)="onShowAltriFiltri()">
+            <i class="fas fa-chevron-up"></i>
+        </span>
     </div>
     <div *ngIf="showAltriFiltri" class="px-3 pt-2 pb-4">
         <div class="col w-100">
-            <input (click)="onCheckAltriFiltri('tipologia')" class="checkbox-size" type="checkbox" id="tipologiaIntervento" name="tipologiaIntervento"
+            <input (click)="onCheckAltriFiltri('tipologia')" class="checkbox-size" type="checkbox"
+                   id="tipologiaIntervento" name="tipologiaIntervento"
                    [checked]="altriFiltri.tipologia">
-            <label class="ml-1 mb-0" for="tipologiaIntervento" style="cursor: pointer">Raggruppati per tipologia intervento</label>
+            <label class="ml-2 mb-0" for="tipologiaIntervento" style="cursor: pointer">
+                Raggruppati per tipologia intervento
+            </label>
         </div>
         <div class="col w-100 my-3">
-            <input (click)="onCheckAltriFiltri('trasmessi')" class="checkbox-size" type="checkbox" id="trasmessi" name="trasmessi"
+            <input (click)="onCheckAltriFiltri('trasmessi')" class="checkbox-size" type="checkbox" id="trasmessi"
+                   name="trasmessi"
                    [checked]="altriFiltri.trasmessi">
-            <label class="ml-1 mb-0" for="trasmessi" style="cursor: pointer">Stampa trasmessi ad altro comando</label>
+            <label class="ml-2 mb-0" for="trasmessi" style="cursor: pointer">
+                Stampa trasmessi ad altro comando
+            </label>
         </div>
         <div class="col w-100">
-            <input (click)="onCheckAltriFiltri('interventi')"  class="checkbox-size" type="checkbox" id="soloInterventi" name="soloInterventi"
+            <input (click)="onCheckAltriFiltri('interventi')" class="checkbox-size" type="checkbox" id="soloInterventi"
+                   name="soloInterventi"
                    [checked]="altriFiltri.interventi">
-            <label class="ml-1 mb-0" for="soloInterventi" style="cursor: pointer">Solo interventi (non vengono riportate le partenze)</label>
+            <label class="ml-2 mb-0" for="soloInterventi" style="cursor: pointer">
+                Solo interventi (non vengono riportate le partenze)
+            </label>
         </div>
     </div>
 </div>

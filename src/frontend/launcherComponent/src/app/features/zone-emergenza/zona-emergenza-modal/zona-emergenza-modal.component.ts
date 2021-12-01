@@ -61,7 +61,6 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             tipologia: [null, [Validators.required]],
             descrizione: [null, [Validators.required]],
-            dirigenti: [null],
             id: [null],
             codEmergenza: [null],
             codComandoRichiedente: [null],
@@ -70,7 +69,12 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             allertata: [null],
             listaModuliImmediata: [null],
             listaModuliConsolidamento: [null],
-            listaModuliPotInt: [null]
+            listaModuliPotInt: [null],
+            comandanteRegionale: [null],
+            responsabileDistrettoAreaColpita: [null],
+            responsabile: [null],
+            responsabileCampiBaseMezziOperativi: [null],
+            responsabileGestionePersonaleContratti: [null]
         });
     }
 
@@ -99,6 +103,11 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             listaModuliImmediata: this.zonaEmergenzaEdit.listaModuliImmediata,
             listaModuliConsolidamento: this.zonaEmergenzaEdit.listaModuliConsolidamento,
             listaModuliPotInt: this.zonaEmergenzaEdit.listaModuliPotInt,
+            comandanteRegionale: this.zonaEmergenzaEdit.dirigenti[0],
+            responsabileDistrettoAreaColpita: this.zonaEmergenzaEdit.dirigenti[1],
+            responsabile: this.zonaEmergenzaEdit.dirigenti[2],
+            responsabileCampiBaseMezziOperativi: this.zonaEmergenzaEdit.dirigenti[3],
+            responsabileGestionePersonaleContratti: this.zonaEmergenzaEdit.dirigenti[4]
         });
         this.f.tipologia.disable();
     }
