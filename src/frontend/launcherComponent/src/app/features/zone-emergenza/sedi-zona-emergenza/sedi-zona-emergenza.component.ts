@@ -6,7 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { Observable, Subscription } from 'rxjs';
-import { AddDoa, AddPca, DeleteDoa, DeletePca, GetZonaEmergenzaById, SaveCraZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
+import { AddDoa, AddPca, DeleteDoa, DeletePca, GetTipologieEmergenza, GetZonaEmergenzaById, SaveCraZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
 import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
@@ -70,6 +70,7 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
         this.initForm();
         this.store.dispatch([
             new SetSediNavbarVisible(false),
+            new GetTipologieEmergenza(),
             new StopBigLoading()
         ]);
     }
@@ -153,7 +154,7 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
         this.f.responsabileGestionePersonaleContratti.disable();
     }
 
-    onAddDoa(): void {
+    onAddDoa(zonaEmergenza: ZonaEmergenza): void {
         const inserisciDoaModal = this.modalService.open(DoaModalComponent, {
             windowClass: 'modal-holder',
             size: 'xl',
@@ -174,8 +175,8 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
             moduli.push(...moduliMobConsolidamentoZonaEmergenza);
         }
 
-        console.log('moduli', moduli);
         inserisciDoaModal.componentInstance.moduli = moduli;
+        inserisciDoaModal.componentInstance.zonaEmergenza = zonaEmergenza;
 
         inserisciDoaModal.result.then((result: { esito: string, doa: DoaForm }) => {
             switch (result.esito) {

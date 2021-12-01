@@ -17,7 +17,7 @@
                    class="form-control"
                    type="text"
                    placeholder="Nome"
-                   formControlName="nome"/>
+                   formControlName="nome">
         </div>
         <div class="row">
             <div class="col-6">
@@ -36,7 +36,7 @@
                            class="form-control"
                            type="tel"
                            placeholder="Latitudine"
-                           formControlName="latitudine"/>
+                           formControlName="latitudine">
                 </div>
             </div>
             <div class="col-3">
@@ -46,7 +46,7 @@
                            class="form-control"
                            type="tel"
                            placeholder="Longitudine"
-                           formControlName="longitudine"/>
+                           formControlName="longitudine">
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
                    class="form-control"
                    type="text"
                    placeholder="Dirigente"
-                   formControlName="dirigente"/>
+                   formControlName="dirigente">
         </div>
         <div class="form-group">
             <label for="listaModuliColonnaMobile">Moduli Colonna Mobile</label>
@@ -65,10 +65,20 @@
                        bindLabel="nomeModulo"
                        [multiple]="true"
                        [hideSelected]="true"
+                       [disabled]="!moduli?.length"
                        placeholder="Moduli Colonna Mobile"
                        formControlName="listaModuliColonnaMobile">
             </ng-select>
         </div>
+        <ng-container *ngIf="!moduli?.length">
+            <div class="alert alert-danger">
+                Non ci sono moduli associati, la selezione è obbligatoria.
+                <button class="btn btn-outline-light"
+                        (click)="onColonneMobili()">
+                    Associa Moduli
+                </button>
+            </div>
+        </ng-container>
         <div class="form-group">
             <label for="listaComuniInteressati">Lista Comuni Interessati</label>
             <ng-select id="listaComuniInteressati"
