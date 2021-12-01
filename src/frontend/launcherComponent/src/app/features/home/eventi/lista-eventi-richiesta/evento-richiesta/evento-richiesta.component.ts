@@ -9,11 +9,6 @@ import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.mo
 })
 export class EventoRichiestaComponent implements OnInit {
 
-    espanso = false;
-    iconeClasseEventoCorrente: any;
-    iconeClassiEvento: any;
-    myMap: any;
-
     @Input() eventoRichiesta: EventoRichiesta;
     @Input() operatore: string;
     @Input() nomeClasseEvento: string;
@@ -21,6 +16,11 @@ export class EventoRichiestaComponent implements OnInit {
 
     @Output() mostraDettaglio: EventEmitter<EventoRichiesta> = new EventEmitter();
     @Output() filtroTarga: EventEmitter<string> = new EventEmitter();
+
+    espanso = false;
+    iconeClasseEventoCorrente: any;
+    iconeClassiEvento: any;
+    myMap: any;
 
     constructor() {
     }
