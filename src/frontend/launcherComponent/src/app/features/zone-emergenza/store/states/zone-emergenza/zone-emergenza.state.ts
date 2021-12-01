@@ -322,6 +322,13 @@ export class ZoneEmergenzaState {
         });
         const tipologiaZoneEmergenzaCopy = makeCopy(tipologiaZoneEmergenza);
         tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[indexEmergenza]];
+        const dirigenti = [
+            formValue.comandanteRegionale,
+            formValue.responsabileDistrettoAreaColpita,
+            formValue.responsabile,
+            formValue.responsabileCampiBaseMezziOperativi,
+            formValue.responsabileGestionePersonaleContratti,
+        ];
         const zonaEmergenza = new ZonaEmergenza(
             null,
             null,
@@ -344,7 +351,9 @@ export class ZoneEmergenzaState {
                 'Lazio'
             ),
             null,
-            false
+            false,
+            false,
+            dirigenti
         );
         this.zoneEmergenzaService.add(zonaEmergenza).subscribe(() => {
             dispatch([
@@ -378,6 +387,13 @@ export class ZoneEmergenzaState {
         });
         const tipologiaZoneEmergenzaCopy = makeCopy(tipologiaZoneEmergenza);
         tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[indexEmergenza]];
+        const dirigenti = [
+            formValue.comandanteRegionale,
+            formValue.responsabileDistrettoAreaColpita,
+            formValue.responsabile,
+            formValue.responsabileCampiBaseMezziOperativi,
+            formValue.responsabileGestionePersonaleContratti,
+        ];
         const zonaEmergenza = new ZonaEmergenza(
             formValue.id,
             formValue.codEmergenza,
@@ -402,7 +418,7 @@ export class ZoneEmergenzaState {
             formValue.listaEventi,
             formValue.annullata,
             formValue.allertata,
-            formValue.dirigenti,
+            dirigenti,
             formValue.listaModuliImmediata,
             formValue.listaModuliConsolidamento,
             formValue.listaModuliPotInt
@@ -599,17 +615,9 @@ export class ZoneEmergenzaState {
         dispatch(new StartLoadingZoneEmergenza());
         const state = getState();
         const formValue = state.allertaCONZonaEmergenzaForm.model;
-        const dirigenti = [
-            formValue.comandanteRegionale,
-            formValue.responsabileDistrettoAreaColpita,
-            formValue.responsabile,
-            formValue.responsabileCampiBaseMezziOperativi,
-            formValue.responsabileGestionePersonaleContratti,
-        ];
         const params = {
             id: formValue.id,
-            descrizioneEmergenza: formValue.descrizioneEmergenza,
-            dirigenti
+            descrizioneEmergenza: formValue.descrizioneEmergenza
         };
         this.zoneEmergenzaService.allertaEmergenzaCON(params).subscribe(() => {
             dispatch([

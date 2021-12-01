@@ -6,7 +6,6 @@ export interface ZonaEmergenzaForm {
     longitudine: number;
     tipologia: string;
     descrizione: string;
-    dirigenti?: string[];
     id?: string;
     codEmergenza?: string;
     codComandoRichiedente?: string;
@@ -16,4 +15,9 @@ export interface ZonaEmergenzaForm {
     listaModuliImmediata?: ModuloColonnaMobile[];
     listaModuliConsolidamento?: ModuloColonnaMobile[];
     listaModuliPotInt?: ModuloColonnaMobile[];
+    comandanteRegionale?: string;
+    responsabileDistrettoAreaColpita?: string;
+    responsabile?: string;
+    responsabileCampiBaseMezziOperativi?: string;
+    responsabileGestionePersonaleContratti?: string;
 }
