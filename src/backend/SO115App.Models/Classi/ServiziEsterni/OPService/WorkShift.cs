@@ -6,6 +6,13 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
 {
     public class WorkShift
     {
+        public WorkShift()
+        {
+            Precedente = new SquadraWorkShift();
+            Successivo = new SquadraWorkShift();
+            Attuale = new SquadraWorkShift();
+        }
+
         [JsonPropertyName("previous")]
         public SquadraWorkShift Precedente { get; set; }
 
@@ -32,6 +39,12 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
 
     public class SquadraWorkShift
     {
+        public SquadraWorkShift()
+        {
+            Squadre = new Squadra[] { };
+            Funzionari = new Officer[] { };
+        }
+
         [JsonPropertyName("workshiftID")]
         public string Id { get; set; }
 

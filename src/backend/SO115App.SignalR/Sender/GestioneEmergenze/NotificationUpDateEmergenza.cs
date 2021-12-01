@@ -47,10 +47,9 @@ namespace SO115App.SignalR.Sender.GestioneEmergenze
             }
             );
 
-
             if (emergenza.ListaModuliImmediata != null)
             {
-                foreach(var modulo in  emergenza.ListaModuliImmediata.FindAll(c => !c.SedeAllertata).ToList())
+                foreach (var modulo in emergenza.ListaModuliImmediata.FindAll(c => !c.SedeAllertata).ToList())
                 {
                     modulo.SedeAllertata = true;
                     //NOTIFICA NAVBAR
