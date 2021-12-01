@@ -66,7 +66,7 @@ namespace SO115App.API.Controllers
             try
             {
                 _insertHandler.Handle(command);
-                return Ok();
+                return Ok(command.InfoEmergenza);
             }
             catch (Exception ex)
             {
