@@ -186,7 +186,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                         document.body.removeChild(a);
                         break;
                 }
-            }, error => console.log('Errore Stampa Documento'));
+            }, () => console.log('Errore Stampa Documento'));
         } else {
             console.error('CodSede utente non trovato');
         }
@@ -211,7 +211,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                         document.body.removeChild(a);
                         break;
                 }
-            }, error => console.log('Errore visualizzazione Documento'));
+            }, () => console.log('Errore visualizzazione Documento'));
         } else {
             console.error('CodSede utente non trovato');
         }
@@ -223,9 +223,6 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
         if (codSede) {
             this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
                 switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
-                        break;
                     case HttpEventType.DownloadProgress:
                         this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
                         break;
@@ -258,7 +255,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                         );
                         break;
                 }
-            }, error => console.log('Errore Stampa Documento'));
+            }, () => console.log('Errore Stampa Documento'));
         } else {
             console.error('CodSede utente non trovato');
         }
@@ -321,7 +318,9 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
-                if (ricerca || ricerca === '' && this.descCategoria) {
+                console.log('ricerca', ricerca);
+                console.log('this.descCategoria', this.descCategoria);
+                if ((ricerca || ricerca === '') && this.descCategoria) {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetDocumentiAreaDocumentale());
                 }

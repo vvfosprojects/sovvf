@@ -29,7 +29,6 @@ import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { NgbActiveModal, NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { ClearRicercaFilterbar } from '../../../features/home/store/actions/filterbar/ricerca-richieste.actions';
-import { AreaMappaState } from '../../../features/maps/store/states/area-mappa.state';
 
 @Component({
     selector: 'app-lista-schede-contatto-modal',
@@ -77,7 +76,6 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
                 private activeModal: NgbActiveModal) {
         this.getRicerca();
         this.getSchedeContatto();
-        this.getSchedeContattoMarkers();
         this.getSchedeContattoHover();
         this.getRangeVisualizzazioneContatoriSchedeContatto();
         this.getContatoriSchedeContatto();
@@ -103,7 +101,7 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
-                if (ricerca !== null) {
+                if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetListaSchedeContatto());
                 }
@@ -118,10 +116,6 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
                 this.schedeContatto = schedeContatto;
             })
         );
-    }
-
-    getSchedeContattoMarkers(): void {
-        const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
     }
 
     getSchedeContattoHover(): void {

@@ -1,8 +1,7 @@
 import { TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
-import { SetZonaEmergenzaFromMappaActiveValue } from '../tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.actions';
 import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
-import { Doa } from '../../../interface/doa.interface';
 import { DoaForm } from '../../../interface/doa-form.interface';
+import { PcaForm } from '../../../interface/pca-form.interface';
 
 export class GetZoneEmergenza {
     static readonly type = '[ZoneEmergenza] Get Zone Emergenza';
@@ -128,6 +127,24 @@ export class AddDoa {
 
 export class DeleteDoa {
     static readonly type = '[ZoneEmergenza] Delete Doa';
+
+    constructor(public codice: string) {
+    }
+}
+
+export class ResetPcaForm {
+    static readonly type = '[ZoneEmergenza] Reset Pca Form';
+}
+
+export class AddPca {
+    static readonly type = '[ZoneEmergenza] Add Pca';
+
+    constructor(public pca: PcaForm, public codiceDoa: string) {
+    }
+}
+
+export class DeletePca {
+    static readonly type = '[ZoneEmergenza] Delete Pca';
 
     constructor(public codice: string) {
     }

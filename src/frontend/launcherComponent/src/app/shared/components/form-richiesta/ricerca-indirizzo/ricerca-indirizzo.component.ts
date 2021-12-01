@@ -18,11 +18,12 @@ import locatorSuggestLocationsParams = __esri.locatorSuggestLocationsParams;
 export class RicercaIndirizzoComponent implements OnInit {
 
     @Input() indirizzo: string;
+    @Input() requiredField = true;
     @Input() requiredFieldClass = true;
     @Input() invalid: boolean;
     @Input() spatialReference: SpatialReference;
-    @Output() changeIndirizzo: EventEmitter<string> = new EventEmitter<string>();
 
+    @Output() changeIndirizzo: EventEmitter<string> = new EventEmitter<string>();
     @Output() selectCandidate: EventEmitter<AddressCandidate> = new EventEmitter<AddressCandidate>();
     mapProperties: { spatialReference?: SpatialReference };
 
@@ -69,7 +70,7 @@ export class RicercaIndirizzoComponent implements OnInit {
         this.changeIndirizzo.emit(this.indirizzo);
 
 
-        if (this.requiredFieldClass && this.indirizzo !== this.indirizzoBackup) {
+        if (this.requiredField && this.indirizzo !== this.indirizzoBackup) {
             this.loadingAddressCandidates = true;
         }
 
@@ -77,7 +78,7 @@ export class RicercaIndirizzoComponent implements OnInit {
     }
 
     onKeyUpDebounce(): boolean {
-        if (this.requiredFieldClass) {
+        if (this.requiredField) {
             this.setIndexSelectedAddressCandidate(0);
 
             if (!this.indirizzo) {
