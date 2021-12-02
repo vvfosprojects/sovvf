@@ -4,133 +4,146 @@
         <div [class.col-12]="!doubleMonitor"
              [class.col-6]="doubleMonitor">
             <div class="col-12">
-                <h4>
+                <h4 (click)="goToGestioneEmergenze()">
                     <i class="fas fa-arrow-left mr-2"></i>
-                    <span class="font-weight-bold cursor-pointer"
-                          (click)="goToGestioneEmergenze()">Gestione Emergenze</span> - Dettaglio
-                    Emergenza {{ zonaEmergenzaById?.codEmergenza }}
+                    <span class="font-weight-bold cursor-pointer">Gestione Emergenze</span>
+                    - Dettaglio Emergenza {{ zonaEmergenzaById?.codEmergenza }}
                 </h4>
             </div>
-            <hr>
+            <!-- Informazioni Emergenza -->
             <div class="col-12">
-                <h5>
-                    <span class="text-muted">
-                        Tipologia:
-                    </span>
-                    {{ zonaEmergenzaById.tipologia.emergenza[0] }}
-                </h5>
-                <h5>
-                    <span class="text-muted">
-                        Indirizzo:
-                    </span>
-                    {{ zonaEmergenzaById?.localita.indirizzo }} -
-                    Lat: {{ zonaEmergenzaById?.localita.coordinate.latitudine }} -
-                    Lon: {{ zonaEmergenzaById?.localita.coordinate.longitudine }}
-                </h5>
-                <h5>
-                    <span class="text-muted">
-                        Cod. Sede Richiedente:
-                    </span>
-                    {{ zonaEmergenzaById.codComandoRichiedente }}
-                </h5>
-                <h5>
-                    <span class="text-muted">
-                        Descrizione:
-                    </span>
-                    {{ zonaEmergenzaById.descrizione }}
-                </h5>
-                <ng-container *ngIf="zonaEmergenzaById?.dirigenti?.length">
-                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[0]">
+                <div class="card my-3">
+                    <div class="card-header">
+                        {{ 'Informazioni Emergenza' | uppercase }}
+                    </div>
+                    <div class="card-body">
                         <h5>
+                            <span class="text-muted">
+                                Tipologia:
+                            </span>
+                            {{ zonaEmergenzaById.tipologia.emergenza[0] }}
+                        </h5>
+                        <h5>
+                            <span class="text-muted">
+                                Indirizzo:
+                            </span>
+                            {{ zonaEmergenzaById?.localita.indirizzo }} -
+                            Lat: {{ zonaEmergenzaById?.localita.coordinate.latitudine }} -
+                            Lon: {{ zonaEmergenzaById?.localita.coordinate.longitudine }}
+                        </h5>
+                        <h5>
+                            <span class="text-muted">
+                                Cod. Sede Richiedente:
+                            </span>
+                            {{ zonaEmergenzaById.codComandoRichiedente }}
+                        </h5>
+                        <h5>
+                            <span class="text-muted">
+                                Descrizione:
+                            </span>
+                            {{ zonaEmergenzaById.descrizione }}
+                        </h5>
+                        <ng-container *ngIf="zonaEmergenzaById?.dirigenti?.length">
+                            <ng-container *ngIf="zonaEmergenzaById.dirigenti[0]">
+                                <h5>
                             <span class="text-muted">
                                 Comandante Regionale di Area Colpita:
                             </span>
-                            {{ zonaEmergenzaById.dirigenti[0] }}
-                        </h5>
-                    </ng-container>
-                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[1]">
-                        <h5>
+                                    {{ zonaEmergenzaById.dirigenti[0] }}
+                                </h5>
+                            </ng-container>
+                            <ng-container *ngIf="zonaEmergenzaById.dirigenti[1]">
+                                <h5>
                             <span class="text-muted">
                                 Responsabile del Distretto Operativo di Area Colpita:
                             </span>
-                            {{ zonaEmergenzaById.dirigenti[1] }}
-                        </h5>
-                    </ng-container>
-                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[2]">
-                        <h5>
+                                    {{ zonaEmergenzaById.dirigenti[1] }}
+                                </h5>
+                            </ng-container>
+                            <ng-container *ngIf="zonaEmergenzaById.dirigenti[2]">
+                                <h5>
                             <span class="text-muted">
                                 Responsabile:
                             </span>
-                            {{ zonaEmergenzaById.dirigenti[2] }}
-                        </h5>
-                    </ng-container>
-                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[3]">
-                        <h5>
+                                    {{ zonaEmergenzaById.dirigenti[2] }}
+                                </h5>
+                            </ng-container>
+                            <ng-container *ngIf="zonaEmergenzaById.dirigenti[3]">
+                                <h5>
                             <span class="text-muted">
                                 Responsabile generale dei campi base e dei mezzi operativi:
                             </span>
-                            {{ zonaEmergenzaById.dirigenti[3] }}
-                        </h5>
-                    </ng-container>
-                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[4]">
-                        <h5>
+                                    {{ zonaEmergenzaById.dirigenti[3] }}
+                                </h5>
+                            </ng-container>
+                            <ng-container *ngIf="zonaEmergenzaById.dirigenti[4]">
+                                <h5>
                             <span class="text-muted">
                                Responsabile per la gestione del personale e dei contratti:
                             </span>
-                            {{ zonaEmergenzaById.dirigenti[4] }}
-                        </h5>
-                    </ng-container>
-                </ng-container>
-            </div>
-            <hr>
-            <!-- Richieste da comando -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <div class="clearfix">
-                        <div class="float-left">
-                            <h5 class="mb-0">{{ 'Richieste Moduli' | uppercase }}</h5>
-                        </div>
-                        <ng-container *ngIf="!isDirRegionale && !isCON">
-                            <div class="float-left ml-2">
-                                <button class="btn btn-no-hover btn-primary">Nuova Richiesta</button>
-                            </div>
+                                    {{ zonaEmergenzaById.dirigenti[4] }}
+                                </h5>
+                            </ng-container>
                         </ng-container>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div *ngFor="let e of getEventiRichiesteZonaEmergenza()" class="card">
-                        <div class="card-body">
-                            {{ e.istante | date }} / Moduli richiesti: {{ e.tipologiaModuli | json }}
-                        </div>
-                        <ng-container *ngIf="isDirRegionale || (isCON && zonaEmergenzaById.allertata)">
-                            <div class="card-footer">
-                                <button class="btn btn-primary"
-                                        (click)="onColonneMobili(e)">
-                                    Gestisci
-                                </button>
+            </div>
+            <!-- Moduli Richiesti -->
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="clearfix d-flex align-items-center">
+                            <div class="float-left">
+                                {{ 'Moduli Richiesti' | uppercase }}
                             </div>
-                        </ng-container>
+                            <ng-container *ngIf="!isDirRegionale && !isCON">
+                                <div class="float-left ml-2">
+                                    <button class="btn btn-no-hover btn-primary">Nuova Richiesta</button>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div *ngFor="let e of getEventiRichiesteZonaEmergenza()" class="card">
+                            <div class="card-body">
+                                {{ e.istante | date }} / Moduli richiesti: {{ e.tipologiaModuli | json }}
+                            </div>
+                            <ng-container *ngIf="isDirRegionale || (isCON && zonaEmergenzaById.allertata)">
+                                <div class="card-footer">
+                                    <button class="btn btn-no-hover btn-light border-secondary"
+                                            (click)="onColonneMobili(e)">
+                                        SELEZIONA MODULI
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- Moduli Assegnati-->
             <div class="col-12">
-                <h5 class="mb-3">Moduli Assegnati</h5>
-                <div class="row">
-                    <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
-                        <div class="col-12">
-                            <div class="alert alert-danger">
-                                Nessun Modulo assegnato
-                            </div>
+                <div class="card">
+                    <div class="card-header">
+                        {{ 'Moduli Assegnati' | uppercase }}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
+                                <div class="col-12">
+                                    <div class="alert alert-danger">
+                                        Nessun Modulo assegnato
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length">
+                                <div *ngFor="let moduli_mob_Immediata of zonaEmergenzaById.listaModuliImmediata"
+                                     class="col-2 mb-2">
+                                    <app-modulo-colonna-mobile [modulo]="moduli_mob_Immediata">
+                                    </app-modulo-colonna-mobile>
+                                </div>
+                            </ng-container>
                         </div>
-                    </ng-container>
-                    <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length">
-                        <div *ngFor="let moduli_mob_Immediata of zonaEmergenzaById.listaModuliImmediata"
-                             class="col-2 mb-2">
-                            <app-modulo-colonna-mobile [modulo]="moduli_mob_Immediata">
-                            </app-modulo-colonna-mobile>
-                        </div>
-                    </ng-container>
+                    </div>
                 </div>
             </div>
 
