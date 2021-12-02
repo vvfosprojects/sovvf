@@ -22,7 +22,6 @@ import {
     ResetPcaForm,
     ResetZonaEmergenzaForm,
     SaveCraZonaEmergenza,
-    SetEventoRichiestaGestitoZonaEmergenza,
     SetMappaActiveValue,
     SetTipologieEmergenza,
     SetZonaEmergenzaById,
@@ -457,22 +456,22 @@ export class ZoneEmergenzaState {
         });
     }
 
-    @Action(SetEventoRichiestaGestitoZonaEmergenza)
-    setEventoRichiestaGestitoZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>, action: SetEventoRichiestaGestitoZonaEmergenza): void {
-        const state = getState();
-        const eventoGestito = action.eventoGestito as EventoEmergenza;
-        const zonaEmergenza = state.zonaEmergenzaById as ZonaEmergenza;
-        const zonaEmergenzaCopy = makeCopy(zonaEmergenza) as ZonaEmergenza;
-        const indexToReplace = zonaEmergenzaCopy.listaEventi.findIndex((e: EventoEmergenza) => e.istante === action.eventoGestito.istante && !e.gestita && e.tipoEvento === 'RichiestaEmergenza');
-        zonaEmergenzaCopy.listaEventi[indexToReplace] = eventoGestito;
-        dispatch(new EditZonaEmergenza(zonaEmergenzaCopy));
-    }
-
     @Action(UpdateModuliMobImmediataZonaEmergenza)
     updateModuliMobImmediataZonaEmergenza({ dispatch }: StateContext<ZoneEmergenzaStateModel>, action: UpdateModuliMobImmediataZonaEmergenza): void {
         dispatch(new StartLoadingZoneEmergenza());
-        const zonaEmergenzaValue = action.zonaEmergenza;
+        const zonaEmergenzaValue = action.zonaEmergenza as ZonaEmergenza;
+
+        let eventoGestito: EventoEmergenza;
+        let zonaEmergenzaCopy: ZonaEmergenza;
+        if (action.eventoGestito) {
+            eventoGestito = action.eventoGestito;
+            zonaEmergenzaCopy = makeCopy(zonaEmergenzaValue);
+            const indexToReplace = zonaEmergenzaCopy.listaEventi.findIndex((e: EventoEmergenza) => e.istante === action.eventoGestito.istante && !e.gestita && e.tipoEvento === 'RichiestaEmergenza');
+            zonaEmergenzaCopy.listaEventi[indexToReplace] = eventoGestito;
+        }
+
         const moduliMobImmediata = action.moduliMobImmediata;
+
         const zonaEmergenza = new ZonaEmergenza(
             zonaEmergenzaValue.id,
             zonaEmergenzaValue.codEmergenza,
@@ -494,7 +493,7 @@ export class ZoneEmergenzaState {
                 zonaEmergenzaValue.localita.provincia,
                 zonaEmergenzaValue.localita.regione
             ),
-            zonaEmergenzaValue.listaEventi,
+            zonaEmergenzaCopy ? zonaEmergenzaCopy.listaEventi : zonaEmergenzaValue.listaEventi,
             zonaEmergenzaValue.annullata,
             zonaEmergenzaValue.allertata,
             zonaEmergenzaValue.dirigenti,
@@ -502,16 +501,8 @@ export class ZoneEmergenzaState {
             zonaEmergenzaValue.listaModuliConsolidamento,
             zonaEmergenzaValue.listaModuliPotInt
         );
-        this.zoneEmergenzaService.edit(zonaEmergenza).subscribe((response: ResponseInterface) => {
-            dispatch([
-                new GetZoneEmergenza(),
-                new StopLoadingZoneEmergenza()
-            ]);
-        }, () => {
-            dispatch([
-                new StopLoadingZoneEmergenza()
-            ]);
-        });
+
+        dispatch(new EditZonaEmergenza(zonaEmergenza));
     }
 
     @Action(UpdateModuliMobPotIntZonaEmergenza)

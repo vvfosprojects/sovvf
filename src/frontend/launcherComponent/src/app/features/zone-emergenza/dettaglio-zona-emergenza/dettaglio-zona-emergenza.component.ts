@@ -6,7 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { Observable, Subscription } from 'rxjs';
-import { GetTipologieEmergenza, GetZonaEmergenzaById, SetEventoRichiestaGestitoZonaEmergenza, UpdateModuliMobImmediataZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
+import { GetTipologieEmergenza, GetZonaEmergenzaById, UpdateModuliMobImmediataZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
 import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
@@ -125,10 +125,7 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
                             const eventoCopy = makeCopy(evento);
                             const eventoGestito = eventoCopy;
                             eventoGestito.gestita = true;
-                            this.store.dispatch([
-                                new UpdateModuliMobImmediataZonaEmergenza(this.zonaEmergenzaById, result.moduliSelezionati),
-                                new SetEventoRichiestaGestitoZonaEmergenza(eventoGestito)
-                            ]);
+                            this.store.dispatch(new UpdateModuliMobImmediataZonaEmergenza(this.zonaEmergenzaById, result.moduliSelezionati, eventoGestito));
                             break;
                     }
                     break;

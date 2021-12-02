@@ -62,18 +62,10 @@ export class EditZonaEmergenza {
     }
 }
 
-export class SetEventoRichiestaGestitoZonaEmergenza {
-    static readonly type = '[ZoneEmergenza] Set Evento Richiesta Gestito Zona Emergenza';
-
-    constructor(public eventoGestito: EventoEmergenza) {
-    }
-}
-
-
 export class UpdateModuliMobImmediataZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Update Moduli Mob_Immediata Zona Emergenza';
 
-    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobImmediata: ModuloColonnaMobile[]) {
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobImmediata: ModuloColonnaMobile[], public eventoGestito?: EventoEmergenza) {
     }
 }
 
