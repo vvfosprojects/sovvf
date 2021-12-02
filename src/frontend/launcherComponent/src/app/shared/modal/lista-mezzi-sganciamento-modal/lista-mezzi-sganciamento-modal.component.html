@@ -8,11 +8,11 @@
             <span class="text-danger"><i class="fas fa-times"></i></span>
         </button>
     </div>
-    <div class="modal-body">
+    <div class="modal-body px-0">
         <app-partial-loader *ngIf="loadingMezzi"></app-partial-loader>
         <ng-container *ngIf="mezzi?.length && !loadingMezzi">
             <div *ngFor="let m of mezzi; let i = index"
-                 class="mezzo-sganciamento"
+                 class="mezzo-sganciamento px-2"
                  [class.border-bottom]="i !== (mezzi.length - 1)">
                 <div class="clearfix px-2 py-3">
                     <div class="float-left">
@@ -21,15 +21,17 @@
                     <div class="float-right">
                         <button class="btn btn-outline-danger btn-no-hover"
                                 (click)="onSganciamento(m.mezzo.mezzo)">
-                            {{ 'Sgancia mezzo' | uppercase }}
+                            {{ 'info' | uppercase }}
                         </button>
                     </div>
                 </div>
             </div>
         </ng-container>
         <ng-container *ngIf="!mezzi?.length && !loadingMezzi">
-            <div class="alert alert-danger mb-0">
-                {{ 'Nessun Mezzo disponibile' }}
+            <div class="px-2">
+                <div class="alert alert-danger mb-0">
+                    {{ 'Nessun Mezzo disponibile' }}
+                </div>
             </div>
         </ng-container>
     </div>
