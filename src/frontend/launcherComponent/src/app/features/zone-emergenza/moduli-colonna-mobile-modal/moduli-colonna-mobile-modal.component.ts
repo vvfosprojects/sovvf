@@ -8,6 +8,7 @@ import { NgWizardConfig, STEP_STATE, THEME } from 'ng-wizard';
 import { Observable, Subscription } from 'rxjs';
 import { ModuliColonnaMobileState } from '../store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
 import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
+import { makeCopy } from '../../../shared/helper/function-generiche';
 
 @Component({
     selector: 'app-moduli-colonna-mobile-modal',
@@ -28,6 +29,8 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
 
     zonaEmergenza: ZonaEmergenza;
     tipologiaEmergenza: TipologiaEmergenza;
+
+    moduliMobImmediataRichiesti: string[];
 
     stepStates = {
         normal: STEP_STATE.normal,
@@ -56,6 +59,7 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
         const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
         const tipologiaEmergenza = tipologieEmergenza?.filter((t: TipologiaEmergenza) => t.id === this.zonaEmergenza.tipologia.id)[0];
         this.tipologiaEmergenza = tipologiaEmergenza;
+        this.filterTipologiaEmergenzaModuliMobImmediata();
         switch (this.fase) {
             case '1':
                 this.tipologiaEmergenza.moduli.mob_Immediata.forEach((m: string) => {
@@ -122,6 +126,14 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
         const count = this.moduliSelezionati?.length;
         const description = count ? count + ' totali' : '';
         return description;
+    }
+
+    filterTipologiaEmergenzaModuliMobImmediata(): void {
+        if (this.moduliMobImmediataRichiesti) {
+            const tipologiaEmergenzaCopy = makeCopy(this.tipologiaEmergenza);
+            tipologiaEmergenzaCopy.moduli.mob_Immediata.sort((a: string, b: string) => this.moduliMobImmediataRichiesti.indexOf(b) - this.moduliMobImmediataRichiesti.indexOf(a));
+            this.tipologiaEmergenza = tipologiaEmergenzaCopy;
+        }
     }
 
     isSelezionatoModulo(idModulo: string): boolean {

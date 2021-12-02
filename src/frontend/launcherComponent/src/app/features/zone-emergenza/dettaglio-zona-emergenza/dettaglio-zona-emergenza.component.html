@@ -40,40 +40,103 @@
                     {{ zonaEmergenzaById.descrizione }}
                 </h5>
                 <ng-container *ngIf="zonaEmergenzaById?.dirigenti?.length">
-                    <h5>
-                        <span class="text-muted">
-                            Comandante Regionale di Area Colpita:
-                        </span>
-                        {{ zonaEmergenzaById.dirigenti[0] }}
-                    </h5>
-                    <h5>
-                        <span class="text-muted">
-                            Responsabile del Distretto Operativo di Area Colpita:
-                        </span>
-                        {{ zonaEmergenzaById.dirigenti[1] }}
-                    </h5>
-                    <h5>
-                        <span class="text-muted">
-                            Responsabile:
-                        </span>
-                        {{ zonaEmergenzaById.dirigenti[2] }}
-                    </h5>
-                    <h5>
-                        <span class="text-muted">
-                            Responsabile generale dei campi base e dei mezzi operativi:
-                        </span>
-                        {{ zonaEmergenzaById.dirigenti[3] }}
-                    </h5>
-                    <h5>
-                        <span class="text-muted">
-                           Responsabile per la gestione del personale e dei contratti:
-                        </span>
-                        {{ zonaEmergenzaById.dirigenti[4] }}
-                    </h5>
+                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[0]">
+                        <h5>
+                            <span class="text-muted">
+                                Comandante Regionale di Area Colpita:
+                            </span>
+                            {{ zonaEmergenzaById.dirigenti[0] }}
+                        </h5>
+                    </ng-container>
+                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[1]">
+                        <h5>
+                            <span class="text-muted">
+                                Responsabile del Distretto Operativo di Area Colpita:
+                            </span>
+                            {{ zonaEmergenzaById.dirigenti[1] }}
+                        </h5>
+                    </ng-container>
+                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[2]">
+                        <h5>
+                            <span class="text-muted">
+                                Responsabile:
+                            </span>
+                            {{ zonaEmergenzaById.dirigenti[2] }}
+                        </h5>
+                    </ng-container>
+                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[3]">
+                        <h5>
+                            <span class="text-muted">
+                                Responsabile generale dei campi base e dei mezzi operativi:
+                            </span>
+                            {{ zonaEmergenzaById.dirigenti[3] }}
+                        </h5>
+                    </ng-container>
+                    <ng-container *ngIf="zonaEmergenzaById.dirigenti[4]">
+                        <h5>
+                            <span class="text-muted">
+                               Responsabile per la gestione del personale e dei contratti:
+                            </span>
+                            {{ zonaEmergenzaById.dirigenti[4] }}
+                        </h5>
+                    </ng-container>
                 </ng-container>
             </div>
             <hr>
+            <!-- Richieste da comando -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <h5 class="mb-0">{{ 'Richieste Moduli' | uppercase }}</h5>
+                        </div>
+                        <ng-container *ngIf="!isDirRegionale && !isCON">
+                            <div class="float-left ml-2">
+                                <button class="btn btn-no-hover btn-primary">Nuova Richiesta</button>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div *ngFor="let e of getEventiRichiesteZonaEmergenza()" class="card">
+                        <div class="card-body">
+                            {{ e.istante | date }} / Moduli richiesti: {{ e.tipologiaModuli | json }}
+                        </div>
+                        <ng-container *ngIf="isDirRegionale || (isCON && zonaEmergenzaById.allertata)">
+                            <div class="card-footer">
+                                <button class="btn btn-primary"
+                                        (click)="onColonneMobili(e)">
+                                    Gestisci
+                                </button>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <!-- Moduli Assegnati-->
             <div class="col-12">
+                <h5 class="mb-3">Moduli Assegnati</h5>
+                <div class="row">
+                    <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                Nessun Modulo assegnato
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length">
+                        <div *ngFor="let moduli_mob_Immediata of zonaEmergenzaById.listaModuliImmediata"
+                             class="col-2 mb-2">
+                            <app-modulo-colonna-mobile [modulo]="moduli_mob_Immediata">
+                            </app-modulo-colonna-mobile>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+
+            <!-- Fasi al momento non utilizzate -->
+            <!-- Fase 1 -->
+            <!-- <div class="col-12">
                 <h5 class="mb-3">Moduli Assegnati - Fase 1</h5>
                 <div class="row">
                     <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
@@ -91,8 +154,9 @@
                         </div>
                     </ng-container>
                 </div>
-            </div>
-            <div class="col-12 mt-3">
+            </div> -->
+            <!-- Fase 2 -->
+            <!-- <div class="col-12 mt-3">
                 <h5 class="mb-3">Moduli Assegnati - Fase 2</h5>
                 <div class="row">
                     <ng-container *ngIf="!zonaEmergenzaById?.listaModuliPotInt?.length">
@@ -110,8 +174,9 @@
                         </div>
                     </ng-container>
                 </div>
-            </div>
-            <div class="col-12 mt-3">
+            </div> -->
+            <!-- Fase 3 -->
+            <!-- <div class="col-12 mt-3">
                 <h5 class="mb-3">Moduli Assegnati - Fase 3</h5>
                 <div class="row">
                     <ng-container *ngIf="!zonaEmergenzaById?.listaModuliConsolidamento?.length">
@@ -129,7 +194,7 @@
                         </div>
                     </ng-container>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div *ngIf="doubleMonitor" class="col-6">
             <div class="mt-2"
