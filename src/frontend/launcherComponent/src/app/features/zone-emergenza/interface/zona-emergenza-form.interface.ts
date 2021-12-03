@@ -20,4 +20,5 @@ export interface ZonaEmergenzaForm {
     responsabile?: string;
     responsabileCampiBaseMezziOperativi?: string;
     responsabileGestionePersonaleContratti?: string;
+    tipologieModuli?: string[];
 }

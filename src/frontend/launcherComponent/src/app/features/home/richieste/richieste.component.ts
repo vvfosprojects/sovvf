@@ -276,7 +276,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     nuovaPartenza(richiesta: SintesiRichiesta): void {
         this.store.dispatch([
-            new ClearRichiestaSelezionata(),
             new SetRichiestaComposizione(richiesta),
             new SetCentroMappa({ coordinateCentro: richiesta.localita.coordinate }),
             new SetZoomCentroMappa(16)

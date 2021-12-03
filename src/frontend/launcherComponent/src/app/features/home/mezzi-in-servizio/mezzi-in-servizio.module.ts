@@ -9,7 +9,6 @@ import { MezziInServizioService } from 'src/app/core/service/mezzi-in-servizio-s
 import { NgxsModule } from '@ngxs/store';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { EventiRichiestaState } from '../store/states/eventi-richiesta/eventi-richiesta.state';
-import { MezzoInServizioComponent } from './mezzo-in-servizio/mezzo-in-servizio.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 
 @NgModule({
@@ -28,8 +27,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
         FilterPipeModule,
     ],
     declarations: [
-        MezziInServizioComponent,
-        MezzoInServizioComponent
+        MezziInServizioComponent
     ],
     exports: [
         MezziInServizioComponent

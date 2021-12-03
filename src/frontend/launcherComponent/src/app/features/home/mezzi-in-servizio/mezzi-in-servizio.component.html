@@ -7,15 +7,18 @@
         <ng-template [ngIf]="mezziInServizio">
             <div class="px-3 cursor-pointer">
                 <div *ngFor="let m of mezziInServizio">
-                    <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
+                    <app-mezzo-in-servizio [mezzoInServizio]="m"
+                                           [idMezzoInServizioHover]="idMezzoInServizioHover"
                                            [nightMode]="nightMode"
                                            [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
                                            [loading]="(loadingActionMezzo$ | async)"
-                                           (hoverIn)="hoverIn($event)" (hoverOut)="hoverOut()"
+                                           (hoverIn)="hoverIn($event)"
+                                           (hoverOut)="hoverOut()"
                                            (selezionato)="selezionato($event)"
                                            (dettaglioRichiesta)="onDettaglioRichiesta($event)"
                                            (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
-                                           (actionMezzo)="onActionMezzo($event.a, $event.b)"></app-mezzo-in-servizio>
+                                           (actionMezzo)="onActionMezzo($event.a, $event.b)">
+                    </app-mezzo-in-servizio>
                 </div>
             </div>
         </ng-template>

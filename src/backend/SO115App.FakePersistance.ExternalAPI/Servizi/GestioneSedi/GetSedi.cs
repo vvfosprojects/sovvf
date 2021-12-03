@@ -25,7 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede,
         IGetSediMarker, IGetCoordinateByCodSede, IGetStringCoordinateByCodSede
     {
-        private string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
+        private const string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
         private readonly IHttpRequestManager<List<SedeUC>> _serviceDirezioni;
         private readonly IHttpRequestManager<DistaccamentoUC> _serviceSedi;
         private readonly IConfiguration _config;
@@ -100,9 +100,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var sede = _serviceSedi.GetAsync(url).Result;
 
-            if (sede != null)
-                if (sede.Descrizione.Equals("CENTRALE"))
-                    sede.Descrizione = sede.Descrizione + " " + sede.IdSedePadre;
+            if (sede?.Descrizione.Equals("CENTRALE") ?? false)
+            {
+                sede.Descrizione = sede.Descrizione + " " + sede.IdSedePadre;
+
+
+            }
 
             return sede;
         }

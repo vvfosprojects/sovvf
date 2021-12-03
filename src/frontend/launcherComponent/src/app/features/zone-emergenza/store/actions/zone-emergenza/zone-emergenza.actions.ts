@@ -1,4 +1,4 @@
-import { TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
+import { EventoEmergenza, TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
 import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
 import { DoaForm } from '../../../interface/doa-form.interface';
 import { PcaForm } from '../../../interface/pca-form.interface';
@@ -56,12 +56,16 @@ export class AddZonaEmergenza {
 
 export class EditZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Edit Zona Emergenza';
+
+    // Se zonaEmergenza è null il suo valore sarà recuperato dalla form nello store
+    constructor(public zonaEmergenza?: ZonaEmergenza) {
+    }
 }
 
 export class UpdateModuliMobImmediataZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Update Moduli Mob_Immediata Zona Emergenza';
 
-    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobImmediata: ModuloColonnaMobile[]) {
+    constructor(public zonaEmergenza: ZonaEmergenza, public moduliMobImmediata: ModuloColonnaMobile[], public eventoGestito?: EventoEmergenza) {
     }
 }
 

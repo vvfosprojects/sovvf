@@ -78,7 +78,7 @@
             </div>
         </div>
         <!-- Mappa -->
-        <div *ngIf="doubleMonitor$ | async"
+        <div *ngIf="(doubleMonitor$ | async) && !viewState.codaChiamate.active"
              class="col-6"
              style="height: 987px">
             <div class="row h-100"
@@ -92,6 +92,11 @@
                     </app-maps>
                 </div>
             </div>
+        </div>
+        <div *ngIf="(doubleMonitor$ | async) && viewState.codaChiamate.active" class="col-6">
+            <iframe src="https://gis.dipvvf.it/portal/apps/opsdashboard/index.html#/717ba47ed1084f7eb6af70a97d68cf06"
+                    height="950" width="100%">
+            </iframe>
         </div>
     </div>
 </div>

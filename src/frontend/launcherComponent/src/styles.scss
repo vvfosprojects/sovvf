@@ -199,10 +199,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     color: $SO-white $SO-i;
   }
 
-  .mezzo-sganciamento:hover {
-    background-color: #e2e2e2 $SO-i;
-  }
-
   .bg-whitesmoke {
     background: whitesmoke $SO-i;
   }
@@ -302,10 +298,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     }
   }
 
-  .mezzo-sganciamento:hover {
-    background-color: $SO-dark-light $SO-i;
-  }
-
   .card-header {
     background-color: $SO-dark-light $SO-i;
   }
@@ -379,7 +371,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   .table-striped > tbody > tr:nth-child(even) > .td-logbook,
   .table-striped > tbody > tr:nth-child(even) > .td-logbook {
-    background-color: #d54444 $SO-i;
+    background-color: #c35e5e $SO-i;
   }
 
   .table-striped > tbody > tr:nth-child(odd) > td,
@@ -428,6 +420,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     border: $SO-card-border $SO-muted $SO-i;
     background-color: $SO-dark-light $SO-i;
     border-radius: $SO-border-radius;
+  }
+
+  .box-azione:hover {
+    background-color: #30363BFF $SO-i;
   }
 
   hr {
@@ -1468,7 +1464,13 @@ tag-input {
   border: $SO-card-border $SO-muted $SO-i;
   background-color: $SO-white $SO-i;
   border-radius: $SO-border-radius;
+  cursor: pointer;
 }
+
+.box-azione:hover {
+   word-wrap: break-word;
+   background-color: #f1f1f1 $SO-i;
+ }
 
 .gestita {
   background: $SO-light $SO-i;

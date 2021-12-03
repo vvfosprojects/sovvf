@@ -102,9 +102,9 @@ namespace SO115App.ExternalAPI.Fake.Box
                 },
                 PersonaleTotale = new ConteggioPersonale
                 {
-                    Current = workshift[0].Attuale.Squadre.Select(s => s.Membri.Count()).Sum(s => s),
-                    Next = workshift[0].Successivo.Squadre.Select(s => s.Membri.Count()).Sum(s => s),
-                    Previous = workshift[0].Precedente.Squadre.Select(s => s.Membri.Count()).Sum(s => s)
+                    Current = workshift.Select(w => w?.Attuale?.Squadre?.Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
+                    Next = workshift.Select(w => w?.Successivo?.Squadre?.Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
+                    Previous = workshift.Select(w => w?.Precedente?.Squadre?.Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
                 },
                 SquadreServizio = new ConteggioPersonale
                 {
