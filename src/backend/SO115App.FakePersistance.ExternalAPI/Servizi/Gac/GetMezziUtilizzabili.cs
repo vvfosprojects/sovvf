@@ -213,7 +213,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     mezzoDto.CodiceDistaccamento, sede, new Coordinate(coordinate.Latitudine, coordinate.Longitudine))
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                    CoordinateStrg = new string[] { coordinate.Latitudine.ToString(), coordinate.Longitudine.ToString() }
+                    CoordinateStrg = new string[] { coordinate.Latitudine.ToString().Replace(",", "."), coordinate.Longitudine.ToString().Replace(",", ".") }
                 };
             }
             catch (Exception e)
