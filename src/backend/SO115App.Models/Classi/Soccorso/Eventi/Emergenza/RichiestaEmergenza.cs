@@ -21,5 +21,7 @@ namespace SO115App.Models.Classi.Soccorso.Eventi.Emergenza
         public string[] TipologiaModuli;
 
         public bool Gestita;
+
+        public DateTime istanteGestione;
     }
 }
