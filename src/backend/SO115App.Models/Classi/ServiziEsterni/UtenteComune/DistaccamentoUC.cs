@@ -34,6 +34,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
 
         [JsonPropertyName("coordinate")]
         public string coordinate { get; set; }
+
         public Coordinate Coordinate
         {
             get
@@ -44,9 +45,14 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
                 {
                     try
                     {
-                        return new Coordinate(double.Parse(coordinate.Split(',')[0].Replace('.', ',')), double.Parse(coordinate.Split(',')[1].Replace('.', ',')));
+                        var coord = new Coordinate(double.Parse(coordinate.Split(',')[0].Replace('.', ',')), double.Parse(coordinate.Split(',')[1].Replace('.', ',')))
+                        {
+                            CoordToString = coordinate.Split(',')
+                        };
+
+                        return coord;
                     }
-                    catch 
+                    catch
                     {
                         return DmsToDd(coordinate);
                     }
@@ -55,7 +61,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
         }
 
         /// <summary>
-        /// Converte da "40°08'08.7\"N,8°48'48.8\"E" a 40.2425425454
+        ///   Converte da "40°08'08.7\"N,8°48'48.8\"E" a 40.2425425454
         /// </summary>
         /// <param name="coordinate"></param>
         /// <returns></returns>
