@@ -56,9 +56,12 @@ export class AddZonaEmergenza {
 
 export class EditZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Edit Zona Emergenza';
+}
 
-    // Se zonaEmergenza è null il suo valore sarà recuperato dalla form nello store
-    constructor(public zonaEmergenza?: ZonaEmergenza) {
+export class SetEventoRichiestaGestitoZonaEmergenza {
+    static readonly type = '[ZoneEmergenza] Set Evento Richiesta Gestito Zona Emergenza';
+
+    constructor( public eventoGestito?: EventoEmergenza) {
     }
 }
 
