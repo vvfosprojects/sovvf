@@ -182,8 +182,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
             backdrop: true
         });
         modal.result.then(() => {
-            },
-            () => this.store.dispatch(new ClearEventiRichiesta()));
+        }, () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
     hoverIn(idMezzoInServizio: string): void {

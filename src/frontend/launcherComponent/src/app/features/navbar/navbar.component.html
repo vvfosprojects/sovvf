@@ -35,6 +35,31 @@
                             <i class="fas fa-phone-alt mr-1"></i>
                             <i class="fas fa-list"></i>
                         </button>
+                        <button class="btn btn-light mr-2"
+                                ngbTooltip="Visualizza Gestione Emergenze"
+                                placement="right"
+                                [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
+                                [class.btn-nav-selected]="url.indexOf('/zone-emergenza') !== -1"
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']"
+                                [class.cursor-not-allowed]="disabledZoneEmergenza"
+                                [disabled]="disabledZoneEmergenza"
+                                [disableTooltip]="disabledZoneEmergenza">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                        <button class="btn btn-light mr-2"
+                                ngbTooltip="Visualizza Rubrica"
+                                placement="right"
+                                [routerLink]="['/' + RoutesPath.Rubrica]"
+                                [class.btn-nav-selected]="url === '/rubrica' || url === '/pos'"
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                            <i class="fas fa-address-book"></i>
+                        </button>
+                        <app-notifiche [listaNotifiche]="listaNotifiche$ | async"
+                                       [nuoveNotifiche]="nuoveNotifiche$ | async"
+                                       [nightMode]="nightMode"
+                                       (notificheLette)="setNotificheLette()"
+                                       (notificaSelezionata)="onNotificaSelezionata($event)">
+                        </app-notifiche>
                     </div>
                     <!-- Treeview -->
                     <ng-template [ngIf]="listeSediNavbarLoaded$ | async">
@@ -61,36 +86,36 @@
                 </div>
             </div>
             <!-- Zona Destra -->
-            <div class="float-right">
-                <div class="clearfix">
-                    <!-- Operatore e Bottono Destra -->
-                    <div class="float-right">
-                        <button class="btn btn-light mr-2"
-                                ngbTooltip="Visualizza Gestione Emergenze"
-                                [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
-                                [class.btn-nav-selected]="url.indexOf('/zone-emergenza') !== -1"
-                                [routerLinkActive]="['btn-light-nav', 'text-dark']"
-                                [class.cursor-not-allowed]="disabledZoneEmergenza"
-                                [disabled]="disabledZoneEmergenza"
-                                [disableTooltip]="disabledZoneEmergenza">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </button>
-                        <button class="btn btn-light mr-2"
-                                ngbTooltip="Visualizza Rubrica"
-                                [routerLink]="['/' + RoutesPath.Rubrica]"
-                                [class.btn-nav-selected]="url === '/rubrica' || url === '/pos'"
-                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                            <i class="fas fa-address-book"></i>
-                        </button>
-                        <app-notifiche [listaNotifiche]="listaNotifiche$ | async"
-                                       [nuoveNotifiche]="nuoveNotifiche$ | async"
-                                       [nightMode]="nightMode"
-                                       (notificheLette)="setNotificheLette()"
-                                       (notificaSelezionata)="onNotificaSelezionata($event)">
-                        </app-notifiche>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="float-right">-->
+<!--                <div class="clearfix">-->
+<!--                    &lt;!&ndash; Operatore e Bottono Destra &ndash;&gt;-->
+<!--                    <div class="float-right">-->
+<!--                        <button class="btn btn-light mr-2"-->
+<!--                                ngbTooltip="Visualizza Gestione Emergenze"-->
+<!--                                [routerLink]="['/' + RoutesPath.ZoneEmergenza]"-->
+<!--                                [class.btn-nav-selected]="url.indexOf('/zone-emergenza') !== -1"-->
+<!--                                [routerLinkActive]="['btn-light-nav', 'text-dark']"-->
+<!--                                [class.cursor-not-allowed]="disabledZoneEmergenza"-->
+<!--                                [disabled]="disabledZoneEmergenza"-->
+<!--                                [disableTooltip]="disabledZoneEmergenza">-->
+<!--                            <i class="fas fa-exclamation-triangle"></i>-->
+<!--                        </button>-->
+<!--                        <button class="btn btn-light mr-2"-->
+<!--                                ngbTooltip="Visualizza Rubrica"-->
+<!--                                [routerLink]="['/' + RoutesPath.Rubrica]"-->
+<!--                                [class.btn-nav-selected]="url === '/rubrica' || url === '/pos'"-->
+<!--                                [routerLinkActive]="['btn-light-nav', 'text-dark']">-->
+<!--                            <i class="fas fa-address-book"></i>-->
+<!--                        </button>-->
+<!--                        <app-notifiche [listaNotifiche]="listaNotifiche$ | async"-->
+<!--                                       [nuoveNotifiche]="nuoveNotifiche$ | async"-->
+<!--                                       [nightMode]="nightMode"-->
+<!--                                       (notificheLette)="setNotificheLette()"-->
+<!--                                       (notificaSelezionata)="onNotificaSelezionata($event)">-->
+<!--                        </app-notifiche>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </nav>
 </ng-template>

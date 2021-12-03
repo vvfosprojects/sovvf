@@ -199,10 +199,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     color: $SO-white $SO-i;
   }
 
-  .mezzo-sganciamento:hover {
-    background-color: #e2e2e2 $SO-i;
-  }
-
   .bg-whitesmoke {
     background: whitesmoke $SO-i;
   }
@@ -300,10 +296,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     text {
       fill: $SO-white $SO-i;
     }
-  }
-
-  .mezzo-sganciamento:hover {
-    background-color: $SO-dark-light $SO-i;
   }
 
   .card-header {
@@ -1477,7 +1469,7 @@ tag-input {
 
 .box-azione:hover {
    word-wrap: break-word;
-   background-color: #d2d2d2 $SO-i;
+   background-color: #f1f1f1 $SO-i;
  }
 
 .gestita {
