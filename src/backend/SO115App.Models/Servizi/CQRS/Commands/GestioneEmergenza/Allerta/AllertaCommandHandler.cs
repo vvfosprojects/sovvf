@@ -40,7 +40,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta
         {
             command.InfoEmergenza = _getEmergenzaById.Get(command.Id);
             command.InfoEmergenza.Allertata = true;
-            command.InfoEmergenza.AddEvento(new AllertaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.DescrizioneEmergenza, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
+            command.InfoEmergenza.AddEvento(new AllertaEmergenza(DateTime.UtcNow, command.CodOperatore, command.InfoEmergenza.CodEmergenza, command.DescrizioneEmergenza, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
             _upDateEmergenza.Update(command.InfoEmergenza);
         }
     }

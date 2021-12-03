@@ -39,30 +39,31 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
         {
             var emergenza = _getEmergenza.Get(command.InfoEmergenza.Id);
 
-            foreach (var evento in emergenza.ListaEventi)
-                command.InfoEmergenza.AddEvento(evento);
+            foreach (var evento in command.InfoEmergenza.ListaEventi)
+                emergenza.AddEvento(evento);
 
-            command.InfoEmergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
+            emergenza.AddEvento(new ModificaEmergenza(DateTime.UtcNow, command.CodOperatore, command.InfoEmergenza.CodEmergenza, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
 
             if (emergenza.ListaModuliImmediata == null && command.InfoEmergenza.ListaModuliImmediata != null)
             {
-                command.InfoEmergenza.AddEvento(new PresaInCaricoEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico));
-                command.InfoEmergenza.AddEvento(new InserimentoModuliColonnaMobileEmergenzaImmediata(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico, emergenza.ListaModuliImmediata));
+                emergenza.AddEvento(new PresaInCaricoEmergenza(DateTime.UtcNow, command.CodOperatore, command.InfoEmergenza.CodEmergenza, command.InfoEmergenza.CodSedePresaInCarico));
+                emergenza.AddEvento(new InserimentoModuliColonnaMobileEmergenzaImmediata(DateTime.UtcNow, command.CodOperatore, command.InfoEmergenza.CodEmergenza, command.InfoEmergenza.CodSedePresaInCarico, emergenza.ListaModuliImmediata));
             }
 
             if (emergenza.ListaModuliPotInt == null && command.InfoEmergenza.ListaModuliPotInt != null)
             {
-                command.InfoEmergenza.AddEvento(new PresaInCaricoEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico));
-                command.InfoEmergenza.AddEvento(new InserimentoModuliColonnaMobileEmergenzaPotInt(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico, emergenza.ListaModuliPotInt));
+                emergenza.AddEvento(new PresaInCaricoEmergenza(DateTime.UtcNow, command.CodOperatore, command.InfoEmergenza.CodEmergenza, command.InfoEmergenza.CodSedePresaInCarico));
+                emergenza.AddEvento(new InserimentoModuliColonnaMobileEmergenzaPotInt(DateTime.UtcNow, command.CodOperatore, command.InfoEmergenza.CodEmergenza, command.InfoEmergenza.CodSedePresaInCarico, emergenza.ListaModuliPotInt));
             }
 
             if (emergenza.ListaModuliConsolidamento == null && command.InfoEmergenza.ListaModuliConsolidamento != null)
             {
-                command.InfoEmergenza.AddEvento(new PresaInCaricoEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico));
-                command.InfoEmergenza.AddEvento(new InserimentoModuliColonnaMobileEmergenzaConsolidamento(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, command.InfoEmergenza.CodSedePresaInCarico, emergenza.ListaModuliConsolidamento));
+                emergenza.AddEvento(new PresaInCaricoEmergenza(DateTime.UtcNow, command.CodOperatore, command.InfoEmergenza.CodEmergenza, command.InfoEmergenza.CodSedePresaInCarico));
+                emergenza.AddEvento(new InserimentoModuliColonnaMobileEmergenzaConsolidamento(DateTime.UtcNow, command.CodOperatore, command.InfoEmergenza.CodEmergenza, command.InfoEmergenza.CodSedePresaInCarico, emergenza.ListaModuliConsolidamento));
             }
 
-            _upDateEmergenza.Update(command.InfoEmergenza);
+            command.Emergenza = emergenza;
+            _upDateEmergenza.Update(emergenza);
         }
     }
 }
