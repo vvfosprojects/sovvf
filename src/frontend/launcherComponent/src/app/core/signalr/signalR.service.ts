@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { GetListaRichieste, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import { GetListaRichieste, SetRichiestaById, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -185,7 +185,10 @@ export class SignalRService {
             } else if (composizionePartenzaActive) {
                 this.store.dispatch(new UpdateMezzoComposizione(data.mezzo.mezzo));
             }
-            this.store.dispatch(new StopLoadingMezziInServizio());
+            this.store.dispatch([
+                new SetRichiestaById(data.mezzo.infoRichiesta.codiceRichiesta),
+                new StopLoadingMezziInServizio()
+            ]);
         });
 
         /**
