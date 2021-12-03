@@ -71,7 +71,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 return new PreAccoppiato()
                 {
                     CodiceMezzo = MezzoSquadra.CodiceMezzo,
-                    Distaccamento = DescSede.DescDistaccamento.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "").ToUpper(),
+                    Distaccamento = DescSede.DescDistaccamento/*.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "")*/.ToUpper(),
                     DescrizioneMezzo = MezzoSquadra.Descrizione,
                     GenereMezzo = MezzoSquadra.Genere,
                     StatoMezzo = lstStatoMezzi.Result.Find(m => m.CodiceMezzo.Equals(MezzoSquadra.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede,
