@@ -1,5 +1,6 @@
 ﻿using CQRS.Queries;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System.Collections.Generic;
@@ -37,8 +38,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCompetenze
                 if (i <= 3)
                 {
                     var Distaccamento = _getCodiciDistaccamenti.Get(codCompetenza).Result;
-                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate);
-                    sede.CoordinateString = Distaccamento.CoordinateString;
+
+                    var sede = Distaccamento.MapSede();
 
                     if (sede != null)
                         listaSedi.Add(sede);

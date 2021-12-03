@@ -198,7 +198,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 string IndirizzoSede = "";
                 Coordinate coordinate = null;
 
-
                 foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
                 {
                     if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento))
@@ -214,6 +213,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     mezzoDto.CodiceDistaccamento, sede, new Coordinate(coordinate.Latitudine, coordinate.Longitudine))
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
+                    CoordinateStrg = new string[] { coordinate.Latitudine.ToString(), coordinate.Longitudine.ToString() }
                 };
             }
             catch (Exception e)
