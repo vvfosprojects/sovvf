@@ -707,9 +707,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.scorciatoieTelefono[scorciatoia] = false;
             f.telefono.patchValue('');
             f.nominativo.patchValue('');
+            f.nominativo.enable();
+            f.telefono.enable();
         } else {
             Object.keys(this.scorciatoieTelefono).forEach(x => this.scorciatoieTelefono[x] = x === scorciatoia);
-            f.telefono.patchValue(scorciatoia);
             let nominativo = null;
             switch (scorciatoia) {
                 case '112':
@@ -726,6 +727,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     break;
             }
             f.nominativo.patchValue(nominativo);
+            f.telefono.patchValue(scorciatoia);
+            f.nominativo.disable();
+            f.telefono.disable();
         }
     }
 
