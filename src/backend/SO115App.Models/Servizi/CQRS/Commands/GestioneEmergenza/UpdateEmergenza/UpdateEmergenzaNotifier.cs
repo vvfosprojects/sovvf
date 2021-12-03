@@ -47,7 +47,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
 
         public void Notify(UpdateEmergenzaCommand command)
         {
-            _sender.Send(command.InfoEmergenza);
+            _sender.Send(command.Emergenza);
 
             //var infoESRI = _mappingESRIMessage.Map(sintesi);
             //_notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);

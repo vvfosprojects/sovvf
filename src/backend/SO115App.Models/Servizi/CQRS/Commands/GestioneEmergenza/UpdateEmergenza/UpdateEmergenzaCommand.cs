@@ -24,6 +24,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
     public class UpdateEmergenzaCommand
     {
         public string CodOperatore { get; set; }
-        public Emergenza InfoEmergenza { get; set; }
+
+        public string CodSede { get; set; }
+        public EmergenzaDTO InfoEmergenza { get; set; }
+
+        public Emergenza Emergenza { get; set; }
     }
 }
