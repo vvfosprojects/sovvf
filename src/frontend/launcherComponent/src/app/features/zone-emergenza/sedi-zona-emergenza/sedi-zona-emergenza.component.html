@@ -4,9 +4,10 @@
         <div [class.col-12]="!doubleMonitor"
              [class.col-6]="doubleMonitor">
             <div class="col-12">
-                <h4 (click)="goToGestioneEmergenze()">
+                <h4 class="cursor-pointer"
+                    (click)="goToGestioneEmergenze()">
                     <i class="fas fa-arrow-left mr-2"></i>
-                    <span class="font-weight-bold cursor-pointer">Gestione Emergenze</span>
+                    <span class="font-weight-bold">Gestione Emergenze</span>
                     - CRA, DOA e PCA Emergenza {{ zonaEmergenzaById?.codEmergenza }}
                 </h4>
             </div>
