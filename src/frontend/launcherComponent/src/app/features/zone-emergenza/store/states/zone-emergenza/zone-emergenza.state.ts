@@ -465,7 +465,6 @@ export class ZoneEmergenzaState {
                 }
             };
             this.zoneEmergenzaService.setEventoGestito(obj).subscribe(() => {
-
             }, () => {
             });
         }
@@ -509,7 +508,7 @@ export class ZoneEmergenzaState {
 
         this.zoneEmergenzaService.edit(zonaEmergenza).subscribe(() => {
             if (action.eventoGestito) {
-                dispatch(new SetEventoRichiestaGestitoZonaEmergenza());
+                dispatch(new SetEventoRichiestaGestitoZonaEmergenza(action.eventoGestito));
             }
 
             dispatch([
