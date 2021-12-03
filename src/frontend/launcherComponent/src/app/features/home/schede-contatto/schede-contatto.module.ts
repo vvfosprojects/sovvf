@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsModule } from '@ngxs/store';
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
 import { RichiesteModule } from '../richieste/richieste.module';
+import { ConfermaMergeModalComponent } from './conferma-merge-modal/conferma-merge-modal.component';
 
 @NgModule({
     imports: [
@@ -19,6 +20,9 @@ import { RichiesteModule } from '../richieste/richieste.module';
             MergeSchedeContattoState
         ]),
         RichiesteModule
+    ],
+    declarations: [
+        ConfermaMergeModalComponent
     ]
 })
 export class SchedeContattoModule {

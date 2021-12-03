@@ -51,5 +51,10 @@ namespace SO115App.Models.Classi.Condivise
         ///   il codice del mezzo nel quale si trova la squadra
         /// </summary>
         public string CodMezzo { get; set; }
+
+        /// <summary>
+        ///   Turno della squadra
+        /// </summary>
+        public string Turno { get; set; }
     }
 }

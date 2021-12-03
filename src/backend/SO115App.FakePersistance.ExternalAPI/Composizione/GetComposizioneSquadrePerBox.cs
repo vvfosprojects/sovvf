@@ -28,6 +28,7 @@ using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,23 +43,25 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetStatoSquadra _getStatoSquadre;
         private readonly IGetSedi _getSedi;
         private readonly IGetPersonaFisica _getAnagrafiche;
+        private readonly IGetTurno _getTurno;
 
         public GetComposizioneSquadrePerBox(IGetSquadre getSquadre,
             IGetStatoSquadra getStatoSquadre,
             IGetSedi getSedi,
-            IGetPersonaFisica getAnagrafiche)
+            IGetPersonaFisica getAnagrafiche, IGetTurno getTurno)
         {
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
             _getSedi = getSedi;
             _getAnagrafiche = getAnagrafiche;
+            _getTurno = getTurno;
         }
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
             var lstSedi = Task.Run(() => _getSedi.GetAll().Result.Select(s => s.MapDistaccamentoComposizione()).ToList());
 
-            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
+            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(_getTurno.Get().Codice, query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
 
             Task<List<MembroComposizione>> lstAnagrafiche = null;
 

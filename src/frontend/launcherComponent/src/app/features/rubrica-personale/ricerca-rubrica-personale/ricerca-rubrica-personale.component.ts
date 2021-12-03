@@ -9,8 +9,8 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 })
 export class RicercaRubricaPersonaleComponent {
 
+    @Input() ricerca: string;
     @Input() loading: boolean;
-    ricerca: string;
 
     @Output() ricercaChange = new EventEmitter<any>();
 

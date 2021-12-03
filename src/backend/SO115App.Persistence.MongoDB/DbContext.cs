@@ -32,6 +32,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Documentale;
 using SO115App.Models.Classi.Emergenza;
+using SO115App.Models.Classi.Fonogramma;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Pos;
@@ -108,7 +109,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<RichiestaPresidiata>();
             BsonClassMap.RegisterClassMap<RichiestaSospesa>();
             BsonClassMap.RegisterClassMap<RichiestaModificata>();
-            BsonClassMap.RegisterClassMap<AnnullamentoPartenza>();
+            BsonClassMap.RegisterClassMap<AnnullamentoStatoPartenza>();
 
             BsonClassMap.RegisterClassMap<RichiestaSoccorsoAereo>();
             BsonClassMap.RegisterClassMap<AnnullamentoRichiestaSoccorsoAereo>();
@@ -126,6 +127,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
             BsonClassMap.RegisterClassMap<InviareFonogramma>();
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
+            BsonClassMap.RegisterClassMap<Fonogramma>();
             BsonClassMap.RegisterClassMap<AllertaSedi>();
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
@@ -146,6 +148,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<PresaInCaricoEmergenza>();
             BsonClassMap.RegisterClassMap<AllertaEmergenza>();
             BsonClassMap.RegisterClassMap<ModuliColonnaMobile>();
+            BsonClassMap.RegisterClassMap<RichiestaEmergenza>();
 
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaImmediata>();
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaPotInt>();
@@ -153,8 +156,7 @@ namespace Persistence.MongoDB
 
             UnitaOperativaMap.Map();
 
-            BsonClassMap.RegisterClassMap<LogBook>(); 
-
+            BsonClassMap.RegisterClassMap<LogBook>();
         }
 
         public IMongoCollection<UnitaOperativa> ListaSediCollection
@@ -164,6 +166,7 @@ namespace Persistence.MongoDB
                 return database.GetCollection<UnitaOperativa>("unitaOperative");
             }
         }
+
         public IMongoCollection<TipologiaEmergenza> TipologieEmergenzaCollection
         {
             get

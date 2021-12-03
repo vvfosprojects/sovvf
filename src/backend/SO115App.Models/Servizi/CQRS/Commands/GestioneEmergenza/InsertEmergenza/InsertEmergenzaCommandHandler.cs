@@ -44,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenz
             else
                 command.InfoEmergenza.CodEmergenza = _getCodiceEmergenza.GetCodRegionale(command.InfoEmergenza.Localita.Regione, String.Join(",", command.InfoEmergenza.Tipologia.emergenza));
 
-            command.InfoEmergenza.AddEvento(new CreazioneEmergenza(DateTime.UtcNow, command.InfoEmergenza.CodEmergenza, command.CodOperatore, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
+            command.InfoEmergenza.AddEvento(new CreazioneEmergenza(DateTime.UtcNow, command.CodOperatore, command.InfoEmergenza.CodEmergenza, String.Join(",", command.InfoEmergenza.Tipologia.emergenza)));
             _insertEmergenza.Insert(command.InfoEmergenza);
         }
     }

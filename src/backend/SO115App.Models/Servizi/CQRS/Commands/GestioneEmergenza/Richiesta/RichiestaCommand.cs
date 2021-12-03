@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetMezziByICCID.cs" company="CNVVF">
+// <copyright file="RichiestaCommand.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,21 +17,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
-using System.Collections.Generic;
 
-namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
+using SO115App.Models.Classi.Emergenza;
+
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Richiesta
 {
-    /// <summary>
-    ///   Servizio che recupera una lista di mezzi dal GAC a partire dal loro codice iccid (SIMCARD)
-    /// </summary>
-    public interface IGetMezziByICCID
+    public class RichiestaCommand
     {
-        /// <summary>
-        ///   Restituisce la lista dei mezzi
-        /// </summary>
-        /// <param name="iccid">una lista di codici iccid</param>
-        /// <returns>una lista mezzi</returns>
-        List<Mezzo> Get(List<string> iccid);
+        public string CodOperatore { get; set; }
+        public string CodSede { get; set; }
+        public string Id { get; set; }
+        public string[] TipologieModuli { get; set; }
+        public Emergenza InfoEmergenza { get; set; }
     }
 }

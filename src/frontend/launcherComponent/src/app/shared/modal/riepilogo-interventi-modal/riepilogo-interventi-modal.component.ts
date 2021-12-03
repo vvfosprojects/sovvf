@@ -52,23 +52,30 @@ export class RiepilogoInterventiModalComponent {
         this.getDataRiepilogoInterventi();
     }
 
-    formatDate(date: any): any {
+    formatDate(date: any, from?: boolean, to?: boolean): any {
         date.month = date.month - 1;
         const day = date.day;
         const month = date.month;
         const year = date.year;
-        const dateFormatted = new Date(year, month, day, 10, 0, 0, 0);
+        let dateFormatted;
+        if (from) {
+            dateFormatted = new Date(year, month, day, 1, 0, 0, 0);
+        } else if (to) {
+            dateFormatted = new Date(year, month, day + 1, 0, 59, 59, 0);
+        } else {
+            dateFormatted = new Date(year, month, day, 10, 0, 0, 0);
+        }
         return dateFormatted;
     }
 
     getDataRiepilogoInterventi(): void {
         this.stampaRichiestaService.getSquadreRiepilogoIntervento().subscribe((data: any) => {
             this.squadre = data.dataArray;
-        }, error => console.log('Errore Get Squadre Riepilogo Interventi'));
+        }, () => console.log('Errore Get Squadre Riepilogo Interventi'));
 
         this.stampaRichiestaService.getDistaccamentiRiepilogoIntervento().subscribe((distaccamenti: Sede[]) => {
             this.distaccamenti = distaccamenti;
-        }, error => console.log('Errore Get Distaccamenti Riepilogo Interventi'));
+        }, () => console.log('Errore Get Distaccamenti Riepilogo Interventi'));
     }
 
     onShowFiltriInterventi(): void {
@@ -138,8 +145,8 @@ export class RiepilogoInterventiModalComponent {
                         case 'ok':
                             const obj = {
                                 contentType: val.slice(2, 5) === 'csv' ? 'text/' + val.slice(2, 5) : 'application/' + val.slice(2, 5),
-                                da: this.prefix.DaA ? this.formatDate(this.fromDate) : null,
-                                a: this.prefix.DaA ? this.formatDate(this.toDate) : null,
+                                da: this.prefix.DaA ? this.formatDate(this.fromDate, true) : null,
+                                a: this.prefix.DaA ? this.formatDate(this.toDate, false, true) : null,
                                 distaccamenti: this.distaccamentoSelezionati ? this.distaccamentoSelezionati : null,
                                 turni: this.turnoSelezionati ? this.turnoSelezionati : null,
                                 squadre: this.squadreSelezionate ? this.squadreSelezionate : null,
@@ -174,7 +181,7 @@ export class RiepilogoInterventiModalComponent {
                                         document.body.removeChild(a);
                                         break;
                                 }
-                                }, error => console.log('Errore Stampa Riepilogo Interventi' + val.slice(2, 5).toUpperCase()));
+                            }, () => console.log('Errore Stampa Riepilogo Interventi' + val.slice(2, 5).toUpperCase()));
                             break;
                         case 'ko':
                             break;
@@ -196,7 +203,7 @@ export class RiepilogoInterventiModalComponent {
                     this.stampaRichiestaService.getSquadreRiepilogoIntervento(this.distaccamentoSelezionati).subscribe((data: any) => {
                         this.squadre = data.dataArray;
                         this.squadreSelezionate = [];
-                    }, error => console.log('Errore Get Squadre Riepilogo Interventi'));
+                    }, () => console.log('Errore Get Squadre Riepilogo Interventi'));
                 }
                 break;
 

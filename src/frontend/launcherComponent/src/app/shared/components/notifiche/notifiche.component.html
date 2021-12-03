@@ -6,7 +6,7 @@
             [ngClass]="getClasses()"
             style="position:relative;"
             [ngbTooltip]="getTooltip()"
-            placement="left"
+            placement="right"
             (click)="listaNotifiche?.length > 0 && myDrop.toggle()" ngbDropdownAnchor>
         <i class="far fa-bell"></i>
         <span *ngIf="nuoveNotifiche" class="position-absolute badge badge-danger px-1" style="top:2px; right:4px;">

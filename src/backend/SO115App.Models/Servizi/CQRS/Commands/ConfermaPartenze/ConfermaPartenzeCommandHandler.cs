@@ -27,6 +27,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,10 +45,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
         private readonly ISendSTATRIItem _sendNewItemSTATRI;
         private readonly ICheckCongruitaPartenze _checkCongruita;
+        private readonly IGetTurno _getTurno;
 
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita)
+            IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza,
+            ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita, IGetTurno getTurno)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
@@ -57,6 +60,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _getMaxCodicePartenza = getMaxCodicePartenza;
             _sendNewItemSTATRI = sendNewItemSTATRI;
             _checkCongruita = checkCongruita;
+            _getTurno = getTurno;
         }
 
         public void Handle(ConfermaPartenzeCommand command)
@@ -207,6 +211,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 codpart++;
                 partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
+                partenza.Turno = _getTurno.Get().Codice;
 
                 command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
                 command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;

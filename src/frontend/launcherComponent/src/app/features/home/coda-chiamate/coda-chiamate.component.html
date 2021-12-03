@@ -1,32 +1,32 @@
-<div class="row" [ngClass]="heightCodaChiamate()" style="overflow-y: scroll">
-    <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
-    <div class="col-11 mx-auto">
-        <div *ngIf="(loading$ | async) === false" class="mt-3">
-            <app-grafico-distaccamenti [data]="dataGrafico$ | async"
-                                       [view]="[1450, ((dataGrafico$ | async)?.length * 70)]"
-                                       [showXAxis]="false"
-                                       [showYAxis]="true"
-                                       [gradient]="true"
-                                       [showLegend]="true"
-                                       [legendTitle]="'Legenda'"
-                                       [legendPosition]="'right'"
-                                       [showXAxisLabel]="false"
-                                       [xAxisLabel]="''"
-                                       [showYAxisLabel]="false"
-                                       [yAxisLabel]="''"
-                                       [colorScheme]="{ domain: ['#AA4A4A', '#5AA454', '#AAAAAA'] }"
-                                       [schemeType]="'ordinal'"
-                                       [barPadding]="10"
-                                       [groupPadding]="20"
-                                       [showGridLines]="false"
-                                       [showDataLabel]="true"
-                                       [roundDomains]="true"
-                                       [noBarWhenZero]="true"
-                                       [roundEdges]="true"
-                                       (select)="onSelect($event)"
-                                       (activate)="onActivate($event)"
-                                       (deactivate)="onDeactivate($event)">
-            </app-grafico-distaccamenti>
+<div class="container-fluid py-2">
+    <div class="row" [ngClass]="heightCodaChiamate()" style="overflow-y: scroll">
+        <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
+        <div class="col-11 mx-auto">
+            <div *ngIf="(loading$ | async) === false" class="mt-3">
+                <app-grafico-distaccamenti [data]="dataGrafico$ | async"
+                                           [view]="[1450, ((dataGrafico$ | async)?.length * 70)]"
+                                           [showXAxis]="false"
+                                           [showYAxis]="true"
+                                           [gradient]="true"
+                                           [showLegend]="true"
+                                           [legendTitle]="'Legenda'"
+                                           [legendPosition]="'right'"
+                                           [showXAxisLabel]="false"
+                                           [xAxisLabel]="''"
+                                           [showYAxisLabel]="false"
+                                           [yAxisLabel]="''"
+                                           [colorScheme]="{ domain: ['#AA4A4A', '#5AA454', '#AAAAAA'] }"
+                                           [schemeType]="'ordinal'"
+                                           [barPadding]="10"
+                                           [groupPadding]="20"
+                                           [showGridLines]="false"
+                                           [showDataLabel]="true"
+                                           [roundDomains]="true"
+                                           [noBarWhenZero]="true"
+                                           [roundEdges]="true"
+                                           (select)="onSelect($event)">
+                </app-grafico-distaccamenti>
+            </div>
         </div>
     </div>
 </div>

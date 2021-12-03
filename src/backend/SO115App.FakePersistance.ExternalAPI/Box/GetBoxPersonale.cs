@@ -28,6 +28,7 @@ using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,13 +42,15 @@ namespace SO115App.ExternalAPI.Fake.Box
         private readonly IGetSquadre _getSquadre;
         private readonly IGetSedi _sedi;
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IGetTurno _getTurno;
 
-        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre, IGetSedi sedi, IGetSottoSediByCodSede getSottoSediByCodSede)
+        public GetBoxPersonale(IGetStatoSquadra getStatoSquadra, IGetSquadre getSquadre, IGetSedi sedi, IGetSottoSediByCodSede getSottoSediByCodSede, IGetTurno getTurno)
         {
             _getStatoSquadra = getStatoSquadra;
             _getSquadre = getSquadre;
             _sedi = sedi;
             _getSottoSediByCodSede = getSottoSediByCodSede;
+            _getTurno = getTurno;
         }
 
         public BoxPersonale Get(string[] codiciSede)
@@ -59,7 +62,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var listaCodiciSedeConSottoSedi = _getSottoSediByCodSede.Get(codiciSede);
 
-            var statoSquadre = _getStatoSquadra.Get(listaCodiciSedeConSottoSedi);
+            var statoSquadre = _getStatoSquadra.Get(_getTurno.Get().Codice, listaCodiciSedeConSottoSedi);
 
             var lstCodici = listaCodiciSedeConSottoSedi.Select(cod => cod.Split('.')[0]).Distinct();
 
@@ -99,9 +102,9 @@ namespace SO115App.ExternalAPI.Fake.Box
                 },
                 PersonaleTotale = new ConteggioPersonale
                 {
-                    Current = workshift[0].Attuale.Squadre.Select(s => s.Membri.Count()).Sum(s => s),
-                    Next = workshift[0].Successivo.Squadre.Select(s => s.Membri.Count()).Sum(s => s),
-                    Previous = workshift[0].Precedente.Squadre.Select(s => s.Membri.Count()).Sum(s => s)
+                    Current = workshift.Select(w => w?.Attuale?.Squadre?.Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
+                    Next = workshift.Select(w => w?.Successivo?.Squadre?.Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
+                    Previous = workshift.Select(w => w?.Precedente?.Squadre?.Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
                 },
                 SquadreServizio = new ConteggioPersonale
                 {

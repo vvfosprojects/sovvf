@@ -29,6 +29,11 @@ namespace SO115App.API.Models.Classi.Condivise
         public string Codice { get; set; }
 
         /// <summary>
+        ///   Turno della Partenza
+        /// </summary>
+        public string Turno { get; set; }
+
+        /// <summary>
         ///   Lista delle squadre coinvolte
         /// </summary>
         public List<Squadra> Squadre { get; set; }

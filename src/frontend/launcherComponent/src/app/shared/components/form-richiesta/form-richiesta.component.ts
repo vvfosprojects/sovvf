@@ -141,6 +141,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnInit(): void {
+        // Ripulisco informazioni Interventi
+        this.store.dispatch([
+            new ClearCountInterventiProssimita(),
+            new ClearInterventiProssimita()
+        ]);
+        //
         if (this.apertoFromMappa) {
             this.setIndirizzoFromMappa(this.lat, this.lon, this.address);
         }

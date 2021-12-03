@@ -67,7 +67,7 @@ namespace SO115App.API.Controllers
 
                 var result = _riepilogoInterventiQuery.Handle(query);
 
-                return File(result.Data.ToArray(), contentType);
+                return File(result.Data?.ToArray(), contentType);
             }
             catch (Exception e)
             {

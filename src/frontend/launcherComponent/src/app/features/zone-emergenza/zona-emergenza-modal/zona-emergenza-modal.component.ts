@@ -14,6 +14,7 @@ export class ZonaEmergenzaModalComponent implements OnInit {
     mapPoint: any;
     lat: number;
     lon: number;
+    allTipologieEmergenza: any[];
     tipologieEmergenza: TipologiaEmergenza[];
 
     indirizzo: number;
@@ -61,7 +62,6 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             tipologia: [null, [Validators.required]],
             descrizione: [null, [Validators.required]],
-            dirigenti: [null],
             id: [null],
             codEmergenza: [null],
             codComandoRichiedente: [null],
@@ -70,7 +70,13 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             allertata: [null],
             listaModuliImmediata: [null],
             listaModuliConsolidamento: [null],
-            listaModuliPotInt: [null]
+            listaModuliPotInt: [null],
+            comandanteRegionale: [null],
+            responsabileDistrettoAreaColpita: [null],
+            responsabile: [null],
+            responsabileCampiBaseMezziOperativi: [null],
+            responsabileGestionePersonaleContratti: [null],
+            tipologieModuli: [null]
         });
     }
 
@@ -99,8 +105,26 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             listaModuliImmediata: this.zonaEmergenzaEdit.listaModuliImmediata,
             listaModuliConsolidamento: this.zonaEmergenzaEdit.listaModuliConsolidamento,
             listaModuliPotInt: this.zonaEmergenzaEdit.listaModuliPotInt,
+            comandanteRegionale: this.zonaEmergenzaEdit.dirigenti[0],
+            responsabileDistrettoAreaColpita: this.zonaEmergenzaEdit.dirigenti[1],
+            responsabile: this.zonaEmergenzaEdit.dirigenti[2],
+            responsabileCampiBaseMezziOperativi: this.zonaEmergenzaEdit.dirigenti[3],
+            responsabileGestionePersonaleContratti: this.zonaEmergenzaEdit.dirigenti[4]
         });
         this.f.tipologia.disable();
+    }
+
+    getTipologieModuliByDescTipologiaEmergenza(): string[] {
+        let tipologieModuli: string[];
+        const descTipologiaEmergenzaSelezionata = this.f?.tipologia?.value;
+        if (descTipologiaEmergenzaSelezionata) {
+            this.tipologieEmergenza.forEach((t: TipologiaEmergenza) => {
+                if (t.emergenza.indexOf(descTipologiaEmergenzaSelezionata) !== -1) {
+                    tipologieModuli = t.moduli.mob_Immediata;
+                }
+            });
+        }
+        return tipologieModuli;
     }
 
     close(esito: string): void {

@@ -28,7 +28,7 @@
                                  [disableTooltip]="mezzoInServizio.squadre[0].nome.length <= 6">
                                 {{ mezzoInServizio.squadre[0].nome | truncate: 6}}
                             </div>
-                            <button class="btn btn-sm btn-light border ml-1" ngbTooltip="Elenco squadre"
+                            <button class="btn btn-sm btn-no-hover btn-light border ml-1" ngbTooltip="Elenco squadre"
                                     (click)="onListaSquadrePartenza(); $event.stopPropagation()">
                                 <div *ngIf="mezzoInServizio.squadre?.length"
                                      class="d-inline-block">
@@ -45,42 +45,69 @@
                 </div>
             </div>
             <!-- Indirizzo -->
-            <div class="col-3 pt-1">
-                <div *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">
-                    <i class="fas fa-map-marker-alt text-{{statoMezzoColor(mezzoInServizio.mezzo.mezzo.stato)}}"></i>
-                    {{ mezzoInServizio.mezzo.infoRichiesta.indirizzo | truncate: 28 }}
-                </div>
+            <div class="col-{{colIndirizzoRichiesta}} d-flex align-items-center">
+                <ng-container *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">
+                    <div [ngbTooltip]="mezzoInServizio.mezzo.infoRichiesta.indirizzo"
+                         [disableTooltip]="mezzoInServizio.mezzo.infoRichiesta.indirizzo.length < truncateLenghtIndirizzoRichiesta">
+                        <i class="fas fa-map-marker-alt text-{{statoMezzoColor(mezzoInServizio.mezzo.mezzo.stato)}}"></i>
+                        {{ mezzoInServizio.mezzo.infoRichiesta.indirizzo | truncate: truncateLenghtIndirizzoRichiesta }}
+                    </div>
+                </ng-container>
             </div>
-            <div class="col-3">
-                <div class="clearfix">
-                    <!-- Codice Richiesta -->
+            <div class="col-{{colInfoRichiesta}} d-flex justify-content-between align-items-center">
+                <!-- Codice Richiesta -->
+                <ng-container *ngIf="!hideCodRichiesta">
                     <div class="float-left pr-3">
                         <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
-                                class="btn btn-block btn-light font-weight-bold"
+                                class="btn btn-block btn-no-hover btn-light font-weight-bold"
                                 (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
                             <i class="fas fa-hashtag"></i>
                             {{ mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta }}
                         </button>
                     </div>
-                    <!-- Eventi -->
-                    <div class="float-left">
-                        <button *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta"
-                                class="btn btn-block btn-light"
-                                (click)="visualizzaEventiRichiesta.emit(mezzoInServizio.mezzo.mezzo)">
-                            <i class="fas fa-list"></i>
-                            Eventi
-                        </button>
+                </ng-container>
+                <!-- Tipologia Richiesta  -->
+                <ng-container *ngIf="showTipologiaRichiesta">
+                    <div class="float-left"
+                         [ngbTooltip]="richiesta?.tipologie[0]?.descrizione"
+                         [disableTooltip]="richiesta?.tipologie[0]?.descrizione.length < 23">
+                        <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta?.tipologie[0]) }}"></i>
+                        {{ richiesta?.tipologie[0]?.descrizione | truncate: 23 }}
                     </div>
+                </ng-container>
+                <!-- Eventi -->
+                <div class="float-right">
+                    <button *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta"
+                            class="btn btn-block btn-no-hover btn-light"
+                            [ngbTooltip]="'Visualizza Eventi'"
+                            [disableTooltip]="!hideTextButtonEventi"
+                            (click)="visualizzaEventiRichiesta.emit(mezzoInServizio.mezzo.mezzo)">
+                        <i class="fas fa-list"></i>
+                        <ng-container *ngIf="!hideTextButtonEventi">
+                            Eventi
+                        </ng-container>
+                    </button>
                 </div>
             </div>
             <!-- Distaccamento -->
-            <div class="col-2 px-0 text-right">
-                <div class="badge badge-secondary"
-                     [ngbTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione"
-                     [disableTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione.length <= 13">
-                    {{ mezzoInServizio.mezzo.mezzo.distaccamento.descrizione | slice: 0:15 }}
+            <ng-container *ngIf="!hideDistaccamento">
+                <div class="col-2 px-0 text-right">
+                    <div class="badge badge-secondary"
+                         [ngbTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione"
+                         [disableTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione.length <= 13">
+                        {{ mezzoInServizio.mezzo.mezzo.distaccamento.descrizione | slice: 0:15 }}
+                    </div>
                 </div>
-            </div>
+            </ng-container>
+            <!-- Select Button -->
+            <ng-container *ngIf="showSelectButton">
+                <div class="col-1">
+                    <button class="btn btn-block btn-light btn-no-hover border-secondary"
+                            (click)="onSelect(mezzoInServizio)">
+                        {{ 'info' | uppercase }}
+                    </button>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>

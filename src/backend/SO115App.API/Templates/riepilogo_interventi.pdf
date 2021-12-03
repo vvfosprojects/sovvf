@@ -1,0 +1,340 @@
+%PDF-1.1
+1 0 obj
+<<
+/Creator (Developer 2000)
+/CreatorDate (
+/Author (Oracle Reports)
+/Producer (Oracle PDF driver)
+/Title (RIEPILOGO_INTERVENTI.pdf)
+>>
+endobj
+5 0 obj
+<</Length 6 0 R>>
+stream
+BT
+239.68 547.88 TD
+/F0 20.00 Tf
+(Comando Provinciale Vigili del Fuoco) Tj
+84.00 -27.72 TD
+(VENEZIA-svil92) Tj
+ET
+1.00 w
+323.68 516.16 m 466.48 516.16 l B*
+BT
+117.16 53.72 TD
+/F0 11.00 Tf
+(A = Aperto ) Tj
+58.28 0.00 TD
+(C = Chiuso ) Tj
+-169.60 0.00 TD
+(Stato dell'Intervento \(S\): ) Tj
+ET
+0.00 w
+0 J
+0 j
+7.08 62.96 m 786.60 62.96 l S
+BT
+255.08 53.76 TD
+(*Orari: Uscita - Arrivo sul posto - Partenza dal posto - Rientro   Sigla mezzo andata e sigla mezzo ritorno) Tj
+-248.84 -11.80 TD
+(N° Int :  R = scheda ricevuta da altro comando   T = scheda trasmessa ad altro comando) Tj
+0.04 -12.28 TD
+(Tipo Partenza \(TP\)  M = Manuale  I = Importata N = Normale) Tj
+277.72 0.00 TD
+( Scheda Annullata = Informazioni barrate) Tj
+435.88 1.40 TD
+(Pag. ) Tj
+(1) Tj
+( / ) Tj
+(1) Tj
+ET
+q
+0.00 66.04 841.88 528.96 re W n
+2.64 398.40 834.44 55.48 re S
+BT
+17.84 442.36 TD
+/F0 10.00 Tf
+(7) Tj
+ET
+q
+8.24 454.96 26.56 10.60 re W n
+BT
+8.24 456.68 TD
+(N°.Int) Tj
+ET
+Q 0 g 0 G
+BT
+67.92 443.16 TD
+/F0 10.00 Tf
+(02/02/21) Tj
+-15.72 -16.39 TD
+(\(18:13-10:21\)) Tj
+73.44 15.52 TD
+(D) Tj
+ET
+q
+120.20 453.56 15.36 12.00 re W n
+BT
+120.20 456.68 TD
+(Tur.) Tj
+ET
+Q 0 g 0 G
+BT
+137.20 442.28 TD
+/F0 10.00 Tf
+(Incidenti sul lavoro) Tj
+31.60 14.40 TD
+(Tipologia) Tj
+84.60 -14.16 TD
+(SP60 Via Monsignor Paolo Lino) Tj
+0.00 -11.76 TD
+(Zovatto ) Tj
+27.80 25.68 TD
+(Località / Indirizzo) Tj
+133.80 -14.28 TD
+() Tj
+-14.08 14.28 TD
+(Km/Civ) Tj
+103.28 -0.24 TD
+(Sch.) Tj
+-71.76 -13.60 TD
+(Annone) Tj
+0.00 -11.76 TD
+(Veneto-VE) Tj
+ET
+q
+440.44 454.88 40.84 9.96 re W n
+BT
+440.44 455.96 TD
+(Comune) Tj
+ET
+Q 0 g 0 G
+BT
+240.16 479.60 TD
+/F0 12.00 Tf
+(02/02/2021) Tj
+-117.72 0.00 TD
+(02/02/2021) Tj
+-118.32 -0.04 TD
+(Riepilogo Interventi dal:) Tj
+221.04 0.00 TD
+(al:) Tj
+ET
+0.00 w
+0 J
+0 j
+3.64 474.68 m 345.48 474.68 l S
+487.12 453.80 m 487.12 399.16 l S
+3.64 453.32 m 812.92 453.32 l S
+430.48 453.80 m 430.48 399.16 l S
+399.40 453.80 m 399.40 399.16 l S
+252.40 453.80 m 252.40 399.16 l S
+136.47 453.80 m 136.47 399.16 l S
+121.12 453.80 m 121.12 399.16 l S
+36.56 453.80 m 36.56 399.16 l S
+BT
+40.40 434.40 TD
+/F0 10.00 Tf
+(C) Tj
+ET
+50.56 453.80 m 50.56 399.16 l S
+BT
+40.16 456.68 TD
+(S.) Tj
+485.28 -13.20 TD
+(Mestre_Abp1) Tj
+2.12 13.32 TD
+(Sigla squadra) Tj
+123.72 -0.60 TD
+(Capo Partenza) Tj
+3.88 -12.72 TD
+(BONINI RIC.) Tj
+-70.72 0.84 TD
+/F0 9.00 Tf
+(20/01/2021 \(C\)) Tj
+10.20 11.88 TD
+/F0 10.00 Tf
+(Servizio) Tj
+-85.60 -12.72 TD
+(1) Tj
+ET
+0.5600 G
+727.12 440.36 23.52 12.00 re S
+BT
+729.64 445.16 TD
+/F0 8.00 Tf
+(13:46) Tj
+ET
+752.04 440.16 23.52 12.00 re S
+BT
+763.80 444.96 TD
+() Tj
+ET
+777.76 440.00 23.52 12.00 re S
+BT
+789.52 444.80 TD
+() Tj
+ET
+803.16 440.72 23.52 12.00 re S
+BT
+805.68 445.52 TD
+(10:21) Tj
+-738.12 12.60 TD
+/F0 10.00 Tf
+(Data Int.) Tj
+666.04 -1.20 TD
+(Orari* - Mezzo A  R) Tj
+-197.68 23.00 TD
+/F0 12.00 Tf
+() Tj
+ET
+1 G
+14.20 425.20 12.56 12.00 re S
+BT
+20.48 428.32 TD
+/F0 10.00 Tf
+() Tj
+ET
+q
+487.84 454.88 15.12 9.96 re W n
+BT
+487.84 455.96 TD
+( TP) Tj
+ET
+Q 0 g 0 G
+BT
+491.96 443.48 TD
+/F0 10.00 Tf
+(N) Tj
+-238.40 -43.16 TD
+/F0 8.00 Tf
+(X: 12,71313518) Tj
+78.08 0.00 TD
+(Y: 45,75413717) Tj
+-78.08 19.68 TD
+(Rich: SERVIZIO EMERGENZA) Tj
+0.00 -9.48 TD
+(TERRITORIALE 118 ) Tj
+463.28 19.68 TD
+(M_19171NBCR) Tj
+87.44 0.00 TD
+() Tj
+-384.84 50.28 TD
+/F0 12.00 Tf
+(1) Tj
+ET
+q
+346.88 476.16 72.16 14.16 re W n
+BT
+346.88 479.56 TD
+(Tot. Interventi:) Tj
+ET
+Q 0 g 0 G
+0.00 w
+0 J
+0 j
+347.28 474.68 m 457.08 474.68 l S
+Q 0 g 0 G
+endstream
+endobj
+6 0 obj
+3609
+endobj
+7 0 obj
+<</Type /Font
+/Name /F0
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/BaseFont /TimesNewRoman
+/FirstChar 24
+/LastChar 255
+/Widths 8 0 R
+/FontDescriptor 9 0 R
+>>
+endobj
+8 0 obj
+[780 780 780 780 780 780 780 780 252 336 
+408 504 504 834 780 174 336 336 504 564 
+252 336 252 276 504 504 504 504 504 504 
+504 504 504 504 276 276 564 564 564 462 
+924 726 666 666 726 612 558 726 726 336 
+390 726 612 888 726 726 558 726 666 558 
+612 726 726 954 726 726 612 336 276 330 
+468 504 336 444 504 444 504 444 336 504 
+504 276 282 504 276 768 504 504 504 504 
+336 390 276 504 504 726 504 498 444 480 
+198 480 540 780 504 0 336 504 444 1002 
+504 504 336 1002 558 336 888 0 612 0 
+0 336 336 444 444 348 504 1002 336 984 
+390 336 726 0 444 726 252 336 504 504 
+504 504 198 504 360 762 282 498 564 336 
+762 504 402 552 300 300 324 576 456 336 
+336 300 312 498 750 750 750 450 726 726 
+726 726 726 726 888 666 612 612 612 612 
+336 336 336 336 726 726 726 726 726 726 
+726 564 726 726 726 726 726 726 558 504 
+444 444 444 444 444 444 666 444 444 444 
+444 444 276 276 276 276 504 504 504 504 
+504 504 504 552 504 504 504 504 504 504 
+504 504 ]
+endobj
+9 0 obj
+<<
+/Type /FontDescriptor
+/FontName /TimesNewRoman
+/Ascent 900
+/CapHeight 774
+/Descent -228
+/Flags 32
+/FontBBox [0 0 0 0]
+/ItalicAngle 0
+/StemV 0
+/AvgWidth 504
+/MaxWidth 1002
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/MediaBox [0 0 842 595]
+/Parent 3 0 R
+/Resources <</ProcSet [ /PDF /Text ] /Font << /F0 7 0 R >> >>
+/Contents 5 0 R
+/CropBox [0 0 842 595]
+>>
+endobj
+2 0 obj
+<<
+/Type /Catalog
+/Pages 3 0 R
+>>
+endobj
+3 0 obj
+<<
+/Type /Pages
+/Kids [ 
+4 0 R ]
+/Count 1
+>>
+endobj
+xref
+0 10
+0000000000 65535 f
+0000000010 00000 n
+0000005420 00000 n
+0000005475 00000 n
+0000005238 00000 n
+0000000170 00000 n
+0000003834 00000 n
+0000003857 00000 n
+0000004043 00000 n
+0000005031 00000 n
+trailer
+<<
+/Size 10
+/Root 2 0 R
+/Info 1 0 R
+>>
+startxref
+5543
+%%EOF

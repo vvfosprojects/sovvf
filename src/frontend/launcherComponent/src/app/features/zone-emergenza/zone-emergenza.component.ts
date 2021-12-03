@@ -163,8 +163,10 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
             centered: true
         });
 
-        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const allTipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
 
+        modalNuovaEmergenza.componentInstance.allTipologieEmergenza = allTipologieEmergenza;
         modalNuovaEmergenza.componentInstance.tipologieEmergenza = tipologieEmergenza;
         modalNuovaEmergenza.componentInstance.zonaEmergenzaEdit = zonaEmergenza;
 

@@ -21,12 +21,11 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 {
-    public class GetSedi : IGetDirezioni, IGetSedi, IGetAlberaturaUnitaOperative, IGetListaDistaccamentiByPinListaSedi, 
+    public class GetSedi : IGetDirezioni, IGetSedi, IGetAlberaturaUnitaOperative, IGetListaDistaccamentiByPinListaSedi,
         IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede,
         IGetSediMarker, IGetCoordinateByCodSede, IGetStringCoordinateByCodSede
     {
-
-        private string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
+        private const string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
         private readonly IHttpRequestManager<List<SedeUC>> _serviceDirezioni;
         private readonly IHttpRequestManager<DistaccamentoUC> _serviceSedi;
         private readonly IConfiguration _config;
@@ -101,9 +100,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var sede = _serviceSedi.GetAsync(url).Result;
 
-            if(sede!=null)
-                if(sede.Descrizione.Equals("CENTRALE"))
-                    sede.Descrizione = sede.Descrizione + " " + sede.IdSedePadre;
+            if (sede?.Descrizione.Equals("CENTRALE") ?? false)
+            {
+                sede.Descrizione = sede.Descrizione + " " + sede.IdSedePadre;
+
+
+            }
 
             return sede;
         }
@@ -164,13 +166,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     var lstProvinciali = GetDirezioniProvinciali().Result;
 
                     List<SedeUC> lstFigli = new List<SedeUC>();
-                    foreach(var sede in lstProvinciali)
+                    foreach (var sede in lstProvinciali)
                     {
                         var figli = GetFigli(sede.id).Result;
                         lstFigli.AddRange(figli);
                     }
 
+                    //Le coordinate sono fisse perchè il CON prende tutta italia
                     var con = GetInfoSede("00").Result;
+                    con.coordinate = "42.28313392189123,11.682171591796926";
 
                     var conFiglio = GetInfoSede("001").Result;
 
@@ -180,7 +184,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione, conFiglio.Coordinate));
 
                     //REGIONI
-                    foreach(var regionale in lstRegionali)
+                    foreach (var regionale in lstRegionali)
                     {
                         var info = GetInfoSede(regionale.id).Result;
 
@@ -188,19 +192,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     };
 
                     //PROVINCE
-                    foreach(var provinciale in lstProvinciali)
+                    foreach (var provinciale in lstProvinciali)
                     {
                         var info = GetInfoSede(provinciale.id).Result;
 
-                        //if(info != null) { 
-                            var lstComunali = GetFigli(provinciale.id).Result
-                            .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione, comunale.Coordinate)).ToHashSet().ToList();
+                        //if(info != null) {
+                        var lstComunali = GetFigli(provinciale.id).Result
+                        .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione, comunale.Coordinate)).ToHashSet().ToList();
 
-                            var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
+                        var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
 
-                            if (centrale != null)
-                            {
-                                lstComunali.Remove(centrale);
+                        if (centrale != null)
+                        {
+                            lstComunali.Remove(centrale);
 
                             try
                             {
@@ -211,10 +215,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                             }
                             catch
                             {
-
                             }
-
-                            }
+                        }
                         //}
                     };
 
@@ -234,15 +236,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                         var cacheEntryOptionsBk = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
                         _memoryCache.Set("ListaSediAlberate", sedi, cacheEntryOptionsBk);
                         return sedi;
-                    }else
+                    }
+                    else
                         throw new Exception("Errore costruzione alberatura sedi di servizio.");
                 }
-
-
             }
             else
             {
-
                 if (ListaSediAlberate == null)
                     _memoryCache.Remove("ListaSediAlberate");
 
@@ -261,7 +261,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             else
                 return result.Result.Where(s => lstCodici.Any(c => c.ToUpper().Equals(s.Codice.ToUpper()))).Select(s => s.MapDistaccamento()).ToList();
         }
-
 
         /// <summary>
         ///   metodo della classe che restituisce un Distaccamento
@@ -292,7 +291,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var listaSedi = GetAll();
 
-            Parallel.ForEach(listaSedi.Result, sede => 
+            Parallel.ForEach(listaSedi.Result, sede =>
             {
                 var sedeMarker = new SedeMarker();
 
@@ -337,7 +336,5 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             return GetInfoSede(codiceSede).Result.coordinate.Split(',');
         }
-
-
     }
 }

@@ -68,7 +68,6 @@ import { IconaStatoComponent } from './components/icona-stato/icona-stato.compon
 import { VersioneComponent } from './components/versione/versione.component';
 import { TipologiaSintesiRichiestaComponent } from './components/tipologia-sintesi-richiesta/tipologia-sintesi-richiesta.component';
 import { RiepilogoInterventiModalComponent } from './modal/riepilogo-interventi-modal/riepilogo-interventi-modal.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { OperatoreComponent } from './components/operatore/operatore.component';
 import { RouterModule } from '@angular/router';
 import { PosModalComponent } from './modal/pos-modal/pos-modal.component';
@@ -83,7 +82,7 @@ import { FiltroComponent } from './components/filtro/filtro.component';
 import { AzioniAreaDocumentaleModalComponent } from './modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
 import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { ListaMezziSganciamentoModalComponent } from './modal/lista-mezzi-sganciamento-modal/lista-mezzi-sganciamento-modal.component';
-
+import { MezzoInServizioComponent } from './components/mezzo-in-servizio/mezzo-in-servizio.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -150,7 +149,6 @@ const COMPONENTS = [
     VersioneComponent,
     TipologiaSintesiRichiestaComponent,
     OperatoreComponent,
-    SidebarComponent,
     TipologiaSintesiRichiestaComponent,
     RiepilogoInterventiModalComponent,
     PosModalComponent,
@@ -159,7 +157,8 @@ const COMPONENTS = [
     FormRichiestaComponent,
     RicercaIndirizzoComponent,
     AzioniAreaDocumentaleModalComponent,
-    ListaMezziSganciamentoModalComponent
+    ListaMezziSganciamentoModalComponent,
+    MezzoInServizioComponent
 ];
 const MODULES = [
     PipeModule

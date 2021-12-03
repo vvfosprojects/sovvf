@@ -36,27 +36,27 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
         {
-            var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri);
+            var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri).Result;
 
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
 
-            var lstTipologie = _getTipologie.Get(lstInterventi.Result.SelectMany(i => i.Tipologie).ToList());
+            var lstTipologie = _getTipologie.Get(lstInterventi?.SelectMany(i => i.Tipologie).ToList());
 
-            var filename = "Riepilogo_interventi_" + DateTime.Now.ToString("dd/MM/yyyy") + ".pdf";
+            var filename = "Riepilogo_interventi_" + DateTime.UtcNow.ToString("dd/MM/yyyy") + ".pdf";
 
-            var lstRiepiloghi = lstInterventi.Result?.Select(i => new RiepilogoIntervento()
+            var lstRiepiloghi = lstInterventi?.Select(i => new RiepilogoIntervento()
             {
                 Stato = char.Parse(i.TestoStatoRichiesta),
                 Data = i.Eventi.OfType<Telefonata>().First().DataOraInserimento,
                 Turno = (i.Partenze != null && i.Partenze.Count > 0) ? string.Concat(i?.Partenze?.LastOrDefault()?.Partenza.Squadre.Select(s => s.Turno)) : "",
-                Indirizzo = i.Localita?.Indirizzo.Split(',')[0],
+                Indirizzo = i.Localita?.Indirizzo,
                 X = "X: " + i.Localita.Coordinate.Latitudine,
                 Y = "Y: " + i.Localita.Coordinate.Longitudine,
                 Richiedente = i.Richiedente.Nominativo,
-                Tipologie = string.Concat(lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')).TrimEnd(',').TrimEnd(' '),
+                //Tipologie = string.Concat(lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')).TrimEnd(',').TrimEnd(' '),
                 NumeroIntervento = i.CodRichiesta != null ? int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()) : 0,
-                Comune = i?.Localita?.Citta ?? i?.Localita?.Indirizzo?.Split(',')[2],
-                //KmCiv = i?.Localita?.Indirizzo?.Split(',')[1],
+                Comune = i?.Localita?.Citta ?? i?.Localita?.Indirizzo,
+                //KmCiv = i?.Localita?.Indirizzo,
 
                 Interno = i.Localita.Interno,
                 Piano = i.Localita.Piano,
@@ -87,7 +87,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 A = query.Filtri.A,
                 Da = query.Filtri.Da,
                 DescComando = operatore.Sede.Descrizione,
-                TotInterventi = lstInterventi.Result.Count
+                TotInterventi = lstInterventi.Count
             };
 
             MemoryStream memoryStream;

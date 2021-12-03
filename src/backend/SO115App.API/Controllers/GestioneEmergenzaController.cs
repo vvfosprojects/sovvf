@@ -1,4 +1,5 @@
-﻿using CQRS.Commands;
+﻿using CQRS.Authorization;
+using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.AnnullaEmergenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenza;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Richiesta;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenza;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetEmergenzaById;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetListaEmergenzeByCodComando;
@@ -29,6 +31,7 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<GetEmergenzaByIdQuery, GetEmergenzaByIdResult> _getEmergenzaByIdHandler;
         private readonly IQueryHandler<GetListaEmergenzeByCodComandoQuery, GetListaEmergenzeByCodComandoResult> _getListaEmergenzeByCodComandoHandler;
         private readonly ICommandHandler<AllertaCommand> _allertaHandler;
+        private readonly ICommandHandler<RichiestaCommand> _richiestaHandler;
 
         public GestioneEmergenzaController(ICommandHandler<InsertEmergenzaCommand> InsertHandler,
                                            ICommandHandler<UpdateEmergenzaCommand> UpdateHandler,
@@ -36,7 +39,8 @@ namespace SO115App.API.Controllers
                                            IQueryHandler<GetTipologieEmergenzaQuery, GetTipologieEmergenzaResult> GetTipologieHandler,
                                            IQueryHandler<GetEmergenzaByIdQuery, GetEmergenzaByIdResult> GetEmergenzaByIdHandler,
                                            IQueryHandler<GetListaEmergenzeByCodComandoQuery, GetListaEmergenzeByCodComandoResult> GetListaEmergenzeByCodComandoHandler,
-                                           ICommandHandler<AllertaCommand> AllertaHandler)
+                                           ICommandHandler<AllertaCommand> AllertaHandler,
+                                           ICommandHandler<RichiestaCommand> richiestaHandler)
         {
             _insertHandler = InsertHandler;
             _updateHandler = UpdateHandler;
@@ -45,6 +49,7 @@ namespace SO115App.API.Controllers
             _getEmergenzaByIdHandler = GetEmergenzaByIdHandler;
             _getListaEmergenzeByCodComandoHandler = GetListaEmergenzeByCodComandoHandler;
             _allertaHandler = AllertaHandler;
+            _richiestaHandler = richiestaHandler;
         }
 
         [HttpPost("InsertEmergenza")]
@@ -61,7 +66,7 @@ namespace SO115App.API.Controllers
             try
             {
                 _insertHandler.Handle(command);
-                return Ok();
+                return Ok(command.InfoEmergenza);
             }
             catch (Exception ex)
             {
@@ -73,11 +78,12 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("UpDateEmergenza")]
-        public async Task<IActionResult> UpDateEmergenza([FromBody] Emergenza emergenza)
+        public async Task<IActionResult> UpDateEmergenza([FromBody] EmergenzaDTO emergenza)
         {
             var command = new UpdateEmergenzaCommand()
             {
                 CodOperatore = Request.Headers["IdUtente"].ToString(),
+                CodSede = Request.Headers["codicesede"].ToString().Split(',')[0],
                 InfoEmergenza = emergenza
             };
 
@@ -122,6 +128,24 @@ namespace SO115App.API.Controllers
             try
             {
                 _allertaHandler.Handle(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("AddRichiestaEmergenza")]
+        public async Task<IActionResult> AddRichiestaEmergenza([FromBody] RichiestaCommand command)
+        {
+            command.CodOperatore = Request.Headers["IdUtente"].ToString();
+            command.CodSede = Request.Headers["codicesede"].ToString().Split(',')[0];
+            try
+            {
+                _richiestaHandler.Handle(command);
                 return Ok();
             }
             catch (Exception ex)

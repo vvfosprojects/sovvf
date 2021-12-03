@@ -15,7 +15,7 @@ import { ModificaEntiModalComponent } from '../modifica-enti-modal/modifica-enti
 import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
-import { PatchEntiIntervenutiRichiesta, PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
+import { PatchEntiIntervenutiRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor, defineChiamataIntervento } from '../../helper/function-richieste';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { EnteInterface } from '../../interface/ente.interface';
@@ -73,10 +73,9 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     onSganciamentoMezzo(richiesta: SintesiRichiesta): void {
         let sganciamentoMezziModal;
         sganciamentoMezziModal = this.modalService.open(ListaMezziSganciamentoModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'xxlModal modal-holder',
             backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
+            centered: true
         });
         sganciamentoMezziModal.componentInstance.richiesta = richiesta;
         sganciamentoMezziModal.result.then(
@@ -252,7 +251,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                                     document.body.removeChild(a);
                                     break;
                             }
-                        }, error => console.log('Errore Stampa ' + val.slice(2, 5).toUpperCase()));
+                        }, () => console.log('Errore Stampa ' + val.slice(2, 5).toUpperCase()));
                         break;
                     case 'ko':
                         break;

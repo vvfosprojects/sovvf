@@ -19,7 +19,8 @@
                             </button>
                         </div>
                         <div class="col-4">
-                            <app-ricerca-area-documentale [loading]="loading$ | async"
+                            <app-ricerca-area-documentale [ricerca]="ricerca"
+                                                          [loading]="loading$ | async"
                                                           (ricercaChange)="onRicercaDocumenti($event)">
                             </app-ricerca-area-documentale>
                         </div>

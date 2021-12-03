@@ -1,9 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Doa } from '../../interface/doa.interface';
 import { Store } from '@ngxs/store';
-import { ResetDoaForm } from '../../store/actions/zone-emergenza/zone-emergenza.actions';
+import { ResetPcaForm } from '../../store/actions/zone-emergenza/zone-emergenza.actions';
+import { Pca } from '../../interface/pca.interface';
+import { roundToDecimal } from '../../../../shared/helper/function-generiche';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
     selector: 'app-pca-modal',
@@ -12,7 +14,7 @@ import { ResetDoaForm } from '../../store/actions/zone-emergenza/zone-emergenza.
 })
 export class PcaModalComponent implements OnDestroy {
 
-    doaForm: FormGroup;
+    pcaForm: FormGroup;
 
     constructor(public modal: NgbActiveModal,
                 private formBuilder: FormBuilder,
@@ -21,32 +23,39 @@ export class PcaModalComponent implements OnDestroy {
     }
 
     get f(): any {
-        return this.doaForm?.controls;
+        return this.pcaForm?.controls;
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch(new ResetDoaForm());
+        this.store.dispatch(new ResetPcaForm());
     }
 
     initForm(): void {
-        this.doaForm = this.formBuilder.group({
+        this.pcaForm = this.formBuilder.group({
             codice: [null],
             nome: [null, [Validators.required]],
             indirizzo: [null, [Validators.required]],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
-            longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
-            dirigente: [null, [Validators.required]],
-            listaModuliColonnaMobile: [null, [Validators.required]],
-            listaComuniInteressati: [null, [Validators.required]],
-            listaPca: [null]
+            longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]]
         });
     }
 
-    onInserisciDoa(): void {
-        this.close('ok', this.doaForm.value);
+    onSetIndirizzo(candidate: AddressCandidate): void {
+        console.log('onSetIndirizzo', candidate);
+        const lat = roundToDecimal(candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidate.location.longitude, 6);
+
+        this.f.indirizzo.patchValue(candidate.address);
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lng);
     }
 
-    close(esito: string, doa?: Doa): void {
-        this.modal.close({ esito, doa });
+
+    onInserisciPca(): void {
+        this.close('ok', this.pcaForm.value);
+    }
+
+    close(esito: string, pca?: Pca): void {
+        this.modal.close({ esito, pca });
     }
 }

@@ -31,19 +31,23 @@ export class ZoneEmergenzaService {
         return this.http.get<{ emergenza: ZonaEmergenza }>(API_ZONE_EMERGENZA + '/GetEmergenzaById?Id=' + idZonaEmergenza);
     }
 
-    add(zonaEmergenza: ZonaEmergenza): Observable<any> {
-        return this.http.post<any>(API_ZONE_EMERGENZA + '/InsertEmergenza', zonaEmergenza);
+    add(zonaEmergenza: ZonaEmergenza): Observable<ZonaEmergenza> {
+        return this.http.post<ZonaEmergenza>(API_ZONE_EMERGENZA + '/InsertEmergenza', zonaEmergenza);
     }
 
     edit(zonaEmergenza: ZonaEmergenza): Observable<any> {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/UpdateEmergenza', zonaEmergenza);
     }
 
-    annulla(params: { id: string, motivazione: string}): Observable<any> {
+    annulla(params: { id: string, motivazione: string }): Observable<any> {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/AnnullaEmergenza', params);
     }
 
-    allertaEmergenzaCON(params: { id: string, descrizioneEmergenza: string, dirigenti: string[]}): Observable<any> {
+    allertaEmergenzaCON(params: { id: string, descrizioneEmergenza: string }): Observable<any> {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/AllertaEmergenza', params);
+    }
+
+    requestTipologieModuli(params: { id: string, tipologieModuli: string[] }): Observable<any> {
+        return this.http.post<any>(API_ZONE_EMERGENZA + '/AddRichiestaEmergenza', params);
     }
 }

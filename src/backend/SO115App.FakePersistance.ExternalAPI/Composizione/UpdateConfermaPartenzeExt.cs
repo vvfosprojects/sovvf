@@ -67,14 +67,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         /// <param name="command">il command in ingresso</param>
         /// <returns>ConfermaPartenze</returns>
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
-        {  
+        {
             var codiceSede = command.ConfermaPartenze.CodiceSede.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
                 foreach (var squadra in partenza.Squadre)
                 {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice);
+                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
 
                     //Chiamata OPService per aggiornare lo stato delle Squadre "ALLOCATE" oppure "DEALLOCATE"
                     if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
@@ -135,7 +135,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             numeroIntervento = command.Richiesta.CodRichiesta,
                             dataIntervento = dataIntervento,
                             dataRientro = dataRientro,
-                            autista = partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
+                            autista = partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.CodiceFiscale,
                         });
                     }
                     else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
@@ -152,7 +152,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             numeroIntervento = command.Richiesta.CodRichiesta,
                             dataIntervento = dataIntervento,
                             dataUscita = dataUscita,
-                            autista = partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
+                            autista = partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica == "DRIVER")?.CodiceFiscale,
                             tipoUscita = new TipoUscita()
                             {
                                 codice = tipologia.Codice,

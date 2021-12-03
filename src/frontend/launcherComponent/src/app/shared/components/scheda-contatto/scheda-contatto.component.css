@@ -36,3 +36,10 @@
 .btn-outline-warning:hover {
   color: #ffffff !important;
 }
+
+input[type="checkbox"] {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+  outline: none !important;
+  vertical-align: middle;
+}

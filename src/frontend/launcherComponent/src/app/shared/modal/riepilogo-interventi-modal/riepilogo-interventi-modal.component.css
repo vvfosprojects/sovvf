@@ -21,7 +21,9 @@ select.custom-select {
     width: auto;
 }
 
-.checkbox-size {
-    width: 17px;
-    height: 17px;
+input[type="checkbox"] {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+    outline: none !important;
+    vertical-align: middle;
 }
