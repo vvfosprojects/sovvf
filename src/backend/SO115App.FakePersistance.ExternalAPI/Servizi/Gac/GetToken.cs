@@ -10,6 +10,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     {
         private readonly IConfiguration _configuration;
         private readonly IHttpRequestManager<TokenService> _clientToken;
+
         public GetToken(IHttpRequestManager<TokenService> clientToken, IConfiguration configuration)
         {
             _clientToken = clientToken;
@@ -18,13 +19,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public string GeneraToken()
         {
-            string token = "";
+            string token = "so115";
 
-            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetToken}?user=SO115&password=SO115");
-            var EsitoToken = _clientToken.GetAsync(url, token).Result;
+            //var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetToken}?user=SO115&password=SO115");
+            //var EsitoToken = _clientToken.GetAsync(url, token).Result;
 
-            if (!EsitoToken.errore)
-                token = EsitoToken.descrizioneEsito;
+            //if (!EsitoToken.errore)
+            //    token = EsitoToken.descrizioneEsito;
 
             return token;
         }

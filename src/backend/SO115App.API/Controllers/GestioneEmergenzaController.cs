@@ -66,7 +66,7 @@ namespace SO115App.API.Controllers
             try
             {
                 _insertHandler.Handle(command);
-                return Ok();
+                return Ok(command.InfoEmergenza);
             }
             catch (Exception ex)
             {
@@ -78,11 +78,12 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("UpDateEmergenza")]
-        public async Task<IActionResult> UpDateEmergenza([FromBody] Emergenza emergenza)
+        public async Task<IActionResult> UpDateEmergenza([FromBody] EmergenzaDTO emergenza)
         {
             var command = new UpdateEmergenzaCommand()
             {
                 CodOperatore = Request.Headers["IdUtente"].ToString(),
+                CodSede = Request.Headers["codicesede"].ToString().Split(',')[0],
                 InfoEmergenza = emergenza
             };
 

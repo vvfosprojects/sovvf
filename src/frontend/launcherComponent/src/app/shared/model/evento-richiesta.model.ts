@@ -9,6 +9,5 @@ export class EventoRichiesta {
         public sedeOperatore?: string
     ) {
     }
-
 }
 

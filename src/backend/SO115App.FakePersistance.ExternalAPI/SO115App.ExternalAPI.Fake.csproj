@@ -42,9 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Servizi\Gac\Mock\Json\Mezzo.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Servizi\Nue\Mock\Json\SchedeContatto.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

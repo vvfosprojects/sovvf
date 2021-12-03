@@ -14,6 +14,7 @@ export class ZonaEmergenzaModalComponent implements OnInit {
     mapPoint: any;
     lat: number;
     lon: number;
+    allTipologieEmergenza: any[];
     tipologieEmergenza: TipologiaEmergenza[];
 
     indirizzo: number;
@@ -74,7 +75,8 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             responsabileDistrettoAreaColpita: [null],
             responsabile: [null],
             responsabileCampiBaseMezziOperativi: [null],
-            responsabileGestionePersonaleContratti: [null]
+            responsabileGestionePersonaleContratti: [null],
+            tipologieModuli: [null]
         });
     }
 
@@ -110,6 +112,19 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             responsabileGestionePersonaleContratti: this.zonaEmergenzaEdit.dirigenti[4]
         });
         this.f.tipologia.disable();
+    }
+
+    getTipologieModuliByDescTipologiaEmergenza(): string[] {
+        let tipologieModuli: string[];
+        const descTipologiaEmergenzaSelezionata = this.f?.tipologia?.value;
+        if (descTipologiaEmergenzaSelezionata) {
+            this.tipologieEmergenza.forEach((t: TipologiaEmergenza) => {
+                if (t.emergenza.indexOf(descTipologiaEmergenzaSelezionata) !== -1) {
+                    tipologieModuli = t.moduli.mob_Immediata;
+                }
+            });
+        }
+        return tipologieModuli;
     }
 
     close(esito: string): void {

@@ -109,7 +109,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<RichiestaPresidiata>();
             BsonClassMap.RegisterClassMap<RichiestaSospesa>();
             BsonClassMap.RegisterClassMap<RichiestaModificata>();
-            BsonClassMap.RegisterClassMap<AnnullamentoPartenza>();
+            BsonClassMap.RegisterClassMap<AnnullamentoStatoPartenza>();
 
             BsonClassMap.RegisterClassMap<RichiestaSoccorsoAereo>();
             BsonClassMap.RegisterClassMap<AnnullamentoRichiestaSoccorsoAereo>();
@@ -148,6 +148,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<PresaInCaricoEmergenza>();
             BsonClassMap.RegisterClassMap<AllertaEmergenza>();
             BsonClassMap.RegisterClassMap<ModuliColonnaMobile>();
+            BsonClassMap.RegisterClassMap<RichiestaEmergenza>();
 
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaImmediata>();
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaPotInt>();
@@ -155,8 +156,7 @@ namespace Persistence.MongoDB
 
             UnitaOperativaMap.Map();
 
-            BsonClassMap.RegisterClassMap<LogBook>(); 
-
+            BsonClassMap.RegisterClassMap<LogBook>();
         }
 
         public IMongoCollection<UnitaOperativa> ListaSediCollection
@@ -166,6 +166,7 @@ namespace Persistence.MongoDB
                 return database.GetCollection<UnitaOperativa>("unitaOperative");
             }
         }
+
         public IMongoCollection<TipologiaEmergenza> TipologieEmergenzaCollection
         {
             get

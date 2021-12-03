@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 
 namespace SO115App.ExternalAPI.Fake.GestioneIntervento
 {
@@ -28,13 +27,10 @@ namespace SO115App.ExternalAPI.Fake.GestioneIntervento
     /// </summary>
     public class UpDateRichiestaExt : IUpDateRichiestaAssistenza
     {
-        private readonly ISetMovimentazione _setMovimentazione;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
-        public UpDateRichiestaExt(ISetMovimentazione setMovimentazione,
-                                  IUpDateRichiestaAssistenza upDateRichiestaAssistenza)
+        public UpDateRichiestaExt(IUpDateRichiestaAssistenza upDateRichiestaAssistenza)
         {
-            _setMovimentazione = setMovimentazione;
             _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
         }
 

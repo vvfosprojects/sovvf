@@ -862,11 +862,13 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             size: 'md'
         });
 
-        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const allTipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
 
         modalNuovaEmergenza.componentInstance.mapPoint = mapPoint;
         modalNuovaEmergenza.componentInstance.lat = lat;
         modalNuovaEmergenza.componentInstance.lon = lon;
+        modalNuovaEmergenza.componentInstance.allTipologieEmergenza = allTipologieEmergenza;
         modalNuovaEmergenza.componentInstance.tipologieEmergenza = tipologieEmergenza;
 
         modalNuovaEmergenza.result.then((result: string) => {

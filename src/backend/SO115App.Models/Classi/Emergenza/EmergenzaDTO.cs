@@ -4,20 +4,8 @@ using System.Collections.Generic;
 
 namespace SO115App.Models.Classi.Emergenza
 {
-    public class Emergenza
+    public class EmergenzaDTO
     {
-        private List<Evento> _eventi;
-
-        public IEnumerable<Evento> ListaEventi
-        {
-            get { return _eventi.ToArray(); }
-        }
-
-        public Emergenza()
-        {
-            this._eventi = new List<Evento>();
-        }
-
         public string Id { get; set; }
         public string CodEmergenza { get; set; }
         public string Descrizione { get; set; }
@@ -32,10 +20,6 @@ namespace SO115App.Models.Classi.Emergenza
         public List<ModuliColonnaMobile> ListaModuliImmediata { get; set; }
         public List<ModuliColonnaMobile> ListaModuliPotInt { get; set; }
         public List<ModuliColonnaMobile> ListaModuliConsolidamento { get; set; }
-
-        public void AddEvento(Evento evento)
-        {
-            this._eventi.Add(evento);
-        }
+        public List<Evento> ListaEventi { get; set; }
     }
 }
