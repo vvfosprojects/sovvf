@@ -41,5 +41,13 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         [JsonConverter(typeof(string))]
         public double Longitudine { get; set; }
+
+        public string[] CoordToString
+        {
+            get
+            {
+                return new string[] { Longitudine.ToString().Replace(",", "."), Latitudine.ToString().Replace(",", ".") };
+            }
+        }
     }
 }
