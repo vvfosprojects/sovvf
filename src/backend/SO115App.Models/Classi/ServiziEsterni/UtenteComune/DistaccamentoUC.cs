@@ -45,12 +45,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
                 {
                     try
                     {
-                        var coord = new Coordinate(double.Parse(coordinate.Split(',')[0].Replace('.', ',')), double.Parse(coordinate.Split(',')[1].Replace('.', ',')))
-                        {
-                            CoordToString = coordinate.Split(',')
-                        };
-
-                        return coord;
+                        return new Coordinate(double.Parse(coordinate.Split(',')[0].Replace('.', ',')), double.Parse(coordinate.Split(',')[1].Replace('.', ',')));
                     }
                     catch
                     {

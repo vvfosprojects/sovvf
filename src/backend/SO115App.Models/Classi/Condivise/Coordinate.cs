@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System.Text.Json.Serialization;
 
 namespace SO115App.API.Models.Classi.Condivise
@@ -41,11 +42,5 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         [JsonConverter(typeof(string))]
         public double Longitudine { get; set; }
-
-        public string[] CoordToString
-        {
-            get { return new string[] { Longitudine.ToString().Replace(",", "."), Latitudine.ToString().Replace(",", ".") }; }
-            set { }
-        }
     }
 }
