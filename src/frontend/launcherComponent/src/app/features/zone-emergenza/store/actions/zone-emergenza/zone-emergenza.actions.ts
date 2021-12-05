@@ -54,6 +54,10 @@ export class AddZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Add Zona Emergenza';
 }
 
+export class RequestTipologieModuli {
+    static readonly type = '[ZoneEmergenza] Request Tipologie Moduli';
+}
+
 export class EditZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Edit Zona Emergenza';
 }
@@ -61,7 +65,7 @@ export class EditZonaEmergenza {
 export class SetEventoRichiestaGestitoZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Set Evento Richiesta Gestito Zona Emergenza';
 
-    constructor( public eventoGestito?: EventoEmergenza) {
+    constructor(public eventoGestito?: EventoEmergenza) {
     }
 }
 

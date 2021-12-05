@@ -16,6 +16,7 @@ import {
     GetTipologieEmergenza,
     GetZonaEmergenzaById,
     GetZoneEmergenza,
+    RequestTipologieModuli,
     ResetAllertaCONZonaEmergenzaForm,
     ResetAnnullaZonaEmergenzaForm,
     ResetDoaForm,
@@ -53,6 +54,7 @@ import { PcaForm } from '../../../interface/pca-form.interface';
 import { ResetForm, UpdateFormValue } from '@ngxs/form-plugin';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { RichiestaModuliZonaEmergenzaForm } from '../../../interface/richiesta-moduli-form.interface';
 
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
@@ -61,6 +63,12 @@ export interface ZoneEmergenzaStateModel {
     allTipologieZonaEmergenza: { id: string, desc: string }[];
     zonaEmergenzaForm: {
         model: ZonaEmergenzaForm,
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
+    richiestaModuliZonaEmergenzaForm: {
+        model: RichiestaModuliZonaEmergenzaForm,
         dirty: boolean,
         status: string,
         errors: any
@@ -111,6 +119,12 @@ export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
     tipologieZonaEmergenza: null,
     allTipologieZonaEmergenza: null,
     zonaEmergenzaForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
+    richiestaModuliZonaEmergenzaForm: {
         model: undefined,
         dirty: false,
         status: '',
@@ -377,6 +391,26 @@ export class ZoneEmergenzaState {
         }, () => {
             dispatch([
                 new ResetZonaEmergenzaForm(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        });
+    }
+
+    @Action(RequestTipologieModuli)
+    requestTipologieModuli({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>): void {
+        dispatch(new StartLoadingZoneEmergenza());
+        const state = getState();
+        const formValue = state.richiestaModuliZonaEmergenzaForm.model;
+        const paramsRequestTipologieModuli = {
+            id: formValue.idZonaEmergenza,
+            tipologieModuli: formValue.tipologiaModuli
+        };
+        this.zoneEmergenzaService.requestTipologieModuli(paramsRequestTipologieModuli).subscribe(() => {
+            dispatch([
+                new StopLoadingZoneEmergenza()
+            ]);
+        }, () => {
+            dispatch([
                 new StopLoadingZoneEmergenza()
             ]);
         });
