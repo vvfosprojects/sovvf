@@ -17,7 +17,8 @@
                     <div class="card-header">
                         {{ 'Informazioni Emergenza' | uppercase }}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body"
+                         style="max-height: 170px; overflow-y: auto">
                         <h5>
                             <span class="text-muted">
                                 Tipologia:
@@ -108,7 +109,8 @@
                             </ng-container>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body"
+                         style="max-height: 280px; overflow-y: auto">
                         <div *ngFor="let e of getEventiRichiesteZonaEmergenza()" class="card mb-2">
                             <div class="card-body">
                                 {{ e.istante | date: 'dd/MM/YYYY HH:mm' }}
@@ -145,7 +147,8 @@
                     <div class="card-header">
                         {{ 'Moduli Assegnati' | uppercase }}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body"
+                         style="max-height: 250px; overflow-y: auto">
                         <div class="row">
                             <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
                                 <div class="col-12">
