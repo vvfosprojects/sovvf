@@ -383,7 +383,7 @@ export class ZoneEmergenzaState {
     }
 
     @Action(EditZonaEmergenza)
-    editZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>, action: EditZonaEmergenza): void {
+    editZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>): void {
         dispatch(new StartLoadingZoneEmergenza());
 
         const state = getState();
@@ -455,13 +455,13 @@ export class ZoneEmergenzaState {
     setEventoRichiestaGestitoZonaEmergenza({ getState }: StateContext<ZoneEmergenzaStateModel>, action: SetEventoRichiestaGestitoZonaEmergenza): void {
         const state = getState();
         const zonaEmergenza = state.zonaEmergenzaById;
-        const istanteEentoGestito = action.eventoGestito?.istante;
+        const istanteEventoGestito = action.eventoGestito?.istante;
 
-        if (zonaEmergenza && istanteEentoGestito) {
+        if (zonaEmergenza && istanteEventoGestito) {
             const obj = {
                 id: zonaEmergenza.id,
                 richiestaEmergenza: {
-                    istante: istanteEentoGestito
+                    istante: istanteEventoGestito
                 }
             };
             this.zoneEmergenzaService.setEventoGestito(obj).subscribe(() => {
