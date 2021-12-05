@@ -94,6 +94,18 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
                 this.doubleMonitor = doubleMonitor;
+                if (this.doubleMonitor === false && this.tastoZonaEmergenzaMappaActive) {
+                    this.store.dispatch([
+                        new SetZonaEmergenzaFromMappaActiveValue(false),
+                        new SetMappaActiveValue(true)
+                    ]);
+                }
+                if (this.doubleMonitor === true && this.tastoZonaEmergenzaMappaActive) {
+                    this.store.dispatch([
+                        new SetZonaEmergenzaFromMappaActiveValue(false),
+                        new SetMappaActiveValue(false)
+                    ]);
+                }
             })
         );
     }
@@ -132,9 +144,14 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
 
     onChangeVisualizzazione(): void {
         if (this.mappaActive) {
-            this.store.dispatch(new SetMappaActiveValue(false));
+            this.store.dispatch([
+                new SetZonaEmergenzaFromMappaActiveValue(false),
+                new SetMappaActiveValue(false)
+            ]);
         } else if (!this.mappaActive) {
-            this.store.dispatch(new SetMappaActiveValue(true));
+            this.store.dispatch([
+                new SetMappaActiveValue(true)
+            ]);
         }
     }
 
@@ -142,12 +159,11 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         if (!this.tastoZonaEmergenzaMappaActive) {
             this.store.dispatch([
                 new SetZonaEmergenzaFromMappaActiveValue(true),
-                new SetMappaActiveValue(true)
+                !this.doubleMonitor && new SetMappaActiveValue(true)
             ]);
         } else {
             this.store.dispatch([
-                new SetZonaEmergenzaFromMappaActiveValue(false),
-                new SetMappaActiveValue(false)
+                new SetZonaEmergenzaFromMappaActiveValue(false)
             ]);
         }
     }
