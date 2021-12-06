@@ -113,6 +113,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         {
             switch (evento)
             {
+                case AnnullamentoStatoPartenza _:
+                    return ((AnnullamentoStatoPartenza)evento).Note;
+
                 case RevocaPerAltraMotivazione _:
                     return ((RevocaPerAltraMotivazione)evento).Motivazione;
 
@@ -120,7 +123,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     return ((RevocaPerSostituzioneMezzo)evento).Motivazione;
 
                 case RevocaPerRiassegnazione _:
-                    string codRichiesta;
                     if (((RevocaPerRiassegnazione)evento).RichiestaSubentrata.CodRichiesta.Trim().Length > 0)
                         return ((RevocaPerRiassegnazione)evento).RichiestaSubentrata.CodRichiesta;
                     else
@@ -167,6 +169,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             if (evento is RevocaPerSostituzioneMezzo)
             {
                 targa = ((RevocaPerSostituzioneMezzo)evento).CodiceMezzo;
+            }
+
+            if (evento is AnnullamentoStatoPartenza)
+            {
+                targa = ((AnnullamentoStatoPartenza)evento).CodiceMezzo;
             }
 
             if (evento is ComposizionePartenze)
@@ -226,130 +233,50 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             return targa.Contains('.') ? targa.Split('.')[1] : targa;
         }
 
-        private string MapEvento(Evento evento)
+        private string MapEvento(Evento evento) => evento switch
         {
-            switch (evento)
-            {
-                case Telefonata _:
-                    return Costanti.Telefonata;
+            AnnullamentoStatoPartenza _ => Costanti.AnnullamentoStatoPartenza,
+            Telefonata _ => Costanti.Telefonata,
+            InizioPresaInCarico _ => Costanti.InizioPresaInCarico,
+            RiaperturaRichiesta _ => Costanti.RiaperturaRichiesta,
+            ComposizionePartenze _ => Costanti.Composizione,
+            ChiusuraRichiesta _ => Costanti.ChiusuraRichiesta,
+            ArrivoSulPosto _ => Costanti.ArrivoSulPosto,
+            UscitaPartenza _ => Costanti.UscitaPartenza,
+            RichiestaPresidiata _ => Costanti.RichiestaPresidiata,
+            RichiestaSospesa _ => Costanti.RichiestaSospesa,
+            PartenzaRientrata _ => Costanti.EventoMezzoRientrato,
+            PartenzaInRientro _ => Costanti.EventoMezzoInRientro,
+            AssegnataRichiesta _ => Costanti.AssegnataRichiesta,
+            AssegnazionePriorita _ => Costanti.AssegnataPriorita,
+            MarcaRilevante _ => Costanti.MarcaRilevante,
+            RevocaPerAltraMotivazione _ => Costanti.RevocaPerAltraMotivazione,
+            RevocaPerFuoriServizio _ => Costanti.RevocaPerFuoriServizio,
+            RevocaPerInterventoNonPiuNecessario _ => Costanti.RevocaPerInterventoNonPiuNecessario,
+            RevocaPerRiassegnazione _ => Costanti.RevocaPerRiassegnazione,
+            AnnullamentoPresaInCarico _ => Costanti.AnnullamentoPresaInCarico,
+            InviareFonogramma _ => Costanti.FonogrammaDaInviare,
+            FonogrammaInviato _ => Costanti.FonogrammaInviato,
+            AllertaSedi _ => Costanti.AllertaAltreSedi,
+            RevocaPerSostituzioneMezzo _ => Costanti.RevocaPerSostituzioneMezzo,
+            SostituzionePartenzaFineTurno _ => Costanti.SostituzionePartenza,
+            TrasferimentoChiamata _ => Costanti.TrasferimentoChiamata,
+            RichiestaSoccorsoAereo _ => Costanti.RichiestaSoccorsoAereo,
+            AnnullamentoRichiestaSoccorsoAereo _ => Costanti.AnnullamentoRichiestaSoccorsoAereo,
+            InserimentoEnteIntervenuto _ => Costanti.InserimentoEnteInterenuto,
+            STATRI_InivioRichiesta _ => Costanti.STATRI_InivioRichiesta,
+            RichiestaModificata _ => Costanti.RichiestaModificata,
+            CreazioneEmergenza _ => Costanti.EmergenzaCreazione,
+            ModificaEmergenza _ => Costanti.EmergenzaModifica,
+            AnnullamentoEmergenza _ => Costanti.EmergenzaAnnulla,
+            PresaInCaricoEmergenza _ => Costanti.EmergenzaPresaInCarico,
+            InserimentoModuliColonnaMobileEmergenzaImmediata _ => Costanti.EmergenzaInserimentoModuliColonnaMobiliImmediata,
+            InserimentoModuliColonnaMobileEmergenzaPotInt _ => Costanti.EmergenzaInserimentoModuliColonnaMobiliPotInt,
+            InserimentoModuliColonnaMobileEmergenzaConsolidamento _ => Costanti.EmergenzaInserimentoModuliColonnaMobiliConsolidamento,
+            AllertaEmergenza _ => Costanti.EmergenzaAllerta,
+            LogBook _ => Costanti.LogBook,
 
-                case InizioPresaInCarico _:
-                    return Costanti.InizioPresaInCarico;
-
-                case RiaperturaRichiesta _:
-                    return Costanti.RiaperturaRichiesta;
-
-                case ComposizionePartenze _:
-                    return Costanti.Composizione;
-
-                case ChiusuraRichiesta _:
-                    return Costanti.ChiusuraRichiesta;
-
-                case ArrivoSulPosto _:
-                    return Costanti.ArrivoSulPosto;
-
-                case UscitaPartenza _:
-                    return Costanti.UscitaPartenza;
-
-                case RichiestaPresidiata _:
-                    return Costanti.RichiestaPresidiata;
-
-                case RichiestaSospesa _:
-                    return Costanti.RichiestaSospesa;
-
-                case PartenzaRientrata _:
-                    return Costanti.EventoMezzoRientrato;
-
-                case PartenzaInRientro _:
-                    return Costanti.EventoMezzoInRientro;
-
-                case AssegnataRichiesta _:
-                    return Costanti.AssegnataRichiesta;
-
-                case AssegnazionePriorita _:
-                    return Costanti.AssegnataPriorita;
-
-                case MarcaRilevante _:
-                    return Costanti.MarcaRilevante;
-
-                case RevocaPerAltraMotivazione _:
-                    return Costanti.RevocaPerAltraMotivazione;
-
-                case RevocaPerFuoriServizio _:
-                    return Costanti.RevocaPerFuoriServizio;
-
-                case RevocaPerInterventoNonPiuNecessario _:
-                    return Costanti.RevocaPerInterventoNonPiuNecessario;
-
-                case RevocaPerRiassegnazione _:
-                    return Costanti.RevocaPerRiassegnazione;
-
-                case AnnullamentoPresaInCarico _:
-                    return Costanti.AnnullamentoPresaInCarico;
-
-                case InviareFonogramma _:
-                    return Costanti.FonogrammaDaInviare;
-
-                case FonogrammaInviato _:
-                    return Costanti.FonogrammaInviato;
-
-                case AllertaSedi _:
-                    return Costanti.AllertaAltreSedi;
-
-                case RevocaPerSostituzioneMezzo _:
-                    return Costanti.RevocaPerSostituzioneMezzo;
-
-                case SostituzionePartenzaFineTurno _:
-                    return Costanti.SostituzionePartenza;
-
-                case TrasferimentoChiamata _:
-                    return Costanti.TrasferimentoChiamata;
-
-                case RichiestaSoccorsoAereo _:
-                    return Costanti.RichiestaSoccorsoAereo;
-
-                case AnnullamentoRichiestaSoccorsoAereo _:
-                    return Costanti.AnnullamentoRichiestaSoccorsoAereo;
-
-                case InserimentoEnteIntervenuto _:
-                    return Costanti.InserimentoEnteInterenuto;
-
-                case STATRI_InivioRichiesta _:
-                    return Costanti.STATRI_InivioRichiesta;
-
-                case RichiestaModificata _:
-                    return Costanti.RichiestaModificata;
-
-                case CreazioneEmergenza _:
-                    return Costanti.EmergenzaCreazione;
-
-                case ModificaEmergenza _:
-                    return Costanti.EmergenzaModifica;
-
-                case AnnullamentoEmergenza _:
-                    return Costanti.EmergenzaAnnulla;
-
-                case PresaInCaricoEmergenza _:
-                    return Costanti.EmergenzaPresaInCarico;
-
-                case InserimentoModuliColonnaMobileEmergenzaImmediata _:
-                    return Costanti.EmergenzaInserimentoModuliColonnaMobiliImmediata;
-
-                case InserimentoModuliColonnaMobileEmergenzaPotInt _:
-                    return Costanti.EmergenzaInserimentoModuliColonnaMobiliPotInt;
-
-                case InserimentoModuliColonnaMobileEmergenzaConsolidamento _:
-                    return Costanti.EmergenzaInserimentoModuliColonnaMobiliConsolidamento;
-
-                case AllertaEmergenza _:
-                    return Costanti.EmergenzaAllerta;
-
-                case LogBook _:
-                    return Costanti.LogBook;
-
-                default:
-                    return Costanti.EventoGenerico;
-            }
-        }
+            _ => Costanti.EventoGenerico
+        };
     }
 }
