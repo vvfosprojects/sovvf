@@ -422,6 +422,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
+        this.f.indirizzo.markAsDirty();
+        this.f.latitudine.markAsDirty();
+        this.f.longitudine.markAsDirty();
 
         this.reducerSchedaTelefonata('cerca');
     }
