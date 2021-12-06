@@ -41,22 +41,14 @@ namespace SO115App.Logging.CQRS
 
             Log.Information("Action starting {commandClass}: {jsonCommand}", commandClass, jsonCommand);
 
-            try
-            {
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                this.decorated.Handle(command);
-                stopwatch.Stop();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            this.decorated.Handle(command);
+            stopwatch.Stop();
 
-                var elapsed = stopwatch.ElapsedMilliseconds;
+            var elapsed = stopwatch.ElapsedMilliseconds;
 
-                Log.Information("Action executed ({elapsed} ms)", elapsed);
-            }
-            catch (Exception ex)
-            {
-                var error = ex.Message;
-                Log.Error("Action Error {commandClass}: {jsonCommand} - Error: {error}", commandClass, jsonCommand, error);
-            }
+            Log.Information("Action executed ({elapsed} ms)", elapsed);
         }
     }
 }
