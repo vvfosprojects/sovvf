@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using Persistence.MongoDB;
@@ -121,6 +122,17 @@ namespace SO115App.Persistence.MongoDB
             else
             {
                 var filtroFullText = Builders<RichiestaAssistenza>.Filter.Text(filtro.SearchKey);
+                //var filtroFullText = Builders<RichiestaAssistenza>.Filter.Regex("codice", filtro.SearchKey);
+                //filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("codRichiesta", filtro.SearchKey);
+                //filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("codSOCompetente", filtro.SearchKey);
+                //filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("descrizione", filtro.SearchKey);
+                //filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("indirizzo", filtro.SearchKey);
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("nominativo", new BsonRegularExpression(filtro.SearchKey));
+                //filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("telefono", filtro.SearchKey);
+                //filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("notePubbliche", filtro.SearchKey);
+                //filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("notePrivate", filtro.SearchKey);
+                //filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("noteNue", filtro.SearchKey);
+                //filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("tags", filtro.SearchKey);
 
                 var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
 
@@ -129,7 +141,6 @@ namespace SO115App.Persistence.MongoDB
 
                 _dbContext.RichiestaAssistenzaCollection.Indexes.CreateMany(indexes);
                 lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText & (filtroSediCompetenti | filtriSediAllertate)).ToList();
-
             }
 
             if (filtro == null)
@@ -324,7 +335,6 @@ namespace SO115App.Persistence.MongoDB
             var squadre = string.IsNullOrEmpty(filtri.Squadra) ? empty : Builders<RichiestaAssistenza>.Filter.AnyIn(r => r.lstSquadre, lstsq);
 
             var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno & squadre).ToList();
-
 
             //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB)
 
