@@ -22,7 +22,8 @@
         <div ngxUiLoaderBlurred>
             <div #contentElement>
                 <app-navbar [user]="user"
-                            [nightMode]="(nightMode$ | async)"
+                            [nightMode]="nightMode$ | async"
+                            [doubleMonitor]="doubleMonitor$ | async"
                             [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
                             [colorButtonView]="colorButton$ | async"
                             [disabledMezziInServizio]="permissionFeatures.MezziInServizio | checkPermission"
