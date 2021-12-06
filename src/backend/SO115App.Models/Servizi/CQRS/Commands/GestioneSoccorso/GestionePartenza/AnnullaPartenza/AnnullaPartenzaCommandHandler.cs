@@ -20,6 +20,8 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
+using SO115App.Models.Classi.Gac;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
@@ -30,6 +32,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
@@ -78,9 +81,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(statoMezzoAttuale))
             {
-                //TODO AGGIUNGERE NOTE
-                new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, "AnnullamentoStatoPartenza", command.CodicePartenza);
-
                 string nuovoStatoMezzo = null;
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
@@ -104,55 +104,55 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         break;
                 }
 
-                foreach (var squadra in partenza.Partenza.Squadre)
-                {
-                    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(nuovoStatoMezzo);
-                }
+                string note = $"Il cambio stato {statoMezzoAttuale} è stato annullato e il mezzo è tornato nello stato {nuovoStatoMezzo}";
+
+                new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, Costanti.AnnullamentoStatoPartenza, command.CodicePartenza, note);
+
+                partenza.Partenza.Squadre.ForEach(squadra => squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(nuovoStatoMezzo));
+                
                 partenza.Partenza.Mezzo.Stato = nuovoStatoMezzo;
 
                 command.Richiesta.DeleteEvento(ultimoMovimento);
 
                 #region Chiamata GAC
 
-                //var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+                var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
 
                 //SEGNALO LA MODIFICA A GAC
-                //var movimento = new ModificaMovimentoGAC()
-                //{
-                //    targa = command.TargaMezzo,
-                //    autistaRientro = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
-                //    autistaUscita = partenza.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
-                //    dataIntervento = command.Richiesta.dataOraInserimento,
-                //    dataRientro = date,
-                //    dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
-                //    idPartenza = command.CodicePartenza,
-                //    latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                //    longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                //    numeroIntervento = command.Richiesta.CodRichiesta,
-                //    tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
-                //    localita = "",
-                //    comune = new ComuneGAC()
-                //    {
-                //        codice = "",
-                //        descrizione = command.Richiesta.Localita.Citta
-                //    },
-                //    provincia = new ProvinciaGAC()
-                //    {
-                //        codice = "",
-                //        descrizione = command.Richiesta.Localita.Provincia
-                //    },
-                //    tipoUscita = new TipoUscita()
-                //    {
-                //        codice = tipologia.Codice,
-                //        descrizione = tipologia.Descrizione
-                //    }
-                //};
+                var movimento = new ModificaMovimentoGAC()
+                {
+                    targa = command.TargaMezzo,
+                    autistaRientro = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
+                    autistaUscita = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
+                    dataIntervento = command.Richiesta.dataOraInserimento,
+                    dataRientro = date,
+                    dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
+                    idPartenza = command.CodicePartenza,
+                    latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                    longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                    numeroIntervento = command.Richiesta.CodRichiesta,
+                    tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                    localita = "",
+                    comune = new ComuneGAC()
+                    {
+                        codice = "",
+                        descrizione = command.Richiesta.Localita.Citta
+                    },
+                    provincia = new ProvinciaGAC()
+                    {
+                        codice = "",
+                        descrizione = command.Richiesta.Localita.Provincia
+                    },
+                    tipoUscita = new TipoUscita()
+                    {
+                        codice = tipologia.Codice,
+                        descrizione = tipologia.Descrizione
+                    }
+                };
 
-                //_modificaGAC.Send(movimento);
+                _modificaGAC.Send(movimento);
 
                 #endregion Chiamata GAC
-
-                //command.Chiamata = _mapper.Map(command.Richiesta);
 
                 //AGGIORNO STATO MEZZO E RICHIESTA
                 var commandStatoMezzo = new AggiornaStatoMezzoCommand()

@@ -56,7 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             var response = _getCompetenze.PostAsyncFormData(url, multipartFormDataContent).Result;
 
-            if (response != null)
+            if (response?.results != null)
             {
                 var codCom = response.results.Find(x => x.paramName.Equals("cod_com")).value;
 
@@ -67,6 +67,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
                 if (response.results.Find(x => x.paramName.Equals("rank_3")) != null)
                     competenze[2] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("rank_3")).value}";
+            }
+            else
+            {
+#if DEBUG
+                competenze = new string[3] { "RM.1000", "RM.1002", "RM.1004" };
+#endif
             }
 
             return competenze;
