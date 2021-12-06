@@ -524,36 +524,45 @@ export class SchedaTelefonataState {
     }
 
     @Action(AnnullaChiamata)
-    annullaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
-        this.ngZone.run(() => {
-            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-            modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
-            modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
-            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
+    annullaChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+        const state = getState();
+        const formIsDirty = state.richiestaForm.dirty;
+        if (formIsDirty) {
+            this.ngZone.run(() => {
+                const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+                    windowClass: 'modal-holder',
+                    backdropClass: 'light-blue-backdrop',
+                    centered: true
+                });
+                modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+                modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
+                modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
+                modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
 
-            modalConfermaAnnulla.result.then(
-                (val) => {
-                    switch (val) {
-                        case 'ok':
-                            dispatch([
-                                new CestinaChiamata(),
-                                new ToggleChiamata()
-                            ]);
-                            break;
-                        case 'ko':
-                            console.log('[AnnullaChiamata] Azione annullata');
-                            break;
-                    }
-                    console.log('Modal chiusa con val ->', val);
-                },
-                (err) => console.log('[AnnullaChiamata] Modale chiusa senza bottoni. Err ->', err)
-            );
-        });
+                modalConfermaAnnulla.result.then(
+                    (val) => {
+                        switch (val) {
+                            case 'ok':
+                                dispatch([
+                                    new CestinaChiamata(),
+                                    new ToggleChiamata()
+                                ]);
+                                break;
+                            case 'ko':
+                                console.log('[AnnullaChiamata] Azione annullata');
+                                break;
+                        }
+                        console.log('Modal chiusa con val ->', val);
+                    },
+                    (err) => console.log('[AnnullaChiamata] Modale chiusa senza bottoni. Err ->', err)
+                );
+            });
+        } else {
+            dispatch([
+                new CestinaChiamata(),
+                new ToggleChiamata()
+            ]);
+        }
     }
 
     @Action(CestinaChiamata)

@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <div class="modal-title">
+        {{ 'Richiesta Moduli' | uppercase }}
+    </div>
+    <button type="button"
+            class="btn btn-light close"
+            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="modal.dismiss('cross')">
+        <span class="text-danger"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="richiestaModuliNZonaEmergenzaForm" ngxsForm="zoneEmergenza.richiestaModuliZonaEmergenzaForm">
+        <label for="tipologiaModuli">Tipologia Moduli</label>
+        <ng-select id="tipologiaModuli"
+                   [items]="getTipologieModuliByDescTipologiaEmergenza()"
+                   [multiple]="true"
+                   [hideSelected]="true"
+                   placeholder="Seleziona uno o più Moduli da richiedere"
+                   formControlName="tipologiaModuli">
+        </ng-select>
+    </form>
+</div>
+<div class="modal-footer" style="place-content: space-between;">
+    <button class="btn btn-lg btn-danger text-right btn-no-hover font-weight-bold"
+            (click)="close('ok')"
+            [disabled]="!richiestaModuliNZonaEmergenzaForm?.valid">
+        {{ 'Conferma Richiesta Moduli' | uppercase }}
+    </button>
+    <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"
+            (click)="close('ko')">
+        {{ 'Esci' | uppercase }}
+    </button>
+</div>

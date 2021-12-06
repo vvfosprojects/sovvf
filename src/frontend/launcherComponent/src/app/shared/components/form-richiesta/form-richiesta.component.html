@@ -98,7 +98,7 @@
                                    [class.is-invalid]="submitted && f.indirizzo.errors"
                                    type="text"
                                    placeholder="Indirizzo"
-                                   formControlName="indirizzo"/>
+                                   formControlName="indirizzo">
                         </ng-container>
                         <div *ngIf="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
                              class="invalid-feedback">
@@ -122,7 +122,7 @@
                                    [debounceTime]="1000"
                                    (debounceKeyUp)="onChangeCoordinate()"
                                    (keypress)="checkInputPattern($event, 'LAT_LON')"
-                                   (paste)="checkInputPattern($event, 'LAT_LON')"/>
+                                   (paste)="checkInputPattern($event, 'LAT_LON')">
                             <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
                                 <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
                                 <div *ngIf="f.latitudine.errors.pattern">La latitudine non è corretta</div>
@@ -141,7 +141,7 @@
                                    [debounceTime]="1000"
                                    (debounceKeyUp)="onChangeCoordinate()"
                                    (keypress)="checkInputPattern($event, 'LAT_LON')"
-                                   (paste)="checkInputPattern($event, 'LAT_LON')"/>
+                                   (paste)="checkInputPattern($event, 'LAT_LON')">
                             <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
                                 <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
                                 <div *ngIf="f.longitudine.errors.pattern">La longitudine non è corretta</div>
@@ -210,7 +210,7 @@
                                        type="text"
                                        placeholder="Nominativo"
                                        formControlName="nominativo"
-                                       role="presentation"/>
+                                       role="presentation">
                                 <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
                                     <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
                                 </div>
@@ -223,7 +223,7 @@
                                        formControlName="telefono" (keypress)="checkInputPattern($event, 'PHONE')"
                                        (paste)="checkInputPattern($event, 'PHONE')"
                                        class="form-control required-field"
-                                       [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
+                                       [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }">
                                 <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
                                     <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
                                     <div *ngIf="f.telefono.errors.pattern">Il Telefono è non è corretto</div>
@@ -237,18 +237,18 @@
                                 <label class="d-none" for="palazzo">Palazzo</label>
                                 <input id="palazzo" type="text" placeholder="Palazzo/Citofono/Info"
                                        formControlName="palazzo"
-                                       class="form-control"/>
+                                       class="form-control">
                             </div>
                             <div class="col-2 px-1">
                                 <label class="d-none" for="scala">Scala</label>
                                 <input id="scala" type="text" placeholder="Scala" formControlName="scala"
-                                       class="form-control"/>
+                                       class="form-control">
                             </div>
                             <div class="col-2 px-1">
                                 <label class="d-none" for="piano">Piano</label>
                                 <input id="piano" type="text" placeholder="Piano" formControlName="piano"
                                        class="form-control"
-                                       [ngClass]="{ 'is-invalid': submitted && f.piano.errors }"/>
+                                       [ngClass]="{ 'is-invalid': submitted && f.piano.errors }">
                                 <div *ngIf="submitted && f.piano.errors" class="invalid-feedback">
                                     <div *ngIf="f.piano.errors.required">Il Piano è richiesto</div>
                                 </div>
@@ -256,14 +256,14 @@
                             <div class="col-2 px-1">
                                 <label class="d-none" for="interno">Interno</label>
                                 <input id="interno" type="text" placeholder="Interno" formControlName="interno"
-                                       class="form-control"/>
+                                       class="form-control">
                             </div>
                             <div class="col-2 pl-1">
                                 <ng-template [ngIf]="f?.codSchedaContatto?.value">
                                     <label class="d-none" for="contatto">Contatto</label>
                                     <input id="contatto" type="text" placeholder="Contatto"
                                            formControlName="codSchedaContatto"
-                                           class="form-control"/>
+                                           class="form-control">
                                 </ng-template>
                                 <ng-template [ngIf]="!f?.codSchedaContatto?.value">
                                     <button class="btn btn-secondary btn-block btn-no-hover"
@@ -350,7 +350,7 @@
                                            min="0"
                                            placeholder="Inserisci HA"
                                            formControlName="boschi"
-                                           class="form-control"/>
+                                           class="form-control">
                                     <span class="input-group-text h6" id="boschi-group-text">
                                         Boschi
                                     </span>
@@ -365,7 +365,7 @@
                                            min="0"
                                            placeholder="Inserisci HA"
                                            formControlName="campi"
-                                           class="form-control"/>
+                                           class="form-control">
                                     <span class="input-group-text h6" id="campi-group-text">
                                         Campi
                                     </span>
@@ -380,7 +380,7 @@
                                            min="0"
                                            placeholder="Inserisci HA"
                                            formControlName="sterpaglie"
-                                           class="form-control"/>
+                                           class="form-control">
                                     <span class="input-group-text h6" id="sterpaglie-group-text">
                                         Sterpaglie
                                     </span>
@@ -411,7 +411,7 @@
                                            [class.is-invalid]="submitted && f.zoneEmergenza.errors"
                                            type="text"
                                            placeholder="Inserisci il Codice Emergenza"
-                                           formControlName="zoneEmergenza" class="form-control"/>
+                                           formControlName="zoneEmergenza" class="form-control">
                                 </div>
                                 <div class="form-group mb-2">
                                     <label class="d-none" for="etichette">Tag</label>
@@ -484,7 +484,7 @@
                     <ng-template [ngIf]="!modifica">
                         <button class="btn btn-primary btn-no-hover btn-xlarge mr-3"
                                 style="min-width: 100px"
-                                [disabled]="loadingCompetenze || disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="loadingCompetenze || !competenze?.length || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
@@ -493,7 +493,7 @@
                         </button>
                         <button class="btn btn-danger btn-no-hover btn-xlarge mr-3"
                                 style="min-width: 100px"
-                                [disabled]="loadingCompetenze || formIsInvalid()"
+                                [disabled]="loadingCompetenze || !competenze?.length || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
                                 ngbTooltip="Metti In Coda"
                                 placement="top">
@@ -502,7 +502,7 @@
                         <ng-container *ngIf="!apertoFromMappa">
                             <button class="btn btn-outline-secondary btn-no-hover btn-xlarge"
                                     type="button"
-                                    [disabled]="loadingCompetenze || formIsInvalid()"
+                                    [disabled]="loadingCompetenze || !competenze?.length || formIsInvalid()"
                                     (click)="onInAttesa()">
                                 <i class="fas fa-pause mr-1"></i>
                                 In Attesa
@@ -512,7 +512,7 @@
                     <ng-template [ngIf]="modifica">
                         <button class="btn btn-primary btn-no-hover mr-3 btn-xlarge"
                                 style="min-width: 100px"
-                                [disabled]="loadingCompetenze || disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="loadingCompetenze || !competenze?.length || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
@@ -521,7 +521,7 @@
                         </button>
                         <button class="btn btn-success btn-no-hover btn-xlarge"
                                 style="min-width: 100px"
-                                [disabled]="loadingCompetenze || formIsInvalid()"
+                                [disabled]="loadingCompetenze || !competenze?.length || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
                                 ngbTooltip="Conferma Modifica"
                                 placement="top">

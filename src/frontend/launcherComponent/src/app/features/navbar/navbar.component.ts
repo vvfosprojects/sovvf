@@ -61,6 +61,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() disabledZoneEmergenza: boolean;
     @Input() colorButtonView: ViewInterfaceButton;
     @Input() sidebarOpened: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
 

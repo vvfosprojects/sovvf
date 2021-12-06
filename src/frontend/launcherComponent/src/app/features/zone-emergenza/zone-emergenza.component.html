@@ -27,32 +27,34 @@
                             </span>
                         </button>
                     </div>
-                    <div class="col">
-                        <div class="text-right">
-                            <div class="btn-group" role="group">
-                                <button type="button"
-                                        class="btn btn-sm btn-no-hover"
-                                        [class.btn-dark]="!mappaActive && !nightMode"
-                                        [class.btn-outline-dark]="mappaActive && !nightMode"
-                                        [class.btn-light]="!mappaActive && nightMode"
-                                        [class.btn-outline-light]="mappaActive && nightMode"
-                                        (click)="onChangeVisualizzazione()">
-                                    <i class="fas fa-list-ul"></i>
-                                    Lista Emergenze
-                                </button>
-                                <button type="button"
-                                        class="btn btn-sm btn-no-hover"
-                                        [class.btn-dark]="mappaActive && !nightMode"
-                                        [class.btn-outline-dark]="!mappaActive && !nightMode"
-                                        [class.btn-light]="mappaActive && nightMode"
-                                        [class.btn-outline-light]="!mappaActive && nightMode"
-                                        (click)="onChangeVisualizzazione()">
-                                    <i class="fas fa-globe-europe"></i>
-                                    Mappa
-                                </button>
+                    <ng-container *ngIf="!doubleMonitor">
+                        <div class="col">
+                            <div class="text-right">
+                                <div class="btn-group" role="group">
+                                    <button type="button"
+                                            class="btn btn-sm btn-no-hover"
+                                            [class.btn-dark]="!mappaActive && !nightMode"
+                                            [class.btn-outline-dark]="mappaActive && !nightMode"
+                                            [class.btn-light]="!mappaActive && nightMode"
+                                            [class.btn-outline-light]="mappaActive && nightMode"
+                                            (click)="onChangeVisualizzazione()">
+                                        <i class="fas fa-list-ul"></i>
+                                        Lista Emergenze
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-sm btn-no-hover"
+                                            [class.btn-dark]="mappaActive && !nightMode"
+                                            [class.btn-outline-dark]="!mappaActive && !nightMode"
+                                            [class.btn-light]="mappaActive && nightMode"
+                                            [class.btn-outline-light]="!mappaActive && nightMode"
+                                            (click)="onChangeVisualizzazione()">
+                                        <i class="fas fa-globe-europe"></i>
+                                        Mappa
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </ng-container>
                 </div>
             </div>
             <div *ngIf="!mappaActive">
@@ -75,8 +77,8 @@
             </div>
         </div>
         <div *ngIf="doubleMonitor || mappaActive"
-             [class.col-12]="mappaActive"
-             [class.col-6]="!mappaActive">
+             [class.col-12]="mappaActive && !doubleMonitor"
+             [class.col-6]="!mappaActive || doubleMonitor">
             <div class="mt-2"
                  [class.map-active]="mappaActive"
                  [class.map-double-monitor]="!mappaActive">

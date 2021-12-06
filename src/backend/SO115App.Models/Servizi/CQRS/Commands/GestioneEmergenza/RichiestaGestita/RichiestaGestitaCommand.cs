@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Coordinate.cs" company="CNVVF">
+// <copyright file="RichiestaCommand.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,29 +18,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using System.Text.Json.Serialization;
+using SO115App.Models.Classi.Emergenza;
+using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
 
-namespace SO115App.API.Models.Classi.Condivise
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.RichiestaGestita
 {
-    public class Coordinate
+    public class RichiestaGestitaCommand
     {
-        public Coordinate(double Latitudine = 0.0, double Longitudine = 0.0)
-        {
-            this.Latitudine = Latitudine;
-            this.Longitudine = Longitudine;
-        }
-
-        /// <summary>
-        ///   Latitudine
-        /// </summary>
-        [JsonConverter(typeof(string))]
-        public double Latitudine { get; set; }
-
-        /// <summary>
-        ///   Latitudine
-        /// </summary>
-        [JsonConverter(typeof(string))]
-        public double Longitudine { get; set; }
+        public string CodOperatore { get; set; }
+        public string CodSede { get; set; }
+        public string Id { get; set; }
+        public RichiestaEmergenza richiestaEmergenza { get; set; }
+        public Emergenza InfoEmergenza { get; set; }
     }
 }

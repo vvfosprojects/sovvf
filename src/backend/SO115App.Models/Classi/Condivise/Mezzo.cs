@@ -26,7 +26,8 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Mezzo
     {
-        public Mezzo() { /*IstantiCambiStato = new List<IstanteCambioStato>();*/ }
+        public Mezzo()
+        { /*IstantiCambiStato = new List<IstanteCambioStato>();*/ }
 
         public Mezzo(string codice, string descrizione, string genere, string stato,
                      string appartenenza, Sede distaccamento, Coordinate coordinate)
@@ -92,6 +93,11 @@ namespace SO115App.API.Models.Classi.Condivise
         public Coordinate Coordinate { get; set; }
 
         /// <summary>
+        ///   Localizzazione del mezzo da Geofleet
+        /// </summary>
+        public string[] CoordinateStrg { get; set; }
+
+        /// <summary>
         ///   identifica l'istante dell'acquisizione coordinate del mezzo
         /// </summary>
         public DateTime? IstanteAcquisizione { get; set; }
@@ -103,7 +109,7 @@ namespace SO115App.API.Models.Classi.Condivise
         public bool CoordinateFake { get; set; }
 
         /// <summary>
-        /// Definisce se il mezzo è preaccoppiato con le squadre
+        ///   Definisce se il mezzo è preaccoppiato con le squadre
         /// </summary>
         public bool PreAccoppiato { get; set; } = false;
 

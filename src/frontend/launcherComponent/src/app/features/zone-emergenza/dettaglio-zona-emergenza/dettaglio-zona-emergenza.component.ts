@@ -6,7 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { Observable, Subscription } from 'rxjs';
-import { GetTipologieEmergenza, GetZonaEmergenzaById, UpdateModuliMobImmediataZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
+import { GetTipologieEmergenza, GetZonaEmergenzaById, RequestTipologieModuli, UpdateModuliMobImmediataZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
 import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
@@ -15,6 +15,8 @@ import { ModuliColonnaMobileModalComponent } from '../moduli-colonna-mobile-moda
 import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { makeCopy } from '../../../shared/helper/function-generiche';
+import { RichiestaModuliModalComponent } from '../richiesta-moduli-modal/richiesta-moduli-modal.component';
+import { ResetForm } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-dettaglio-zona-emergenza',
@@ -134,6 +136,35 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
                 default:
                     break;
             }
+        });
+    }
+
+    reducerRichiestaModuli(): void {
+        if (this.isCON || this.isDirRegionale) {
+            return;
+        }
+
+        const richiestaModuliEmergenzaModal = this.modalService.open(RichiestaModuliModalComponent, {
+            windowClass: 'modal-holder',
+            centered: true
+        });
+
+        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
+
+        richiestaModuliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
+        richiestaModuliEmergenzaModal.componentInstance.tipologieEmergenza = tipologieEmergenza;
+
+        richiestaModuliEmergenzaModal.result.then((esito: string) => {
+            switch (esito) {
+                case 'ok':
+                    this.store.dispatch(new RequestTipologieModuli());
+                    break;
+                case 'ko':
+                    break;
+                default:
+                    break;
+            }
+            this.store.dispatch(new ResetForm({ path: 'zoneEmergenza.richiestaModuliZonaEmergenzaForm' }));
         });
     }
 

@@ -31,6 +31,10 @@ export class ZoneEmergenzaService {
         return this.http.get<{ emergenza: ZonaEmergenza }>(API_ZONE_EMERGENZA + '/GetEmergenzaById?Id=' + idZonaEmergenza);
     }
 
+    setEventoGestito(obj: any): Observable<any> {
+        return this.http.post<ZonaEmergenza>(API_ZONE_EMERGENZA + '/GestisciRichiestaEmergenza', obj);
+    }
+
     add(zonaEmergenza: ZonaEmergenza): Observable<ZonaEmergenza> {
         return this.http.post<ZonaEmergenza>(API_ZONE_EMERGENZA + '/InsertEmergenza', zonaEmergenza);
     }

@@ -24,6 +24,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
+        private readonly IGetStringCoordinateByCodSede _getStringCoordinateByCodSede;
         private readonly IConfiguration _configuration;
 
         private readonly IGetToken _getToken;
@@ -31,7 +32,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPosizioneFlotta getPosizioneFlotta)
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPosizioneFlotta getPosizioneFlotta, IGetStringCoordinateByCodSede getStringCoordinateByCodSede)
         {
             _getStatoMezzi = GetStatoMezzi;
             _clientMezzi = clientMezzi;
@@ -40,6 +41,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getPosizioneFlotta = getPosizioneFlotta;
+            _getStringCoordinateByCodSede = getStringCoordinateByCodSede;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
@@ -198,7 +200,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 string IndirizzoSede = "";
                 Coordinate coordinate = null;
 
-
                 foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
                 {
                     if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento))
@@ -214,6 +215,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     mezzoDto.CodiceDistaccamento, sede, new Coordinate(coordinate.Latitudine, coordinate.Longitudine))
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
+                    CoordinateStrg = _getStringCoordinateByCodSede.Get(mezzoDto.CodiceDistaccamento)
                 };
             }
             catch (Exception e)

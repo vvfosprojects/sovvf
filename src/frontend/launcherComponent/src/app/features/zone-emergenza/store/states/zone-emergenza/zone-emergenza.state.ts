@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
-import { EventoEmergenza, TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
+import { TipologiaEmergenza, ZonaEmergenza } from '../../../model/zona-emergenza.model';
 import { ZoneEmergenzaService } from '../../../../../core/service/zone-emergenza-service/zone-emergenza.service';
 import {
     AddDoa,
@@ -16,12 +16,14 @@ import {
     GetTipologieEmergenza,
     GetZonaEmergenzaById,
     GetZoneEmergenza,
+    RequestTipologieModuli,
     ResetAllertaCONZonaEmergenzaForm,
     ResetAnnullaZonaEmergenzaForm,
     ResetDoaForm,
     ResetPcaForm,
     ResetZonaEmergenzaForm,
     SaveCraZonaEmergenza,
+    SetEventoRichiestaGestitoZonaEmergenza,
     SetMappaActiveValue,
     SetTipologieEmergenza,
     SetZonaEmergenzaById,
@@ -52,6 +54,7 @@ import { PcaForm } from '../../../interface/pca-form.interface';
 import { ResetForm, UpdateFormValue } from '@ngxs/form-plugin';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { RichiestaModuliZonaEmergenzaForm } from '../../../interface/richiesta-moduli-form.interface';
 
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
@@ -60,6 +63,12 @@ export interface ZoneEmergenzaStateModel {
     allTipologieZonaEmergenza: { id: string, desc: string }[];
     zonaEmergenzaForm: {
         model: ZonaEmergenzaForm,
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
+    richiestaModuliZonaEmergenzaForm: {
+        model: RichiestaModuliZonaEmergenzaForm,
         dirty: boolean,
         status: string,
         errors: any
@@ -110,6 +119,12 @@ export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
     tipologieZonaEmergenza: null,
     allTipologieZonaEmergenza: null,
     zonaEmergenzaForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
+    richiestaModuliZonaEmergenzaForm: {
         model: undefined,
         dirty: false,
         status: '',
@@ -381,66 +396,80 @@ export class ZoneEmergenzaState {
         });
     }
 
+    @Action(RequestTipologieModuli)
+    requestTipologieModuli({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>): void {
+        dispatch(new StartLoadingZoneEmergenza());
+        const state = getState();
+        const formValue = state.richiestaModuliZonaEmergenzaForm.model;
+        const paramsRequestTipologieModuli = {
+            id: formValue.idZonaEmergenza,
+            tipologieModuli: formValue.tipologiaModuli
+        };
+        this.zoneEmergenzaService.requestTipologieModuli(paramsRequestTipologieModuli).subscribe(() => {
+            dispatch([
+                new StopLoadingZoneEmergenza()
+            ]);
+        }, () => {
+            dispatch([
+                new StopLoadingZoneEmergenza()
+            ]);
+        });
+    }
+
     @Action(EditZonaEmergenza)
-    editZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>, action: EditZonaEmergenza): void {
+    editZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>): void {
         dispatch(new StartLoadingZoneEmergenza());
 
-        let zonaEmergenza: ZonaEmergenza;
-
-        if (!action.zonaEmergenza) {
-            const state = getState();
-            const formValue = state.zonaEmergenzaForm.model;
-            let tipologiaZoneEmergenza: TipologiaEmergenza;
-            let indexEmergenza: number;
-            state.tipologieZonaEmergenza.forEach((t: TipologiaEmergenza) => {
-                t.emergenza.forEach((e: string, i: number) => {
-                    if (e === formValue.tipologia) {
-                        tipologiaZoneEmergenza = t;
-                        indexEmergenza = i;
-                    }
-                });
+        const state = getState();
+        const formValue = state.zonaEmergenzaForm.model;
+        let tipologiaZoneEmergenza: TipologiaEmergenza;
+        let indexEmergenza: number;
+        state.tipologieZonaEmergenza.forEach((t: TipologiaEmergenza) => {
+            t.emergenza.forEach((e: string, i: number) => {
+                if (e === formValue.tipologia) {
+                    tipologiaZoneEmergenza = t;
+                    indexEmergenza = i;
+                }
             });
-            const tipologiaZoneEmergenzaCopy = makeCopy(tipologiaZoneEmergenza);
-            tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[indexEmergenza]];
-            const dirigenti = [
-                formValue.comandanteRegionale,
-                formValue.responsabileDistrettoAreaColpita,
-                formValue.responsabile,
-                formValue.responsabileCampiBaseMezziOperativi,
-                formValue.responsabileGestionePersonaleContratti,
-            ];
-            zonaEmergenza = new ZonaEmergenza(
-                formValue.id,
-                formValue.codEmergenza,
-                formValue.codComandoRichiedente,
-                formValue.descrizione,
-                tipologiaZoneEmergenzaCopy,
-                new Localita(
-                    {
-                        latitudine: formValue.latitudine,
-                        longitudine: formValue.longitudine
-                    },
-                    formValue.indirizzo,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    'RM',
-                    'Lazio'
-                ),
-                formValue.listaEventi,
-                formValue.annullata,
-                formValue.allertata,
-                dirigenti,
-                formValue.listaModuliImmediata,
-                formValue.listaModuliConsolidamento,
-                formValue.listaModuliPotInt
-            );
-        } else {
-            zonaEmergenza = action.zonaEmergenza;
-        }
+        });
+        const tipologiaZoneEmergenzaCopy = makeCopy(tipologiaZoneEmergenza);
+        tipologiaZoneEmergenzaCopy.emergenza = [tipologiaZoneEmergenza.emergenza[indexEmergenza]];
+        const dirigenti = [
+            formValue.comandanteRegionale,
+            formValue.responsabileDistrettoAreaColpita,
+            formValue.responsabile,
+            formValue.responsabileCampiBaseMezziOperativi,
+            formValue.responsabileGestionePersonaleContratti,
+        ];
+        const zonaEmergenza = new ZonaEmergenza(
+            formValue.id,
+            formValue.codEmergenza,
+            formValue.codComandoRichiedente,
+            formValue.descrizione,
+            tipologiaZoneEmergenzaCopy,
+            new Localita(
+                {
+                    latitudine: formValue.latitudine,
+                    longitudine: formValue.longitudine
+                },
+                formValue.indirizzo,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                'RM',
+                'Lazio'
+            ),
+            formValue.listaEventi,
+            formValue.annullata,
+            formValue.allertata,
+            dirigenti,
+            formValue.listaModuliImmediata,
+            formValue.listaModuliConsolidamento,
+            formValue.listaModuliPotInt
+        );
 
         this.zoneEmergenzaService.edit(zonaEmergenza).subscribe(() => {
             dispatch([
@@ -456,22 +485,31 @@ export class ZoneEmergenzaState {
         });
     }
 
+    @Action(SetEventoRichiestaGestitoZonaEmergenza)
+    setEventoRichiestaGestitoZonaEmergenza({ getState }: StateContext<ZoneEmergenzaStateModel>, action: SetEventoRichiestaGestitoZonaEmergenza): void {
+        const state = getState();
+        const zonaEmergenza = state.zonaEmergenzaById;
+        const istanteEventoGestito = action.eventoGestito?.istante;
+
+        if (zonaEmergenza && istanteEventoGestito) {
+            const obj = {
+                id: zonaEmergenza.id,
+                richiestaEmergenza: {
+                    istante: istanteEventoGestito
+                }
+            };
+            this.zoneEmergenzaService.setEventoGestito(obj).subscribe(() => {
+            }, () => {
+            });
+        }
+    }
+
     @Action(UpdateModuliMobImmediataZonaEmergenza)
     updateModuliMobImmediataZonaEmergenza({ dispatch }: StateContext<ZoneEmergenzaStateModel>, action: UpdateModuliMobImmediataZonaEmergenza): void {
         dispatch(new StartLoadingZoneEmergenza());
-        const zonaEmergenzaValue = action.zonaEmergenza as ZonaEmergenza;
 
-        let eventoGestito: EventoEmergenza;
-        let zonaEmergenzaCopy: ZonaEmergenza;
-        if (action.eventoGestito) {
-            eventoGestito = action.eventoGestito;
-            zonaEmergenzaCopy = makeCopy(zonaEmergenzaValue);
-            const indexToReplace = zonaEmergenzaCopy.listaEventi.findIndex((e: EventoEmergenza) => e.istante === action.eventoGestito.istante && !e.gestita && e.tipoEvento === 'RichiestaEmergenza');
-            zonaEmergenzaCopy.listaEventi[indexToReplace] = eventoGestito;
-        }
-
+        const zonaEmergenzaValue = action.zonaEmergenza;
         const moduliMobImmediata = action.moduliMobImmediata;
-
         const zonaEmergenza = new ZonaEmergenza(
             zonaEmergenzaValue.id,
             zonaEmergenzaValue.codEmergenza,
@@ -493,7 +531,7 @@ export class ZoneEmergenzaState {
                 zonaEmergenzaValue.localita.provincia,
                 zonaEmergenzaValue.localita.regione
             ),
-            zonaEmergenzaCopy ? zonaEmergenzaCopy.listaEventi : zonaEmergenzaValue.listaEventi,
+            zonaEmergenzaValue.listaEventi,
             zonaEmergenzaValue.annullata,
             zonaEmergenzaValue.allertata,
             zonaEmergenzaValue.dirigenti,
@@ -502,7 +540,20 @@ export class ZoneEmergenzaState {
             zonaEmergenzaValue.listaModuliPotInt
         );
 
-        dispatch(new EditZonaEmergenza(zonaEmergenza));
+        this.zoneEmergenzaService.edit(zonaEmergenza).subscribe(() => {
+            if (action.eventoGestito) {
+                dispatch(new SetEventoRichiestaGestitoZonaEmergenza(action.eventoGestito));
+            }
+
+            dispatch([
+                new GetZoneEmergenza(),
+                new StopLoadingZoneEmergenza()
+            ]);
+        }, () => {
+            dispatch([
+                new StopLoadingZoneEmergenza()
+            ]);
+        });
     }
 
     @Action(UpdateModuliMobPotIntZonaEmergenza)

@@ -4,9 +4,10 @@
         <div [class.col-12]="!doubleMonitor"
              [class.col-6]="doubleMonitor">
             <div class="col-12">
-                <h4 (click)="goToGestioneEmergenze()">
+                <h4 class="cursor-pointer"
+                    (click)="goToGestioneEmergenze()">
                     <i class="fas fa-arrow-left mr-2"></i>
-                    <span class="font-weight-bold cursor-pointer">Gestione Emergenze</span>
+                    <span class="font-weight-bold">Gestione Emergenze</span>
                     - Dettaglio Emergenza {{ zonaEmergenzaById?.codEmergenza }}
                 </h4>
             </div>
@@ -16,7 +17,8 @@
                     <div class="card-header">
                         {{ 'Informazioni Emergenza' | uppercase }}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body"
+                         style="max-height: 170px; overflow-y: auto">
                         <h5>
                             <span class="text-muted">
                                 Tipologia:
@@ -97,23 +99,42 @@
                                 {{ 'Moduli Richiesti' | uppercase }}
                             </div>
                             <ng-container *ngIf="!isDirRegionale && !isCON">
-                                <div class="float-left ml-2">
-                                    <button class="btn btn-no-hover btn-primary">Nuova Richiesta</button>
+                                <div class="float-left ml-3">
+                                    <button class="btn btn-no-hover btn-primary"
+                                            (click)="reducerRichiestaModuli()">
+                                        <i class="fas fa-plus"></i>
+                                        {{ 'Richiedi Moduli' | uppercase }}
+                                    </button>
                                 </div>
                             </ng-container>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div *ngFor="let e of getEventiRichiesteZonaEmergenza()" class="card">
+                    <div class="card-body"
+                         style="max-height: 280px; overflow-y: auto">
+                        <div *ngFor="let e of getEventiRichiesteZonaEmergenza()" class="card mb-2">
                             <div class="card-body">
-                                {{ e.istante | date }} / Moduli richiesti: {{ e.tipologiaModuli | json }}
+                                {{ e.istante | date: 'dd/MM/YYYY HH:mm' }}
+                                - Moduli richiesti:
+                                <div *ngFor="let tipologiaModulo of e.tipologiaModuli, let i = index"
+                                     class="d-inline-block mr-1">
+                                    {{ tipologiaModulo }}<span *ngIf="(i + 1) < e.tipologiaModuli?.length"
+                                                               class="d-inline-block">,</span>
+                                </div>
                             </div>
                             <ng-container *ngIf="isDirRegionale || (isCON && zonaEmergenzaById.allertata)">
                                 <div class="card-footer">
                                     <button class="btn btn-no-hover btn-light border-secondary"
                                             (click)="onColonneMobili(e)">
+                                        <i class="fas fa-truck mr-1"></i>
                                         SELEZIONA MODULI
                                     </button>
+                                    <ng-container *ngIf="isDirRegionale && !isCON">
+                                        <button class="btn btn-no-hover btn-light border-secondary ml-2"
+                                                (click)="onColonneMobili(e)">
+                                            <i class="fas fa-paper-plane mr-1"></i>
+                                            {{ 'Invia richiesta al CON' | uppercase }}
+                                        </button>
+                                    </ng-container>
                                 </div>
                             </ng-container>
                         </div>
@@ -126,11 +147,12 @@
                     <div class="card-header">
                         {{ 'Moduli Assegnati' | uppercase }}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body"
+                         style="max-height: 250px; overflow-y: auto">
                         <div class="row">
                             <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
                                 <div class="col-12">
-                                    <div class="alert alert-danger">
+                                    <div class="alert alert-danger mb-0">
                                         Nessun Modulo assegnato
                                     </div>
                                 </div>

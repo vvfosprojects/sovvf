@@ -46,16 +46,18 @@
                        [hideSelected]="true">
             </ng-select>
         </div>
-        <div class="form-group">
-            <label for="tipologieModuli">Tipologie Moduli</label>
-            <ng-select id="tipologieModuli"
-                       [items]="getTipologieModuliByDescTipologiaEmergenza()"
-                       placeholder="Seleziona una o più tipologie di Moduli"
-                       formControlName="tipologieModuli"
-                       [multiple]="true"
-                       [hideSelected]="true">
-            </ng-select>
-        </div>
+        <ng-container *ngIf="!zonaEmergenzaEdit">
+            <div class="form-group">
+                <label for="tipologieModuli">Tipologie Moduli</label>
+                <ng-select id="tipologieModuli"
+                           [items]="getTipologieModuliByDescTipologiaEmergenza()"
+                           placeholder="Seleziona una o più tipologie di Moduli"
+                           formControlName="tipologieModuli"
+                           [multiple]="true"
+                           [hideSelected]="true">
+                </ng-select>
+            </div>
+        </ng-container>
         <div class="form-group">
             <label for="descrizione">Descrizione Emergenza</label>
             <textarea id="descrizione"

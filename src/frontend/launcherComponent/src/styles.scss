@@ -249,6 +249,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     color: rgba(40, 167, 69, 0.7)
   }
 }
+
 // END Sun Mode Styles
 
 // Moon Mode Styles
@@ -266,6 +267,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     background-color: $SO-dark-light $SO-i;
     color: $SO-white $SO-i;
   }
+
   //
 
   // Feature Emergenza
@@ -282,6 +284,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   .ng-wizard-theme-default > ul.step-anchor > li.done > a {
     color: $SO-secondary $SO-i;
   }
+
   //
 
   a {
@@ -561,6 +564,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     color: rgba(255, 255, 255, .7);
   }
 }
+
 // END Moon Mode Styles
 
 // Loader index.html
@@ -862,18 +866,24 @@ tag-input {
   -webkit-box-shadow: $SO-shadow $SO-i;
   -moz-box-shadow: $SO-shadow $SO-i;
   box-shadow: $SO-shadow $SO-i;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .card-shadow-primary {
   -webkit-box-shadow: $SO-card-shadow $SO-blue;
   -moz-box-shadow: $SO-card-shadow $SO-blue;
   box-shadow: $SO-card-shadow $SO-blue;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .card-shadow-info {
   -webkit-box-shadow: $SO-card-shadow $SO-blue-light;
   -moz-box-shadow: $SO-card-shadow $SO-blue-light;
   box-shadow: $SO-card-shadow $SO-blue-light;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .card-shadow-success {
@@ -881,6 +891,8 @@ tag-input {
   -moz-box-shadow: $SO-card-shadow $SO-success;
   box-shadow: $SO-card-shadow $SO-success;
   border: $SO-card-border $SO-success;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .card-shadow-danger {
@@ -888,6 +900,8 @@ tag-input {
   -moz-box-shadow: $SO-card-shadow $SO-danger;
   box-shadow: $SO-card-shadow $SO-danger;
   border: $SO-card-border $SO-danger;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .card-shadow-warning {
@@ -895,6 +909,8 @@ tag-input {
   -moz-box-shadow: $SO-card-shadow $SO-warning;
   box-shadow: $SO-card-shadow $SO-warning;
   border: $SO-card-border $SO-warning;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .card-shadow-secondary {
@@ -902,6 +918,8 @@ tag-input {
   -moz-box-shadow: $SO-card-shadow $SO-secondary;
   box-shadow: $SO-card-shadow $SO-secondary;
   border: $SO-card-border $SO-secondary;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .card-shadow-orange {
@@ -909,6 +927,8 @@ tag-input {
   -moz-box-shadow: $SO-card-shadow $SO-orange;
   box-shadow: $SO-card-shadow $SO-orange;
   border: $SO-card-border $SO-orange;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 /* Shadow soft */
@@ -1468,9 +1488,9 @@ tag-input {
 }
 
 .box-azione:hover {
-   word-wrap: break-word;
-   background-color: #f1f1f1 $SO-i;
- }
+  word-wrap: break-word;
+  background-color: #f1f1f1 $SO-i;
+}
 
 .gestita {
   background: $SO-light $SO-i;
