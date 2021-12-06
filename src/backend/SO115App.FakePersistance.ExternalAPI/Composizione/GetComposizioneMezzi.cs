@@ -2,8 +2,10 @@
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -50,10 +52,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             if (query.CodiciSedi.Contains("00") || query.CodiciSedi.Contains("001"))
                 query.CodiciSedi = lstSedi.Result.Select(s => s.Codice).ToArray();
 
-            var lstSquadre = Task.Run(() => new ConcurrentBag<Models.Classi.ServiziEsterni.OPService.Squadra>(query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0])).SelectMany(shift => shift?.Result?.Squadre).ToList()));
+            var lstSquadreWS = query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
+
+            List<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra> lstSquadre = new List<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
+            if (lstSquadreWS[0] != null)
+                lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Squadre).ToList();
 
             var lstStatiSquadre = _getStatoSquadre.Get("", query.CodiciSedi.ToList());
-            var lstSquadrePreaccoppiate = lstSquadre.Result.Where(s => s.CodiciMezziPreaccoppiati != null).ToList();
+            var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).ToList();
 
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
@@ -79,14 +85,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Distaccamento = new Sede(lstSedi.Result.FirstOrDefault(sede => sede?.Codice == s.CodiceSede)?.Descrizione),
                         Nome = s.IdSquadra,
                         Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
-                        Membri = lstSquadre.Result.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra))?.Membri.Select(m => new Componente()
+                        Membri = lstSquadre.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra))?.Membri.Select(m => new API.Models.Classi.Condivise.Componente()
                         {
                             CodiceFiscale = m.CodiceFiscale,
                             DescrizioneQualifica = m.Ruolo,
                             Nominativo = $"{m.FirstName} {m.LastName}",
                             Ruolo = m.Ruolo
                         }).ToList(),
-                        Turno = lstSquadre.Result.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra))?.TurnoAttuale.ToCharArray()[0] ?? 'X',
+                        Turno = lstSquadre.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra))?.TurnoAttuale.ToCharArray()[0] ?? 'X',
                     }).ToList());
 
                     m.PreAccoppiato = lstSqPreacc.Result?.Count > 0;
