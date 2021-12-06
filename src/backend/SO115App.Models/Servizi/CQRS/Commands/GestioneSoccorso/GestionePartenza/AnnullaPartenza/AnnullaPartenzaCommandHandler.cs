@@ -79,7 +79,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(statoMezzoAttuale))
             {
                 //TODO AGGIUNGERE NOTE
-                new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, "AnnullamentoStatoPartenza", command.CodicePartenza);
+                new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, "AnnullamentoStatoPartenza", command.CodicePartenza, "");
 
                 string nuovoStatoMezzo = null;
 
