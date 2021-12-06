@@ -35,9 +35,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza
 {
-    public class AnnullaPartenzaCommandHandler : ICommandHandler<AnnullaPartenzaCommand>
+    public class AnnullaStatoPartenzaCommandHandler : ICommandHandler<AnnullaStatoPartenzaCommand>
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private readonly IGetStatoMezzi _getStatoMezzi;
@@ -53,7 +53,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IGetTipologieByCodice _getTipologie;
         private readonly IModificaInterventoChiuso _modificaGAC;
 
-        public AnnullaPartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze, IMapperRichiestaSuSintesi mapper,
+        public AnnullaStatoPartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze, IMapperRichiestaSuSintesi mapper,
                                              IGetStatoMezzi getStatoMezzi, ISendSTATRIItem statri, ICheckCongruitaPartenze check,
                                              IModificaInterventoChiuso modificaGAC, ISetStatoOperativoMezzo setStatoMezzo, ISetStatoSquadra setStatoSquadra)
         {
@@ -68,7 +68,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _modificaGAC = modificaGAC;
         }
 
-        public void Handle(AnnullaPartenzaCommand command)
+        public void Handle(AnnullaStatoPartenzaCommand command)
         {
             var date = DateTime.UtcNow;
             var ultimoMovimento = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().ToList().Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
