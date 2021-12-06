@@ -171,6 +171,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 targa = ((RevocaPerSostituzioneMezzo)evento).CodiceMezzo;
             }
 
+            if (evento is AnnullamentoStatoPartenza)
+            {
+                targa = ((AnnullamentoStatoPartenza)evento).CodiceMezzo;
+            }
+
             if (evento is ComposizionePartenze)
             {
                 targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Codice;
