@@ -733,6 +733,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             f.telefono.patchValue(scorciatoia);
             f.nominativo.disable();
             f.telefono.disable();
+            f.nominativo.markAsDirty();
+            f.telefono.markAsDirty();
         }
     }
 
