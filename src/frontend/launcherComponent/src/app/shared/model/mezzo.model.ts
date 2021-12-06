@@ -43,6 +43,10 @@ export class Mezzo {
          */
         public coordinateFake?: boolean,
         /**
+         *  Coordinate che definiscono la posizione attuale del mezzo
+         */
+        public coordinateStrg?: string[],
+        /**
          * Testo della segnalazione sullo stato di appartenenza.
          */
         public descrizioneAppartenenza?: string,
