@@ -70,8 +70,8 @@ export class SintesiRichiesteService {
     }
 
     public eliminaPartenzaRichiesta(obj: any): Observable<any> {
-        console.log('eliminaPartenzaRichiesta', obj);
-        return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AnnullaPartenza`, obj);
+        console.log('Annulla Stato Partenza', obj);
+        return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AnnullaStatoPartenza`, obj);
     }
 
     public modificaStatoFonogrammaRichiesta(obj: any): Observable<any> {
