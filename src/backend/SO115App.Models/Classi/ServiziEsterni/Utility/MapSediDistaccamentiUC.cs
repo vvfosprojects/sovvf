@@ -16,8 +16,8 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
         );
 
         public static Sede MapSede(this Distaccamento distaccamento) => new Sede
-        (
-            distaccamento.CodDistaccamento.ToString(),
+        (            
+            distaccamento.Id,
             distaccamento.DescDistaccamento,
             distaccamento.Indirizzo,
             distaccamento.Coordinate
