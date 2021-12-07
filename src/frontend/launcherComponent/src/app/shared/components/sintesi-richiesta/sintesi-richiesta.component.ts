@@ -63,6 +63,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() annullaStatoMezzi: string[];
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
+    @Output() clickIndirizzo = new EventEmitter<SintesiRichiesta>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();
     @Output() fissaInAlto = new EventEmitter<SintesiRichiesta>();
     @Output() nuovaPartenza = new EventEmitter<SintesiRichiesta>();
@@ -116,6 +117,12 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     richiestaClick(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.clickRichiesta.emit(richiesta);
+        }
+    }
+
+    indirizzoClick(richiesta: SintesiRichiesta): void {
+        if (richiesta) {
+            this.clickIndirizzo.emit(richiesta);
         }
     }
 

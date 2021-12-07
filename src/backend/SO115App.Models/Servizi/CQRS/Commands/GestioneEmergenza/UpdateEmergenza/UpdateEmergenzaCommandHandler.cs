@@ -66,14 +66,36 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
             }
 
             if (command.InfoEmergenza.ListaModuliImmediata != null)
-                emergenza.ListaModuliImmediata.AddRange(command.InfoEmergenza.ListaModuliImmediata);
-
+            {
+                if (emergenza.ListaModuliImmediata != null)
+                    emergenza.ListaModuliImmediata.AddRange(command.InfoEmergenza.ListaModuliImmediata);
+                else
+                {
+                    emergenza.ListaModuliImmediata = new System.Collections.Generic.List<Classi.Emergenza.ModuliColonnaMobile>();
+                    emergenza.ListaModuliImmediata.AddRange(command.InfoEmergenza.ListaModuliImmediata);
+                }
+            }
             if (command.InfoEmergenza.ListaModuliPotInt != null)
-                emergenza.ListaModuliPotInt.AddRange(command.InfoEmergenza.ListaModuliPotInt);
+            {
+                if (emergenza.ListaModuliPotInt != null)
+                    emergenza.ListaModuliPotInt.AddRange(command.InfoEmergenza.ListaModuliPotInt);
+                else
+                {
+                    emergenza.ListaModuliPotInt = new System.Collections.Generic.List<Classi.Emergenza.ModuliColonnaMobile>();
+                    emergenza.ListaModuliPotInt.AddRange(command.InfoEmergenza.ListaModuliPotInt);
+                }
+            }
 
             if (command.InfoEmergenza.ListaModuliConsolidamento != null)
-                emergenza.ListaModuliConsolidamento.AddRange(command.InfoEmergenza.ListaModuliConsolidamento);
-
+            {
+                if (emergenza.ListaModuliConsolidamento != null)
+                    emergenza.ListaModuliConsolidamento.AddRange(command.InfoEmergenza.ListaModuliConsolidamento);
+                else
+                {
+                    emergenza.ListaModuliConsolidamento = new System.Collections.Generic.List<Classi.Emergenza.ModuliColonnaMobile>();
+                    emergenza.ListaModuliConsolidamento.AddRange(command.InfoEmergenza.ListaModuliConsolidamento);
+                }
+            }
             command.Emergenza = emergenza;
             _upDateEmergenza.Update(emergenza);
         }

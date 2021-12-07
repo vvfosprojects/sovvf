@@ -59,8 +59,11 @@
 <div class="alert alert-warning mb-0" role="alert">
     Il cambiamento di stato risulterà il {{todayDate?.day + '/' + todayDate?.month + '/' + todayDate?.year}} alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}.
 </div>
+<div *ngIf="checkInvalidTime()" class="alert alert-danger mb-0" role="alert">
+    Impossibile aggiungere un evento con data futura.
+</div>
 <div class="modal-footer" style="place-content: space-between;">
-  <button class="btn btn-lg btn-danger btn-no-hover font-xxlarge" [disabled]="!timeActionForm?.valid"
+  <button class="btn btn-lg btn-danger btn-no-hover font-xxlarge" [disabled]="(!timeActionForm?.valid) || checkInvalidTime()"
           (click)="onSubmit()">
     {{ title | uppercase }}
   </button>
