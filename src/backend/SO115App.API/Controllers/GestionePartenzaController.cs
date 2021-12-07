@@ -57,8 +57,8 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpPost("AnnullaPartenza")]
-        public async Task<IActionResult> AnnullaPartenzaCommand([FromBody] AnnullaStatoPartenzaCommand command)
+        [HttpPost("AnnullaStatoPartenza")]
+        public async Task<IActionResult> AnnullaStatoPartenza([FromBody] AnnullaStatoPartenzaCommand command)
         {
             command.IdOperatore = Request.Headers["IdUtente"];
             command.CodiciSedi = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);

@@ -13,6 +13,7 @@ export class MezzoActionsModalComponent implements OnInit {
 
     timeActionForm: FormGroup;
     todayDate;
+    dateNow;
     navigation: 'select';
     outsideDays: 'visible';
     submitted: boolean;
@@ -31,6 +32,7 @@ export class MezzoActionsModalComponent implements OnInit {
 
     constructor(public modal: NgbActiveModal, private fb: FormBuilder, calendar: NgbCalendar) {
         this.todayDate = calendar.getToday();
+        this.dateNow = calendar.getToday();
     }
 
     ngOnInit(): void {
@@ -43,6 +45,20 @@ export class MezzoActionsModalComponent implements OnInit {
         this.timeActionForm = this.fb.group({
             time: [this.time, Validators.required],
         });
+    }
+
+    checkInvalidTime(): boolean {
+        if (!this.time || this.titleStato === ': In Viaggio') {
+            return false;
+        }
+        let isInvalid;
+        const timeSelected = new Date();
+        timeSelected.setHours(this.time.hour, this.time.minute);
+        const dateNow = new Date();
+        const dateOutOfRange = this.dateNow.before({ year: this.todayDate.year, month: this.todayDate.month, day: this.todayDate.day });
+        const dateEquals = this.dateNow.equals({ year: this.todayDate.year, month: this.todayDate.month, day: this.todayDate.day });
+        isInvalid = !!(((timeSelected > dateNow) && dateEquals) || dateOutOfRange);
+        return isInvalid;
     }
 
     formatTime(): void {
@@ -76,7 +92,7 @@ export class MezzoActionsModalComponent implements OnInit {
         const singleValue = Array.from(new Set(mezziEventi));
         // Rimuovo mezzi già rientrati
         const mezziRientrati = [];
-        singleValue.forEach(x => this.listaEventi.filter(y => y.codiceMezzo === x).reduce( (a, e) => !a ? e : (new Date(a.ora) > new Date (e.ora) ? a : e)).stato === 'Rientrato' ? mezziRientrati.push(x) : null);
+        singleValue.forEach(x => this.listaEventi.filter(y => y.codiceMezzo === x).reduce((a, e) => !a ? e : (new Date(a.ora) > new Date(e.ora) ? a : e)).stato === 'Rientrato' ? mezziRientrati.push(x) : null);
         // Attivo la checkbox per ultimo mezzo
         if (singleValue.length - mezziRientrati.length === 1) {
             this.ultimoMezzo = true;
