@@ -22,9 +22,9 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza
 {
-    public class AnnullaPartenzaCommand
+    public class AnnullaStatoPartenzaCommand
     {
         public string IdOperatore { get; set; }
         public string[] CodiciSedi { get; set; }

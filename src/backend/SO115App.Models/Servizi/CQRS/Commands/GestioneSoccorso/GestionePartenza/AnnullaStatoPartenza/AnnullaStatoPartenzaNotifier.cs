@@ -20,18 +20,18 @@
 using CQRS.Commands.Notifiers;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza
 {
-    public class AnnullaPartenzaNotifier : ICommandNotifier<AnnullaPartenzaCommand>
+    public class AnnullaStatoPartenzaNotifier : ICommandNotifier<AnnullaStatoPartenzaCommand>
     {
         private readonly INotifyAnnullaPartenza _sender;
 
-        public AnnullaPartenzaNotifier(INotifyAnnullaPartenza sender)
+        public AnnullaStatoPartenzaNotifier(INotifyAnnullaPartenza sender)
         {
             _sender = sender;
         }
 
-        public void Notify(AnnullaPartenzaCommand command)
+        public void Notify(AnnullaStatoPartenzaCommand command)
         {
             _sender.SendNotification(command);
         }
