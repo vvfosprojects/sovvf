@@ -46,6 +46,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly ISetStatoSquadra _setStatoSquadra;
 
         private readonly IMapperRichiestaSuSintesi _mapper;
+        private readonly IGetRichiesta _getRichiesta;
 
         private readonly ISendSTATRIItem _statri;
         private readonly ICheckCongruitaPartenze _check;
@@ -53,10 +54,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IGetTipologieByCodice _getTipologie;
         private readonly IModificaInterventoChiuso _modificaGAC;
 
-        public AnnullaStatoPartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze, IMapperRichiestaSuSintesi mapper,
+        public AnnullaStatoPartenzaCommandHandler(IGetRichiesta getRichiesta, IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze, IMapperRichiestaSuSintesi mapper,
                                              IGetStatoMezzi getStatoMezzi, ISendSTATRIItem statri, ICheckCongruitaPartenze check,
                                              IModificaInterventoChiuso modificaGAC, ISetStatoOperativoMezzo setStatoMezzo, ISetStatoSquadra setStatoSquadra)
         {
+            _getRichiesta = getRichiesta;
             _setStatoMezzo = setStatoMezzo;
             _setStatoSquadra = setStatoSquadra;
             _updateStatoPartenze = updateStatoPartenze;
@@ -154,6 +156,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 #endregion Chiamata GAC
 
+
                 //AGGIORNO STATO MEZZO E RICHIESTA
                 var commandStatoMezzo = new AggiornaStatoMezzoCommand()
                 {
@@ -169,6 +172,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 };
 
                 _updateStatoPartenze.Update(commandStatoMezzo);
+
+                command.Richiesta = _getRichiesta.GetByCodice(command.Richiesta.Codice);
+
+                command.Chiamata = _mapper.Map(command.Richiesta);
             }
         }
     }
