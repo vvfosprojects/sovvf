@@ -2,9 +2,6 @@
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSedi;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneSedi
 {

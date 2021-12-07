@@ -27,16 +27,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza
 {
-    public class AnnullaPartenzaAuthorization : ICommandAuthorizer<AnnullaPartenzaCommand>
+    public class AnnullaStatoPartenzaAuthorization : ICommandAuthorizer<AnnullaStatoPartenzaCommand>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly IGetRichiesta _getRichiestaById;
 
-        public AnnullaPartenzaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
+        public AnnullaStatoPartenzaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
             IGetRichiesta getRichiestaById)
         {
@@ -46,7 +46,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _getRichiestaById = getRichiestaById;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(AnnullaPartenzaCommand command)
+        public IEnumerable<AuthorizationResult> Authorize(AnnullaStatoPartenzaCommand command)
         {
             command.Operatore = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
             command.Richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
