@@ -24,6 +24,7 @@ using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -40,6 +41,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SO115App.Persistence.MongoDB
@@ -121,7 +123,19 @@ namespace SO115App.Persistence.MongoDB
             }
             else
             {
-                var filtroFullText = Builders<RichiestaAssistenza>.Filter.Text(filtro.SearchKey);
+                var filtroFullText = Builders<RichiestaAssistenza>.Filter.AnyEq("descrizione", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.indirizzo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.citta", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.provincia", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("codRichiesta", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("codice", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("tags", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("codSoCompetente", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("richiedente.telefono", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("richiedente.nominativo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("noteNue", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePubbliche", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePrivate", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
 
                 var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
 
