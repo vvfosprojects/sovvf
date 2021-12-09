@@ -148,21 +148,21 @@ ng-select {
   display: flex !important;
   flex-direction: row-reverse !important;
   place-content: space-between !important;
+  width: 100% !important;
 }
 
 .btn-creazione {
-  min-width: 225px !important;
-  width: 225px !important;
+  width: 18%;
 }
 
 .row-modifica {
   display: flex !important;
   place-content: space-between !important;
+  width: 100% !important;
 }
 
 .btn-modifica {
-  min-width: 400px !important;
-  width: 400px !important;
+  width: 32.5% !important;
 }
 
 
