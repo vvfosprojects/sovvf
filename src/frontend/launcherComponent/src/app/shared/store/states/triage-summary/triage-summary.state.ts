@@ -11,6 +11,7 @@ import {
 import { SchedaContatto } from '../../../interface/scheda-contatto.interface';
 import { SchedeContattoService } from '../../../../core/service/schede-contatto/schede-contatto.service';
 import { PosInterface } from '../../../interface/pos.interface';
+import { SetSchedaContattoTelefonata } from '../../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 
 export interface TriageSummaryStateModel {
     summary: TriageSummary[];
@@ -71,8 +72,9 @@ export class TriageSummaryState {
     }
 
     @Action(SetSchedaContattoTriageSummary)
-    setSchedaContattoTriageSummary({ patchState }: StateContext<TriageSummaryStateModel>, action: SetSchedaContattoTriageSummary): void {
+    setSchedaContattoTriageSummary({ patchState, dispatch }: StateContext<TriageSummaryStateModel>, action: SetSchedaContattoTriageSummary): void {
         this.schedeContattoService.getSchedaContatto(action.codScheda).subscribe((schedaContatto: SchedaContatto) => {
+            dispatch(new SetSchedaContattoTelefonata(schedaContatto));
             patchState({
                 schedaContatto
             });
