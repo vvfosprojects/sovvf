@@ -19,12 +19,10 @@
 //-----------------------------------------------------------------------
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Newtonsoft.Json;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -32,16 +30,13 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.RubricaDTO;
-using SO115App.Models.Classi.ServiziEsterni.Statri;
 using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SO115App.Persistence.MongoDB
@@ -136,6 +131,9 @@ namespace SO115App.Persistence.MongoDB
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("noteNue", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePubbliche", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePrivate", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.codiceMezzo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.nome", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
 
                 var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
 
