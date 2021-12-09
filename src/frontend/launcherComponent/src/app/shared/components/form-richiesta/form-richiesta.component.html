@@ -208,6 +208,7 @@
                                        class="form-control required-field"
                                        [class.is-invalid]="submitted && f.nominativo.errors"
                                        type="text"
+                                       (keyup)="checkNominativoSchedaContatto()"
                                        placeholder="Nominativo"
                                        formControlName="nominativo"
                                        role="presentation">
@@ -221,6 +222,7 @@
                                 <label class="d-none" for="telefono">Telefono</label>
                                 <input id="telefono" type="tel" placeholder="Inserisci il Telefono"
                                        formControlName="telefono" (keypress)="checkInputPattern($event, 'PHONE')"
+                                       (keyup)="checkNumeroSchedaContatto()"
                                        (paste)="checkInputPattern($event, 'PHONE')"
                                        class="form-control required-field"
                                        [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }">
