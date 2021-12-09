@@ -144,6 +144,25 @@ ng-select {
 }
 */
 
+.row-creazione {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  place-content: space-between !important;
+}
 
+.btn-creazione {
+  min-width: 225px !important;
+  width: 225px !important;
+}
+
+.row-modifica {
+  display: flex !important;
+  place-content: space-between !important;
+}
+
+.btn-modifica {
+  min-width: 400px !important;
+  width: 400px !important;
+}
 
 

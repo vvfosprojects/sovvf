@@ -482,10 +482,9 @@
             <!-- BOTTONI -->
             <div class="clearfix"
                  [class.py-3]="apertoFromMappa">
-                <div class="float-left">
+                <div class="row-creazione">
                     <ng-template [ngIf]="!modifica">
-                        <button class="btn btn-primary btn-no-hover btn-xlarge mr-3"
-                                style="min-width: 100px"
+                        <button class="btn btn-primary btn-no-hover btn-xlarge" style="width: 300px"
                                 [disabled]="loadingCompetenze || !competenze?.length || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
@@ -493,8 +492,7 @@
                                 placement="top">
                             Conferma e Invia Partenza
                         </button>
-                        <button class="btn btn-danger btn-no-hover btn-xlarge mr-3"
-                                style="min-width: 100px"
+                        <button class="btn btn-danger btn-no-hover btn-xlarge btn-creazione"
                                 [disabled]="loadingCompetenze || !competenze?.length || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
                                 ngbTooltip="Metti In Coda"
@@ -502,7 +500,7 @@
                             Conferma
                         </button>
                         <ng-container *ngIf="!apertoFromMappa">
-                            <button class="btn btn-outline-secondary btn-no-hover btn-xlarge"
+                            <button class="btn btn-outline-secondary btn-no-hover btn-xlarge btn-creazione"
                                     type="button"
                                     [disabled]="loadingCompetenze || !competenze?.length || formIsInvalid()"
                                     (click)="onInAttesa()">
@@ -510,31 +508,8 @@
                                 In Attesa
                             </button>
                         </ng-container>
-                    </ng-template>
-                    <ng-template [ngIf]="modifica">
-                        <button class="btn btn-primary btn-no-hover mr-3 btn-xlarge"
-                                style="min-width: 100px"
-                                [disabled]="loadingCompetenze || !competenze?.length || disabledInviaPartenza || formIsInvalid()"
-                                [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
-                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
-                                ngbTooltip="Invia Partenza"
-                                placement="top">
-                            Salva e Invia Partenza
-                        </button>
-                        <button class="btn btn-success btn-no-hover btn-xlarge"
-                                style="min-width: 100px"
-                                [disabled]="loadingCompetenze || !competenze?.length || formIsInvalid()"
-                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
-                                ngbTooltip="Conferma Modifica"
-                                placement="top">
-                            Salva e Chiudi
-                        </button>
-                    </ng-template>
-                </div>
-                <div class="float-right">
-                    <ng-template [ngIf]="!modifica">
                         <ng-container *ngIf="!apertoFromMappa">
-                            <button class="btn btn-outline-secondary mr-2 btn-no-hover btn-xlarge mx-3"
+                            <button class="btn btn-outline-secondary btn-no-hover btn-xlarge btn-creazione"
                                     type="button"
                                     (click)="onResetChiamata()">
                                 <i class="fas fa-recycle mr-1"></i>
@@ -542,7 +517,7 @@
                             </button>
                         </ng-container>
                         <ng-container *ngIf="!apertoFromMappa">
-                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
+                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge btn-creazione"
                                     (click)="onAnnullaChiamata()">
                                 Torna Indietro
                             </button>
@@ -554,10 +529,28 @@
                             </button>
                         </ng-container>
                     </ng-template>
+                </div>
+                <div class="row-modifica">
                     <ng-template [ngIf]="modifica">
-                        <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
+                        <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge btn-modifica"
                                 (click)="onChiudiModifica()">
                             Annulla Modifiche
+                        </button>
+                        <button class="btn btn-success btn-no-hover btn-xlarge btn-modifica"
+                                [disabled]="loadingCompetenze || !competenze?.length || formIsInvalid()"
+                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
+                                ngbTooltip="Conferma Modifica"
+                                placement="top">
+                            Salva e Chiudi
+                        </button>
+                        <button class="btn btn-primary btn-no-hover btn-xlarge btn-modifica"
+                                style="min-width: 100px; width: 400px"
+                                [disabled]="loadingCompetenze || !competenze?.length || disabledInviaPartenza || formIsInvalid()"
+                                [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
+                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
+                                ngbTooltip="Invia Partenza"
+                                placement="top">
+                            Salva e Invia Partenza
                         </button>
                     </ng-template>
                 </div>
