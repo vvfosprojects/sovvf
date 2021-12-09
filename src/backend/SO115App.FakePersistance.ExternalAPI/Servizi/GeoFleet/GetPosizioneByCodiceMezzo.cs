@@ -48,12 +48,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
         /// <returns>Il messaggio posizione da Geofleet</returns>
         public async Task<MessaggioPosizione> Get(string codiceMezzo)
         {
-            if (codiceMezzo.Contains(".")) codiceMezzo += "/";
+            if (codiceMezzo.Contains(".")) 
+                codiceMezzo += "/";
+
             var response = await _client.GetAsync(_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value + Costanti.GeoFleetGetPosizioneByCodiceMezzo + codiceMezzo).ConfigureAwait(false);//L'API GeoFleet ancora non si aspetta una lista di codici mezzo
-            if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;
+            
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) 
+                return new MessaggioPosizione() { Localizzazione = new Localizzazione() };
+
             response.EnsureSuccessStatusCode();
+            
             using HttpContent content = response.Content;
+            
             string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            
             return JsonConvert.DeserializeObject<MessaggioPosizione>(data);
         }
     }
