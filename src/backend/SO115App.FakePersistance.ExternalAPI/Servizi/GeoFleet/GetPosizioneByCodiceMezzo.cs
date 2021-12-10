@@ -19,9 +19,11 @@
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SO115App.ExternalAPI.Client;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -32,10 +34,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
     /// </summary>
     public class GetPosizioneByCodiceMezzo : IGetPosizioneByCodiceMezzo
     {
-        private readonly HttpClient _client;
+        private readonly IHttpRequestManager<MessaggioPosizione> _client;
         private readonly IConfiguration _configuration;
 
-        public GetPosizioneByCodiceMezzo(HttpClient client, IConfiguration configuration)
+        public GetPosizioneByCodiceMezzo(IHttpRequestManager<MessaggioPosizione> client, IConfiguration configuration)
         {
             _client = client;
             _configuration = configuration;
@@ -48,21 +50,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
         /// <returns>Il messaggio posizione da Geofleet</returns>
         public async Task<MessaggioPosizione> Get(string codiceMezzo)
         {
-            if (codiceMezzo.Contains(".")) 
-                codiceMezzo += "/";
+            var url = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value + Costanti.GeoFleetGetPosizioneByCodiceMezzo + "posizioneByCodiceMezzo?id=" + codiceMezzo);
 
-            var response = await _client.GetAsync(_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value + Costanti.GeoFleetGetPosizioneByCodiceMezzo + codiceMezzo).ConfigureAwait(false);//L'API GeoFleet ancora non si aspetta una lista di codici mezzo
-            
-            if (response.StatusCode != System.Net.HttpStatusCode.OK) 
-                return new MessaggioPosizione() { Localizzazione = new Localizzazione() };
+            try
+            {
+                var result = _client.GetAsync(url).Result;
 
-            response.EnsureSuccessStatusCode();
-            
-            using HttpContent content = response.Content;
-            
-            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            
-            return JsonConvert.DeserializeObject<MessaggioPosizione>(data);
+                return result;
+            }
+            catch 
+            {
+                return null;
+            }
         }
     }
 }
