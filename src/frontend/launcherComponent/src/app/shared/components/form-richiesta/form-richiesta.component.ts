@@ -156,6 +156,18 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    checkNominativoSchedaContatto(): void {
+        if (this.f.codSchedaContatto.value && this.f.nominativo.value === '' && this.schedaContatto) {
+            this.f.nominativo.patchValue(this.schedaContatto.richiedente?.nominativo);
+        }
+    }
+
+    checkNumeroSchedaContatto(): void {
+        if (this.f.codSchedaContatto.value && this.f.telefono.value === '' && this.schedaContatto) {
+            this.f.telefono.patchValue(this.schedaContatto.richiedente?.telefono);
+        }
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {
             if (changes.operatore?.currentValue) {
@@ -663,8 +675,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     setSchedaContatto(scheda: SchedaContatto): void {
         const f = this.f;
         f.codSchedaContatto.patchValue(scheda.codiceScheda);
-        f.nominativo.patchValue(scheda.richiedente?.nominativo);
-        f.telefono.patchValue(scheda.richiedente?.telefono);
+        if (!this.richiestaModifica?.richiedente) {
+            f.nominativo.patchValue(scheda.richiedente?.nominativo);
+            f.telefono.patchValue(scheda.richiedente?.telefono);
+        }
         f.indirizzo.patchValue(scheda.localita?.indirizzo);
 
         // const lat = scheda.localita.coordinate.latitudine;
@@ -708,13 +722,13 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const f = this.f;
         if (this.scorciatoieTelefono[scorciatoia]) {
             this.scorciatoieTelefono[scorciatoia] = false;
-            f.telefono.patchValue('');
-            f.nominativo.patchValue('');
+            f.codSchedaContatto.value ? f.telefono.patchValue(this.schedaContatto?.richiedente?.telefono) : f.telefono.patchValue('');
+            f.codSchedaContatto.value ? f.nominativo.patchValue(this.schedaContatto?.richiedente?.nominativo) : f.nominativo.patchValue('');
             f.nominativo.enable();
             f.telefono.enable();
         } else {
             Object.keys(this.scorciatoieTelefono).forEach(x => this.scorciatoieTelefono[x] = x === scorciatoia);
-            let nominativo = null;
+            let nominativo = this.richiestaModifica?.richiedente?.nominativo ? this.richiestaModifica?.richiedente?.nominativo : null;
             switch (scorciatoia) {
                 case '112':
                     nominativo = 'Carabinieri';
