@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ServicesConfigurator.cs" company="CNVVF">
+// <copyright file="RichiestaCreazioneCRACommand.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SimpleInjector;
-using SO115App.Persistence.File.CSVManagement;
-using SO115App.Persistence.File.PDFManagement;
-using System.Linq;
 
-namespace SO115App.CompositionRoot
+using SO115App.Models.Classi.Emergenza;
+
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.RichiestaCreazioneCRA
 {
-    internal static class ServicesConfigurator
+    public class RichiestaCreazioneCRACommand
     {
-        internal static void Configure(Container container)
-        {
-            container.Register(typeof(IPDFTemplateManager<>), typeof(IPDFTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("PDFTemplateManager")).ToArray()[1]);
-            container.Register(typeof(ICSVTemplateManager<>), typeof(ICSVTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("CSVTemplateManager")).ToArray()[0]);
-        }
+        public string CodOperatore { get; set; }
+        public string CodSede { get; set; }
+        public string Id { get; set; }
+        public string[] Dirigenti { get; set; }
+        public int NumeroDOA { get; set; }
+        public Emergenza InfoEmergenza { get; set; }
     }
 }

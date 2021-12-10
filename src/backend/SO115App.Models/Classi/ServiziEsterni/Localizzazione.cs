@@ -4,7 +4,11 @@ namespace SO115App.Models.Classi.ServiziEsterni
 {
     public class Localizzazione
     {
-        private readonly double[] coordinates = new double[2];
+        public Localizzazione(double lat, double lon) => coordinates = new double[2] { lat, lon };
+
+        public Localizzazione() => coordinates = new double[2] { 0, 0 };
+
+        private double[] coordinates { get; set; }
 
         public double Lat
         {
@@ -28,7 +32,7 @@ namespace SO115App.Models.Classi.ServiziEsterni
             var coord1 = new GeoCoordinate(Lat, Lon);
             var coord2 = new GeoCoordinate(loc.Lat, loc.Lon);
 
-            return coord1.GetDistanceTo(coord2);
+            return coord1.GetDistanceTo(coord2) / 1000;
         }
     }
 }
