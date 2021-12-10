@@ -123,7 +123,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             case Costanti.MezzoInViaggio:
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                                 var c1 = query.Richiesta.Localita.Coordinate;
-                                mc.Km = _geofleet.Get(mc.Id).Result.Localizzazione
+                                mc.Km = _geofleet.Get(mc.Id).Result?.Localizzazione
                                     .GetDistanceTo(new Localizzazione(c1.Latitudine, c1.Longitudine))
                                     .ToString("N1");
                                 break;
