@@ -1,28 +1,34 @@
-<div class="clearfix">
-    <div class="float-left w-50 px-2">
-        <ng-template [ngIf]="dettaglioSoccorsoAereo">
-            <button class="btn btn-warning btn-block btn-no-hover" style="outline: none"
-                    ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova"
-                    placement="top" (click)="openSoccorsoAereoModal($event)" [disabled]="dettaglioSoccorsoAereo">
-                <i class="fas fa-helicopter"
-                   style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
-            </button>
-        </ng-template>
-        <ng-template [ngIf]="!dettaglioSoccorsoAereo">
-            <button class="btn btn-warning btn-block btn-no-hover"
-                    ngbTooltip="Intervento aereo"
-                    placement="top" (click)="openSoccorsoAereoModal($event)">
-                <i class="fas fa-helicopter"
-                   style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
-            </button>
-        </ng-template>
-    </div>
-    <div class="float-left w-50 px-2" [ngbTooltip]="disableConfirmPartenza ? 'Mezzo e squadra necessari per confermare': ''">
-        <button class="btn btn-success btn-block btn-no-hover"
-                [disabled]="disableConfirmPartenza"
-                (click)="_confirmPartenzaInViaggio()">
-            <span class="d-inline-block mr-2">Conferma</span>
-            <span class="badge badge-light">{{ boxPartenzaLenght }}</span>
+<div class="clearfix w-100 d-inline-flex" style="place-content: space-between">
+    <button class="btn btn-outline-danger btn-no-hover btn-xlarge btn-creazione"
+            style="width: 32%"
+            ngbTooltip="Esci dalla Composizione Partenza"
+            placement="bottom-left"
+            (click)="turnOffComposizione()">
+        Torna Indietro
+    </button>
+    <ng-template [ngIf]="dettaglioSoccorsoAereo">
+        <button class="btn btn-warning btn-block btn-no-hover" style="outline: none; width: 33%"
+                ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova"
+                placement="top" (click)="openSoccorsoAereoModal($event)" [disabled]="dettaglioSoccorsoAereo">
+            <i class="fas fa-helicopter"
+               style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
         </button>
-    </div>
+    </ng-template>
+    <ng-template [ngIf]="!dettaglioSoccorsoAereo">
+        <button class="btn btn-warning btn-block btn-no-hover"
+                style="width: 32%"
+                ngbTooltip="Intervento aereo"
+                placement="top" (click)="openSoccorsoAereoModal($event)">
+            <i class="fas fa-helicopter"
+               style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
+        </button>
+    </ng-template>
+    <button class="btn btn-success btn-no-hover"
+            style="width: 32%"
+            [ngbTooltip]="disableConfirmPartenza ? 'Mezzo e squadra necessari per confermare': ''"
+            [disabled]="disableConfirmPartenza"
+            (click)="_confirmPartenzaInViaggio()">
+        <span class="d-inline-block mr-2">Conferma</span>
+        <span class="badge badge-light">{{ boxPartenzaLenght }}</span>
+    </button>
 </div>

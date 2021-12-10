@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { Select, Store } from '@ngxs/store';
 import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
-import { SwitchComposizione, TurnOffComposizione } from '../../../features/home/store/actions/view/view.actions';
+import { SwitchComposizione } from '../../../features/home/store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { Observable, Subscription } from 'rxjs';
@@ -155,10 +155,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         } else if (this.sostituzionePartenza) {
             this.store.dispatch(new GetListaMezziSquadre());
         }
-    }
-
-    turnOffComposizione(): void {
-        this.store.dispatch(new TurnOffComposizione());
     }
 
     compPartenzaSwitch(event: Composizione): void {
