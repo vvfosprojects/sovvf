@@ -68,6 +68,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() idRichiestaSelezionata: string;
     @Input() richiestaModifica: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
+    @Input() richiestaComposizione: SintesiRichiesta;
     @Input() chiamateMarkers: ChiamataMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() direction: DirectionInterface;
@@ -301,6 +302,16 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const zoom = 16;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
         } else if (changes?.richiestaModifica?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
+        }
+
+        // Controllo il valore di "richiestaComposizione"
+        if (changes?.richiestaComposizione?.currentValue && this.map && this.view?.ready) {
+            const richiestaComposizione = changes?.richiestaComposizione?.currentValue;
+            const coordinateCentro = richiestaComposizione.localita.coordinate;
+            const zoom = 16;
+            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        } else if (changes?.richiestaComposizione?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
         }
 
