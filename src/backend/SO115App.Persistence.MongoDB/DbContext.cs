@@ -174,7 +174,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<ComposizioneSquadra>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(c => c.Codice)
+                cm.MapIdMember(c => c.Id)
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
