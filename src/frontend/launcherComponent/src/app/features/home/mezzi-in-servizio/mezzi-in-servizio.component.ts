@@ -15,7 +15,7 @@ import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 import {
     ClearFiltriMezziInServizio,
     ClearListaMezziInServizio,
-    ClearMezzoInServizioHover,
+    ClearMezzoInServizioHover, ClearMezzoInServizioSelezionato,
     GetListaMezziInServizio,
     SetMezzoInServizioHover,
     SetMezzoInServizioSelezionato
@@ -85,6 +85,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.subscriptions.unsubscribe();
         this.store.dispatch([
             new ClearListaMezziInServizio(),
+            new ClearMezzoInServizioHover(),
+            new ClearMezzoInServizioSelezionato(),
             new ClearFiltriMezziInServizio(true),
             new ClearRicercaFilterbar(),
         ]);
