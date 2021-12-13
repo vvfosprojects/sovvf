@@ -52,6 +52,9 @@ import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
 import { Partenza } from '../../../shared/model/partenza.model';
+import { MezziInServizioState } from '../../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
+import { Coordinate } from '../../../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-map-esri',
@@ -74,6 +77,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() schedeContattoStatus: boolean;
     @Input() composizionePartenzaStatus: boolean;
     @Input() mezziInServizioStatus: boolean;
+    @Input() idMezzoInServizioSelezionato: string;
     @Input() areaMappaLoading: boolean;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
@@ -369,6 +373,20 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
                     break;
             }
+        }
+
+        // Controllo il valore di "idMezzoInServizioSelezionato"
+        if (changes?.idMezzoInServizioSelezionato?.currentValue && this.map && this.view?.ready) {
+            const mezziInServizio = this.store.selectSnapshot(MezziInServizioState.mezziInServizio);
+            const idMezzoInServizioSelezionato = changes?.idMezzoInServizioSelezionato?.currentValue;
+            const mezzoInServizioSelezionato = mezziInServizio.filter((m: MezzoInServizio) => m.mezzo.mezzo.codice === idMezzoInServizioSelezionato)[0];
+            const lat = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[0];
+            const lon = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[1];
+            const coordinateCentro = new Coordinate(lat, lon);
+            const zoom = 16;
+            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        } else if (changes?.idMezzoInServizioSelezionato?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
         }
     }
 

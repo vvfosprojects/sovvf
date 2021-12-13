@@ -1,5 +1,6 @@
 <div class="row border rounded shadow-sm p-2 h-100 font-xxlarge bg-mezzo-in-servizio"
-     [ngClass]="cardClasses(mezzoInServizio.mezzo.mezzo.stato, mezzoInServizio.mezzo.mezzo.codice)"
+     [class.bg-mezzo-in-servizio-selezionato]="idMezzoInServizioSelezionato === mezzoInServizio.mezzo.mezzo.codice"
+     [ngClass]="cardClasses(mezzoInServizio.mezzo.mezzo.stato)"
      (mouseenter)="hoverIn.emit(mezzoInServizio.mezzo.mezzo.codice)"
      (mouseleave)="hoverOut.emit()"
      (click)="selezionato.emit(mezzoInServizio.mezzo.mezzo.codice)">
