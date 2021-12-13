@@ -146,7 +146,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new ClearCountInterventiProssimita(),
             new ClearInterventiProssimita()
         ]);
-        //
         if (this.apertoFromMappa) {
             this.setIndirizzoFromMappa(this.lat, this.lon, this.address);
         }
@@ -179,7 +178,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 const schedaContatto = changes.schedaContatto.currentValue;
                 if (schedaContatto && schedaContatto.codiceScheda) {
                     this.setSchedaContatto(schedaContatto);
-                    this.f.noteNue.patchValue(schedaContatto.dettaglio);
                 }
                 // Controllo scorciatoia numero da Scheda Contatto
                 const telefono = schedaContatto.richiedente.telefono;
@@ -528,6 +526,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     new Localita(coordinate ? coordinate : null, indirizzo),
                     null
                 );
+            } else {
+                this.chiamataMarker = null;
             }
 
             this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
@@ -674,25 +674,27 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     setSchedaContatto(scheda: SchedaContatto): void {
         const f = this.f;
+        f.noteNue.patchValue(scheda.dettaglio);
         f.codSchedaContatto.patchValue(scheda.codiceScheda);
+        f.indirizzo.patchValue(scheda.localita?.indirizzo);
+
+        const lat = +scheda.localita.coordinateString[0];
+        const lng = +scheda.localita.coordinateString[1];
+        f.latitudine.patchValue(lat);
+        f.longitudine.patchValue(lng);
+
         if (!this.richiestaModifica?.richiedente) {
             f.nominativo.patchValue(scheda.richiedente?.nominativo);
             f.telefono.patchValue(scheda.richiedente?.telefono);
         }
-        f.indirizzo.patchValue(scheda.localita?.indirizzo);
 
-        // const lat = scheda.localita.coordinate.latitudine;
-        // const lng = scheda.localita.coordinate.longitudine;
-        const lat = +scheda.localita.coordinateString[0];
-        const lng = +scheda.localita.coordinateString[1];
-        const coordinate = new Coordinate(lat, lng);
-
-        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
-            new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo), null
-        );
-        this.f.latitudine.patchValue(lat);
-        this.f.longitudine.patchValue(lng);
-        this.reducerSchedaTelefonata('cerca');
+        if (!this.richiestaModifica) {
+            const coordinate = new Coordinate(lat, lng);
+            this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
+                new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo), null
+            );
+            this.reducerSchedaTelefonata('cerca');
+        }
     }
 
     checkInputPattern(event: any, type: string): void {
