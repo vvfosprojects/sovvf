@@ -30,34 +30,6 @@ namespace SO115App.CompositionRoot
         {
             container.Register(typeof(IPDFTemplateManager<>), typeof(IPDFTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("PDFTemplateManager")).ToArray()[1]);
             container.Register(typeof(ICSVTemplateManager<>), typeof(ICSVTemplateManager<>).Assembly.DefinedTypes.Where(n => n.Name.Contains("CSVTemplateManager")).ToArray()[0]);
-
-            container.Register<
-                API.Models.Servizi.Infrastruttura.Autenticazione.IGetOperatoreAutenticato,
-                API.SOVVF.FakeImplementations.Modello.Autenticazione.GetOperatoreAutenticato>();
-            container.Register<
-                API.Models.Servizi.CQRS.Commands.GestioneSoccorso.SelezioneSquadra.CommandDTO.ITestAndSetSelezioneDisponibilitaSquadra,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse.TestAndSetSelezioneDisponibilitaSquadra_Fake>();
-            container.Register<
-                API.Models.Classi.Soccorso.Risorse.ITestAndSetSelezioneDisponibilitaMezzo,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse.TestAndSetSelezioneDisponibilitaMezzo_Fake>();
-            container.Register<
-                API.Models.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaSquadra.CommandDTO.ITestAndSetDeselezioneDisponibilitaSquadra,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse.TestAndSetDeselezioneDisponibilitaSquadra_DoNothing>();
-            container.Register<
-                API.Models.Servizi.CQRS.Commands.GestioneSoccorso.DeselezionaMezzo.CommandDTO.ITestAndSetDeselezioneDisponibilitaMezzo,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Risorse.TestAndSetDeselezioneDisponibilitaMezzo_DoNothing>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaAssistenzaById,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GetRichiestaAssistenzaById_Fake>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza.ICercaRichiesteAssistenza,
-                API.Models.Classi.Soccorso.CercaRichiesteAssistenza_Empty>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetNumeroMezziSoccorsoOraInServizio,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi.GetNumeroMezziSoccorsoOraInServizio_Fake>();
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetNumeroSquadreSoccorsoOraInServizio,
-                API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi.GetNumeroSquadreSoccorsoOraInServizio_Fake>();
         }
     }
 }

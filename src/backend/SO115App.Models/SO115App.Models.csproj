@@ -6,8 +6,11 @@
 
   <ItemGroup>
     <Compile Remove="Classi\MongoDTO\**" />
+    <Compile Remove="Servizi\Infrastruttura\Anagrafiche\**" />
     <EmbeddedResource Remove="Classi\MongoDTO\**" />
+    <EmbeddedResource Remove="Servizi\Infrastruttura\Anagrafiche\**" />
     <None Remove="Classi\MongoDTO\**" />
+    <None Remove="Servizi\Infrastruttura\Anagrafiche\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,7 +54,6 @@
 
   <ItemGroup>
     <Folder Include="Servizi\CQRS\Commands\GestioneRubrica\Enti\DeleteEnte\" />
-    <Folder Include="Servizi\Infrastruttura\Anagrafiche\" />
     <Folder Include="Servizi\Infrastruttura\SistemiEsterni\Distaccamenti\CoordinateTask\" />
   </ItemGroup>
 </Project>

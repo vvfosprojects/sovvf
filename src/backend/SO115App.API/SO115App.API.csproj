@@ -51,8 +51,6 @@
     <Folder Include="wwwroot\RiepiloghiInterventi\" />
   </ItemGroup>
   <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties />
-    </VisualStudio>
+    <VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio>
   </ProjectExtensions>
 </Project>

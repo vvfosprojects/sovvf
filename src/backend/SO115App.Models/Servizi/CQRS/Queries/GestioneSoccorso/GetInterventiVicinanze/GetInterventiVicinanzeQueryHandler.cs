@@ -14,7 +14,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
         private readonly IGetListaSintesi _getListaSintesi;
         private readonly IGetInterventiInProssimita _getInterventiInProssimita;
 
-        public GetInterventiVicinanzeQueryHandler(IGetCompetenzeByCoordinateIntervento getCompetenze, 
+        public GetInterventiVicinanzeQueryHandler(IGetCompetenzeByCoordinateIntervento getCompetenze,
                                                   IGetListaSintesi getListaSintesi,
                                                   IGetInterventiInProssimita getInterventiInProssimita)
         {
@@ -31,19 +31,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
 
             var interventiInProssimita = _getInterventiInProssimita.Get(query.Coordinate, lstPinNodo);
 
-
             var resultStessaVia = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
             {
                 UnitaOperative = lstPinNodo,
                 IndirizzoIntervento = new API.Models.Classi.Condivise.Localita(null, query.Indirizzo)
             });
-
-            //var result = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
-            //{
-            //    UnitaOperative = lstPinNodo
-            //});
-
-            //result.RemoveAll(i => resultStessaVia.Select(ii => ii.Codice).Contains(i.Codice));
 
             var resultChiuseStessoIndirizzo = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
             {
@@ -57,7 +49,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
                 DataArrayInterventiChiusiStessoIndirizzo = resultChiuseStessoIndirizzo,
                 DataArrayStessaVia = resultStessaVia
             };
-
         }
     }
 }

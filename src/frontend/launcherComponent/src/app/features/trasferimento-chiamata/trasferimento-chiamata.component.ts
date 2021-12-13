@@ -29,6 +29,7 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
     @Select(TrasferimentoChiamataState.listaTrasferimentiChiamate) listaTrasferimentiChiamate$: Observable<TrasferimentoChiamata[]>;
+    listaTrasferimentiChiamate: TrasferimentoChiamata[];
     @Select(RicercaTrasferimentoChiamataState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -51,6 +52,7 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
         this.getRicerca();
         this.getPageSize();
         this.getTrasferimentoChiamata(true);
+        this.getListaTrasferimentiChiamate();
         this.getSediTrasferimenti();
     }
 
@@ -74,6 +76,14 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
                 this.doubleMonitor = doubleMonitor;
+            })
+        );
+    }
+
+    getListaTrasferimentiChiamate(): void {
+        this.subscriptions.add(
+            this.listaTrasferimentiChiamate$.subscribe((listaTrasferimentiChiamate: TrasferimentoChiamata[]) => {
+                this.listaTrasferimentiChiamate = listaTrasferimentiChiamate;
             })
         );
     }

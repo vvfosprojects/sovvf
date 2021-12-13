@@ -96,6 +96,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.store.dispatch(new GetListaRichieste());
+        this.heightControl();
         this.getRichiestaFissata();
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
@@ -111,9 +112,21 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
             new ClearRichieste(),
+            new ClearRichiestaSelezionata(),
+            new ClearRichiestaHover(),
             new ClearRicercaFilterbar()
         ]);
         console.log('Componente Richieste distrutto');
+    }
+
+    heightControl(): void {
+        if (!this.richiestaFissata) {
+            if (this.boxAttivi) {
+                this.listHeightClass = 'm-h-710';
+            } else {
+                this.listHeightClass = 'm-h-840';
+            }
+        }
     }
 
     getRichieste(): void {

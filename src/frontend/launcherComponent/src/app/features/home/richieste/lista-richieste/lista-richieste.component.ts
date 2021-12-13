@@ -90,6 +90,13 @@ export class ListaRichiesteComponent implements OnChanges {
         }
     }
 
+    /* Gestisce il singolo click sull indirizzo */
+    indirizzoClick(richiesta: SintesiRichiesta): void {
+        if (richiesta?.id === this.idRichiestaSelezionata) {
+            this.deselezione.emit(true);
+        }
+    }
+
     /* Gestisce il singolo click sulla richiesta */
     onDeselezionaRichiesta(value: boolean): void {
         this.deselezione.emit(value);

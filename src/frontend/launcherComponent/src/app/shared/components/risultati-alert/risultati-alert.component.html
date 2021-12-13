@@ -1,0 +1,14 @@
+<ng-container *ngIf="!items">
+    <div class="col-12 mt-3 text-center">
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <div class="alert alert-primary">
+                    <h5 class="mb-0 font-weight-bolder">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        {{ getTesto() | uppercase }}
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

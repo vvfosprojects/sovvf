@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Servizi\DistaccamentoCoordinate\**" />
+    <EmbeddedResource Remove="Servizi\DistaccamentoCoordinate\**" />
+    <None Remove="Servizi\DistaccamentoCoordinate\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Servizi\Identity\Mock\Json\Anagrafica.json" />
     <None Remove="Servizi\Personale\Mock\Json\Componenti.json" />
     <None Remove="Servizi\Personale\Mock\Json\SquadreNelTurno.json" />
@@ -35,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SO115App.API.SOVVF.FakeImplementations\SO115App.API.SOVVF.FakeImplementations.csproj" />
     <ProjectReference Include="..\SO115App.ExternalApi.Client\SO115App.ExternalAPI.Client.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
     <ProjectReference Include="..\SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj" />
@@ -45,9 +50,5 @@
     <None Update="Servizi\Nue\Mock\Json\SchedeContatto.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Servizi\DistaccamentoCoordinate\" />
   </ItemGroup>
 </Project>

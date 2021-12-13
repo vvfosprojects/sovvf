@@ -115,7 +115,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 return f;
             }).ToList();
 
-            return lstFigli;
+            return lstFigli.Where(f => f.tipologiaDistaccamento.codice != "14" && f.tipologiaDistaccamento.codice != "9").ToList();
         }
 
         public async Task<DistaccamentoUC> GetInfoSede(string codSede)
@@ -260,7 +260,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 if (ListaSediAlberate == null)
                     _memoryCache.Remove("ListaSediAlberate");
 
-                return ListaSediAlberate;
+               return ListaSediAlberate;
             }
         }
 

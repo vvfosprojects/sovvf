@@ -18,13 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza;
 using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza
 {
     public interface INotifyAnnullaPartenza
     {
-        Task SendNotification(AnnullaPartenzaCommand command);
+        Task SendNotification(AnnullaStatoPartenzaCommand command);
     }
 }

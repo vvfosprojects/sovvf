@@ -64,35 +64,40 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var partenza = richiesta.Partenze.LastOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
 
             var statoAttuale = _statoMezzi.Get(command.CodiciSede, command.IdMezzo).First().StatoOperativo;
+            string statoMezzoReale = "";
 
-            //ANNULLO PARTENZA PRECEDENTE NEL CASO DI CAMBIO ORARIO STATO MEZZO IN VIAGGIO
-            if (command.StatoMezzo.Equals(statoAttuale) && statoAttuale.Equals(Costanti.MezzoInViaggio))
+            if (statoAttuale.Equals("In Viaggio"))
             {
-                partenza.Partenza.PartenzaAnnullata = true;
-
-                var partenzaCambiata = new Partenza()
-                {
-                    Mezzo = partenza.Partenza.Mezzo,
-                    Codice = partenza.CodicePartenza,
-                    Squadre = partenza.Partenza.Squadre
-                };
-
-                richiesta.CambiaStatoPartenza(partenzaCambiata, new CambioStatoMezzo()
-                {
-                    CodMezzo = command.IdMezzo,
-                    Istante = istante,
-                    Stato = command.StatoMezzo
-                }, _sendNewItemSTATRI, _checkCongruita);
+                if (!command.StatoMezzo.Equals("In Viaggio"))
+                    statoMezzoReale = command.StatoMezzo;
             }
-            else
+            else if (statoAttuale.Equals("Sul Posto"))
             {
-                richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                if (command.StatoMezzo.Equals("In Viaggio") || command.StatoMezzo.Equals("Sul Posto"))
+                    statoMezzoReale = statoAttuale;
+
+                if (command.StatoMezzo.Equals("In Rientro") || command.StatoMezzo.Equals("Rientrato"))
                 {
-                    CodMezzo = command.IdMezzo,
-                    Istante = istante,
-                    Stato = command.StatoMezzo
-                }, _sendNewItemSTATRI, _checkCongruita);
+                    statoMezzoReale = command.StatoMezzo;
+                }
             }
+            else if (statoAttuale.Equals("In Rientro"))
+            {
+                if (command.StatoMezzo.Equals("In Viaggio") || command.StatoMezzo.Equals("Sul Posto") || command.StatoMezzo.Equals("In Rientro"))
+                    statoMezzoReale = statoAttuale;
+
+                if (command.StatoMezzo.Equals("Rientrato"))
+                    statoMezzoReale = command.StatoMezzo;
+            }
+            else if (statoAttuale.Equals("Rientrato"))
+                statoMezzoReale = statoAttuale;
+
+            richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+            {
+                CodMezzo = command.IdMezzo,
+                Istante = istante,
+                Stato = command.StatoMezzo
+            }, _sendNewItemSTATRI, _checkCongruita);
 
             if (command.AzioneIntervento != null && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenza.Partenza.Codice).Count() == 0)
             {
@@ -103,8 +108,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
 
             //SE CAMBIO ORARIO DI UNO STATO AVVISO GAC
-            var dataRientro = richiesta.ListaEventi.OfType<PartenzaRientrata>().LastOrDefault(p => p.CodicePartenza == partenza.CodicePartenza)?.Istante;
+            //var statoAttuale = _statoMezzi.Get(command.CodiciSede, command.IdMezzo).First();
 
+            var dataRientro = richiesta.ListaEventi.OfType<PartenzaRientrata>().LastOrDefault(p => p.CodicePartenza == partenza.CodicePartenza)?.Istante;
             if (command.StatoMezzo.Equals(statoAttuale) && statoAttuale.Equals(Costanti.MezzoInViaggio)) _modificaGac.Send(new ModificaMovimentoGAC()
             {
                 comune = new ComuneGAC() { descrizione = richiesta.Localita.Citta },
@@ -117,7 +123,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
                 idPartenza = partenza.Partenza.Codice,
                 numeroIntervento = richiesta.CodRichiesta,
-                autistaUscita = partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale,
+                autistaUscita = partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).Nominativo,
                 autistaRientro = partenza.Partenza.Terminata ? partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale : null,
                 dataRientro = dataRientro,
                 dataUscita = command.DataOraAggiornamento,
@@ -135,7 +141,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 Richiesta = richiesta,
                 IdUtente = command.IdUtente,
                 DataOraAggiornamento = istante,
-                StatoMezzo = command.StatoMezzo,
+                StatoMezzo = statoMezzoReale,
                 IdMezzo = command.IdMezzo
             });
         }

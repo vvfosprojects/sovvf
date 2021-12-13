@@ -139,7 +139,7 @@
 
                                 <!-- mezzi -->
                                 <span class="nowrap">
-                                    <button class="btn btn-light border pl-0 py-0 big_numbers"
+                                    <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
                                             [ngbPopover]="popMezzi"
                                             popoverTitle="Mezzi"
                                             triggers="click"
@@ -153,7 +153,7 @@
                                     </button>
 
                                     <ng-template #popMezzi>
-                                        <div class="h6 nowrap" *ngFor="let m of methods.mezziRichiesta(richiesta)">
+                                        <div class="nowrap" *ngFor="let m of methods.mezziRichiesta(richiesta)">
                                             <span>
                                                 <span class="badge badge-secondary">{{ m?.stato }}</span>
                                                 <span class="font-weight-bold mx-1">{{ m?.descrizione }}</span>
@@ -166,6 +166,22 @@
                                         </h6>
                                     </ng-template>
                                 </span>
+
+                                <button *ngIf="!fissata && fissabile"
+                                        class="btn btn-light border py-0 px-0" style="width: 45px"
+                                        ngbTooltip="Fissa in alto"
+                                        [disabled]="disableFissaInAlto"
+                                        (click)="fissaClick(richiesta); $event.stopPropagation()">
+                                    <i class="fas fa-fw fa-thumbtack fa-rotate-45 text-secondary"></i>
+                                </button>
+
+                                <button *ngIf="fissata && fissabile"
+                                        class="btn btn-primary py-0 px-0" style="width: 45px"
+                                        ngbTooltip="Inserisci nella lista"
+                                        (click)="fissaClick(richiesta); $event.stopPropagation()">
+                                    <i class="fas fa-fw fa-thumbtack fa-rotate-45"></i>
+                                </button>
+
                             </div>
                         </div>
                     </div>
@@ -191,28 +207,30 @@
                         <div class="clearfix" style="width: 10%"></div>
                         <div class="clearfix"
                              style="width: 33%">
-                            <i class="guida fas fa-map-marker-alt fa-fw mr-1" style="font-size: 140%"
-                               ngbTooltip="Località"></i>
-                            <ng-container *ngIf="!richiesta?.localita?.indirizzo && richiesta?.localita?.coordinate">
-                                <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
-                                      class="font-xxlarge">
-                                      Lat: {{ richiesta.localita.coordinate?.latitudine }} -
-                                      Lon: {{ richiesta.localita.coordinate?.longitudine }}
-                              </span>
-                            </ng-container>
-                            <ng-container *ngIf="richiesta?.localita?.indirizzo">
-                                <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
-                                      class="font-xxlarge"
-                                      [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
-                                  {{ richiesta?.localita?.indirizzo | truncate:30 }}
-                              </span>
-                            </ng-container>
+                            <span (click)="indirizzoClick(richiesta)" style="cursor: pointer">
+                                <i class="guida fas fa-map-marker-alt fa-fw mr-1" style="font-size: 140%"
+                                                                ngbTooltip="Località"></i>
+                                <ng-container *ngIf="!richiesta?.localita?.indirizzo && richiesta?.localita?.coordinate">
+                                    <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
+                                          class="font-xxlarge">
+                                          Lat: {{ richiesta.localita.coordinate?.latitudine }} -
+                                          Lon: {{ richiesta.localita.coordinate?.longitudine }}
+                                  </span>
+                                </ng-container>
+                                <ng-container *ngIf="richiesta?.localita?.indirizzo">
+                                    <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
+                                          class="font-xxlarge"
+                                          [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
+                                      {{ richiesta?.localita?.indirizzo | truncate:30 }}
+                                  </span>
+                                </ng-container>
                             <span *ngIf="!partenza"
                                   class="list-inline list-unstyled m-0 ml-2 font-xxlarge"
                                   style="vertical-align: text-bottom;">
                                 <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
                                                 [competenza]="c" [i]="i"></app-competenza>
                         </span>
+                            </span>
                         </div>
                         <div class="clearfix"
                              style="width: 26%; align-self: center">
@@ -247,19 +265,6 @@
                                         [ngClass]="{'cursor-not-allowed': disabledAzioniRichiesta}"
                                         (click)="onShowAzioniRichiesta()">
                                     <i class="fas fa-fw fa-expand text-secondary"></i>
-                                </button>
-                                <button *ngIf="!fissata && fissabile"
-                                        class="btn btn-light border py-0 px-0 mr-1"
-                                        ngbTooltip="Fissa in alto"
-                                        [disabled]="disableFissaInAlto"
-                                        (click)="fissaClick(richiesta); $event.stopPropagation()">
-                                    <i class="fas fa-fw fa-thumbtack fa-rotate-45 text-secondary"></i>
-                                </button>
-                                <button *ngIf="fissata && fissabile"
-                                        class="btn btn-primary py-0 px-0 mr-1"
-                                        ngbTooltip="Inserisci nella lista"
-                                        (click)="fissaClick(richiesta); $event.stopPropagation()">
-                                    <i class="fas fa-fw fa-thumbtack fa-rotate-45"></i>
                                 </button>
                                 <button *ngIf="gestibile"
                                         class="btn btn-light border py-0 px-0 mr-1"

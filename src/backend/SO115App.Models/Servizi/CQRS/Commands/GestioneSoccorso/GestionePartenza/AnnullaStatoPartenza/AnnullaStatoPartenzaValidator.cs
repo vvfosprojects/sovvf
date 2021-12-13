@@ -22,11 +22,11 @@ using SO115App.Models.Classi.Utility;
 using System.Collections.Generic;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza
 {
-    public class AnnullaPartenzaValidator : ICommandValidator<AnnullaPartenzaCommand>
+    public class AnnullaStatoPartenzaValidator : ICommandValidator<AnnullaStatoPartenzaCommand>
     {
-        public IEnumerable<ValidationResult> Validate(AnnullaPartenzaCommand command)
+        public IEnumerable<ValidationResult> Validate(AnnullaStatoPartenzaCommand command)
         {
             // Controlli sul richiedente
             if (command.CodiceRichiesta.Length == 0)

@@ -199,10 +199,10 @@
             <!-- bottone nuova partenza -->
             <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
                 <button class="btn btn-primary btn-no-hover"
+                        style="width: 50%"
                         (click)="nuovaPartenza()"
                         [disabled]="disableNuovaPartenza || boxPartenzaList.length > 2"><i
-                        class="fas fa-plus mr-2"></i><span
-                        style="vertical-align: text-bottom;">Aggiungi</span>
+                        class="fas fa-plus mr-2"></i><span>Aggiungi Altra Partenza</span>
                 </button>
             </div>
             <!-- lista box partenze -->
@@ -226,7 +226,7 @@
         <!-- Soccorso aereo triage-->
         <div class="clearfix">
             <div class="float-left w-100 pl-2" style="width: 2%">
-                <div class="clearfix">
+                <div class="clearfix d-flex" style="padding-left: 32%">
                     <div class="float-left">
                         <ngb-rating [rate]="getSoccorsoAereoTriage(triageSummary)?.value"
                                     [max]="4"

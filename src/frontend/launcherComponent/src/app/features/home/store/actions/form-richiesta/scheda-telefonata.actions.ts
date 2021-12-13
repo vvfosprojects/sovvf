@@ -87,6 +87,9 @@ export class AnnullaChiamata {
 
 export class CestinaChiamata {
     static readonly type = '[SchedaTelefonata] Cestina chiamata';
+
+    constructor(public options?: { bypassInitCentroMappa: boolean }) {
+    }
 }
 
 export class ResetChiamata {

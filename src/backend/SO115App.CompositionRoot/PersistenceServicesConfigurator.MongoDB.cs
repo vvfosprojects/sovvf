@@ -3,8 +3,10 @@ using Persistence.MongoDB;
 using SimpleInjector;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.ExternalAPI.Fake.Composizione;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDocumentale;
@@ -15,8 +17,10 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Persistence.MongoDB;
+using SO115App.Persistence.MongoDB.GestioneComposizioneMezzi;
 using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
 using SO115App.Persistence.MongoDB.GestioneDocumentale;
@@ -28,6 +32,8 @@ using SO115App.Persistence.MongoDB.GestioneSedi;
 using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
 using SO115App.Persistence.MongoDB.GestioneTriage;
 using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
+using GetComposizioneMezzi = SO115App.Persistence.MongoDB.GestioneComposizioneMezzi.GetComposizioneMezzi;
+using GetComposizioneSquadre = SO115App.Persistence.MongoDB.GestioneComposizioneMezzi.GetComposizioneSquadre;
 
 namespace SO115App.CompositionRoot
 {
@@ -38,8 +44,7 @@ namespace SO115App.CompositionRoot
             var connectionString = configuration.GetSection("DatabaseSettings").GetSection("ConnectionString").Value;
             var databaseName = configuration.GetSection("DatabaseSettings").GetSection("DatabaseName").Value;
 
-            container.Register<DbContext>(() =>
-                new DbContext(connectionString, databaseName), Lifestyle.Singleton);
+            container.Register<DbContext>(() => new DbContext(connectionString, databaseName), Lifestyle.Singleton);
 
             container.Register<IResetDB, ResetDB>();
             container.Register<IWatchChangeSchedeNue, DbWatchForChange>();
@@ -308,9 +313,16 @@ namespace SO115App.CompositionRoot
             container.Register<IGetTipologieIntervento, GetTipologieEmergenza>();
             #endregion Emergenza
 
-            #region UnitaOperativa MongoDb
+            #region CACHE MongoDb
             container.Register<IGetAllSediAlberate, GetListaSediAlberata>(); 
             container.Register<ISetSediAlberate, SetListaSediAlberate>();
+
+            container.Register<IGetComposizioneSquadreDB, GetComposizioneSquadre>();
+            container.Register<ISetComposizioneSquadre, SetComposizioneSquadre>();
+
+            container.Register<ISetComposizioneMezzi, SetComposizioneMezzi>();
+            container.Register<IGetComposizioneMezziDB, GetComposizioneMezzi>();
+
             #endregion
 
             #region Ricerca Full Text         
