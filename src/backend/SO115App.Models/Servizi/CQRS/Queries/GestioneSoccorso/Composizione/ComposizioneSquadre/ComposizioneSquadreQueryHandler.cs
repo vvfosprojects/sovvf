@@ -18,8 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Microsoft.Extensions.Caching.Memory;
 using Serilog;
+using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
@@ -29,11 +34,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizioneSquadreQueryHandler : IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult>
     {
-        private readonly IGetComposizioneSquadre _iGetComposizioneSquadre;
+        private readonly ISetComposizioneSquadre _setSquadreDB;
+        private readonly IGetComposizioneSquadreDB _getSquadreDB;
 
-        public ComposizioneSquadreQueryHandler(IGetComposizioneSquadre iGetComposizioneSquadre)
+        private readonly IGetComposizioneSquadre _getSquadre;
+        private readonly IMemoryCache _cache;
+
+        public ComposizioneSquadreQueryHandler(IGetComposizioneSquadre getSquadre, IMemoryCache cache, ISetComposizioneSquadre set)
         {
-            this._iGetComposizioneSquadre = iGetComposizioneSquadre;
+            _getSquadre = getSquadre;
+            _cache = cache;
+            _setSquadreDB = set;
         }
 
         /// <summary>
@@ -45,8 +56,33 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Squadre Composizione Handler");
 
-            var composizioneSquadre = _iGetComposizioneSquadre.Get(query);
-                
+            List<ComposizioneSquadra> composizioneSquadre = null; 
+
+            try
+            {
+                //if(!_cache.TryGetValue("ComposizioneSquadre", out composizioneSquadre))
+                //{
+                composizioneSquadre = _getSquadre.Get(query); 
+
+                //_cache.Set("ComposizioneSquadre", composizioneSquadre, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
+
+                _setSquadreDB.Set(composizioneSquadre);
+                //}
+                //else
+                //{
+                //    composizioneSquadre = _getSquadreDB.Get();
+                //}
+            }
+            catch
+            {
+                composizioneSquadre = _getSquadreDB.Get();
+
+                if (composizioneSquadre == null)
+                {
+                    throw new Exception("Errore caricamento elenco squadre");
+                }
+            }
+
             Log.Debug("Fine elaborazione Lista Squadre Composizione Handler");
 
             return new ComposizioneSquadreResult()

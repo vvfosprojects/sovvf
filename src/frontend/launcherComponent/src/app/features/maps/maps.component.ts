@@ -25,6 +25,7 @@ import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import { RichiestaModificaState } from '../home/store/states/form-richiesta/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { RichiestaGestioneState } from '../home/store/states/richieste/richiesta-gestione.state';
+import { MezziInServizioState } from '../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 
 @Component({
     selector: 'app-maps',
@@ -52,6 +53,8 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     // Richiesta Gestione
     @Select(RichiestaGestioneState.richiestaGestione) richiestaGestione$: Observable<SintesiRichiesta>;
+    // Richiesta Gestione
+    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
     // Filtri Richieste Selezionati
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     // Status "Schede Contatto"
@@ -60,6 +63,8 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     // Status "Mezzi in Servizio"
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
+    // Mezzo In Servizio Selezionato
+    @Select(MezziInServizioState.idMezzoInServizioSelezionato) idMezzoInServizioSelezionato$: Observable<string>;
 
     mapsFullyLoaded = false;
     activeRoute: string;

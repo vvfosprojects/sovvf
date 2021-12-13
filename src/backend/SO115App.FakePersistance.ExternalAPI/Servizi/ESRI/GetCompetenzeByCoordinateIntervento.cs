@@ -71,8 +71,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             else
             {
 #if DEBUG
-                competenze = new string[3] { "RM.1000", "RM.1002", "RM.1004" };
+                //competenze = new string[3] { "RM.1000", "RM.1002", "RM.1004" };
 #endif
+                throw new ArgumentException($"Coordinate Errate x: {coord.x} y:{coord.y}", nameof(competenze));
             }
 
             return competenze;

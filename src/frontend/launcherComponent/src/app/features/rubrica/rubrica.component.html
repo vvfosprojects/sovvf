@@ -35,7 +35,13 @@
                 <div *ngIf="ricerca" class="col-12 pl-4">
                     <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
                 </div>
-                <div class="col-12">
+                <div *ngIf="!vociRubrica?.length" class="col-12">
+                    <app-risultati-alert [items]="!!(vociRubrica?.length)"
+                                         [ricerca]="!!(ricerca?.length)"
+                                         [loading]="!!(loading$ | async)">
+                    </app-risultati-alert>
+                </div>
+                <div *ngIf="vociRubrica?.length" class="col-12">
                     <app-tabella-rubrica [vociRubrica]="vociRubrica$ | async" [totalItems]="totalItems$ | async"
                                          [pageSize]="pageSize" [page]="page$ | async" [loading]="loading$ | async"
                                          [pageSizes]="pageSizes$ | async"
