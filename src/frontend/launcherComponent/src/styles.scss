@@ -84,6 +84,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   background-color: $SO-dark $SO-i;
 }
 
+.tooltip {
+  pointer-events: none;
+}
+
 .close {
   text-shadow: none !important;
 }
