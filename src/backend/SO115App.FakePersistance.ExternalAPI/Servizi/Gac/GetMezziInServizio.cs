@@ -57,10 +57,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         /// <returns>Lista di MezziInServizio</returns>
         public List<MezzoInServizio> Get(string[] CodiciSede)
         {
-            var mezzi = _getMezziUtilizzabili.Get(CodiciSede.ToList());
+            var mezzi = _getMezziUtilizzabili.Get(CodiciSede.ToList()).Result;
             var statoMezzi = _getStatoMezzi.Get(CodiciSede);
 
-            var listaMezzoInServizio = mezzi.Result.Select(mezzo =>
+            var listaMezzoInServizio = new List<MezzoInServizio>();
+
+            foreach (var mezzo in mezzi)
             {
                 var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
                 mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
@@ -94,12 +96,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     mezzoInServizio.Squadre = null;
                 }
 
-                return mezzoInServizio;
-            });
+                listaMezzoInServizio.Add(mezzoInServizio);
+            };
 
             return listaMezzoInServizio
-                .OrderBy(c => c.Mezzo.Mezzo.Stato == Costanti.MezzoInSede)
-                .ToList();
+                .OrderBy(c => c.Mezzo.Mezzo.Stato == Costanti.MezzoInSede).ToList();
         }
     }
 }
