@@ -45,6 +45,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     utente: Utente;
     @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<Utente[]>;
+    listaUtenti: Utente[];
     @Select(GestioneUtentiState.utenteDetail) utenteGestioneDetail$: Observable<Utente>;
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -70,6 +71,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.getDoubleMonitorMode();
         this.getDistaccamenti();
         this.getUtente();
+        this.getListaUtenti();
         this.getRicerca();
         this.getPageSize();
         this.getUtentiGestione(true);
@@ -246,6 +248,14 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.utente$.subscribe((utente: Utente) => {
                 this.utente = utente;
+            })
+        );
+    }
+
+    getListaUtenti(): void {
+        this.subscriptions.add(
+            this.listaUtenti$.subscribe((listaUtenti: Utente[]) => {
+                this.listaUtenti = listaUtenti;
             })
         );
     }

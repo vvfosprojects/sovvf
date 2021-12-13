@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="mezziInServizio?.length" class="row">
     <div class="col-12" [ngClass]="heightListaMezzi()">
         <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
         <ng-template [ngIf]="ricerca">
@@ -35,4 +35,11 @@
             </ngb-pagination>
         </div>
     </div>
+</div>
+<div *ngIf="!mezziInServizio?.length">
+    <app-risultati-alert [items]="!!(mezziInServizio?.length)"
+                         [filters]="!!((mezziInServizioFiltriSelezionati$ | async)?.length)"
+                         [ricerca]="!!(ricerca?.length)"
+                         [loading]="!!(loadingMezziInServizio$ | async)">
+    </app-risultati-alert>
 </div>
