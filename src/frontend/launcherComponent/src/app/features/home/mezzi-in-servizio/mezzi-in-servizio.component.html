@@ -5,8 +5,10 @@
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </ng-template>
         <ng-template [ngIf]="mezziInServizio">
-            <div class="px-3 cursor-pointer">
-                <div *ngFor="let m of mezziInServizio">
+            <div class="px-3">
+                <div *ngFor="let m of mezziInServizio"
+                     [class.cursor-pointer]="m.mezzo.mezzo.coordinateStrg?.length > 1"
+                     [class.cursor-not-allowed]="m.mezzo.mezzo.coordinateStrg?.length <= 1">
                     <app-mezzo-in-servizio [mezzoInServizio]="m"
                                            [idMezzoInServizioHover]="idMezzoInServizioHover"
                                            [nightMode]="nightMode"
