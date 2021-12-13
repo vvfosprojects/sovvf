@@ -107,6 +107,18 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         console.log('Componente Richieste creato');
     }
 
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+        this.store.dispatch([
+            new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
+            new ClearRichieste(),
+            new ClearRichiestaSelezionata(),
+            new ClearRichiestaHover(),
+            new ClearRicercaFilterbar()
+        ]);
+        console.log('Componente Richieste distrutto');
+    }
+
     heightControl(): void {
         if (!this.richiestaFissata) {
             if (this.boxAttivi) {
@@ -115,16 +127,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                 this.listHeightClass = 'm-h-840';
             }
         }
-    }
-
-    ngOnDestroy(): void {
-        this.subscription.unsubscribe();
-        this.store.dispatch([
-            new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
-            new ClearRichieste(),
-            new ClearRicercaFilterbar()
-        ]);
-        console.log('Componente Richieste distrutto');
     }
 
     getRichieste(): void {

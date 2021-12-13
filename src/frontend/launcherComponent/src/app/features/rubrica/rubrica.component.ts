@@ -28,6 +28,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
     @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
+    vociRubrica: EnteInterface[];
     @Select(RubricaState.loadingRubrica) loading$: Observable<boolean>;
     @Select(RicercaRubricaState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -49,6 +50,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
         }
         this.getDoubleMonitorMode();
         this.getRicerca();
+        this.getVociRubrica();
         this.getPageSize();
         this.getRubrica(true);
     }
@@ -68,11 +70,19 @@ export class RubricaComponent implements OnInit, OnDestroy {
         ]);
         this.subscriptions.unsubscribe();
     }
-    
+
     getDoubleMonitorMode(): void {
         this.subscriptions.add(
             this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
                 this.doubleMonitor = doubleMonitor;
+            })
+        );
+    }
+
+    getVociRubrica(): void {
+        this.subscriptions.add(
+            this.vociRubrica$.subscribe((vociRubrica: EnteInterface[]) => {
+                this.vociRubrica = vociRubrica;
             })
         );
     }

@@ -83,6 +83,7 @@ import { AzioniAreaDocumentaleModalComponent } from './modal/azioni-area-documen
 import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { ListaMezziSganciamentoModalComponent } from './modal/lista-mezzi-sganciamento-modal/lista-mezzi-sganciamento-modal.component';
 import { MezzoInServizioComponent } from './components/mezzo-in-servizio/mezzo-in-servizio.component';
+import { RisultatiAlertComponent } from './components/risultati-alert/risultati-alert.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -158,7 +159,8 @@ const COMPONENTS = [
     RicercaIndirizzoComponent,
     AzioniAreaDocumentaleModalComponent,
     ListaMezziSganciamentoModalComponent,
-    MezzoInServizioComponent
+    MezzoInServizioComponent,
+    RisultatiAlertComponent
 ];
 const MODULES = [
     PipeModule

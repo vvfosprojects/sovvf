@@ -28,7 +28,13 @@
                 <div *ngIf="ricerca" class="col-12 col-md-9 mx-auto pl-4">
                     <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
                 </div>
-                <div class="col-12 col-md-9 mx-auto">
+                <div *ngIf="!listaTrasferimentiChiamate?.length" class="col-12 col-md-9 mx-auto">
+                    <app-risultati-alert [items]="!!(listaTrasferimentiChiamate?.length)"
+                                         [ricerca]="!!(ricerca?.length)"
+                                         [loading]="!!(loading$ | async)">
+                    </app-risultati-alert>
+                </div>
+                <div *ngIf="listaTrasferimentiChiamate?.length" class="col-12 col-md-9 mx-auto">
                     <app-tabella-trasferimento-chiamata
                             [listaTrasferimentiChiamate]="listaTrasferimentiChiamate$ | async"
                             [totalItems]="totalItems$ | async"

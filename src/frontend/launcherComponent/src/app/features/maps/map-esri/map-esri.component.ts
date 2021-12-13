@@ -51,6 +51,10 @@ import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
+import { Partenza } from '../../../shared/model/partenza.model';
+import { MezziInServizioState } from '../../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
+import { Coordinate } from '../../../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-map-esri',
@@ -64,6 +68,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() idRichiestaSelezionata: string;
     @Input() richiestaModifica: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
+    @Input() richiestaComposizione: SintesiRichiesta;
     @Input() chiamateMarkers: ChiamataMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() direction: DirectionInterface;
@@ -73,6 +78,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() schedeContattoStatus: boolean;
     @Input() composizionePartenzaStatus: boolean;
     @Input() mezziInServizioStatus: boolean;
+    @Input() idMezzoInServizioSelezionato: string;
     @Input() areaMappaLoading: boolean;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
@@ -236,7 +242,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const center = [newPCenter.coordinateCentro.longitudine, newPCenter.coordinateCentro.latitudine];
             this.changeCenter(center).then(() => {
                 const zoom = newPCenter.zoom;
-                this.changeZoom(zoom).then();
+                this.changeZoom(zoom).then(() => {
+                });
             });
         }
 
@@ -260,7 +267,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.direction?.currentValue) {
             const direction = changes?.direction?.currentValue;
             if (direction?.isVisible) {
-                this.getRoute(direction);
+                this.getRoute(direction, { clearPrevious: true });
             } else {
                 this.clearDirection();
             }
@@ -274,8 +281,18 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const coordinateCentro = richiestaSelezionata.localita.coordinate;
             const zoom = 16;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+            richiestaSelezionata.partenze.forEach((p: Partenza) => {
+                if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
+                    const origin = { lat: +p.partenza.mezzo.coordinateStrg[0], lng: +p.partenza.mezzo.coordinateStrg[1] };
+                    const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
+                    const genereMezzo = p.partenza.mezzo.genere;
+                    const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                    this.getRoute(direction);
+                }
+            });
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
+            this.clearDirection();
         }
 
         // Controllo il valore di "richiestaModifica"
@@ -285,6 +302,16 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const zoom = 16;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
         } else if (changes?.richiestaModifica?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
+        }
+
+        // Controllo il valore di "richiestaComposizione"
+        if (changes?.richiestaComposizione?.currentValue && this.map && this.view?.ready) {
+            const richiestaComposizione = changes?.richiestaComposizione?.currentValue;
+            const coordinateCentro = richiestaComposizione.localita.coordinate;
+            const zoom = 16;
+            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        } else if (changes?.richiestaComposizione?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
         }
 
@@ -357,6 +384,20 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
                     break;
             }
+        }
+
+        // Controllo il valore di "idMezzoInServizioSelezionato"
+        if (changes?.idMezzoInServizioSelezionato?.currentValue && this.map && this.view?.ready) {
+            const mezziInServizio = this.store.selectSnapshot(MezziInServizioState.mezziInServizio);
+            const idMezzoInServizioSelezionato = changes?.idMezzoInServizioSelezionato?.currentValue;
+            const mezzoInServizioSelezionato = mezziInServizio.filter((m: MezzoInServizio) => m.mezzo.mezzo.codice === idMezzoInServizioSelezionato)[0];
+            const lat = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[0];
+            const lon = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[1];
+            const coordinateCentro = new Coordinate(lat, lon);
+            const zoom = 16;
+            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        } else if (changes?.idMezzoInServizioSelezionato?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
         }
     }
 
@@ -820,8 +861,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         locatorTask.locationToAddress(params).then((response) => {
             console.log('locationToAddress response', response);
 
-            this.changeCenter([lon, lat]).then();
-            this.changeZoom(19).then();
+            this.changeCenter([lon, lat]).then(() => {
+                const zoom = 19;
+                this.changeZoom(zoom).then(() => {
+                });
+            });
 
             // Apro il modale con FormChiamata con lat, lon e address
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
@@ -854,8 +898,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             this.setContextMenuVisible(false);
         }
 
-        this.changeCenter([lon, lat]).then();
-        this.changeZoom(19).then();
+        this.changeCenter([lon, lat]).then(() => {
+            const zoom = 19;
+            this.changeZoom(zoom).then(() => {
+            });
+        });
 
         const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
             windowClass: 'modal-holder',
@@ -947,7 +994,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    getRoute(direction: DirectionInterface): void {
+    getRoute(direction: DirectionInterface, options?: { clearPrevious?: boolean }): void {
+        if (options?.clearPrevious) {
+            this.clearDirection();
+        }
+
         const pointPartenza = new Point({
             longitude: direction.origin.lng,
             latitude: direction.origin.lat,

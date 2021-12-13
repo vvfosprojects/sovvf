@@ -96,42 +96,37 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             #endregion LEGGO DA API ESTERNA
 
             //MAPPING
-            var ListaMezzi = lstMezziDto.Select(m =>
+            var ListaMezzi = new List<Mezzo>();
+
+            foreach (var m in lstMezziDto)
             {
-                //if (!mezzoFake.Equals("CMOB"))
-                //{
-                //var anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(m.Descrizione));
                 var mezzo = MapMezzo(m);
 
                 if (mezzo != null)
                 {
-                    //listaMezziBySedeAppo.Add(mezzo);
-                    return mezzo;
-                }
-                //}
+                    var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
 
-                var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
+                    if (CoordinateMezzoGeoFleet == null)
+                    {
+                        mezzo.Coordinate = mezzo.Distaccamento.Coordinate;
+                        mezzo.CoordinateFake = true;
+                    }
+                    else
+                    {
+                        mezzo.Coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
+                        mezzo.CoordinateFake = false;
+                    }
 
-                if (CoordinateMezzoGeoFleet == null)
-                {
-                    mezzo.Coordinate = mezzo.Distaccamento.Coordinate;
-                    mezzo.CoordinateFake = true;
-                }
-                else
-                {
-                    mezzo.Coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
-                    mezzo.CoordinateFake = false;
-                }
+                    var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
+                    if (ListaStatoOperativoMezzo.Count > 0)
+                    {
+                        mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
+                        mezzo.IdRichiesta = ListaStatoOperativoMezzo.FirstOrDefault(x => x.CodiceMezzo.Equals(mezzo.Codice)).CodiceRichiesta;
+                    }
 
-                var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
-                if (ListaStatoOperativoMezzo.Count > 0)
-                {
-                    mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
-                    mezzo.IdRichiesta = ListaStatoOperativoMezzo.FirstOrDefault(x => x.CodiceMezzo.Equals(mezzo.Codice)).CodiceRichiesta;
+                    ListaMezzi.Add(mezzo);
                 }
-
-                return mezzo;
-            }).ToList();
+            };
 
             return ListaMezzi;
         }

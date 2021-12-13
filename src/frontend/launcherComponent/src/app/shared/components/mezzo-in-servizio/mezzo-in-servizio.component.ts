@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { MezzoInServizio } from '../../interface/mezzo-in-servizio.interface';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Store } from '@ngxs/store';
@@ -10,8 +10,7 @@ import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/
 @Component({
     selector: 'app-mezzo-in-servizio',
     templateUrl: './mezzo-in-servizio.component.html',
-    styleUrls: ['./mezzo-in-servizio.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./mezzo-in-servizio.component.css']
 })
 export class MezzoInServizioComponent implements OnChanges {
 
@@ -62,19 +61,8 @@ export class MezzoInServizioComponent implements OnChanges {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(this.mezzoInServizio.mezzo.mezzo.codice, listaSquadre));
     }
 
-    cardClasses(stato: StatoMezzo, idMezzo: string): string {
-        let returnClass = statoMezzoBorderClass(stato);
-        if (!this.nightMode) {
-            if (this.idMezzoInServizioHover === idMezzo) {
-                returnClass += ' bg-light';
-            }
-            if (this.idMezzoInServizioSelezionato === idMezzo) {
-                returnClass += ' bg-light';
-            }
-        } else if (this.nightMode) {
-            // TODO: logica hover con nightMode
-        }
-        return returnClass;
+    cardClasses(stato: StatoMezzo): string {
+        return statoMezzoBorderClass(stato);
     }
 
     statoMezzoColor(stato: StatoMezzo): string {
