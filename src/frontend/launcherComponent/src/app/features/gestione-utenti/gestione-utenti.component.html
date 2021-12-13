@@ -33,7 +33,14 @@
                 <div *ngIf="ricerca" class="col-12 col-md-9 mx-auto pl-4">
                     <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
                 </div>
-                <div class="col-12 col-md-9 mx-auto">
+                <div *ngIf="!listaUtenti?.length" class="col-12 col-md-9 mx-auto">
+                    <app-risultati-alert [items]="!!(listaUtenti?.length)"
+                                         [filters]="!!((sediFiltroSelezionate$ | async)?.length)"
+                                         [ricerca]="!!(ricerca?.length)"
+                                         [loading]="!!(loading$ | async)">
+                    </app-risultati-alert>
+                </div>
+                <div *ngIf="listaUtenti?.length" class="col-12 col-md-9 mx-auto">
                     <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [idUtenteLoggato]="utente?.id"
                                         [totalItems]="totalItems$ | async" [pageSize]="pageSize" [page]="page$ | async"
                                         [loading]="loading$ | async" [pageSizes]="pageSizes$ | async"

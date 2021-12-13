@@ -25,6 +25,7 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { SintesiRichiestaModalComponent } from '../../../shared/modal/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
+import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -49,6 +50,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Select(MezziInServizioState.mezziInServizioFiltered) mezziInServizio$: Observable<MezzoInServizio[]>;
     mezziInServizio: MezzoInServizio[];
+    @Select(MezziInServizioState.filtriSelezionati) mezziInServizioFiltriSelezionati$: Observable<VoceFiltro[]>;
+    mezziInServizioFiltriSelezionati: VoceFiltro[];
     @Select(MezziInServizioState.idMezzoInServizioHover) idMezzoInServizioHover$: Observable<string>;
     idMezzoInServizioHover: string;
     @Select(MezziInServizioState.idMezzoInServizioSelezionato) idMezzoInServizioSelezionato$: Observable<string>;
@@ -70,6 +73,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.getMezziInServizio();
         this.getMezzoInServizioHover();
         this.getMezzoInServizioSelezionato();
+        this.getMezziInServizioFiltriSelezionati();
     }
 
     ngOnInit(): void {
@@ -111,6 +115,14 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.idMezzoInServizioSelezionato$.subscribe((idMezzo: string) => {
                 this.idMezzoInServizioSelezionato = idMezzo;
+            })
+        );
+    }
+
+    getMezziInServizioFiltriSelezionati(): void {
+        this.subscriptions.add(
+            this.mezziInServizioFiltriSelezionati$.subscribe((filtriSelezionati: VoceFiltro[]) => {
+                this.mezziInServizioFiltriSelezionati = filtriSelezionati;
             })
         );
     }
