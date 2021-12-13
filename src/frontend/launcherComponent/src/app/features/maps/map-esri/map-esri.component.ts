@@ -51,6 +51,7 @@ import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
+import { Partenza } from '../../../shared/model/partenza.model';
 
 @Component({
     selector: 'app-map-esri',
@@ -236,7 +237,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const center = [newPCenter.coordinateCentro.longitudine, newPCenter.coordinateCentro.latitudine];
             this.changeCenter(center).then(() => {
                 const zoom = newPCenter.zoom;
-                this.changeZoom(zoom).then();
+                this.changeZoom(zoom).then(() => {
+                });
             });
         }
 
@@ -260,7 +262,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.direction?.currentValue) {
             const direction = changes?.direction?.currentValue;
             if (direction?.isVisible) {
-                this.getRoute(direction);
+                this.getRoute(direction, { clearPrevious: true });
             } else {
                 this.clearDirection();
             }
@@ -274,8 +276,18 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const coordinateCentro = richiestaSelezionata.localita.coordinate;
             const zoom = 16;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+            richiestaSelezionata.partenze.forEach((p: Partenza) => {
+                if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
+                    const origin = { lat: +p.partenza.mezzo.coordinateStrg[0], lng: +p.partenza.mezzo.coordinateStrg[1] };
+                    const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
+                    const genereMezzo = p.partenza.mezzo.genere;
+                    const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                    this.getRoute(direction);
+                }
+            });
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
+            this.clearDirection();
         }
 
         // Controllo il valore di "richiestaModifica"
@@ -820,8 +832,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         locatorTask.locationToAddress(params).then((response) => {
             console.log('locationToAddress response', response);
 
-            this.changeCenter([lon, lat]).then();
-            this.changeZoom(19).then();
+            this.changeCenter([lon, lat]).then(() => {
+                const zoom = 19;
+                this.changeZoom(zoom).then(() => {
+                });
+            });
 
             // Apro il modale con FormChiamata con lat, lon e address
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
@@ -854,8 +869,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             this.setContextMenuVisible(false);
         }
 
-        this.changeCenter([lon, lat]).then();
-        this.changeZoom(19).then();
+        this.changeCenter([lon, lat]).then(() => {
+            const zoom = 19;
+            this.changeZoom(zoom).then(() => {
+            });
+        });
 
         const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
             windowClass: 'modal-holder',
@@ -947,7 +965,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    getRoute(direction: DirectionInterface): void {
+    getRoute(direction: DirectionInterface, options?: { clearPrevious?: boolean }): void {
+        if (options?.clearPrevious) {
+            this.clearDirection();
+        }
+
         const pointPartenza = new Point({
             longitude: direction.origin.lng,
             latitude: direction.origin.lat,

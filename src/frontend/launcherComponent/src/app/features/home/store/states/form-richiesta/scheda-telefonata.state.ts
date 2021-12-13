@@ -449,7 +449,7 @@ export class SchedaTelefonataState {
         this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
             if (chiamataResult && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([
-                    new CestinaChiamata(),
+                    new CestinaChiamata({ bypassInitCentroMappa: true }),
                     new SetIdChiamataInviaPartenza(chiamataResult),
                     new ShowToastr(
                         ToastrType.Success,
@@ -462,6 +462,7 @@ export class SchedaTelefonataState {
                 ]);
             } else if (chiamataResult && chiamata.chiamataUrgente) {
                 this.store.dispatch([
+                    new CestinaChiamata(),
                     new ToggleChiamata(),
                     new SetRichiestaModifica(chiamataResult),
                     new SetTriageSummary(chiamataResult.triageSummary),
@@ -566,12 +567,13 @@ export class SchedaTelefonataState {
     }
 
     @Action(CestinaChiamata)
-    cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+    cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: CestinaChiamata): void {
+        const bypassInitCentroMappa = action.options?.bypassInitCentroMappa;
         dispatch([
             new ClearMarkerChiamata(),
             new ResetChiamata(),
             new ClearChiamata(),
-            new GetInitCentroMappa()
+            !bypassInitCentroMappa && new GetInitCentroMappa()
         ]);
     }
 
