@@ -1,6 +1,7 @@
 ﻿using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.Composizione
 {
@@ -21,7 +22,8 @@ namespace SO115App.Models.Classi.Composizione
 
     public class MezzoInRientro
     {
-        public string Id { get; set; }
+        [JsonPropertyName("Id")]
+        public string IDD { get; set; }
         public MezzoPreaccoppiato Mezzo { get; set; }
     }
 

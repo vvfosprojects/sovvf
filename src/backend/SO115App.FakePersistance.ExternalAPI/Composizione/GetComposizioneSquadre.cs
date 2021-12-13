@@ -146,7 +146,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         }).ToList() : null,
                         MezziInRientro = lstMezziInRientro.Result?.Select(m => new MezzoInRientro()
                         {
-                            Id = m.CodiceMezzo,
+                            IDD = m.CodiceMezzo,
                             Mezzo = new MezzoPreaccoppiato()
                             {
                                 Codice = m.CodiceMezzo,

@@ -56,22 +56,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Mezzi per Composizione Handler");
 
-            List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = null;
+            List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = null; 
 
             try
             {
-                if (!_cache.TryGetValue("ComposizioneMezzi", out composizioneMezzi))
-                {
-                    composizioneMezzi = _iGetComposizioneMezzi.Get(query);
+                //if (!_cache.TryGetValue("ComposizioneMezzi", out composizioneMezzi))
+                //{
+                composizioneMezzi = _iGetComposizioneMezzi.Get(query);
 
-                    _cache.Set("ComposizioneMezzi", composizioneMezzi, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
+                //_cache.Set("ComposizioneMezzi", composizioneMezzi, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
 
                     _setMezzi.Set(composizioneMezzi);
-                }
-                else
-                {
-                    composizioneMezzi = _getMezzi.Get();
-                }
+                //}
+                //else
+                //{
+                //    composizioneMezzi = _getMezzi.Get();
+                //}
             }
             catch
             {

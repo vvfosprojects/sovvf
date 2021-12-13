@@ -56,22 +56,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Squadre Composizione Handler");
 
-            List<ComposizioneSquadra> composizioneSquadre = null;
+            List<ComposizioneSquadra> composizioneSquadre = null; 
 
             try
             {
-                if(!_cache.TryGetValue("ComposizioneSquadre", out composizioneSquadre))
-                {
-                    composizioneSquadre = _getSquadre.Get(query);
+                //if(!_cache.TryGetValue("ComposizioneSquadre", out composizioneSquadre))
+                //{
+                composizioneSquadre = _getSquadre.Get(query); 
 
-                    _cache.Set("ComposizioneSquadre", composizioneSquadre, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
+                //_cache.Set("ComposizioneSquadre", composizioneSquadre, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
 
-                    _setSquadreDB.Set(composizioneSquadre);
-                }
-                else
-                {
-                    composizioneSquadre = _getSquadreDB.Get();
-                }
+                _setSquadreDB.Set(composizioneSquadre);
+                //}
+                //else
+                //{
+                //    composizioneSquadre = _getSquadreDB.Get();
+                //}
             }
             catch
             {

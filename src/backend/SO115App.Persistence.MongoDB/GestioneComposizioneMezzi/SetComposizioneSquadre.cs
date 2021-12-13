@@ -17,6 +17,8 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
             {
                 var filter = Builders<ComposizioneSquadra>.Filter.Eq(s => s.Codice, squadra.Codice);
 
+                squadra.Id = _dbContext.ComposizioneSquadreCollection.Find(filter).First().Id;
+
                 if (_dbContext.ComposizioneSquadreCollection.CountDocuments(filter) > 0)
                     _dbContext.ComposizioneSquadreCollection.ReplaceOne(filter, squadra);
                 else
