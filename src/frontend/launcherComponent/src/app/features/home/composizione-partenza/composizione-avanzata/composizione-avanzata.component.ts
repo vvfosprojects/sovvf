@@ -378,7 +378,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             if (obj.mezzoComposizione) {
                 if (obj.mezzoComposizione.mezzo && obj.mezzoComposizione.mezzo.stato) {
                     obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
-                } else { obj.mezzoComposizione.stato = StatoMezzo.InViaggio; }
+                } else {
+                    obj.mezzoComposizione.stato = StatoMezzo.InViaggio;
+                }
                 rObj.mezzo = obj.mezzoComposizione.mezzo ? obj.mezzoComposizione.mezzo : obj.mezzoComposizione;
             } else {
                 rObj.mezzo = null;
@@ -429,20 +431,20 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     // Interazione con Mappa
     mezzoCoordinate(obj: MezzoDirection): void {
         if (obj.coordinateMezzo && this.richiesta.localita.coordinate) {
-                const direction: DirectionInterface = {
-                    origin: {
-                        lat: obj.coordinateMezzo.latitudine,
-                        lng: obj.coordinateMezzo.longitudine
-                    },
-                    destination: {
-                        lat: this.richiesta.localita.coordinate.latitudine,
-                        lng: this.richiesta.localita.coordinate.longitudine
-                    },
-                    genereMezzo: obj.genereMezzo,
-                    isVisible: true
-                };
+            const direction: DirectionInterface = {
+                origin: {
+                    lat: obj.coordinateMezzo.latitudine,
+                    lng: obj.coordinateMezzo.longitudine
+                },
+                destination: {
+                    lat: this.richiesta.localita.coordinate.latitudine,
+                    lng: this.richiesta.localita.coordinate.longitudine
+                },
+                genereMezzo: obj.genereMezzo,
+                isVisible: true
+            };
 
-                this.sendDirection.emit(direction);
+            this.sendDirection.emit(direction);
         } else {
             this.onClearDirection();
             console.error('coordinate mezzo / coordinate richiesta non presenti');

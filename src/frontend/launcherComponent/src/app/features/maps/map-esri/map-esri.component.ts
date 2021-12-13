@@ -260,7 +260,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.direction?.currentValue) {
             const direction = changes?.direction?.currentValue;
             if (direction?.isVisible) {
-                this.getRoute(direction);
+                this.getRoute(direction, { clearPrevious: true });
             } else {
                 this.clearDirection();
             }
@@ -947,7 +947,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    getRoute(direction: DirectionInterface): void {
+    getRoute(direction: DirectionInterface, options?: { clearPrevious?: boolean }): void {
+        if (options?.clearPrevious) {
+            this.clearDirection();
+        }
+
         const pointPartenza = new Point({
             longitude: direction.origin.lng,
             latitude: direction.origin.lat,
