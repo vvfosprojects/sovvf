@@ -25,5 +25,4 @@ class MezzoInServizoInfo {
         public conteggi?: ConteggioGruppoMezzi
     ) {
     }
-
 }

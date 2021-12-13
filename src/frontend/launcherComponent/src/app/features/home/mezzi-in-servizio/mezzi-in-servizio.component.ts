@@ -208,7 +208,10 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     selezionato(idMezzoInServizio: string): void {
-        this.store.dispatch(new SetMezzoInServizioSelezionato(idMezzoInServizio));
+        const mezzoInServizio = this.mezziInServizio.filter((m: MezzoInServizio) => m.mezzo.mezzo.codice === idMezzoInServizio)[0];
+        if (mezzoInServizio.mezzo.mezzo.coordinateStrg?.length > 1) {
+            this.store.dispatch(new SetMezzoInServizioSelezionato(idMezzoInServizio));
+        }
     }
 
     heightListaMezzi(): string {
