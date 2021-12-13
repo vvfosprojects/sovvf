@@ -175,7 +175,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 .ToList();
             });
 
-            return lstMezziComposizione.Result.ToList();
+            var result = lstMezziComposizione.Result.ToList();
+
+            return result;
         }
     }
 }

@@ -17,10 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Classi.Organigramma;
@@ -29,6 +33,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Documentale;
 using SO115App.Models.Classi.Emergenza;
@@ -44,6 +49,7 @@ using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Evento = SO115App.Models.Classi.NUE.Evento;
 
@@ -154,9 +160,40 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaPotInt>();
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaConsolidamento>();
 
-            UnitaOperativaMap.Map();
-
             BsonClassMap.RegisterClassMap<LogBook>();
+
+            //PER CACHE
+            UnitaOperativaMap.Map();
+            BsonClassMap.RegisterClassMap<ComposizioneMezzi>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id)
+                    .SetIdGenerator(StringObjectIdGenerator.Instance)
+                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
+            BsonClassMap.RegisterClassMap<ComposizioneSquadra>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Codice)
+                    .SetIdGenerator(StringObjectIdGenerator.Instance)
+                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
+        }
+
+        public IMongoCollection<ComposizioneMezzi> ComposizioneMezziCollection
+        {
+            get
+            {
+                return database.GetCollection<ComposizioneMezzi>("composizioneMezzi");
+            }
+        }
+
+        public IMongoCollection<ComposizioneSquadra> ComposizioneSquadreCollection
+        {
+            get
+            {
+                return database.GetCollection<ComposizioneSquadra>("composizioneSquadre");
+            }
         }
 
         public IMongoCollection<UnitaOperativa> ListaSediCollection
