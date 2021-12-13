@@ -32,6 +32,7 @@ using SO115App.Persistence.MongoDB.GestioneSedi;
 using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
 using SO115App.Persistence.MongoDB.GestioneTriage;
 using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
+using GetComposizioneMezzi = SO115App.Persistence.MongoDB.GestioneComposizioneMezzi.GetComposizioneMezzi;
 using GetComposizioneSquadre = SO115App.Persistence.MongoDB.GestioneComposizioneMezzi.GetComposizioneSquadre;
 
 namespace SO115App.CompositionRoot
@@ -320,7 +321,7 @@ namespace SO115App.CompositionRoot
             container.Register<ISetComposizioneSquadre, SetComposizioneSquadre>();
 
             container.Register<ISetComposizioneMezzi, SetComposizioneMezzi>();
-            //container.Register<IGetComposizioneMezzi, GetComposizioneMezzi>();
+            container.Register<IGetComposizioneMezziDB, GetComposizioneMezzi>();
 
             #endregion
 

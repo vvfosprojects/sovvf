@@ -18,8 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Microsoft.Extensions.Caching.Memory;
 using Serilog;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
@@ -29,11 +33,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizioneMezziQueryHandler : IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult>
     {
-        private readonly IGetComposizioneMezzi _iGetComposizioneMezzi;
+        private readonly ISetComposizioneMezzi _setMezzi;
+        private readonly IGetComposizioneMezziDB _getMezzi;
 
-        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi)
+        private readonly IGetComposizioneMezzi _iGetComposizioneMezzi;
+        private readonly IMemoryCache _cache;
+
+        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi, ISetComposizioneMezzi setMezzi, IGetComposizioneMezziDB getMezzi, IMemoryCache cache)
         {
             _iGetComposizioneMezzi = iGetComposizioneMezzi;
+            _setMezzi = setMezzi;
+            _getMezzi = getMezzi;
+            _cache = cache;
         }
 
         /// <summary>
@@ -45,7 +56,32 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Mezzi per Composizione Handler");
 
-            var composizioneMezzi = _iGetComposizioneMezzi.Get(query).ToList();;
+            List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = null;
+
+            try
+            {
+                if (!_cache.TryGetValue("ComposizioneMezzi", out composizioneMezzi))
+                {
+                    composizioneMezzi = _iGetComposizioneMezzi.Get(query);
+
+                    _cache.Set("ComposizioneMezzi", composizioneMezzi, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
+
+                    _setMezzi.Set(composizioneMezzi);
+                }
+                else
+                {
+                    composizioneMezzi = _getMezzi.Get();
+                }
+            }
+            catch
+            {
+                composizioneMezzi = _getMezzi.Get();
+
+                if (composizioneMezzi == null)
+                {
+                    throw new Exception("Errore caricamento elenco mezzi");
+                }
+            }
 
             Log.Debug("Fine elaborazione Lista Mezzi per Composizione Handler");
 

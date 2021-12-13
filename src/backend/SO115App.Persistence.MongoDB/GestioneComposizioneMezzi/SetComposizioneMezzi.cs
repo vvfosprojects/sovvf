@@ -15,7 +15,12 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
         {
             foreach (var mezzo in mezzi)
             {
-                _dbContext.ComposizioneMezziCollection.ReplaceOne(Builders<ComposizioneMezzi>.Filter.Eq(m => m.Id, mezzo.Id), mezzo);
+                var filter = Builders<ComposizioneMezzi>.Filter.Eq(s => s.Id, mezzo.Id);
+
+                if (_dbContext.ComposizioneMezziCollection.CountDocuments(filter) > 0)
+                    _dbContext.ComposizioneMezziCollection.ReplaceOne(filter, mezzo);
+                else
+                    _dbContext.ComposizioneMezziCollection.InsertOne(mezzo);
             }
         }
     }
