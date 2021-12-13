@@ -407,7 +407,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     onClearDirection(): void {
         this.clearDirection.emit();
-        this.centraMappa.emit();
     }
 
     mezziPageChange(pageMezzi: number): void {

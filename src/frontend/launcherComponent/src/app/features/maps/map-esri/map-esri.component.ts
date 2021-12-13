@@ -236,7 +236,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const center = [newPCenter.coordinateCentro.longitudine, newPCenter.coordinateCentro.latitudine];
             this.changeCenter(center).then(() => {
                 const zoom = newPCenter.zoom;
-                this.changeZoom(zoom).then();
+                this.changeZoom(zoom).then(() => {
+                });
             });
         }
 
@@ -820,8 +821,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         locatorTask.locationToAddress(params).then((response) => {
             console.log('locationToAddress response', response);
 
-            this.changeCenter([lon, lat]).then();
-            this.changeZoom(19).then();
+            this.changeCenter([lon, lat]).then(() => {
+                const zoom = 19;
+                this.changeZoom(zoom).then(() => {
+                });
+            });
 
             // Apro il modale con FormChiamata con lat, lon e address
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
@@ -854,8 +858,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             this.setContextMenuVisible(false);
         }
 
-        this.changeCenter([lon, lat]).then();
-        this.changeZoom(19).then();
+        this.changeCenter([lon, lat]).then(() => {
+            const zoom = 19;
+            this.changeZoom(zoom).then(() => {
+            });
+        });
 
         const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
             windowClass: 'modal-holder',
