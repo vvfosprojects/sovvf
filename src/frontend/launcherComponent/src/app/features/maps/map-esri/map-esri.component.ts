@@ -51,6 +51,7 @@ import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
+import { Partenza } from '../../../shared/model/partenza.model';
 
 @Component({
     selector: 'app-map-esri',
@@ -275,8 +276,18 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const coordinateCentro = richiestaSelezionata.localita.coordinate;
             const zoom = 16;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+            richiestaSelezionata.partenze.forEach((p: Partenza) => {
+                if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
+                    const origin = { lat: +p.partenza.mezzo.coordinateStrg[0], lng: +p.partenza.mezzo.coordinateStrg[1] };
+                    const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
+                    const genereMezzo = p.partenza.mezzo.genere;
+                    const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                    this.getRoute(direction);
+                }
+            });
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
+            this.clearDirection();
         }
 
         // Controllo il valore di "richiestaModifica"
