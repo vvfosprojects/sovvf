@@ -34,6 +34,7 @@ import { SetTriageSummary } from '../../../../../shared/store/actions/triage-sum
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
+import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
@@ -243,11 +244,11 @@ export class ComposizionePartenzaState {
     }
 
     @Action(TerminaComposizione)
-    terminaComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
-        const state = getState();
+    terminaComposizione({ dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
+        const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
         dispatch([
+            !idRichiestaSelezionata && new GetInitCentroMappa(),
             new ClearDirection(),
-            new GetInitCentroMappa(),
             new ClearComposizioneVeloce(),
             new ClearComposizioneAvanzata(),
             new ClearMezzoComposizione(),
