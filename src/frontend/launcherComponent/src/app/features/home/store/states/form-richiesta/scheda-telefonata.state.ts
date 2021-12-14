@@ -364,6 +364,11 @@ export class SchedaTelefonataState {
             }
 
             const competenze = state.competenze;
+            let codCompetenze: string[];
+            if (!competenze) {
+                codCompetenze = [f.codPrimaCompetenza, f.codSecondaCompetenza, f.codTerzaCompetenza];
+            }
+
             const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
             const tipiTerreno = [] as TipoTerreno[];
 
@@ -412,6 +417,7 @@ export class SchedaTelefonataState {
                     },
                 },
                 competenze,
+                codCompetenze,
                 f.complessita,
                 f.istantePresaInCarico,
                 f.istantePrimaAssegnazione,

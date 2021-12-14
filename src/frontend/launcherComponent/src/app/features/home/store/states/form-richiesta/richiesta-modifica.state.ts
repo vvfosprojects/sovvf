@@ -177,6 +177,7 @@ export class RichiestaModificaState {
                         },
                     },
                     competenze ? competenze : f.competenze,
+                    null,
                     f.complessita,
                     f.istantePresaInCarico,
                     f.istantePrimaAssegnazione,

@@ -22,6 +22,9 @@ export interface RichiestaForm {
     nominativo: string;
     telefono: string;
     competenze: Sede[];
+    codPrimaCompetenza?: string;
+    codSecondaCompetenza?: string;
+    codTerzaCompetenza?: string;
     complessita: Complessita;
     istantePresaInCarico: Date;
     istantePrimaAssegnazione: Date;
