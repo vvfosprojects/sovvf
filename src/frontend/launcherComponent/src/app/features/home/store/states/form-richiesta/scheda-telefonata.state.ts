@@ -292,7 +292,7 @@ export class SchedaTelefonataState {
                     new StopLoadingCompetenze()
                 ]);
             }
-        });
+        }, () => dispatch(new StopLoadingCompetenze()));
     }
 
     @Action(ClearCompetenze)

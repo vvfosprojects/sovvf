@@ -218,6 +218,19 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     clearFormDisconnection(): void {
         this.submitted = false;
+        this.store.dispatch([
+            new ClearClipboard(),
+            new DelChiamataMarker(this.idChiamata),
+            new ClearCompetenze(),
+            new ClearCountInterventiProssimita(),
+            new ClearInterventiProssimita(),
+            new ClearSchedaContattoTelefonata()
+        ]);
+        clearSummaryData(this.store);
+        clearPosTriageSummary(this.store);
+        clearTriageSummary(this.store);
+        clearTriageChiamataModalData(this.store);
+
         if (this.richiestaModifica) {
             this.store.dispatch([
                 new ChiudiRichiestaModifica()
@@ -225,17 +238,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         } else {
             this.store.dispatch(new ClearSchedaContattoTelefonata());
         }
-        this.store.dispatch([
-            new ClearClipboard(),
-            new DelChiamataMarker(this.idChiamata),
-            new ClearCompetenze(),
-            new ClearCountInterventiProssimita(),
-            new ClearInterventiProssimita()
-        ]);
-        clearSummaryData(this.store);
-        clearPosTriageSummary(this.store);
-        clearTriageSummary(this.store);
-        clearTriageChiamataModalData(this.store);
 
         this.reducerSchedaTelefonata('reset');
     }
@@ -254,6 +256,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             indirizzo: [null],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            competenze: [null, [Validators.required]],
             codSchedaContatto: [{ value: null, disabled: true }],
             piano: [null],
             palazzo: [null],
@@ -293,6 +296,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             indirizzo: this.richiestaModifica.localita.indirizzo,
             latitudine: this.richiestaModifica.localita.coordinate.latitudine,
             longitudine: this.richiestaModifica.localita.coordinate.longitudine,
+            competenze: this.richiestaModifica.competenze,
             codSchedaContatto: this.richiestaModifica.codiceSchedaNue,
             piano: this.richiestaModifica.localita.piano,
             palazzo: this.richiestaModifica.localita.palazzo,
@@ -311,10 +315,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             descrizione: this.richiestaModifica.descrizione,
             zoneEmergenza: this.richiestaModifica.zoneEmergenza,
             prioritaRichiesta: this.richiestaModifica.prioritaRichiesta,
-            stato: StatoRichiesta.Chiamata,
+            stato: this.richiestaModifica.stato,
             urgenza: this.richiestaModifica.chiamataUrgente,
             esercitazione: this.richiestaModifica.esercitazione,
-            noteNue: this.richiestaModifica.noteNue,
+            noteNue: this.richiestaModifica.noteNue
         });
 
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
@@ -526,11 +530,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     new Localita(coordinate ? coordinate : null, indirizzo),
                     null
                 );
-            } else {
-                this.chiamataMarker = null;
+                this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
             }
-
-            this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
 
             if (!indirizzoInserito) {
                 this.f.indirizzo.setValidators([]);
