@@ -1,5 +1,8 @@
 <div class="container-fluid py-2">
-    <div class="row" [ngClass]="heightCodaChiamate()" style="overflow-y: scroll">
+    <div *ngIf="!(dataGrafico$ | async)">
+        <app-risultati-alert [items]="!!(dataGrafico$ | async)" [loading]="!!(loading$ | async)"></app-risultati-alert>
+    </div>
+    <div *ngIf="(dataGrafico$ | async)" class="row" [ngClass]="heightCodaChiamate()" style="overflow-y: scroll">
         <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
         <div class="col-11 mx-auto">
             <div *ngIf="(loading$ | async) === false" class="mt-3">

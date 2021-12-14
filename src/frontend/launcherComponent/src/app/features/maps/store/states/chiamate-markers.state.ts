@@ -19,7 +19,6 @@ import {
     UpdateItemChiamataMarker
 } from '../actions/chiamate-markers.actions';
 import { Injectable } from '@angular/core';
-import { Sede } from '../../../../shared/model/sede.model';
 
 export interface ChiamateMarkersStateModel {
     chiamateMarkers: ChiamataMarker[];
@@ -59,7 +58,7 @@ export class ChiamateMarkersState {
     @Action(SetChiamataMarker)
     setChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: SetChiamataMarker): void {
         this.chiamateMarkerService.setChiamataInCorso(action.chiamataMarker, action.codCompetenze).subscribe(() => {
-        }, error => {
+        }, () => {
             dispatch([
                 new ClearIndirizzo(),
                 new GetInitCentroMappa()
@@ -70,7 +69,7 @@ export class ChiamateMarkersState {
     @Action(UpdateChiamataMarker)
     updateChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: UpdateChiamataMarker): void {
         this.chiamateMarkerService.updateChiamataInCorso(action.chiamataMarker, action.codCompetenze).subscribe(() => {
-        }, error => {
+        }, () => {
             dispatch([
                 new ClearIndirizzo(),
                 new GetInitCentroMappa()
