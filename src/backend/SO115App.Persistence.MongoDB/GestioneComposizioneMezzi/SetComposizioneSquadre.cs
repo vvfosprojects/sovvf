@@ -9,21 +9,34 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
     public class SetComposizioneSquadre : ISetComposizioneSquadre
     {
         private readonly DbContext _dbContext;
+
         public SetComposizioneSquadre(DbContext dbContext) => _dbContext = dbContext;
 
         public void Set(List<ComposizioneSquadra> squadre)
         {
-            foreach (var squadra in squadre)
+            var filter = Builders<ComposizioneSquadra>.Filter.Eq(s => s.Distaccamento.Codice, squadre[0].Distaccamento.Codice);
+
+            if (_dbContext.ComposizioneSquadreCollection.CountDocuments(filter) > 0)
             {
-                var filter = Builders<ComposizioneSquadra>.Filter.Eq(s => s.Codice, squadra.Codice);
-
-                squadra.Id = _dbContext.ComposizioneSquadreCollection.Find(filter).First().Id;
-
-                if (_dbContext.ComposizioneSquadreCollection.CountDocuments(filter) > 0)
-                    _dbContext.ComposizioneSquadreCollection.ReplaceOne(filter, squadra);
-                else
-                    _dbContext.ComposizioneSquadreCollection.InsertOne(squadra);  
+                _dbContext.ComposizioneSquadreCollection.DeleteMany(filter);
+                _dbContext.ComposizioneSquadreCollection.InsertMany(squadre);
             }
+            else
+                _dbContext.ComposizioneSquadreCollection.InsertMany(squadre);
+
+            //foreach (var squadra in squadre)
+            //{
+            //    var filter = Builders<ComposizioneSquadra>.Filter.Eq(s => s.Codice, squadra.Codice);
+
+            // var exist = _dbContext.ComposizioneSquadreCollection.Find(filter).FirstOrDefault();
+
+            // if (exist != null) squadra.Id = exist.Id;
+
+            //    if (_dbContext.ComposizioneSquadreCollection.CountDocuments(filter) > 0)
+            //        _dbContext.ComposizioneSquadreCollection.ReplaceOne(filter, squadra);
+            //    else
+            //        _dbContext.ComposizioneSquadreCollection.InsertOne(squadra);
+            //}
         }
     }
 }
