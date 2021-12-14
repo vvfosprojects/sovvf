@@ -25,6 +25,7 @@ import {
     ClearInterventiProssimita,
     ReducerSchedaTelefonata,
     SetCompetenze,
+    SetCompetenzeSuccess,
     SetRedirectComposizionePartenza,
     StartChiamata,
     StopLoadingDettagliTipologia
@@ -56,7 +57,7 @@ import { ClearPosTriageSummary, ClearTriageSummary, SetPosTriageSummary, SetSche
 import { getPrioritaTriage } from '../../helper/function-triage';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { roundToDecimal } from '../../helper/function-generiche';
+import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
 import { ClearSchedaContattoTelefonata } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { PosInterface } from '../../interface/pos.interface';
 import { makeIdChiamata } from '../../helper/function-richieste';
@@ -64,6 +65,9 @@ import { TipoTerreno } from '../../model/tipo-terreno';
 import { TipoTerrenoEnum } from '../../enum/tipo-terreno.enum';
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { SchedaTelefonataState } from '../../../features/home/store/states/form-richiesta/scheda-telefonata.state';
+import { TipologicheMezziState } from '../../../features/home/store/states/composizione-partenza/tipologiche-mezzi.state';
+import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
@@ -79,6 +83,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     @Select(SchedaTelefonataState.loadingDettagliTipologia) loadingDettagliTipologia$: Observable<boolean>;
     loadingDettagliTipologia: boolean;
+
+    @Select(TipologicheMezziState.tipologiche) tipologiche$: Observable<ListaTipologicheMezzi>;
+    distaccamenti: TipologicaComposizionePartenza[];
+    distaccamentiFiltered: TipologicaComposizionePartenza[];
 
     @Input() tipologie: Tipologia[];
     @Input() operatore: Utente;
@@ -135,21 +143,21 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     constructor(private formBuilder: FormBuilder,
                 private store: Store,
                 private modalService: NgbModal) {
-        this.store.dispatch(new StartChiamata());
-        this.richiestaForm = this.createAndGetForm();
-        this.f.indirizzo.setValidators([Validators.required]);
-    }
-
-    ngOnInit(): void {
-        // Ripulisco informazioni Interventi
+        this.getLoadingDettagliTipologia();
+        this.getDettagliTipologia();
         this.store.dispatch([
+            new StartChiamata(),
             new ClearCountInterventiProssimita(),
             new ClearInterventiProssimita()
         ]);
+        this.richiestaForm = this.createAndGetForm();
+        this.getTipologiche();
+    }
+
+    ngOnInit(): void {
         if (this.apertoFromMappa) {
             this.setIndirizzoFromMappa(this.lat, this.lon, this.address);
         }
-        this.getDettagliTipologia();
         if (this.richiestaModifica && this.richiestaModifica.codiceSchedaNue) {
             this.store.dispatch(new SetSchedaContattoTriageSummary(this.richiestaModifica.codiceSchedaNue));
         }
@@ -253,13 +261,13 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             istanteRicezioneRichiesta: [new Date(new Date().getTime() + OFFSET_SYNC_TIME[0])],
             nominativo: [null, [Validators.required]],
             telefono: [null, [Validators.required]], // Inserire se necessario => Validators.pattern('^(\\+?)[0-9]+$')
-            indirizzo: [null],
+            indirizzo: [null, [Validators.required]],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             competenze: [null],
-            codPrimaCompetenza: [null],
-            codSecondaCompetenza: [null],
-            codTerzaCompetenza: [null],
+            codPrimaCompetenza: [{ value: null, disabled: true }],
+            codSecondaCompetenza: [{ value: null, disabled: true }],
+            codTerzaCompetenza: [{ value: null, disabled: true }],
             codSchedaContatto: [{ value: null, disabled: true }],
             piano: [null],
             palazzo: [null],
@@ -389,7 +397,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         return !!(this.f.codTipologia.value);
     }
 
-    getDettagliTipologia(): void {
+    getLoadingDettagliTipologia(): void {
         this.subscription.add(
             this.loadingDettagliTipologia$.subscribe((loading: boolean) => {
                 if (loading) {
@@ -397,6 +405,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 }
             })
         );
+    }
+
+    getDettagliTipologia(): void {
         this.subscription.add(
             this.dettagliTipologia$.subscribe((dettagliTipologia: DettaglioTipologia[]) => {
                 if (dettagliTipologia) {
@@ -406,6 +417,21 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             })
         );
     }
+
+    getTipologiche(): void {
+        this.subscription.add(
+            this.tipologiche$.subscribe((tipologiche: ListaTipologicheMezzi) => {
+                if (tipologiche?.distaccamenti?.length) {
+                    this.distaccamenti = tipologiche.distaccamenti;
+                    this.distaccamentiFiltered = makeCopy(this.distaccamenti);
+                    if (this.f?.codPrimaCompetenza?.disabled) {
+                        this.f.codPrimaCompetenza.enable();
+                    }
+                }
+            })
+        );
+    }
+
 
     getTipologia(codTipologia: string): Tipologia {
         return this.tipologie?.filter((t: Tipologia) => t.codice === codTipologia)[0];
@@ -500,6 +526,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         } else if (!lat || !lng) {
             this.f.indirizzo.setValidators([Validators.required]);
         }
+        this.f.codPrimaCompetenza.patchValue(null);
+        this.f.codSecondaCompetenza.patchValue(null);
+        this.f.codTerzaCompetenza.patchValue(null);
     }
 
     onMsgIndirizzo(): string {
@@ -552,6 +581,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 new ClearInterventiProssimita()
             ]);
             this.f.indirizzo.setValidators([Validators.required]);
+            this.f.codPrimaCompetenza.patchValue(null);
+            this.f.codSecondaCompetenza.patchValue(null);
+            this.f.codTerzaCompetenza.patchValue(null);
         }
     }
 
@@ -582,6 +614,58 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
     } */
+
+    onSelectCompetenza(nCompetenza: number, codCompetenza: string): void {
+        switch (nCompetenza) {
+            case 1:
+                if (codCompetenza) {
+                    if (this.f.codSecondaCompetenza.disabled) {
+                        this.f.codSecondaCompetenza.enable();
+                    }
+                } else {
+                    if (this.f.codSecondaCompetenza.enabled) {
+                        this.f.codSecondaCompetenza.patchValue(null);
+                        this.f.codSecondaCompetenza.disable();
+                    }
+                    if (this.f.codTerzaCompetenza.enabled) {
+                        this.f.codTerzaCompetenza.patchValue(null);
+                        this.f.codTerzaCompetenza.disable();
+                    }
+                }
+                break;
+            case 2:
+                if (codCompetenza) {
+                    if (this.f.codTerzaCompetenza.disabled) {
+                        this.f.codTerzaCompetenza.enable();
+                    }
+                } else {
+                    if (this.f.codTerzaCompetenza.enabled) {
+                        this.f.codTerzaCompetenza.patchValue(null);
+                        this.f.codTerzaCompetenza.disable();
+                    }
+                }
+                break;
+        }
+        this.distaccamentiFiltered = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id !== this.f.codPrimaCompetenza.value && d.id !== this.f.codSecondaCompetenza.value && d.id !== this.f.codTerzaCompetenza.value);
+
+        if (codCompetenza) {
+            const codCompetenze = [];
+            if (this.f.codPrimaCompetenza?.value) {
+                codCompetenze.push(this.f.codPrimaCompetenza?.value);
+            }
+            if (this.f.codSecondaCompetenza?.value) {
+                codCompetenze.push(this.f.codSecondaCompetenza?.value);
+            }
+            if (this.f.codTerzaCompetenza?.value) {
+                codCompetenze.push(this.f.codTerzaCompetenza?.value);
+            }
+            const coordinate = {
+                latitudine: this.f.latitudine?.value,
+                longitudine: this.f.longitudine?.value
+            };
+            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
+        }
+    }
 
     openModalSchedeContatto(): void {
         let modalOptions: any;

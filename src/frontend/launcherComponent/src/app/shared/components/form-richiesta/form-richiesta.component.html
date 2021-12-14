@@ -177,7 +177,7 @@
                                           [class.is-invalid]="submitted && f.noteIndirizzo.errors"
                                           placeholder="Inserisci le Note Indirizzo"
                                           formControlName="noteIndirizzo"
-                                          style="height: 90px"
+                                          style="height: 77px"
                                           role="presentation">
                                 </textarea>
                             </div>
@@ -201,33 +201,49 @@
                         </div>
                     </ng-template>
                     <!-- INPUT COMPETENZE -->
-                    <ng-template [ngIf]="!loadingCompetenze && !competenze?.length && !richiestaModifica">
-                        <div class="form-group mb-1">
+                    <ng-template [ngIf]="!loadingCompetenze && competenze?.length === 0 && !richiestaModifica">
+                        <div class="form-group mb-2">
                             <label for="competenza_1"
                                    class="d-none">Competenza 1</label>
-                            <input id="competenza_1"
-                                   class="form-control required-field"
-                                   type="text"
-                                   placeholder="1ᵃ Competenza (Es. RM.1000)"
-                                   formControlName="codPrimaCompetenza">
+                            <ng-select id="competenza_1"
+                                       class="required-field"
+                                       [items]="distaccamentiFiltered"
+                                       bindLabel="descDistaccamento"
+                                       bindValue="id"
+                                       placeholder="Seleziona 1ᵃ Competenza"
+                                       formControlName="codPrimaCompetenza"
+                                       [searchable]="!f.codPrimaCompetenza.value"
+                                       [notFoundText]="'Nessun risultato'"
+                                       (ngModelChange)="onSelectCompetenza(1, $event)">
+                            </ng-select>
                         </div>
-                        <div class="form-group mb-1">
+                        <div class="form-group mb-2">
                             <label for="competenza_2"
                                    class="d-none">Competenza 2</label>
-                            <input id="competenza_2"
-                                   class="form-control required-field"
-                                   type="text"
-                                   placeholder="2ᵃ Competenza (Es. RM.1000)"
-                                   formControlName="codSecondaCompetenza">
+                            <ng-select id="competenza_2"
+                                       [items]="distaccamentiFiltered"
+                                       bindLabel="descDistaccamento"
+                                       bindValue="id"
+                                       placeholder="Seleziona 2ᵃ Competenza"
+                                       formControlName="codSecondaCompetenza"
+                                       [searchable]="!f.codSecondaCompetenza.value"
+                                       [notFoundText]="'Nessun risultato'"
+                                       (ngModelChange)="onSelectCompetenza(2, $event)">
+                            </ng-select>
                         </div>
-                        <div class="form-group mb-1">
+                        <div class="form-group mb-2">
                             <label for="competenza_3"
                                    class="d-none">Competenza 3</label>
-                            <input id="competenza_3"
-                                   class="form-control required-field"
-                                   type="text"
-                                   placeholder="3ᵃ Competenza (Es. RM.1000)"
-                                   formControlName="codTerzaCompetenza">
+                            <ng-select id="competenza_3"
+                                       [items]="distaccamentiFiltered"
+                                       bindLabel="descDistaccamento"
+                                       bindValue="id"
+                                       placeholder="Seleziona 3ᵃ Competenza"
+                                       formControlName="codTerzaCompetenza"
+                                       [searchable]="!f.codTerzaCompetenza.value"
+                                       [notFoundText]="'Nessun risultato'"
+                                       (ngModelChange)="onSelectCompetenza(3, $event)">
+                            </ng-select>
                         </div>
                     </ng-template>
                     <!-- COMPETENZE RICHIESTA -->
