@@ -85,7 +85,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             var filtri = _filtriHandler.Get();
 
-            filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti();
+            filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodi);
 
             var listaChiamateInCorso = _listaChiamateInCorsoMarkerHandler.Get(pinNodi);
             var ListaZoneEmergenza = _getZoneEmergenza.GetAll();
