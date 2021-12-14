@@ -41,6 +41,7 @@ namespace SO115App.API.Controllers
         ///   Handler del servizio
         /// </summary>
         private readonly ICommandHandler<AddInterventoCommand> _Addhandler;
+
         private readonly ICommandHandler<AddInterventoFromSurvey123Command> _addFromSurvey123Handler;
         private readonly ICommandHandler<UpDateInterventoCommand> _Updatehandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
@@ -69,6 +70,7 @@ namespace SO115App.API.Controllers
 
             var command = new AddInterventoCommand()
             {
+                CodCompetenze = chiamata.CodCompetenze,
                 Chiamata = chiamata,
                 CodiceSede = codiceSede.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)[0],
                 CodUtente = idUtente
