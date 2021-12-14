@@ -497,8 +497,14 @@
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
                                 ngbTooltip="Metti In Coda"
                                 placement="top">
-                            Conferma
+                            Conferma ed Esci
                         </button>
+                        <ng-container *ngIf="!apertoFromMappa">
+                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge btn-creazione"
+                                    (click)="onAnnullaChiamata()">
+                                Annulla
+                            </button>
+                        </ng-container>
                         <ng-container *ngIf="!apertoFromMappa">
                             <button class="btn btn-outline-secondary btn-no-hover btn-xlarge btn-creazione"
                                     type="button"
@@ -514,12 +520,6 @@
                                     (click)="onResetChiamata()">
                                 <i class="fas fa-recycle mr-1"></i>
                                 Ripulisci Campi
-                            </button>
-                        </ng-container>
-                        <ng-container *ngIf="!apertoFromMappa">
-                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge btn-creazione"
-                                    (click)="onAnnullaChiamata()">
-                                Torna Indietro
                             </button>
                         </ng-container>
                         <ng-container *ngIf="apertoFromMappa">
