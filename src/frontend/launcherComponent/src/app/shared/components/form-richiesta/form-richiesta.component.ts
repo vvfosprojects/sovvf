@@ -315,10 +315,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             descrizione: this.richiestaModifica.descrizione,
             zoneEmergenza: this.richiestaModifica.zoneEmergenza,
             prioritaRichiesta: this.richiestaModifica.prioritaRichiesta,
-            stato: StatoRichiesta.Chiamata,
+            stato: this.richiestaModifica.stato,
             urgenza: this.richiestaModifica.chiamataUrgente,
             esercitazione: this.richiestaModifica.esercitazione,
-            noteNue: this.richiestaModifica.noteNue,
+            noteNue: this.richiestaModifica.noteNue
         });
 
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
