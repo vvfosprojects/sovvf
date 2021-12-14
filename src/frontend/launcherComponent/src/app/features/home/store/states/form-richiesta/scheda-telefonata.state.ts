@@ -378,7 +378,7 @@ export class SchedaTelefonataState {
 
             const competenze = state.competenze;
             let codCompetenze: string[];
-            if (!competenze) {
+            if (competenze?.length <= 0) {
                 codCompetenze = [f.codPrimaCompetenza, f.codSecondaCompetenza, f.codTerzaCompetenza];
             }
 
