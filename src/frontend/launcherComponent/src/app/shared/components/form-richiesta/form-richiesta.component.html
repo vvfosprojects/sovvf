@@ -176,6 +176,15 @@
                                 Recupero Competenze
                             </div>
                         </ng-template>
+                        <!-- COMPETENZE RICHIESTA -->
+                        <ng-template [ngIf]="!loadingCompetenze && !competenze?.length && richiestaModifica?.competenze?.length">
+                            <div class="float-left"
+                                 style="font-size: xx-large">
+                                <app-competenza *ngFor="let c of richiestaModifica?.competenze; let i = index"
+                                                [competenza]="c" [i]="i">
+                                </app-competenza>
+                            </div>
+                        </ng-template>
                     </div>
                 </div>
             </div>
@@ -537,7 +546,7 @@
                             Annulla Modifiche
                         </button>
                         <button class="btn btn-success btn-no-hover btn-xlarge btn-modifica"
-                                [disabled]="loadingCompetenze || !competenze?.length || formIsInvalid()"
+                                [disabled]="!richiestaModifica?.competenze?.length || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
                                 ngbTooltip="Conferma Modifica"
                                 placement="top">
