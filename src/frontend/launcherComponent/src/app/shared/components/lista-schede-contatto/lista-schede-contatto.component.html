@@ -19,7 +19,7 @@
             <ng-template ngbTabContent>
                 <div class="row">
                     <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
-                        <h6 class="text-center">Non ci sono Schede Contatto per Competenza</h6>
+                        <app-risultati-alert [items]="false"></app-risultati-alert>
                     </div>
                 </div>
             </ng-template>
@@ -39,7 +39,7 @@
             <ng-template ngbTabContent>
                 <div class="row">
                     <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
-                        <h6 class="text-center">Non ci sono Schede Contatto Differibili</h6>
+                        <app-risultati-alert [items]="false"></app-risultati-alert>
                     </div>
                 </div>
             </ng-template>
@@ -60,7 +60,7 @@
             <ng-template ngbTabContent>
                 <div class="row">
                     <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
-                        <h6 class="text-center">Non ci sono Schede Contatto per Conoscenza</h6>
+                        <app-risultati-alert [items]="false"></app-risultati-alert>
                     </div>
                 </div>
             </ng-template>
@@ -79,7 +79,7 @@
             <ng-template ngbTabContent>
                 <div class="row">
                     <div *ngIf="schedeContatto.length === 0" class="col-12 mt-4">
-                        <h6 class="text-center">Non ci sono Schede Contatto</h6>
+                        <app-risultati-alert [items]="false"></app-risultati-alert>
                     </div>
                 </div>
             </ng-template>

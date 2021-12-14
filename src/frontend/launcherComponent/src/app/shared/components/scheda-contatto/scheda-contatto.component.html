@@ -1,9 +1,10 @@
 <ng-container *ngIf="isVisible()">
-    <li class="cursor-pointer border-top border-bottom font-xxlarge py-1"
+    <li class="border-top border-bottom font-xxlarge py-1"
+        [class.cursor-pointer]="!editSchedaContatto"
         [ngClass]="cardClasses(scheda.codiceScheda)"
         (mouseenter)="hoverIn.emit(scheda.codiceScheda)"
         (mouseleave)="hoverOut.emit()"
-        (click)="dettaglioScheda.emit(scheda.codiceScheda)">
+        (click)="onDettaglioScheda(scheda.codiceScheda)">
         <div class="row position-relative">
             <div class="col-1">
                 <button *ngIf="scheda.collegate && scheda.collegate.length > 0"
@@ -29,7 +30,7 @@
                 {{ scheda.localita?.indirizzo ? scheda.localita?.indirizzo : 'Indirizzo non specificato -' }}
                 <span [class.font-weight-bolder]="!scheda.localita?.indirizzo">{{ 'lat: ' + scheda.localita?.coordinate?.latitudine + ' lon: ' + scheda.localita?.coordinate?.longitudine }}</span>
             </div>
-            <div class="col-1 px-1 py-1 text-right cursor-pointer">
+            <div class="col-1 px-1 py-1 text-right">
                 {{scheda.operatoreChiamata?.codicePostazioneOperatore || 'N/D'}}
                 <i class="fas fa-desktop ml-1" ngbTooltip="Postazione Operatore"></i>
             </div>
@@ -53,11 +54,12 @@
                     <div *ngIf="editSchedaContatto && !this.scheda.gestita && !this.scheda.collegate?.length"
                          class="float-right text-right">
                         <input type="checkbox"
+                               class="cursor-pointer"
                                appClickStopPropagation
                                [id]="getCheckboxState(scheda).id"
                                [checked]="getCheckboxState(scheda).status"
                                [disabled]="getCheckboxState(scheda)?.disabled"
-                               (click)="onEditSchedaSelezionata(getCheckboxState(scheda))"/>
+                               (click)="onEditSchedaSelezionata(getCheckboxState(scheda))">
                         <label [for]="getCheckboxState(scheda).id"></label>
                     </div>
                     <ng-container *ngIf="editSchedaContatto && !this.scheda.gestita && this.scheda.collegate?.length">

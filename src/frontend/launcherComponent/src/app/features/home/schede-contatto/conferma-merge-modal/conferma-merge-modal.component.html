@@ -11,7 +11,10 @@
     <div *ngFor="let schedaContatto of schedeContatto">
         <ul class="my-2 list-unstyled">
             <app-scheda-contatto [scheda]="schedaContatto"
-                                 (dettaglioScheda)="onDettaglioScheda($event)"></app-scheda-contatto>
+                                 [disableCreaRichiesta]="true"
+                                 [disableGestisci]="true"
+                                 (dettaglioScheda)="onDettaglioScheda($event)">
+            </app-scheda-contatto>
         </ul>
     </div>
 </div>

@@ -15,6 +15,7 @@ import {
     ReducerSchedaTelefonata,
     ResetChiamata,
     SetCompetenze,
+    SetCompetenzeSuccess,
     SetCountInterventiProssimita,
     SetInterventiProssimita,
     SetRedirectComposizionePartenza,
@@ -197,7 +198,6 @@ export class SchedaTelefonataState {
 
     @Action(ReducerSchedaTelefonata)
     reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
-
         const state = getState();
         const coordinate = action.schedaTelefonata?.markerChiamata?.localita?.coordinate ? action.schedaTelefonata.markerChiamata.localita.coordinate : {
             latitudine: state.richiestaForm?.model?.latitudine,
@@ -273,15 +273,8 @@ export class SchedaTelefonataState {
                 const codCompetenze = competenze.map((c: Sede) => {
                     return c.codice;
                 });
-                dispatch([
-                    new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
-                    new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
-                    new StopLoadingCompetenze()
-                ]);
 
-                if (action.markerChiamata) {
-                    dispatch(new MarkerChiamata(action.markerChiamata, codCompetenze));
-                }
+                dispatch(new SetCompetenzeSuccess(action.coordinate, action.indirizzo, codCompetenze, action.markerChiamata));
 
                 patchState({
                     competenze
@@ -291,8 +284,29 @@ export class SchedaTelefonataState {
                     new ClearCompetenze(),
                     new StopLoadingCompetenze()
                 ]);
+                patchState({
+                    competenze: []
+                });
             }
+        }, () => {
+            dispatch(new StopLoadingCompetenze());
+            patchState({
+                competenze: []
+            });
         });
+    }
+
+    @Action(SetCompetenzeSuccess)
+    setCompetenzeSuccess({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenzeSuccess): void {
+        dispatch([
+            new SetCountInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze),
+            new SetInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze),
+            new StopLoadingCompetenze()
+        ]);
+
+        if (action.markerChiamata) {
+            dispatch(new MarkerChiamata(action.markerChiamata, action.codCompetenze));
+        }
     }
 
     @Action(ClearCompetenze)
@@ -358,12 +372,16 @@ export class SchedaTelefonataState {
         let tipologia: Tipologia;
 
         if (f) {
-
             if (f.codTipologia) {
                 tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
             }
 
             const competenze = state.competenze;
+            let codCompetenze: string[];
+            if (!competenze) {
+                codCompetenze = [f.codPrimaCompetenza, f.codSecondaCompetenza, f.codTerzaCompetenza];
+            }
+
             const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
             const tipiTerreno = [] as TipoTerreno[];
 
@@ -412,6 +430,7 @@ export class SchedaTelefonataState {
                     },
                 },
                 competenze,
+                codCompetenze,
                 f.complessita,
                 f.istantePresaInCarico,
                 f.istantePrimaAssegnazione,

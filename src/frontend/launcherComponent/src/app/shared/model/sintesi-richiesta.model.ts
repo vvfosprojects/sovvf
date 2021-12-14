@@ -78,6 +78,10 @@ export class SintesiRichiesta {
          */
         public competenze: Sede[],
         /**
+         * codici delle sedi di prima, seconda e terza competenza
+         */
+        public codCompetenze: string[],
+        /**
          * indice di complessità dell'intervento (per es. numero di eventi-richiesta-richiesta collegati alla richiesta)
          */
         public complessita: Complessita,
