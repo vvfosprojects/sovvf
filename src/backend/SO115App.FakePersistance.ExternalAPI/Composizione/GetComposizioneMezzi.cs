@@ -17,6 +17,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -101,6 +102,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     var coord = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
 
+                    //double latitudine;
+                    //double.TryParse(m.Coordinate.Latitudine, NumberStyles.Any, CultureInfo.InvariantCulture, out latitudine);
+
                     var mc = new ComposizioneMezzi()
                     {
                         //Id = m.Codice,
@@ -108,7 +112,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,
                         ListaSquadre = lstSquadreInRientro.Result,
-                        Km = (new GeoCoordinate(m.Coordinate.Latitudine, m.Coordinate.Longitudine)
+                        Km = (new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1]))
                             .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
                             / 1000).ToString("N1"),
                         TempoPercorrenza = null
@@ -124,7 +128,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         {
                             case Costanti.MezzoInViaggio:
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                                mc.Km = (new GeoCoordinate(m.Coordinate.Latitudine, m.Coordinate.Longitudine)
+                                mc.Km = (new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1]))
                                     .GetDistanceTo(new GeoCoordinate(double.Parse(coord[0]), double.Parse(coord[1])))
                                     / 1000).ToString("N1");
                                 break;
