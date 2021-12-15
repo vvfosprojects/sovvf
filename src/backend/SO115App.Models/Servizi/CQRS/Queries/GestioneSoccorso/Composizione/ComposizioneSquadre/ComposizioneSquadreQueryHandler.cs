@@ -63,16 +63,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 if (composizioneSquadre?.Count > 0)
                     _setSquadreDB.Set(composizioneSquadre);
-                else
-                    composizioneSquadre = _getSquadreDB.Get();
 
                 if (composizioneSquadre?.Count == 0)
-                    throw new Exception(msgErroreCaricamento);
+                    composizioneSquadre = _getSquadreDB.Get();
             }
             catch
             {
-                composizioneSquadre = _getSquadreDB.Get();
-
                 if (composizioneSquadre?.Count == 0)
                     throw new Exception(msgErroreCaricamento);
             }
