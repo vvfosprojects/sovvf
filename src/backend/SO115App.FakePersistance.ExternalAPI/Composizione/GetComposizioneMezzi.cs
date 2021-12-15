@@ -99,8 +99,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     m.PreAccoppiato = lstSqPreacc.Result?.Count > 0;
                     m.IdRichiesta = statiOperativiMezzi.FirstOrDefault(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
 
-                    var c1 = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace('.', ',')).ToArray();
-                    var c3 = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
+                    var c1 = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
 
                     var mc = new ComposizioneMezzi()
                     {
@@ -109,10 +108,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,
                         ListaSquadre = lstSquadreInRientro.Result,
-                        Km = $"{c1[0]} - {c1[1]} / {double.Parse(c1[0])}-{double.Parse(c1[1])} / {double.Parse(c3[0])}-{double.Parse(c3[1])}",
-                        //Km = (new GeoCoordinate(m.Coordinate.Latitudine, m.Coordinate.Longitudine)
-                        //    .GetDistanceTo(new GeoCoordinate(double.Parse(c1[0]), double.Parse(c1[1])))
-                        //    / 1000).ToString("N1"),
+                        Km = (new GeoCoordinate(m.Coordinate.Latitudine, m.Coordinate.Longitudine)
+                            .GetDistanceTo(new GeoCoordinate(double.Parse(c1[0]), double.Parse(c1[1])))
+                            / 1000).ToString("N1"),
                         TempoPercorrenza = null
                     };
 
@@ -126,10 +124,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         {
                             case Costanti.MezzoInViaggio:
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                                var c2 = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace('.', ',')).ToArray();
-                                //mc.Km = _geofleet.Get(mc.Mezzo.Codice).Result?.Localizzazione
-                                //    .GetDistanceTo(new Localizzazione(double.Parse(c2[0]), double.Parse(c2[1])))
-                                //    .ToString("N1");
+                                var c2 = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
+                                mc.Km = _geofleet.Get(mc.Mezzo.Codice).Result?.Localizzazione
+                                    .GetDistanceTo(new Localizzazione(double.Parse(c2[0]), double.Parse(c2[1])))
+                                    .ToString("N1");
                                 break;
 
                             case Costanti.MezzoSulPosto:
