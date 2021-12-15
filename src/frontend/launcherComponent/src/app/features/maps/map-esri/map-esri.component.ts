@@ -55,6 +55,7 @@ import { Partenza } from '../../../shared/model/partenza.model';
 import { MezziInServizioState } from '../../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { Coordinate } from '../../../shared/model/coordinate.model';
+import { ViewComponentState } from '../../home/store/states/view/view.state';
 
 @Component({
     selector: 'app-map-esri',
@@ -80,6 +81,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() mezziInServizioStatus: boolean;
     @Input() idMezzoInServizioSelezionato: string;
     @Input() areaMappaLoading: boolean;
+    @Input() richiesteStatus: boolean;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
@@ -345,6 +347,16 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             }
         }
 
+        // Controllo se la feature "Chiamate/Interventi" viene attivata
+        if (changes?.richiesteStatus?.currentValue) {
+            const richiesteActive = changes?.richiesteStatus?.currentValue;
+            switch (richiesteActive) {
+                case true:
+                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
+                    break;
+            }
+        }
+
         // Controllo se la feature "Schede Contatto" viene attivata
         if (changes?.schedeContattoStatus?.currentValue !== null) {
             const schedeContattoActive = changes?.schedeContattoStatus?.currentValue;
@@ -381,7 +393,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
                     break;
                 case false:
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
+                    const backupView = this.store.selectSnapshot(ViewComponentState.colorButton)?.backupViewComponent?.view;
+                    if (backupView && backupView.mezziInServizio && backupView.mezziInServizio.active) {
+                        this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                    } else {
+                        this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
+                    }
                     break;
             }
         }

@@ -53,6 +53,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
+    mapsIsActive: boolean;
 
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
@@ -84,6 +86,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.getTurnoCalendario();
         this.getTurnoExtra();
         this.getUrl();
+        this.getMapsIsActive();
     }
 
     ngOnInit(): void {
@@ -117,6 +120,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     setTime(): void {
         this.time = new Date();
+    }
+
+    getMapsIsActive(): void {
+        this.subscription.add(
+            this.mapsIsActive$.subscribe((mapsIsActive: boolean) => {
+                this.mapsIsActive = mapsIsActive;
+            })
+        );
     }
 
     getTurnoCalendario(): void {
@@ -183,7 +194,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     onChiamateInterventi(): void {
         const codaChiamateStatus = this.store.selectSnapshot(ViewComponentState.codaChiamateStatus);
-        const mezziInServizioStatus = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
+        const mezziInServizioStatus = (this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus) || (this.colorButtonView?.backupViewComponent?.view?.mezziInServizio?.active && this.mapsIsActive));
         const schedeContattoStatus = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
         const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
         const modificaRichiestaStatus = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);

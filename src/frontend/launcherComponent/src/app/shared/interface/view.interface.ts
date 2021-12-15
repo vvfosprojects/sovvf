@@ -27,6 +27,7 @@ export interface Grids {
 export interface ViewComponentStateModel {
     view: ViewLayouts;
     column: Grids;
+    backupViewComponent?: ViewComponentStateModel;
 }
 
 export interface ViewInterfaceMaps {
@@ -36,4 +37,5 @@ export interface ViewInterfaceMaps {
 export interface ViewInterfaceButton {
     chiamata?: string;
     buttonView?: string[];
+    backupViewComponent?: ViewComponentStateModel;
 }
