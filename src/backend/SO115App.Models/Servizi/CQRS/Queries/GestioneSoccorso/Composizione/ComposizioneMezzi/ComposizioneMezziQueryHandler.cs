@@ -61,14 +61,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 composizioneMezzi = _iGetComposizioneMezzi.Get(query);
 
-                if (composizioneMezzi?.Count > 0)
+                if (composizioneMezzi != null && composizioneMezzi.Count > 0)
                     _setMezzi.Set(composizioneMezzi);
 
-                if (composizioneMezzi?.Count == 0)          
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)          
                     composizioneMezzi = _getMezzi.Get();
             }
             catch
             {
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
+                    composizioneMezzi = _getMezzi.Get();
+
                 if (composizioneMezzi?.Count == 0)
                     throw new Exception(msgErroreCaricamento);
             }
