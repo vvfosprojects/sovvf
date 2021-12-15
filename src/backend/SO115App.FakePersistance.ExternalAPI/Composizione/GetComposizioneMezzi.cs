@@ -108,7 +108,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,
                         ListaSquadre = lstSquadreInRientro.Result,
-                        Km = $"{c1[0]} - {c1[1]}",
+                        Km = $"{c1[0]} - {c1[1]} / {double.Parse(c1[0])}-{double.Parse(c1[1])}",
                         //Km = (new GeoCoordinate(m.Coordinate.Latitudine, m.Coordinate.Longitudine)
                         //    .GetDistanceTo(new GeoCoordinate(double.Parse(c1[0]), double.Parse(c1[1])))
                         //    / 1000).ToString("N1"),
@@ -163,7 +163,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 return ricerca && distaccamento && genere && stato;
             })).ContinueWith(lstMezzi =>//ORDINAMENTO
             {
-                return lstMezzi.Result 
+                return lstMezzi.Result
                 .OrderBy(mezzo => (!query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => (!query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
