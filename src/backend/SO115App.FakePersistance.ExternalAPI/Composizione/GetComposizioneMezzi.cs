@@ -108,8 +108,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,
                         ListaSquadre = lstSquadreInRientro.Result,
-                        Km = (new GeoCoordinate(double.Parse(m.Coordinate.Latitudine.ToString().Replace(',', '.')), double.Parse(m.Coordinate.Longitudine.ToString().Replace(',', '.')))
-                            .GetDistanceTo(new GeoCoordinate(double.Parse(coord[0]), double.Parse(coord[1])))
+                        Km = (new GeoCoordinate(m.Coordinate.Latitudine, m.Coordinate.Longitudine)
+                            .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
                             / 1000).ToString("N1"),
                         TempoPercorrenza = null
                     };
@@ -124,7 +124,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         {
                             case Costanti.MezzoInViaggio:
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                                mc.Km = (new GeoCoordinate(double.Parse(m.Coordinate.Latitudine.ToString().Replace(',', '.')), double.Parse(m.Coordinate.Longitudine.ToString().Replace(',', '.')))
+                                mc.Km = (new GeoCoordinate(m.Coordinate.Latitudine, m.Coordinate.Longitudine)
                                     .GetDistanceTo(new GeoCoordinate(double.Parse(coord[0]), double.Parse(coord[1])))
                                     / 1000).ToString("N1");
                                 break;
