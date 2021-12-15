@@ -77,7 +77,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 {
                     e = e.GetBaseException();
 
-                    var x = new Exception($"{msgErroreCaricamento}: {e.Message} \n\nStackTrace: {e.StackTrace}");
+                    var coordinate = query.Richiesta.Localita.Coordinate;
+
+                    var x = new Exception($"Coordinate: lat {coordinate?.Latitudine}, lon {coordinate?.Longitudine} - {msgErroreCaricamento}: {e.Message}");
 
                     throw x;
                 }
