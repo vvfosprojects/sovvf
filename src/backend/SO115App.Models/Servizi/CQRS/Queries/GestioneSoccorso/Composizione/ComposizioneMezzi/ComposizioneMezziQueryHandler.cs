@@ -24,6 +24,7 @@ using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
@@ -64,16 +65,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if (composizioneMezzi != null && composizioneMezzi.Count > 0)
                     _setMezzi.Set(composizioneMezzi);
 
-                if (composizioneMezzi == null || composizioneMezzi.Count == 0)          
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
                     composizioneMezzi = _getMezzi.Get();
             }
-            catch
+            catch (Exception e)
             {
                 if (composizioneMezzi == null || composizioneMezzi.Count == 0)
                     composizioneMezzi = _getMezzi.Get();
 
                 if (composizioneMezzi == null || composizioneMezzi.Count == 0)
-                    throw new Exception(msgErroreCaricamento);
+                {
+                    e = e.GetBaseException();
+
+                    var x = new Exception($"{msgErroreCaricamento}: {e.Message} \n\nStackTrace: {e.StackTrace}");
+
+                    throw x;
+                }
             }
 
             Log.Debug("Fine elaborazione Lista Mezzi per Composizione Handler");
