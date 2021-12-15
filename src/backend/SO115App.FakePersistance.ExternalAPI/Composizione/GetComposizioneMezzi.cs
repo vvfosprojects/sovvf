@@ -100,6 +100,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     m.IdRichiesta = statiOperativiMezzi.FirstOrDefault(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
 
                     var c1 = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace('.', ',')).ToArray();
+                    var c3 = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
 
                     var mc = new ComposizioneMezzi()
                     {
@@ -108,7 +109,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,
                         ListaSquadre = lstSquadreInRientro.Result,
-                        Km = $"{c1[0]} - {c1[1]} / {double.Parse(c1[0])}-{double.Parse(c1[1])}",
+                        Km = $"{c1[0]} - {c1[1]} / {double.Parse(c1[0])}-{double.Parse(c1[1])} / {double.Parse(c3[0])}-{double.Parse(c3[1])}",
                         //Km = (new GeoCoordinate(m.Coordinate.Latitudine, m.Coordinate.Longitudine)
                         //    .GetDistanceTo(new GeoCoordinate(double.Parse(c1[0]), double.Parse(c1[1])))
                         //    / 1000).ToString("N1"),
