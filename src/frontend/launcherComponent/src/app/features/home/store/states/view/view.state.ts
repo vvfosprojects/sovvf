@@ -40,6 +40,7 @@ import { ComposizionePartenzaState } from '../composizione-partenza/composizione
 import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
 import { Injectable } from '@angular/core';
+import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -164,9 +165,12 @@ export class ViewComponentState {
     }
 
     @Action(ChangeView)
-    changeView({ getState, patchState }: StateContext<ViewComponentStateModel>, action: ChangeView): void {
+    changeView({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ChangeView): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
+        if (action.modalita === AppFeatures.Mappa) {
+            dispatch(new SaveView(makeCopy(state)));
+        }
         const newState = updateView(stateDefault, action);
         patchState({
             ...state,
@@ -324,7 +328,7 @@ export class ViewComponentState {
         /**
          * se lo stato dei mezzi in servizio non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
          */
-        if (!state.view.mezziInServizio.active) {
+        if (!state.view.mezziInServizio.active && !(state.view?.mappa?.active && state.backupViewComponent?.view?.mezziInServizio?.active)) {
             dispatch([
                 new ClearDirection(),
                 new GetInitCentroMappa(),
