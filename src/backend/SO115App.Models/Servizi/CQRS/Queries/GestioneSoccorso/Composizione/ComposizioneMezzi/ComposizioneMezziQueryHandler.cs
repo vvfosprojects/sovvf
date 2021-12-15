@@ -18,13 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using Microsoft.Extensions.Caching.Memory;
 using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
@@ -37,14 +37,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetComposizioneMezziDB _getMezzi;
 
         private readonly IGetComposizioneMezzi _iGetComposizioneMezzi;
-        private readonly IMemoryCache _cache;
 
-        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi, ISetComposizioneMezzi setMezzi, IGetComposizioneMezziDB getMezzi, IMemoryCache cache)
+        private const string msgErroreCaricamento = "Errore caricamento elenco mezzi";
+
+        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi, ISetComposizioneMezzi setMezzi, IGetComposizioneMezziDB getMezzi)
         {
             _iGetComposizioneMezzi = iGetComposizioneMezzi;
             _setMezzi = setMezzi;
             _getMezzi = getMezzi;
-            _cache = cache;
         }
 
         /// <summary>
@@ -56,30 +56,32 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Mezzi per Composizione Handler");
 
-            List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = null; 
+            List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = null;
 
             try
             {
-                //if (!_cache.TryGetValue("ComposizioneMezzi", out composizioneMezzi))
-                //{
                 composizioneMezzi = _iGetComposizioneMezzi.Get(query);
 
-                //_cache.Set("ComposizioneMezzi", composizioneMezzi, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(30)));
-
+                if (composizioneMezzi != null && composizioneMezzi.Count > 0)
                     _setMezzi.Set(composizioneMezzi);
-                //}
-                //else
-                //{
-                //    composizioneMezzi = _getMezzi.Get();
-                //}
-            }
-            catch
-            {
-                composizioneMezzi = _getMezzi.Get();
 
-                if (composizioneMezzi == null)
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
+                    composizioneMezzi = _getMezzi.Get();
+            }
+            catch (Exception e)
+            {
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
+                    composizioneMezzi = _getMezzi.Get();
+
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
                 {
-                    throw new Exception("Errore caricamento elenco mezzi");
+                    e = e.GetBaseException();
+
+                    var coordinate = query.Richiesta.Localita.Coordinate;
+
+                    var x = new Exception($"Coordinate: lat {coordinate?.Latitudine}, lon {coordinate?.Longitudine} - {msgErroreCaricamento}: {e.Message}");
+
+                    throw x;
                 }
             }
 
