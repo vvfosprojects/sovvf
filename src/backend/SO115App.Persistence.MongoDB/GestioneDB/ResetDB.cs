@@ -31,6 +31,15 @@ namespace SO115App.Persistence.MongoDB.GestioneDB
                 if (!_dbContext.DeleteDB("trasferimentiChiamate"))
                     return false;
 
+                if (!_dbContext.DeleteDB("composizioneMezzi"))
+                    return false;
+
+                if (!_dbContext.DeleteDB("composizioneSquadre"))
+                    return false;
+
+                if (!_dbContext.DeleteDB("unitaOperative"))
+                    return false;
+
                 return true;
             }
             catch
