@@ -21,11 +21,12 @@ import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { SetAreaMappa } from './store/actions/area-mappa.actions';
 import { RouterState } from '@ngxs/router-plugin';
 import { RichiestaSelezionataState } from '../home/store/states/richieste/richiesta-selezionata.state';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import { RichiestaModificaState } from '../home/store/states/form-richiesta/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { RichiestaGestioneState } from '../home/store/states/richieste/richiesta-gestione.state';
 import { MezziInServizioState } from '../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { SchedeContattoState } from '../home/store/states/schede-contatto/schede-contatto.state';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({
     selector: 'app-maps',
@@ -53,12 +54,16 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     // Richiesta Gestione
     @Select(RichiestaGestioneState.richiestaGestione) richiestaGestione$: Observable<SintesiRichiesta>;
-    // Richiesta Gestione
+    // Richiesta Composizione
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    // Richieste Status
+    @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
     // Filtri Richieste Selezionati
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     // Status "Schede Contatto"
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    // Scheda Contatto Selezionata
+    @Select(SchedeContattoState.codiceSchedaContattoSelezionata) idSchedaContattoSelezionata$: Observable<string>;
     // Status "Composizione Partenza"
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     // Status "Mezzi in Servizio"

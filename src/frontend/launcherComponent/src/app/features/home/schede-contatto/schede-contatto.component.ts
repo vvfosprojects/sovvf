@@ -4,11 +4,13 @@ import {
     ClearFiltriSchedeContatto,
     ClearListaSchedeContatto,
     ClearSchedaContattoHover,
+    ClearSchedaContattoSelezionata,
     GetListaSchedeContatto,
     OpenDetailSC,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
     SetSchedaContattoHover,
+    SetSchedaContattoSelezionata,
     SetSchedaContattoTelefonata,
     SetTabAttivo,
     ToggleCollapsed,
@@ -58,6 +60,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     @Select(SchedeContattoState.codiceSchedaContattoHover) codiceSchedaContattoHover$: Observable<string>;
     codiceSchedaContattoHover: string;
+    @Select(SchedeContattoState.codiceSchedaContattoSelezionata) codiceSchedaContattoSelezionata$: Observable<string>;
+    codiceSchedaContattoSelezionata: string;
     @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
     contatoriSchedeContatto: ContatoriSchedeContatto;
     @Select(SchedeContattoState.rangeVisualizzazione) rangeVisualizzazione$: Observable<RangeSchedeContattoEnum>;
@@ -82,6 +86,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.getRicerca();
         this.getSchedeContatto();
         this.getSchedeContattoHover();
+        this.getSchedeContattoSelezionata();
         this.getRangeVisualizzazioneContatoriSchedeContatto();
         this.getContatoriSchedeContatto();
         this.subscriptions.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
@@ -98,6 +103,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ClearFiltriSchedeContatto(),
             new ClearListaSchedeContatto(),
+            new ClearSchedaContattoHover(),
+            new ClearSchedaContattoSelezionata(),
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
@@ -128,6 +135,14 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.codiceSchedaContattoHover$.subscribe((codiceSchedaContatto: string) => {
                 this.codiceSchedaContattoHover = codiceSchedaContatto;
+            })
+        );
+    }
+
+    getSchedeContattoSelezionata(): void {
+        this.subscriptions.add(
+            this.codiceSchedaContattoSelezionata$.subscribe((codiceSchedaContattoSelezionata: string) => {
+                this.codiceSchedaContattoSelezionata = codiceSchedaContattoSelezionata;
             })
         );
     }
@@ -171,6 +186,14 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     onHoverOut(): void {
         this.store.dispatch(new ClearSchedaContattoHover());
+    }
+
+    onSelezione(codiceScheda: string): void {
+        this.store.dispatch(new SetSchedaContattoSelezionata(codiceScheda));
+    }
+
+    onDeselezione(): void {
+        this.store.dispatch(new ClearSchedaContattoSelezionata());
     }
 
     onTornaIndietro(): void {

@@ -84,10 +84,11 @@
     </div>
     <div class="float-right">
         <div class="clearfix">
-            <div *ngIf="((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((schedeContattoStatus$ | async) === false) && ((mezziInServizioStatus$ | async) === false) && !doubleMonitor"
+            <div *ngIf="((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((schedeContattoStatus$ | async) === false) && !doubleMonitor"
                  class="float-left">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
                                [nightMode]="nightMode"
+                               [viewState]="viewState"
                                [mapStatus]="(mapsStatus$ | async)"
                                (buttonView)="switchView($event)">
                 </app-view-mode>
