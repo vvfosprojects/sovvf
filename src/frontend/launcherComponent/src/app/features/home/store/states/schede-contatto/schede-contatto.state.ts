@@ -3,7 +3,7 @@ import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interfa
 import {
     ClearFiltriSchedeContatto,
     ClearListaSchedeContatto,
-    ClearSchedaContattoHover,
+    ClearSchedaContattoHover, ClearSchedaContattoSelezionata,
     ClearSchedaContattoTelefonata, GetContatoriSchedeContatto,
     GetListaSchedeContatto,
     InsertSchedeContatto,
@@ -18,7 +18,7 @@ import {
     SetListaSchedeContatto,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
-    SetSchedaContattoHover,
+    SetSchedaContattoHover, SetSchedaContattoSelezionata,
     SetSchedaContattoTelefonata,
     SetTabAttivo,
     StartLoadingSchedeContatto,
@@ -58,6 +58,7 @@ export interface SchedeContattoStateModel {
     schedeContatto: SchedaContatto[];
     schedaContattoTelefonata: SchedaContatto;
     codiceSchedaContattoHover: string;
+    codiceSchedaContattoSelezionata: string;
     filtriSchedeContatto: VoceFiltro[];
     filtriSelezionati: FiltersSchedeContatto;
     tabAttivo: ClassificazioneSchedaContatto;
@@ -79,6 +80,7 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     ...SchedeContattoEmpty,
     schedaContattoTelefonata: undefined,
     codiceSchedaContattoHover: undefined,
+    codiceSchedaContattoSelezionata: undefined,
     filtriSchedeContatto: [
         new VoceFiltro('1', Categoria.Gestione, 'Gestita', false),
         new VoceFiltro('2', Categoria.Gestione, 'Non Gestita', false),
@@ -138,6 +140,11 @@ export class SchedeContattoState {
     @Selector()
     static codiceSchedaContattoHover(state: SchedeContattoStateModel): string {
         return state.codiceSchedaContattoHover;
+    }
+
+    @Selector()
+    static codiceSchedaContattoSelezionata(state: SchedeContattoStateModel): string {
+        return state.codiceSchedaContattoSelezionata;
     }
 
     @Selector()
@@ -218,7 +225,7 @@ export class SchedeContattoState {
         } as FiltersInterface;
         const pagination = {
             page: action.page ? action.page : 1,
-            pageSize: boxesVisibili ? 12 : 13
+            pageSize: boxesVisibili ? 11 : 12
         } as PaginationInterface;
         this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
             const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
@@ -340,6 +347,20 @@ export class SchedeContattoState {
     clearSchedaContattoHover({ patchState }: StateContext<SchedeContattoStateModel>): void {
         patchState({
             codiceSchedaContattoHover: null
+        });
+    }
+
+    @Action(SetSchedaContattoSelezionata)
+    setSchedaContattoSelezionata({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoSelezionata): void {
+        patchState({
+            codiceSchedaContattoSelezionata: action.codiceSchedaContatto
+        });
+    }
+
+    @Action(ClearSchedaContattoSelezionata)
+    clearSchedaContattoSelezionata({ patchState }: StateContext<SchedeContattoStateModel>): void {
+        patchState({
+            codiceSchedaContattoSelezionata: null
         });
     }
 

@@ -83,6 +83,17 @@ export class ClearSchedaContattoHover {
     static readonly type = '[SchedeContatto] Clear Scheda Contatto Hover';
 }
 
+export class SetSchedaContattoSelezionata {
+    static readonly type = '[SchedeContatto] Set Scheda Contatto Selezionata';
+
+    constructor(public codiceSchedaContatto: string) {
+    }
+}
+
+export class ClearSchedaContattoSelezionata {
+    static readonly type = '[SchedeContatto] Clear Scheda Contatto Selezionata';
+}
+
 export class ReducerSetFiltroSchedeContatto {
     static readonly type = '[SchedeContatto] Reducer Set Filtro Schede Contatto';
 

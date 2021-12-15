@@ -2,7 +2,7 @@ import {
     Grids,
     ViewComponentStateModel,
     ViewInterfaceButton,
-    ViewInterfaceMaps
+    ViewInterfaceMaps,
 } from '../../../../shared/interface/view.interface';
 import { ChangeView } from '../actions/view/view.actions';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
@@ -23,11 +23,18 @@ export function updateView(stateDefault: any, action: ChangeView): ViewComponent
     switch (action.modalita) {
         case AppFeatures.Mappa:
             stateDefault.view.richieste.active = false;
+            stateDefault.view.mezziInServizio.active = false;
             stateDefault.view.mappa.active = true;
             break;
         case AppFeatures.Richieste:
             stateDefault.view.mappa.active = false;
+            stateDefault.view.mezziInServizio.active = false;
             stateDefault.view.richieste.active = true;
+            break;
+        case AppFeatures.MezziInServizio:
+            stateDefault.view.mappa.active = false;
+            stateDefault.view.richieste.active = false;
+            stateDefault.view.mezziInServizio.active = true;
             break;
         default:
             break;
@@ -142,8 +149,11 @@ export function colorButton(state: any): ViewInterfaceButton {
         buttonView: [
             state.view.richieste.active && !state.view.richieste.split ? 'btn-secondary' : 'btn-outline-secondary',
             state.view.richieste.split && state.view.mappa.split ? 'btn-secondary' : 'btn-outline-secondary',
-            state.view.mappa.active && !state.view.mappa.split ? 'btn-secondary' : 'btn-outline-secondary'
-        ]
+            state.view.mappa.active && !state.view.mappa.split ? 'btn-secondary' : 'btn-outline-secondary',
+            state.view.mezziInServizio.active && !state.view.richieste.split ? 'btn-secondary' : 'btn-outline-secondary',
+            state.view.mezziInServizio.split && state.view.mappa.split ? 'btn-secondary' : 'btn-outline-secondary',
+        ],
+        backupViewComponent: state.backupViewComponent,
     } as ViewInterfaceButton;
 }
 

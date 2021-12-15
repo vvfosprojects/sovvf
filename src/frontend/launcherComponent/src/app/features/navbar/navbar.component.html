@@ -15,14 +15,14 @@
                                     ngbTooltip="Vai alla lista Chiamate/Interventi"
                                     placement="right"
                                     [routerLink]="['/' + RoutesPath.Home]"
-                                    [class.btn-nav-selected]="!(mezziInServizioStatus$ | async) && !(schedeContattoStatus$ | async) && !(codaChiamateStatus$ | async) && url === '/home'"
+                                    [class.btn-nav-selected]="!(colorButtonView?.backupViewComponent?.view?.mezziInServizio?.active && (mapsIsActive$ | async)) && !(mezziInServizioStatus$ | async) && !(schedeContattoStatus$ | async) && !(codaChiamateStatus$ | async) && url === '/home'"
                                     (click)="onChiamateInterventi()">
                                 <i class="fas fa-home"></i>
                             </button>
                             <button class="btn btn-light mr-2"
                                     ngbTooltip="Visualizza Mezzi in Servizio"
                                     placement="right"
-                                    [class.btn-nav-selected]="(mezziInServizioStatus$ | async) && url === '/home'"
+                                    [class.btn-nav-selected]="((mezziInServizioStatus$ | async) || (colorButtonView?.backupViewComponent?.view?.mezziInServizio?.active && (mapsIsActive$ | async)))&& url === '/home'"
                                     [class.cursor-not-allowed]="disabledMezziInServizio"
                                     [disabled]="disabledMezziInServizio"
                                     [disableTooltip]="disabledMezziInServizio"
