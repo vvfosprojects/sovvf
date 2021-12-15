@@ -99,6 +99,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     m.PreAccoppiato = lstSqPreacc.Result?.Count > 0;
                     m.IdRichiesta = statiOperativiMezzi.FirstOrDefault(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
 
+                    var coord = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
+
                     var mc = new ComposizioneMezzi()
                     {
                         //Id = m.Codice,
@@ -106,8 +108,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,
                         ListaSquadre = lstSquadreInRientro.Result,
-                        Km = (new GeoCoordinate(m.Coordinate.Latitudine, m.Coordinate.Longitudine)
-                            .GetDistanceTo(new GeoCoordinate(query.Richiesta.Localita.Coordinate.Latitudine, query.Richiesta.Localita.Coordinate.Longitudine))
+                        Km = (new GeoCoordinate(double.Parse(coord[0]), double.Parse(coord[1]))
+                            .GetDistanceTo(new GeoCoordinate(double.Parse(coord[0]), double.Parse(coord[1])))
                             / 1000).ToString("N1"),
                         TempoPercorrenza = null
                     };
@@ -122,10 +124,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         {
                             case Costanti.MezzoInViaggio:
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                                var c1 = query.Richiesta.Localita.Coordinate;
-                                mc.Km = _geofleet.Get(mc.Mezzo.Codice).Result?.Localizzazione
-                                    .GetDistanceTo(new Localizzazione(c1.Latitudine, c1.Longitudine))
-                                    .ToString("N1");
+                                mc.Km = (new GeoCoordinate(double.Parse(coord[0]), double.Parse(coord[1]))
+                                    .GetDistanceTo(new GeoCoordinate(double.Parse(coord[0]), double.Parse(coord[1])))
+                                    / 1000).ToString("N1");
                                 break;
 
                             case Costanti.MezzoSulPosto:
@@ -160,7 +161,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 return ricerca && distaccamento && genere && stato;
             })).ContinueWith(lstMezzi =>//ORDINAMENTO
             {
-                return lstMezzi.Result 
+                return lstMezzi.Result
                 .OrderBy(mezzo => (!query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => (!query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))

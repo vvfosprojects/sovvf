@@ -56,6 +56,8 @@ import { MezziInServizioState } from '../../home/store/states/mezzi-in-servizio/
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ViewComponentState } from '../../home/store/states/view/view.state';
+import { SchedeContattoState } from '../../home/store/states/schede-contatto/schede-contatto.state';
+import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 
 @Component({
     selector: 'app-map-esri',
@@ -80,6 +82,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() composizionePartenzaStatus: boolean;
     @Input() mezziInServizioStatus: boolean;
     @Input() idMezzoInServizioSelezionato: string;
+    @Input() idSchedaContattoSelezionata: string;
     @Input() areaMappaLoading: boolean;
     @Input() richiesteStatus: boolean;
 
@@ -281,7 +284,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const idRichiestaSelezionata = changes?.idRichiestaSelezionata?.currentValue;
             const richiestaSelezionata = richieste.filter((r: SintesiRichiesta) => r.id === idRichiestaSelezionata)[0];
             const coordinateCentro = richiestaSelezionata.localita.coordinate;
-            const zoom = 16;
+            const zoom = 19;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
             richiestaSelezionata.partenze.forEach((p: Partenza) => {
                 if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
@@ -301,7 +304,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.richiestaModifica?.currentValue && this.map && this.view?.ready) {
             const richiestaModifica = changes?.richiestaModifica?.currentValue;
             const coordinateCentro = richiestaModifica.localita.coordinate;
-            const zoom = 16;
+            const zoom = 19;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
         } else if (changes?.richiestaModifica?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
@@ -311,21 +314,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.richiestaComposizione?.currentValue && this.map && this.view?.ready) {
             const richiestaComposizione = changes?.richiestaComposizione?.currentValue;
             const coordinateCentro = richiestaComposizione.localita.coordinate;
-            const zoom = 16;
+            const zoom = 19;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
         } else if (changes?.richiestaComposizione?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
         }
-
-        // Controllo il valore di "richiestaGestione"
-        // if (changes?.richiestaGestione?.currentValue && this.map && this.view?.ready) {
-        //     const richiestaGestione = changes?.richiestaGestione?.currentValue;
-        //     const coordinateCentro = richiestaGestione.localita.coordinate;
-        //     const zoom = 16;
-        //     this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
-        // } else if (changes?.richiestaGestione?.currentValue === null && changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
-        //         this.store.dispatch(new GetInitCentroMappa());
-        // }
 
         // Controllo il valore di "filtriRichiesteSelezionati"
         if (changes?.filtriRichiesteSelezionati?.currentValue) {
@@ -372,6 +365,18 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             }
         }
 
+        // Controllo il valore di "idSchedaContattoSelezionata"
+        if (changes?.idSchedaContattoSelezionata?.currentValue && this.map && this.view?.ready) {
+            const schedeContatto = this.store.selectSnapshot(SchedeContattoState.schedeContatto);
+            const idSchedaContattoSelezionata = changes?.idSchedaContattoSelezionata?.currentValue;
+            const schedaContattoSelezionata = schedeContatto.filter((s: SchedaContatto) => s.codiceScheda === idSchedaContattoSelezionata)[0];
+            const coordinateCentro = new Coordinate(schedaContattoSelezionata.localita.coordinate.latitudine, schedaContattoSelezionata.localita.coordinate.longitudine);
+            const zoom = 19;
+            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        } else if (changes?.idSchedaContattoSelezionata?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
+        }
+
         // Controllo se la feature "Composizione Partenza" viene attivata
         if (changes?.composizionePartenzaStatus?.currentValue !== null) {
             const composizionePartenzaActive = changes?.composizionePartenzaStatus?.currentValue;
@@ -411,7 +416,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const lat = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[0];
             const lon = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[1];
             const coordinateCentro = new Coordinate(lat, lon);
-            const zoom = 16;
+            const zoom = 19;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
         } else if (changes?.idMezzoInServizioSelezionato?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
