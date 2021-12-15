@@ -70,8 +70,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             else
                 ListaPosizioneFlotta = posizioneFlotta;
 
-            //var ListaAnagraficaMezzo = GetAnagraficaMezziByCodComando(ListaCodiciComandi).Result;
-
             #region LEGGO DA API ESTERNA
 
             var token = _getToken.GeneraToken();
