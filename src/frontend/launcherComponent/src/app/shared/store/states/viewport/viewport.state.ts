@@ -60,6 +60,11 @@ export class ViewportState {
         return state.sunMode;
     }
 
+    @Selector()
+    static maxInnerWidthDoubleMonitor(state: ViewportStateModel): number {
+        return state.maxInnerWidthDoubleMonitor;
+    }
+
     @Selector([RouterState, AuthState, AppState])
     static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel): boolean {
         return;
