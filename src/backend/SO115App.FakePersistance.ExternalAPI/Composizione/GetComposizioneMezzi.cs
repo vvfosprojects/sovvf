@@ -17,6 +17,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -101,6 +102,28 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     var coord = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
 
+                    //double latitudine;
+                    //double.TryParse(m.Coordinate.Latitudine, NumberStyles.Any, CultureInfo.InvariantCulture, out latitudine);
+
+                    Coordinate coordinateMezzo = null;
+
+                    if (m.CoordinateStrg != null)
+                    {
+                        if (m.CoordinateStrg[0] == null)
+                        {
+                            coordinateMezzo = new Coordinate(m.Distaccamento.Coordinate.Latitudine, m.Distaccamento.Coordinate.Longitudine);
+                        }
+                        else
+                            coordinateMezzo = new Coordinate(Convert.ToDouble(m.CoordinateStrg[0]), Convert.ToDouble(m.CoordinateStrg[1]));
+                    }
+                    var distanzaKm = "";
+                    if (coordinateMezzo != null)
+                    {
+                        distanzaKm = (new GeoCoordinate(coordinateMezzo.Latitudine, coordinateMezzo.Longitudine)
+                            .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
+                            / 1000).ToString("N1");
+                    }
+
                     var mc = new ComposizioneMezzi()
                     {
                         //Id = m.Codice,
@@ -108,9 +131,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,
                         ListaSquadre = lstSquadreInRientro.Result,
-                        Km = (new GeoCoordinate(double.Parse(m.Coordinate.Latitudine.ToString().Replace(',', '.')), double.Parse(m.Coordinate.Longitudine.ToString().Replace(',', '.')))
-                            .GetDistanceTo(new GeoCoordinate(double.Parse(coord[0]), double.Parse(coord[1])))
-                            / 1000).ToString("N1"),
+                        Km = distanzaKm,
                         TempoPercorrenza = null
                     };
 
@@ -124,9 +145,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         {
                             case Costanti.MezzoInViaggio:
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                                mc.Km = (new GeoCoordinate(double.Parse(m.Coordinate.Latitudine.ToString().Replace(',', '.')), double.Parse(m.Coordinate.Longitudine.ToString().Replace(',', '.')))
-                                    .GetDistanceTo(new GeoCoordinate(double.Parse(coord[0]), double.Parse(coord[1])))
-                                    / 1000).ToString("N1");
+                                mc.Km = distanzaKm;
                                 break;
 
                             case Costanti.MezzoSulPosto:

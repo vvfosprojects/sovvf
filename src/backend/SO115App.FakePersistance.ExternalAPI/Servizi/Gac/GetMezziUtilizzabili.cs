@@ -70,8 +70,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             else
                 ListaPosizioneFlotta = posizioneFlotta;
 
-            //var ListaAnagraficaMezzo = GetAnagraficaMezziByCodComando(ListaCodiciComandi).Result;
-
             #region LEGGO DA API ESTERNA
 
             var token = _getToken.GeneraToken();
@@ -185,6 +183,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         private Mezzo MapMezzo(MezzoDTO mezzoDto)
         {
+            var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             try
             {
@@ -194,23 +193,35 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 string descSede = "";
                 string IndirizzoSede = "";
                 Coordinate coordinate = null;
+                string[] coordinateStrg = new string[2];
+                var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
+                if (CoordinateMezzoGeoFleet != null)
+                {
+                    coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
+                    coordinateStrg = new string[2] { coordinate.Latitudine.ToString(), coordinate.Longitudine.ToString() };
+                }
 
                 foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
                 {
                     if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento))
                     {
                         descSede = figlio.Nome;
-                        coordinate = figlio.Coordinate;
+
+                        if (coordinate == null)
+                            coordinate = figlio.Coordinate;
                     }
                 }
 
-                var sede = new Sede(mezzoDto.CodiceDistaccamento, descSede ?? "", IndirizzoSede ?? "", coordinate ?? null);
+                var sede = new Sede(mezzoDto.CodiceDistaccamento, descSede ?? "", IndirizzoSede ?? "", coordinate ?? null)
+                {
+                    CoordinateString = _getStringCoordinateByCodSede.Get(mezzoDto.CodiceDistaccamento)
+                };
 
                 return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
                     mezzoDto.CodiceDistaccamento, sede, new Coordinate(coordinate.Latitudine, coordinate.Longitudine))
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                    CoordinateStrg = _getStringCoordinateByCodSede.Get(mezzoDto.CodiceDistaccamento)
+                    CoordinateStrg = coordinateStrg[0] != null ? coordinateStrg : sede.CoordinateString
                 };
             }
             catch (Exception e)
