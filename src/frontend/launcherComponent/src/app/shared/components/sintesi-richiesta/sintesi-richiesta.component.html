@@ -302,7 +302,7 @@
                          class="col-12 default-cursor"
                          [class.d-none]="partenza">
                         <!-- II livello di dettaglio -->
-                        <div class="row mt-3">
+                        <div class="row mt-2">
                             <!-- I colonna -->
                             <div class="col-2">
                                 <div class="clearfix">
@@ -413,7 +413,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- II colonna Triage -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) <= 0"
                                  class="col-8">
@@ -424,7 +423,6 @@
                                     </app-triage-summary-sintesi-richiesta>
                                 </div>
                             </div>
-
                             <!-- II colonna Lista Partenze -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0"
                                  class="col-8 px-0 border border-lista-partenze">
@@ -446,19 +444,19 @@
                                     </app-lista-partenze>
                                 </div>
                             </div>
-
                             <!-- III colonna -->
                             <div class="col-2">
                                 <div class="clearfix">
                                     <!-- turno intervento -->
                                     <div class="text-right">
-                                        <h4 *ngIf="richiesta?.trnInsChiamata; else nessunTurno">
+                                        <span *ngIf="richiesta?.trnInsChiamata; else nessunTurno"
+                                              class="font-xxlarge">
                                             {{ richiesta?.trnInsChiamata }}
                                             <i class="fa-fw far fa-calendar-check guida ml-1"
                                                ngbTooltip="Turno Inserimento"
                                                placement="left">
                                             </i>
-                                        </h4>
+                                        </span>
                                         <ng-template #nessunTurno>
                                             <h4>
                                                 <span class="d-inline-block mr-1">-</span>
@@ -477,7 +475,8 @@
                                                 {{ tipoTerrenoValue?.terrenoHa }}
                                             </div>
                                             <button *ngIf="richiesta?.tipoTerreno && richiesta?.tipoTerreno.length > 1"
-                                                    class="btn btn-light px-1 py-0" [ngbPopover]="terreni" placement="left"
+                                                    class="btn btn-light px-1 py-0" [ngbPopover]="terreni"
+                                                    placement="left"
                                                     (click)="$event.stopPropagation()">
                                                 +{{ richiesta?.tipoTerreno?.length - 1 }}</button>
                                             <ng-template #terreni>
