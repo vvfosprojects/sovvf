@@ -260,7 +260,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 if (ListaSediAlberate == null)
                     _memoryCache.Remove("ListaSediAlberate");
 
-               return ListaSediAlberate;
+                return ListaSediAlberate;
             }
         }
 
@@ -348,7 +348,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         string[] IGetStringCoordinateByCodSede.Get(string codiceSede)
         {
-            return GetInfoSede(codiceSede).Result.coordinate.Split(',');
+            if (GetInfoSede(codiceSede).Result.coordinate.Length > 0)
+                return GetInfoSede(codiceSede).Result.coordinate.Split(',');
+            else
+                return null;
         }
     }
 }
