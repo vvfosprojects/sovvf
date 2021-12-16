@@ -3,13 +3,14 @@
         <div [class.col-12]="!doubleMonitor"
              [class.col-6]="doubleMonitor">
             <div class="row">
-                <div class="col-12 col-md-9 mx-auto mb-2" [class.text-moon]="nightMode$ | async">
+                <div class="col-12 mb-2"
+                     [class.text-moon]="nightMode$ | async">
                     <h2>
                         <i class="fas fa-exchange-alt"></i>
                         Trasferimenti Chiamate
                     </h2>
                 </div>
-                <div class="col-12 col-md-9 mx-auto">
+                <div class="col-12">
                     <div class="row">
                         <div class="col">
                             <button class="btn btn-primary mb-2 font-weight-bold"
@@ -18,23 +19,26 @@
                                 Aggiungi Trasferimento
                             </button>
                         </div>
-                        <div class="col text-right">
+                        <div class="col-4 text-right">
                             <app-ricerca-trasferimento-chiamata [loading]="loading$ | async"
+                                                                [ricerca]="ricerca"
                                                                 (ricercaChange)="onRicercaTrasferimentoChiamata($event)">
                             </app-ricerca-trasferimento-chiamata>
                         </div>
                     </div>
                 </div>
-                <div *ngIf="ricerca" class="col-12 col-md-9 mx-auto pl-4">
+                <div *ngIf="ricerca" class="col-12 pl-4">
                     <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
                 </div>
-                <div *ngIf="!listaTrasferimentiChiamate?.length" class="col-12 col-md-9 mx-auto">
-                    <app-risultati-alert [items]="!!(listaTrasferimentiChiamate?.length)"
-                                         [ricerca]="!!(ricerca?.length)"
-                                         [loading]="!!(loading$ | async)">
-                    </app-risultati-alert>
-                </div>
-                <div *ngIf="listaTrasferimentiChiamate?.length" class="col-12 col-md-9 mx-auto">
+                <ng-container *ngIf="!listaTrasferimentiChiamate?.length">
+                    <div class="col-12">
+                        <app-risultati-alert [items]="!!(listaTrasferimentiChiamate?.length)"
+                                             [ricerca]="!!(ricerca?.length)"
+                                             [loading]="!!(loading$ | async)">
+                        </app-risultati-alert>
+                    </div>
+                </ng-container>
+                <div *ngIf="listaTrasferimentiChiamate?.length" class="col-12">
                     <app-tabella-trasferimento-chiamata
                             [listaTrasferimentiChiamate]="listaTrasferimentiChiamate$ | async"
                             [totalItems]="totalItems$ | async"
