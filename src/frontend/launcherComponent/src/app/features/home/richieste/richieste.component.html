@@ -21,13 +21,11 @@
 <ng-template [ngIf]="ricerca">
     <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
 </ng-template>
-<ng-template [ngIf]="!richieste?.length">
-    <app-risultati-alert [items]="!!(richieste?.length)"
-                         [filters]="!!((filtriRichiesteSelezionati$ | async)?.length)"
-                         [ricerca]="!!(ricerca?.length)"
-                         [loading]="!!(loadingRichieste$ | async)">
-    </app-risultati-alert>
-</ng-template>
+<app-risultati-alert [items]="!!(richieste?.length)"
+                     [filters]="!!((filtriRichiesteSelezionati$ | async)?.length)"
+                     [ricerca]="!!(ricerca?.length)"
+                     [loading]="!!(loadingRichieste$ | async)">
+</app-risultati-alert>
 <ng-template [ngIf]="richieste?.length">
     <app-lista-richieste [nightMode]="nightMode"
                          [richieste]="richieste"

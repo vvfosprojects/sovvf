@@ -2,118 +2,97 @@
     <ng-template [ngIf]="ricerca">
         <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
     </ng-template>
-    <ngb-tabset [activeId]="tabAttivo" (tabChange)="onSelectTab($event)">
-        <ngb-tab [id]="ClassificazioneEnum.Competenza">
-            <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipCompetenza" placement="top-left">
-                    <i class="fas fa-square text-danger mr-2"></i>
-                    <b>Competenza ({{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }})</b>
-                </div>
-                <ng-template #tipCompetenza>
-                    <div>Tutte: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreTutte }}</div>
-                    <div><b>
-                        Da gestire: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }}
-                    </b></div>
+    <app-risultati-alert [items]="!!(schedeContatto?.length)"
+                         [filters]="!!(filtriSelezionati?.length)"
+                         [ricerca]="!!(ricerca?.length)"
+                         [loading]="loading">
+    </app-risultati-alert>
+    <ng-container *ngIf="schedeContatto?.length">
+        <ngb-tabset [activeId]="tabAttivo" (tabChange)="onSelectTab($event)">
+            <ngb-tab [id]="ClassificazioneEnum.Competenza">
+                <ng-template ngbTabTitle>
+                    <div [ngbTooltip]="tipCompetenza" placement="top-left">
+                        <i class="fas fa-square text-danger mr-2"></i>
+                        <b>Competenza ({{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }})</b>
+                    </div>
+                    <ng-template #tipCompetenza>
+                        <div>Tutte: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreTutte }}</div>
+                        <div><b>
+                            Da gestire: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }}
+                        </b></div>
+                    </ng-template>
                 </ng-template>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="row">
-                    <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
-                        <app-risultati-alert [items]="false"></app-risultati-alert>
+            </ngb-tab>
+            <ngb-tab [id]="ClassificazioneEnum.Differibile">
+                <ng-template ngbTabTitle>
+                    <div [ngbTooltip]="tipDifferibile" placement="top-left">
+                        <i class="fas fa-square text-secondary mr-2"></i>
+                        <b>Differibile ({{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }})</b>
                     </div>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab [id]="ClassificazioneEnum.Differibile">
-            <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipDifferibile" placement="top-left">
-                    <i class="fas fa-square text-secondary mr-2"></i>
-                    <b>Differibile ({{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }})</b>
-                </div>
-                <ng-template #tipDifferibile>
-                    <div>Tutte: {{ contatoriSchedeContatto?.differibileSchede?.contatoreTutte }}</div>
-                    <div><b>Da gestire: {{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }}</b>
-                    </div>
+                    <ng-template #tipDifferibile>
+                        <div>Tutte: {{ contatoriSchedeContatto?.differibileSchede?.contatoreTutte }}</div>
+                        <div><b>Da gestire: {{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }}</b>
+                        </div>
+                    </ng-template>
                 </ng-template>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="row">
-                    <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
-                        <app-risultati-alert [items]="false"></app-risultati-alert>
+            </ngb-tab>
+            <ngb-tab [id]="ClassificazioneEnum.Conoscenza">
+                <ng-template ngbTabTitle>
+                    <div [ngbTooltip]="tipConoscenza" placement="top-left">
+                        <i class="fas fa-square text-warning mr-2"></i>
+                        <b>Conoscenza ({{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }})</b>
                     </div>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab [id]="ClassificazioneEnum.Conoscenza">
-            <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipConoscenza" placement="top-left">
-                    <i class="fas fa-square text-warning mr-2"></i>
-                    <b>Conoscenza ({{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }})</b>
-                </div>
-                <ng-template #tipConoscenza>
-                    <div>Tutte: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreTutte }}</div>
-                    <div><b>
-                        Da gestire: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }}
-                    </b></div>
+                    <ng-template #tipConoscenza>
+                        <div>Tutte: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreTutte }}</div>
+                        <div><b>
+                            Da gestire: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }}
+                        </b></div>
+                    </ng-template>
                 </ng-template>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="row">
-                    <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
-                        <app-risultati-alert [items]="false"></app-risultati-alert>
+            </ngb-tab>
+            <ngb-tab id="Tutte">
+                <ng-template ngbTabTitle>
+                    <div [ngbTooltip]="tipTutte" placement="top-left">
+                        <i class="fas fa-list mr-2"></i>
+                        <b>Tutte ({{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }})</b>
                     </div>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab id="Tutte">
-            <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipTutte" placement="top-left">
-                    <i class="fas fa-list mr-2"></i>
-                    <b>Tutte ({{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }})</b>
-                </div>
-                <ng-template #tipTutte>
-                    <div>Tutte: {{ contatoriSchedeContatto?.totaleSchede?.contatoreTutte }}</div>
-                    <div><b>Da gestire: {{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }}</b></div>
+                    <ng-template #tipTutte>
+                        <div>Tutte: {{ contatoriSchedeContatto?.totaleSchede?.contatoreTutte }}</div>
+                        <div><b>Da gestire: {{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }}</b></div>
+                    </ng-template>
                 </ng-template>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="row">
-                    <div *ngIf="schedeContatto.length === 0" class="col-12 mt-4">
-                        <app-risultati-alert [items]="false"></app-risultati-alert>
-                    </div>
-                </div>
-            </ng-template>
-        </ngb-tab>
-    </ngb-tabset>
-    <ul class="my-2 list-unstyled">
-        <app-scheda-contatto
-                *ngFor="let scheda of schedeContatto"
-                [scheda]="scheda"
-                [nightMode]="nightMode"
-                [idVisualizzati]="idVisualizzati"
-                [idCollapsed]="idCollapsed"
-                [idSchedaContattoHover]="codiceSchedaContattoHover"
-                [idSchedaContattoSelezionata]="codiceSchedaContattoSelezionata"
-                [editSchedaContatto]="statoModalita"
-                [schedeContattoSelezionate]="idSelezionatiMerge"
-                [classificazione]="classificazioneMerge"
-                [disableCreaRichiesta]="(permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede) || scheda.gestita"
-                [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                (hoverIn)="onHoverIn($event)"
-                (hoverOut)="onHoverOut()"
-                (selezionata)="onSelezione($event)"
-                (deselezionata)="onDeselezione()"
-                (collapsed)="onCollapsed($event)"
-                (undoRaggruppamento)="onUndoMergeSchedaContatto($event)"
-                (dettaglioScheda)="onDettaglioScheda($event)"
-                (editSelezionata)="onEditSchedaSelezionata($event)"
-                (checkBoxError)="onCheckboxError()"
-                (setSchedaContattoTelefonata)="onSetSchedaContattoTelefonata($event)"
-                (setSchedaContattoGestita)="onSetSchedaContattoGestita(scheda, $event)">
-        </app-scheda-contatto>
-    </ul>
+            </ngb-tab>
+        </ngb-tabset>
+        <ul class="my-2 list-unstyled">
+            <app-scheda-contatto
+                    *ngFor="let scheda of schedeContatto"
+                    [scheda]="scheda"
+                    [nightMode]="nightMode"
+                    [idVisualizzati]="idVisualizzati"
+                    [idCollapsed]="idCollapsed"
+                    [idSchedaContattoHover]="codiceSchedaContattoHover"
+                    [idSchedaContattoSelezionata]="codiceSchedaContattoSelezionata"
+                    [editSchedaContatto]="statoModalita"
+                    [schedeContattoSelezionate]="idSelezionatiMerge"
+                    [classificazione]="classificazioneMerge"
+                    [disableCreaRichiesta]="(permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede) || scheda.gestita"
+                    [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                    [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                    [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                    (hoverIn)="onHoverIn($event)"
+                    (hoverOut)="onHoverOut()"
+                    (selezionata)="onSelezione($event)"
+                    (deselezionata)="onDeselezione()"
+                    (collapsed)="onCollapsed($event)"
+                    (undoRaggruppamento)="onUndoMergeSchedaContatto($event)"
+                    (dettaglioScheda)="onDettaglioScheda($event)"
+                    (editSelezionata)="onEditSchedaSelezionata($event)"
+                    (checkBoxError)="onCheckboxError()"
+                    (setSchedaContattoTelefonata)="onSetSchedaContattoTelefonata($event)"
+                    (setSchedaContattoGestita)="onSetSchedaContattoGestita(scheda, $event)">
+            </app-scheda-contatto>
+        </ul>
+    </ng-container>
 </div>
 <div class="col-12 px-0">
     <div class="clearfix">
