@@ -1,6 +1,5 @@
 <ng-container *ngIf="isVisible()">
-    <li class="border-top border-bottom font-xxlarge py-1"
-        [class.cursor-pointer]="!editSchedaContatto"
+    <li class="border-top border-bottom font-xxlarge cursor-pointer py-1"
         [ngClass]="cardClasses(scheda.codiceScheda)"
         (mouseenter)="hoverIn.emit(scheda.codiceScheda)"
         (mouseleave)="hoverOut.emit()"
@@ -56,22 +55,42 @@
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </ng-container>
-                <div *ngIf="editSchedaContatto && !this.scheda.gestita && !this.scheda.collegate?.length">
+                <ng-container *ngIf="editSchedaContatto && !this.scheda.gestita && !this.scheda.collegate?.length">
                     <input type="checkbox"
-                           class="cursor-pointer"
+                           class="cursor-pointer mr-3"
                            appClickStopPropagation
                            [id]="getCheckboxState(scheda).id"
                            [checked]="getCheckboxState(scheda).status"
                            [disabled]="getCheckboxState(scheda)?.disabled"
                            (click)="onEditSchedaSelezionata(getCheckboxState(scheda))">
                     <label [for]="getCheckboxState(scheda).id"></label>
-                </div>
+                    <button class="btn btn-lg btn-no-hover btn-secondary mr-1"
+                            ngbTooltip="Dettaglio Scheda Contatto"
+                            placement="left"
+                            (click)="onDettaglioScheda(scheda.codiceScheda); $event.stopPropagation()">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </ng-container>
                 <ng-container *ngIf="editSchedaContatto && !this.scheda.gestita && this.scheda.collegate?.length">
-                    <button class="btn btn-lg btn-danger mt-1"
+                    <button class="btn btn-lg btn-no-hover btn-secondary mr-1"
+                            ngbTooltip="Dettaglio Scheda Contatto"
+                            placement="left"
+                            (click)="onDettaglioScheda(scheda.codiceScheda); $event.stopPropagation()">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                    <button class="btn btn-lg btn-no-hover btn-danger"
                             ngbTooltip="Elimina raggruppamento"
                             [disabled]="disableEliminaRaggruppamento"
                             (click)="onUndoRaggruppamento(scheda?.codiceScheda); $event.stopPropagation()">
                         <i class="fas fa-trash"></i>
+                    </button>
+                </ng-container>
+                <ng-container *ngIf="editSchedaContatto && this.scheda.gestita">
+                    <button class="btn btn-lg btn-no-hover btn-secondary mr-1"
+                            ngbTooltip="Dettaglio Scheda Contatto"
+                            placement="left"
+                            (click)="onDettaglioScheda(scheda.codiceScheda); $event.stopPropagation()">
+                        <i class="fas fa-info-circle"></i>
                     </button>
                 </ng-container>
             </div>
