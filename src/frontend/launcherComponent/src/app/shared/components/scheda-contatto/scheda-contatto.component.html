@@ -4,7 +4,7 @@
         (mouseenter)="hoverIn.emit(scheda.codiceScheda)"
         (mouseleave)="hoverOut.emit()"
         (click)="reducerSelezione(scheda.codiceScheda)">
-        <div class="row position-relative">
+        <div class="row">
             <div class="col-1 d-flex align-items-center">
                 <button *ngIf="scheda.collegate && scheda.collegate.length > 0"
                         class="btn btn-no-hover btn-outline-light ml-2"
@@ -25,12 +25,12 @@
                 {{ scheda.dataInserimento | date: 'dd/MM/yyyy HH:mm:ss' }}
             </div>
             <div class="col d-flex align-items-center">
-                <i class="fas fa-map-marker-alt mr-1"></i>
+                <i class="fas fa-map-marker-alt mr-2"></i>
                 <span class="d-inline-block mr-2">{{ scheda.localita?.indirizzo ? scheda.localita?.indirizzo : 'Indirizzo non specificato -' }}</span>
                 <span [class.font-weight-bolder]="!scheda.localita?.indirizzo">{{ 'lat: ' + scheda.localita?.coordinate?.latitudine + ' lon: ' + scheda.localita?.coordinate?.longitudine }}</span>
             </div>
             <div class="col-1 d-flex align-items-center">
-                <i class="fas fa-desktop mr-1" ngbTooltip="Postazione Operatore"></i>
+                <i class="fas fa-desktop mr-2" ngbTooltip="Postazione Operatore" placement="left"></i>
                 {{scheda.operatoreChiamata?.codicePostazioneOperatore || 'N/D'}}
             </div>
             <div class="col-2 text-right">
@@ -58,6 +58,8 @@
                 <ng-container *ngIf="editSchedaContatto && !this.scheda.gestita && !this.scheda.collegate?.length">
                     <input type="checkbox"
                            class="cursor-pointer mr-3"
+                           ngbTooltip="Seleziona Scheda Contatto da raggruppare"
+                           placement="left"
                            appClickStopPropagation
                            [id]="getCheckboxState(scheda).id"
                            [checked]="getCheckboxState(scheda).status"
@@ -96,7 +98,7 @@
             </div>
         </div>
         <ng-container *ngIf="idCollapsed?.includes(scheda.codiceScheda)">
-            <ul class="list-unstyled" style="opacity: 0.75">
+            <ul class="list-unstyled" style="opacity: 0.8">
                 <ng-container *ngFor="let collegata of scheda.collegate">
                     <app-scheda-contatto-collegata [scheda]="collegata"></app-scheda-contatto-collegata>
                 </ng-container>

@@ -10,7 +10,7 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 export class RicercaTrasferimentoChiamataComponent {
 
     @Input() loading: boolean;
-    ricerca: string;
+    @Input() ricerca: string;
 
     @Output() ricercaChange = new EventEmitter<any>();
 
