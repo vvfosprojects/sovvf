@@ -12,9 +12,18 @@ export class RisultatiAlertComponent {
     @Input() ricerca: boolean;
     @Input() loading: boolean;
 
-    getTesto(): string {
-        let testo = '';
+    getIcona(): string {
+        let icona: string;
+        if (this.loading) {
+            icona = 'spinner fa-spin';
+        } else {
+            icona = 'exclamation-triangle';
+        }
+        return icona;
+    }
 
+    getTesto(): string {
+        let testo: string;
         if (this.loading) {
             testo = 'Caricamento risultati in corso...';
         } else {
@@ -28,8 +37,6 @@ export class RisultatiAlertComponent {
                 testo = 'Spiacente, nessun risultato con i parametri di ricerca e i filtri selezionati';
             }
         }
-
         return testo;
     }
-
 }

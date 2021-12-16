@@ -15,7 +15,8 @@ import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 import {
     ClearFiltriMezziInServizio,
     ClearListaMezziInServizio,
-    ClearMezzoInServizioHover, ClearMezzoInServizioSelezionato,
+    ClearMezzoInServizioHover,
+    ClearMezzoInServizioSelezionato,
     GetListaMezziInServizio,
     SetMezzoInServizioHover,
     SetMezzoInServizioSelezionato
