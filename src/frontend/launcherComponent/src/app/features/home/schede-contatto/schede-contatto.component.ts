@@ -34,6 +34,7 @@ import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterb
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { ConfermaMergeModalComponent } from './conferma-merge-modal/conferma-merge-modal.component';
+import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -54,6 +55,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
+
+    @Select(SchedeContattoState.filtriSelezionati) filtriSelezionatiSchedeContatto$: Observable<VoceFiltro[]>;
 
     @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
     @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;

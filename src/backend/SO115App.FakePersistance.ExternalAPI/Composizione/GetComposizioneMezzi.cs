@@ -102,9 +102,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     var coord = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
 
-                    //double latitudine;
-                    //double.TryParse(m.Coordinate.Latitudine, NumberStyles.Any, CultureInfo.InvariantCulture, out latitudine);
-
                     Coordinate coordinateMezzo = null;
 
                     if (m.CoordinateStrg != null)
@@ -119,9 +116,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     var distanzaKm = "";
                     if (coordinateMezzo != null)
                     {
+#if !DEBUG
                         distanzaKm = (new GeoCoordinate(coordinateMezzo.Latitudine, coordinateMezzo.Longitudine)
                             .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
                             / 1000).ToString("N1");
+#endif
+#if DEBUG
+                        distanzaKm = "0";
+#endif
                     }
 
                     var mc = new ComposizioneMezzi()
