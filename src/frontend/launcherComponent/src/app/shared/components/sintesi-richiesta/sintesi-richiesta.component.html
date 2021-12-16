@@ -209,8 +209,9 @@
                              style="width: 33%">
                             <span (click)="indirizzoClick(richiesta)" style="cursor: pointer">
                                 <i class="guida fas fa-map-marker-alt fa-fw mr-1" style="font-size: 140%"
-                                                                ngbTooltip="Località"></i>
-                                <ng-container *ngIf="!richiesta?.localita?.indirizzo && richiesta?.localita?.coordinate">
+                                   ngbTooltip="Località"></i>
+                                <ng-container
+                                        *ngIf="!richiesta?.localita?.indirizzo && richiesta?.localita?.coordinate">
                                     <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
                                           class="font-xxlarge">
                                           Lat: {{ richiesta.localita.coordinate?.latitudine }} -
@@ -298,39 +299,8 @@
 
                     <!-- box note localita e zone emergenza -->
                     <div *ngIf="inGestione"
-                         class="col-md-12 default-cursor pl-5"
+                         class="col-12 default-cursor"
                          [class.d-none]="partenza">
-                        <div *ngIf="richiesta?.localita?.note || richiesta?.zoneEmergenza?.length || richiesta?.tags?.length"
-                             class="col-md-12">
-                            <div class="row card bt-0 note-localita mt-1">
-                                <div class="col-md-12 bg_diagonal_grey">
-                                    <div class="row text-dark">
-                                        <div class="col-12">
-                                            <div class="h6 mb-0 pt-2 pb-1">
-                                                <span *ngIf="richiesta?.localita?.note">{{ richiesta?.localita?.note }}</span>
-                                                <span *ngIf="!richiesta?.localita?.note">Note località non presenti</span>
-                                            </div>
-                                            <div class="h5 mb-0 pull-right">
-                                            <span *ngFor="let ze of richiesta?.zoneEmergenza"
-                                                  class="badge badge-danger pull-right m-1">
-                                                {{ ze }}
-                                            </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 text-right">
-                                            <i class="guida fas fa-tags fa-fw text-left mr-1" title="Etichette"></i>
-                                            <span *ngFor="let tag of richiesta?.tags"
-                                                  class="badge badge-secondary text-right py-2 m-1"><i
-                                                    class="fas fa-hashtag fa-fw text-left"></i>{{tag}}</span>
-                                            <span *ngIf="!richiesta?.tags || (richiesta?.tags && richiesta?.tags?.length <= 0)">
-                                            Non ci sono Tags
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- II livello di dettaglio -->
                         <div class="row mt-3">
                             <!-- I colonna -->
@@ -454,6 +424,7 @@
                                     </app-triage-summary-sintesi-richiesta>
                                 </div>
                             </div>
+
                             <!-- II colonna Lista Partenze -->
                             <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0"
                                  class="col-8 px-0 border border-lista-partenze">
@@ -499,28 +470,30 @@
                                     </div>
 
                                     <!-- tipo terreno -->
-                                    <div class="text-right">
-                                        <div *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
-                                             class="d-inline-block mr-2" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
-                                            {{ tipoTerrenoValue?.terrenoHa }}
-                                        </div>
-                                        <button *ngIf="richiesta?.tipoTerreno && richiesta?.tipoTerreno.length > 1"
-                                                class="btn btn-light px-1 py-0" [ngbPopover]="terreni" placement="left"
-                                                (click)="$event.stopPropagation()">
-                                            +{{ richiesta?.tipoTerreno?.length - 1 }}</button>
-                                        <ng-template #terreni>
-                                            <div *ngIf="methods._terreniMinori(richiesta?.tipoTerreno) as terreniTooltip">
-                                                <div *ngFor="let terreno of terreniTooltip" class="h6 mb-0">
-                                                    {{ methods._tipoTerreno(terreno)}}
-                                                </div>
+                                    <ng-container *ngIf="richiesta?.tipoTerreno?.length">
+                                        <div class="text-right">
+                                            <div *ngIf="methods._terrenoMaggiore(richiesta?.tipoTerreno) as tipoTerrenoValue; else noterreni"
+                                                 class="d-inline-block mr-2" [ngbTooltip]="tipoTerrenoValue?.terrenoMq">
+                                                {{ tipoTerrenoValue?.terrenoHa }}
                                             </div>
-                                        </ng-template>
-                                        <ng-template #noterreni>
-                                            -
-                                        </ng-template>
-                                        <i class="guida fas fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"
-                                           placement="left"></i>
-                                    </div>
+                                            <button *ngIf="richiesta?.tipoTerreno && richiesta?.tipoTerreno.length > 1"
+                                                    class="btn btn-light px-1 py-0" [ngbPopover]="terreni" placement="left"
+                                                    (click)="$event.stopPropagation()">
+                                                +{{ richiesta?.tipoTerreno?.length - 1 }}</button>
+                                            <ng-template #terreni>
+                                                <div *ngIf="methods._terreniMinori(richiesta?.tipoTerreno) as terreniTooltip">
+                                                    <div *ngFor="let terreno of terreniTooltip" class="h6 mb-0">
+                                                        {{ methods._tipoTerreno(terreno)}}
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                            <ng-template #noterreni>
+                                                -
+                                            </ng-template>
+                                            <i class="guida fas fa-tree fa-fw ml-1" ngbTooltip="Tipologia terreno"
+                                               placement="left"></i>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- complessità -->
                                     <ng-template [ngIf]="richiesta?.complessita?.indice !== '0'">
@@ -535,6 +508,64 @@
                                             </h4>
                                         </div>
                                     </ng-template>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="richiesta?.localita?.note || richiesta?.notePrivate || richiesta?.notePubbliche || richiesta?.zoneEmergenza?.length || richiesta?.tags?.length">
+                            <div class="card note-localita bg_diagonal_grey mt-1">
+                                <div class="card-header py-1 px-2">
+                                    <div class="card-title mb-0">Note</div>
+                                </div>
+                                <div class="card-body py-2">
+                                    <ng-container *ngIf="richiesta?.localita?.note">
+                                        <h6 class="mb-1">
+                                            <span class="cursor-pointer"
+                                                  ngbTooltip="Note Indirizzo"
+                                                  placement="top">
+                                                <i class="fas fa-map-marker mr-1"></i>
+                                                <i class="fas fa-sticky-note mr-1"></i>
+                                            </span>
+                                            {{ richiesta.localita.note }}
+                                        </h6>
+                                    </ng-container>
+                                    <ng-container *ngIf="richiesta?.notePrivate">
+                                        <h6 class="mb-1">
+                                            <span class="cursor-pointer"
+                                                  ngbTooltip="Note Private"
+                                                  placement="top">
+                                                <i class="fas fa-user-lock mr-1"></i>
+                                                <i class="fas fa-sticky-note mr-1"></i>
+                                            </span>
+                                            {{ richiesta.notePrivate }}
+                                        </h6>
+                                    </ng-container>
+                                    <ng-container *ngIf="richiesta?.notePubbliche">
+                                        <h6 class="mb-1">
+                                            <span class="cursor-pointer"
+                                                  ngbTooltip="Note Pubbliche"
+                                                  placement="top">
+                                                <i class="fas fa-sticky-note mr-1"></i>
+                                            </span>
+                                            {{ richiesta.notePubbliche }}
+                                        </h6>
+                                    </ng-container>
+                                    <ng-container *ngIf="richiesta?.zoneEmergenza?.length">
+                                        <div *ngFor="let ze of richiesta.zoneEmergenza"
+                                             class="badge badge-danger m-1">
+                                            {{ ze }}
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="richiesta?.tags?.length">
+                                        <div>
+                                            <i class="guida fas fa-tags fa-fw text-left mr-1" title="Etichette"></i>
+                                            <div *ngFor="let tag of richiesta?.tags"
+                                                 class="badge badge-secondary text-right py-2 m-1">
+                                                <i class="fas fa-hashtag fa-fw text-left"></i>
+                                                {{ tag }}
+                                            </div>
+                                        </div>
+                                    </ng-container>
                                 </div>
                             </div>
                         </div>
