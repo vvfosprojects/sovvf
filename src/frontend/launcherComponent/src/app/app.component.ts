@@ -266,7 +266,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 this.width = innerWidth;
                 this.store.dispatch(new SetInnerWidth(innerWidth));
                 this.setLoaderPosition();
-                if (this.viewState.mappa.active && this.backupView) {
+                if (this.viewState?.mappa?.active && this.backupView) {
                     if (this.backupView.view.richieste.active) {
                         this.store.dispatch(new ChangeView(AppFeatures.Richieste));
                     } else if (this.backupView.view.mezziInServizio.active) {
