@@ -6,7 +6,6 @@ import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 import { AuthState, AuthStateModel } from '../../../../features/auth/store/auth.state';
 import { AppState, AppStateModel } from '../app/app.state';
 import { RoutesPath } from '../../../enum/routes-path.enum';
-import { ChangeView } from '../../../../features/home/store/actions/view/view.actions';
 
 export interface ViewportStateModel {
     availHeight: number;
@@ -104,10 +103,10 @@ export class ViewportState {
 
     @Action(SetInnerWidth)
     setInnerWidth({ getState, patchState, dispatch }: StateContext<ViewportStateModel>, { innerWidth }: SetInnerWidth): void {
-        const state = getState();
-        if (innerWidth > state.maxInnerWidthDoubleMonitor) {
-            dispatch(new ChangeView(8));
-        }
+        // const state = getState();
+        // if (innerWidth > state.maxInnerWidthDoubleMonitor) {
+        //     dispatch(new ChangeView(8));
+        // }
         patchState({ innerWidth });
     }
 

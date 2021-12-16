@@ -253,6 +253,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
             if (this.width !== innerWidth) {
                 this.width = innerWidth;
                 this.store.dispatch(new SetInnerWidth(innerWidth));
+                this.setLoaderPosition();
             }
         }
     }
