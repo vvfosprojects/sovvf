@@ -167,7 +167,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<ComposizioneMezzi>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(c => c.Id)
+                cm.MapIdMember(c => c.IdMongo)
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });

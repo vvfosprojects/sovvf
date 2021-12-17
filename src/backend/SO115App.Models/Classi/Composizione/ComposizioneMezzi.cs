@@ -27,6 +27,7 @@ namespace SO115App.API.Models.Classi.Composizione
     public class ComposizioneMezzi
     {
         public string Id { get; set; }
+        public string IdMongo { get; set; }
         public Mezzo Mezzo { get; set; }
 
         /// <summary>

@@ -8,7 +8,8 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
 {
     public class SetComposizioneMezzi : ISetComposizioneMezzi
     {
-        DbContext _dbContext;
+        private readonly DbContext _dbContext;
+
         public SetComposizioneMezzi(DbContext dbContext) => _dbContext = dbContext;
 
         public void Set(List<ComposizioneMezzi> mezzi)
