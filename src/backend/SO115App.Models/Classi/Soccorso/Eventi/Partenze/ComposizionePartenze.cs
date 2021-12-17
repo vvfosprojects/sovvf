@@ -53,7 +53,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             Partenza = partenza;
             FuoriSede = fuoriSede;
 
-            Partenza.Cordinate = coordinatePartenza;
+            Partenza.Coordinate = coordinatePartenza;
         }
 
         /// <summary>

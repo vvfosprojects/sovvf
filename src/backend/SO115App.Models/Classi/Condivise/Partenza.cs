@@ -26,7 +26,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         /// Le coordinate da cui il mezzo associato alla partenza è partito
         /// </summary>
-        public CoordinateString Cordinate { get; set; }
+        public CoordinateString Coordinate { get; set; }
         /// <summary>
         ///   Codice incrementale univoco legato alla partenza
         /// </summary>
