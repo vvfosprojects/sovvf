@@ -24,6 +24,10 @@ namespace SO115App.API.Models.Classi.Condivise
     public class Partenza
     {
         /// <summary>
+        /// Le coordinate da cui il mezzo associato alla partenza è partito
+        /// </summary>
+        public Coordinate Cordinate { get; set; }
+        /// <summary>
         ///   Codice incrementale univoco legato alla partenza
         /// </summary>
         public string Codice { get; set; }
@@ -51,10 +55,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Indica se la partenza è stata annullata
         /// </summary>
-        public bool PartenzaAnnullata
-        {
-            get; set;
-        } = false;
+        public bool PartenzaAnnullata { get; set; } = false;
 
         /// <summary>
         ///   Indica se la partenza è terminata

@@ -23,6 +23,13 @@ import { AddZonaEmergenza, ResetZonaEmergenzaForm } from '../../zone-emergenza/s
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { RichiesteState } from '../../home/store/states/richieste/richieste.state';
 import { GetInitCentroMappa, SetCentroMappa } from '../store/actions/centro-mappa.actions';
+import { Partenza } from '../../../shared/model/partenza.model';
+import { MezziInServizioState } from '../../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
+import { Coordinate } from '../../../shared/model/coordinate.model';
+import { ViewComponentState } from '../../home/store/states/view/view.state';
+import { SchedeContattoState } from '../../home/store/states/schede-contatto/schede-contatto.state';
+import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -51,13 +58,6 @@ import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
-import { Partenza } from '../../../shared/model/partenza.model';
-import { MezziInServizioState } from '../../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
-import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
-import { Coordinate } from '../../../shared/model/coordinate.model';
-import { ViewComponentState } from '../../home/store/states/view/view.state';
-import { SchedeContattoState } from '../../home/store/states/schede-contatto/schede-contatto.state';
-import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 
 @Component({
     selector: 'app-map-esri',
@@ -286,7 +286,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const coordinateCentro = richiestaSelezionata.localita.coordinate;
             const zoom = 19;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
-            richiestaSelezionata.partenze.forEach((p: Partenza) => {
+            richiestaSelezionata.partenze.forEach((p: Partenza, index: number) => {
+                if (index === 0) {
+                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                }
                 if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
                     const origin = { lat: +p.partenza.mezzo.coordinateStrg[0], lng: +p.partenza.mezzo.coordinateStrg[1] };
                     const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
@@ -298,6 +301,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
             this.clearDirection();
+            this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
         }
 
         // Controllo il valore di "richiestaModifica"
