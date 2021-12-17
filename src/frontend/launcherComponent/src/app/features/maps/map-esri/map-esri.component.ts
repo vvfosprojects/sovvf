@@ -30,6 +30,7 @@ import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ViewComponentState } from '../../home/store/states/view/view.state';
 import { SchedeContattoState } from '../../home/store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
+import { ESRI_LAYERS_CONFIG } from '../../../core/settings/esri-layers-config';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -89,7 +90,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
 
-    operatore: Utente;
+    @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
+    @ViewChild('contextMenu', { static: false }) private contextMenu: ElementRef;
 
     map: Map;
     view: any = null;
@@ -103,10 +105,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     sediOperativeFeatureLayer: FeatureLayer;
     sediOperativeMarkersGraphics = [];
 
+    operatore: Utente;
     RoutesPath = RoutesPath;
-
-    @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
-    @ViewChild('contextMenu', { static: false }) private contextMenu: ElementRef;
 
     constructor(private http: HttpClient,
                 private mapService: MapService,
@@ -288,10 +288,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
             richiestaSelezionata.partenze.forEach((p: Partenza, index: number) => {
                 if (index === 0) {
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
                 }
                 if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
-                    const origin = { lat: +p.partenza.mezzo.coordinateStrg[0], lng: +p.partenza.mezzo.coordinateStrg[1] };
+                    const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
                     const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
                     const genereMezzo = p.partenza.mezzo.genere;
                     const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
@@ -301,7 +301,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
             this.clearDirection();
-            this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
+            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
         }
 
         // Controllo il valore di "richiestaModifica"
@@ -332,15 +332,15 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     const codFiltro = filtro.codice.toLocaleLowerCase().replace(/\s+/g, '');
                     switch (codFiltro) {
                         case 'interventichiusi':
-                            this.toggleLayer('Interventi - Chiusi', true).then();
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, true).then();
                             break;
                         default:
-                            this.toggleLayer('Interventi - Chiusi', false).then();
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, false).then();
                             break;
                     }
                 });
             } else {
-                this.toggleLayer('Interventi - Chiusi', false).then();
+                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, false).then();
             }
         }
 
@@ -349,7 +349,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const richiesteActive = changes?.richiesteStatus?.currentValue;
             switch (richiesteActive) {
                 case true:
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
                     break;
             }
         }
@@ -359,11 +359,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const schedeContattoActive = changes?.schedeContattoStatus?.currentValue;
             switch (schedeContattoActive) {
                 case true:
-                    this.toggleLayer('SchedeContatto - Non Gestita', true).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, true).then();
                     break;
                 case false:
-                    this.toggleLayer('SchedeContatto - Non Gestita', false).then(() => {
-                        this.toggleLayer('SchedeContatto - Gestita', false).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, false).then(() => {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.gestite, false).then();
                     });
                     break;
             }
@@ -386,10 +386,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const composizionePartenzaActive = changes?.composizionePartenzaStatus?.currentValue;
             switch (composizionePartenzaActive) {
                 case true:
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
                     break;
                 case false:
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false);
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
                     break;
             }
         }
@@ -399,14 +399,14 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const mezziInServizioActive = changes?.mezziInServizioStatus?.currentValue;
             switch (mezziInServizioActive) {
                 case true:
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
                     break;
                 case false:
                     const backupView = this.store.selectSnapshot(ViewComponentState.colorButton)?.backupViewComponent?.view;
                     if (backupView && backupView.mezziInServizio && backupView.mezziInServizio.active) {
-                        this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
                     } else {
-                        this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
                     }
                     break;
             }

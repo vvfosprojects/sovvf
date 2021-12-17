@@ -57,7 +57,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstSquadreWS = query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
 
-            List<Models.Classi.ServiziEsterni.OPService.Squadra> lstSquadre = new List<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
+            var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.Squadra>();
             if (lstSquadreWS[0] != null)
                 lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Squadre).ToList();
 
@@ -128,7 +128,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     var mc = new ComposizioneMezzi()
                     {
-                        //Id = m.Codice,
+                        Id = m.Codice,
                         Mezzo = m,
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,
