@@ -195,7 +195,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     CodMezzo = partenza.Mezzo.Codice,
                     Istante = dataAdesso,
                     Stato = Costanti.MezzoInViaggio
-                }, _sendNewItemSTATRI, _checkCongruita, _getPosizione.Get(partenza.Mezzo.Codice).Result.ToCoordinate() ?? partenza.Mezzo.Coordinate);
+                }, _sendNewItemSTATRI, _checkCongruita, _getPosizione.Get(partenza.Mezzo.Codice).Result?.ToCoordinate() ?? partenza.Mezzo.Coordinate);
 
                 dataAdesso = dataAdesso.AddSeconds(1);
             }
