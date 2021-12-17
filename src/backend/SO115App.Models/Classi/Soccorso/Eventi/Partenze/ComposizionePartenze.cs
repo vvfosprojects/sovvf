@@ -18,11 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Eccezioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
 {
@@ -51,10 +48,12 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte,
-            bool fuoriSede, Partenza partenza) : base(richiesta, partenza.Mezzo.Codice, istante, codiceFonte, "ComposizionePartenza", partenza.Codice)
+            bool fuoriSede, Partenza partenza, Coordinate coordinatePartenza = null) : base(richiesta, partenza.Mezzo.Codice, istante, codiceFonte, "ComposizionePartenza", partenza.Codice)
         {
             Partenza = partenza;
             FuoriSede = fuoriSede;
+
+            Partenza.Cordinate = coordinatePartenza;
         }
 
         /// <summary>
