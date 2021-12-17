@@ -48,7 +48,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte,
-            bool fuoriSede, Partenza partenza, Coordinate coordinatePartenza = null) : base(richiesta, partenza.Mezzo.Codice, istante, codiceFonte, "ComposizionePartenza", partenza.Codice)
+            bool fuoriSede, Partenza partenza, CoordinateString coordinatePartenza = null) : base(richiesta, partenza.Mezzo.Codice, istante, codiceFonte, "ComposizionePartenza", partenza.Codice)
         {
             Partenza = partenza;
             FuoriSede = fuoriSede;
