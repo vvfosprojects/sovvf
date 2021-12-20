@@ -10,6 +10,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Allerta;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.AnnullaEmergenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Richiesta;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.RichiestaCreazioneCRA;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.RichiestaGestita;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenza;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetEmergenzaById;
@@ -34,6 +35,7 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<AllertaCommand> _allertaHandler;
         private readonly ICommandHandler<RichiestaCommand> _richiestaHandler;
         private readonly ICommandHandler<RichiestaGestitaCommand> _richiestaGestitaHandler;
+        private readonly ICommandHandler<RichiestaCreazioneCRACommand> _richiestaCreazioneCraHandler;
 
         public GestioneEmergenzaController(ICommandHandler<InsertEmergenzaCommand> InsertHandler,
                                            ICommandHandler<UpdateEmergenzaCommand> UpdateHandler,
@@ -43,7 +45,8 @@ namespace SO115App.API.Controllers
                                            IQueryHandler<GetListaEmergenzeByCodComandoQuery, GetListaEmergenzeByCodComandoResult> GetListaEmergenzeByCodComandoHandler,
                                            ICommandHandler<AllertaCommand> AllertaHandler,
                                            ICommandHandler<RichiestaCommand> richiestaHandler,
-                                           ICommandHandler<RichiestaGestitaCommand> richiestaGestitaHandler)
+                                           ICommandHandler<RichiestaGestitaCommand> richiestaGestitaHandler,
+                                           ICommandHandler<RichiestaCreazioneCRACommand> richiestaCreazioneCraHandler)
         {
             _insertHandler = InsertHandler;
             _updateHandler = UpdateHandler;
@@ -54,6 +57,7 @@ namespace SO115App.API.Controllers
             _allertaHandler = AllertaHandler;
             _richiestaHandler = richiestaHandler;
             _richiestaGestitaHandler = richiestaGestitaHandler;
+            _richiestaCreazioneCraHandler = richiestaCreazioneCraHandler;
         }
 
         [HttpPost("InsertEmergenza")]
@@ -150,6 +154,24 @@ namespace SO115App.API.Controllers
             try
             {
                 _richiestaHandler.Handle(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("AddRichiestaCreazioneCraEmergenza")]
+        public async Task<IActionResult> AddRichiestaCreazioneCraEmergenza([FromBody] RichiestaCreazioneCRACommand command)
+        {
+            command.CodOperatore = Request.Headers["IdUtente"].ToString();
+            command.CodSede = Request.Headers["codicesede"].ToString().Split(',')[0];
+            try
+            {
+                _richiestaCreazioneCraHandler.Handle(command);
                 return Ok();
             }
             catch (Exception ex)
