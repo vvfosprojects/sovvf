@@ -249,13 +249,27 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                             try
                             {
-                                //var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString())));
+                                if (info.coordinate.Trim().Length > 0)
+                                {
+                                    var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString())));
 
-                                //lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+                                    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
-                                //result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
+                                    result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
+                                }
+                                //else
+                                //{
+                                //    var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(0, 0));
+
+                                //    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+
+                                //    result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
+
+                                //}
                             }
-                            catch { }
+                            catch 
+                            { 
+                            }
                         }
                     };
 
