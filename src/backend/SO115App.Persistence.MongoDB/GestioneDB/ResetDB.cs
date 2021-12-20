@@ -40,6 +40,9 @@ namespace SO115App.Persistence.MongoDB.GestioneDB
                 if (!_dbContext.DeleteDB("unitaOperative"))
                     return false;
 
+                if (!_dbContext.DeleteDB("emergenza"))
+                    return false;
+
                 return true;
             }
             catch
