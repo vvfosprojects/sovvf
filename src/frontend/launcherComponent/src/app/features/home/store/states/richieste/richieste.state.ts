@@ -259,6 +259,12 @@ export class RichiesteState {
                 dispatch(new StopLoadingActionRichiesta(action.richiesta.id));
             }
 
+            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
+
+            if (mezziInServizioActive) {
+                this.store.dispatch(new SetRichiestaById(action.richiesta.codice));
+            }
+
             const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
             const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
             const loaderRichieste = state.loadingRichieste;
