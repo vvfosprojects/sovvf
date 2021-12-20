@@ -157,9 +157,10 @@
                         <div class="row py-2 px-3">
                             <div class="col-12">
                                 <button class="btn btn-primary mb-3"
+                                        [disabled]="getEventiRichiestaCreazioneCraZonaEmergenza()?.numDoa === f?.listaDoa?.value?.length"
                                         (click)="onAddDoa(zonaEmergenzaById)">
                                     <i class="fas fa-plus"></i>
-                                    Inserisci DOA
+                                    Inserisci DOA ({{ getEventiRichiestaCreazioneCraZonaEmergenza()?.numDoa - f?.listaDoa?.value?.length }} rimanenti)
                                 </button>
                                 <ng-container *ngIf="!f?.listaDoa?.value?.length">
                                     <div class="alert alert-danger">
