@@ -247,14 +247,18 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     }
 
     mezzoDirection(mezzoComp: MezzoComposizione): void {
-        const lat = +mezzoComp.mezzo.coordinateStrg[0];
-        const lon = +mezzoComp.mezzo.coordinateStrg[1];
-        const mezzoDirection = {
-            idMezzo: mezzoComp.id,
-            coordinateMezzo: new Coordinate(lat, lon),
-            genereMezzo: mezzoComp.mezzo.genere
-        } as MezzoDirection;
-        this.mezzoCoordinate.emit(mezzoDirection);
+        const lat = mezzoComp.mezzo.coordinateStrg?.length > 0 ? +mezzoComp.mezzo.coordinateStrg[0] : null;
+        const lon = mezzoComp.mezzo.coordinateStrg?.length > 1 ? +mezzoComp.mezzo.coordinateStrg[1] : null;
+        if (lat && lon) {
+            const mezzoDirection = {
+                idMezzo: mezzoComp.id,
+                coordinateMezzo: new Coordinate(lat, lon),
+                genereMezzo: mezzoComp.mezzo.genere
+            } as MezzoDirection;
+            this.mezzoCoordinate.emit(mezzoDirection);
+        } else {
+            console.error('CoordinateStrg non presenti nel mezzo');
+        }
     }
 
     mezzoDirectionClear(mezzoComp: MezzoComposizione): void {

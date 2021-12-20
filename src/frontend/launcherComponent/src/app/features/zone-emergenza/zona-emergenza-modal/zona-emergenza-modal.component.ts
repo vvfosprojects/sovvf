@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TipologiaEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
+import { roundToDecimal } from '../../../shared/helper/function-generiche';
 import Locator from '@arcgis/core/tasks/Locator';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
     selector: 'app-zona-emergenza-modal',
@@ -11,13 +13,14 @@ import Locator from '@arcgis/core/tasks/Locator';
 })
 export class ZonaEmergenzaModalComponent implements OnInit {
 
+    apertoFromMappa: boolean;
     mapPoint: any;
     lat: number;
     lon: number;
+    indirizzo: number;
+
     allTipologieEmergenza: any[];
     tipologieEmergenza: TipologiaEmergenza[];
-
-    indirizzo: number;
 
     zonaEmergenzaForm: FormGroup;
     zonaEmergenzaEdit: ZonaEmergenza;
@@ -32,23 +35,25 @@ export class ZonaEmergenzaModalComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
-        const locatorTask = new Locator({
-            url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
-        });
+        if (this.apertoFromMappa) {
+            // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
+            const locatorTask = new Locator({
+                url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
+            });
 
-        // Params per il servizio "locationToAddress"
-        const location = this.mapPoint;
-        const params = {
-            location
-        };
+            // Params per il servizio "locationToAddress"
+            const location = this.mapPoint;
+            const params = {
+                location
+            };
 
-        // Trovo l'indirizzo tramite le coordinate
-        locatorTask.locationToAddress(params).then((response) => {
-            console.log('locationToAddress response', response);
-            this.indirizzo = response.attributes.Match_addr;
-            this.patchIndirizzo();
-        });
+            // Trovo l'indirizzo tramite le coordinate
+            locatorTask.locationToAddress(params).then((response) => {
+                console.log('locationToAddress response', response);
+                this.indirizzo = response.attributes.Match_addr;
+                this.patchIndirizzo();
+            });
+        }
 
         if (this.zonaEmergenzaEdit) {
             this.patchForm();
@@ -71,13 +76,17 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             listaModuliImmediata: [null],
             listaModuliConsolidamento: [null],
             listaModuliPotInt: [null],
-            comandanteRegionale: [null],
-            responsabileDistrettoAreaColpita: [null],
-            responsabile: [null],
-            responsabileCampiBaseMezziOperativi: [null],
-            responsabileGestionePersonaleContratti: [null],
             tipologieModuli: [null]
         });
+    }
+
+    onSetIndirizzo(candidate: AddressCandidate): void {
+        const lat = roundToDecimal(candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidate.location.longitude, 6);
+
+        this.f.indirizzo.patchValue(candidate.address);
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lng);
     }
 
     patchIndirizzo(): void {
@@ -86,6 +95,9 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             latitudine: this.lat,
             longitudine: this.lon
         });
+        this.f.indirizzo.disable();
+        this.f.latitudine.disable();
+        this.f.longitudine.disable();
     }
 
     patchForm(): void {
@@ -95,7 +107,6 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             longitudine: this.zonaEmergenzaEdit.localita.coordinate.longitudine,
             tipologia: this.zonaEmergenzaEdit.tipologia.emergenza[0],
             descrizione: this.zonaEmergenzaEdit.descrizione,
-            dirigenti: this.zonaEmergenzaEdit.dirigenti,
             id: this.zonaEmergenzaEdit.id,
             codEmergenza: this.zonaEmergenzaEdit.codEmergenza,
             codComandoRichiedente: this.zonaEmergenzaEdit.codComandoRichiedente,
@@ -104,12 +115,7 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             allertata: this.zonaEmergenzaEdit.allertata,
             listaModuliImmediata: this.zonaEmergenzaEdit.listaModuliImmediata,
             listaModuliConsolidamento: this.zonaEmergenzaEdit.listaModuliConsolidamento,
-            listaModuliPotInt: this.zonaEmergenzaEdit.listaModuliPotInt,
-            comandanteRegionale: this.zonaEmergenzaEdit.dirigenti[0],
-            responsabileDistrettoAreaColpita: this.zonaEmergenzaEdit.dirigenti[1],
-            responsabile: this.zonaEmergenzaEdit.dirigenti[2],
-            responsabileCampiBaseMezziOperativi: this.zonaEmergenzaEdit.dirigenti[3],
-            responsabileGestionePersonaleContratti: this.zonaEmergenzaEdit.dirigenti[4]
+            listaModuliPotInt: this.zonaEmergenzaEdit.listaModuliPotInt
         });
         this.f.tipologia.disable();
     }
