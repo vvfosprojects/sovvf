@@ -204,7 +204,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     {
                         var info = GetInfoSede(regionale.id).Result;
 
-                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, info.Coordinate));
+                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString()))));
                     };
 
                     //PROVINCE
@@ -212,10 +212,35 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     {
                         var info = GetInfoSede(provinciale.id).Result;
 
-                        var lstComunali = GetFigli(provinciale.id).Result
-                            .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione, comunale.Coordinate))
-                            .ToHashSet().ToList();
+                        var listaComuni = GetFigli(provinciale.id).Result;
 
+                        var lstComunali = new List<UnitaOperativa>();
+
+                        foreach (var comune in listaComuni)
+                        {
+                            if (comune.coordinate.Trim().Length > 0)
+                            {
+                                try
+                                {
+                                    var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',')[0].ToString()), Convert.ToDouble(comune.coordinate.Split(',')[1].ToString())));
+                                    lstComunali.Add(unita);
+                                }
+                                catch
+                                {
+                                    if (comune.coordinate.Contains("°"))
+                                    {
+                                        comune.coordinate = comune.DmsToDdString(comune.coordinate);
+                                        var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',')[0].ToString()), Convert.ToDouble(comune.coordinate.Split(',')[1].ToString())));
+                                        lstComunali.Add(unita);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(0, 0));
+                                lstComunali.Add(unita);
+                            }
+                        }
                         var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
 
                         if (centrale != null)
@@ -224,11 +249,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                             try
                             {
-                                var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, info.Coordinate);
+                                //var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString())));
 
-                                lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+                                //lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
-                                result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
+                                //result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
                             }
                             catch { }
                         }
