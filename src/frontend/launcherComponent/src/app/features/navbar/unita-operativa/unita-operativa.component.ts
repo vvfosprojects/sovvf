@@ -7,7 +7,6 @@ import { ClearSediNavbarSelezionate, PatchSediNavbarSelezionate, SetSediNavbarSe
 import { TreeviewEmitterInterface } from '../../../shared/interface/treeview.interface';
 import { delay } from 'rxjs/operators';
 
-
 @Component({
     selector: 'app-unita-operativa',
     templateUrl: './unita-operativa.component.html',
