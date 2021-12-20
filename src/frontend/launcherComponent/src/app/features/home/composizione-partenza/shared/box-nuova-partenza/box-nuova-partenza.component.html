@@ -25,14 +25,15 @@
             <span><b>-</b></span>
         </div>
         <div *ngIf="nuovaPartenza.squadreComposizione?.length === 1" class="col">
-            <div class="nowrap">
-                <i  [ngClass]="_iconaStatiClass(_nomeStatiSquadra(nuovaPartenza.squadreComposizione[0].stato))"
-                    ngbTooltip="Squadra {{ _nomeStatiSquadra(nuovaPartenza.squadreComposizione[0].stato) }}"
-                    class="fas fa-users mr-1 font-weight-bold"></i>
-                <span [ngbTooltip]=" nuovaPartenza.squadreComposizione[0].nome && nuovaPartenza.squadreComposizione[0].nome.length >= 8 ?  nuovaPartenza.squadreComposizione[0].nome : null">
-                    {{ nuovaPartenza.squadreComposizione[0].nome | truncate: 8 }}</span>
+            <div class="nowrap d-flex align-items-center">
+                <i [ngClass]="_iconaStatiClass(_nomeStatiSquadra(nuovaPartenza.squadreComposizione[0].stato))"
+                   ngbTooltip="Squadra {{ _nomeStatiSquadra(nuovaPartenza.squadreComposizione[0].stato) }}"
+                   class="fas fa-users mr-1 font-weight-bold"></i>
+                <span [ngbTooltip]="nuovaPartenza.squadreComposizione[0].nome && nuovaPartenza.squadreComposizione[0].nome.length >= 8 ? nuovaPartenza.squadreComposizione[0].nome : null">
+                    {{ nuovaPartenza.squadreComposizione[0].nome | truncate: 8 }}
+                </span>
                 <button *ngIf="nuovaPartenza.mezzoComposizione && compPartenzaMode === 1 && nuovaPartenza.mezzoComposizione?.mezzo?.stato !== StatoMezzo.InRientro && !disableDividi"
-                        class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
+                        class="btn btn-sm btn-primary btn-no-hover ml-2 px-1 py-0"
                         [disabled]="loadingSquadre || loadingMezzi"
                         [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
                         (click)="squadraShortcutEvent()" ngbTooltip="Dividi squadra">
