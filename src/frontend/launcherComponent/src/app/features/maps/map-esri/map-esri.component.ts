@@ -938,6 +938,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         const allTipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
         const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
 
+        modalNuovaEmergenza.componentInstance.apertoFromMappa = true;
         modalNuovaEmergenza.componentInstance.mapPoint = mapPoint;
         modalNuovaEmergenza.componentInstance.lat = lat;
         modalNuovaEmergenza.componentInstance.lon = lon;

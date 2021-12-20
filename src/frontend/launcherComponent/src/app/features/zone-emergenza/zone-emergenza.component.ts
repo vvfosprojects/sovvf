@@ -11,6 +11,7 @@ import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.sta
 import { TipologiaEmergenza, ZonaEmergenza } from './model/zona-emergenza.model';
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import {
+    AddZonaEmergenza,
     AllertaCONZonaEmergenza,
     AnnullaZonaEmergenza,
     EditZonaEmergenza,
@@ -155,17 +156,40 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         }
     }
 
-    onSetZonaEmergenzaFromMappaActiveValue(): void {
-        if (!this.tastoZonaEmergenzaMappaActive) {
-            this.store.dispatch([
-                new SetZonaEmergenzaFromMappaActiveValue(true),
-                !this.doubleMonitor && new SetMappaActiveValue(true)
-            ]);
-        } else {
-            this.store.dispatch([
-                new SetZonaEmergenzaFromMappaActiveValue(false)
-            ]);
-        }
+    onCreazioneEmergenza(): void {
+        const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'md'
+        });
+
+        const allTipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
+
+        modalNuovaEmergenza.componentInstance.allTipologieEmergenza = allTipologieEmergenza;
+        modalNuovaEmergenza.componentInstance.tipologieEmergenza = tipologieEmergenza;
+
+        modalNuovaEmergenza.result.then((result: string) => {
+            switch (result) {
+                case 'ok':
+                    this.store.dispatch([
+                        new AddZonaEmergenza(),
+                        new SetZonaEmergenzaFromMappaActiveValue(false)
+                    ]);
+                    break;
+                case 'ko':
+                    this.store.dispatch([
+                        new ResetZonaEmergenzaForm(),
+                        new SetZonaEmergenzaFromMappaActiveValue(false)
+                    ]);
+                    break;
+                default:
+                    this.store.dispatch([
+                        new ResetZonaEmergenzaForm(),
+                        new SetZonaEmergenzaFromMappaActiveValue(false)
+                    ]);
+                    break;
+            }
+        });
     }
 
     onDetail(zonaEmergenza: ZonaEmergenza): void {
