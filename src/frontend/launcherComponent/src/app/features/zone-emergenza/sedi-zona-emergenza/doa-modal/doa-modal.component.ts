@@ -44,7 +44,6 @@ export class DoaModalComponent implements OnDestroy {
             indirizzo: [null, [Validators.required]],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
-            dirigente: [null, [Validators.required]],
             listaModuliColonnaMobile: [null, [Validators.required]],
             listaComuniInteressati: [null, [Validators.required]],
             listaPca: [null]
