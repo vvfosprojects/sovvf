@@ -91,16 +91,19 @@
                     </ngx-treeview>
                 </div>
                 <ng-template [ngIf]="tItems">
-                    <div class="mt-4 pl-2">
+                    <div class="mt-4 pl-2"
+                         [class.mb-3]="!alertModificheDaSalvare">
                         <app-checkbox [bigText]="true"
                                       [checkboxState]="{ id: 'editMode', status: viewEditButtons, label: !viewEditButtons ? 'Abilita Modifica' : 'Disabilita Modifica'}"
                                       (checkbox)="toggleViewEditButtons()">
                         </app-checkbox>
                     </div>
                 </ng-template>
-                <div class="alert alert-danger font-weight-bolder mt-3">
-                    Si prega di salvare per non perdere eventuali modifiche.
-                </div>
+                <ng-container *ngIf="alertModificheDaSalvare">
+                    <div class="alert alert-danger font-weight-bolder mt-3">
+                        Si prega di salvare per non perdere eventuali modifiche.
+                    </div>
+                </ng-container>
                 <div class="clearfix">
                     <div class="float-left">
                         <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2"

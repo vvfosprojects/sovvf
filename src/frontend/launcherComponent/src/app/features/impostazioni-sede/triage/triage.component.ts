@@ -71,6 +71,7 @@ export class TriageComponent implements OnDestroy {
     showTriage: boolean;
 
     viewEditButtons = true;
+    alertModificheDaSalvare = true;
 
     itemValueTitleEdit: string;
     itemTitleEdit: string;
@@ -243,6 +244,7 @@ export class TriageComponent implements OnDestroy {
 
     toggleViewEditButtons(): void {
         this.viewEditButtons = !this.viewEditButtons;
+        this.alertModificheDaSalvare = !!this.viewEditButtons;
     }
 
     addItem(item?: TreeItem): void {
