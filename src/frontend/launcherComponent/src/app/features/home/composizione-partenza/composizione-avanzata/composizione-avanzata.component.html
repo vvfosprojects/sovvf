@@ -3,7 +3,20 @@
          class="col-12 m-h-647">
         <app-partial-loader></app-partial-loader>
     </div>
-    <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
+    <div class="col-8">
+      <div class="row">
+      <div class="col-12">
+        <app-filterbar-composizione [filtri]="filtri"
+                                    [nightMode]="nightMode"
+                                    [competenze]="richiesta?.competenze"
+                                    [disableComposizioneMode]="loadingListe"
+                                    [composizionePartenza]="true"
+                                    [loadingSquadre]="loadingSquadre"
+                                    [loadingMezzi]="loadingMezzi"
+                                    [triageSummary]="triageSummary">
+        </app-filterbar-composizione>
+      </div>
+      <div *ngIf="!loadingInvioPartenza" class="col-6 px-0">
         <div class="card min-h-comp">
             <app-partial-loader *ngIf="!squadreComposizione || loadingSquadre"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
@@ -77,8 +90,8 @@
                 </ngb-pagination>
             </div>
         </div>
-    </div>
-    <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
+      </div>
+      <div *ngIf="!loadingInvioPartenza" class="col-6 pr-0">
         <div class="card mx-auto min-h-comp">
             <app-partial-loader *ngIf="!squadreComposizione || loadingMezzi"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
@@ -158,10 +171,12 @@
                 </ngb-pagination>
             </div>
         </div>
+      </div>
+      </div>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-4 pr-0">
         <!-- Lista Partenze Richiesta -->
-        <div style="height:33%">
+        <div style="height:50%">
             <div class="card h-100"
                  [class.card-shadow]="!nightMode">
                 <div class="card-header py-2">
@@ -194,35 +209,36 @@
                 </div>
             </div>
         </div>
-        <!-- Box Partenza -->
-        <div class="w-100 py-2 px-1" style="height:56%">
-            <!-- bottone nuova partenza -->
-            <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
-                <button class="btn btn-primary btn-no-hover"
-                        style="width: 50%"
-                        (click)="nuovaPartenza()"
-                        [disabled]="disableNuovaPartenza || boxPartenzaList.length > 2"><i
-                        class="fas fa-plus mr-2"></i><span>Aggiungi Altra Partenza</span>
-                </button>
-            </div>
-            <!-- lista box partenze -->
-            <div *ngIf="boxPartenzaList?.length">
-                <div *ngFor="let p of boxPartenzaList.slice().reverse(); let index = index">
-                    <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [elimina]="true"
-                                            [nightMode]="nightMode"
-                                            [loadingSquadre]="loadingSquadre"
-                                            [loadingMezzi]="loadingMezzi"
-                                            [disableDividi]="checkDoubleDividi(p)"
-                                            [itemSelezionato]="p.id === idBoxPartenzaSelezionato"
-                                            [compPartenzaMode]="Composizione.Avanzata"
-                                            [alert]="true" (selezionato)="boxPartenzaSelezionato($event)"
-                                            (eliminato)="eliminaBoxPartenza($event)"
-                                            (squadraShortcut)="squadraShortcut($event)"
-                                            (deselezionato)="onClearDirection()">
-                    </app-box-nuova-partenza>
-                </div>
-            </div>
-        </div>
+         <!-- Box Partenza -->
+         <div class="w-100 py-2 px-1" style="height:40%">
+          <!-- bottone nuova partenza -->
+          <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
+              <button class="btn btn-primary btn-no-hover"
+                      style="width: 50%"
+                      (click)="nuovaPartenza()"
+                      [disabled]="disableNuovaPartenza || boxPartenzaList.length > 2"><i
+                      class="fas fa-plus mr-2"></i><span>Aggiungi Altra Partenza</span>
+              </button>
+          </div>
+          <!-- lista box partenze -->
+          <div *ngIf="boxPartenzaList?.length">
+              <div *ngFor="let p of boxPartenzaList.slice().reverse(); let index = index">
+                  <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [elimina]="true"
+                                          [nightMode]="nightMode"
+                                          [loadingSquadre]="loadingSquadre"
+                                          [loadingMezzi]="loadingMezzi"
+                                          [disableDividi]="checkDoubleDividi(p)"
+                                          [itemSelezionato]="p.id === idBoxPartenzaSelezionato"
+                                          [compPartenzaMode]="Composizione.Avanzata"
+                                          [alert]="true" (selezionato)="boxPartenzaSelezionato($event)"
+                                          (eliminato)="eliminaBoxPartenza($event)"
+                                          (squadraShortcut)="squadraShortcut($event)"
+                                          (deselezionato)="onClearDirection()">
+                  </app-box-nuova-partenza>
+              </div>
+          </div>
+      </div>
+
         <!-- Soccorso aereo triage-->
         <div class="clearfix">
             <div class="float-left w-100 pl-2" style="width: 2%">
@@ -249,5 +265,5 @@
                                          [disableConfirmPartenza]="disableConfirmPartenza"
                                          (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()">
         </app-composizione-confirm-button>
-    </div>
+  </div>
 </div>

@@ -78,6 +78,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // Filtri Composizione
     @Input() filtriSelezionati: any;
+    @Input() filtri: any;
 
     // BoxPartenza Composizione
     @Input() boxPartenzaList: BoxPartenza[];
