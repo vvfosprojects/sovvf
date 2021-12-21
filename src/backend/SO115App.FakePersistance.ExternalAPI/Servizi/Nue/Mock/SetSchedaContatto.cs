@@ -74,7 +74,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="codiceSede">il codice sede dell'operatore</param>
         /// <param name="codiceFiscale">il codice fiscale dell'operatore</param>
         /// <param name="gestita">la booleana gestita</param>
-        public void SetGestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
+        public void SetGestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita, string codiceIntervento)
         {
             var schedeContatto = _getSchedeContatto.ListaSchedeContatto(codiceSede);
 
@@ -92,6 +92,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
             }
             schedaContatto.Gestita = gestita;
+            schedaContatto.CodiceInterventoAssociato = codiceIntervento;
 
             Set(schedaContatto, codiceScheda);
         }

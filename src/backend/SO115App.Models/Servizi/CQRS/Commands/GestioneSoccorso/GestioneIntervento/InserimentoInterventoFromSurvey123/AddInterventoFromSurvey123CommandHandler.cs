@@ -67,7 +67,6 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
 
         public void Handle(AddInterventoFromSurvey123Command command)
         {
-
             List<Tipologia> listaTipologie = new List<Tipologia>()
             {
                 new Tipologia("364","Verifiche statiche speditive (TRIAGE)","")
@@ -100,7 +99,6 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
             var utentiPresaInCarico = intervento.ListaUtentiPresaInCarico?.Select(u => u.Nominativo).ToList();
 
             command.Chiamata.Localita.SplitIndirizzo();
-
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -157,7 +155,7 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
             if (intervento.CodiceSchedaNue != null)
             {
                 var codiceFiscaleOperatore = _getUtenteById.GetUtenteByCodice(command.CodUtente).CodiceFiscale;
-                _setStatoGestioneSchedaContatto.Gestita(intervento.CodiceSchedaNue, command.CodiceSede, codiceFiscaleOperatore, true);
+                _setStatoGestioneSchedaContatto.Gestita(intervento.CodiceSchedaNue, command.CodiceSede, codiceFiscaleOperatore, true, intervento.Codice);
             }
 
             _saveRichiestaAssistenza.Save(richiesta);
