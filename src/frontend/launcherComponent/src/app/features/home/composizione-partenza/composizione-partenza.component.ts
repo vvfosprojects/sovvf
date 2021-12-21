@@ -40,6 +40,8 @@ import { makeCopy } from '../../../shared/helper/function-generiche';
 import { TipologicaComposizionePartenza } from './interface/filtri/tipologica-composizione-partenza.interface';
 import { FiltroTurnoSquadre } from '../../../shared/enum/filtro-turno-composizione-partenza.enum';
 import { TipologicheMezziState } from '../store/states/composizione-partenza/tipologiche-mezzi.state';
+import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
+import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -185,6 +187,18 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     centraMappa(): void {
         this.store.dispatch(new SetCoordCentroMappa(this.richiesta.localita.coordinate));
+    }
+
+    onClickIndirizzoRichiesta(event: SintesiRichiesta): void {
+        const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
+        if (idRichiestaSelezionata === event.id) {
+            this.store.dispatch(new ClearRichiestaSelezionata());
+            setTimeout(() => {
+                this.store.dispatch(new SetRichiestaSelezionata(event.id));
+            }, 1);
+        } else {
+            this.store.dispatch(new SetRichiestaSelezionata(event.id));
+        }
     }
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {

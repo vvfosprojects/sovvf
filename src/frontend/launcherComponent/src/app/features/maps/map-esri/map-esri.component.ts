@@ -30,6 +30,7 @@ import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ViewComponentState } from '../../home/store/states/view/view.state';
 import { SchedeContattoState } from '../../home/store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
+import { ComposizionePartenzaState } from '../../home/store/states/composizione-partenza/composizione-partenza.state';
 import { ESRI_LAYERS_CONFIG } from '../../../core/settings/esri-layers-config';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
@@ -280,24 +281,34 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
         // Controllo il valore di "idRichiestaSelezionata"
         if (changes?.idRichiestaSelezionata?.currentValue && this.map && this.view?.ready) {
-            const richieste = this.store.selectSnapshot(RichiesteState.richieste);
+            let richiestaSelezionata: SintesiRichiesta;
+            let coordinateCentro: Coordinate;
             const idRichiestaSelezionata = changes?.idRichiestaSelezionata?.currentValue;
-            const richiestaSelezionata = richieste.filter((r: SintesiRichiesta) => r.id === idRichiestaSelezionata)[0];
-            const coordinateCentro = richiestaSelezionata.localita.coordinate;
-            const zoom = 19;
-            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
-            richiestaSelezionata.partenze.forEach((p: Partenza, index: number) => {
-                if (index === 0) {
-                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
-                }
-                if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
-                    const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
-                    const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
-                    const genereMezzo = p.partenza.mezzo.genere;
-                    const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
-                    this.getRoute(direction);
-                }
-            });
+
+            if (this.richiesteStatus) {
+                const richieste = this.store.selectSnapshot(RichiesteState.richieste);
+                richiestaSelezionata = richieste.filter((r: SintesiRichiesta) => r.id === idRichiestaSelezionata)[0];
+            } else if (this.composizionePartenzaStatus) {
+                richiestaSelezionata = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+            }
+
+            if (richiestaSelezionata) {
+                coordinateCentro = richiestaSelezionata.localita.coordinate;
+                const zoom = 19;
+                this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+                richiestaSelezionata.partenze.forEach((p: Partenza, index: number) => {
+                    if (index === 0) {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    }
+                    if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
+                        const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
+                        const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
+                        const genereMezzo = p.partenza.mezzo.genere;
+                        const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                        this.getRoute(direction);
+                    }
+                });
+            }
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
             this.clearDirection();
