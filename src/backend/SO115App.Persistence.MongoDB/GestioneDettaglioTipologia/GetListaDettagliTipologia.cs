@@ -2,8 +2,11 @@
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.RicercaElencoPOS;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +17,14 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
     {
         private readonly DbContext _dbContext;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetPOS _getPOS;
 
-        public GetListaDettagliTipologia(DbContext dbContext, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public GetListaDettagliTipologia(DbContext dbContext, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+                                        IGetPOS getPOS)
         {
             _dbContext = dbContext;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getPOS = getPOS;
         }
 
         public List<TipologiaDettaglio> Get(DettaglioTipologiaQuery query)
@@ -53,7 +59,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
                 Descrizione = c.Descrizione,
                 Ricorsivo = c.Ricorsivo,
                 Id = c.Id,
-                Pos = c.Pos
+                Pos = _getPOS.GetPosByCodTipologiaCodDettaglio(new GetElencoPOSQuery() { CodiceSede = c.CodSede, Filters = new FiltriPOS() { idDettaglioTipologia = c.CodiceDettaglioTipologia, idTipologia = c.CodiceTipologia } })
             }).OrderByDescending(c => c.Descrizione).ToList();
         }
 
