@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
@@ -8,19 +8,22 @@ import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.act
 import { ClearRicercaDettagliTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { Observable, Subscription } from 'rxjs';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
+import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-impostazioni-sede',
     templateUrl: './impostazioni-sede.component.html',
     styleUrls: ['./impostazioni-sede.component.scss']
 })
+
 export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
 
+    @ViewChild('acc') accordionComponent: NgbAccordion;
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
 
     private subscriptions: Subscription = new Subscription();
-    
+
     constructor(private store: Store) {
         this.getDoubleMonitorMode();
         this.fetchTipologie();
@@ -54,5 +57,42 @@ export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
     fetchTipologie(): void {
         this.store.dispatch(new GetTipologie());
     }
+
+    AccordionExpandAll(){
+      console.log(this.accordionComponent.activeIds);
+      if(this.accordionComponent.activeIds.length === 2){
+        this.accordionComponent.collapseAll();
+      }
+      else
+      {
+        this.accordionComponent.expandAll();
+      }
+    }
+
+
+    GetTesto():string{
+      if(this.accordionComponent?.activeIds?.length > 0 && this.accordionComponent?.activeIds?.length === 2)
+        return "Chiudi tutto";
+      else
+        return "Espandi tutto";
+    }
+
+    getExpand(id:string):boolean{
+      console.log(id);
+      console.log(this.accordionComponent?.activeIds);
+      if(this.accordionComponent?.activeIds.indexOf(id) !== -1)
+      {
+        console.log("VERO");
+        return true;
+      }
+      else
+      {
+        console.log("FALSO");
+        return false;
+      }
+    }
+
+
+
 
 }

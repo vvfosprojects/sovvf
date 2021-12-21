@@ -8,14 +8,21 @@
                         <i class="fas fa-building mr-1"></i>
                         Impostazioni Sede
                     </h1>
+                    <button class="btn btn-info"
+                      [id]="'btnExpandAll'"
+                      (click)="AccordionExpandAll()">
+                      {{GetTesto()}}
+                    </button>
                 </div>
                 <div class="col-12 col-md-9 mx-auto">
-                    <ngb-accordion [closeOthers]="true" activeIds="triage">
+                    <ngb-accordion #acc="ngbAccordion">
                         <ngb-panel id="dettagliTipologie">
                             <ng-template ngbPanelTitle>
                                 <div class="font-weight-bold text-white">
                                     <i class="fas fa-list"></i>
-                                    DETTAGLI TIPOLOGIE
+                                    DETTAGLI TIPOLOGIE &nbsp;
+                                    <span *ngIf="getExpand('dettagliTipologie')" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
+                                    <span *ngIf="!getExpand('dettagliTipologie')" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
                                 </div>
                             </ng-template>
                             <ng-template ngbPanelContent>
@@ -26,7 +33,9 @@
                             <ng-template ngbPanelTitle>
                                 <div class="font-weight-bold text-white">
                                     <i class="fas fa-question-circle"></i>
-                                    TRIAGE
+                                    TRIAGE &nbsp;
+                                    <span *ngIf="getExpand('triage')" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
+                                    <span *ngIf="!getExpand('triage')" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
                                 </div>
                             </ng-template>
                             <ng-template ngbPanelContent>
