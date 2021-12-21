@@ -472,31 +472,32 @@ export class SchedeContattoState {
     @Action(OpenDetailSC)
     openDetailSC({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDetailSC): void {
         const state = getState();
-        const schedaContattoDetail = state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
-        const innerWidth = window.innerWidth;
-        if (innerWidth && innerWidth > 3700) {
-            this.ngZone.run(() => {
-                const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
-                    {
-                        windowClass: 'xxlModal modal-holder modal-left',
-                        backdropClass: 'light-blue-backdrop',
-                        centered: true,
-                        backdrop: true,
-                    }
-                );
-                modal.componentInstance.schedaContatto = schedaContattoDetail;
-            });
-        } else {
+        const schedaContattoDetail = state.schedeContatto?.length ? state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0] : null;
+        if (schedaContattoDetail) {
             this.ngZone.run(() => {
                 const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
                     {
                         windowClass: 'xxlModal modal-holder',
                         backdropClass: 'light-blue-backdrop',
                         centered: true,
-                        backdrop: true,
+                        backdrop: true
                     }
                 );
                 modal.componentInstance.schedaContatto = schedaContattoDetail;
+            });
+        } else {
+            this.schedeContattoService.getSchedaContatto(action.codiceScheda).subscribe((schedaContatto: SchedaContatto) => {
+                this.ngZone.run(() => {
+                    const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
+                        {
+                            windowClass: 'xxlModal modal-holder',
+                            backdropClass: 'light-blue-backdrop',
+                            centered: true,
+                            backdrop: true
+                        }
+                    );
+                    modal.componentInstance.schedaContatto = schedaContatto;
+                });
             });
         }
     }

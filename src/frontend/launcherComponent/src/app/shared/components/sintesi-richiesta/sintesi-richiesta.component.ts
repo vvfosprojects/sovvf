@@ -26,6 +26,7 @@ import { defineChiamataIntervento } from '../../helper/function-richieste';
 import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
 import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
 import { EnteInterface } from '../../interface/ente.interface';
+import { OpenDetailSC } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -204,6 +205,12 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     checkNumeroPartenzeAttive(partenze: Partenza[]): number {
         return checkNumeroPartenzeAttive(partenze);
+    }
+
+    onDettaglioSchedaContatto(codiceScheda: string): void {
+        if (codiceScheda) {
+            this.store.dispatch(new OpenDetailSC(codiceScheda));
+        }
     }
 
     openDettaglioTriage(): void {
