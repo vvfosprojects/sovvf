@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12">
+    <!-- <div class="col-12">
         <app-filterbar-composizione [filtri]="filtri$ | async"
                                     [nightMode]="nightMode"
                                     [competenze]="richiesta?.competenze"
@@ -29,7 +29,7 @@
                                     [loadingMezzi]="loadingMezzi$ | async"
                                     [triageSummary]="summary$ | async">
         </app-filterbar-composizione>
-    </div>
+    </div> -->
     <div class="col-12">
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce"
              class="px-3">
@@ -55,7 +55,9 @@
     <div class="col-12">
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata"
              class="px-3">
-            <app-composizione-avanzata [richiesta]="richiesta"
+            <app-composizione-avanzata
+                                       [filtri]="filtri$ | async"
+                                       [richiesta]="richiesta"
                                        [nightMode]="nightMode"
                                        [loadingInvioPartenza]="loadingInvioPartenza$ | async"
                                        [boxAttivi]="boxAttivi"
