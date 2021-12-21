@@ -9,9 +9,9 @@
                         Impostazioni Sede
                     </h1>
                     <button class="btn btn-info"
-                      [id]="'btnExpandAll'"
-                      (click)="AccordionExpandAll()">
-                      {{GetTesto()}}
+                            [id]="'btnExpandAll'"
+                            (click)="accordionExpandAll()">
+                        {{ getTesto() }}
                     </button>
                 </div>
                 <div class="col-12 col-md-9 mx-auto">
@@ -21,8 +21,12 @@
                                 <div class="font-weight-bold text-white">
                                     <i class="fas fa-list"></i>
                                     DETTAGLI TIPOLOGIE &nbsp;
-                                    <span *ngIf="getExpand('dettagliTipologie')" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
-                                    <span *ngIf="!getExpand('dettagliTipologie')" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
+                                    <span *ngIf="getExpand('dettagliTipologie')"
+                                          class="float-right cursor-pointer mr-2"><i
+                                            class="fas fa-chevron-down"></i></span>
+                                    <span *ngIf="!getExpand('dettagliTipologie')"
+                                          class="float-right cursor-pointer mr-2"><i
+                                            class="fas fa-chevron-up"></i></span>
                                 </div>
                             </ng-template>
                             <ng-template ngbPanelContent>
@@ -34,8 +38,10 @@
                                 <div class="font-weight-bold text-white">
                                     <i class="fas fa-question-circle"></i>
                                     TRIAGE &nbsp;
-                                    <span *ngIf="getExpand('triage')" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
-                                    <span *ngIf="!getExpand('triage')" class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
+                                    <span *ngIf="getExpand('triage')" class="float-right cursor-pointer mr-2"><i
+                                            class="fas fa-chevron-down"></i></span>
+                                    <span *ngIf="!getExpand('triage')" class="float-right cursor-pointer mr-2"><i
+                                            class="fas fa-chevron-up"></i></span>
                                 </div>
                             </ng-template>
                             <ng-template ngbPanelContent>

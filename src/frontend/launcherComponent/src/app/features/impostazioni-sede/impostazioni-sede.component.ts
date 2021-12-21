@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
@@ -58,41 +58,24 @@ export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetTipologie());
     }
 
-    AccordionExpandAll(){
-      console.log(this.accordionComponent.activeIds);
-      if(this.accordionComponent.activeIds.length === 2){
-        this.accordionComponent.collapseAll();
-      }
-      else
-      {
-        this.accordionComponent.expandAll();
-      }
+    accordionExpandAll(): void {
+        console.log(this.accordionComponent.activeIds);
+        if (this.accordionComponent.activeIds.length === 2) {
+            this.accordionComponent.collapseAll();
+        } else {
+            this.accordionComponent.expandAll();
+        }
     }
 
-
-    GetTesto():string{
-      if(this.accordionComponent?.activeIds?.length > 0 && this.accordionComponent?.activeIds?.length === 2)
-        return "Chiudi tutto";
-      else
-        return "Espandi tutto";
+    getTesto(): string {
+        if (this.accordionComponent?.activeIds?.length > 0 && this.accordionComponent?.activeIds?.length === 2) {
+            return 'Chiudi tutto';
+        } else {
+            return 'Espandi tutto';
+        }
     }
 
-    getExpand(id:string):boolean{
-      console.log(id);
-      console.log(this.accordionComponent?.activeIds);
-      if(this.accordionComponent?.activeIds.indexOf(id) !== -1)
-      {
-        console.log("VERO");
-        return true;
-      }
-      else
-      {
-        console.log("FALSO");
-        return false;
-      }
+    getExpand(id: string): boolean {
+        return this.accordionComponent?.activeIds.indexOf(id) !== -1;
     }
-
-
-
-
 }
