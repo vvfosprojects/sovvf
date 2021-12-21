@@ -318,7 +318,23 @@ export class SchedeContattoState {
 
     @Action(SetSchedaContattoGestita)
     setSchedaContattoGestita({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoGestita): void {
-        this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita).subscribe(() => {
+        this.ngZone.run(() => {
+            const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
+                {
+                    windowClass: 'xxlModal modal-holder',
+                    backdropClass: 'light-blue-backdrop',
+                    centered: true,
+                    backdrop: true
+                }
+            );
+            modal.result.then((res: { type: string, codIntervento: string }) => {
+                switch (res.type) {
+                    case 'ok':
+                        this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita, res.codIntervento).subscribe(() => {
+                        });
+                        break;
+                }
+            });
         });
     }
 
@@ -475,8 +491,7 @@ export class SchedeContattoState {
         const schedaContattoDetail = state.schedeContatto?.length ? state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0] : null;
         if (schedaContattoDetail) {
             this.ngZone.run(() => {
-                const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
-                    {
+                const modal = this.modal.open(DettaglioSchedaContattoModalComponent, {
                         windowClass: 'xxlModal modal-holder',
                         backdropClass: 'light-blue-backdrop',
                         centered: true,
@@ -488,8 +503,7 @@ export class SchedeContattoState {
         } else {
             this.schedeContattoService.getSchedaContatto(action.codiceScheda).subscribe((schedaContatto: SchedaContatto) => {
                 this.ngZone.run(() => {
-                    const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
-                        {
+                    const modal = this.modal.open(DettaglioSchedaContattoModalComponent, {
                             windowClass: 'xxlModal modal-holder',
                             backdropClass: 'light-blue-backdrop',
                             centered: true,
