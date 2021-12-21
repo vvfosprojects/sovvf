@@ -10,8 +10,6 @@ import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interfac
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
 import {
-    ClearDettaglioTipologiaTriageChiamata,
-    ClearTriageChiamata,
     SetDettaglioTipologiaTriageChiamata,
     SetTipologiaTriageChiamata
 } from '../../store/actions/triage-modal/triage-modal.actions';
@@ -166,19 +164,6 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato?.codiceDettaglioTipologia, this.pos));
     }
 
-    onResetDettaglioTipologiaSelezionato(): void {
-        this.dettaglioTipologiaSelezionato = null;
-        this.store.dispatch([
-            new ClearDettaglioTipologiaTriageChiamata(),
-            new ClearTriageChiamata()
-        ]);
-        this.clearTriageSummary();
-    }
-
-    clearTriageSummary(): void {
-        this.triageSummary = null;
-    }
-
     getDomandeTriage(): void {
         this.subscriptions.add(
             this.triage$.subscribe((triage: TreeviewItem) => {
@@ -299,6 +284,6 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return !this.dettaglioTipologiaSelezionato ? 'Dettaglio Tipologia' : 'Triage';
+        return 'Triage';
     }
 }
