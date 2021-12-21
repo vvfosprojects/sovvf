@@ -149,7 +149,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                         d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
                         return d;
                     });
-                    this.tipologicheMezzi.turni = [FiltroTurnoSquadre[0], FiltroTurnoSquadre[1]];
+                    this.tipologicheMezzi.turni = [FiltroTurnoSquadre.Precedente, FiltroTurnoSquadre.Successivo];
                     this.store.dispatch(new GetFiltriComposizione());
                 }
             })
