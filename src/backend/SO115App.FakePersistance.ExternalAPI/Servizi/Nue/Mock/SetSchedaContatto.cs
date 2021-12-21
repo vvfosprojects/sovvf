@@ -59,6 +59,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 if (ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
                 {
                     _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("gestita", scheda.Gestita));
+                    _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("codiceInterventoAssociato", scheda.CodiceInterventoAssociato));
                 }
                 else
                 {
