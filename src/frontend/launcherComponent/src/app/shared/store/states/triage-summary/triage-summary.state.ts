@@ -2,27 +2,22 @@ import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { TriageSummary } from '../../../interface/triage-summary.interface';
 import {
-    ClearPosTriageSummary,
     ClearTriageSummary,
-    SetPosTriageSummary,
     SetSchedaContattoTriageSummary,
     SetTriageSummary
 } from '../../actions/triage-summary/triage-summary.actions';
 import { SchedaContatto } from '../../../interface/scheda-contatto.interface';
 import { SchedeContattoService } from '../../../../core/service/schede-contatto/schede-contatto.service';
-import { PosInterface } from '../../../interface/pos.interface';
 import { SetSchedaContattoTelefonata } from '../../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 
 export interface TriageSummaryStateModel {
     summary: TriageSummary[];
     schedaContatto: SchedaContatto;
-    pos: PosInterface[];
 }
 
 export const TriageSummaryStateDefaults: TriageSummaryStateModel = {
     summary: undefined,
     schedaContatto: undefined,
-    pos: undefined
 };
 
 @Injectable()
@@ -51,11 +46,6 @@ export class TriageSummaryState {
         return state.schedaContatto.dettaglio;
     }
 
-    @Selector()
-    static pos(state: TriageSummaryStateModel): PosInterface[] {
-        return state.pos;
-    }
-
     @Action(SetTriageSummary)
     setTriageSummary({ patchState }: StateContext<TriageSummaryStateModel>, action: SetTriageSummary): void {
         patchState({
@@ -78,20 +68,6 @@ export class TriageSummaryState {
             patchState({
                 schedaContatto
             });
-        });
-    }
-
-    @Action(SetPosTriageSummary)
-    setPosTriageSummary({ patchState }: StateContext<TriageSummaryStateModel>, action: SetPosTriageSummary): void {
-        patchState({
-            pos: action.pos
-        });
-    }
-
-    @Action(ClearPosTriageSummary)
-    clearPosTriageSummary({ patchState }: StateContext<TriageSummaryStateModel>): void {
-        patchState({
-            pos: TriageSummaryStateDefaults.pos
         });
     }
 }
