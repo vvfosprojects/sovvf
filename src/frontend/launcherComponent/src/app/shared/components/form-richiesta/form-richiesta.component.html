@@ -177,7 +177,7 @@
                                           [class.is-invalid]="submitted && f.noteIndirizzo.errors"
                                           placeholder="Inserisci le Note Indirizzo"
                                           formControlName="noteIndirizzo"
-                                          style="height: 77px"
+                                          style="height: 77px; max-height: 77px"
                                           role="presentation">
                                 </textarea>
                             </div>
@@ -322,7 +322,8 @@
                                 <input id="interno" type="text" placeholder="Interno" formControlName="interno"
                                        class="form-control">
                             </div>
-                            <div class="col-2 pl-1">
+                            <div class="col-2 pl-1 cursor-pointer"
+                                 (click)="onDettaglioSchedaContatto(f?.codSchedaContatto?.value)">
                                 <ng-template [ngIf]="f?.codSchedaContatto?.value">
                                     <label class="d-none" for="contatto">Contatto</label>
                                     <input id="contatto" type="text" placeholder="Contatto"
@@ -331,7 +332,8 @@
                                 </ng-template>
                                 <ng-template [ngIf]="!f?.codSchedaContatto?.value">
                                     <button class="btn btn-secondary btn-block btn-no-hover"
-                                            (click)="openModalSchedeContatto()">S. Contatto
+                                            (click)="openModalSchedeContatto()">
+                                        S. Contatto
                                     </button>
                                 </ng-template>
                             </div>
@@ -608,7 +610,7 @@
                         </button>
                         <button class="btn btn-primary btn-no-hover btn-xlarge btn-modifica"
                                 style="min-width: 100px; width: 400px"
-                                [disabled]="loadingCompetenze || !competenze?.length || disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="loadingCompetenze || !richiestaModifica?.competenze?.length || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"

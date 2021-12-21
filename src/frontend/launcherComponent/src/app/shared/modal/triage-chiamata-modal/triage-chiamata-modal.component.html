@@ -14,29 +14,6 @@
         <hr class="my-3">
         <h5 class="mr-1">Dettaglio Tipologia Selezionato:</h5>
         <h5 class="font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</h5>
-<!--        <button class="btn btn-danger btn-no-hover" (click)="onResetDettaglioTipologiaSelezionato()">-->
-<!--            <i class="fas fa-sync-alt mr-1"></i>-->
-<!--            Cambia Dettaglio Tipologia-->
-<!--        </button>-->
-    </ng-template>
-    <ng-template [ngIf]="dettagliTipologia?.length && !dettaglioTipologiaSelezionato">
-        <hr class="mt-3 mb-0">
-        <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologia"
-                                      (changeDettaglioTipologia)="setDettaglioTipologiaSelezionato($event)">
-        </app-step-dettaglio-tipologia>
-    </ng-template>
-    <ng-template [ngIf]="!dettagliTipologia?.length && !dettaglioTipologiaSelezionato && !loadingTriageChiamata">
-        <div class="alert alert-danger font-weight-bold mt-3 mb-0">
-            Nessun Dettaglio Tipologia presente per "{{ tipologiaSelezionata?.descrizione }}".
-            <small class="d-block">Puoi gestire i Dettagli Tipologia nella pagina "Impostazioni
-                Sede".</small>
-        </div>
-    </ng-template>
-    <ng-template [ngIf]="!dettaglioTipologiaSelezionato && loadingTriageChiamata">
-        <div class="alert alert-warning font-weight-bold mt-3 mb-0">
-            <i class="fas fa-spinner fa-spin mr-1"></i>
-            Caricamento Dettagli Tipologia
-        </div>
     </ng-template>
     <ng-template [ngIf]="!triage && dettaglioTipologiaSelezionato && !loadingTriageChiamata">
         <div class="alert alert-danger font-weight-bold mt-3 mb-0">

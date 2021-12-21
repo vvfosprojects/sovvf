@@ -18,7 +18,6 @@ import { DettagliTipologieState } from '../../../shared/store/states/dettagli-ti
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
-import { PosInterface } from '../../../shared/interface/pos.interface';
 
 @Component({
     selector: 'app-scheda-richiesta',
@@ -56,9 +55,6 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
     // Triage Summary
     @Select(TriageSummaryState.summary) triageSummary$: Observable<TriageSummary[]>;
-
-    // Pos Summary
-    @Select(TriageSummaryState.pos) pos$: Observable<PosInterface[]>;
 
     permessiFeature = PermissionFeatures;
 

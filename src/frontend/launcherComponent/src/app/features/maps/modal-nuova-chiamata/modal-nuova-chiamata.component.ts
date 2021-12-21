@@ -14,7 +14,6 @@ import { EnteInterface } from '../../../shared/interface/ente.interface';
 import { RichiestaModificaState } from '../../home/store/states/form-richiesta/richiesta-modifica.state';
 import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
-import { PosInterface } from '../../../shared/interface/pos.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { ViewComponentState } from '../../home/store/states/view/view.state';
 import { ToggleChiamata } from '../../home/store/actions/view/view.actions';
@@ -46,9 +45,6 @@ export class ModalNuovaChiamataComponent implements OnDestroy {
 
     // Triage Summary
     @Select(TriageSummaryState.summary) triageSummary$: Observable<TriageSummary[]>;
-
-    // Pos Summary
-    @Select(TriageSummaryState.pos) pos$: Observable<PosInterface[]>;
 
     lat: number;
     lon: number;
