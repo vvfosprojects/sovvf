@@ -61,6 +61,8 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                 private store: Store,
                 private route: ActivatedRoute,
                 private areaDocumentaleService: AreaDocumentaleService) {
+        // TODO: modificare quando verranno inserite nuove tipologie di documentazione
+        localStorage.setItem(LSNAME.areaDocumentale, '1');
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
