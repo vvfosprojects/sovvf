@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbActiveModal, NgbCalendar, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -29,6 +29,7 @@ export class MezzoActionsModalComponent implements OnInit {
         aperta: false,
     };
     azioneIntervento: string;
+    @ViewChild('timepickerRef') timepickerRef: NgbTimepicker;
 
     constructor(public modal: NgbActiveModal, private fb: FormBuilder, calendar: NgbCalendar) {
         this.todayDate = calendar.getToday();
@@ -67,10 +68,15 @@ export class MezzoActionsModalComponent implements OnInit {
             this.time.hour = d.getHours();
             this.time.minute = d.getMinutes();
             this.time.second = d.getSeconds();
-        } else {
-            this.time.hour = (+this.dataInViaggio.ora) + 2;
+        } else if (this.dataInViaggio) {
+            this.time.hour = (+this.dataInViaggio.ora) + 1;
             this.time.minute = +this.dataInViaggio.minuti;
             this.time.second = d.getSeconds();
+            this.todayDate = {
+                year: +this.dataInViaggio.anno,
+                month: +this.dataInViaggio.mese,
+                day: +this.dataInViaggio.giorno
+            };
         }
     }
 
@@ -83,6 +89,17 @@ export class MezzoActionsModalComponent implements OnInit {
 
     onCancel(): void {
         this.modal.close({ status: 'ko', result: null });
+    }
+
+    onDateNow(): void {
+        const d = new Date();
+        this.time.hour = d.getHours();
+        this.time.minute = d.getMinutes();
+        this.time.second = d.getSeconds();
+        this.timepickerRef.model.hour = d.getHours();
+        this.timepickerRef.model.minute = d.getMinutes();
+        this.timepickerRef.model.second = d.getSeconds();
+        this.todayDate = this.dateNow;
     }
 
     checkUltimoMezzo(): void {

@@ -50,53 +50,61 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string, ora?: string, event?: MouseEvent): void {
-            if (event) {
-                event.stopPropagation();
+        if (event) {
+            event.stopPropagation();
+        }
+        let modal;
+        const dataInViaggio = {
+            anno: '',
+            mese: '',
+            giorno: '',
+            ora: '',
+            minuti: ''
+        };
+        if (ora) {
+            const indexOra = ora.indexOf('T') + 1;
+            const indexMin = ora.indexOf(':') + 1;
+            const indexFirstCut = ora.indexOf('-') + 1;
+            const indexSecondCut = ora.lastIndexOf('-') + 1;
+            dataInViaggio.ora = ora.slice(indexOra, indexOra + 2);
+            dataInViaggio.minuti = ora.slice(indexMin, indexMin + 2);
+            dataInViaggio.anno = ora.slice(0, 4);
+            dataInViaggio.mese = ora.slice(indexFirstCut, indexSecondCut - 1);
+            dataInViaggio.giorno = ora.slice(indexSecondCut, indexOra - 1);
+        }
+        modal = this.modalService.open(MezzoActionsModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            size: 'lg',
+            centered: true
+        });
+        modal.componentInstance.statoMezzo = this.mezzo.stato;
+        modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
+        modal.componentInstance.titleStato = !ora ? '' : ': ' + action;
+        modal.componentInstance.dataInViaggio = dataInViaggio;
+        modal.componentInstance.listaEventi = this.listaEventi;
+        modal.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    if (action) {
+                        this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
+                        const orario = res.result.oraEvento;
+                        const data = res.result.dataEvento;
+                        const azioneIntervento = res.result.azioneIntervento;
+                        this.actionMezzo.emit({
+                            mezzoAction: this.statoMezzoActions,
+                            oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
+                            dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
+                            azioneIntervento,
+                        });
+                    } else {
+                        this.actionMezzo.emit();
+                    }
+                    break;
+                case 'ko':
+                    break;
             }
-            let modal;
-            const dataInViaggio = {
-                ora: '',
-                minuti: ''
-            };
-            if (ora) {
-                const indexOra =  ora.indexOf('T') + 1;
-                const indexMin =  ora.indexOf(':') + 1;
-                dataInViaggio.ora = ora.slice(indexOra, indexOra + 2);
-                dataInViaggio.minuti = ora.slice(indexMin, indexMin + 2);
-            }
-            modal = this.modalService.open(MezzoActionsModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                size: 'lg',
-                centered: true
-            });
-            modal.componentInstance.statoMezzo = this.mezzo.stato;
-            modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
-            modal.componentInstance.titleStato = !ora ? '' : ': ' + action;
-            modal.componentInstance.dataInViaggio = dataInViaggio;
-            modal.componentInstance.listaEventi = this.listaEventi;
-            modal.result.then((res: { status: string, result: any }) => {
-                switch (res.status) {
-                    case 'ok' :
-                        if (action) {
-                            this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
-                            const orario = res.result.oraEvento;
-                            const data = res.result.dataEvento;
-                            const azioneIntervento = res.result.azioneIntervento;
-                            this.actionMezzo.emit({
-                                mezzoAction: this.statoMezzoActions,
-                                oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
-                                dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
-                                azioneIntervento,
-                            });
-                        } else {
-                            this.actionMezzo.emit();
-                        }
-                        break;
-                    case 'ko':
-                        break;
-                }
-            });
+        });
     }
 
     getListaEventiMezzo(): void {
