@@ -25,8 +25,9 @@
         </form>
         <div class="form-group">
           <div class="md-form md-outline" id="default-picker" style="display: flex; justify-content: center;">
-            <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
-            <i class="far fa-clock" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
+            <ngb-timepicker #timepickerRef [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
+            <i (click)="onDateNow()" class="far fa-clock" ngbTooltip="Imposta Data e Ora di adesso" placement="right"
+               style="align-self: center; padding-left: 10px; font-size: 25px; cursor: pointer"></i>
           </div>
         </div>
       </div>
