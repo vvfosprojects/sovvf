@@ -58,7 +58,7 @@ import { getPrioritaTriage } from '../../helper/function-triage';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
-import { ClearSchedaContattoTelefonata, OpenDetailSC } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { ClearSchedaContattoTelefonata, OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { PosInterface } from '../../interface/pos.interface';
 import { makeIdChiamata } from '../../helper/function-richieste';
 import { TipoTerreno } from '../../model/tipo-terreno';
@@ -669,7 +669,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     onDettaglioSchedaContatto(codiceScheda: string): void {
         if (codiceScheda) {
-            this.store.dispatch(new OpenDetailSC(codiceScheda));
+            this.store.dispatch(new OpenDettaglioSchedaContatto(codiceScheda));
         }
     }
 

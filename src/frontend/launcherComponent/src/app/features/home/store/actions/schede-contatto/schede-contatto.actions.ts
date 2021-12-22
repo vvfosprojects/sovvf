@@ -124,7 +124,7 @@ export class ResetFiltriSelezionatiSchedeContatto {
 }
 
 export class SetRangeVisualizzazioneSchedeContatto {
-    static readonly type = '[SchedeContatto]Set Range Visualizzazione Schede Contatto';
+    static readonly type = '[SchedeContatto] Set Range Visualizzazione Schede Contatto';
 
     constructor(public range: RangeSchedeContattoEnum) {
     }
@@ -158,8 +158,8 @@ export class ToggleCollapsed {
     }
 }
 
-export class OpenDetailSC {
-    static readonly type = '[SchedeContatto] Open Detail';
+export class OpenDettaglioSchedaContatto {
+    static readonly type = '[SchedeContatto] Open Dettaglio Scheda Contatto';
 
     constructor(public codiceScheda: string) {
     }

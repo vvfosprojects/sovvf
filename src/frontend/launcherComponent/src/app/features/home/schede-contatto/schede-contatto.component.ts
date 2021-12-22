@@ -6,7 +6,7 @@ import {
     ClearSchedaContattoHover,
     ClearSchedaContattoSelezionata,
     GetListaSchedeContatto,
-    OpenDetailSC,
+    OpenDettaglioSchedaContatto,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
     SetSchedaContattoHover,
@@ -180,7 +180,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     onDettaglioScheda(idSchedaContatto: string): void {
-        this.store.dispatch(new OpenDetailSC(idSchedaContatto));
+        this.store.dispatch(new OpenDettaglioSchedaContatto(idSchedaContatto));
     }
 
     onHoverIn(idSchedaContatto: string): void {

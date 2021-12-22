@@ -37,12 +37,14 @@
             {{ schedaContatto.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS' }}
         </div>
         <div class="col-7 d-flex align-items-center">
-            <i class="fas fa-hashtag mr-2 guida"></i>
-            <span>Codice {{ defineChiamataIntervento(schedaContatto?.codiceInterventoAssociato) }}</span>
-            <button class="btn btn-outline-light ml-4"
-                    (click)="onDettaglioRichiesta(schedaContatto?.codiceInterventoAssociato)">
-                {{ schedaContatto?.codiceInterventoAssociato }}
-            </button>
+            <ng-container *ngIf="schedaContatto?.codiceInterventoAssociato">
+                <i class="fas fa-hashtag mr-2 guida"></i>
+                <span>Codice {{ defineChiamataIntervento(schedaContatto.codiceInterventoAssociato) }}</span>
+                <button class="btn btn-outline-light ml-4"
+                        (click)="onDettaglioRichiesta(schedaContatto.codiceInterventoAssociato)">
+                    {{ schedaContatto.codiceInterventoAssociato }}
+                </button>
+            </ng-container>
         </div>
     </div>
     <!-- Seconda riga -->

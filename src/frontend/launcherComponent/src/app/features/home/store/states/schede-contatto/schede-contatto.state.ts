@@ -3,11 +3,13 @@ import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interfa
 import {
     ClearFiltriSchedeContatto,
     ClearListaSchedeContatto,
-    ClearSchedaContattoHover, ClearSchedaContattoSelezionata,
-    ClearSchedaContattoTelefonata, GetContatoriSchedeContatto,
+    ClearSchedaContattoHover,
+    ClearSchedaContattoSelezionata,
+    ClearSchedaContattoTelefonata,
+    GetContatoriSchedeContatto,
     GetListaSchedeContatto,
     InsertSchedeContatto,
-    OpenDetailSC,
+    OpenDettaglioSchedaContatto,
     ReducerSetFiltroSchedeContatto,
     RemoveSchedeContatto,
     ResetFiltriSelezionatiSchedeContatto,
@@ -18,7 +20,8 @@ import {
     SetListaSchedeContatto,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
-    SetSchedaContattoHover, SetSchedaContattoSelezionata,
+    SetSchedaContattoHover,
+    SetSchedaContattoSelezionata,
     SetSchedaContattoTelefonata,
     SetTabAttivo,
     StartLoadingSchedeContatto,
@@ -52,6 +55,8 @@ import { ResponseInterface } from '../../../../../shared/interface/response/resp
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewComponentState } from '../view/view.state';
+import { GetCodiciRichieste } from '../../../../../shared/store/actions/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.actions';
+import { GestisciSchedaContattoModalComponent } from '../../../../../shared/modal/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.component';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -317,25 +322,30 @@ export class SchedeContattoState {
     }
 
     @Action(SetSchedaContattoGestita)
-    setSchedaContattoGestita({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoGestita): void {
-        this.ngZone.run(() => {
-            const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
-                {
-                    windowClass: 'xxlModal modal-holder',
-                    backdropClass: 'light-blue-backdrop',
-                    centered: true,
-                    backdrop: true
-                }
-            );
-            modal.result.then((res: { type: string, codIntervento: string }) => {
-                switch (res.type) {
-                    case 'ok':
-                        this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita, res.codIntervento).subscribe(() => {
-                        });
-                        break;
-                }
+    setSchedaContattoGestita({ patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoGestita): void {
+        if (action.gestita === true) {
+            dispatch(new GetCodiciRichieste());
+            this.ngZone.run(() => {
+                const modal = this.modal.open(GestisciSchedaContattoModalComponent, {
+                        windowClass: 'modal-holder',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true,
+                        backdrop: true
+                    }
+                );
+                modal.result.then((res: { type: string, codIntervento: string }) => {
+                    switch (res.type) {
+                        case 'ok':
+                            this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita, res.codIntervento).subscribe(() => {
+                            });
+                            break;
+                    }
+                });
             });
-        });
+        } else if (action.gestita === false) {
+            this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita, action.schedaContatto.codiceInterventoAssociato).subscribe(() => {
+            });
+        }
     }
 
     @Action(SetSchedaContattoTelefonata)
@@ -485,8 +495,8 @@ export class SchedeContattoState {
         });
     }
 
-    @Action(OpenDetailSC)
-    openDetailSC({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDetailSC): void {
+    @Action(OpenDettaglioSchedaContatto)
+    openDettaglioSchedaContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDettaglioSchedaContatto): void {
         const state = getState();
         const schedaContattoDetail = state.schedeContatto?.length ? state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0] : null;
         if (schedaContattoDetail) {

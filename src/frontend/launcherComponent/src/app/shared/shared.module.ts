@@ -84,6 +84,7 @@ import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-moda
 import { ListaMezziSganciamentoModalComponent } from './modal/lista-mezzi-sganciamento-modal/lista-mezzi-sganciamento-modal.component';
 import { MezzoInServizioComponent } from './components/mezzo-in-servizio/mezzo-in-servizio.component';
 import { RisultatiAlertComponent } from './components/risultati-alert/risultati-alert.component';
+import { GestisciSchedaContattoModalComponent } from './modal/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -160,7 +161,8 @@ const COMPONENTS = [
     AzioniAreaDocumentaleModalComponent,
     ListaMezziSganciamentoModalComponent,
     MezzoInServizioComponent,
-    RisultatiAlertComponent
+    RisultatiAlertComponent,
+    GestisciSchedaContattoModalComponent
 ];
 const MODULES = [
     PipeModule

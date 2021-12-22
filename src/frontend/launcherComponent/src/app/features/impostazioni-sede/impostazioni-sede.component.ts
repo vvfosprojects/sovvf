@@ -39,6 +39,7 @@ export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        console.log('Componente Impostazioni Sede distrutto');
         this.store.dispatch([
             new ClearRicercaDettagliTipologia(),
             new SetSediNavbarVisible()
@@ -59,7 +60,6 @@ export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
     }
 
     accordionExpandAll(): void {
-        console.log(this.accordionComponent.activeIds);
         if (this.accordionComponent.activeIds.length === 2) {
             this.accordionComponent.collapseAll();
         } else {
