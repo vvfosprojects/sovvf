@@ -201,7 +201,7 @@
                         </div>
                     </ng-template>
                     <!-- INPUT COMPETENZE -->
-                    <ng-template [ngIf]="!loadingCompetenze && competenze?.length === 0 && !richiestaModifica">
+                    <ng-template [ngIf]="!loadingCompetenze && competenze?.length === 0 && !modifica">
                         <div class="form-group mb-2">
                             <label for="competenza_1"
                                    class="d-none">Competenza 1</label>
@@ -404,7 +404,9 @@
             <!-- NOTE -->
             <ng-container *ngIf="!apertoFromMappa">
                 <div class="row p-2 my-2 bg-secondary"></div>
-                <div class="row mb-5">
+                <div class="row"
+                     [class.mb-5]="!modifica"
+                     [class.mb-2]="modifica">
                     <div class="col-8">
                         <div class="row">
                             <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 mb-2 pr-2">
