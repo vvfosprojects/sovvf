@@ -60,6 +60,7 @@ import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
+import { RichiestaGestioneState } from '../../home/store/states/richieste/richiesta-gestione.state';
 
 @Component({
     selector: 'app-map-esri',
@@ -425,11 +426,21 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
         // Controllo il valore di "idMezzoInServizioSelezionato"
         if (changes?.idMezzoInServizioSelezionato?.currentValue && this.map && this.view?.ready) {
-            const mezziInServizio = this.store.selectSnapshot(MezziInServizioState.mezziInServizio);
+            let lat: number;
+            let lon: number;
             const idMezzoInServizioSelezionato = changes?.idMezzoInServizioSelezionato?.currentValue;
-            const mezzoInServizioSelezionato = mezziInServizio.filter((m: MezzoInServizio) => m.mezzo.mezzo.codice === idMezzoInServizioSelezionato)[0];
-            const lat = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[0];
-            const lon = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[1];
+
+            if (this.mezziInServizioStatus) {
+                const mezziInServizio = this.store.selectSnapshot(MezziInServizioState.mezziInServizio);
+                const mezzoInServizioSelezionato = mezziInServizio.filter((m: MezzoInServizio) => m.mezzo.mezzo.codice === idMezzoInServizioSelezionato)[0];
+                lat = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[0];
+                lon = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[1];
+            } else if (this.richiesteStatus) {
+                const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
+                const partenza = richiestaGestione.partenze.filter((p: Partenza) => p.partenza.mezzo.codice === idMezzoInServizioSelezionato)[0];
+                lat = +partenza.partenza.mezzo.coordinateStrg[0];
+                lon = +partenza.partenza.mezzo.coordinateStrg[1];
+            }
             const coordinateCentro = new Coordinate(lat, lon);
             const zoom = 19;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));

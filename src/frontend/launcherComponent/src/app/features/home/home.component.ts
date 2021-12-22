@@ -22,10 +22,6 @@ import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
 
-    private subscription = new Subscription();
-    viewState: ViewLayouts;
-    columnState: Grids;
-
     @Select(NavbarState.navbarIsLoaded) navbarLoaded: Observable<boolean>;
 
     @Select(SediTreeviewState.isDirRegionale) isDirRegionale$: Observable<boolean>;
@@ -48,6 +44,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     boxAttivi: boolean;
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
+
+    viewState: ViewLayouts;
+    columnState: Grids;
+
+    private subscription = new Subscription();
 
     constructor(private store: Store) {
         this.getAllDettagliTipologie();
