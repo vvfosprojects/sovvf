@@ -57,6 +57,8 @@ import { ImpostazioniState } from '../../../../../shared/store/states/impostazio
 import { ViewComponentState } from '../view/view.state';
 import { GetCodiciRichieste } from '../../../../../shared/store/actions/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.actions';
 import { GestisciSchedaContattoModalComponent } from '../../../../../shared/modal/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.component';
+import { GestisciSchedaContattoModalState } from '../../../../../shared/store/states/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.state';
+import { ResetForm } from '@ngxs/form-plugin';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -333,11 +335,16 @@ export class SchedeContattoState {
                         backdrop: true
                     }
                 );
-                modal.result.then((res: { type: string, codIntervento: string }) => {
-                    switch (res.type) {
+                modal.result.then((res: string) => {
+                    switch (res) {
                         case 'ok':
-                            this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita, res.codIntervento).subscribe(() => {
-                            });
+                            const formValueGestioneSchedaContatto = this.store.selectSnapshot(GestisciSchedaContattoModalState.formValue);
+                            this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita, formValueGestioneSchedaContatto.codiceRichiesta).subscribe(() => {
+                                dispatch(new ResetForm({ path: 'gestisciSchedaContattoModal.gestisciSchedaContattoForm' }));
+                            }, () => dispatch(new ResetForm({ path: 'gestisciSchedaContattoModal.gestisciSchedaContattoForm' })));
+                            break;
+                        case 'ko':
+                            dispatch(new ResetForm({ path: 'gestisciSchedaContattoModal.gestisciSchedaContattoForm' }));
                             break;
                     }
                 });

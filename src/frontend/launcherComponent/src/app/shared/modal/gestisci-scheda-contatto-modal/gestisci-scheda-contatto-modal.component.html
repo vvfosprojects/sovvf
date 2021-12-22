@@ -8,9 +8,19 @@
     </button>
 </div>
 <div class="modal-body">
-
+    <form [formGroup]="gestisciSchedaContattoForm" ngxsForm="gestisciSchedaContattoModal.gestisciSchedaContattoForm">
+        <ng-select [items]="codiciRichieste"
+                   [searchable]="!f.codiceRichiesta?.value"
+                   formControlName="codiceRichiesta"
+                   placeholder="Seleziona un codice Chiamata/Intervento">
+        </ng-select>
+    </form>
 </div>
-<div class="modal-footer">
+<div class="modal-footer justify-content-between">
+    <button class="btn btn-lg btn-danger btn-no-hover"
+            (click)="close('ok')">
+        {{ 'Conferma' | uppercase }}
+    </button>
     <button class="btn btn-lg btn-secondary btn-no-hover text-right"
             (click)="close('ko')">
         {{ 'Chiudi' | uppercase }}
