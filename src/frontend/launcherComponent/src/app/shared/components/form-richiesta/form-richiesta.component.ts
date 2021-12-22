@@ -49,7 +49,7 @@ import {
     ClearDettagliTipologie,
     ClearTipologiaTriageChiamata,
     ClearTriageChiamata,
-    GetDettagliTipologieByCodTipologia
+    GetDettagliTipologieByCodTipologia, SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata
 } from '../../store/actions/triage-modal/triage-modal.actions';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
@@ -69,6 +69,7 @@ import { TipologicheMezziState } from '../../../features/home/store/states/compo
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import { TreeviewItem } from 'ngx-treeview';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -77,6 +78,9 @@ import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
     encapsulation: ViewEncapsulation.None
 })
 export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
+
+    @Select(TriageChiamataModalState.triage) triage$: Observable<TreeviewItem>;
+    triage: TreeviewItem;
 
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
@@ -150,6 +154,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         ]);
         this.richiestaForm = this.createAndGetForm();
         this.getTipologiche();
+        this.getTriage();
     }
 
     ngOnInit(): void {
@@ -378,14 +383,14 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         clearTriageSummary(this.store);
         clearTriageChiamataModalData(this.store);
         this.pos = null;
-        if (dettaglioTipologia && !this.richiestaModifica) {
+        if (dettaglioTipologia) {
             // Trovo il dettaglio tipologia nella lista dei dettagli e aggiorno il valore
             const dettaglio = this.dettagliTipologia.filter(x => x.codiceDettaglioTipologia === dettaglioTipologia.codiceDettaglioTipologia)[0];
             this.f.dettaglioTipologia.patchValue(dettaglio);
             this.pos = dettaglio?.pos;
-        } else if (dettaglioTipologia) {
-            const dettaglio = this.dettagliTipologia.filter(x => x.codiceDettaglioTipologia === dettaglioTipologia.codiceDettaglioTipologia)[0];
-            this.pos = dettaglio?.pos;
+            // Setto tipologia e dettaglio per verificare esistenza triage
+            this.store.dispatch(new SetTipologiaTriageChiamata(+this.tipologie.filter((t: Tipologia) => t.codice === this.f.codTipologia.value)[0].codice));
+            this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(dettaglio?.codiceDettaglioTipologia, this.pos));
         }
     }
 
@@ -405,6 +410,59 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 }
             })
         );
+    }
+
+    getTriage(): void {
+        this.subscription.add(
+            this.triage$.subscribe((triage: TreeviewItem) => {
+                if (triage) {
+                    let index = 0;
+                    const mappedTriage = [];
+                    const triageArray = [makeCopy(triage)];
+                    for (const item of triageArray) {
+                        index = index + 1;
+                        mappedTriage[0] = getFatherMapped(item);
+                    }
+                    this.triage = mappedTriage[0];
+                } else {
+                    this.triage = null;
+                }
+            })
+        );
+
+        function getFatherMapped(item): TreeviewItem {
+            return new TreeviewItem({
+                text: item.text,
+                value: item.value,
+                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
+                collapsed: item.internalCollapsed,
+                disabled: item.internalDisabled
+            });
+        }
+
+        function mapTreeviewItems(childrens: any): any {
+            const childrensCopy = childrens;
+            let childrenIndex = 0;
+            for (const children of childrensCopy) {
+                childrensCopy[childrenIndex] = getChildrenMapped(children);
+                childrenIndex = childrenIndex + 1;
+                if (children?.internalChildren) {
+                    mapTreeviewItems(children.internalChildren);
+                }
+            }
+            childrens = childrensCopy;
+            return childrens;
+        }
+
+        function getChildrenMapped(item): TreeviewItem {
+            return new TreeviewItem({
+                text: item.text,
+                value: item.value,
+                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
+                collapsed: item.internalCollapsed,
+                disabled: item.internalDisabled
+            });
+        }
     }
 
     getDettagliTipologia(): void {
@@ -687,10 +745,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const codTipologia = this.f.codTipologia.value;
         let modalOptions: any;
         modalOptions = {
-            windowClass: 'modal-holder',
+            windowClass: 'xxlModal modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
-            size: 'lg'
         };
         const triageModal = this.modalService.open(TriageChiamataModalComponent, modalOptions);
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];

@@ -27,6 +27,9 @@ import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
 import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
 import { EnteInterface } from '../../interface/ente.interface';
 import { OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { ClearMezzoInServizioSelezionato, SetMezzoInServizioSelezionato } from '../../../features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { Mezzo } from '../../model/mezzo.model';
+import { MezziInServizioState } from '../../../features/home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -329,6 +332,18 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
                     break;
             }
         });
+    }
+
+    onSelezioneMezzoPartenza(mezzo: Mezzo): void {
+        const idMezzoInServizioSelezionato = this.store.selectSnapshot(MezziInServizioState.idMezzoInServizioSelezionato);
+        if (idMezzoInServizioSelezionato === mezzo.codice) {
+            this.store.dispatch(new ClearMezzoInServizioSelezionato());
+            setTimeout(() => {
+                this.store.dispatch(new SetMezzoInServizioSelezionato(mezzo.codice));
+            }, 1);
+        } else {
+            this.store.dispatch(new SetMezzoInServizioSelezionato(mezzo.codice));
+        }
     }
 
     openDettaglioSoccorsoAereoModal(open: any): void {

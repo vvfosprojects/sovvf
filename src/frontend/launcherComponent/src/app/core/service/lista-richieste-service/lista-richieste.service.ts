@@ -48,11 +48,11 @@ export class SintesiRichiesteService {
             };
         } else {
             obj = {
-                page: null,
-                pageSize: null,
+                page: 0,
+                pageSize: 1000,
                 searchKey: null,
-                includiRichiesteAperte: null,
-                includiRichiesteChiuse: null,
+                includiRichiesteAperte: true,
+                includiRichiesteChiuse: false,
                 filtriTipologie: null,
                 statiRichiesta: null,
                 tipologiaRichiesta: null,
