@@ -50,6 +50,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     checkedUrgenza: boolean;
     disableUrgenza: boolean;
     apertoFromMappa: boolean;
+    domandeTerminate: boolean;
 
     private subscriptions: Subscription = new Subscription();
 
@@ -237,6 +238,10 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
             this.checkedUrgenza = true;
             this.disableUrgenza = true;
         }
+    }
+
+    checkFineTriage(fineTriage: boolean): void {
+        this.domandeTerminate = fineTriage;
     }
 
     closeModal(type: string): void {
