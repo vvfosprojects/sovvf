@@ -44,7 +44,11 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public CoordinateString ToCoordinateString()
         {
+#if DEBUG
+            return new CoordinateString(Latitudine.ToString().Replace('.', ','), Longitudine.ToString().Replace('.', ','));
+#else
             return new CoordinateString(Latitudine.ToString().Replace(',', '.'), Longitudine.ToString().Replace(',', '.'));
+#endif
         }
     }
 
