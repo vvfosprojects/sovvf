@@ -36,6 +36,12 @@ import { SquadraComposizione } from '../../../../shared/interface/squadra-compos
 })
 export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
+    @Input() filtri: any;
+    // Loading Liste Mezzi e Squadre
+    @Input() loadingListe: boolean;
+    @Input() loadingSquadre: boolean;
+    @Input() loadingMezzi: boolean;
+
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
