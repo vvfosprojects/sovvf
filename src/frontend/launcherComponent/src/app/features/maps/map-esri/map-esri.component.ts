@@ -31,6 +31,7 @@ import { ViewComponentState } from '../../home/store/states/view/view.state';
 import { SchedeContattoState } from '../../home/store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 import { ComposizionePartenzaState } from '../../home/store/states/composizione-partenza/composizione-partenza.state';
+import { RichiestaGestioneState } from '../../home/store/states/richieste/richiesta-gestione.state';
 import { ESRI_LAYERS_CONFIG } from '../../../core/settings/esri-layers-config';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
@@ -60,7 +61,6 @@ import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
-import { RichiestaGestioneState } from '../../home/store/states/richieste/richiesta-gestione.state';
 
 @Component({
     selector: 'app-map-esri',

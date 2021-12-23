@@ -6,13 +6,7 @@ import { RicercaAreaDocumentaleState } from './store/states/ricerca-area-documen
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import {
-    ClearCodCategoriaAreaDocumentale,
-    GetDocumentiAreaDocumentale,
-    SetCodCategoriaAreaDocumentale,
-    StartLoadingDocumentiAreaDocumentale,
-    StopLoadingDocumentiAreaDocumentale
-} from './store/actions/area-documentale/area-documentale.actions';
+import { ClearCodCategoriaAreaDocumentale, GetDocumentiAreaDocumentale, SetCodCategoriaAreaDocumentale, StartLoadingDocumentiAreaDocumentale, StopLoadingDocumentiAreaDocumentale } from './store/actions/area-documentale/area-documentale.actions';
 import { ClearRicercaAreaDocumentale, SetRicercaAreaDocumentale, } from './store/actions/ricerca-area-documentale/ricerca-area-documentale.actions';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';

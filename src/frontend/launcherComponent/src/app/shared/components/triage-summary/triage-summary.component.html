@@ -1,7 +1,6 @@
 <ng-template [ngIf]="dettaglioTipologia">
-    <div class="h3 font-weight-bolder text-left mb-3">
-        {{ dettaglioTipologia?.descrizione | uppercase }}
-    </div>
+    <small class="d-inline-block mt-3">{{ 'Dettaglio tipologia' | uppercase }}</small>
+    <h3 class="mb-3">{{ dettaglioTipologia?.descrizione | uppercase }}</h3>
 </ng-template>
 <ngb-accordion [closeOthers]="true" activeIds="riepilogoTriage" (panelChange)="onShowInfoAggiuntive($event)">
     <!-- POS -->
@@ -21,7 +20,7 @@
             <ng-template ngbPanelContent>
                 <div *ngFor="let p of pos; let i = index"
                      class="clearfix"
-                     [class.mb-2]="(i + 1) <= pos.length">
+                     [class.mb-2]="(i + 1) < pos.length">
                     <div class="float-left pt-2">
                         <h4 class="mb-0" (click)="onViewPos(p)">{{ p.descrizionePos }}</h4>
                     </div>

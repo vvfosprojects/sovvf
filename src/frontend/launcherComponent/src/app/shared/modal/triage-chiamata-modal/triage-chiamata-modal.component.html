@@ -1,7 +1,7 @@
 <div class="modal-header">
     <div class="modal-title font-weight-bold">
-        <h4 class="font-weight-bold"><span class="mr-3">TRIAGE</span> {{ tipologiaSelezionata?.codiceDescrizione }}</h4>
-        <h2 class="font-weight-bold">{{ dettaglioTipologiaSelezionato?.descrizione }}</h2>
+        <h5 class="font-weight-lighter">{{ tipologiaSelezionata?.codiceDescrizione | uppercase }}</h5>
+        <h3>TRIAGE <span class="font-weight-bold">{{ dettaglioTipologiaSelezionato?.descrizione | uppercase }}</span></h3>
     </div>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="dismissModal('dismiss')">

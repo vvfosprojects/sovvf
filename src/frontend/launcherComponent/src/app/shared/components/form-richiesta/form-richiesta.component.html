@@ -17,7 +17,7 @@
                             <div class="float-left w-75">
                                 <label class="d-none">Tipologia intervento</label>
                                 <div class="required-field">
-                                    <ng-select class="border"
+                                    <ng-select class="ng-select-no-border"
                                                [class.errore]="submitted && !checkTipologie()"
                                                bindLabel="codiceDescrizione"
                                                bindValue="codice"
@@ -64,29 +64,28 @@
                         <div class="clearfix">
                             <div class="float-left w-75">
                                 <label class="d-none">Dettaglio tipologia</label>
-                                <div class="">
-                                    <ng-select class="border"
-                                               bindLabel="descrizione"
-                                               clearAllText="Clear"
-                                               placeholder="Seleziona Dettaglio Tipologia"
-                                               formControlName="dettaglioTipologia"
-                                               [notFoundText]="'Nessun dettaglio tipologia trovato'"
-                                               [items]="dettagliTipologia"
-                                               [multiple]="false"
-                                               [closeOnSelect]="true"
-                                               [searchable]="false"
-                                               [hideSelected]="true"
-                                               [readonly]="!f.codTipologia.value"
-                                               (change)="onChangeDettaglioTipologia($event)">
-                                    </ng-select>
-                                </div>
+                                <ng-select bindLabel="descrizione"
+                                           clearAllText="Clear"
+                                           placeholder="Seleziona Dettaglio Tipologia"
+                                           formControlName="dettaglioTipologia"
+                                           [notFoundText]="'Nessun dettaglio tipologia trovato'"
+                                           [items]="dettagliTipologia"
+                                           [multiple]="false"
+                                           [closeOnSelect]="true"
+                                           [searchable]="true"
+                                           [hideSelected]="true"
+                                           [readonly]="!f.codTipologia.value"
+                                           (change)="onChangeDettaglioTipologia($event)">
+                                </ng-select>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="loadingDettagliTipologia" class="font-xlarge pl-2 pt-1">
-                        <i class="fas fa-spinner fa-spin mr-2"></i>
-                        Recupero Dettaglio Tipologia
-                    </div>
+                    <ng-container *ngIf="loadingDettagliTipologia">
+                        <div class="font-xlarge pl-2 py-1">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            Recupero Dettaglio Tipologia
+                        </div>
+                    </ng-container>
                 </div>
             </div>
             <!-- INDIRIZZO -->
@@ -420,7 +419,7 @@
                 <div class="row p-2 my-2 bg-secondary"></div>
                 <div class="row"
                      [class.mb-5]="!modifica"
-                     [class.mb-2]="modifica">
+                     [class.mb-4]="modifica">
                     <div class="col-8">
                         <div class="row">
                             <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 mb-2 pr-2">
@@ -639,22 +638,27 @@
         </form>
     </div>
     <!-- Resoconto triage -->
-    <div class="col-4 h-100 scroll-y pt-1 pb-3"
+    <div class="col-4 h-100 scroll-y px-0 pb-3"
          [class.bg-resoconto-triage]="!apertoFromMappa">
-        <div class="px-2 mb-2 bg-secondary font-weight-bold text-center" style="color: #ffffff">INFO AGGIUNTIVE</div>
-        <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
-                            [dettaglioTipologia]="f.dettaglioTipologia?.value"
-                            [codSchedaContatto]="schedaContatto?.codiceScheda"
-                            [dettaglioSchedaContatto]="schedaContattoDettaglio"
-                            [countInterventiProssimita]="countInterventiProssimita"
-                            [interventiProssimita]="interventiProssimita"
-                            [countInterventiStessaVia]="countInterventiStessaVia"
-                            [interventiStessaVia]="interventiStessaVia"
-                            [countInterventiChiusiStessoIndirizzo]="countInterventiChiusiStessoIndirizzo"
-                            [interventiChiusiStessoIndirizzo]="interventiChiusiStessoIndirizzo"
-                            [triageSummary]="getTipologia(f.codTipologia.value) ? triageSummary : null"
-                            [pos]="getTipologia(f.codTipologia.value) ? pos : null"
-                            [schedaContatto]="schedaContatto">
-        </app-triage-summary>
+        <div class="bg-secondary font-weight-bold border-bottom border-light text-center"
+             style="color: #ffffff">
+            INFO AGGIUNTIVE
+        </div>
+        <div class="px-3">
+            <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
+                                [dettaglioTipologia]="f.dettaglioTipologia?.value"
+                                [codSchedaContatto]="schedaContatto?.codiceScheda"
+                                [dettaglioSchedaContatto]="schedaContattoDettaglio"
+                                [countInterventiProssimita]="countInterventiProssimita"
+                                [interventiProssimita]="interventiProssimita"
+                                [countInterventiStessaVia]="countInterventiStessaVia"
+                                [interventiStessaVia]="interventiStessaVia"
+                                [countInterventiChiusiStessoIndirizzo]="countInterventiChiusiStessoIndirizzo"
+                                [interventiChiusiStessoIndirizzo]="interventiChiusiStessoIndirizzo"
+                                [triageSummary]="getTipologia(f.codTipologia.value) ? triageSummary : null"
+                                [pos]="getTipologia(f.codTipologia.value) ? pos : null"
+                                [schedaContatto]="schedaContatto">
+            </app-triage-summary>
+        </div>
     </div>
 </div>
