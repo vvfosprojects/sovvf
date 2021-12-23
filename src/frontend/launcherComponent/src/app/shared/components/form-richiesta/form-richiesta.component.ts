@@ -757,7 +757,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const codTipologia = this.f.codTipologia.value;
 
         const triageModal = this.modalService.open(TriageChiamataModalComponent, {
-            windowClass: 'xxlModal modal-holder',
+            windowClass: 'xlModal modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
         });

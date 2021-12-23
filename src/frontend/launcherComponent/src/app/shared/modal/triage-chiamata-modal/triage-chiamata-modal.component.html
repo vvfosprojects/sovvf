@@ -1,7 +1,7 @@
 <div class="modal-header">
     <div class="modal-title font-weight-bold">
-        <h4 class="font-weight-bolder"><span class="mr-3">TRIAGE</span> {{ tipologiaSelezionata?.codiceDescrizione }}</h4>
-        <h2 class="font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</h2>
+        <h4 class="font-weight-bold"><span class="mr-3">TRIAGE</span> {{ tipologiaSelezionata?.codiceDescrizione }}</h4>
+        <h2 class="font-weight-bold">{{ dettaglioTipologiaSelezionato?.descrizione }}</h2>
     </div>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="dismissModal('dismiss')">
@@ -10,12 +10,14 @@
 </div>
 <div class="modal-body height py-4 px-5">
     <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
-        <div class="row" [class.doubleSideView]="triageSummary?.length">
+        <div class="row"
+             [class.doubleSideView]="triageSummary?.length">
             <div *ngIf="triageSummary?.length" class="col-6">
+                <h5 class="mb-3">{{ 'Riepilogo Triage' | uppercase }}</h5>
                 <div *ngFor="let summary of triageSummary; let i = index">
                     <div class="alert alert-info"
                          [class.mb-0]="i === triageSummary?.length - 1 && !getSuggerimentoByRispostaValue(summary.rispostaValue)">
-                        <h5>
+                        <h5 class="mb-0">
                             {{ getDomandaByRispostaValue(summary.rispostaValue)?.text }}
                             <span class="font-weight-bolder">{{ summary.risposta }}</span>
                         </h5>
@@ -31,11 +33,16 @@
                     </ng-template>
                 </div>
             </div>
-
-            <div [ngClass]="triageSummary?.length ? 'col-6' : 'col-12'">
-                <h2 *ngIf="domandeTerminate">
-                    DOMANDE TERMINATE
-                </h2>
+            <div class="d-flex align-items-end"
+                 [ngClass]="triageSummary?.length ? 'col-6' : 'col-12'">
+                <ng-container *ngIf="domandeTerminate">
+                    <div class="alert alert-danger w-100 mb-0">
+                        <h5 class="mb-0">
+                            <i class="fas fa-check mr-1"></i>
+                            TRIAGE TERMINATO
+                        </h5>
+                    </div>
+                </ng-container>
                 <app-step-domande [triage]="triage"
                                   (risposta)="setRisposta($event)"
                                   (domandeTerminate)="checkFineTriage($event)">
@@ -44,23 +51,20 @@
         </div>
     </ng-template>
 </div>
-<div class="modal-footer">
-    <div class="clearfix w-100">
-        <ng-container *ngIf="!apertoFromMappa">
-            <div class="float-left mt-2"
-                 ngbTooltip="Necessaria la compilazione dei campi obbligatori"
-                 [disableTooltip]="!disableUrgenza || checkedUrgenza">
+<div class="modal-footer justify-content-between">
+    <ng-container *ngIf="!apertoFromMappa">
+            <span class="d-inline-block mt-2"
+                  ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+                  placement="right"
+                  [disableTooltip]="!disableUrgenza || checkedUrgenza">
                 <app-checkbox
                         [checkboxState]="getCheckboxUrgenzaState()"
                         (click)="setUrgenza()">
                 </app-checkbox>
-            </div>
-        </ng-container>
-        <div class="float-right">
-            <button type="button" class="btn btn-lg btn-success btn-no-hover" (click)="closeModal('success')">
-                <i class="fas fa-check mr-1"></i>
-                {{ 'Chiudi e Salva Triage' | uppercase }}
-            </button>
-        </div>
-    </div>
+            </span>
+    </ng-container>
+    <button type="button" class="btn btn-lg btn-success btn-no-hover" (click)="closeModal('success')">
+        <i class="fas fa-check mr-1"></i>
+        {{ 'Chiudi e Salva Triage' | uppercase }}
+    </button>
 </div>
