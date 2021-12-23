@@ -9,19 +9,6 @@
     </button>
 </div>
 <div class="modal-body height py-4 px-5">
-    <ng-template [ngIf]="!triage && dettaglioTipologiaSelezionato && !loadingTriageChiamata">
-        <div class="alert alert-danger font-weight-bold mt-3 mb-0">
-            Nessuna domanda disponibile per "{{ dettaglioTipologiaSelezionato?.descrizione }}".
-            <small class="d-block">Puoi gestire le domande per i Dettagli Tipologia nella pagina "Impostazioni
-                Sede".</small>
-        </div>
-    </ng-template>
-    <ng-template [ngIf]="!triage && dettaglioTipologiaSelezionato && loadingTriageChiamata">
-        <div class="alert alert-warning font-weight-bold mt-3 mb-0">
-            <i class="fas fa-spinner fa-spin mr-1"></i>
-            Caricamento Domande
-        </div>
-    </ng-template>
     <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
         <div class="row" [class.doubleSideView]="triageSummary?.length">
             <div *ngIf="triageSummary?.length" class="col-6">
@@ -37,7 +24,7 @@
                         <div class="alert alert-primary"
                              [class.mb-0]="i === triageSummary?.length - 1">
                             <h5 class="mb-0 font-weight-bolder">
-                                <i class="fas fa-user mr-1"></i>
+                                <i class="fas fa-bullhorn mr-1"></i>
                                 {{ getSuggerimentoByRispostaValue(summary.rispostaValue) }}
                             </h5>
                         </div>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Tipologia } from '../../model/tipologia.model';
 import { ChiamataMarker } from '../../../features/maps/maps-model/chiamata-marker.model';
@@ -9,39 +9,28 @@ import { Select, Store } from '@ngxs/store';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
 import { Observable, Subscription } from 'rxjs';
-import {
-    SetDettaglioTipologiaTriageChiamata,
-    SetTipologiaTriageChiamata
-} from '../../store/actions/triage-modal/triage-modal.actions';
 import { TreeviewItem } from 'ngx-treeview';
-import { makeCopy } from '../../helper/function-generiche';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
 import { RispostaTriage } from '../../interface/risposta-triage.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
-import { PosInterface } from '../../interface/pos.interface';
 
 @Component({
     selector: 'app-triage-chiamata-modal',
     templateUrl: './triage-chiamata-modal.component.html',
     styleUrls: ['./triage-chiamata-modal.component.scss']
 })
-export class TriageChiamataModalComponent implements OnInit, OnDestroy {
+export class TriageChiamataModalComponent implements OnDestroy {
 
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
-    @Select(TriageChiamataModalState.loadingTriageChiamata) loadingTriageChiamata$: Observable<boolean>;
-    loadingTriageChiamata: boolean;
 
-    @Select(TriageChiamataModalState.triage) triage$: Observable<TreeviewItem>;
     triage: TreeviewItem;
-    @Select(TriageChiamataModalState.triageData) triageData$: Observable<ItemTriageData[]>;
     triageData: ItemTriageData[];
 
     tipologiaSelezionata: Tipologia;
     dettaglioTipologiaSelezionato: DettaglioTipologia;
-    pos: PosInterface[];
 
     chiamataMarker: ChiamataMarker;
 
@@ -57,120 +46,10 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
     constructor(private modal: NgbActiveModal,
                 private store: Store,
                 private modalService: NgbModal) {
-        this.getLoadingTriageChiamata();
-        this.getTriage();
-        this.getTriageData();
-    }
-
-    ngOnInit(): void {
-        this.store.dispatch(new SetTipologiaTriageChiamata(+this.tipologiaSelezionata.codice));
-        if (this.dettaglioTipologiaSelezionato) {
-            this.setDettaglioTipologiaSelezionato();
-        }
-        this.getDettagliTipologia();
     }
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
-    }
-
-    getLoadingTriageChiamata(): void {
-        this.subscriptions.add(
-            this.loadingTriageChiamata$.subscribe((loadingTriageChiamata: boolean) => {
-                this.loadingTriageChiamata = loadingTriageChiamata;
-            })
-        );
-    }
-
-    getDettagliTipologia(): void {
-        this.subscriptions.add(
-            this.dettagliTipologia$.subscribe((dettagliTipologia: DettaglioTipologia[]) => {
-                if (dettagliTipologia) {
-                    this.dettagliTipologia = dettagliTipologia;
-                }
-            })
-        );
-    }
-
-    getTriage(): void {
-        this.subscriptions.add(
-            this.triage$.subscribe((triage: TreeviewItem) => {
-                if (triage) {
-                    let index = 0;
-                    const mappedTriage = [];
-                    const triageArray = [makeCopy(triage)];
-                    for (const item of triageArray) {
-                        index = index + 1;
-                        mappedTriage[0] = getFatherMapped(item);
-                    }
-                    this.triage = mappedTriage[0];
-                } else {
-                    this.triage = null;
-                }
-            })
-        );
-
-        function getFatherMapped(item): TreeviewItem {
-            return new TreeviewItem({
-                text: item.text,
-                value: item.value,
-                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
-                collapsed: item.internalCollapsed,
-                disabled: item.internalDisabled
-            });
-        }
-
-        function mapTreeviewItems(childrens: any): any {
-            const childrensCopy = childrens;
-            let childrenIndex = 0;
-            for (const children of childrensCopy) {
-                childrensCopy[childrenIndex] = getChildrenMapped(children);
-                childrenIndex = childrenIndex + 1;
-                if (children?.internalChildren) {
-                    mapTreeviewItems(children.internalChildren);
-                }
-            }
-            childrens = childrensCopy;
-            return childrens;
-        }
-
-        function getChildrenMapped(item): TreeviewItem {
-            return new TreeviewItem({
-                text: item.text,
-                value: item.value,
-                children: item.internalChildren?.length ? mapTreeviewItems(item.internalChildren) : null,
-                collapsed: item.internalCollapsed,
-                disabled: item.internalDisabled
-            });
-        }
-    }
-
-    getTriageData(): void {
-        this.subscriptions.add(
-            this.triageData$.subscribe((triageData: ItemTriageData[]) => {
-                if (triageData) {
-                    this.triageData = triageData;
-                } else {
-                    this.triageData = null;
-                }
-            })
-        );
-    }
-
-    setDettaglioTipologiaSelezionato(codDettaglioTipologia?: number): void {
-        if (codDettaglioTipologia) {
-            this.dettaglioTipologiaSelezionato = this.dettagliTipologia?.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === codDettaglioTipologia)[0];
-            this.pos = this.dettaglioTipologiaSelezionato?.pos;
-        }
-        this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(this.dettaglioTipologiaSelezionato?.codiceDettaglioTipologia, this.pos));
-    }
-
-    getDomandeTriage(): void {
-        this.subscriptions.add(
-            this.triage$.subscribe((triage: TreeviewItem) => {
-                this.triage = triage;
-            })
-        );
     }
 
     setRisposta(rispostaTriage: RispostaTriage): void {
@@ -251,8 +130,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
         const obj = {
             type,
             dettaglio: this.dettaglioTipologiaSelezionato,
-            triageSummary: this.triageSummary,
-            pos: this.pos
+            triageSummary: this.triageSummary
         };
         this.modal.close(obj);
     }
@@ -273,7 +151,7 @@ export class TriageChiamataModalComponent implements OnInit, OnDestroy {
             (val: string) => {
                 switch (val) {
                     case 'ok':
-                        const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato, pos: this.pos };
+                        const obj = { type, dettaglio: this.dettaglioTipologiaSelezionato };
                         this.modal.close(obj);
                         break;
                     case 'ko':

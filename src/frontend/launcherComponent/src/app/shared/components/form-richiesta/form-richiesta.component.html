@@ -36,12 +36,26 @@
                                     <small>Almeno una tipologia è richiesta</small>
                                 </div>
                             </div>
-                            <div class="float-left w-25 px-2">
-                                <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()"
-                                        [disabled]="!f.dettaglioTipologia.value || modifica">
-                                    {{'Inizia Triage' | uppercase}}
-                                </button>
-                            </div>
+                            <ng-container *ngIf="!modifica">
+                                <div class="float-left w-25 px-2">
+                                    <button class="btn btn-primary btn-block btn-no-hover"
+                                            (click)="!!((!loadingTriageChiamata && triage) || triageSummary) && openTriage()"
+                                            [disabled]="loadingTriageChiamata || !f.dettaglioTipologia.value || modifica || (!loadingTriageChiamata && !triage && !triageSummary)">
+                                        <ng-container *ngIf="loadingTriageChiamata && !modifica">
+                                            <i class="fas fa-spin fa-spinner mr-1"></i>
+                                            {{ 'Caricamento Triage' | uppercase}}
+                                        </ng-container>
+                                        <ng-container
+                                                *ngIf="!loadingTriageChiamata && !triage && !triageSummary">
+                                            {{ 'Triage non presente' | uppercase}}
+                                        </ng-container>
+                                        <ng-container
+                                                *ngIf="(!loadingTriageChiamata && triage) || triageSummary">
+                                            {{ 'Inizia Triage' | uppercase}}
+                                        </ng-container>
+                                    </button>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
                 </div>

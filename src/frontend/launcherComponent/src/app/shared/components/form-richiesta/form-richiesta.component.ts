@@ -1,14 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    OnInit,
-    Output,
-    SimpleChanges,
-    ViewEncapsulation
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -49,14 +39,15 @@ import {
     ClearDettagliTipologie,
     ClearTipologiaTriageChiamata,
     ClearTriageChiamata,
-    GetDettagliTipologieByCodTipologia, SetDettaglioTipologiaTriageChiamata, SetTipologiaTriageChiamata
+    GetDettagliTipologieByCodTipologia,
+    SetDettaglioTipologiaTriageChiamata,
+    SetTipologiaTriageChiamata
 } from '../../store/actions/triage-modal/triage-modal.actions';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ClearTriageSummary, SetSchedaContattoTriageSummary, SetTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
 import { getPrioritaTriage } from '../../helper/function-triage';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
-import { UpdateFormValue } from '@ngxs/form-plugin';
 import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
 import { ClearSchedaContattoTelefonata, OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { PosInterface } from '../../interface/pos.interface';
@@ -68,8 +59,9 @@ import { SchedaTelefonataState } from '../../../features/home/store/states/form-
 import { TipologicheMezziState } from '../../../features/home/store/states/composizione-partenza/tipologiche-mezzi.state';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
-import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import { TreeviewItem } from 'ngx-treeview';
+import { ItemTriageData } from '../../interface/item-triage-data.interface';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -81,6 +73,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     @Select(TriageChiamataModalState.triage) triage$: Observable<TreeviewItem>;
     triage: TreeviewItem;
+    @Select(TriageChiamataModalState.triageData) triageData$: Observable<ItemTriageData[]>;
+    triageData: ItemTriageData[];
+    @Select(TriageChiamataModalState.loadingTriageChiamata) loadingTriageChiamata$: Observable<boolean>;
+    loadingTriageChiamata: boolean;
 
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
@@ -145,16 +141,14 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     constructor(private formBuilder: FormBuilder,
                 private store: Store,
                 private modalService: NgbModal) {
+        this.store.dispatch(new StartChiamata());
+        this.initForm();
         this.getLoadingDettagliTipologia();
         this.getDettagliTipologia();
-        this.store.dispatch([
-            new StartChiamata(),
-            new ClearCountInterventiProssimita(),
-            new ClearInterventiProssimita()
-        ]);
-        this.richiestaForm = this.createAndGetForm();
         this.getTipologiche();
         this.getTriage();
+        this.getTriageData();
+        this.getLoadingTriageChiamata();
     }
 
     ngOnInit(): void {
@@ -229,32 +223,29 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     clearFormDisconnection(): void {
         this.submitted = false;
+        this.pos = null;
         this.store.dispatch([
             new ClearClipboard(),
             new DelChiamataMarker(this.idChiamata),
             new ClearCompetenze(),
             new ClearCountInterventiProssimita(),
             new ClearInterventiProssimita(),
-            new ClearSchedaContattoTelefonata()
         ]);
-        clearSummaryData(this.store);
-        clearTriageSummary(this.store);
-        clearTriageChiamataModalData(this.store);
-        this.pos = null;
 
         if (this.richiestaModifica) {
-            this.store.dispatch([
-                new ChiudiRichiestaModifica()
-            ]);
+            this.store.dispatch(new ChiudiRichiestaModifica());
         } else {
             this.store.dispatch(new ClearSchedaContattoTelefonata());
         }
 
+        clearSummaryData(this.store);
+        clearTriageSummary(this.store);
+        clearTriageChiamataModalData(this.store);
         this.reducerSchedaTelefonata('reset');
     }
 
-    createAndGetForm(): FormGroup {
-        return this.formBuilder.group({
+    initForm(): void {
+        this.richiestaForm = this.formBuilder.group({
             id: [null],
             codice: [null],
             codiceRichiesta: [null],
@@ -389,8 +380,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.dettaglioTipologia.patchValue(dettaglio);
             this.pos = dettaglio?.pos;
             // Setto tipologia e dettaglio per verificare esistenza triage
-            this.store.dispatch(new SetTipologiaTriageChiamata(+this.tipologie.filter((t: Tipologia) => t.codice === this.f.codTipologia.value)[0].codice));
-            this.store.dispatch(new SetDettaglioTipologiaTriageChiamata(dettaglio?.codiceDettaglioTipologia, this.pos));
+            this.store.dispatch([
+                new SetTipologiaTriageChiamata(+this.tipologie.filter((t: Tipologia) => t.codice === this.f.codTipologia.value)[0].codice),
+                new SetDettaglioTipologiaTriageChiamata(dettaglio?.codiceDettaglioTipologia, this.pos)
+            ]);
         }
     }
 
@@ -408,6 +401,14 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 if (loading) {
                     this.loadingDettagliTipologia = loading;
                 }
+            })
+        );
+    }
+
+    getLoadingTriageChiamata(): void {
+        this.subscription.add(
+            this.loadingTriageChiamata$.subscribe((loadingTriageChiamata: boolean) => {
+                this.loadingTriageChiamata = loadingTriageChiamata;
             })
         );
     }
@@ -465,6 +466,18 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    getTriageData(): void {
+        this.subscription.add(
+            this.triageData$.subscribe((triageData: ItemTriageData[]) => {
+                if (triageData) {
+                    this.triageData = triageData;
+                } else {
+                    this.triageData = null;
+                }
+            })
+        );
+    }
+
     getDettagliTipologia(): void {
         this.subscription.add(
             this.dettagliTipologia$.subscribe((dettagliTipologia: DettaglioTipologia[]) => {
@@ -489,7 +502,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             })
         );
     }
-
 
     getTipologia(codTipologia: string): Tipologia {
         return this.tipologie?.filter((t: Tipologia) => t.codice === codTipologia)[0];
@@ -743,66 +755,39 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     openTriage(): void {
         const codTipologia = this.f.codTipologia.value;
-        let modalOptions: any;
-        modalOptions = {
+
+        const triageModal = this.modalService.open(TriageChiamataModalComponent, {
             windowClass: 'xxlModal modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
-        };
-        const triageModal = this.modalService.open(TriageChiamataModalComponent, modalOptions);
+        });
+
         triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
         triageModal.componentInstance.dettaglioTipologiaSelezionato = this.f.dettaglioTipologia.value;
+        triageModal.componentInstance.triage = this.triage;
+        triageModal.componentInstance.triageData = this.triageData;
         triageModal.componentInstance.chiamataMarker = this.chiamataMarker;
         triageModal.componentInstance.checkedUrgenza = !!(this.f.urgenza.value);
         triageModal.componentInstance.disableUrgenza = this.formIsInvalid() || !!(this.f.urgenza.value);
         triageModal.componentInstance.apertoFromMappa = !!(this.apertoFromMappa);
+
         triageModal.result.then((res: TriageModalResult) => {
             switch (res.type) {
                 case 'success':
                     console.log('TriageModalResult', res);
-                    if (res?.dettaglio) {
-                        this.f.dettaglioTipologia.patchValue(res.dettaglio);
-                        this.store.dispatch(new UpdateFormValue({
-                            path: 'schedaTelefonata.richiestaForm',
-                            value: {
-                                dettaglioTipologia: res.dettaglio
-                            }
-                        }));
-                    }
                     if (res?.triageSummary?.length) {
                         saveTriageSummary(this.store, res.triageSummary);
                     }
-                    clearTriageChiamataModalData(this.store);
                     break;
                 case 'dismiss':
                     console.log('TriageModalResult', res);
-                    if (res?.dettaglio) {
-                        this.f.dettaglioTipologia.patchValue(res.dettaglio);
-                        this.store.dispatch(new UpdateFormValue({
-                            path: 'schedaTelefonata.richiestaForm',
-                            value: {
-                                dettaglioTipologia: res.dettaglio
-                            }
-                        }));
-                    } else {
-                        this.f.dettaglioTipologia.patchValue(null);
-                        this.store.dispatch(new UpdateFormValue({
-                            path: 'schedaTelefonata.richiestaForm',
-                            value: {
-                                dettaglioTipologia: null
-                            }
-                        }));
-                    }
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
-                    clearTriageChiamataModalData(this.store);
                     break;
                 default:
                     console.log('TriageModalResult: default');
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
-                    clearTriageChiamataModalData(this.store);
-                    this.f.dettaglioTipologia.patchValue(null);
                     break;
             }
         });
@@ -811,7 +796,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             type: string;
             dettaglio: DettaglioTipologia;
             triageSummary: TriageSummary[];
-            pos: PosInterface[];
         }
     }
 
