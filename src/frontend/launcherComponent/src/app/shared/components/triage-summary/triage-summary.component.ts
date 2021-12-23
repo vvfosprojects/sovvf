@@ -6,11 +6,7 @@ import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interfac
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
-import {
-    getContatoreGeneriMezzo,
-    getGeneriMezzoTriageSummary,
-    getNoteOperatoreTriageSummary
-} from '../../helper/function-triage';
+import { getContatoreGeneriMezzo, getGeneriMezzoTriageSummary, getNoteOperatoreTriageSummary } from '../../helper/function-triage';
 import { SetSchedaContattoTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
 import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
 import { PosInterface } from '../../interface/pos.interface';
@@ -75,8 +71,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
             this.noteOperatore = getNoteOperatoreTriageSummary(triageSummary);
         }
         if (changes?.schedaContatto?.currentValue) {
-            const schedaContatto = changes?.schedaContatto?.currentValue;
-            this.schedaContatto = schedaContatto;
+            this.schedaContatto = changes?.schedaContatto?.currentValue;
         }
     }
 
