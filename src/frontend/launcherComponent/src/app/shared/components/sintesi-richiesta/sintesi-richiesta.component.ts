@@ -30,6 +30,7 @@ import { OpenDettaglioSchedaContatto } from '../../../features/home/store/action
 import { ClearMezzoInServizioSelezionato, SetMezzoInServizioSelezionato } from '../../../features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { Mezzo } from '../../model/mezzo.model';
 import { MezziInServizioState } from '../../../features/home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { PosDettaglioModalComponent } from '../../modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -309,6 +310,19 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalDettaglioFonogramma.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
         modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
+    }
+
+    onDettaglioPos(): void {
+        let modalDettaglioPos;
+        modalDettaglioPos = this.modalService.open(PosDettaglioModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            size: 'lg',
+            centered: true,
+        });
+        modalDettaglioPos.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+        modalDettaglioPos.componentInstance.pos = this.richiesta.dettaglioTipologia ? this.richiesta.dettaglioTipologia.pos : null;
+        modalDettaglioPos.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata: ' : 'Intervento: ';
     }
 
     onSostituzioneFineTurno(partenze: Partenza[]): void {
