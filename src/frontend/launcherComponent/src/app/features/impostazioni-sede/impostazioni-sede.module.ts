@@ -15,6 +15,8 @@ import { RicercaDettagliTipologieComponent } from './dettagli-tipologie/ricerca-
 import { DettaglioTipologiaModalState } from './store/states/dettaglio-tipologia-modal-state';
 import { TriageComponent } from './triage/triage.component';
 import { MapsModule } from '../maps/maps.module';
+import { ImportTriageModalState } from './store/states/import-triage-modal-state';
+import { ImportTriageModalComponent } from './triage/import-triage-modal/import-triage-modal.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +24,8 @@ import { MapsModule } from '../maps/maps.module';
         DettagliTipologieComponent,
         DettaglioTipologiaModalComponent,
         RicercaDettagliTipologieComponent,
-        TriageComponent
+        TriageComponent,
+        ImportTriageModalComponent
     ],
     imports: [
         CommonModule,
@@ -31,7 +34,8 @@ import { MapsModule } from '../maps/maps.module';
         SharedModule,
         TreeviewModule.forRoot(),
         NgxsModule.forFeature([
-            DettaglioTipologiaModalState
+            DettaglioTipologiaModalState,
+            ImportTriageModalState
         ]),
         NgxsFormPluginModule.forRoot(),
         FormsModule,

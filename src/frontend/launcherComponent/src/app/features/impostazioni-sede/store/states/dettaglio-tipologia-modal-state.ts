@@ -2,14 +2,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, UpdateDettaglioTipologiaDto } from '../../../../shared/interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
-import {
-    ClearFormDettaglioTipologia,
-    RequestAddDettaglioTipologia,
-    RequestDeleteDettaglioTipologia,
-    RequestUpdateDettaglioTipologia
-} from '../actions/dettaglio-tipologia-modal.actions';
-import { ResponseInterface } from '../../../../shared/interface/response/response.interface';
-import { DeleteDettaglioTipologia } from '../../../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { ClearFormDettaglioTipologia, RequestAddDettaglioTipologia, RequestDeleteDettaglioTipologia, RequestUpdateDettaglioTipologia } from '../actions/dettaglio-tipologia-modal.actions';
 
 export interface DettaglioTipologiaModalStateModel {
     dettaglioTipologiaForm: {
@@ -64,9 +57,9 @@ export class DettaglioTipologiaModalState {
             descrizione: form.descrizione,
         } as DettaglioTipologiaDto;
 
-        this.detttagliTipologieService.addDettaglioTipologia(newDetttaglioTipologia).subscribe((response: ResponseInterface) => {
+        this.detttagliTipologieService.addDettaglioTipologia(newDetttaglioTipologia).subscribe(() => {
                 dispatch(new ClearFormDettaglioTipologia());
-            }, (error) => dispatch(new ClearFormDettaglioTipologia())
+            }, () => dispatch(new ClearFormDettaglioTipologia())
         );
     }
 
@@ -81,9 +74,9 @@ export class DettaglioTipologiaModalState {
             codiceDettaglioTipologia: +form.codiceDettaglioTipologia
         } as UpdateDettaglioTipologiaDto;
 
-        this.detttagliTipologieService.updateDettaglioTipologia(updatedDetttaglioTipologia).subscribe((response: ResponseInterface) => {
+        this.detttagliTipologieService.updateDettaglioTipologia(updatedDetttaglioTipologia).subscribe(() => {
                 dispatch(new ClearFormDettaglioTipologia());
-            }, (error) => dispatch(new ClearFormDettaglioTipologia())
+            }, () => dispatch(new ClearFormDettaglioTipologia())
         );
     }
 
@@ -92,7 +85,7 @@ export class DettaglioTipologiaModalState {
         const updatedDetttaglioTipologia = {
             codDettaglio: action.codDettaglioTipologia
         } as DeleteDettaglioTipologiaDto;
-        this.detttagliTipologieService.deleteDettagliTipologie(updatedDetttaglioTipologia).subscribe((response: ResponseInterface) => {
+        this.detttagliTipologieService.deleteDettagliTipologie(updatedDetttaglioTipologia).subscribe(() => {
         });
     }
 

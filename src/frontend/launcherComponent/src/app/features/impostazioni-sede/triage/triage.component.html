@@ -7,15 +7,14 @@
         <div class="row">
             <div class="col-6">
                 <label for="selectTipologia" class="font-xxlarge">
-                    Seleziona una Tipologia
+                    Tipologia
                 </label>
                 <ng-select id="selectTipologia"
                            [(ngModel)]="codTipologia"
                            [items]="tipologie$ | async"
                            bindValue="codice"
                            bindLabel="descrizione"
-                           placeholder="Seleziona una Tipologia dalla lista"
-                           [clearable]="false"
+                           placeholder="Seleziona una Tipologia"
                            [disabled]="showTriage"
                            (ngModelChange)="onSetCodTipologia($event)">
                 </ng-select>
@@ -23,15 +22,14 @@
             <div *ngIf="codTipologia" class="col-6">
                 <label [for]="'dettaglioTipologiaTriage' + '-' + 'Incendio  normale (generico)'"
                        class="font-xxlarge">
-                    Seleziona un Dettaglio Tipologia
+                    Dettaglio Tipologia
                 </label>
                 <ng-select [id]="'dettaglioTipologiaTriage' + '-' + 'Incendio normale (generico)'"
                            [(ngModel)]="codDettaglioTipologia"
                            [items]="dettagliTipologie$ | async"
                            bindValue="codiceDettaglioTipologia"
                            bindLabel="descrizione"
-                           placeholder="Seleziona un Dettaglio Tipologia dalla lista"
-                           [clearable]="false"
+                           placeholder="Seleziona un Dettaglio Tipologia"
                            [disabled]="showTriage"
                            (ngModelChange)="onSetDettaglioTipologia($event)">
                 </ng-select>
@@ -69,18 +67,17 @@
     <ng-template [ngIf]="showTriage">
         <div class="py-3 px-2 mt-3">
             <h3 class="mt-2">
-                <b class="mr-3">{{ dettaglioTipologia?.descrizione | uppercase }}</b>
-                <i class="fas fa-arrow-circle-right mr-3"></i>
+                <b>{{ dettaglioTipologia?.descrizione | uppercase }}</b>
                 <ng-template [ngIf]="tItems">
+                    <i class="fas fa-arrow-circle-right mx-3"></i>
                     <span *ngIf="viewEditButtons">Modifica </span>Triage
                 </ng-template>
                 <ng-template [ngIf]="!tItems">
-                    <span class="text-danger font-weight-bolder">Triage non presente per il Dettaglio Tipologia selezionato</span>
+                    <div class="alert alert-danger mt-3">
+                        Triage non presente per {{ dettaglioTipologia?.descrizione | uppercase }}
+                    </div>
                 </ng-template>
             </h3>
-            <ng-template [ngIf]="!tItems">
-                <hr class="mt-3 mb-2">
-            </ng-template>
             <ng-template [ngIf]="tItems">
                 <div class="card mt-3 px-4 py-3"
                      [class.bg-light]="!(nightMode$ | async)"
@@ -135,7 +132,7 @@
                         {{ 'Aggiungi la prima Domanda' | uppercase }}
                     </button>
                     <button class="btn btn-lg btn-no-hover btn-secondary font-weight-bolder"
-                            [disabled]="true">
+                            (click)="importTriage()">
                         <i class="fas fa-upload mr-1"></i>
                         {{ 'Importa Triage da un altro Dettaglio Tipologia' | uppercase }}
                     </button>
