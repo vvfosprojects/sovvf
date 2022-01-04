@@ -10,128 +10,156 @@
 </div>
 <div class="modal-body bg-light pt-3 pb-4 px-5">
     <form [formGroup]="addItemTriageForm">
-        <ng-template [ngIf]="rispostaTitle">
+        <ng-container *ngIf="rispostaTitle">
             <h3 class="text-center">
                 Se la risposta è <b>{{ rispostaTitle | uppercase }}</b>
             </h3>
-        </ng-template>
-        <!-- Generi Mezzo / Priorita / Intervento Aereo -->
-        <ng-template [ngIf]="!primaDomanda">
-            <div class="card bg-dark-light p-4"
-                 [class.mt-3]="rispostaTitle">
-                <div>
-                    <label for="noteUtente">
-                        <i class="fas fa-bullhorn mr-1"></i>
-                        Indicazioni all'Utente
-                    </label>
-                    <textarea id="noteUtente"
-                              class="form-control"
-                              placeholder="Scrivi qui le indicazioni all'Utente"
-                              formControlName="noteUtente">
-                    </textarea>
-                </div>
-                <div class="mt-3">
-                    <label for="noteOperatore">
-                        <i class="far fa-sticky-note mr-1"></i>
-                        Suggerimenti Utili per l'Operatore
-                    </label>
-                    <textarea id="noteOperatore"
-                              class="form-control"
-                              placeholder="Scrivi qui i suggerimenti utili per l'Operatore"
-                              formControlName="noteOperatore">
-                    </textarea>
-                </div>
-                <div class="mt-3">
-                    <label for="mezzi">
-                        <i class="fas fa-truck mr-1"></i>
-                        Generi Mezzo Appropriati
-                    </label>
-                    <ng-select id="mezzi"
-                               placeholder="Seleziona uno o più Generi Mezzo"
-                               formControlName="generiMezzo"
-                               [items]="generiMezzo"
-                               bindLabel="descrizione"
-                               bindValue="descrizione"
-                               [hideSelected]="true"
-                               [multiple]="true">
-                    </ng-select>
-                </div>
-                <div class="mt-3">
-                    <label for="soccorsoAereo">
-                        <i class="fas fa-plane mr-1"></i>
-                        Richiesta Soccorso Aereo
-                    </label>
-                    <ng-select id="soccorsoAereo"
-                               placeholder="Seleziona la necessità di Soccorso Aereo"
-                               formControlName="soccorsoAereo"
-                               [items]="NecessitaSoccorsoAereoValues"
-                               [hideSelected]="true"
-                               [multiple]="false">
-                    </ng-select>
-                </div>
-                <div class="mt-3">
-                    <label for="prioritaConsigliata">
-                        <i class="fas fa-thermometer mr-1"></i>
-                        Priorità Intervento
-                    </label>
-                    <ng-select id="prioritaConsigliata"
-                               placeholder="Seleziona un livello di Priorità"
-                               formControlName="prioritaConsigliata"
-                               [items]="['Molto Bassa', 'Bassa', 'Media', 'Alta']"
-                               [hideSelected]="true"
-                               [multiple]="false">
-                    </ng-select>
-                </div>
-            </div>
-        </ng-template>
-        <!-- Domanda -->
-        <div class="card border-danger shadow-sm bg-dark-light pt-3 pb-4 px-4"
-             [class.mt-3]="!primaDomanda">
-            <div [class.mb-2]="f.domandaSeguente.value">
-                <ng-template [ngIf]="primaDomanda">
-                    <label for="domandaSeguente">Inserisci il testo della Prima Domanda</label>
-                </ng-template>
-                <ng-template [ngIf]="!primaDomanda">
-                    <label for="domandaSeguente">
-                        <i class="fas fa-forward mr-1"></i>
-                        Domanda Seguente
-                    </label>
-                </ng-template>
-                <input id="domandaSeguente"
-                       [placeholder]="primaDomanda ? 'Scrivi il testo della Domanda' : 'Scrivi il testo per la Domanda Seguente'"
-                       formControlName="domandaSeguente"
-                       type="text"
-                       class="form-control form-control-lg">
-            </div>
-            <hr *ngIf="f.domandaSeguente.value">
-            <div *ngIf="f.domandaSeguente.value">
-                <div class="mt-2 mb-3">
-                    <app-checkbox
-                            [checkboxState]="{id: 'rispostePersonalizzate', descrizione: 'rispostePersonalizzate', status: f?.rispostePersonalizzate?.value, label: 'Imposta Risposte Personalizzate', disabled: false}"
-                            (checkbox)="onCheckRispostePersonalizzate($event)">
-                    </app-checkbox>
-                </div>
-                <div class="w-50 mt-2"
-                     [class.opacity-50]="!f?.rispostePersonalizzate?.value">
-                    <div *ngFor="let risposta of risposte, let i = index" class="mb-2">
-                        <label [for]="'risposta' +  (i + 1)">Risposta {{ i + 1 }}</label>
-                        <input [id]="'risposta' +  (i + 1)"
-                               type="text"
-                               class="form-control form-control-lg"
-                               [formControlName]="'risposta' + (i + 1)"
-                               placeholder="Scrivi qui la risposta {{ i + 1 }}"
-                               [disabled]="!f.rispostePersonalizzate?.value">
+        </ng-container>
+        <!-- Copia Risposte -->
+        <ng-container *ngIf="canCopyFromOthersReponse">
+            <div class="clearfix mt-4">
+                <div class="float-left mr-2">
+                    <div class="form-group">
+                        <input id="copiaRisposte"
+                               type="checkbox"
+                               formControlName="copiaRisposte"
+                               class="mr-2"
+                               (ngModelChange)="onChangeCopiaRisposteValue($event)">
+                        <label for="copiaRisposte">
+                            Copia risposte impostate sul
+                        </label>
                     </div>
-                    <ng-template [ngIf]="f.rispostePersonalizzate?.value && f['risposta' + (this.risposte.length)]?.value">
-                        <button class="btn btn-primary mt-2"
-                                (click)="addRisposta()">
-                            <i class="fas fa-plus"></i>
-                            Aggiungi Risposta
-                        </button>
-                    </ng-template>
+                </div>
+                <div class="float-left">
+                    <ng-select [items]="ripostePrimaDomanda"
+                               [searchable]="false"
+                               [hideSelected]="true"
+                               [clearable]="false"
+                               style="min-width: 150px"
+                               formControlName="copiaRisposteFrom">
+                    </ng-select>
                 </div>
             </div>
-        </div>
+        </ng-container>
+        <ng-container *ngIf="!f.copiaRisposte?.value">
+            <!-- Generi Mezzo / Priorita / Intervento Aereo -->
+            <ng-container *ngIf="!primaDomanda">
+                <div class="card bg-dark-light p-4"
+                     [class.mt-3]="rispostaTitle">
+                    <div>
+                        <label for="noteUtente">
+                            <i class="fas fa-bullhorn mr-1"></i>
+                            Indicazioni all'Utente
+                        </label>
+                        <textarea id="noteUtente"
+                                  class="form-control"
+                                  placeholder="Scrivi qui le indicazioni all'Utente"
+                                  formControlName="noteUtente">
+                    </textarea>
+                    </div>
+                    <div class="mt-3">
+                        <label for="noteOperatore">
+                            <i class="far fa-sticky-note mr-1"></i>
+                            Suggerimenti Utili per l'Operatore
+                        </label>
+                        <textarea id="noteOperatore"
+                                  class="form-control"
+                                  placeholder="Scrivi qui i suggerimenti utili per l'Operatore"
+                                  formControlName="noteOperatore">
+                    </textarea>
+                    </div>
+                    <div class="mt-3">
+                        <label for="mezzi">
+                            <i class="fas fa-truck mr-1"></i>
+                            Generi Mezzo Appropriati
+                        </label>
+                        <ng-select id="mezzi"
+                                   placeholder="Seleziona uno o più Generi Mezzo"
+                                   formControlName="generiMezzo"
+                                   [items]="generiMezzo"
+                                   bindLabel="descrizione"
+                                   bindValue="descrizione"
+                                   [hideSelected]="true"
+                                   [multiple]="true">
+                        </ng-select>
+                    </div>
+                    <div class="mt-3">
+                        <label for="soccorsoAereo">
+                            <i class="fas fa-plane mr-1"></i>
+                            Richiesta Soccorso Aereo
+                        </label>
+                        <ng-select id="soccorsoAereo"
+                                   placeholder="Seleziona la necessità di Soccorso Aereo"
+                                   formControlName="soccorsoAereo"
+                                   [items]="NecessitaSoccorsoAereoValues"
+                                   [hideSelected]="true"
+                                   [multiple]="false">
+                        </ng-select>
+                    </div>
+                    <div class="mt-3">
+                        <label for="prioritaConsigliata">
+                            <i class="fas fa-thermometer mr-1"></i>
+                            Priorità Intervento
+                        </label>
+                        <ng-select id="prioritaConsigliata"
+                                   placeholder="Seleziona un livello di Priorità"
+                                   formControlName="prioritaConsigliata"
+                                   [items]="['Molto Bassa', 'Bassa', 'Media', 'Alta']"
+                                   [hideSelected]="true"
+                                   [multiple]="false">
+                        </ng-select>
+                    </div>
+                </div>
+            </ng-container>
+            <!-- Domanda -->
+            <div class="card border-danger shadow-sm bg-dark-light pt-3 pb-4 px-4">
+                <div [class.mb-2]="f.domandaSeguente.value">
+                    <ng-template [ngIf]="primaDomanda">
+                        <label for="domandaSeguente">Inserisci il testo della Prima Domanda</label>
+                    </ng-template>
+                    <ng-template [ngIf]="!primaDomanda">
+                        <label for="domandaSeguente">
+                            <i class="fas fa-forward mr-1"></i>
+                            Domanda Seguente
+                        </label>
+                    </ng-template>
+                    <input id="domandaSeguente"
+                           [placeholder]="primaDomanda ? 'Scrivi il testo della Domanda' : 'Scrivi il testo per la Domanda Seguente'"
+                           formControlName="domandaSeguente"
+                           type="text"
+                           class="form-control form-control-lg">
+                </div>
+                <hr *ngIf="f.domandaSeguente.value">
+                <div *ngIf="f.domandaSeguente.value">
+                    <div class="mt-2 mb-3">
+                        <app-checkbox
+                                [checkboxState]="{id: 'rispostePersonalizzate', descrizione: 'rispostePersonalizzate', status: f?.rispostePersonalizzate?.value, label: 'Imposta Risposte Personalizzate', disabled: false}"
+                                (checkbox)="onCheckRispostePersonalizzate($event)">
+                        </app-checkbox>
+                    </div>
+                    <div class="w-50 mt-2"
+                         [class.opacity-50]="!f?.rispostePersonalizzate?.value">
+                        <div *ngFor="let risposta of risposte, let i = index" class="mb-2">
+                            <label [for]="'risposta' +  (i + 1)">Risposta {{ i + 1 }}</label>
+                            <input [id]="'risposta' +  (i + 1)"
+                                   type="text"
+                                   class="form-control form-control-lg"
+                                   [formControlName]="'risposta' + (i + 1)"
+                                   placeholder="Scrivi qui la risposta {{ i + 1 }}"
+                                   [disabled]="!f.rispostePersonalizzate?.value">
+                        </div>
+                        <ng-template
+                                [ngIf]="f.rispostePersonalizzate?.value && f['risposta' + (this.risposte.length)]?.value">
+                            <button class="btn btn-primary mt-2"
+                                    (click)="addRisposta()">
+                                <i class="fas fa-plus"></i>
+                                Aggiungi Risposta
+                            </button>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
     </form>
 </div>
 <div class="modal-footer">

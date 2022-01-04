@@ -157,7 +157,7 @@
                        [class.text-info]="item.collapsed"
                        [class.font-weight-bolder]="!item.collapsed"
                        (click)="item.children ? onCollapseExpand() : addItem(item)">
-                    {{ item.text }}
+                    {{ item.text }} - {{ item.value }}
                 </label>
                 <ng-template [ngIf]="viewEditButtons && item.children?.length > 1">
                     <div class="d-inline-block ml-2">

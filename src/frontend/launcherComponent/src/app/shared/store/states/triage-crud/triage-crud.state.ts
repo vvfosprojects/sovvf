@@ -237,20 +237,19 @@ export class TriageCrudState {
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
         const triage = state.triageByDettaglioTipologia;
         const triageData = state.triageDataByDettaglioTipologia;
-        this.triageService.add(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
+        this.triageService.add(codTipologia, codDettaglioTipologia, triage, triageData).subscribe(() => {
             dispatch(new GetTriageByCodDettaglioTipologia(codTipologia, codDettaglioTipologia));
         });
     }
 
     @Action(UpdateTriage)
-    updateTriage({ getState, dispatch }: StateContext<TriageStateModel>): void {
+    updateTriage({ getState, dispatch }: StateContext<TriageStateModel>, { triage }: UpdateTriage): void {
         const state = getState();
         const idTriage = state.idTriage;
         const codTipologia = state.dettaglioTipologia.codiceTipologia;
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
-        const triage = state.triageByDettaglioTipologia;
         const triageData = state.triageDataByDettaglioTipologia;
-        this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
+        this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe(() => {
             dispatch(new GetTriageByCodDettaglioTipologia(codTipologia, codDettaglioTipologia));
         });
     }

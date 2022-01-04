@@ -58,6 +58,9 @@ export class AddTriage {
 
 export class UpdateTriage {
     static readonly type = '[Triage] Update Triage';
+
+    constructor(public triage: any) {
+    }
 }
 
 export class DeleteTriage {

@@ -46,6 +46,9 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
 
     NecessitaSoccorsoAereoValues = Object.values(NecessitaSoccorsoAereoEnum);
 
+    canCopyFromOthersReponse: boolean;
+    ripostePrimaDomanda: string[];
+
     private subscription: Subscription = new Subscription();
 
     constructor(private modal: NgbActiveModal,
@@ -90,6 +93,8 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
             risposta2: new FormControl(),
             risposta3: new FormControl(),
             risposta4: new FormControl(),
+            copiaRisposte: new FormControl(),
+            copiaRisposteFrom: new FormControl()
         });
         this.addItemTriageForm = this.fb.group({
             soccorsoAereo: [null],
@@ -101,7 +106,9 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
             rispostePersonalizzate: [false],
             risposta1: [this.risposte[0]],
             risposta2: [this.risposte[1]],
-            risposta3: [this.risposte[2]]
+            risposta3: [this.risposte[2]],
+            copiaRisposte: [false],
+            copiaRisposteFrom: [{ value: null, disabled: true }]
         });
     }
 
@@ -117,7 +124,8 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
             prioritaConsigliata,
             noteOperatore,
             noteUtente,
-            domandaSeguente: this.domandaSeguente
+            domandaSeguente: this.domandaSeguente,
+            copiaRisposteFrom: this.ripostePrimaDomanda?.length ? this.ripostePrimaDomanda[0] : null
         });
     }
 
@@ -126,7 +134,18 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     }
 
     formIsInvalid(): boolean {
-        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value?.length && !this.f.prioritaConsigliata.value && !this.f.noteOperatore.value && !this.f.noteUtente.value;
+        return !this.f.domandaSeguente.value && !this.f.soccorsoAereo.value && !this.f.generiMezzo.value?.length && !this.f.prioritaConsigliata.value && !this.f.noteOperatore.value && !this.f.noteUtente.value && !this.f.copiaRisposte.value;
+    }
+
+    onChangeCopiaRisposteValue(newValue: boolean): void {
+        switch (newValue) {
+            case true:
+                this.f.copiaRisposteFrom.enable();
+                break;
+            case false:
+                this.f.copiaRisposteFrom.disable();
+                break;
+        }
     }
 
     onCheckRispostePersonalizzate(event: any): void {
@@ -139,41 +158,50 @@ export class ItemTriageModalComponent implements OnInit, OnDestroy {
     }
 
     onConferma(): void {
-        const risposte = [];
-        this.risposte.forEach((risposta: string, index: number) => {
-            risposte.push(this.f['risposta' + (index + 1)].value);
-        });
-
-        if (this.item && !this.parentItemData || (this.parentItemData && this.getParentItemDataDiffs())) {
+        const copiaRisposte = this.f.copiaRisposte.value;
+        if (copiaRisposte) {
             const item = {
-                value: this.item.value,
-                soccorsoAereo: this.f.soccorsoAereo.value,
-                generiMezzo: this.f.generiMezzo.value && this.f.generiMezzo.value.length > 0 ? this.f.generiMezzo.value : null,
-                noteOperatore: this.f.noteOperatore.value,
-                noteUtente: this.f.noteUtente.value,
-                prioritaConsigliata: this.f.prioritaConsigliata.value,
-                domandaSeguente: this.f.domandaSeguente.value,
-                rispostePersonalizzate: this.f.rispostePersonalizzate.value ? risposte : null
-            };
-            this.modal.close({ success: true, data: item });
-        } else if (this.item && !this.parentItemData || (this.parentItemData && !this.getParentItemDataDiffs())) {
-            const item = {
-                value: this.item.value,
-                soccorsoAereo: null,
-                generiMezzo: null,
-                noteOperatore: null,
-                noteUtente: null,
-                prioritaConsigliata: null,
-                domandaSeguente: this.f.domandaSeguente.value,
-                rispostePersonalizzate: this.f.rispostePersonalizzate.value ? risposte : null
+                copiaRisposte: true,
+                copiaRisposteFrom: this.f.copiaRisposteFrom.value
             };
             this.modal.close({ success: true, data: item });
         } else {
-            const item = {
-                domandaSeguente: this.f.domandaSeguente.value,
-                rispostePersonalizzate: this.f.rispostePersonalizzate.value ? risposte : null
-            };
-            this.modal.close({ success: true, data: item });
+            const risposte = [];
+            this.risposte.forEach((risposta: string, index: number) => {
+                risposte.push(this.f['risposta' + (index + 1)].value);
+            });
+
+            if (this.item && !this.parentItemData || (this.parentItemData && this.getParentItemDataDiffs())) {
+                const item = {
+                    value: this.item.value,
+                    soccorsoAereo: this.f.soccorsoAereo.value,
+                    generiMezzo: this.f.generiMezzo.value && this.f.generiMezzo.value.length > 0 ? this.f.generiMezzo.value : null,
+                    noteOperatore: this.f.noteOperatore.value,
+                    noteUtente: this.f.noteUtente.value,
+                    prioritaConsigliata: this.f.prioritaConsigliata.value,
+                    domandaSeguente: this.f.domandaSeguente.value,
+                    rispostePersonalizzate: this.f.rispostePersonalizzate.value ? risposte : null
+                };
+                this.modal.close({ success: true, data: item });
+            } else if (this.item && !this.parentItemData || (this.parentItemData && !this.getParentItemDataDiffs())) {
+                const item = {
+                    value: this.item.value,
+                    soccorsoAereo: null,
+                    generiMezzo: null,
+                    noteOperatore: null,
+                    noteUtente: null,
+                    prioritaConsigliata: null,
+                    domandaSeguente: this.f.domandaSeguente.value,
+                    rispostePersonalizzate: this.f.rispostePersonalizzate.value ? risposte : null
+                };
+                this.modal.close({ success: true, data: item });
+            } else {
+                const item = {
+                    domandaSeguente: this.f.domandaSeguente.value,
+                    rispostePersonalizzate: this.f.rispostePersonalizzate.value ? risposte : null
+                };
+                this.modal.close({ success: true, data: item });
+            }
         }
     }
 

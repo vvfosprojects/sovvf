@@ -275,6 +275,10 @@ export class TriageComponent implements OnDestroy {
             addItemTriageModal.componentInstance.primaDomanda = !this.tItems;
             addItemTriageModal.componentInstance.item = item;
 
+            const itemParent = this.findItem(this.tItems[0], item.value.slice(2));
+            addItemTriageModal.componentInstance.canCopyFromOthersReponse = !!(!itemParent) && !item.children?.length;
+            addItemTriageModal.componentInstance.ripostePrimaDomanda = this.tItems[0].children.map((i: TreeviewItem) => i.text).filter((itemText: string) => itemText !== item.text);
+
             if (item) {
                 getParentItemDataAdd(item.value, this.tItems[0], this.tItemsData, addItemTriageModal);
             }
@@ -282,10 +286,20 @@ export class TriageComponent implements OnDestroy {
             addItemTriageModal.result.then((res: { success: boolean, data: any }) => {
                 if (res.success) {
                     if (this.tItems) {
-                        if (res.data.domandaSeguente) {
-                            this.addDomandaSeguente(item, res.data.domandaSeguente, res.data.rispostePersonalizzate);
+                        if (res.data.copiaRisposte) {
+                            const itemCopiaRisposteFrom = this.tItems[0].children.filter((i: TreeviewItem) => i.text === res.data.copiaRisposteFrom)[0];
+                            if (itemCopiaRisposteFrom) {
+                                const itemsToCopyIntoItem = this.findItem(this.tItems[0], itemCopiaRisposteFrom.value)?.children;
+                                findItemAndAddItems(this.tItems[0], item.value, itemsToCopyIntoItem);
+                            } else {
+                                console.error('Risposte del ' + res.data.copiaRisposteFrom + ' non trovate.');
+                            }
+                        } else {
+                            if (res.data.domandaSeguente) {
+                                this.addDomandaSeguente(item, res.data.domandaSeguente, res.data.rispostePersonalizzate);
+                            }
+                            this.addOtherData(res, item);
                         }
-                        this.addOtherData(res, item);
                     } else {
                         this.addPrimaDomanda(res.data.domandaSeguente, res.data.rispostePersonalizzate);
                     }
@@ -329,6 +343,66 @@ export class TriageComponent implements OnDestroy {
             if (itemData) {
                 return itemData;
             }
+        }
+
+        function findItemAndAddItems(tItems: any, value: string, itemsToAdd: TreeviewItem[]): void {
+            if (tItems.value === value) {
+                const clonedArray = itemsToAdd.map(x => ({ ...x })) as any;
+                clonedArray[0].checked = true;
+                clonedArray[0].children = clonedArray[0].internalChildren;
+                clonedArray[0].collapsed = false;
+                clonedArray[0].disabled = false;
+                clonedArray[0].indeterminate = false;
+
+                tItems.children = clonedArray;
+
+                const ramoDiPartenza = findItem(tItems, value);
+                const indexes = setAndGetValuesToAdjust(itemsToAdd[0], []);
+                indexes.forEach((x: string) => {
+                    const y = findItem(ramoDiPartenza, x);
+                    if (y) {
+                        y.value = y.children?.length > 2 ? value.slice(0, 1) + y.value.slice(1) : y.value.slice(0, 2) + value.slice(0, 1) + y.value.slice(3, y.value.length);
+                    }
+                });
+            } else if (tItems.children != null) {
+                let i: number;
+                let result = null;
+                for (i = 0; result == null && i < tItems.children.length; i++) {
+                    result = findItem(tItems.children[i], value);
+                }
+
+                const clonedArray = itemsToAdd.map(x => ({ ...x })) as any;
+                clonedArray[0].checked = true;
+                clonedArray[0].children = clonedArray[0].internalChildren;
+                clonedArray[0].collapsed = false;
+                clonedArray[0].disabled = false;
+                clonedArray[0].indeterminate = false;
+
+                result.children = clonedArray;
+
+                const ramoDiPartenza = findItem(tItems, value);
+                const indexes = setAndGetValuesToAdjust(ramoDiPartenza, []);
+                indexes.forEach((x: string) => {
+                    const y = findItem(ramoDiPartenza, x);
+                    if (y) {
+                        y.value = y.children?.length > 2 ? value.slice(0, 1) + y.value.slice(1) : y.value.slice(0, 2) + value.slice(0, 1) + y.value.slice(3, y.value.length);
+                    }
+                });
+            }
+        }
+
+        function setAndGetValuesToAdjust(element: any, indexes: string[]): string[] {
+            const indexesArray = indexes ? indexes : [];
+            if (element != null) {
+                let i: number;
+                for (i = 0; i < element.children?.length || i <= 1; i++) {
+                    indexesArray.push(element.value);
+                    if (element.children?.length) {
+                        setAndGetValuesToAdjust(element.children[i], indexes);
+                    }
+                }
+            }
+            return indexesArray;
         }
     }
 
@@ -684,7 +758,7 @@ export class TriageComponent implements OnDestroy {
         if (this.viewEditButtons) {
             this.toggleViewEditButtons();
         }
-        this.editMode ? this.store.dispatch(new UpdateTriage()) : this.store.dispatch(new AddTriage());
+        this.editMode ? this.store.dispatch(new UpdateTriage(this.tItems[0])) : this.store.dispatch(new AddTriage());
     }
 
     removeTriage(): void {
@@ -707,7 +781,7 @@ export class TriageComponent implements OnDestroy {
                             this.toggleViewEditButtons();
                         }
                         this.updateTriage(null);
-                        this.store.dispatch(new UpdateTriage());
+                        this.store.dispatch(new UpdateTriage(this.tItems[0]));
                         break;
                     case 'ko':
                         break;
