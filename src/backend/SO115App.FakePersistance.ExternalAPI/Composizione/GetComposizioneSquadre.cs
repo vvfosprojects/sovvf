@@ -191,8 +191,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoSulPosto))
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoOccupato))
                     .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti?[0].Equals(squadra.Distaccamento?.Codice) ?? false)
-                    .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti.Length > 1 ? query.Filtro?.CodiciDistaccamenti[1].Equals(squadra.Distaccamento?.Codice) : false)
-                    .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti.Length > 2 ? query.Filtro?.CodiciDistaccamenti[2].Equals(squadra.Distaccamento?.Codice) : false)
+                    .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti?.Length > 1 ? query.Filtro?.CodiciDistaccamenti[1].Equals(squadra.Distaccamento?.Codice) : false)
+                    .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti?.Length > 2 ? query.Filtro?.CodiciDistaccamenti[2].Equals(squadra.Distaccamento?.Codice) : false)
                     .ThenBy(squadra => squadra.Nome);
             });
 
