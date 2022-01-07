@@ -20,6 +20,7 @@
 
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using System;
 
 namespace DomainModel.CQRS.Commands.HLogBook
 {
@@ -27,6 +28,7 @@ namespace DomainModel.CQRS.Commands.HLogBook
     {
         public string codice { get; set; }
         public string Text { get; set; }
+        public DateTime istante { get; set; }
         public string CodUtente { get; set; }
         public RichiestaAssistenza Richiesta { get; set; }
     }

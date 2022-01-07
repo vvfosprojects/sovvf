@@ -44,7 +44,8 @@ namespace DomainModel.CQRS.Commands.HLogBook
 
         public void Handle(LogBookCommand command)
         {
-            new LogBook(command.Richiesta, DateTime.UtcNow, command.CodUtente, command.Richiesta.CodRichiesta, command.Text);
+
+            new LogBook(command.Richiesta, Convert.ToDateTime(command.istante.ToString("dd'/'MM'/'yyyy' 'HH':'mm':'ss")), command.CodUtente, command.Richiesta.CodRichiesta, command.Text);
 
             _updateRichiestaAssistenza.UpDate(command.Richiesta);
         }
