@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTime } from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
 @Component({
     selector: 'app-add-evento-richiesta',
@@ -28,13 +29,13 @@ export class AddEventoRichiestaComponent implements OnInit {
 
     initForm(): void {
         const todayNgbDate = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() } as NgbDate;
-        console.log('todayNgbDate', todayNgbDate);
+        const nowNgbTime = { hour: new Date().getHours(), minute: new Date().getMinutes() } as NgbTime;
 
         this.eventoForm = this.formBuilder.group({
             codice: [null, Validators.required],
             text: [null, Validators.required],
             date: [todayNgbDate, Validators.required],
-            orario: [{ hour: new Date().getHours(), minute: new Date().getMinutes() }, Validators.required]
+            orario: [nowNgbTime, Validators.required]
         });
     }
 
