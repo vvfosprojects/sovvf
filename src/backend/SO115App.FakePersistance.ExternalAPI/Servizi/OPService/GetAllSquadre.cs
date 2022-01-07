@@ -78,7 +78,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                 return result;
             });
 
-            Parallel.ForEach(lstOPSquadre.Squadre.ToList().FindAll(x => lstDistaccamenti.FindAll(d => d.Id.Contains(x.Distaccamento)).Count > 0), squadra =>
+            Parallel.ForEach(lstOPSquadre.Squadre.ToList().FindAll(x => lstDistaccamenti.FindAll(d => d.Id.Contains(x.Distaccamento)).Count > 0 && x.spotType.Equals("WORKSHIFT")), squadra =>
                  lstSquadre.Add(new ComposizioneSquadra()
                  {
                      Codice = squadra.Codice,
