@@ -132,7 +132,7 @@ export class EventiRichiestaState {
         const codiceRichiesta = state?.codiceRichiesta;
         dispatch(new StartLoadingEventiRichiesta());
         if (nuovoEvento) {
-            this.eventiRichiesta.addEventoRichiesta(nuovoEvento, nuovoEvento.istante).subscribe(() => {
+            this.eventiRichiesta.addEventoRichiesta(nuovoEvento, nuovoEvento.date, nuovoEvento.orario).subscribe(() => {
                     dispatch([
                         new StopLoadingEventiRichiesta(),
                         new ResetForm({ path: 'eventiRichiesta.eventoForm' }),

@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <span class="card-title">{{ 'log book' | uppercase }}</span>
+        <span class="card-title">{{ 'log book' | uppercase }} - Aggiungi evento</span>
     </div>
     <div class="card-body py-1">
         <form [formGroup]="eventoForm"
@@ -8,9 +8,9 @@
               class="form-inline"
               (ngSubmit)="onSubmit()">
             <div class="clearfix d-flex align-items-center w-100">
-                <div class="float-left mr-5">
+                <div class="float-left mr-3">
                     <div class="form-group">
-                        <label for="evento" class="mr-3">Nuovo Evento</label>
+                        <label for="evento" class="d-none">Nuovo Evento</label>
                         <textarea id="evento"
                                   class="form-control"
                                   placeholder="Scrivi qui il nuovo evento"
@@ -19,8 +19,27 @@
                         </textarea>
                     </div>
                 </div>
-                <div class="float-left mr-5">
-                    <ngb-timepicker formControlName="istante">
+                <!-- <div class="float-left mr-4"> -->
+                <!--     <ngb-datepicker formControlName="date"> -->
+                <!--     </ngb-datepicker> -->
+                <!-- </div> -->
+                <div class="input-group mr-4">
+                    <input class="form-control"
+                           placeholder="yyyy-mm-dd"
+                           name="dp"
+                           formControlName="date"
+                           ngbDatepicker
+                           #d="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar"
+                                type="button"
+                                (click)="d.toggle()">
+                            <i class="fas fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="float-left mr-4">
+                    <ngb-timepicker formControlName="orario">
                     </ngb-timepicker>
                 </div>
                 <ng-container *ngIf="eventoForm.valid">
