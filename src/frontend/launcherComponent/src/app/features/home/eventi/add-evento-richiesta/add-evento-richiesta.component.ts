@@ -1,11 +1,12 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-add-evento-richiesta',
     templateUrl: './add-evento-richiesta.component.html',
     styleUrls: ['./add-evento-richiesta.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None
 })
 export class AddEventoRichiestaComponent implements OnInit {
 
@@ -27,7 +28,8 @@ export class AddEventoRichiestaComponent implements OnInit {
     initForm(): void {
         this.eventoForm = this.formBuilder.group({
             codice: [null, Validators.required],
-            text: [null, Validators.required]
+            text: [null, Validators.required],
+            istante: [{ hour: new Date().getHours(), minute: new Date().getMinutes() }, Validators.required]
         });
     }
 
