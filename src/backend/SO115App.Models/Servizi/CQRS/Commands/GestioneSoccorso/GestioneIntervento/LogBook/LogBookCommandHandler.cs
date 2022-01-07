@@ -25,6 +25,7 @@ using SO115App.Models.Classi.Soccorso.Eventi.ELogBook;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace DomainModel.CQRS.Commands.HLogBook
@@ -44,8 +45,8 @@ namespace DomainModel.CQRS.Commands.HLogBook
 
         public void Handle(LogBookCommand command)
         {
-
-            new LogBook(command.Richiesta, command.istante.AddHours(1), command.CodUtente, command.Richiesta.CodRichiesta, command.Text);
+            var cultureInfo = new CultureInfo("it-IT",false);
+            new LogBook(command.Richiesta, DateTime.Parse(command.istante, cultureInfo), command.CodUtente, command.Richiesta.CodRichiesta, command.Text);
 
             _updateRichiestaAssistenza.UpDate(command.Richiesta);
         }
