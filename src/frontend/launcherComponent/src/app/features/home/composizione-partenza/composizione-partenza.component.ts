@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { BoxPartenza, BoxPartenzaPreAccoppiati } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { ComposizioneVeloceState } from '../store/states/composizione-partenza/composizione-veloce.state';
-import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
+import { DirectionInterface } from '../../maps/maps-interface/direction.interface';
 import { ClearDirection, SetDirection } from '../../maps/store/actions/maps-direction.actions';
 import { SetCoordCentroMappa } from '../../maps/store/actions/centro-mappa.actions';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
