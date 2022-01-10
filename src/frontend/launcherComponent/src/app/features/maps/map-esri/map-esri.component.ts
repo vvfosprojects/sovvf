@@ -10,7 +10,7 @@ import { SetChiamataFromMappaActiveValue } from '../store/actions/tasto-chiamata
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
-import { DirectionInterface } from '../maps-interface/direction-interface';
+import { DirectionInterface } from '../maps-interface/direction.interface';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
 import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
@@ -32,6 +32,8 @@ import { SchedeContattoState } from '../../home/store/states/schede-contatto/sch
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 import { ComposizionePartenzaState } from '../../home/store/states/composizione-partenza/composizione-partenza.state';
 import { RichiestaGestioneState } from '../../home/store/states/richieste/richiesta-gestione.state';
+import { CentroMappaState } from '../store/states/centro-mappa.state';
+import { SetDirectionTravelData } from '../store/actions/maps-direction.actions';
 import { ESRI_LAYERS_CONFIG } from '../../../core/settings/esri-layers-config';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
@@ -275,7 +277,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const direction = changes?.direction?.currentValue;
             if (direction?.isVisible) {
                 this.getRoute(direction, { clearPrevious: true });
-            } else {
+            } else if (!direction?.isVisible) {
+                const zoom = 19;
+                const centroMappa = this.store.selectSnapshot(CentroMappaState.centroMappa);
+                this.store.dispatch(new SetCentroMappa({ coordinateCentro: centroMappa.coordinateCentro, zoom }));
                 this.clearDirection();
             }
         }
@@ -450,6 +455,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.clearDirection();
         this.view?.destroy();
         this.map?.destroy();
     }
@@ -1043,7 +1049,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    getRoute(direction: DirectionInterface, options?: { clearPrevious?: boolean }): void {
+    getRoute(direction: DirectionInterface, options?: { clearPrevious?: boolean, color?: number[] }): void {
         if (options?.clearPrevious) {
             this.clearDirection();
         }
@@ -1084,13 +1090,17 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         routeTask.solve(routeParams).then((data: RouteResult) => {
+            console.log('getRoute data', data);
             // @ts-ignore
             data.routeResults.forEach((result: any) => {
                 result.route.symbol = {
                     type: 'simple-line',
-                    color: [5, 150, 255],
+                    color: options?.color ? options.color : [5, 150, 255],
                     width: 3
                 };
+                const totalKilometers = result.route?.attributes?.Total_Kilometers;
+                const totalTravelTime = result.route?.attributes?.Total_TravelTime;
+                this.store.dispatch(new SetDirectionTravelData({ totalKilometers, totalTravelTime }));
                 this.view.graphics.add(result.route);
             });
         });
