@@ -5,6 +5,7 @@
     </div>
     <div class="col-8">
         <div class="row">
+            <!-- Filterbar -->
             <ng-container *ngIf="!loadingInvioPartenza">
                 <div class="col-12">
                     <app-filterbar-composizione [filtri]="filtri"
@@ -18,6 +19,8 @@
                     </app-filterbar-composizione>
                 </div>
             </ng-container>
+
+            <!-- Lista Squadre -->
             <ng-container *ngIf="!loadingInvioPartenza">
                 <div class="col-5 px-0">
                     <div class="card min-h-comp">
@@ -95,6 +98,8 @@
                     </div>
                 </div>
             </ng-container>
+
+            <!-- Lista Mezzi -->
             <ng-container *ngIf="!loadingInvioPartenza">
                 <div class="col-7 pr-0">
                     <div class="card mx-auto min-h-comp">
@@ -183,40 +188,15 @@
     </div>
     <ng-container *ngIf="!loadingInvioPartenza">
         <div class="col-4 pr-0">
-            <!-- Lista Partenze Richiesta -->
+            <!-- Lista Partenze Richiesta Composizione -->
             <div style="height:50%">
-                <div class="card h-100"
-                     [class.card-shadow]="!nightMode">
-                    <div class="card-header py-2">
-                        <i class="fas fa-list-ul mr-2" style="vertical-align:sub"></i>
-                        <span style="vertical-align:sub">
-                        Partenze
-                        <span *ngIf="richiesta.codiceRichiesta" style="float: right">
-                            <i class="fas fa-hashtag fa-fw mr-1"></i>
-                            {{ richiesta.codiceRichiesta.slice(0, -5)}}
-                            <span class="pb-1"
-                                  style="font-size: 25px; font-weight: 700;">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
-                        </span>
-                        <span *ngIf="!richiesta.codiceRichiesta" style="float: right">
-                            <i class="fas fa-hashtag fa-fw mr-1"></i>
-                            {{ richiesta.codice.slice(0, -5) }}
-                            <span class="pb-1"
-                                  style="font-size: 25px; font-weight: 700;">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
-                        </span>
-                    </span>
-                    </div>
-                    <div class="card-body px-3 pt-1 pb-2" style="overflow: auto">
-                        <app-partial-loader *ngIf="!mezziComposizione || !squadreComposizione"></app-partial-loader>
-                        <app-lista-partenze *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza"
-                                            [partenze]="richiesta.partenze">
-                        </app-lista-partenze>
-                        <li *ngIf="!mezziComposizione || !squadreComposizione"
-                            style="list-style: none;">
-                            <span class="text-muted">Caricamento risultati...</span>
-                        </li>
-                    </div>
-                </div>
+                <app-lista-partenze-composizione [richiesta]="richiesta"
+                                                 [visualizzaPercorsi]="visualizzaPercorsiRichiesta"
+                                                 [nightMode]="nightMode"
+                                                 (toggleVisualizzaPercorsi)="onToggleVisualizzaPercorsi($event)">
+                </app-lista-partenze-composizione>
             </div>
+
             <!-- Box Partenza -->
             <div class="w-100 py-2 px-1" style="height:40%">
                 <!-- bottone nuova partenza -->
@@ -238,10 +218,9 @@
                                                 [disableDividi]="checkDoubleDividi(p)"
                                                 [itemSelezionato]="p.id === idBoxPartenzaSelezionato"
                                                 [compPartenzaMode]="Composizione.Avanzata"
-                                                [alert]="true" (selezionato)="boxPartenzaSelezionato($event)"
+                                                [alert]="true"
                                                 (eliminato)="eliminaBoxPartenza($event)"
-                                                (squadraShortcut)="squadraShortcut($event)"
-                                                (deselezionato)="onClearDirection()">
+                                                (squadraShortcut)="squadraShortcut($event)">
                         </app-box-nuova-partenza>
                     </div>
                 </div>
@@ -267,6 +246,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Bottoni Composizione -->
             <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
                                              [richiesta]="richiesta"

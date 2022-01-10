@@ -1,0 +1,44 @@
+<div class="card h-100"
+     [class.card-shadow]="!nightMode">
+    <div class="card-header py-2">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <div class="d-inline-block">
+                    <i class="fas fa-list-ul mr-2"></i>
+                    Partenze
+                </div>
+                <button class="btn btn-light btn-no-hover border-secondary ml-3"
+                        (click)="onToggleVisualizzaPercorsi()">
+                    <ng-container *ngIf="!visualizzaPercorsi">
+                        Visualizza percorsi
+                    </ng-container>
+                    <ng-container *ngIf="visualizzaPercorsi">
+                        Nascondi percorsi
+                    </ng-container>
+                </button>
+            </div>
+            <div class="d-flex align-items-center">
+                <ng-container *ngIf="richiesta.codiceRichiesta"
+                              class="d-inline-block">
+                    <i class="fas fa-hashtag fa-fw mr-1"></i>
+                    {{ richiesta.codiceRichiesta.slice(0, -5)}}
+                    <span style="font-size: 25px; font-weight: 700;">
+                        {{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5) }}
+                    </span>
+                </ng-container>
+                <ng-container *ngIf="!richiesta.codiceRichiesta"
+                              class="d-inline-block">
+                    <i class="fas fa-hashtag fa-fw mr-1"></i>
+                    {{ richiesta.codice.slice(0, -5) }}
+                    <span style="font-size: 25px; font-weight: 700;">
+                        {{ richiesta.codice.slice(richiesta.codice.length - 5) }}
+                    </span>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="card-body px-3 pt-1 pb-2" style="overflow: auto">
+        <app-lista-partenze [partenze]="richiesta.partenze">
+        </app-lista-partenze>
+    </div>
+</div>

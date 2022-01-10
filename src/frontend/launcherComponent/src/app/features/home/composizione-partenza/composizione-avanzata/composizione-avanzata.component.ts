@@ -39,7 +39,7 @@ import {
     UnselectSquadraComposizioneInRientro,
     UnselectSquadraComposizionePreAccoppiati
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze, SetVisualizzaPercosiRichiesta } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
@@ -62,6 +62,9 @@ import { SquadraComposizione } from '../../../../shared/interface/squadra-compos
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
+
+    // Percorsi richiesta
+    @Input() visualizzaPercorsiRichiesta: boolean;
 
     // Mezzi Composizione
     @Input() mezziComposizione: MezzoComposizione[];
@@ -331,8 +334,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.changeRicercaMezzi.emit(makeCopy(this.ricercaMezzi));
     }
 
-    boxPartenzaSelezionato(boxPartenza: BoxPartenza): void {
-        // this.store.dispatch(new RequestSelectBoxPartenza(boxPartenza.id));
+    onToggleVisualizzaPercorsi(value: boolean): void {
+        // TODO: logica viualizzazione percorsi con bottone
+        this.store.dispatch(new SetVisualizzaPercosiRichiesta(value));
     }
 
     nuovaPartenza(): void {

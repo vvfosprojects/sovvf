@@ -16,7 +16,7 @@ import {
     StartListaSquadreComposizioneLoading,
     StartListaMezziComposizioneLoading,
     StopListaSquadreComposizioneLoading,
-    StopListaMezziComposizioneLoading
+    StopListaMezziComposizioneLoading, SetVisualizzaPercosiRichiesta
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../../maps/maps-model/composizione-marker.model';
@@ -39,6 +39,7 @@ import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.st
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
     composizioneMode: Composizione;
+    visualizzaPercorsiRichiesta: boolean;
     loadingListe: boolean;
     loadingSquadre: boolean;
     loadingMezzi: boolean;
@@ -49,6 +50,7 @@ export interface ComposizionePartenzaStateModel {
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
+    visualizzaPercorsiRichiesta: true,
     loadingListe: false,
     loadingSquadre: false,
     loadingMezzi: false,
@@ -87,6 +89,11 @@ export class ComposizionePartenzaState {
             composizioneMarkers = [];
         }
         return composizioneMarkers;
+    }
+
+    @Selector()
+    static visualizzaPercorsiRichiesta(state: ComposizionePartenzaStateModel): boolean {
+        return state.visualizzaPercorsiRichiesta;
     }
 
     @Selector()
@@ -176,6 +183,13 @@ export class ComposizionePartenzaState {
     setComposizioneMode({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetComposizioneMode): void {
         patchState({
             composizioneMode: action.compMode
+        });
+    }
+
+    @Action(SetVisualizzaPercosiRichiesta)
+    setVisualizzaPercosiRichiesta({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetVisualizzaPercosiRichiesta): void {
+        patchState({
+            visualizzaPercorsiRichiesta: action.value
         });
     }
 

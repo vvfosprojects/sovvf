@@ -35,6 +35,13 @@ export class UpdateRichiestaComposizione {
     }
 }
 
+export class SetVisualizzaPercosiRichiesta {
+    static readonly type = '[ComposizionePartenza] Set Visualizza Percosi Richiesta';
+
+    constructor(public value: boolean) {
+    }
+}
+
 export class ConfirmPartenze {
     static readonly type = '[ComposizionePartenza] Conferma Partenze';
 

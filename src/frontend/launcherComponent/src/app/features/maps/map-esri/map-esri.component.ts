@@ -276,12 +276,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.direction?.currentValue) {
             const direction = changes?.direction?.currentValue;
             if (direction?.isVisible) {
-                this.getRoute(direction, { clearPrevious: true });
+                this.getRoute('nuovaPartenza', direction, { clearPrevious: true, color: [255, 0, 0] });
             } else if (!direction?.isVisible) {
                 const zoom = 19;
                 const centroMappa = this.store.selectSnapshot(CentroMappaState.centroMappa);
                 this.store.dispatch(new SetCentroMappa({ coordinateCentro: centroMappa.coordinateCentro, zoom }));
-                this.clearDirection();
+                this.clearDirection('nuovaPartenza');
             }
         }
 
@@ -311,13 +311,13 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                         const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
                         const genereMezzo = p.partenza.mezzo.genere;
                         const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
-                        this.getRoute(direction);
+                        this.getRoute('partenzeRichiestaSelezionata', direction);
                     }
                 });
             }
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
-            this.clearDirection();
+            this.clearDirection('partenzeRichiestaSelezionata');
             this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
         }
 
@@ -337,7 +337,22 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const coordinateCentro = richiestaComposizione.localita.coordinate;
             const zoom = 19;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+            if (richiestaComposizione) {
+                richiestaComposizione.partenze.forEach((p: Partenza, index: number) => {
+                    if (index === 0) {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    }
+                    if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
+                        const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
+                        const destination = { lat: richiestaComposizione.localita.coordinate.latitudine, lng: richiestaComposizione.localita.coordinate.longitudine };
+                        const genereMezzo = p.partenza.mezzo.genere;
+                        const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                        this.getRoute('partenzeRichiestaComposizione', direction);
+                    }
+                });
+            }
         } else if (changes?.richiestaComposizione?.currentValue === null && this.map && this.view?.ready) {
+            this.clearDirection('partenzeRichiestaComposizione');
             this.store.dispatch(new GetInitCentroMappa());
         }
 
@@ -1049,9 +1064,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    getRoute(direction: DirectionInterface, options?: { clearPrevious?: boolean, color?: number[] }): void {
+    getRoute(idDirectionSymbols: string, direction: DirectionInterface, options?: { clearPrevious?: boolean, color?: number[] }): void {
         if (options?.clearPrevious) {
-            this.clearDirection();
+            this.clearDirection('nuovaPartenza');
         }
 
         const pointPartenza = new Point({
@@ -1090,10 +1105,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         routeTask.solve(routeParams).then((data: RouteResult) => {
-            console.log('getRoute data', data);
             // @ts-ignore
             data.routeResults.forEach((result: any) => {
                 result.route.symbol = {
+                    id: idDirectionSymbols,
                     type: 'simple-line',
                     color: options?.color ? options.color : [5, 150, 255],
                     width: 3
@@ -1106,9 +1121,14 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    clearDirection(): void {
+    clearDirection(idSymbol?: string): void {
         if (this.view?.graphics?.length) {
-            this.view.graphics.removeAll();
+            if (!idSymbol) {
+                this.view.graphics.items.removeAll();
+            } else {
+                // @ts-ignore
+                this.view.graphics.items = this.view.graphics.items.filter((item: Graphic) => item.symbol.id !== idSymbol);
+            }
         }
     }
 

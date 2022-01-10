@@ -57,6 +57,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     // Richiesta Composizione
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    // Percorsi Richiesta
+    @Select(ComposizionePartenzaState.visualizzaPercorsiRichiesta) visualizzaPercorsiRichiesta$: Observable<boolean>;
 
     // Loading
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;

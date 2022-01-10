@@ -4,7 +4,7 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Store } from '@ngxs/store';
-import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze, SetVisualizzaPercosiRichiesta } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import {
     ClearPreAccoppiatiSelezionatiComposizione,
     GetListaComposizioneVeloce,
@@ -36,7 +36,11 @@ import { SquadraComposizione } from '../../../../shared/interface/squadra-compos
 })
 export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
+    // Percorsi richiesta
+    @Input() visualizzaPercorsiRichiesta: boolean;
+
     @Input() filtri: any;
+
     // Loading Liste Mezzi e Squadre
     @Input() loadingListe: boolean;
     @Input() loadingSquadre: boolean;
@@ -90,6 +94,11 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     getSoccorsoAereoTriage(triageSummary: TriageSummary[]): { desc: NecessitaSoccorsoAereoEnum | string, value: number } {
         return getSoccorsoAereoTriage(triageSummary);
+    }
+
+    onToggleVisualizzaPercorsi(value: boolean): void {
+        // TODO: logica viualizzazione percorsi con bottone
+        this.store.dispatch(new SetVisualizzaPercosiRichiesta(value));
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenzaPreAccoppiati): void {
