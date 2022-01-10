@@ -208,7 +208,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                         descSede = figlio.Nome;
 
                         if (coordinate == null)
-                            coordinate = figlio.Coordinate;
+                        {
+                            coordinateStrg = _getStringCoordinateByCodSede.Get(figlio.Codice);
+                            coordinate = new Coordinate(Convert.ToDouble(coordinateStrg[0].Replace(".", ",")), Convert.ToDouble(coordinateStrg[1].Replace(".", ",")));
+                        }
                     }
                 }
 

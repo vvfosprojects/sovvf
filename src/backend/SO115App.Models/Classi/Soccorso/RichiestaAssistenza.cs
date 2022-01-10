@@ -147,6 +147,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
+
+
                     partenza.Mezzo.IdRichiesta = Id;
 
                     break;
