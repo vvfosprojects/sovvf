@@ -22,7 +22,7 @@ import { ZoneEmergenzaState } from '../../zone-emergenza/store/states/zone-emerg
 import { AddZonaEmergenza, ResetZonaEmergenzaForm } from '../../zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { RichiesteState } from '../../home/store/states/richieste/richieste.state';
-import { GetInitCentroMappa, SetCentroMappa } from '../store/actions/centro-mappa.actions';
+import { GetInitCentroMappa, SetCentroMappa, SetZoomCentroMappa, SetZoomCentroMappaByKilometers } from '../store/actions/centro-mappa.actions';
 import { Partenza } from '../../../shared/model/partenza.model';
 import { MezziInServizioState } from '../../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
@@ -63,6 +63,8 @@ import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
+import { DirectionTravelDataInterface } from '../maps-interface/direction-travel-data.interface';
+import { SetVisualizzaPercosiRichiesta } from '../../home/store/actions/composizione-partenza/composizione-partenza.actions';
 
 @Component({
     selector: 'app-map-esri',
@@ -90,6 +92,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() idSchedaContattoSelezionata: string;
     @Input() areaMappaLoading: boolean;
     @Input() richiesteStatus: boolean;
+    @Input() travelDataNuovaPartenza: DirectionTravelDataInterface;
+    @Input() visualizzaPercorsiRichiesta: boolean;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
@@ -336,24 +340,39 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const richiestaComposizione = changes?.richiestaComposizione?.currentValue;
             const coordinateCentro = richiestaComposizione.localita.coordinate;
             const zoom = 19;
-            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
-            if (richiestaComposizione) {
-                richiestaComposizione.partenze.forEach((p: Partenza, index: number) => {
+            this.store.dispatch([
+                new SetCentroMappa({ coordinateCentro, zoom }),
+                new SetVisualizzaPercosiRichiesta(true)
+            ]);
+        } else if (changes?.richiestaComposizione?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
+        }
+
+        // Controllo il valore di "visualizzaPercorsiRichiesta"
+        if (changes?.visualizzaPercorsiRichiesta?.currentValue && this.map && this.view?.ready) {
+            if (this.richiestaComposizione) {
+                this.richiestaComposizione.partenze.forEach((p: Partenza, index: number) => {
                     if (index === 0) {
                         this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
                     }
                     if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
                         const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
-                        const destination = { lat: richiestaComposizione.localita.coordinate.latitudine, lng: richiestaComposizione.localita.coordinate.longitudine };
+                        const destination = { lat: this.richiestaComposizione.localita.coordinate.latitudine, lng: this.richiestaComposizione.localita.coordinate.longitudine };
                         const genereMezzo = p.partenza.mezzo.genere;
                         const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
                         this.getRoute('partenzeRichiestaComposizione', direction);
                     }
                 });
             }
-        } else if (changes?.richiestaComposizione?.currentValue === null && this.map && this.view?.ready) {
+        } else if (changes?.visualizzaPercorsiRichiesta?.currentValue === false && this.map && this.view?.ready) {
+            if (this.direction?.isVisible) {
+                const totalKilometers = this.travelDataNuovaPartenza?.totalKilometers;
+                this.store.dispatch(new SetZoomCentroMappaByKilometers(totalKilometers));
+            } else if (!this.direction?.isVisible) {
+                const zoom = 19;
+                this.store.dispatch(new SetZoomCentroMappa(zoom));
+            }
             this.clearDirection('partenzeRichiestaComposizione');
-            this.store.dispatch(new GetInitCentroMappa());
         }
 
         // Controllo il valore di "filtriRichiesteSelezionati"
@@ -1115,7 +1134,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 };
                 const totalKilometers = result.route?.attributes?.Total_Kilometers;
                 const totalTravelTime = result.route?.attributes?.Total_TravelTime;
-                this.store.dispatch(new SetDirectionTravelData({ totalKilometers, totalTravelTime }));
+                this.store.dispatch(new SetDirectionTravelData(idDirectionSymbols, { totalKilometers, totalTravelTime }));
                 this.view.graphics.add(result.route);
             });
         });

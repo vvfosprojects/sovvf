@@ -10,9 +10,11 @@
                 <button class="btn btn-light btn-no-hover border-secondary ml-3"
                         (click)="onToggleVisualizzaPercorsi()">
                     <ng-container *ngIf="!visualizzaPercorsi">
+                        <i class="fas fa-eye"></i>
                         Visualizza percorsi
                     </ng-container>
                     <ng-container *ngIf="visualizzaPercorsi">
+                        <i class="fas fa-eye-slash"></i>
                         Nascondi percorsi
                     </ng-container>
                 </button>

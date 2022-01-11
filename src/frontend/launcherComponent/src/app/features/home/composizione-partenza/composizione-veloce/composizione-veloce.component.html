@@ -1,4 +1,7 @@
 <div class="row min-h-comp">
+    <ng-container *ngIf="loadingInvioPartenza">
+        <app-partial-loader></app-partial-loader>
+    </ng-container>
     <div class="col-8 pl-0">
         <!-- Filterbar -->
         <app-filterbar-composizione [filtri]="filtri"
@@ -15,7 +18,6 @@
         <div class="card card-shadow h-100"
              [class.moon-text]="nightMode"
              [class.moon-card-light]="nightMode">
-            <app-partial-loader *ngIf="!preAccoppiati || loadingInvioPartenza"></app-partial-loader>
             <div class="card-header"
                  [class.moon-border-bottom]="nightMode">
                 <i class="fas fa-truck mr-2"></i>

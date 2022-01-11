@@ -18,6 +18,7 @@ import { GetBoxPersonale } from './store/actions/boxes/box-personale.actions';
 import { GetBoxMezzi } from './store/actions/boxes/box-mezzi.actions';
 import { GetBoxRichieste } from './store/actions/boxes/box-richieste.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
+import { ComposizionePartenzaState } from './store/states/composizione-partenza/composizione-partenza.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -42,6 +43,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     @Select(ImpostazioniState.boxAttivi) boxAttivi$: Observable<boolean>;
     boxAttivi: boolean;
+
+    // Percorsi Richiesta Composizione
+    @Select(ComposizionePartenzaState.visualizzaPercorsiRichiesta) visualizzaPercorsiRichiesta$: Observable<boolean>;
 
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 

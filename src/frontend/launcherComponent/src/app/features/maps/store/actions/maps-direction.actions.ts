@@ -11,7 +11,7 @@ export class SetDirection {
 export class SetDirectionTravelData {
     static readonly type = '[MapsDirection] Set Direction Travel Data';
 
-    constructor(public travelData: DirectionTravelDataInterface) {
+    constructor(public idDirectionSymbols: string, public travelData: DirectionTravelDataInterface) {
     }
 }
 
