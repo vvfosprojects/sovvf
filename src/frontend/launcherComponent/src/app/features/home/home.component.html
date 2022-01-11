@@ -6,7 +6,8 @@
                  [class.mt-1]="viewState.composizione.active">
                 <!-- Info Aggregate -->
                 <div class="col-12"
-                     [class.py-1]="boxAttivi || !viewState.chiamata.active || !viewState.modifica.active || !viewState.composizione.active"
+                     [class.pt-2]="boxAttivi || !viewState.chiamata.active || !viewState.modifica.active || !viewState.composizione.active"
+                     [class.pb-1]="boxAttivi || !viewState.chiamata.active || !viewState.modifica.active || !viewState.composizione.active"
                      [class.d-none]="!boxAttivi || viewState.chiamata.active || viewState.modifica.active || viewState.composizione.active">
                     <app-info-aggregate [nightMode]="(nightMode$ | async)">
                     </app-info-aggregate>
