@@ -16,7 +16,8 @@ import {
     StartListaSquadreComposizioneLoading,
     StartListaMezziComposizioneLoading,
     StopListaSquadreComposizioneLoading,
-    StopListaMezziComposizioneLoading, SetVisualizzaPercosiRichiesta
+    StopListaMezziComposizioneLoading,
+    SetVisualizzaPercosiRichiesta
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../../maps/maps-model/composizione-marker.model';
@@ -50,7 +51,7 @@ export interface ComposizionePartenzaStateModel {
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
-    visualizzaPercorsiRichiesta: true,
+    visualizzaPercorsiRichiesta: false,
     loadingListe: false,
     loadingSquadre: false,
     loadingMezzi: false,

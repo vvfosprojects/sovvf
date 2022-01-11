@@ -36,7 +36,8 @@
                              [class.d-none]="(viewState.richieste.active || viewState.codaChiamate.active || viewState.chiamata.active || viewState.modifica.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active) && !isCON">
                             <app-maps [viewStateMappa]="viewStateMappa$ | async"
                                       [boxAttivi]="boxAttivi"
-                                      [tastoChiamataMappaActive]="tastoChiamataMappaActive$ | async">
+                                      [tastoChiamataMappaActive]="tastoChiamataMappaActive$ | async"
+                                      [visualizzaPercorsiRichiesta]="visualizzaPercorsiRichiesta$ | async">
                             </app-maps>
                         </div>
                     </div>
@@ -88,7 +89,8 @@
                      [class.d-none]="(((doubleMonitor$ | async) === false) && (viewState.richieste.active || viewState.modifica.active || viewState.composizione.active || viewState.mezziInServizio.active || viewState.schedeContatto.active))">
                     <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
                               [boxAttivi]="boxAttivi"
-                              [tastoChiamataMappaActive]="tastoChiamataMappaActive$ | async">
+                              [tastoChiamataMappaActive]="tastoChiamataMappaActive$ | async"
+                              [visualizzaPercorsiRichiesta]="visualizzaPercorsiRichiesta$ | async">
                     </app-maps>
                 </div>
             </div>

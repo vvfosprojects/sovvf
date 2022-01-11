@@ -1,19 +1,20 @@
-import { Selector, State, Action, StateContext, Store } from '@ngxs/store';
+import { Selector, State, Action, StateContext } from '@ngxs/store';
 import { DirectionInterface } from '../../maps-interface/direction.interface';
 import { SetDirection, ClearDirection, SetDirectionTravelData } from '../actions/maps-direction.actions';
 import { Injectable } from '@angular/core';
 import { DirectionTravelDataInterface } from '../../maps-interface/direction-travel-data.interface';
-import { CentroMappaState } from './centro-mappa.state';
-import { SetCentroMappa } from '../actions/centro-mappa.actions';
+import { SetZoomCentroMappaByKilometers } from '../actions/centro-mappa.actions';
 
 export interface MapsDirectionStateModel {
     direction: DirectionInterface;
-    travelData: DirectionTravelDataInterface;
+    travelDataNuovaPartenza: DirectionTravelDataInterface;
+    travelDataRichiestaComposizione: DirectionTravelDataInterface;
 }
 
 export const mapsDirectionStateDefaults: MapsDirectionStateModel = {
     direction: null,
-    travelData: null
+    travelDataNuovaPartenza: null,
+    travelDataRichiestaComposizione: null,
 };
 
 @Injectable()
@@ -23,12 +24,14 @@ export const mapsDirectionStateDefaults: MapsDirectionStateModel = {
 })
 export class MapsDirectionState {
 
-    constructor(private store: Store) {
-    }
-
     @Selector()
     static direction(state: MapsDirectionStateModel): DirectionInterface {
         return state.direction;
+    }
+
+    @Selector()
+    static travelDataNuovaPartenza(state: MapsDirectionStateModel): DirectionTravelDataInterface {
+        return state.travelDataNuovaPartenza;
     }
 
     @Action(SetDirection)
@@ -40,31 +43,17 @@ export class MapsDirectionState {
 
     @Action(SetDirectionTravelData)
     setDirectionTravelData({ patchState, dispatch }: StateContext<MapsDirectionStateModel>, action: SetDirectionTravelData): void {
-        let zoom: number;
         const totalKilometers = action.travelData.totalKilometers;
-        if (totalKilometers < 2) {
-            zoom = 17;
-        } else if (totalKilometers < 5) {
-            zoom = 15;
-        } else if (totalKilometers < 15) {
-            zoom = 14;
-        } else if (totalKilometers < 25) {
-            zoom = 13;
-        } else if (totalKilometers < 50) {
-            zoom = 11;
-        } else if (totalKilometers < 150) {
-            zoom = 9;
-        } else if (totalKilometers < 200) {
-            zoom = 7;
-        } else {
-            zoom = 6;
+        dispatch(new SetZoomCentroMappaByKilometers(totalKilometers));
+        if (action.idDirectionSymbols === 'nuovaPartenza') {
+            patchState({
+                travelDataNuovaPartenza: action.travelData
+            });
+        } else if (action.idDirectionSymbols === 'partenzeRichiestaComposizione') {
+            patchState({
+                travelDataRichiestaComposizione: action.travelData
+            });
         }
-
-        const centroMappa = this.store.selectSnapshot(CentroMappaState.centroMappa);
-        dispatch(new SetCentroMappa({ coordinateCentro: centroMappa.coordinateCentro, zoom }));
-        patchState({
-            travelData: action.travelData
-        });
     }
 
     @Action(ClearDirection)
@@ -74,7 +63,8 @@ export class MapsDirectionState {
         };
         patchState({
             direction: mapsDirectionOff,
-            travelData: mapsDirectionStateDefaults.travelData
+            travelDataNuovaPartenza: mapsDirectionStateDefaults.travelDataNuovaPartenza,
+            travelDataRichiestaComposizione: mapsDirectionStateDefaults.travelDataRichiestaComposizione
         });
     }
 }
