@@ -7,7 +7,7 @@
               ngxsForm="eventiRichiesta.eventoForm"
               class="form-inline"
               (ngSubmit)="onSubmit()">
-            <div class="clearfix d-flex align-items-center w-100">
+            <div class="clearfix d-flex align-items-center justify-content-around w-100">
                 <div class="float-left mr-3">
                     <div class="form-group">
                         <label for="evento" class="d-none">Nuovo Evento</label>
@@ -19,10 +19,6 @@
                         </textarea>
                     </div>
                 </div>
-                <!-- <div class="float-left mr-4"> -->
-                <!--     <ngb-datepicker formControlName="date"> -->
-                <!--     </ngb-datepicker> -->
-                <!-- </div> -->
                 <div class="input-group mr-4">
                     <input class="form-control"
                            placeholder="yyyy-mm-dd"
@@ -45,7 +41,7 @@
                 <ng-container *ngIf="eventoForm.valid">
                     <div class="float-left">
                         <button type="submit"
-                                class="btn btn-light">
+                                class="btn btn-primary btn-no-hover">
                             Crea Evento
                         </button>
                     </div>
