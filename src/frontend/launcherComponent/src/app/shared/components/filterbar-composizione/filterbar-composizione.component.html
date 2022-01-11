@@ -1,44 +1,35 @@
 <ng-template [ngIf]="filtri">
-    <div class="rounded mt-1 mb-2 px-2 font-comp-xl bg-filterbar"
+    <div class="rounded mt-1 mb-2 py-2 px-2 bg-filterbar"
          [class.card-shadow]="!nightMode"
          [class.border]="!nightMode"
          [ngClass]="nightModeBg()"
          [class.font-comp-xl]="viewState.composizione.active">
-        <div class="row">
+        <div class="clearfix d-flex align-items-center">
             <!-- Tasti Composizione Partenza -->
-            <div *ngIf="composizionePartenza"
-                 class="clearfix py-1 pr-0" style="padding-left: 15px; width: 15%;">
-                <div class="clearfix w-100">
-                    <div class="mx-2">
-                        <span class="mt-2">
-                             <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
-                                 [nightMode]="nightMode"
-                                 [compPartenzaMode]="(composizioneMode$ | async)"
-                                 [disableTasto]="disableComposizioneMode">
-                             </app-tasto-comp-partenza>
-                        </span>
+            <ng-container *ngIf="composizionePartenza">
+                <div class="float-left mr-3">
+                    <div class="mb-2">
+                        <app-tasto-comp-partenza [compPartenzaMode]="(composizioneMode$ | async)"
+                                                 [disableTasto]="disableComposizioneMode"
+                                                 [nightMode]="nightMode"
+                                                 (cambioModalita)="compPartenzaSwitch($event)">
+                        </app-tasto-comp-partenza>
                     </div>
-                    <div class="mx-2 pt-2"
-                         (click)="$event.stopPropagation()">
-                        <button class="btn btn-block btn-primary btn-no-hover font-weight-bolder"
-                                [ngbTooltip]="richiesta?.triageSummary ? 'Visualizza Dettaglio Triage' : 'Triage non disponibile'"
-                                placement="bottom-left"
-                                (click)="openDettaglioTriage()"
-                                [disabled]="!richiesta?.triageSummary?.length">
-                            <i class="fas fa-question-circle mr-1"></i>
-                            {{ 'Triage' | uppercase }}
-                        </button>
-                    </div>
+                    <button class="btn btn-block btn-primary btn-no-hover font-weight-bolder"
+                            [ngbTooltip]="richiesta?.triageSummary ? 'Visualizza Dettaglio Triage' : 'Triage non disponibile'"
+                            placement="bottom-left"
+                            (click)="openDettaglioTriage(); $event.stopPropagation()"
+                            [disabled]="!richiesta?.triageSummary?.length">
+                        <i class="fas fa-question-circle mr-1"></i>
+                        {{ 'Triage' | uppercase }}
+                    </button>
                 </div>
-            </div>
+            </ng-container>
+
             <!-- Select Filtri -->
-            <div [class.clearfix]="composizionePartenza"
-                 [class.col-edit]="composizionePartenza"
-                 [class.align-self-center]="viewState.composizione.active"
-                 [class.col-12]="sostituzionePartenza">
-                <div class="row pt-1 mt-1"
-                     [class.pb-2]="sostituzionePartenza">
-                    <div class="col-3">
+            <div class="float-left">
+                <div class="clearfix mb-2">
+                    <div class="float-left mr-2">
                         <ng-select class="align-self-center custom"
                                    [items]="filtri?.turni"
                                    [multiple]="false"
@@ -53,7 +44,7 @@
                                    placeholder="Turno: Corrente">
                         </ng-select>
                     </div>
-                    <div class="col-3">
+                    <div class="float-left mr-2">
                         <ng-select class="align-self-center custom"
                                    style="max-height: 45px; overflow: auto"
                                    [items]="filtri?.generiMezzi"
@@ -72,14 +63,15 @@
                                    (change)="addFiltro($event, 'tipoMezzo')"
                                    placeholder="Genere Mezzo: Tutti">
                             <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                              <input type="checkbox" [checked]="generiMezzoSelezionato && generiMezzoSelezionato?.includes(item.descrizione)"/>
-                              {{item.descrizione}}
+                                <input type="checkbox"
+                                       [checked]="generiMezzoSelezionato && generiMezzoSelezionato?.includes(item.descrizione)">
+                                {{ item.descrizione }}
                             </ng-template>
                         </ng-select>
                     </div>
-                    <div [class.col-4]="!composizionePartenza && sostituzionePartenza"
-                         [class.col-3]="composizionePartenza && !sostituzionePartenza">
+                    <div class="float-left">
                         <ng-select class="align-self-center custom"
+                                   style="width: 200px"
                                    [items]="filtri?.stati"
                                    bindLabel="descrizione"
                                    bindValue="codice"
@@ -94,18 +86,15 @@
                                    (clear)="clearFiltri('statoMezzo')"
                                    placeholder="Stato: Tutti">
                             <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                              <app-icona-stato [stato]="item.descrizione"></app-icona-stato>
-                              {{item.descrizione}}
+                                <app-icona-stato [stato]="item.descrizione"></app-icona-stato>
+                                {{ item.descrizione }}
                             </ng-template>
                         </ng-select>
                     </div>
                 </div>
-                <div class="row pt-1"
-                     [class.pb-2]="sostituzionePartenza">
-                    <div class="clearfix ml-3 mb-2 d-inline-flex" style="max-height: 75px; overflow: auto;">
-                        <ng-select class="align-self-center"
-                                   style="width: 762px; min-width: 762px"
-                                   [items]="filtri?.distaccamenti"
+                <div class="clearfix">
+                    <div class="float-left">
+                        <ng-select [items]="filtri?.distaccamenti"
                                    bindLabel="descDistaccamento"
                                    bindValue="id"
                                    [clearSearchOnAdd]="true"
@@ -121,21 +110,27 @@
                                    (change)="addFiltro($event, 'codiceDistaccamento')"
                                    placeholder="Distaccamento: Tutti">
                             <ng-template ng-option-tmp let-item="item">
-                              <input type="checkbox" [checked]="distaccamentiSelezionati && distaccamentiSelezionati?.includes(item.id)"/>
-                              {{ item.descDistaccamento }}
+                                <input type="checkbox"
+                                       [checked]="distaccamentiSelezionati && distaccamentiSelezionati?.includes(item.id)">
+                                {{ item.descDistaccamento }}
                             </ng-template>
                         </ng-select>
-                        <button class="btn btn-sm btn-primary mr-1 btn-no-hover border-distaccamenti"
+                    </div>
+                    <div class="float-left mr-3">
+                        <button class="btn btn-sm btn-primary btn-no-hover border-distaccamenti"
                                 (click)="setDistaccamentiDefault()"
                                 [disabled]="disableDefaultDistaccamenti || loadingSquadre || loadingMezzi"
                                 ngbTooltip="Imposta Distaccamenti di competenza">
                             <i class="fas fa-filter pr-1"></i>
                         </button>
-                        <div class="d-inline-flex ml-2">
-                            <div class="font-xxlarge" style="text-align-last: center;">
-                                <app-competenza *ngFor="let c of competenze; let i = index"
-                                                [competenza]="c" [i]="i" [compAvanzata]="true"></app-competenza>
-                            </div>
+                    </div>
+                    <div class="float-left">
+                        <div class="font-xxlarge">
+                            <app-competenza *ngFor="let c of competenze; let i = index"
+                                            [competenza]="c"
+                                            [i]="i"
+                                            [compAvanzata]="true">
+                            </app-competenza>
                         </div>
                     </div>
                 </div>
