@@ -489,6 +489,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.store.dispatch(new SetVisualizzaPercosiRichiesta(false));
         this.clearDirection();
         this.view?.destroy();
         this.map?.destroy();
@@ -1143,7 +1144,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     clearDirection(idSymbol?: string): void {
         if (this.view?.graphics?.length) {
             if (!idSymbol) {
-                this.view.graphics.items.removeAll();
+                this.view.graphics.items = [];
             } else {
                 // @ts-ignore
                 this.view.graphics.items = this.view.graphics.items.filter((item: Graphic) => item.symbol.id !== idSymbol);
