@@ -18,6 +18,8 @@ import {
 } from '../../actions/eventi-richiesta/eventi-richiesta.actions';
 import { Injectable } from '@angular/core';
 import { ResetForm, UpdateFormValue } from '@ngxs/form-plugin';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTime } from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 
 export interface EventiRichiestaStateModel {
     eventoForm: {
@@ -132,11 +134,14 @@ export class EventiRichiestaState {
         const codiceRichiesta = state?.codiceRichiesta;
         dispatch(new StartLoadingEventiRichiesta());
         if (nuovoEvento) {
-            this.eventiRichiesta.addEventoRichiesta(nuovoEvento).subscribe(() => {
+            this.eventiRichiesta.addEventoRichiesta(nuovoEvento, nuovoEvento.date, nuovoEvento.orario).subscribe(() => {
+                    const todayNgbDate = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() } as NgbDate;
+                    const nowNgbTime = { hour: new Date().getHours(), minute: new Date().getMinutes() } as NgbTime;
+
                     dispatch([
                         new StopLoadingEventiRichiesta(),
                         new ResetForm({ path: 'eventiRichiesta.eventoForm' }),
-                        new UpdateFormValue({ value: { codice: codiceRichiesta }, path: 'eventiRichiesta.eventoForm' }),
+                        new UpdateFormValue({ value: { codice: codiceRichiesta, date: todayNgbDate, orario: nowNgbTime }, path: 'eventiRichiesta.eventoForm' }),
                         new GetEventiRichiesta()
                     ]);
                 },

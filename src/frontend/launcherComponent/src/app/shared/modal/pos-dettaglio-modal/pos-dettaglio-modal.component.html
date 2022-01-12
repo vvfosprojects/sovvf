@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold">
+        {{ ('POS ' + titolo + codiceRichiesta ) | uppercase }}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="onClose()">
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body px-0">
+    <div *ngFor="let p of pos; let i = index"
+         class="clearfix px-5"
+         [class.mb-2]="(i + 1) < pos.length">
+        <hr *ngIf="i !== 0">
+        <div class="float-left pt-2">
+            <h4 class="mb-0" (click)="onViewPos(p)">{{ p.descrizionePos }}</h4>
+        </div>
+        <div class="float-right">
+            <button class="btn btn-primary mr-2"
+                    [ngbTooltip]="'Visulizza ' + p.descrizionePos"
+                    (click)="onViewPos(p)">
+                <i class="fas fa-eye"></i>
+            </button>
+            <button class="btn btn-info"
+                    [ngbTooltip]="'Scarica ' + p.descrizionePos"
+                    (click)="onDownloadPos(p)">
+                <i class="fas fa-download"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-lg btn-danger btn-no-hover text-right" style="font-weight:600" (click)="onClose()">
+        {{ 'Chiudi' | uppercase }}
+    </button>
+</div>

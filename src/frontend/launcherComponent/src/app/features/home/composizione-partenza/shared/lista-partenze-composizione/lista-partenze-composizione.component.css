@@ -1,0 +1,17 @@
+#elimina {
+  position: absolute;
+  color: rgba(220, 53, 78, 0.74);
+  width: 20px;
+  height: 20px;
+  top: 4px;
+  right: 4px;
+  z-index: 999;
+}
+
+#elimina:hover {
+  color: #dc3545;
+}
+
+.font-comp-xl {
+  font-size: 130% !important;
+}

@@ -19,9 +19,22 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
         public string descrizione { get; set; }
 
         /// <summary>
-        /// Coordinate della sede
+        ///   Coordinate della sede
         /// </summary>
-        public string coordinate { get; set; }
+        public string coordinate
+        {
+            get; set;
+            //get
+            //{
+            //    if (coordinate.Contains("°"))
+            //        return DmsToDdString(coordinate);
+            //    else
+            //        return coordinate;
+            //}
+            //set
+            //{
+            //}
+        }
 
         public Coordinate Coordinate
         {
@@ -32,10 +45,16 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
                     if (coordinate != null)
                     {
                         if (coordinate.Contains(","))
-                            return new Coordinate(double.Parse(coordinate.Split(',')[0].Replace(".",",")), double.Parse(coordinate.Split(',')[1].Replace(".", ",")));
+                        {
+                            if (!coordinate.Contains("°"))
+                                return new Coordinate(double.Parse(coordinate.Split(',')[0].Replace(".", ",")), double.Parse(coordinate.Split(',')[1].Replace(".", ",")));
+                            else
+                                return DmsToDd(coordinate);
+                        }
                         else
                             return new Coordinate();
-                    }else
+                    }
+                    else
                         return new Coordinate();
                 }
                 catch (System.Exception e)
@@ -43,6 +62,58 @@ namespace SO115App.Models.Classi.ServiziEsterni.UtenteComune
                     return new Coordinate();
                 }
             }
+        }
+
+        /// <summary>
+        ///   Converte da "40°08'08.7\"N,8°48'48.8\"E" a 40.2425425454
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
+        private Coordinate DmsToDd(string coordinate)
+        {
+            string lat = coordinate.Split(',')[0];
+            string lon = coordinate.Split(',')[1];
+
+            double ddLat = double.Parse(lat.Split('°')[0]) + (double.Parse(lat.Split("'")[0].Split('°')[1]) / 60) + (double.Parse(lat.Split("'")[1].Split("\"")[0]) / 3600);
+            double ddLon = double.Parse(lon.Split('°')[0]) + (double.Parse(lon.Split("'")[0].Split('°')[1]) / 60) + (double.Parse(lon.Split("'")[1].Split("\"")[0]) / 3600);
+
+            if (lat.Contains('W') || lat.Contains('S'))
+            {
+                ddLat *= -1;
+            }
+
+            if (lon.Contains('W') || lon.Contains('S'))
+            {
+                ddLon *= -1;
+            }
+
+            return new Coordinate(ddLat, ddLon);
+        }
+
+        /// <summary>
+        ///   Converte da "40°08'08.7\"N,8°48'48.8\"E" a 40.2425425454
+        /// </summary>
+        /// <param name="coordinate"></param>
+        /// <returns></returns>
+        public string DmsToDdString(string coordinate)
+        {
+            string lat = coordinate.Split(',')[0];
+            string lon = coordinate.Split(',')[1];
+
+            double ddLat = double.Parse(lat.Split('°')[0]) + (double.Parse(lat.Split("'")[0].Split('°')[1]) / 60) + (double.Parse(lat.Split("'")[1].Split("\"")[0]) / 3600);
+            double ddLon = double.Parse(lon.Split('°')[0]) + (double.Parse(lon.Split("'")[0].Split('°')[1]) / 60) + (double.Parse(lon.Split("'")[1].Split("\"")[0]) / 3600);
+
+            if (lat.Contains('W') || lat.Contains('S'))
+            {
+                ddLat *= -1;
+            }
+
+            if (lon.Contains('W') || lon.Contains('S'))
+            {
+                ddLon *= -1;
+            }
+
+            return $"{ddLat.ToString()},{ddLon.ToString()}";
         }
 
         public string codice { get; set; }

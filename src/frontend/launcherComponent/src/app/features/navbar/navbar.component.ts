@@ -17,7 +17,7 @@ import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
 import { ToggleCodaChiamate, ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
-import { ClearRichiestaModifica } from '../home/store/actions/form-richiesta/richiesta-modifica.actions';
+import { ChiudiRichiestaModifica, ClearRichiestaModifica } from '../home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { AnnullaChiamata } from '../home/store/actions/form-richiesta/scheda-telefonata.actions';
@@ -208,7 +208,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         } else if (chiamataStatus) {
             this.toggleChiamataStatus();
         } else if (modificaRichiestaStatus) {
-            this.toggleModificaRichiesta();
+            this.store.dispatch(new ChiudiRichiestaModifica(true));
         } else if (composizioneStatus) {
             this.turnOffComposizionePartenza();
         }

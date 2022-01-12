@@ -137,7 +137,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             if (command.Chiamata.CodiceSchedaNue != null)
             {
                 var codiceFiscaleOperatore = _getUtenteById.GetUtenteByCodice(command.CodUtente).CodiceFiscale;
-                _setStatoGestioneSchedaContatto.Gestita(command.Chiamata.CodiceSchedaNue, command.CodiceSede, codiceFiscaleOperatore, true);
+                _setStatoGestioneSchedaContatto.Gestita(command.Chiamata.CodiceSchedaNue, command.CodiceSede, codiceFiscaleOperatore, true, command.Chiamata.Codice);
             }
 
             _saveRichiestaAssistenza.Save(richiesta);

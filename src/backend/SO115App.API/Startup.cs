@@ -29,6 +29,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
@@ -95,7 +96,10 @@ namespace SO115App.API
             services.AddHttpContextAccessor();
 
             services.AddMemoryCache();
-            services.AddMvcCore().AddApiExplorer().AddNewtonsoftJson();
+            services.AddMvcCore().AddApiExplorer().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("SO115", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SO115", Version = "v1.0" });

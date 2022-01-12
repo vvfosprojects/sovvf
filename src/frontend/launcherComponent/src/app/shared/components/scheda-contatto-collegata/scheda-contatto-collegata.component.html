@@ -13,7 +13,12 @@
         </div>
         <div class="col d-flex align-items-center">
             <i class="fas fa-map-marker-alt mr-2"></i>
-            {{ scheda.localita.indirizzo }}
+            <span class="d-inline-block mr-2">
+                {{ scheda.localita?.indirizzo }}
+            </span>
+            <span [class.font-weight-bolder]="!scheda.localita?.indirizzo">
+                {{ 'lat: ' + scheda.localita?.coordinate?.latitudine + ' lon: ' + scheda.localita?.coordinate?.longitudine }}
+            </span>
         </div>
         <div class="col-1 d-flex align-items-center">
             <i class="fas fa-desktop mr-2" ngbTooltip="Postazione Operatore" placement="left"></i>

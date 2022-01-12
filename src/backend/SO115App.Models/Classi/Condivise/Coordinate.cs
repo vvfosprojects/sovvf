@@ -44,7 +44,7 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public CoordinateString ToCoordinateString()
         {
-            return new CoordinateString(Latitudine.ToString().Replace(',', '.'), Longitudine.ToString().Replace(',', '.'));
+            return new CoordinateString(Latitudine.ToString(), Longitudine.ToString());
         }
     }
 
@@ -52,8 +52,8 @@ namespace SO115App.API.Models.Classi.Condivise
     {
         public CoordinateString(string Latitudine = "0", string Longitudine = "0")
         {
-            this.Latitudine = Latitudine;
-            this.Longitudine = Longitudine;
+            this.Latitudine = Latitudine.Replace(",",".");
+            this.Longitudine = Longitudine.Replace(",", ".");
         }
 
         /// <summary>

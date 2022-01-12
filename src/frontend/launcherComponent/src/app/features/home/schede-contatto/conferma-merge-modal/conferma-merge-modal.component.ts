@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SchedaContatto } from '../../../../shared/interface/scheda-contatto.interface';
-import { OpenDetailSC } from '../../store/actions/schede-contatto/schede-contatto.actions';
+import { OpenDettaglioSchedaContatto } from '../../store/actions/schede-contatto/schede-contatto.actions';
 import { Store } from '@ngxs/store';
 
 @Component({
@@ -18,7 +18,7 @@ export class ConfermaMergeModalComponent {
     }
 
     onDettaglioScheda(idSchedaContatto: string): void {
-        this.store.dispatch(new OpenDetailSC(idSchedaContatto));
+        this.store.dispatch(new OpenDettaglioSchedaContatto(idSchedaContatto));
     }
 
     close(esito: string): void {

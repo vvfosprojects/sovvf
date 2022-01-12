@@ -15,6 +15,13 @@ export class SetZoomCentroMappa {
     }
 }
 
+export class SetZoomCentroMappaByKilometers {
+    static readonly type = '[Centro Mappa] Set Zoom Centro Mappa By Kilometers';
+
+    constructor(public totalKilometers: number) {
+    }
+}
+
 export class SetCoordCentroMappa {
     static readonly type = '[Centro Mappa] Set Coordinate Centro Mappa';
 

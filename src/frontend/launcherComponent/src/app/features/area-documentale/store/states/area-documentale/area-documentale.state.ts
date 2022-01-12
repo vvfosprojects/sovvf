@@ -105,7 +105,6 @@ export class AreaDocumentaleState {
         patchState({
             codCategoria: action.codCategoria
         });
-        localStorage.setItem(LSNAME.areaDocumentale, action.codCategoria);
         dispatch(new SetDescCategoriaAreaDocumentale(action.codCategoria));
     }
 

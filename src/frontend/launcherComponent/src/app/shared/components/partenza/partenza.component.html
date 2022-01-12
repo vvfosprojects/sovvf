@@ -1,13 +1,15 @@
 <div class="clearfix px-2 py-1"
      [class.alert-info]="idDaSganciare === partenza.mezzo.descrizione"
      [class.px-1]="idDaSganciare === partenza.mezzo.descrizione">
-    <div class="float-left font-xxlarge"
-         style="display: inline-flex; align-items: center;">
+    <div class="float-left font-xxlarge cursor-pointer"
+         style="display: inline-flex; align-items: center;"
+         (click)="selezioneMezzo.emit(partenza.mezzo)">
         <app-mezzo [mezzo]="partenza.mezzo"
                    [listaEventiMezzo]="listaEventiMezzo"
                    [listaEventi]="listaEventi"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
-                   (actionMezzo)="onActionMezzo($event)"></app-mezzo>
+                   (actionMezzo)="onActionMezzo($event)">
+        </app-mezzo>
         <div *ngIf="!partenza.mezzo" class="d-inline-block p-2">
             Nessun mezzo
         </div>
@@ -21,9 +23,8 @@
                    ngbTooltip="{{ _nomeStatiSquadra(partenza.squadre[0].stato) }}"
                    class="fas fa-users mt-1 mr-2"></i>
                 <div class="d-inline-block"
-                     [ngbTooltip]="partenza.squadre[0].nome"
-                     [disableTooltip]="partenza.squadre[0].nome && partenza.squadre[0].nome.length <= 6">
-                    {{ partenza.squadre[0].nome | truncate: 6 }}
+                     [ngbTooltip]="partenza.squadre[0].nome">
+                    {{ partenza.squadre[0].codice | truncate: 6 }}
                 </div>
                 <div *ngIf="partenza.squadre[0].turno"
                      class="d-inline-block ml-1">
@@ -56,7 +57,8 @@
         </div>
     </div>
     <div *ngIf="annullaStatoMezzo" class="float-right mr-2 my-1">
-        <button class="btn btn-danger btn-sm-mod border-danger" (click)="onAnnullaStato(partenza.mezzo.codice)" ngbTooltip="Annulla ultimo cambio stato">
+        <button class="btn btn-danger btn-sm-mod border-danger" (click)="onAnnullaStato(partenza.mezzo.codice)"
+                ngbTooltip="Annulla ultimo cambio stato">
             <i class="fas fa-history px-1"></i>
         </button>
     </div>

@@ -13,7 +13,7 @@ import { ComposizionePartenzaState } from '../home/store/states/composizione-par
 import { AreaMappaState } from './store/states/area-mappa.state';
 import { AreaMappa } from './maps-model/area-mappa-model';
 import { MapsDirectionState } from './store/states/maps-direction.state';
-import { DirectionInterface } from './maps-interface/direction-interface';
+import { DirectionInterface } from './maps-interface/direction.interface';
 import { FiltriRichiesteState } from '../home/store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../home/filterbar/filtri-richieste/voce-filtro.model';
 import { ViewComponentState } from '../home/store/states/view/view.state';
@@ -27,6 +27,7 @@ import { RichiestaGestioneState } from '../home/store/states/richieste/richiesta
 import { MezziInServizioState } from '../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { SchedeContattoState } from '../home/store/states/schede-contatto/schede-contatto.state';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
+import { DirectionTravelDataInterface } from './maps-interface/direction-travel-data.interface';
 
 @Component({
     selector: 'app-maps',
@@ -39,6 +40,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Input() boxAttivi: boolean;
     @Input() tastoChiamataMappaActive: boolean;
     @Input() tastoZonaEmergenzaMappaActive: boolean;
+    @Input() visualizzaPercorsiRichiesta: boolean;
 
     @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
     centroMappa: CentroMappa;
@@ -47,6 +49,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
     @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<boolean>;
     @Select(MapsDirectionState.direction) direction$: Observable<DirectionInterface>;
+    @Select(MapsDirectionState.travelDataNuovaPartenza) travelDataNuovaPartenza$: Observable<DirectionTravelDataInterface>;
 
     // Richiesta Selezionata
     @Select(RichiestaSelezionataState.idRichiestaSelezionata) idRichiestaSelezionata$: Observable<string>;

@@ -54,6 +54,10 @@ export class AddZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Add Zona Emergenza';
 }
 
+export class RequestCra {
+    static readonly type = '[ZoneEmergenza] Request Cra Doa';
+}
+
 export class RequestTipologieModuli {
     static readonly type = '[ZoneEmergenza] Request Tipologie Moduli';
 }

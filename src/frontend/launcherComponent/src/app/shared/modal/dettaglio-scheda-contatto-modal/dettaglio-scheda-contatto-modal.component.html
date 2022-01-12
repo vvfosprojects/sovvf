@@ -1,5 +1,5 @@
 <div class="modal-header"
-    [class.gestita]="schedaContatto.gestita">
+     [class.gestita]="schedaContatto.gestita">
     <h4 class="mb-0">
         <span class="d-inline-block mr-3">
             <i class="fas fa-info-circle mr-1"></i>
@@ -28,15 +28,24 @@
             <i class="fas fa-hashtag mr-2 guida"></i>
             <span>N.Scheda</span>
             <hr class="my-1">
-            {{schedaContatto.codiceScheda}}
+            {{ schedaContatto.codiceScheda }}
         </div>
         <div class="col-3 mb-3">
             <i class="fas fa-calendar mr-2 guida"></i>
             <span>Data Inserimento</span>
             <hr class="my-1">
-            {{schedaContatto.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS'}}
+            {{ schedaContatto.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS' }}
         </div>
-        <div class="col-7"></div>
+        <div class="col-7 d-flex align-items-center">
+            <ng-container *ngIf="schedaContatto?.codiceInterventoAssociato">
+                <i class="fas fa-hashtag mr-2 guida"></i>
+                <span>Codice {{ defineChiamataIntervento(schedaContatto.codiceInterventoAssociato) }}</span>
+                <button class="btn btn-outline-light ml-4"
+                        (click)="onDettaglioRichiesta(schedaContatto.codiceInterventoAssociato)">
+                    {{ schedaContatto.codiceInterventoAssociato }}
+                </button>
+            </ng-container>
+        </div>
     </div>
     <!-- Seconda riga -->
     <div class="row">

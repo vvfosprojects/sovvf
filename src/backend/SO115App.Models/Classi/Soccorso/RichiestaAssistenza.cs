@@ -113,7 +113,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
-        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, Coordinate coordinatePartenza = null, string codicePartenza = null)
+        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string[] coordinatePartenza = null, string codicePartenza = null)
         {
             bool cambioOrarioUscita = partenza.Mezzo.Stato == stato.Stato;
 
@@ -142,10 +142,14 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     var dataComposizione = cambioOrarioUscita == true ? stato.Istante : stato.Istante.AddMinutes(1);
 
+                    CoordinateString coordinate = new CoordinateString(coordinatePartenza[0], coordinatePartenza[1]);
+
                     if (codicePartenza == null)
-                        new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza, coordinatePartenza.ToCoordinateString());
+                        new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza, coordinate);
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
+
+
 
                     partenza.Mezzo.IdRichiesta = Id;
 

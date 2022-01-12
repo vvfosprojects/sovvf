@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ZonaEmergenza } from '../model/zona-emergenza.model';
+import { EventoEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 
 @Component({
     selector: 'app-tabella-zone-emergenza',
@@ -28,6 +28,10 @@ export class TabellaZoneEmergenzaComponent {
     @Output() sedi: EventEmitter<ZonaEmergenza> = new EventEmitter<ZonaEmergenza>();
 
     constructor() {
+    }
+
+    getEventiRichiestaCreazioneCraZonaEmergenza(zonaEmergenza: ZonaEmergenza): EventoEmergenza {
+        return zonaEmergenza?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaCreazioneCRA' && !e.gestita)[0];
     }
 
     onDetail(zonaEmergenza: ZonaEmergenza): void {

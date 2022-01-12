@@ -7,12 +7,14 @@
         <div class="row">
             <div class="col-1 d-flex align-items-center">
                 <button *ngIf="scheda.collegate && scheda.collegate.length > 0"
-                        class="btn btn-no-hover btn-outline-light ml-2"
+                        class="btn btn-no-hover btn-light ml-2"
                         (click)="onCollapse(); $event.stopPropagation()">
                     <i *ngIf="scheda.collegate && scheda.collegate.length > 0 && !idCollapsed?.includes(scheda.codiceScheda)"
-                       class="fas fa-plus-square"></i>
+                       class="fas fa-plus-square">
+                    </i>
                     <i *ngIf="scheda.collegate && scheda.collegate.length > 0 && idCollapsed?.includes(scheda.codiceScheda)"
-                       class="fas fa-minus-square"></i>
+                       class="fas fa-minus-square">
+                    </i>
                 </button>
             </div>
             <div class="col-2 px-0 d-flex align-items-center">
@@ -26,8 +28,12 @@
             </div>
             <div class="col d-flex align-items-center">
                 <i class="fas fa-map-marker-alt mr-2"></i>
-                <span class="d-inline-block mr-2">{{ scheda.localita?.indirizzo ? scheda.localita?.indirizzo : 'Indirizzo non specificato -' }}</span>
-                <span [class.font-weight-bolder]="!scheda.localita?.indirizzo">{{ 'lat: ' + scheda.localita?.coordinate?.latitudine + ' lon: ' + scheda.localita?.coordinate?.longitudine }}</span>
+                <span class="d-inline-block mr-2">
+                    {{ scheda.localita?.indirizzo ? scheda.localita?.indirizzo : 'Indirizzo non specificato -' }}
+                </span>
+                <span [class.font-weight-bolder]="!scheda.localita?.indirizzo">
+                    {{ 'lat: ' + scheda.localita?.coordinate?.latitudine + ' lon: ' + scheda.localita?.coordinate?.longitudine }}
+                </span>
             </div>
             <div class="col-1 d-flex align-items-center">
                 <i class="fas fa-desktop mr-2" ngbTooltip="Postazione Operatore" placement="left"></i>

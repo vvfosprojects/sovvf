@@ -17,7 +17,7 @@
                             <div class="float-left w-75">
                                 <label class="d-none">Tipologia intervento</label>
                                 <div class="required-field">
-                                    <ng-select class="border"
+                                    <ng-select class="ng-select-no-border"
                                                [class.errore]="submitted && !checkTipologie()"
                                                bindLabel="codiceDescrizione"
                                                bindValue="codice"
@@ -36,12 +36,26 @@
                                     <small>Almeno una tipologia è richiesta</small>
                                 </div>
                             </div>
-                            <div class="float-left w-25 px-2">
-                                <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()"
-                                        [disabled]="!f.dettaglioTipologia.value || modifica">
-                                    {{ 'Inizia Triage' | uppercase }}
-                                </button>
-                            </div>
+                            <ng-container *ngIf="!modifica">
+                                <div class="float-left w-25 px-2">
+                                    <button class="btn btn-primary btn-block btn-no-hover"
+                                            (click)="!!((!loadingTriageChiamata && triage) || triageSummary) && openTriage()"
+                                            [disabled]="loadingTriageChiamata || !f.dettaglioTipologia.value || modifica || (!loadingTriageChiamata && !triage && !triageSummary)">
+                                        <ng-container *ngIf="loadingTriageChiamata && !modifica">
+                                            <i class="fas fa-spin fa-spinner mr-1"></i>
+                                            {{ 'Caricamento Triage' | uppercase}}
+                                        </ng-container>
+                                        <ng-container
+                                                *ngIf="!loadingTriageChiamata && !triage && !triageSummary">
+                                            {{ 'Triage non presente' | uppercase}}
+                                        </ng-container>
+                                        <ng-container
+                                                *ngIf="(!loadingTriageChiamata && triage) || triageSummary">
+                                            {{ 'Inizia Triage' | uppercase}}
+                                        </ng-container>
+                                    </button>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
@@ -50,29 +64,28 @@
                         <div class="clearfix">
                             <div class="float-left w-75">
                                 <label class="d-none">Dettaglio tipologia</label>
-                                <div class="">
-                                    <ng-select class="border"
-                                               bindLabel="descrizione"
-                                               clearAllText="Clear"
-                                               placeholder="Seleziona Dettaglio Tipologia"
-                                               formControlName="dettaglioTipologia"
-                                               [notFoundText]="'Nessun dettaglio tipologia trovato'"
-                                               [items]="dettagliTipologia"
-                                               [multiple]="false"
-                                               [closeOnSelect]="true"
-                                               [searchable]="false"
-                                               [hideSelected]="true"
-                                               [readonly]="!f.codTipologia.value"
-                                               (change)="onChangeDettaglioTipologia($event)">
-                                    </ng-select>
-                                </div>
+                                <ng-select bindLabel="descrizione"
+                                           clearAllText="Clear"
+                                           placeholder="Seleziona Dettaglio Tipologia"
+                                           formControlName="dettaglioTipologia"
+                                           [notFoundText]="'Nessun dettaglio tipologia trovato'"
+                                           [items]="dettagliTipologia"
+                                           [multiple]="false"
+                                           [closeOnSelect]="true"
+                                           [searchable]="true"
+                                           [hideSelected]="true"
+                                           [readonly]="!f.codTipologia.value"
+                                           (change)="onChangeDettaglioTipologia($event)">
+                                </ng-select>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="loadingDettagliTipologia" class="font-xlarge pl-2 pt-1">
-                        <i class="fas fa-spinner fa-spin mr-2"></i>
-                        Recupero Dettaglio Tipologia
-                    </div>
+                    <ng-container *ngIf="loadingDettagliTipologia">
+                        <div class="font-xlarge pl-2 py-1">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            Recupero Dettaglio Tipologia
+                        </div>
+                    </ng-container>
                 </div>
             </div>
             <!-- INDIRIZZO -->
@@ -177,7 +190,7 @@
                                           [class.is-invalid]="submitted && f.noteIndirizzo.errors"
                                           placeholder="Inserisci le Note Indirizzo"
                                           formControlName="noteIndirizzo"
-                                          style="height: 77px"
+                                          style="height: 77px; max-height: 77px"
                                           role="presentation">
                                 </textarea>
                             </div>
@@ -201,7 +214,7 @@
                         </div>
                     </ng-template>
                     <!-- INPUT COMPETENZE -->
-                    <ng-template [ngIf]="!loadingCompetenze && competenze?.length === 0 && !richiestaModifica">
+                    <ng-template [ngIf]="!loadingCompetenze && competenze?.length === 0 && !modifica">
                         <div class="form-group mb-2">
                             <label for="competenza_1"
                                    class="d-none">Competenza 1</label>
@@ -322,7 +335,8 @@
                                 <input id="interno" type="text" placeholder="Interno" formControlName="interno"
                                        class="form-control">
                             </div>
-                            <div class="col-2 pl-1">
+                            <div class="col-2 pl-1 cursor-pointer"
+                                 (click)="onDettaglioSchedaContatto(f?.codSchedaContatto?.value)">
                                 <ng-template [ngIf]="f?.codSchedaContatto?.value">
                                     <label class="d-none" for="contatto">Contatto</label>
                                     <input id="contatto" type="text" placeholder="Contatto"
@@ -331,7 +345,8 @@
                                 </ng-template>
                                 <ng-template [ngIf]="!f?.codSchedaContatto?.value">
                                     <button class="btn btn-secondary btn-block btn-no-hover"
-                                            (click)="openModalSchedeContatto()">S. Contatto
+                                            (click)="openModalSchedeContatto()">
+                                        S. Contatto
                                     </button>
                                 </ng-template>
                             </div>
@@ -402,7 +417,9 @@
             <!-- NOTE -->
             <ng-container *ngIf="!apertoFromMappa">
                 <div class="row p-2 my-2 bg-secondary"></div>
-                <div class="row mb-5">
+                <div class="row"
+                     [class.mb-5]="!modifica"
+                     [class.mb-4]="modifica">
                     <div class="col-8">
                         <div class="row">
                             <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 mb-2 pr-2">
@@ -608,7 +625,7 @@
                         </button>
                         <button class="btn btn-primary btn-no-hover btn-xlarge btn-modifica"
                                 style="min-width: 100px; width: 400px"
-                                [disabled]="loadingCompetenze || !competenze?.length || disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="loadingCompetenze || !richiestaModifica?.competenze?.length || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
@@ -621,10 +638,13 @@
         </form>
     </div>
     <!-- Resoconto triage -->
-    <div class="col-4 h-100 scroll-y py-3"
+    <div class="col-4 h-100 scroll-y px-0 pb-3"
          [class.bg-resoconto-triage]="!apertoFromMappa">
-        <div class="px-2 mb-2 bg-secondary font-weight-bold" style="color: #ffffff">INFO AGGIUNTIVE</div>
-        <div>
+        <div class="bg-secondary font-weight-bold border-bottom border-light text-center"
+             style="color: #ffffff">
+            INFO AGGIUNTIVE
+        </div>
+        <div class="px-3">
             <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
                                 [dettaglioTipologia]="f.dettaglioTipologia?.value"
                                 [codSchedaContatto]="schedaContatto?.codiceScheda"

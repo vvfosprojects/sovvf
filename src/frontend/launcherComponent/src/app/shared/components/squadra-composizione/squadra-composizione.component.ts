@@ -40,10 +40,11 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     @Output() hoverOut = new EventEmitter<SquadraComposizione>();
     @Output() sbloccata = new EventEmitter<SquadraComposizione>();
 
-    disableBtnFeature = false;
-    private subscription = new Subscription();
     squadraComp: any;
+    disableBtnFeature = false;
     autistaInSquadra = false;
+
+    private subscription = new Subscription();
 
     constructor() {
         this.getViewState();

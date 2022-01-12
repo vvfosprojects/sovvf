@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
-            _geofleet = geofleet;
+            //_geofleet = geofleet;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)

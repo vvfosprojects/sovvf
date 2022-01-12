@@ -1,207 +1,202 @@
 <div class="row min-h-comp">
-    <div *ngIf="loadingInvioPartenza"
-         class="col-12 m-h-647">
+    <ng-container *ngIf="loadingInvioPartenza">
         <app-partial-loader></app-partial-loader>
-    </div>
-    <div *ngIf="!loadingInvioPartenza" class="col-3 px-0">
-        <div class="card min-h-comp">
-            <app-partial-loader *ngIf="!squadreComposizione || loadingSquadre"></app-partial-loader>
-            <div class="card-header clearfix px-2 py-1">
-                <div class="float-left h3 mb-0 pt-1 pl-2">
-                    <i class="fas fa-users mr-1"></i>
-                    Squadre
-                </div>
-                <div class="float-right w-50">
-                    <label for="ricercaSquadre"
-                           class="d-none"></label>
-                    <input id="ricercaSquadre"
-                           class="form-control"
-                           [ngClass]="{'border-danger': ricercaSquadre?.length}"
-                           type="text"
-                           name="ricercaSquadre"
-                           placeholder="Cerca..."
-                           [(ngModel)]="ricercaSquadre"
-                           appDebounceKeyUp
-                           [debounceTime]="1000"
-                           (debounceKeyUp)="onSearchSquadre()"
-                           (search)="onClearSearchSquadre()">
-                    <i *ngIf="ricercaSquadre"
-                       class="fas fa-times text-danger clear-search-squadre"
-                       ngbTooltip="Cancella Ricerca Squadre"
-                       (click)="onClearSearchSquadre()"></i>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <ul class="list-group list-group-flush min-h-comp">
-                    <li *ngIf="!squadreComposizione?.length && !loadingSquadre"
-                        class="px-3 pt-1" style="list-style: none;">
-                        <span class="text-muted">Nessun risultato trovato.</span>
-                    </li>
-                    <li *ngIf="loadingSquadre"
-                        class="px-3 pt-1" style="list-style: none;">
-                        <span class="text-muted">Caricamento risultati...</span>
-                    </li>
-                    <ng-template [ngIf]="squadreComposizione?.length && !loadingSquadre">
-                        <app-squadra-composizione
-                                *ngFor="let sC of squadreComposizione"
-                                [nightMode]="nightMode"
-                                [loadingMezzi]="loadingMezzi"
-                                [squadraComposizione]="sC"
-                                [boxPartenzaList]="boxPartenzaList"
-                                [itemSelezionato]="checkSquadraSelezione(sC.codice)"
-                                [itemHover]="checkSquadraHover(sC.codice)"
-                                [richiesta]="richiesta"
-                                (selezionata)="squadraSelezionata($event)"
-                                (selezionataInRientro)="squadraSelezionataInRientro($event)"
-                                (selezionataPreAccoppiati)="squadraSelezionataPreAccoppiati($event)"
-                                (deselezionata)="squadraDeselezionata($event)"
-                                (deselezionataInRientro)="squadraDeselezionataInRientro($event)"
-                                (deselezionataPreAccoppiati)="squadraDeselezionataPreAccoppiati($event)"
-                                (hoverIn)="squadraHoverIn($event)"
-                                (hoverOut)="squadraHoverOut($event)">
-                        </app-squadra-composizione>
-                    </ng-template>
-                </ul>
-            </div>
-        </div>
+    </ng-container>
+    <div class="col-8">
         <div class="row">
-            <div class="col"
-                 style="display: flex; place-content: center; margin-top: 10px;">
-                <ngb-pagination
-                        [(page)]="currentPageSquadre"
-                        [pageSize]="pageSizeSquadre"
-                        [collectionSize]="totalItemsSquadre"
-                        [maxSize]="2"
-                        [disabled]="loadingSquadre"
-                        (pageChange)="squadrePageChange($event)">
-                </ngb-pagination>
+            <!-- Filterbar -->
+            <div class="col-12 px-0">
+                <app-filterbar-composizione [filtri]="filtri"
+                                            [nightMode]="nightMode"
+                                            [competenze]="richiesta?.competenze"
+                                            [disableComposizioneMode]="loadingListe"
+                                            [composizionePartenza]="true"
+                                            [loadingSquadre]="loadingSquadre"
+                                            [loadingMezzi]="loadingMezzi"
+                                            [triageSummary]="triageSummary">
+                </app-filterbar-composizione>
             </div>
-        </div>
-    </div>
-    <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
-        <div class="card mx-auto min-h-comp">
-            <app-partial-loader *ngIf="!squadreComposizione || loadingMezzi"></app-partial-loader>
-            <div class="card-header clearfix px-2 py-1">
-                <div class="float-left h3 mb-0 pt-1 pl-2">
-                    <i class="fas fa-truck mr-1"></i>
-                    Mezzi
-                </div>
-                <div class="float-right"
-                     style="width: 35%">
-                    <label for="ricercaMezzi"
-                           class="d-none"></label>
-                    <input id="ricercaMezzi"
-                           class="form-control"
-                           [ngClass]="{'border-danger': ricercaMezzi?.length}"
-                           type="text"
-                           name="ricercaMezzi"
-                           placeholder="Cerca..."
-                           [(ngModel)]="ricercaMezzi" appDebounceKeyUp
-                           (debounceKeyUp)="onSearchMezzi()"
-                           [debounceTime]="1000">
-                    <i *ngIf="ricercaMezzi"
-                       class="fas fa-times text-danger clear-search-mezzi"
-                       ngbTooltip="Cancella Ricerca Mezzi"
-                       (click)="onClearSearchMezzi()"></i>
-                </div>
-            </div>
-            <div class="card-body p-0">
-                <ul class="list-group list-group-flush min-h-comp">
-                    <li *ngIf="!mezziComposizione?.length && !loadingMezzi"
-                        class="px-3 pt-1" style="list-style: none;">
-                        <span class="text-muted">Nessun risultato trovato.</span>
-                    </li>
-                    <li *ngIf="loadingMezzi"
-                        class="px-3 pt-1" style="list-style: none;">
-                        <span class="text-muted">Caricamento risultati...</span>
-                    </li>
-                    <ng-template [ngIf]="mezziComposizione?.length && !loadingMezzi">
-                        <div *ngFor="let mC of mezziComposizione">
-                            <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
-                                <app-mezzo-composizione [mezzoComp]="mC"
-                                                        [nightMode]="nightMode"
-                                                        [loadingSquadre]="loadingSquadre"
-                                                        [boxPartenzaList]="boxPartenzaList"
-                                                        [itemSelezionato]="checkMezzoSelezione(mC.id)"
-                                                        [itemHover]="checkMezzoHover(mC.id)"
-                                                        [itemInPrenotazione]="idMezziInPrenotazione ? idMezziInPrenotazione.indexOf(mC.id) !== -1 : false"
-                                                        [itemPrenotato]="idMezziPrenotati ? idMezziPrenotati.indexOf(mC.id) !== -1 : false"
-                                                        [itemBloccato]="idMezziBloccati ? idMezziBloccati.indexOf(mC.id) !== -1 : false"
-                                                        [richiesta]="richiesta"
-                                                        (selezionato)="mezzoSelezionato($event)"
-                                                        (selezionatoInRientro)="mezzoSelezionatoInRientro($event)"
-                                                        (selezionatoPreAccoppiati)="mezzoSelezionatoPreAccoppiati($event)"
-                                                        (deselezionato)="mezzoDeselezionato($event)"
-                                                        (deselezionatoInRientro)="mezzoDeselezionatoInRientro($event)"
-                                                        (deselezionatoPreAccoppiati)="mezzoDeselezionatoPreAccoppiati($event)"
-                                                        (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
-                                                        (mezzoCoordinate)="mezzoCoordinate($event)"
-                                                        (mezzoCoordinateClear)="mezzoCoordinateClear()"
-                                                        (sganciamento)="sganciamento.emit($event)">
-                                </app-mezzo-composizione>
-                            </ng-template>
+
+            <!-- Lista Squadre -->
+            <div class="col-5 px-0">
+                <div class="card min-h-comp">
+                    <app-partial-loader *ngIf="!squadreComposizione || loadingSquadre"></app-partial-loader>
+                    <div class="card-header clearfix px-2 py-1">
+                        <div class="float-left h3 mb-0 pt-1 pl-2">
+                            <i class="fas fa-users mr-1"></i>
+                            Squadre
                         </div>
-                    </ng-template>
-                </ul>
+                        <div class="float-right w-50">
+                            <label for="ricercaSquadre"
+                                   class="d-none"></label>
+                            <input id="ricercaSquadre"
+                                   class="form-control"
+                                   [ngClass]="{'border-danger': ricercaSquadre?.length}"
+                                   type="text"
+                                   name="ricercaSquadre"
+                                   placeholder="Cerca..."
+                                   [(ngModel)]="ricercaSquadre"
+                                   appDebounceKeyUp
+                                   [debounceTime]="1000"
+                                   (debounceKeyUp)="onSearchSquadre()"
+                                   (search)="onClearSearchSquadre()">
+                            <i *ngIf="ricercaSquadre"
+                               class="fas fa-times text-danger clear-search-squadre"
+                               ngbTooltip="Cancella Ricerca Squadre"
+                               (click)="onClearSearchSquadre()"></i>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush min-h-comp">
+                            <li *ngIf="!squadreComposizione?.length && !loadingSquadre"
+                                class="px-3 pt-1" style="list-style: none;">
+                                <span class="text-muted">Nessun risultato trovato.</span>
+                            </li>
+                            <li *ngIf="loadingSquadre"
+                                class="px-3 pt-1" style="list-style: none;">
+                                <span class="text-muted">Caricamento risultati...</span>
+                            </li>
+                            <ng-template [ngIf]="squadreComposizione?.length && !loadingSquadre">
+                                <app-squadra-composizione
+                                        *ngFor="let sC of squadreComposizione"
+                                        [nightMode]="nightMode"
+                                        [loadingMezzi]="loadingMezzi"
+                                        [squadraComposizione]="sC"
+                                        [boxPartenzaList]="boxPartenzaList"
+                                        [itemSelezionato]="checkSquadraSelezione(sC.codice)"
+                                        [itemHover]="checkSquadraHover(sC.codice)"
+                                        [richiesta]="richiesta"
+                                        (selezionata)="squadraSelezionata($event)"
+                                        (selezionataInRientro)="squadraSelezionataInRientro($event)"
+                                        (selezionataPreAccoppiati)="squadraSelezionataPreAccoppiati($event)"
+                                        (deselezionata)="squadraDeselezionata($event)"
+                                        (deselezionataInRientro)="squadraDeselezionataInRientro($event)"
+                                        (deselezionataPreAccoppiati)="squadraDeselezionataPreAccoppiati($event)"
+                                        (hoverIn)="squadraHoverIn($event)"
+                                        (hoverOut)="squadraHoverOut($event)">
+                                </app-squadra-composizione>
+                            </ng-template>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"
+                         style="display: flex; place-content: center; margin-top: 10px;">
+                        <ngb-pagination
+                                [(page)]="currentPageSquadre"
+                                [pageSize]="pageSizeSquadre"
+                                [collectionSize]="totalItemsSquadre"
+                                [maxSize]="2"
+                                [disabled]="loadingSquadre"
+                                (pageChange)="squadrePageChange($event)">
+                        </ngb-pagination>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col"
-                 style="display: flex; place-content: center; margin-top: 10px;">
-                <ngb-pagination
-                        [(page)]="currentPageMezzi"
-                        [pageSize]="pageSizeMezzi"
-                        [collectionSize]="totalItemsMezzi"
-                        [maxSize]="5"
-                        [disabled]="loadingMezzi"
-                        (pageChange)="mezziPageChange($event)">
-                </ngb-pagination>
+
+            <!-- Lista Mezzi -->
+            <div class="col-7 pr-0">
+                <div class="card mx-auto min-h-comp">
+                    <app-partial-loader *ngIf="!squadreComposizione || loadingMezzi"></app-partial-loader>
+                    <div class="card-header clearfix px-2 py-1">
+                        <div class="float-left h3 mb-0 pt-1 pl-2">
+                            <i class="fas fa-truck mr-1"></i>
+                            Mezzi
+                        </div>
+                        <div class="float-right"
+                             style="width: 35%">
+                            <label for="ricercaMezzi"
+                                   class="d-none"></label>
+                            <input id="ricercaMezzi"
+                                   class="form-control"
+                                   [ngClass]="{'border-danger': ricercaMezzi?.length}"
+                                   type="text"
+                                   name="ricercaMezzi"
+                                   placeholder="Cerca..."
+                                   [(ngModel)]="ricercaMezzi" appDebounceKeyUp
+                                   (debounceKeyUp)="onSearchMezzi()"
+                                   [debounceTime]="1000">
+                            <i *ngIf="ricercaMezzi"
+                               class="fas fa-times text-danger clear-search-mezzi"
+                               ngbTooltip="Cancella Ricerca Mezzi"
+                               (click)="onClearSearchMezzi()"></i>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush min-h-comp">
+                            <li *ngIf="!mezziComposizione?.length && !loadingMezzi"
+                                class="px-3 pt-1" style="list-style: none;">
+                                <span class="text-muted">Nessun risultato trovato.</span>
+                            </li>
+                            <li *ngIf="loadingMezzi"
+                                class="px-3 pt-1" style="list-style: none;">
+                                <span class="text-muted">Caricamento risultati...</span>
+                            </li>
+                            <ng-template [ngIf]="mezziComposizione?.length && !loadingMezzi">
+                                <div *ngFor="let mC of mezziComposizione">
+                                    <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
+                                        <app-mezzo-composizione [mezzoComp]="mC"
+                                                                [nightMode]="nightMode"
+                                                                [loadingSquadre]="loadingSquadre"
+                                                                [boxPartenzaList]="boxPartenzaList"
+                                                                [itemSelezionato]="checkMezzoSelezione(mC.id)"
+                                                                [itemHover]="checkMezzoHover(mC.id)"
+                                                                [itemInPrenotazione]="idMezziInPrenotazione ? idMezziInPrenotazione.indexOf(mC.id) !== -1 : false"
+                                                                [itemPrenotato]="idMezziPrenotati ? idMezziPrenotati.indexOf(mC.id) !== -1 : false"
+                                                                [itemBloccato]="idMezziBloccati ? idMezziBloccati.indexOf(mC.id) !== -1 : false"
+                                                                [richiesta]="richiesta"
+                                                                (selezionato)="mezzoSelezionato($event)"
+                                                                (selezionatoInRientro)="mezzoSelezionatoInRientro($event)"
+                                                                (selezionatoPreAccoppiati)="mezzoSelezionatoPreAccoppiati($event)"
+                                                                (deselezionato)="mezzoDeselezionato($event)"
+                                                                (deselezionatoInRientro)="mezzoDeselezionatoInRientro($event)"
+                                                                (deselezionatoPreAccoppiati)="mezzoDeselezionatoPreAccoppiati($event)"
+                                                                (hoverIn)="mezzoHoverIn($event)"
+                                                                (hoverOut)="mezzoHoverOut()"
+                                                                (mezzoCoordinate)="mezzoCoordinate($event)"
+                                                                (mezzoCoordinateClear)="mezzoCoordinateClear()"
+                                                                (sganciamento)="sganciamento.emit($event)">
+                                        </app-mezzo-composizione>
+                                    </ng-template>
+                                </div>
+                            </ng-template>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"
+                         style="display: flex; place-content: center; margin-top: 10px;">
+                        <ngb-pagination
+                                [(page)]="currentPageMezzi"
+                                [pageSize]="pageSizeMezzi"
+                                [collectionSize]="totalItemsMezzi"
+                                [maxSize]="5"
+                                [disabled]="loadingMezzi"
+                                (pageChange)="mezziPageChange($event)">
+                        </ngb-pagination>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div *ngIf="!loadingInvioPartenza" class="col-4 pr-0">
-        <!-- Lista Partenze Richiesta -->
-        <div style="height:33%">
-            <div class="card h-100"
-                 [class.card-shadow]="!nightMode">
-                <div class="card-header py-2">
-                    <i class="fas fa-list-ul mr-2" style="vertical-align:sub"></i>
-                    <span style="vertical-align:sub">
-                        Partenze
-                        <span *ngIf="richiesta.codiceRichiesta" style="float: right">
-                            <i class="fas fa-hashtag fa-fw mr-1"></i>
-                            {{ richiesta.codiceRichiesta.slice(0, -5)}}
-                            <span class="pb-1"
-                                  style="font-size: 25px; font-weight: 700;">{{ richiesta.codiceRichiesta.slice(richiesta.codiceRichiesta.length - 5)}}</span>
-                        </span>
-                        <span *ngIf="!richiesta.codiceRichiesta" style="float: right">
-                            <i class="fas fa-hashtag fa-fw mr-1"></i>
-                            {{ richiesta.codice.slice(0, -5) }}
-                            <span class="pb-1"
-                                  style="font-size: 25px; font-weight: 700;">{{ richiesta.codice.slice(richiesta.codice.length - 5)}}</span>
-                        </span>
-                    </span>
-                </div>
-                <div class="card-body px-3 pt-1 pb-2" style="overflow: auto">
-                    <app-partial-loader *ngIf="!mezziComposizione || !squadreComposizione"></app-partial-loader>
-                    <app-lista-partenze  *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza"
-                                         [partenze]="richiesta.partenze">
-                    </app-lista-partenze>
-                    <li *ngIf="!mezziComposizione || !squadreComposizione"
-                        style="list-style: none;">
-                        <span class="text-muted">Caricamento risultati...</span>
-                    </li>
-                </div>
-            </div>
+    <div class="col-4 pr-0">
+        <!-- Lista Partenze Richiesta Composizione -->
+        <div style="height:50%">
+            <app-lista-partenze-composizione [richiesta]="richiesta"
+                                             [visualizzaPercorsi]="visualizzaPercorsiRichiesta"
+                                             [nightMode]="nightMode"
+                                             (toggleVisualizzaPercorsi)="onToggleVisualizzaPercorsi($event)">
+            </app-lista-partenze-composizione>
         </div>
+
         <!-- Box Partenza -->
-        <div class="w-100 py-2 px-1" style="height:56%">
+        <div class="w-100 py-2 px-1" style="height:40%">
             <!-- bottone nuova partenza -->
-            <div *ngIf="boxPartenzaList?.length && boxPartenzaList.length <= 2" class="text-center mb-2">
+            <div *ngIf="boxPartenzaList?.length <= 1" class="text-center mb-2">
                 <button class="btn btn-primary btn-no-hover"
                         style="width: 50%"
                         (click)="nuovaPartenza()"
-                        [disabled]="disableNuovaPartenza || boxPartenzaList.length > 2"><i
+                        [disabled]="disableNuovaPartenza || boxPartenzaList.length > 1"><i
                         class="fas fa-plus mr-2"></i><span>Aggiungi Altra Partenza</span>
                 </button>
             </div>
@@ -215,14 +210,14 @@
                                             [disableDividi]="checkDoubleDividi(p)"
                                             [itemSelezionato]="p.id === idBoxPartenzaSelezionato"
                                             [compPartenzaMode]="Composizione.Avanzata"
-                                            [alert]="true" (selezionato)="boxPartenzaSelezionato($event)"
+                                            [alert]="true"
                                             (eliminato)="eliminaBoxPartenza($event)"
-                                            (squadraShortcut)="squadraShortcut($event)"
-                                            (deselezionato)="onClearDirection()">
+                                            (squadraShortcut)="squadraShortcut($event)">
                     </app-box-nuova-partenza>
                 </div>
             </div>
         </div>
+
         <!-- Soccorso aereo triage-->
         <div class="clearfix">
             <div class="float-left w-100 pl-2" style="width: 2%">
@@ -243,6 +238,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Bottoni Composizione -->
         <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
                                          [richiesta]="richiesta"

@@ -3,11 +3,6 @@
         <h4 class="mb-0 font-weight-bolder">{{ doa.nome | uppercase }}</h4>
     </div>
     <div class="card-body">
-        <ng-container *ngIf="!doa.listaPca?.length">
-            <div class="alert alert-danger mb-0">
-                Nessun PCA Creato per il DOA {{ doa.nome | uppercase }}
-            </div>
-        </ng-container>
         <div class="mb-3">
             <h5>Moduli assegnati a {{ doa.nome | uppercase }}</h5>
             <hr>
@@ -25,6 +20,11 @@
                 <i class="fas fa-plus"></i>
                 Inserisci PCA
             </button>
+        </ng-container>
+        <ng-container *ngIf="!doa.listaPca?.length">
+            <div class="alert alert-danger mb-0">
+                Nessun PCA Creato per il DOA {{ doa.nome | uppercase }}
+            </div>
         </ng-container>
         <div *ngFor="let p of doa.listaPca" class="mb-3">
             <app-pca [pca]="p"></app-pca>
