@@ -6,6 +6,7 @@ import { Select, Store } from '@ngxs/store';
 import { ActionMezzo, ClearRichiestaById } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Observable, Subscription } from 'rxjs';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
+import { defineChiamataIntervento } from '../../helper/function-richieste';
 
 @Component({
     selector: 'app-sintesi-richiesta-modal',
@@ -44,6 +45,10 @@ export class SintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {
         this.store.dispatch(new ActionMezzo(actionMezzo));
+    }
+
+    defineChiamataIntervento(codice: string, codiceRichiesta: string): string {
+        return defineChiamataIntervento(codice, codiceRichiesta);
     }
 
     close(type: string): void {

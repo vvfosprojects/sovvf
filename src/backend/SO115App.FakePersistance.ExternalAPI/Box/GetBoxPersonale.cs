@@ -72,7 +72,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             workshift.RemoveAll(w => w == null);
 
-            var box = workshift.SelectMany(w => w.Squadre).Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento)).ToList();
+            var box = workshift.SelectMany(w => w.Squadre).Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT")).ToList();
 
             var result = new BoxPersonale
             {
@@ -108,9 +108,9 @@ namespace SO115App.ExternalAPI.Fake.Box
                 },
                 SquadreServizio = new ConteggioPersonale
                 {
-                    Current = workshift.SelectMany(w => w?.Attuale?.Squadre).Count(),
-                    Next = workshift.SelectMany(w => w?.Successivo?.Squadre).Count(),
-                    Previous = workshift.SelectMany(w => w?.Precedente?.Squadre).Count()
+                    Current = workshift.SelectMany(w => w?.Attuale?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
+                    Next = workshift.SelectMany(w => w?.Successivo?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
+                    Previous = workshift.SelectMany(w => w?.Precedente?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count()
                 },
                 SquadreAssegnate = statoSquadre.Count,
                 workShift = workshift

@@ -9,6 +9,7 @@ import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composi
 import { Store } from '@ngxs/store';
 import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
+import { Mezzo } from '../../model/mezzo.model';
 
 @Component({
     selector: 'app-partenza',
@@ -29,16 +30,18 @@ export class PartenzaComponent implements OnInit {
     @Input() annullaStatoMezzo: boolean;
     @Input() dateDiffMezzi: any;
 
-
     @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
+    @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
 
     statoRichiestaEnum = StatoRichiesta;
     listaEventiMezzo: EventoMezzo[] = [];
 
-    constructor(config: NgbDropdownConfig, private store: Store, private richiesteService: SintesiRichiesteService) {
+    constructor(config: NgbDropdownConfig,
+                private store: Store,
+                private richiesteService: SintesiRichiesteService) {
         config.placement = 'bottom-left';
     }
 
@@ -54,7 +57,7 @@ export class PartenzaComponent implements OnInit {
         };
         this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
             this.store.dispatch(new RemoveAnnullaStatoMezzi(idMezzo));
-        }, error => console.log('Richiesta di annullamento cambio stato fallita'));
+        }, () => console.log('Richiesta di annullamento cambio stato fallita'));
     }
 
     checkListaEventiMezzo(): void {

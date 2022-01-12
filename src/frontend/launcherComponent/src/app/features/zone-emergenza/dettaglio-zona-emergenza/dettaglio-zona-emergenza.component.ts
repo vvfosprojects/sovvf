@@ -6,7 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { Observable, Subscription } from 'rxjs';
-import { GetTipologieEmergenza, GetZonaEmergenzaById, RequestTipologieModuli, UpdateModuliMobImmediataZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
+import { GetTipologieEmergenza, GetZonaEmergenzaById, RequestCra, RequestTipologieModuli, UpdateModuliMobImmediataZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
 import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
@@ -17,6 +17,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { makeCopy } from '../../../shared/helper/function-generiche';
 import { RichiestaModuliModalComponent } from '../richiesta-moduli-modal/richiesta-moduli-modal.component';
 import { ResetForm } from '@ngxs/form-plugin';
+import { RichiestaCraModalComponent } from '../richiesta-cra-modal/richiesta-cra-modal.component';
 
 @Component({
     selector: 'app-dettaglio-zona-emergenza',
@@ -105,8 +106,17 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
         );
     }
 
+    getEventi(): EventoEmergenza[] {
+      return this.zonaEmergenzaById?.listaEventi;
+  }
+
+
     getEventiRichiesteZonaEmergenza(): EventoEmergenza[] {
         return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaEmergenza' && !e.gestita);
+    }
+
+    getEventiRichiestaCreazioneCraZonaEmergenza(): EventoEmergenza {
+        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaCreazioneCRA' && !e.gestita)[0];
     }
 
     onColonneMobili(evento: EventoEmergenza): void {
@@ -117,7 +127,7 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
 
         colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
         colonneMobiliEmergenzaModal.componentInstance.fase = '1';
-        colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = evento.tipologiaModuli;
+        colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = evento != null ? evento.tipologiaModuli : "all";
 
         colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
             switch (result.esito) {
@@ -136,6 +146,63 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
                 default:
                     break;
             }
+        });
+    }
+
+    onInvioColonneMobiliByDirezione(): void {
+      const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
+          windowClass: 'modal-holder xxlModal',
+          centered: true
+      });
+
+      colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
+      colonneMobiliEmergenzaModal.componentInstance.fase = '1';
+      colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = "all";
+
+      colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
+          switch (result.esito) {
+              case 'ok':
+                  switch (result.fase) {
+                      case '1':
+                          //const eventoCopy = makeCopy(evento);
+                          //const eventoGestito = eventoCopy;
+                          //eventoGestito.gestita = true;
+                          //this.store.dispatch(new UpdateModuliMobImmediataZonaEmergenza(this.zonaEmergenzaById, result.moduliSelezionati, eventoGestito));
+                          break;
+                  }
+                  break;
+              case 'ko':
+                  break;
+              default:
+                  break;
+          }
+      });
+  }
+
+
+    onRichiestaCra(): void {
+        if (this.isCON || this.isDirRegionale) {
+            return;
+        }
+
+        const richiestaModuliEmergenzaModal = this.modalService.open(RichiestaCraModalComponent, {
+            windowClass: 'modal-holder',
+            centered: true
+        });
+
+        richiestaModuliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
+
+        richiestaModuliEmergenzaModal.result.then((esito: string) => {
+            switch (esito) {
+                case 'ok':
+                    this.store.dispatch(new RequestCra());
+                    break;
+                case 'ko':
+                    break;
+                default:
+                    break;
+            }
+            this.store.dispatch(new ResetForm({ path: 'zoneEmergenza.richiestaCraDoaZonaEmergenzaForm' }));
         });
     }
 

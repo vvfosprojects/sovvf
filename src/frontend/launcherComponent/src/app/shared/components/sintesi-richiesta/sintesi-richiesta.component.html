@@ -63,12 +63,17 @@
                             </div>
                         </div>
                         <!-- Campana Chiamata Urgente -->
-                        <div class="clearfix text-center" style="width: 7%">
+                        <div class="clearfix text-center align-self-center" style="width: 7%">
                             <button *ngIf="richiesta.chiamataUrgente && richiesta.stato === 'Chiamata'"
                                     class="btn border btn-no-hover pl-0 py-0 btn-glow"
                                     ngbTooltip="Chiamata Urgente!"
                                     style="height: 36px; width: 36px; border-radius: 65% ">
                                 <i class="fas fa-bell fa-fw" style="padding-left: 7px; color: #ffc107"></i>
+                            </button>
+                            <button *ngIf="richiesta?.dettaglioTipologia?.pos" (click)="onDettaglioPos()"
+                                    class="btn btn-light border big_font py-0 mx-1 float-right" style="margin: 0; width: 45px"
+                                    ngbTooltip="Visualizza POS">
+                                <i class="fas fa-folder-open"></i>
                             </button>
                         </div>
                         <!-- Tipologia/Descrizione Chiamata/Intervento -->
@@ -367,12 +372,13 @@
                                                placement="right">
                                             </i>
                                             S. NUE
-                                            <span class="d-inline-block font-weight-bold">
+                                            <span class="d-inline-block font-weight-bold mr-1 cursor-pointer"
+                                                  (click)="onDettaglioSchedaContatto(richiesta?.codiceSchedaNue)">
                                                 {{ richiesta?.codiceSchedaNue }}
                                             </span>
 
                                             <!-- Note Nue -->
-                                            <i *ngIf="richiesta?.noteNue" class="fa-fw fas fa-sticky-note guida ml-1"
+                                            <i *ngIf="richiesta?.noteNue" class="fa-fw fas fa-sticky-note guida"
                                                [ngbTooltip]="richiesta.noteNue"
                                                placement="right">
                                             </i>
@@ -440,7 +446,8 @@
                                                         (actionMezzo)="onActionMezzo($event)"
                                                         (eliminaPartenza)="onEliminaPartenza($event)"
                                                         (modificaPartenza)="onModificaPartenza($event)"
-                                                        (sostituzioneFineTurno)="onSostituzioneFineTurno(richiesta.partenze)">
+                                                        (sostituzioneFineTurno)="onSostituzioneFineTurno(richiesta.partenze)"
+                                                        (selezioneMezzo)="onSelezioneMezzoPartenza($event)">
                                     </app-lista-partenze>
                                 </div>
                             </div>

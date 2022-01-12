@@ -54,4 +54,8 @@ export class ZoneEmergenzaService {
     requestTipologieModuli(params: { id: string, tipologieModuli: string[] }): Observable<any> {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/AddRichiestaEmergenza', params);
     }
+
+    requestCra(params: { id: string, dirigenti: string[], numeroDOA: number }): Observable<any> {
+        return this.http.post<any>(API_ZONE_EMERGENZA + '/AddRichiestaCreazioneCraEmergenza', params);
+    }
 }

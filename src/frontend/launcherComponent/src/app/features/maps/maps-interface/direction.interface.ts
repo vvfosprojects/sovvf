@@ -1,3 +1,5 @@
+import { DirectionTravelDataInterface } from './direction-travel-data.interface';
+
 export interface DirectionInterface {
     origin?: {
         lat: number;
@@ -8,5 +10,6 @@ export interface DirectionInterface {
         lng: number;
     };
     genereMezzo?: string;
+    travelData?: DirectionTravelDataInterface;
     isVisible: boolean;
 }

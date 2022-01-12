@@ -1,16 +1,20 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
-import { DirectionInterface } from '../../maps-interface/direction-interface';
-import { SetDirection, ClearDirection } from '../actions/maps-direction.actions';
+import { DirectionInterface } from '../../maps-interface/direction.interface';
+import { SetDirection, ClearDirection, SetDirectionTravelData } from '../actions/maps-direction.actions';
 import { Injectable } from '@angular/core';
+import { DirectionTravelDataInterface } from '../../maps-interface/direction-travel-data.interface';
+import { SetZoomCentroMappaByKilometers } from '../actions/centro-mappa.actions';
 
 export interface MapsDirectionStateModel {
     direction: DirectionInterface;
+    travelDataNuovaPartenza: DirectionTravelDataInterface;
+    travelDataRichiestaComposizione: DirectionTravelDataInterface;
 }
 
 export const mapsDirectionStateDefaults: MapsDirectionStateModel = {
-    direction: {
-        isVisible: false
-    }
+    direction: null,
+    travelDataNuovaPartenza: null,
+    travelDataRichiestaComposizione: null,
 };
 
 @Injectable()
@@ -20,11 +24,14 @@ export const mapsDirectionStateDefaults: MapsDirectionStateModel = {
 })
 export class MapsDirectionState {
 
-    constructor() { }
-
     @Selector()
     static direction(state: MapsDirectionStateModel): DirectionInterface {
         return state.direction;
+    }
+
+    @Selector()
+    static travelDataNuovaPartenza(state: MapsDirectionStateModel): DirectionTravelDataInterface {
+        return state.travelDataNuovaPartenza;
     }
 
     @Action(SetDirection)
@@ -34,13 +41,30 @@ export class MapsDirectionState {
         });
     }
 
+    @Action(SetDirectionTravelData)
+    setDirectionTravelData({ patchState, dispatch }: StateContext<MapsDirectionStateModel>, action: SetDirectionTravelData): void {
+        const totalKilometers = action.travelData.totalKilometers;
+        dispatch(new SetZoomCentroMappaByKilometers(totalKilometers));
+        if (action.idDirectionSymbols === 'nuovaPartenza') {
+            patchState({
+                travelDataNuovaPartenza: action.travelData
+            });
+        } else if (action.idDirectionSymbols === 'partenzeRichiestaComposizione') {
+            patchState({
+                travelDataRichiestaComposizione: action.travelData
+            });
+        }
+    }
+
     @Action(ClearDirection)
     clearDirection({ patchState }: StateContext<MapsDirectionStateModel>): void {
         const mapsDirectionOff: DirectionInterface = {
             isVisible: false
         };
         patchState({
-            direction: mapsDirectionOff
+            direction: mapsDirectionOff,
+            travelDataNuovaPartenza: mapsDirectionStateDefaults.travelDataNuovaPartenza,
+            travelDataRichiestaComposizione: mapsDirectionStateDefaults.travelDataRichiestaComposizione
         });
     }
 }

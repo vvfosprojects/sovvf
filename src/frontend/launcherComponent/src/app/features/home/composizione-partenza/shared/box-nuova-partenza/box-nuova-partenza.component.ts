@@ -3,9 +3,7 @@ import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from 'src/app/shared/enum/toastr';
-import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy, nomeStatiSquadra } from '../../../../../shared/helper/function-composizione';
+import { checkSquadraOccupata, iconaStatiClass, nomeStatiSquadra } from '../../../../../shared/helper/function-composizione';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Observable, Subscription } from 'rxjs';
@@ -41,8 +39,6 @@ export class BoxNuovaPartenzaComponent implements OnDestroy, OnInit {
     @Input() elimina: boolean;
     @Input() alert: boolean;
 
-    @Output() selezionato = new EventEmitter<any>();
-    @Output() deselezionato = new EventEmitter<any>();
     @Output() eliminato = new EventEmitter<BoxPartenza>();
     @Output() squadraShortcut = new EventEmitter<SquadraComposizione>();
 
@@ -71,20 +67,6 @@ export class BoxNuovaPartenzaComponent implements OnDestroy, OnInit {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-    }
-
-    onClick(): void {
-        if (!this.itemOccupato) {
-            if (!this.itemSelezionato) {
-                this.selezionato.emit(this.partenza);
-            } else {
-                this.deselezionato.emit(this.partenza);
-            }
-        } else if (mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato)) {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenza.mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
-        } else if (this._checkSquadraOccupata(this.partenza.squadreComposizione)) {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Una o più squadre del Preaccopiato risultano impegnate in un\'altra richiesta', null, null, true));
-        }
     }
 
     onElimina(e: MouseEvent): void {

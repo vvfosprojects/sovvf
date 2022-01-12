@@ -1,102 +1,70 @@
 <div class="modal-header">
-    <h4 class="modal-title font-weight-bold">
-        {{ getTitle() | uppercase }}
-    </h4>
+    <div class="modal-title font-weight-bold">
+        <h5 class="font-weight-lighter">{{ tipologiaSelezionata?.codiceDescrizione | uppercase }}</h5>
+        <h3>TRIAGE <span class="font-weight-bold">{{ dettaglioTipologiaSelezionato?.descrizione | uppercase }}</span></h3>
+    </div>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="dismissModal('dismiss')">
         <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body height py-4 px-5">
-    <h5>Tipologia Selezionata:</h5>
-    <h5 class="font-weight-bolder">{{ tipologiaSelezionata?.codiceDescrizione }}</h5>
-    <ng-template [ngIf]="dettaglioTipologiaSelezionato">
-        <hr class="my-3">
-        <h5 class="mr-1">Dettaglio Tipologia Selezionato:</h5>
-        <h5 class="font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</h5>
-<!--        <button class="btn btn-danger btn-no-hover" (click)="onResetDettaglioTipologiaSelezionato()">-->
-<!--            <i class="fas fa-sync-alt mr-1"></i>-->
-<!--            Cambia Dettaglio Tipologia-->
-<!--        </button>-->
-    </ng-template>
-    <ng-template [ngIf]="dettagliTipologia?.length && !dettaglioTipologiaSelezionato">
-        <hr class="mt-3 mb-0">
-        <app-step-dettaglio-tipologia [dettagliTipologie]="dettagliTipologia"
-                                      (changeDettaglioTipologia)="setDettaglioTipologiaSelezionato($event)">
-        </app-step-dettaglio-tipologia>
-    </ng-template>
-    <ng-template [ngIf]="!dettagliTipologia?.length && !dettaglioTipologiaSelezionato && !loadingTriageChiamata">
-        <div class="alert alert-danger font-weight-bold mt-3 mb-0">
-            Nessun Dettaglio Tipologia presente per "{{ tipologiaSelezionata?.descrizione }}".
-            <small class="d-block">Puoi gestire i Dettagli Tipologia nella pagina "Impostazioni
-                Sede".</small>
-        </div>
-    </ng-template>
-    <ng-template [ngIf]="!dettaglioTipologiaSelezionato && loadingTriageChiamata">
-        <div class="alert alert-warning font-weight-bold mt-3 mb-0">
-            <i class="fas fa-spinner fa-spin mr-1"></i>
-            Caricamento Dettagli Tipologia
-        </div>
-    </ng-template>
-    <ng-template [ngIf]="!triage && dettaglioTipologiaSelezionato && !loadingTriageChiamata">
-        <div class="alert alert-danger font-weight-bold mt-3 mb-0">
-            Nessuna domanda disponibile per "{{ dettaglioTipologiaSelezionato?.descrizione }}".
-            <small class="d-block">Puoi gestire le domande per i Dettagli Tipologia nella pagina "Impostazioni
-                Sede".</small>
-        </div>
-    </ng-template>
-    <ng-template [ngIf]="dettaglioTipologiaSelezionato && loadingTriageChiamata">
-        <div class="alert alert-warning font-weight-bold mt-3 mb-0">
-            <i class="fas fa-spinner fa-spin mr-1"></i>
-            Caricamento Domande
-        </div>
-    </ng-template>
-    <ng-template [ngIf]="triageSummary?.length || triage">
-        <hr class="my-3">
-    </ng-template>
     <ng-template [ngIf]="!dettagliTipologia?.length || dettaglioTipologiaSelezionato">
-        <div *ngFor="let summary of triageSummary; let i = index">
-            <div class="alert alert-info"
-                 [class.mb-0]="i === triageSummary?.length - 1 && !getSuggerimentoByRispostaValue(summary.rispostaValue)">
-                <h5>
-                    {{ getDomandaByRispostaValue(summary.rispostaValue)?.text }}
-                    <span class="font-weight-bolder">{{ summary.risposta }}</span>
-                </h5>
-            </div>
-            <ng-template [ngIf]="getSuggerimentoByRispostaValue(summary.rispostaValue)">
-                <div class="alert alert-primary"
-                     [class.mb-0]="i === triageSummary?.length - 1">
-                    <h5 class="mb-0 font-weight-bolder">
-                        <i class="fas fa-user mr-1"></i>
-                        {{ getSuggerimentoByRispostaValue(summary.rispostaValue) }}
-                    </h5>
+        <div class="row"
+             [class.doubleSideView]="triageSummary?.length">
+            <div *ngIf="triageSummary?.length" class="col-6">
+                <h5 class="mb-3">{{ 'Riepilogo Triage' | uppercase }}</h5>
+                <div *ngFor="let summary of triageSummary; let i = index">
+                    <div class="alert alert-info"
+                         [class.mb-0]="i === triageSummary?.length - 1 && !getSuggerimentoByRispostaValue(summary.rispostaValue)">
+                        <h5 class="mb-0">
+                            {{ getDomandaByRispostaValue(summary.rispostaValue)?.text }}
+                            <span class="font-weight-bolder">{{ summary.risposta }}</span>
+                        </h5>
+                    </div>
+                    <ng-template [ngIf]="getSuggerimentoByRispostaValue(summary.rispostaValue)">
+                        <div class="alert alert-primary"
+                             [class.mb-0]="i === triageSummary?.length - 1">
+                            <h5 class="mb-0 font-weight-bolder">
+                                <i class="fas fa-bullhorn mr-1"></i>
+                                {{ getSuggerimentoByRispostaValue(summary.rispostaValue) }}
+                            </h5>
+                        </div>
+                    </ng-template>
                 </div>
-            </ng-template>
-        </div>
-        <div class="mt-2">
-            <app-step-domande [triage]="triage"
-                              (risposta)="setRisposta($event)">
-            </app-step-domande>
+            </div>
+            <div class="d-flex align-items-end"
+                 [ngClass]="triageSummary?.length ? 'col-6' : 'col-12'">
+                <ng-container *ngIf="domandeTerminate">
+                    <div class="alert alert-danger w-100 mb-0">
+                        <h5 class="mb-0">
+                            <i class="fas fa-check mr-1"></i>
+                            TRIAGE TERMINATO
+                        </h5>
+                    </div>
+                </ng-container>
+                <app-step-domande [triage]="triage"
+                                  (risposta)="setRisposta($event)"
+                                  (domandeTerminate)="checkFineTriage($event)">
+                </app-step-domande>
+            </div>
         </div>
     </ng-template>
 </div>
-<div class="modal-footer">
-    <div class="clearfix w-100">
-        <ng-container *ngIf="!apertoFromMappa">
-            <div class="float-left mt-2"
-                 ngbTooltip="Necessaria la compilazione dei campi obbligatori"
-                 [disableTooltip]="!disableUrgenza || checkedUrgenza">
+<div class="modal-footer justify-content-between">
+    <ng-container *ngIf="!apertoFromMappa">
+            <span class="d-inline-block mt-2"
+                  ngbTooltip="Necessaria la compilazione dei campi obbligatori"
+                  placement="right"
+                  [disableTooltip]="!disableUrgenza || checkedUrgenza">
                 <app-checkbox
                         [checkboxState]="getCheckboxUrgenzaState()"
                         (click)="setUrgenza()">
                 </app-checkbox>
-            </div>
-        </ng-container>
-        <div class="float-right">
-            <button type="button" class="btn btn-lg btn-success btn-no-hover" (click)="closeModal('success')">
-                <i class="fas fa-check mr-1"></i>
-                {{ 'Chiudi e Salva Triage' | uppercase }}
-            </button>
-        </div>
-    </div>
+            </span>
+    </ng-container>
+    <button type="button" class="btn btn-lg btn-success btn-no-hover" (click)="closeModal('success')">
+        <i class="fas fa-check mr-1"></i>
+        {{ 'Chiudi e Salva Triage' | uppercase }}
+    </button>
 </div>

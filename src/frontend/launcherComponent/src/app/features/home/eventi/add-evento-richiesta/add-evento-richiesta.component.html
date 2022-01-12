@@ -1,31 +1,52 @@
 <div class="card">
     <div class="card-header">
-        <span class="card-title">{{ 'log book' | uppercase }}</span>
+        <span class="card-title">{{ 'log book' | uppercase }} - Aggiungi evento</span>
     </div>
-    <div class="card-body">
-        <div class="clearfix">
-            <div class="float-left">
-                <form [formGroup]="eventoForm"
-                      ngxsForm="eventiRichiesta.eventoForm"
-                      class="form-inline"
-                      (ngSubmit)="onSubmit()">
-                    <div class="form-group mr-3">
-                        <label for="evento" class="mr-3">Nuovo Evento</label>
+    <div class="card-body py-1">
+        <form [formGroup]="eventoForm"
+              ngxsForm="eventiRichiesta.eventoForm"
+              class="form-inline"
+              (ngSubmit)="onSubmit()">
+            <div class="clearfix d-flex align-items-center justify-content-around w-100">
+                <div class="float-left mr-3">
+                    <div class="form-group">
+                        <label for="evento" class="d-none">Nuovo Evento</label>
                         <textarea id="evento"
                                   class="form-control"
                                   placeholder="Scrivi qui il nuovo evento"
                                   style="min-width: 400px"
                                   formControlName="text">
-                </textarea>
+                        </textarea>
                     </div>
-                    <ng-container *ngIf="eventoForm.valid">
+                </div>
+                <div class="input-group mr-4">
+                    <input class="form-control"
+                           placeholder="yyyy-mm-dd"
+                           name="dp"
+                           formControlName="date"
+                           ngbDatepicker
+                           #d="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar"
+                                type="button"
+                                (click)="d.toggle()">
+                            <i class="fas fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="float-left mr-4">
+                    <ngb-timepicker formControlName="orario">
+                    </ngb-timepicker>
+                </div>
+                <ng-container *ngIf="eventoForm.valid">
+                    <div class="float-left">
                         <button type="submit"
-                                class="btn btn-light">
+                                class="btn btn-primary btn-no-hover">
                             Crea Evento
                         </button>
-                    </ng-container>
-                </form>
+                    </div>
+                </ng-container>
             </div>
-        </div>
+        </form>
     </div>
 </div>

@@ -10,6 +10,7 @@ export interface SchedaContatto {
     richiedente: Richiedente;
     localita: Localita;
     classificazioneEvento: string;
+    codiceInterventoAssociato: string;
     categoria: string;
     enteCompetenza: string;
     dettaglio: string;

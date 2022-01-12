@@ -80,7 +80,7 @@
                     (click)="onColonneMobili(zE, '3')">
                 F.3
             </button> -->
-            <button *ngIf="isCON && zE.dirigenti?.length"
+            <button *ngIf="isCON && getEventiRichiestaCreazioneCraZonaEmergenza(zE)"
                     class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"

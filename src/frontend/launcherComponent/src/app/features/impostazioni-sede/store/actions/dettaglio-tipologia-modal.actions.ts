@@ -1,5 +1,3 @@
-import { EnteInterface } from '../../../../shared/interface/ente.interface';
-
 export class RequestAddDettaglioTipologia {
     static readonly type = '[DettaglioTipologiaModal] Request Add Dettaglio Tipologia';
 }

@@ -42,10 +42,6 @@ export class ZonaEmergenza {
          */
         public allertata?: boolean,
         /**
-         * Dirigenti assegnati dalla Direzione Regionale quando viene allertato il CON
-         */
-        public dirigenti?: string[],
-        /**
          * Moduli "mob_Immediata" assegnati alla Zona Emergenza
          */
         public listaModuliImmediata?: ModuloColonnaMobile[],
@@ -96,7 +92,9 @@ export class EventoEmergenza {
         public tipoEvento: string,
         public tipologiaEmergenza: string,
         public tipologiaModuli: string[],
-        public gestita: boolean
+        public gestita: boolean,
+        public numDoa: number,
+        public dirigenti: string[]
     ) {
     }
 }

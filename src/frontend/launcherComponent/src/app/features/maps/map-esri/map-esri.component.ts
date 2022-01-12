@@ -10,7 +10,7 @@ import { SetChiamataFromMappaActiveValue } from '../store/actions/tasto-chiamata
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
-import { DirectionInterface } from '../maps-interface/direction-interface';
+import { DirectionInterface } from '../maps-interface/direction.interface';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
 import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
@@ -22,7 +22,7 @@ import { ZoneEmergenzaState } from '../../zone-emergenza/store/states/zone-emerg
 import { AddZonaEmergenza, ResetZonaEmergenzaForm } from '../../zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { RichiesteState } from '../../home/store/states/richieste/richieste.state';
-import { GetInitCentroMappa, SetCentroMappa } from '../store/actions/centro-mappa.actions';
+import { GetInitCentroMappa, SetCentroMappa, SetZoomCentroMappa, SetZoomCentroMappaByKilometers } from '../store/actions/centro-mappa.actions';
 import { Partenza } from '../../../shared/model/partenza.model';
 import { MezziInServizioState } from '../../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
@@ -30,6 +30,10 @@ import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ViewComponentState } from '../../home/store/states/view/view.state';
 import { SchedeContattoState } from '../../home/store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
+import { ComposizionePartenzaState } from '../../home/store/states/composizione-partenza/composizione-partenza.state';
+import { RichiestaGestioneState } from '../../home/store/states/richieste/richiesta-gestione.state';
+import { CentroMappaState } from '../store/states/centro-mappa.state';
+import { SetDirectionTravelData } from '../store/actions/maps-direction.actions';
 import { ESRI_LAYERS_CONFIG } from '../../../core/settings/esri-layers-config';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
@@ -59,6 +63,8 @@ import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
+import { DirectionTravelDataInterface } from '../maps-interface/direction-travel-data.interface';
+import { SetVisualizzaPercosiRichiesta } from '../../home/store/actions/composizione-partenza/composizione-partenza.actions';
 
 @Component({
     selector: 'app-map-esri',
@@ -86,6 +92,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() idSchedaContattoSelezionata: string;
     @Input() areaMappaLoading: boolean;
     @Input() richiesteStatus: boolean;
+    @Input() travelDataNuovaPartenza: DirectionTravelDataInterface;
+    @Input() visualizzaPercorsiRichiesta: boolean;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
@@ -272,35 +280,48 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.direction?.currentValue) {
             const direction = changes?.direction?.currentValue;
             if (direction?.isVisible) {
-                this.getRoute(direction, { clearPrevious: true });
-            } else {
-                this.clearDirection();
+                this.getRoute('nuovaPartenza', direction, { clearPrevious: true, color: [255, 0, 0] });
+            } else if (!direction?.isVisible) {
+                const zoom = 19;
+                const centroMappa = this.store.selectSnapshot(CentroMappaState.centroMappa);
+                this.store.dispatch(new SetCentroMappa({ coordinateCentro: centroMappa.coordinateCentro, zoom }));
+                this.clearDirection('nuovaPartenza');
             }
         }
 
         // Controllo il valore di "idRichiestaSelezionata"
         if (changes?.idRichiestaSelezionata?.currentValue && this.map && this.view?.ready) {
-            const richieste = this.store.selectSnapshot(RichiesteState.richieste);
+            let richiestaSelezionata: SintesiRichiesta;
+            let coordinateCentro: Coordinate;
             const idRichiestaSelezionata = changes?.idRichiestaSelezionata?.currentValue;
-            const richiestaSelezionata = richieste.filter((r: SintesiRichiesta) => r.id === idRichiestaSelezionata)[0];
-            const coordinateCentro = richiestaSelezionata.localita.coordinate;
-            const zoom = 19;
-            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
-            richiestaSelezionata.partenze.forEach((p: Partenza, index: number) => {
-                if (index === 0) {
-                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
-                }
-                if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
-                    const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
-                    const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
-                    const genereMezzo = p.partenza.mezzo.genere;
-                    const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
-                    this.getRoute(direction);
-                }
-            });
+
+            if (this.richiesteStatus) {
+                const richieste = this.store.selectSnapshot(RichiesteState.richieste);
+                richiestaSelezionata = richieste.filter((r: SintesiRichiesta) => r.id === idRichiestaSelezionata)[0];
+            } else if (this.composizionePartenzaStatus) {
+                richiestaSelezionata = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+            }
+
+            if (richiestaSelezionata) {
+                coordinateCentro = richiestaSelezionata.localita.coordinate;
+                const zoom = 19;
+                this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+                richiestaSelezionata.partenze.forEach((p: Partenza, index: number) => {
+                    if (index === 0) {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    }
+                    if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
+                        const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
+                        const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
+                        const genereMezzo = p.partenza.mezzo.genere;
+                        const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                        this.getRoute('partenzeRichiestaSelezionata', direction);
+                    }
+                });
+            }
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
-            this.clearDirection();
+            this.clearDirection('partenzeRichiestaSelezionata');
             this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
         }
 
@@ -319,9 +340,39 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const richiestaComposizione = changes?.richiestaComposizione?.currentValue;
             const coordinateCentro = richiestaComposizione.localita.coordinate;
             const zoom = 19;
-            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+            this.store.dispatch([
+                new SetCentroMappa({ coordinateCentro, zoom }),
+                new SetVisualizzaPercosiRichiesta(true)
+            ]);
         } else if (changes?.richiestaComposizione?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
+        }
+
+        // Controllo il valore di "visualizzaPercorsiRichiesta"
+        if (changes?.visualizzaPercorsiRichiesta?.currentValue && this.map && this.view?.ready) {
+            if (this.richiestaComposizione) {
+                this.richiestaComposizione.partenze.forEach((p: Partenza, index: number) => {
+                    if (index === 0) {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    }
+                    if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
+                        const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
+                        const destination = { lat: this.richiestaComposizione.localita.coordinate.latitudine, lng: this.richiestaComposizione.localita.coordinate.longitudine };
+                        const genereMezzo = p.partenza.mezzo.genere;
+                        const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                        this.getRoute('partenzeRichiestaComposizione', direction);
+                    }
+                });
+            }
+        } else if (changes?.visualizzaPercorsiRichiesta?.currentValue === false && this.map && this.view?.ready) {
+            if (this.direction?.isVisible) {
+                const totalKilometers = this.travelDataNuovaPartenza?.totalKilometers;
+                this.store.dispatch(new SetZoomCentroMappaByKilometers(totalKilometers));
+            } else if (!this.direction?.isVisible) {
+                const zoom = 19;
+                this.store.dispatch(new SetZoomCentroMappa(zoom));
+            }
+            this.clearDirection('partenzeRichiestaComposizione');
         }
 
         // Controllo il valore di "filtriRichiesteSelezionati"
@@ -414,11 +465,21 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
         // Controllo il valore di "idMezzoInServizioSelezionato"
         if (changes?.idMezzoInServizioSelezionato?.currentValue && this.map && this.view?.ready) {
-            const mezziInServizio = this.store.selectSnapshot(MezziInServizioState.mezziInServizio);
+            let lat: number;
+            let lon: number;
             const idMezzoInServizioSelezionato = changes?.idMezzoInServizioSelezionato?.currentValue;
-            const mezzoInServizioSelezionato = mezziInServizio.filter((m: MezzoInServizio) => m.mezzo.mezzo.codice === idMezzoInServizioSelezionato)[0];
-            const lat = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[0];
-            const lon = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[1];
+
+            if (this.mezziInServizioStatus) {
+                const mezziInServizio = this.store.selectSnapshot(MezziInServizioState.mezziInServizio);
+                const mezzoInServizioSelezionato = mezziInServizio.filter((m: MezzoInServizio) => m.mezzo.mezzo.codice === idMezzoInServizioSelezionato)[0];
+                lat = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[0];
+                lon = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[1];
+            } else if (this.richiesteStatus) {
+                const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
+                const partenza = richiestaGestione.partenze.filter((p: Partenza) => p.partenza.mezzo.codice === idMezzoInServizioSelezionato)[0];
+                lat = +partenza.partenza.mezzo.coordinateStrg[0];
+                lon = +partenza.partenza.mezzo.coordinateStrg[1];
+            }
             const coordinateCentro = new Coordinate(lat, lon);
             const zoom = 19;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
@@ -428,6 +489,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.store.dispatch(new SetVisualizzaPercosiRichiesta(false));
+        this.clearDirection();
         this.view?.destroy();
         this.map?.destroy();
     }
@@ -938,6 +1001,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         const allTipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
         const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
 
+        modalNuovaEmergenza.componentInstance.apertoFromMappa = true;
         modalNuovaEmergenza.componentInstance.mapPoint = mapPoint;
         modalNuovaEmergenza.componentInstance.lat = lat;
         modalNuovaEmergenza.componentInstance.lon = lon;
@@ -1020,9 +1084,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    getRoute(direction: DirectionInterface, options?: { clearPrevious?: boolean }): void {
+    getRoute(idDirectionSymbols: string, direction: DirectionInterface, options?: { clearPrevious?: boolean, color?: number[] }): void {
         if (options?.clearPrevious) {
-            this.clearDirection();
+            this.clearDirection('nuovaPartenza');
         }
 
         const pointPartenza = new Point({
@@ -1064,18 +1128,27 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             // @ts-ignore
             data.routeResults.forEach((result: any) => {
                 result.route.symbol = {
+                    id: idDirectionSymbols,
                     type: 'simple-line',
-                    color: [5, 150, 255],
+                    color: options?.color ? options.color : [5, 150, 255],
                     width: 3
                 };
+                const totalKilometers = result.route?.attributes?.Total_Kilometers;
+                const totalTravelTime = result.route?.attributes?.Total_TravelTime;
+                this.store.dispatch(new SetDirectionTravelData(idDirectionSymbols, { totalKilometers, totalTravelTime }));
                 this.view.graphics.add(result.route);
             });
         });
     }
 
-    clearDirection(): void {
+    clearDirection(idSymbol?: string): void {
         if (this.view?.graphics?.length) {
-            this.view.graphics.removeAll();
+            if (!idSymbol) {
+                this.view.graphics.items = [];
+            } else {
+                // @ts-ignore
+                this.view.graphics.items = this.view.graphics.items.filter((item: Graphic) => item.symbol.id !== idSymbol);
+            }
         }
     }
 
