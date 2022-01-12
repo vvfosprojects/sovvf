@@ -23,19 +23,22 @@ namespace SO115App.SignalR.Sender.GestioneEmergenze
         public void Send(RichiestaCreazioneCRACommand richiesta)
         {
             var ListaSediDestinatarie = _getGerarchiaToSend.Get(richiesta.CodSede);
-
-            _notificationHubContext.Clients.Group("00").SendAsync("NotifyModificaEmergenza", richiesta.InfoEmergenza);
-
-            _notificationHubContext.Clients.Group("00").SendAsync("NotifyNavBar", new Notifica()
-            {
-                Titolo = "Richiesta Emergenza",
-                Descrizione = $"E' stata inviata una richiesta di autorizzazione per la creazione di un Cra per l'emergenza {richiesta.InfoEmergenza.CodEmergenza} da parte del comando {richiesta.InfoEmergenza.CodComandoRichiedente}",
-                Tipo = TipoNotifica.UpDateEmergenza,
-                Data = DateTime.Now
-            });
-
             Parallel.ForEach(ListaSediDestinatarie, sede =>
             {
+
+                if (!sede.Contains(".") && !sede.Equals("00"))
+                {
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyModificaEmergenza", richiesta.InfoEmergenza);
+
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new Notifica()
+                    {
+                        Titolo = "Richiesta Emergenza",
+                        Descrizione = $"E' stata inviata una richiesta di autorizzazione per la creazione di un Cra per l'emergenza {richiesta.InfoEmergenza.CodEmergenza} da parte del comando {richiesta.InfoEmergenza.CodComandoRichiedente}",
+                        Tipo = TipoNotifica.UpDateEmergenza,
+                        Data = DateTime.Now
+                    });
+                }
+
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyModificaEmergenza", richiesta.InfoEmergenza);
 
                 //NOTIFICA NAVBAR
