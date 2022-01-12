@@ -86,6 +86,8 @@ import { MezzoInServizioComponent } from './components/mezzo-in-servizio/mezzo-i
 import { RisultatiAlertComponent } from './components/risultati-alert/risultati-alert.component';
 import { GestisciSchedaContattoModalComponent } from './modal/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.component';
 import { PosDettaglioModalComponent } from './modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
+import { VisualizzaDocumentoModalComponent } from './modal/visualizza-documento-modal/visualizza-documento-modal.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -164,7 +166,8 @@ const COMPONENTS = [
     MezzoInServizioComponent,
     RisultatiAlertComponent,
     GestisciSchedaContattoModalComponent,
-    PosDettaglioModalComponent
+    PosDettaglioModalComponent,
+    VisualizzaDocumentoModalComponent
 ];
 const MODULES = [
     PipeModule
@@ -186,7 +189,8 @@ const MODULES = [
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }
         }),
-        TagInputModule
+        TagInputModule,
+        NgxExtendedPdfViewerModule
     ],
     declarations: [
         ...COMPONENTS,
