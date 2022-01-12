@@ -106,6 +106,11 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
         );
     }
 
+    getEventi(): EventoEmergenza[] {
+      return this.zonaEmergenzaById?.listaEventi;
+  }
+
+
     getEventiRichiesteZonaEmergenza(): EventoEmergenza[] {
         return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaEmergenza' && !e.gestita);
     }
@@ -122,7 +127,7 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
 
         colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
         colonneMobiliEmergenzaModal.componentInstance.fase = '1';
-        colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = evento.tipologiaModuli;
+        colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = evento != null ? evento.tipologiaModuli : "all";
 
         colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
             switch (result.esito) {
@@ -143,6 +148,37 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
             }
         });
     }
+
+    onInvioColonneMobiliByDirezione(): void {
+      const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
+          windowClass: 'modal-holder xxlModal',
+          centered: true
+      });
+
+      colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
+      colonneMobiliEmergenzaModal.componentInstance.fase = '1';
+      colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = "all";
+
+      colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
+          switch (result.esito) {
+              case 'ok':
+                  switch (result.fase) {
+                      case '1':
+                          //const eventoCopy = makeCopy(evento);
+                          //const eventoGestito = eventoCopy;
+                          //eventoGestito.gestita = true;
+                          //this.store.dispatch(new UpdateModuliMobImmediataZonaEmergenza(this.zonaEmergenzaById, result.moduliSelezionati, eventoGestito));
+                          break;
+                  }
+                  break;
+              case 'ko':
+                  break;
+              default:
+                  break;
+          }
+      });
+  }
+
 
     onRichiestaCra(): void {
         if (this.isCON || this.isDirRegionale) {
