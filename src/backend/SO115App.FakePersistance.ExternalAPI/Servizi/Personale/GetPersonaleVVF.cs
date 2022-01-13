@@ -56,7 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     _client.SetCache($"PersonaleApiUtenteComuni_{segmento}");
 
                     var uri = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?searchKey={segmento}");
-                    var result = _client.GetAsync(uri, "").Result;
+                    var result = _client.GetAsync(uri).Result;
 
                     result.ForEach(p => personaleUC.Enqueue(p));
                 });
@@ -69,11 +69,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             //Applico i filtri sui dati
 
             var listaFiltrata = personaleUC.ToList()
-                //.FindAll(x => lstSegmenti.Contains(x.cognome.ToLower()) || lstSegmenti.Contains(x.nome.ToLower()))
-                .Distinct()
+                .FindAll(x => lstSegmenti.Contains(x.cognome.ToLower()) && lstSegmenti.Contains(x.nome.ToLower()))
+                .Map()
                 .OrderBy(x => x.cognome)
-                .ToList()
-                .Map();
+                .Distinct()
+                .ToList();
 
             return listaFiltrata;
         }
