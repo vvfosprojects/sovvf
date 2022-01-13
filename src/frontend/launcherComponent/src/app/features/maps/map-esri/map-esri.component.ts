@@ -35,6 +35,9 @@ import { RichiestaGestioneState } from '../../home/store/states/richieste/richie
 import { CentroMappaState } from '../store/states/centro-mappa.state';
 import { SetDirectionTravelData } from '../store/actions/maps-direction.actions';
 import { ESRI_LAYERS_CONFIG } from '../../../core/settings/esri-layers-config';
+import { DirectionTravelDataInterface } from '../maps-interface/direction-travel-data.interface';
+import { SetVisualizzaPercosiRichiesta } from '../../home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { environment } from '../../../../environments/environment';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -63,8 +66,6 @@ import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import esriId from '@arcgis/core/identity/IdentityManager';
 import IdentityManagerRegisterTokenProperties = __esri.IdentityManagerRegisterTokenProperties;
 import * as webMercatorUtils from '@arcgis/core/geometry/support/webMercatorUtils';
-import { DirectionTravelDataInterface } from '../maps-interface/direction-travel-data.interface';
-import { SetVisualizzaPercosiRichiesta } from '../../home/store/actions/composizione-partenza/composizione-partenza.actions';
 
 @Component({
     selector: 'app-map-esri',
@@ -151,18 +152,18 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.areaCambiata(bounds, event.zoom);
                 });
 
-                // Lista layer (client) da aggiungere alla mappa all'init della mappa
+                // Lista layer (client) da aggiungere alla mappa
                 const layersToInitialize = [
                     this.initializeChiamateInCorsoLayer(),
                     this.initializeSediOperativeLayer()
                 ];
                 Promise.all(layersToInitialize).then(() => {
-                    // Feature Layers da spegnere all'init della mappa
-                    const layersToShutdown = [
+                    // Feature Layers da nascondere
+                    const layersToHide = [
                         'Sedi Operative'
                     ];
-                    for (const lShutdown of layersToShutdown) {
-                        this.toggleLayer(lShutdown, false).then();
+                    for (const layerToHide of layersToHide) {
+                        this.toggleLayer(layerToHide, false).then();
                     }
 
                     // Se ci sono aggiungo i markers chiamata
@@ -525,8 +526,15 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
         EsriConfig.apiKey = 'AAPK36ded91859154c2cad9002a686434a34Jt_FmrqMObHesjY_bYHlJu-HZZrTDGJzsQMKnxd8f4TmYY_Vi-f8-4y-7G6WbcVf';
 
+        let portalItemId = '55fdd15730524dedbff72e285cba3795';
+        if (environment.productionTest) {
+            portalItemId = 'f0debe8268ac461588abca904a434ec2';
+        } else if (environment.production) {
+            portalItemId = '2b1e7d22c775479985b6129f842e9d7c';
+        }
+
         const portalItem = new PortalItem({
-            id: '55fdd15730524dedbff72e285cba3795'
+            id: portalItemId
         });
 
         this.map = new WebMap({
