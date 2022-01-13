@@ -13,7 +13,7 @@ import { ComposizionePartenzaState } from '../home/store/states/composizione-par
 import { AreaMappaState } from './store/states/area-mappa.state';
 import { AreaMappa } from './maps-model/area-mappa-model';
 import { MapsDirectionState } from './store/states/maps-direction.state';
-import { DirectionInterface } from './maps-interface/direction-interface';
+import { DirectionInterface } from './maps-interface/direction.interface';
 import { FiltriRichiesteState } from '../home/store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../home/filterbar/filtri-richieste/voce-filtro.model';
 import { ViewComponentState } from '../home/store/states/view/view.state';
@@ -21,10 +21,13 @@ import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { SetAreaMappa } from './store/actions/area-mappa.actions';
 import { RouterState } from '@ngxs/router-plugin';
 import { RichiestaSelezionataState } from '../home/store/states/richieste/richiesta-selezionata.state';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import { RichiestaModificaState } from '../home/store/states/form-richiesta/richiesta-modifica.state';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { RichiestaGestioneState } from '../home/store/states/richieste/richiesta-gestione.state';
+import { MezziInServizioState } from '../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { SchedeContattoState } from '../home/store/states/schede-contatto/schede-contatto.state';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
+import { DirectionTravelDataInterface } from './maps-interface/direction-travel-data.interface';
 
 @Component({
     selector: 'app-maps',
@@ -37,6 +40,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Input() boxAttivi: boolean;
     @Input() tastoChiamataMappaActive: boolean;
     @Input() tastoZonaEmergenzaMappaActive: boolean;
+    @Input() visualizzaPercorsiRichiesta: boolean;
 
     @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
     centroMappa: CentroMappa;
@@ -45,6 +49,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
     @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<boolean>;
     @Select(MapsDirectionState.direction) direction$: Observable<DirectionInterface>;
+    @Select(MapsDirectionState.travelDataNuovaPartenza) travelDataNuovaPartenza$: Observable<DirectionTravelDataInterface>;
 
     // Richiesta Selezionata
     @Select(RichiestaSelezionataState.idRichiestaSelezionata) idRichiestaSelezionata$: Observable<string>;
@@ -52,14 +57,22 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     // Richiesta Gestione
     @Select(RichiestaGestioneState.richiestaGestione) richiestaGestione$: Observable<SintesiRichiesta>;
+    // Richiesta Composizione
+    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    // Richieste Status
+    @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
     // Filtri Richieste Selezionati
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     // Status "Schede Contatto"
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    // Scheda Contatto Selezionata
+    @Select(SchedeContattoState.codiceSchedaContattoSelezionata) idSchedaContattoSelezionata$: Observable<string>;
     // Status "Composizione Partenza"
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     // Status "Mezzi in Servizio"
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
+    // Mezzo In Servizio Selezionato
+    @Select(MezziInServizioState.idMezzoInServizioSelezionato) idMezzoInServizioSelezionato$: Observable<string>;
 
     mapsFullyLoaded = false;
     activeRoute: string;

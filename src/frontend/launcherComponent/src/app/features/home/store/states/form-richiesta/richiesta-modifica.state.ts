@@ -176,7 +176,8 @@ export class RichiestaModificaState {
                             latitudine: f.latitudine
                         },
                     },
-                    competenze,
+                    competenze ? competenze : f.competenze,
+                    null,
                     f.complessita,
                     f.istantePresaInCarico,
                     f.istantePrimaAssegnazione,

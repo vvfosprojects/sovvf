@@ -29,6 +29,7 @@ import { addQuestionMark, capitalize, makeCopy } from '../../../shared/helper/fu
 import { ItemTriageData } from '../../../shared/interface/item-triage-data.interface';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { ImpostazioniState } from '../../../shared/store/states/impostazioni/impostazioni.state';
+import { ImportTriageModalComponent } from './import-triage-modal/import-triage-modal.component';
 
 @Component({
     selector: 'app-triage',
@@ -71,6 +72,7 @@ export class TriageComponent implements OnDestroy {
     showTriage: boolean;
 
     viewEditButtons = true;
+    alertModificheDaSalvare = true;
 
     itemValueTitleEdit: string;
     itemTitleEdit: string;
@@ -234,6 +236,15 @@ export class TriageComponent implements OnDestroy {
         this.addItem();
     }
 
+    importTriage(): void {
+        this.modalService.open(ImportTriageModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+    }
+
     getItemData(item: TreeItem): ItemTriageData {
         const itemData = this.tItemsData?.length && this.tItemsData.filter((data: any) => data.itemValue === item.value)[0];
         if (itemData) {
@@ -243,6 +254,7 @@ export class TriageComponent implements OnDestroy {
 
     toggleViewEditButtons(): void {
         this.viewEditButtons = !this.viewEditButtons;
+        this.alertModificheDaSalvare = !!this.viewEditButtons;
     }
 
     addItem(item?: TreeItem): void {
@@ -459,6 +471,9 @@ export class TriageComponent implements OnDestroy {
                 let newItemData: ItemTriageData;
                 if (itemDataFound) {
                     newItemData = {
+                        id: null,
+                        codiceTipologia: null,
+                        codiceDettaglioTipologia: null,
                         itemValue: item.value,
                         soccorsoAereo: itemDataFound.soccorsoAereo ? itemDataFound.soccorsoAereo : null,
                         generiMezzo: itemDataFound.generiMezzo ? itemDataFound.generiMezzo : null,
@@ -468,6 +483,9 @@ export class TriageComponent implements OnDestroy {
                     };
                 } else {
                     newItemData = {
+                        id: null,
+                        codiceTipologia: null,
+                        codiceDettaglioTipologia: null,
                         itemValue: item.value,
                         soccorsoAereo: null,
                         generiMezzo: null,

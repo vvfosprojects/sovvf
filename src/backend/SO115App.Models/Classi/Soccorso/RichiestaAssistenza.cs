@@ -25,17 +25,14 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
-using SO115App.API.Models.Classi.Soccorso.Fonogramma; 
+using SO115App.API.Models.Classi.Soccorso.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
-using SO115App.Models.Classi.Soccorso.Eventi;
-using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
 using System.Collections.Generic;
@@ -58,7 +55,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         private List<Evento> _eventi;
 
-        public IEnumerable<Evento> ListaEventi { get { return _eventi.ToArray(); } }
+        public IEnumerable<Evento> ListaEventi
+        { get { return _eventi.ToArray(); } }
 
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
@@ -115,7 +113,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
-        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string codicePartenza = null)
+        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string[] coordinatePartenza = null, string codicePartenza = null)
         {
             bool cambioOrarioUscita = partenza.Mezzo.Stato == stato.Stato;
 
@@ -144,10 +142,14 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     var dataComposizione = cambioOrarioUscita == true ? stato.Istante : stato.Istante.AddMinutes(1);
 
-                    if(codicePartenza == null)
-                        new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
+                    CoordinateString coordinate = new CoordinateString(coordinatePartenza[0], coordinatePartenza[1]);
+
+                    if (codicePartenza == null)
+                        new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza, coordinate);
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
+
+
 
                     partenza.Mezzo.IdRichiesta = Id;
 
@@ -180,7 +182,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     new PartenzaRientrata(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
 
-                    sendNewItemSTATRI.InvioRichiesta(this);
+                    //sendNewItemSTATRI.InvioRichiesta(this);
 
                     break;
             }
@@ -639,7 +641,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                         var partenzeAperte = partenze.ToList().FindAll(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
 
                         if ((partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Viaggio")).Count > 0 ||
-                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Rientro")).Count > 0 ) &&
+                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Rientro")).Count > 0) &&
                             partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count == 0
                             )
                             return new Assegnata();
@@ -1030,6 +1032,11 @@ namespace SO115App.API.Models.Classi.Soccorso
             _eventi.Add(evento);
         }
 
+        public void DeleteEvento(Evento evento)
+        {
+            _eventi.Remove(evento);
+        }
+
         /// <summary>
         ///   E' un testo che riassume lo stato della richiesta, tra i seguenti: X (chiusa), C
         ///   (chiamata), A (assegnata), S (sospesa), P (presidiata). Gli stati sono mutuamente
@@ -1106,7 +1113,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         public DateTime dataOraInserimento => Telefonate.First().DataOraInserimento;
 
         public string NoteNue { get; set; }
-
     }
 
     public class ESRI

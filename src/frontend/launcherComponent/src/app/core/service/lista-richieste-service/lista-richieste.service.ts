@@ -25,25 +25,43 @@ export class SintesiRichiesteService {
     }
 
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
-        const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.categoria !== 'StatiRichiesta' && f.categoria !== 'AltriFiltri' && f.categoria !== 'Chiuse');
-        let filtriTipologia;
-        if (filtriTipologieRichiesta?.length) {
-            filtriTipologia = filtriTipologieRichiesta[0]?.codice;
+        let filtriTipologia: any;
+        let obj: any;
+        if (filters && pagination) {
+            const filtriTipologieRichiesta = filters.others.filter((f: VoceFiltro) => f.categoria !== 'StatiRichiesta' && f.categoria !== 'AltriFiltri' && f.categoria !== 'Chiuse');
+            if (filtriTipologieRichiesta?.length) {
+                filtriTipologia = filtriTipologieRichiesta[0]?.codice;
+            }
+            obj = {
+                page: pagination.page,
+                pageSize: pagination.pageSize || 30,
+                searchKey: filters.search,
+                includiRichiesteAperte: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
+                includiRichiesteChiuse: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
+                filtriTipologie: null,
+                statiRichiesta: filters?.filtroStato.length ? filters.filtroStato : null,
+                tipologiaRichiesta: filtriTipologia ? filtriTipologia : null,
+                zoneEmergenza: filters?.zoneEmergenza.length ? filters.zoneEmergenza : null,
+                chiuse: filters?.chiuse.length ? filters.chiuse : null,
+                periodoChiuseChiamate: filters?.periodoChiuseChiamate.da || filters?.periodoChiuseChiamate.data || filters?.periodoChiuseChiamate.turno ? filters?.periodoChiuseChiamate : null,
+                periodoChiusiInterventi: filters?.periodoChiusiInterventi.da || filters?.periodoChiusiInterventi.data || filters?.periodoChiusiInterventi.turno ? filters?.periodoChiusiInterventi : null
+            };
+        } else {
+            obj = {
+                page: 0,
+                pageSize: 1000,
+                searchKey: null,
+                includiRichiesteAperte: true,
+                includiRichiesteChiuse: false,
+                filtriTipologie: null,
+                statiRichiesta: null,
+                tipologiaRichiesta: null,
+                zoneEmergenza: null,
+                chiuse: null,
+                periodoChiuseChiamate: null,
+                periodoChiusiInterventi: null
+            };
         }
-        const obj = {
-            page: pagination.page,
-            pageSize: pagination.pageSize || 30,
-            searchKey: filters.search,
-            includiRichiesteAperte: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
-            includiRichiesteChiuse: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
-            filtriTipologie: null,
-            statiRichiesta: filters?.filtroStato.length ? filters.filtroStato : null,
-            tipologiaRichiesta: filtriTipologia ? filtriTipologia : null,
-            zoneEmergenza: filters?.zoneEmergenza.length ? filters.zoneEmergenza : null,
-            chiuse: filters?.chiuse.length ? filters.chiuse : null,
-            periodoChiuseChiamate: filters?.periodoChiuseChiamate.da || filters?.periodoChiuseChiamate.data || filters?.periodoChiuseChiamate.turno ? filters?.periodoChiuseChiamate : null,
-            periodoChiusiInterventi: filters?.periodoChiusiInterventi.da || filters?.periodoChiusiInterventi.data || filters?.periodoChiusiInterventi.turno ? filters?.periodoChiusiInterventi : null
-        };
         return this.http.post(API_URL_RICHIESTE, obj);
     }
 
@@ -70,8 +88,8 @@ export class SintesiRichiesteService {
     }
 
     public eliminaPartenzaRichiesta(obj: any): Observable<any> {
-        console.log('eliminaPartenzaRichiesta', obj);
-        return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AnnullaPartenza`, obj);
+        console.log('Annulla Stato Partenza', obj);
+        return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AnnullaStatoPartenza`, obj);
     }
 
     public modificaStatoFonogrammaRichiesta(obj: any): Observable<any> {

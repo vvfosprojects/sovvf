@@ -16,7 +16,8 @@ import {
     StartListaSquadreComposizioneLoading,
     StartListaMezziComposizioneLoading,
     StopListaSquadreComposizioneLoading,
-    StopListaMezziComposizioneLoading
+    StopListaMezziComposizioneLoading,
+    SetVisualizzaPercosiRichiesta
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../../maps/maps-model/composizione-marker.model';
@@ -34,10 +35,12 @@ import { SetTriageSummary } from '../../../../../shared/store/actions/triage-sum
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
+import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
     composizioneMode: Composizione;
+    visualizzaPercorsiRichiesta: boolean;
     loadingListe: boolean;
     loadingSquadre: boolean;
     loadingMezzi: boolean;
@@ -48,6 +51,7 @@ export interface ComposizionePartenzaStateModel {
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
+    visualizzaPercorsiRichiesta: false,
     loadingListe: false,
     loadingSquadre: false,
     loadingMezzi: false,
@@ -86,6 +90,11 @@ export class ComposizionePartenzaState {
             composizioneMarkers = [];
         }
         return composizioneMarkers;
+    }
+
+    @Selector()
+    static visualizzaPercorsiRichiesta(state: ComposizionePartenzaStateModel): boolean {
+        return state.visualizzaPercorsiRichiesta;
     }
 
     @Selector()
@@ -178,6 +187,13 @@ export class ComposizionePartenzaState {
         });
     }
 
+    @Action(SetVisualizzaPercosiRichiesta)
+    setVisualizzaPercosiRichiesta({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetVisualizzaPercosiRichiesta): void {
+        patchState({
+            visualizzaPercorsiRichiesta: action.value
+        });
+    }
+
     @Action(UpdateRichiestaComposizione)
     updateRichiestaComposizione({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: UpdateRichiestaComposizione): void {
         patchState({
@@ -243,11 +259,11 @@ export class ComposizionePartenzaState {
     }
 
     @Action(TerminaComposizione)
-    terminaComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
-        const state = getState();
+    terminaComposizione({ dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
+        const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
         dispatch([
+            !idRichiestaSelezionata && new GetInitCentroMappa(),
             new ClearDirection(),
-            new GetInitCentroMappa(),
             new ClearComposizioneVeloce(),
             new ClearComposizioneAvanzata(),
             new ClearMezzoComposizione(),

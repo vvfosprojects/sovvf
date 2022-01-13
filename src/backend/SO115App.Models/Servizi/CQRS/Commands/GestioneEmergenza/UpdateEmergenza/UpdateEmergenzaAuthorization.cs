@@ -57,7 +57,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.InfoEmergenza.CodComandoRichiedente, Costanti.GestoreRichieste))
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodSede, Costanti.GestoreRichieste))
                             abilitato = true;
                     }
 

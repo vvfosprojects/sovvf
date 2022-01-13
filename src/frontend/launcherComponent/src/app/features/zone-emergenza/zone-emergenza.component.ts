@@ -11,6 +11,7 @@ import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.sta
 import { TipologiaEmergenza, ZonaEmergenza } from './model/zona-emergenza.model';
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import {
+    AddZonaEmergenza,
     AllertaCONZonaEmergenza,
     AnnullaZonaEmergenza,
     EditZonaEmergenza,
@@ -94,6 +95,18 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {
                 this.doubleMonitor = doubleMonitor;
+                if (this.doubleMonitor === false && this.tastoZonaEmergenzaMappaActive) {
+                    this.store.dispatch([
+                        new SetZonaEmergenzaFromMappaActiveValue(false),
+                        new SetMappaActiveValue(true)
+                    ]);
+                }
+                if (this.doubleMonitor === true && this.tastoZonaEmergenzaMappaActive) {
+                    this.store.dispatch([
+                        new SetZonaEmergenzaFromMappaActiveValue(false),
+                        new SetMappaActiveValue(false)
+                    ]);
+                }
             })
         );
     }
@@ -132,24 +145,51 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
 
     onChangeVisualizzazione(): void {
         if (this.mappaActive) {
-            this.store.dispatch(new SetMappaActiveValue(false));
-        } else if (!this.mappaActive) {
-            this.store.dispatch(new SetMappaActiveValue(true));
-        }
-    }
-
-    onSetZonaEmergenzaFromMappaActiveValue(): void {
-        if (!this.tastoZonaEmergenzaMappaActive) {
-            this.store.dispatch([
-                new SetZonaEmergenzaFromMappaActiveValue(true),
-                new SetMappaActiveValue(true)
-            ]);
-        } else {
             this.store.dispatch([
                 new SetZonaEmergenzaFromMappaActiveValue(false),
                 new SetMappaActiveValue(false)
             ]);
+        } else if (!this.mappaActive) {
+            this.store.dispatch([
+                new SetMappaActiveValue(true)
+            ]);
         }
+    }
+
+    onCreazioneEmergenza(): void {
+        const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'md'
+        });
+
+        const allTipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
+
+        modalNuovaEmergenza.componentInstance.allTipologieEmergenza = allTipologieEmergenza;
+        modalNuovaEmergenza.componentInstance.tipologieEmergenza = tipologieEmergenza;
+
+        modalNuovaEmergenza.result.then((result: string) => {
+            switch (result) {
+                case 'ok':
+                    this.store.dispatch([
+                        new AddZonaEmergenza(),
+                        new SetZonaEmergenzaFromMappaActiveValue(false)
+                    ]);
+                    break;
+                case 'ko':
+                    this.store.dispatch([
+                        new ResetZonaEmergenzaForm(),
+                        new SetZonaEmergenzaFromMappaActiveValue(false)
+                    ]);
+                    break;
+                default:
+                    this.store.dispatch([
+                        new ResetZonaEmergenzaForm(),
+                        new SetZonaEmergenzaFromMappaActiveValue(false)
+                    ]);
+                    break;
+            }
+        });
     }
 
     onDetail(zonaEmergenza: ZonaEmergenza): void {
@@ -163,8 +203,10 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
             centered: true
         });
 
-        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const allTipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
 
+        modalNuovaEmergenza.componentInstance.allTipologieEmergenza = allTipologieEmergenza;
         modalNuovaEmergenza.componentInstance.tipologieEmergenza = tipologieEmergenza;
         modalNuovaEmergenza.componentInstance.zonaEmergenzaEdit = zonaEmergenza;
 

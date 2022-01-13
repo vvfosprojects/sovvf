@@ -48,8 +48,8 @@ export class SchedeContattoService {
         return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/UndoMergeSchede`, schedaUnita);
     }
 
-    setSchedaContattoGestita(scheda: SchedaContatto, gestita: boolean): Observable<any> {
-        const obj = { scheda, gestita };
+    setSchedaContattoGestita(scheda: SchedaContatto, gestita: boolean, codIntervento: string): Observable<any> {
+        const obj = { scheda, gestita, codIntervento };
         return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetGestita`, obj);
     }
 }

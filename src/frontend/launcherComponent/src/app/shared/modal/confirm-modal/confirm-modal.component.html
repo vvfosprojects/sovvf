@@ -8,7 +8,8 @@
     </button>
 </div>
 <div class="modal-body">
-    <div *ngIf="stampa" class="mb-4 mt-2">
+    <ng-container *ngIf="stampa"
+         class="d-flex justify-content-between">
         <div class="form-check-inline">
             <input class="form-check-input radio-custom" type="radio" id="pdf" name="pdf" [checked]="checkbox.pdf"
                    (click)="onCheck('pdf')">
@@ -16,26 +17,19 @@
                 Stampa come PDF
             </label>
         </div>
-        <div class="form-check-inline">
-            <input class="form-check-input radio-custom" type="radio" id="csv" name="csv" [checked]="checkbox.csv"
-                   (click)="onCheck('csv')">
-            <label class="form-check-label" for="csv">
-                Stampa come CSV
-            </label>
-        </div>
-    </div>
-    <ng-template [ngIf]="messaggio">
+    </ng-container>
+    <ng-container *ngIf="messaggio">
         <h5>{{ messaggio }}</h5>
-    </ng-template>
-    <ng-template [ngIf]="messaggioAttenzione">
+    </ng-container>
+    <ng-container *ngIf="messaggioAttenzione">
         <div class="alert alert-danger h5 font-weight-bold mb-0"
              [class.mt-3]="messaggio">
             {{ messaggioAttenzione }}
         </div>
-    </ng-template>
+    </ng-container>
 </div>
 <div class="modal-footer" style="place-content: space-between;">
-    <button  type="button" class="btn  btn-lg btn-danger btn-no-hover"
+    <button type="button" class="btn  btn-lg btn-danger btn-no-hover"
             style="font-weight:600" (click)="onSubmit('ok')">
         {{ 'Conferma' | uppercase }}
     </button>

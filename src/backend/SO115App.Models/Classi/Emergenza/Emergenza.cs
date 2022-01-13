@@ -9,7 +9,9 @@ namespace SO115App.Models.Classi.Emergenza
         private List<Evento> _eventi;
 
         public IEnumerable<Evento> ListaEventi
-        { get { return _eventi.ToArray(); } }
+        {
+            get { return _eventi.ToArray(); }
+        }
 
         public Emergenza()
         {

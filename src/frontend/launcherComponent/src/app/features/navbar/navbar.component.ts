@@ -17,7 +17,7 @@ import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
 import { ToggleCodaChiamate, ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
-import { ClearRichiestaModifica } from '../home/store/actions/form-richiesta/richiesta-modifica.actions';
+import { ChiudiRichiestaModifica, ClearRichiestaModifica } from '../home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { AnnullaChiamata } from '../home/store/actions/form-richiesta/scheda-telefonata.actions';
@@ -53,6 +53,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
+    mapsIsActive: boolean;
 
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
@@ -61,6 +63,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() disabledZoneEmergenza: boolean;
     @Input() colorButtonView: ViewInterfaceButton;
     @Input() sidebarOpened: boolean;
+    @Input() doubleMonitor: boolean;
 
     @Output() toggleSidebar: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -83,6 +86,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.getTurnoCalendario();
         this.getTurnoExtra();
         this.getUrl();
+        this.getMapsIsActive();
     }
 
     ngOnInit(): void {
@@ -116,6 +120,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     setTime(): void {
         this.time = new Date();
+    }
+
+    getMapsIsActive(): void {
+        this.subscription.add(
+            this.mapsIsActive$.subscribe((mapsIsActive: boolean) => {
+                this.mapsIsActive = mapsIsActive;
+            })
+        );
     }
 
     getTurnoCalendario(): void {
@@ -182,7 +194,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     onChiamateInterventi(): void {
         const codaChiamateStatus = this.store.selectSnapshot(ViewComponentState.codaChiamateStatus);
-        const mezziInServizioStatus = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
+        const mezziInServizioStatus = (this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus) || (this.colorButtonView?.backupViewComponent?.view?.mezziInServizio?.active && this.mapsIsActive));
         const schedeContattoStatus = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
         const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
         const modificaRichiestaStatus = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);
@@ -196,7 +208,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         } else if (chiamataStatus) {
             this.toggleChiamataStatus();
         } else if (modificaRichiestaStatus) {
-            this.toggleModificaRichiesta();
+            this.store.dispatch(new ChiudiRichiestaModifica(true));
         } else if (composizioneStatus) {
             this.turnOffComposizionePartenza();
         }

@@ -5,6 +5,7 @@ import { RangeSchedeContattoEnum } from '../../enum/range-schede-contatto';
 import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
 import { PermissionFeatures } from '../../enum/permission-features.enum';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
+import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-lista-schede-contatto',
@@ -20,10 +21,12 @@ export class ListaSchedeContattoComponent implements OnInit {
     @Input() page: number;
     @Input() tabAttivo: string;
     @Input() schedeContatto: SchedaContatto[];
+    @Input() filtriSelezionati: VoceFiltro[];
     @Input() contatoriSchedeContatto: ContatoriSchedeContatto;
     @Input() idVisualizzati: string[];
     @Input() idCollapsed: string[];
     @Input() codiceSchedaContattoHover: string;
+    @Input() codiceSchedaContattoSelezionata: string;
     @Input() statoModalita: boolean;
     @Input() idSelezionatiMerge: string[];
     @Input() classificazioneMerge: ClassificazioneSchedaContatto;
@@ -37,6 +40,8 @@ export class ListaSchedeContattoComponent implements OnInit {
     @Output() tabSelected: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverIn: EventEmitter<string> = new EventEmitter<string>();
+    @Output() selezionata: EventEmitter<string> = new EventEmitter<string>();
+    @Output() deselezionata: EventEmitter<string> = new EventEmitter<string>();
     @Output() collapsed: EventEmitter<any> = new EventEmitter<any>();
     @Output() undoMergeSchedaContatto: EventEmitter<any> = new EventEmitter<any>();
     @Output() dettaglioScheda: EventEmitter<any> = new EventEmitter<any>();
@@ -69,6 +74,14 @@ export class ListaSchedeContattoComponent implements OnInit {
 
     onHoverOut(): void {
         this.hoverIn.emit();
+    }
+
+    onSelezione(codiceScheda: string): void {
+        this.selezionata.emit(codiceScheda);
+    }
+
+    onDeselezione(): void {
+        this.deselezionata.emit();
     }
 
     onCollapsed(codiceScheda: string): void {

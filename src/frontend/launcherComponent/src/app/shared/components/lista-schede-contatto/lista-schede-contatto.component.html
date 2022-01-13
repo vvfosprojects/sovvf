@@ -17,11 +17,11 @@
                 </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
-                <div class="row">
-                    <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
-                        <h6 class="text-center">Non ci sono Schede Contatto per Competenza</h6>
-                    </div>
-                </div>
+                <app-risultati-alert [items]="!!(schedeContatto?.length)"
+                                     [filters]="!!(filtriSelezionati?.length)"
+                                     [ricerca]="!!(ricerca?.length)"
+                                     [loading]="loading">
+                </app-risultati-alert>
             </ng-template>
         </ngb-tab>
         <ngb-tab [id]="ClassificazioneEnum.Differibile">
@@ -37,11 +37,11 @@
                 </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
-                <div class="row">
-                    <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
-                        <h6 class="text-center">Non ci sono Schede Contatto Differibili</h6>
-                    </div>
-                </div>
+                <app-risultati-alert [items]="!!(schedeContatto?.length)"
+                                     [filters]="!!(filtriSelezionati?.length)"
+                                     [ricerca]="!!(ricerca?.length)"
+                                     [loading]="loading">
+                </app-risultati-alert>
             </ng-template>
         </ngb-tab>
         <ngb-tab [id]="ClassificazioneEnum.Conoscenza">
@@ -58,11 +58,11 @@
                 </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
-                <div class="row">
-                    <div *ngIf="idVisualizzati?.length === 0" class="col-12 mt-4">
-                        <h6 class="text-center">Non ci sono Schede Contatto per Conoscenza</h6>
-                    </div>
-                </div>
+                <app-risultati-alert [items]="!!(schedeContatto?.length)"
+                                     [filters]="!!(filtriSelezionati?.length)"
+                                     [ricerca]="!!(ricerca?.length)"
+                                     [loading]="loading">
+                </app-risultati-alert>
             </ng-template>
         </ngb-tab>
         <ngb-tab id="Tutte">
@@ -77,11 +77,11 @@
                 </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
-                <div class="row">
-                    <div *ngIf="schedeContatto.length === 0" class="col-12 mt-4">
-                        <h6 class="text-center">Non ci sono Schede Contatto</h6>
-                    </div>
-                </div>
+                <app-risultati-alert [items]="!!(schedeContatto?.length)"
+                                     [filters]="!!(filtriSelezionati?.length)"
+                                     [ricerca]="!!(ricerca?.length)"
+                                     [loading]="loading">
+                </app-risultati-alert>
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
@@ -93,6 +93,7 @@
                 [idVisualizzati]="idVisualizzati"
                 [idCollapsed]="idCollapsed"
                 [idSchedaContattoHover]="codiceSchedaContattoHover"
+                [idSchedaContattoSelezionata]="codiceSchedaContattoSelezionata"
                 [editSchedaContatto]="statoModalita"
                 [schedeContattoSelezionate]="idSelezionatiMerge"
                 [classificazione]="classificazioneMerge"
@@ -102,6 +103,8 @@
                 [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
                 (hoverIn)="onHoverIn($event)"
                 (hoverOut)="onHoverOut()"
+                (selezionata)="onSelezione($event)"
+                (deselezionata)="onDeselezione()"
                 (collapsed)="onCollapsed($event)"
                 (undoRaggruppamento)="onUndoMergeSchedaContatto($event)"
                 (dettaglioScheda)="onDettaglioScheda($event)"
@@ -130,10 +133,12 @@
                         [class.btn-success]="(idSelezionatiMerge?.length > 1 && !loading) && !nightMode"
                         [class.btn-outline-light]="(idSelezionatiMerge?.length <= 1 || loading) && nightMode"
                         [class.btn-light]="(idSelezionatiMerge?.length > 1 && !loading) && nightMode"
+                        [class.btn-no-hover]="idSelezionatiMerge.length <= 1 || loading"
                         [disabled]="idSelezionatiMerge.length <= 1 || loading"
                         (click)="onSaveMerge()">
                     <i class="fas fa-save mr-1"></i>
-                    Raggruppa selezionate <span *ngIf="idSelezionatiMerge?.length">({{ idSelezionatiMerge.length }})</span>
+                    Raggruppa selezionate <span *ngIf="idSelezionatiMerge?.length">({{ idSelezionatiMerge.length }}
+                    )</span>
                 </button>
                 <button *ngIf="!statoModalita"
                         class="btn btn-lg mr-3"

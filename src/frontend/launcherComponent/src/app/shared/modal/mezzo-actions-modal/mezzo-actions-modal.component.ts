@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbActiveModal, NgbCalendar, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -13,6 +13,7 @@ export class MezzoActionsModalComponent implements OnInit {
 
     timeActionForm: FormGroup;
     todayDate;
+    dateNow;
     navigation: 'select';
     outsideDays: 'visible';
     submitted: boolean;
@@ -28,9 +29,11 @@ export class MezzoActionsModalComponent implements OnInit {
         aperta: false,
     };
     azioneIntervento: string;
+    @ViewChild('timepickerRef') timepickerRef: NgbTimepicker;
 
     constructor(public modal: NgbActiveModal, private fb: FormBuilder, calendar: NgbCalendar) {
         this.todayDate = calendar.getToday();
+        this.dateNow = calendar.getToday();
     }
 
     ngOnInit(): void {
@@ -45,16 +48,35 @@ export class MezzoActionsModalComponent implements OnInit {
         });
     }
 
+    checkInvalidTime(): boolean {
+        if (!this.time || this.titleStato === ': In Viaggio') {
+            return false;
+        }
+        let isInvalid;
+        const timeSelected = new Date();
+        timeSelected.setHours(this.time.hour, this.time.minute);
+        const dateNow = new Date();
+        const dateOutOfRange = this.dateNow.before({ year: this.todayDate.year, month: this.todayDate.month, day: this.todayDate.day });
+        const dateEquals = this.dateNow.equals({ year: this.todayDate.year, month: this.todayDate.month, day: this.todayDate.day });
+        isInvalid = !!(((timeSelected > dateNow) && dateEquals) || dateOutOfRange);
+        return isInvalid;
+    }
+
     formatTime(): void {
         const d = new Date();
         if (this.title !== 'Modifica') {
             this.time.hour = d.getHours();
             this.time.minute = d.getMinutes();
             this.time.second = d.getSeconds();
-        } else {
-            this.time.hour = (+this.dataInViaggio.ora) + 2;
+        } else if (this.dataInViaggio) {
+            this.time.hour = (+this.dataInViaggio.ora) + 1;
             this.time.minute = +this.dataInViaggio.minuti;
             this.time.second = d.getSeconds();
+            this.todayDate = {
+                year: +this.dataInViaggio.anno,
+                month: +this.dataInViaggio.mese,
+                day: +this.dataInViaggio.giorno
+            };
         }
     }
 
@@ -69,6 +91,17 @@ export class MezzoActionsModalComponent implements OnInit {
         this.modal.close({ status: 'ko', result: null });
     }
 
+    onDateNow(): void {
+        const d = new Date();
+        this.time.hour = d.getHours();
+        this.time.minute = d.getMinutes();
+        this.time.second = d.getSeconds();
+        this.timepickerRef.model.hour = d.getHours();
+        this.timepickerRef.model.minute = d.getMinutes();
+        this.timepickerRef.model.second = d.getSeconds();
+        this.todayDate = this.dateNow;
+    }
+
     checkUltimoMezzo(): void {
         const mezziEventi = [];
         this.listaEventi.forEach(x => mezziEventi.push(x.codiceMezzo));
@@ -76,7 +109,7 @@ export class MezzoActionsModalComponent implements OnInit {
         const singleValue = Array.from(new Set(mezziEventi));
         // Rimuovo mezzi già rientrati
         const mezziRientrati = [];
-        singleValue.forEach(x => this.listaEventi.filter(y => y.codiceMezzo === x).reduce( (a, e) => !a ? e : (new Date(a.ora) > new Date (e.ora) ? a : e)).stato === 'Rientrato' ? mezziRientrati.push(x) : null);
+        singleValue.forEach(x => this.listaEventi.filter(y => y.codiceMezzo === x).reduce((a, e) => !a ? e : (new Date(a.ora) > new Date(e.ora) ? a : e)).stato === 'Rientrato' ? mezziRientrati.push(x) : null);
         // Attivo la checkbox per ultimo mezzo
         if (singleValue.length - mezziRientrati.length === 1) {
             this.ultimoMezzo = true;

@@ -32,6 +32,7 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
     @Select(RubricaPersonaleState.vociRubricaPersonale) vociRubricaPersonale$: Observable<RubricaPersonale[]>;
+    vociRubricaPersonale: RubricaPersonale[];
     @Select(RubricaPersonaleState.loadingRubricaPersonale) loading$: Observable<boolean>;
     @Select(RicercaRubricaPersonaleState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -53,6 +54,7 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
             this.store.dispatch(new SetPageSize(10));
         }
         this.getDoubleMonitorMode();
+        this.getVociRubricaPersonale();
         this.getRicerca();
         this.getPageSize();
         this.getRubricaPersonale(true);
@@ -74,7 +76,15 @@ export class RubricaPersonaleComponent implements OnInit, OnDestroy {
         ]);
         this.subscriptions.unsubscribe();
     }
-    
+
+    getVociRubricaPersonale(): void {
+        this.subscriptions.add(
+            this.vociRubricaPersonale$.subscribe((vociRubricaPersonale: RubricaPersonale[]) => {
+                this.vociRubricaPersonale = vociRubricaPersonale;
+            })
+        );
+    }
+
     getDoubleMonitorMode(): void {
         this.subscriptions.add(
             this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {

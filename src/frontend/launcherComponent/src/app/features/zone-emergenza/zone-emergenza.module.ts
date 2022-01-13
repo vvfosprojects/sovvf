@@ -25,6 +25,8 @@ import { DoaModalComponent } from './sedi-zona-emergenza/doa-modal/doa-modal.com
 import { PcaModalComponent } from './sedi-zona-emergenza/pca-modal/pca-modal.component';
 import { DoaComponent } from './sedi-zona-emergenza/doa/doa.component';
 import { PcaComponent } from './sedi-zona-emergenza/pca/pca.component';
+import { RichiestaModuliModalComponent } from './richiesta-moduli-modal/richiesta-moduli-modal.component';
+import { RichiestaCraModalComponent } from './richiesta-cra-modal/richiesta-cra-modal.component';
 /**
  * Routing
  */
@@ -46,6 +48,8 @@ const ngWizardConfig: NgWizardConfig = {
         ModuliColonnaMobileModalComponent,
         AnnullaZonaEmergenzaModalComponent,
         AllertaCONZonaEmergenzaModalComponent,
+        RichiestaModuliModalComponent,
+        RichiestaCraModalComponent,
         ModuloColonnaMobileComponent,
         DettaglioZonaEmergenzaComponent,
         ZonaEmergenzaModalComponent,

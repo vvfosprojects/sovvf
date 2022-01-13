@@ -123,6 +123,7 @@ namespace SO115App.Models.Classi.Utility
         public const string RevocaPerRiassegnazione = "RevocaPerRiassegnazione";
         public const string RevocaPerSostituzioneMezzo = "RevocaPerSostituzioneMezzo";
         public const string SostituzionePartenza = "SostituzionePartenza";
+        public const string AnnullamentoStatoPartenza = "AnnullamentoStatoPartenza";
         public const string AnnullamentoPresaInCarico = "AnnullamentoPresaInCarico";
 
         public const string FonogrammaDaInviare = "FonogrammaDaInviare";

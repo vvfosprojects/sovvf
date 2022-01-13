@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
-import { DirectionInterface } from '../../../maps/maps-interface/direction-interface';
+import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Store } from '@ngxs/store';
@@ -39,7 +39,7 @@ import {
     UnselectSquadraComposizioneInRientro,
     UnselectSquadraComposizionePreAccoppiati
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze, SetVisualizzaPercosiRichiesta } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
@@ -63,6 +63,9 @@ import { SquadraComposizione } from '../../../../shared/interface/squadra-compos
 })
 export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
 
+    // Percorsi richiesta
+    @Input() visualizzaPercorsiRichiesta: boolean;
+
     // Mezzi Composizione
     @Input() mezziComposizione: MezzoComposizione[];
     @Input() idMezzoSelezionato: string;
@@ -78,6 +81,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     // Filtri Composizione
     @Input() filtriSelezionati: any;
+    @Input() filtri: any;
 
     // BoxPartenza Composizione
     @Input() boxPartenzaList: BoxPartenza[];
@@ -330,8 +334,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.changeRicercaMezzi.emit(makeCopy(this.ricercaMezzi));
     }
 
-    boxPartenzaSelezionato(boxPartenza: BoxPartenza): void {
-        // this.store.dispatch(new RequestSelectBoxPartenza(boxPartenza.id));
+    onToggleVisualizzaPercorsi(value: boolean): void {
+        // TODO: logica viualizzazione percorsi con bottone
+        this.store.dispatch(new SetVisualizzaPercosiRichiesta(value));
     }
 
     nuovaPartenza(): void {
@@ -378,7 +383,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             if (obj.mezzoComposizione) {
                 if (obj.mezzoComposizione.mezzo && obj.mezzoComposizione.mezzo.stato) {
                     obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
-                } else { obj.mezzoComposizione.stato = StatoMezzo.InViaggio; }
+                } else {
+                    obj.mezzoComposizione.stato = StatoMezzo.InViaggio;
+                }
                 rObj.mezzo = obj.mezzoComposizione.mezzo ? obj.mezzoComposizione.mezzo : obj.mezzoComposizione;
             } else {
                 rObj.mezzo = null;
@@ -405,7 +412,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     onClearDirection(): void {
         this.clearDirection.emit();
-        this.centraMappa.emit();
     }
 
     mezziPageChange(pageMezzi: number): void {
@@ -429,20 +435,20 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     // Interazione con Mappa
     mezzoCoordinate(obj: MezzoDirection): void {
         if (obj.coordinateMezzo && this.richiesta.localita.coordinate) {
-                const direction: DirectionInterface = {
-                    origin: {
-                        lat: obj.coordinateMezzo.latitudine,
-                        lng: obj.coordinateMezzo.longitudine
-                    },
-                    destination: {
-                        lat: this.richiesta.localita.coordinate.latitudine,
-                        lng: this.richiesta.localita.coordinate.longitudine
-                    },
-                    genereMezzo: obj.genereMezzo,
-                    isVisible: true
-                };
+            const direction: DirectionInterface = {
+                origin: {
+                    lat: obj.coordinateMezzo.latitudine,
+                    lng: obj.coordinateMezzo.longitudine
+                },
+                destination: {
+                    lat: this.richiesta.localita.coordinate.latitudine,
+                    lng: this.richiesta.localita.coordinate.longitudine
+                },
+                genereMezzo: obj.genereMezzo,
+                isVisible: true
+            };
 
-                this.sendDirection.emit(direction);
+            this.sendDirection.emit(direction);
         } else {
             this.onClearDirection();
             console.error('coordinate mezzo / coordinate richiesta non presenti');

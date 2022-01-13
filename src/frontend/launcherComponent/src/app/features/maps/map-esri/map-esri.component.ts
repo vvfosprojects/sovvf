@@ -10,7 +10,7 @@ import { SetChiamataFromMappaActiveValue } from '../store/actions/tasto-chiamata
 import { makeCentroMappa, makeCoordinate } from 'src/app/shared/helper/mappa/function-mappa';
 import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
-import { DirectionInterface } from '../maps-interface/direction-interface';
+import { DirectionInterface } from '../maps-interface/direction.interface';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
 import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
@@ -22,7 +22,22 @@ import { ZoneEmergenzaState } from '../../zone-emergenza/store/states/zone-emerg
 import { AddZonaEmergenza, ResetZonaEmergenzaForm } from '../../zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { RichiesteState } from '../../home/store/states/richieste/richieste.state';
-import { GetInitCentroMappa, SetCentroMappa } from '../store/actions/centro-mappa.actions';
+import { GetInitCentroMappa, SetCentroMappa, SetZoomCentroMappa, SetZoomCentroMappaByKilometers } from '../store/actions/centro-mappa.actions';
+import { Partenza } from '../../../shared/model/partenza.model';
+import { MezziInServizioState } from '../../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
+import { Coordinate } from '../../../shared/model/coordinate.model';
+import { ViewComponentState } from '../../home/store/states/view/view.state';
+import { SchedeContattoState } from '../../home/store/states/schede-contatto/schede-contatto.state';
+import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
+import { ComposizionePartenzaState } from '../../home/store/states/composizione-partenza/composizione-partenza.state';
+import { RichiestaGestioneState } from '../../home/store/states/richieste/richiesta-gestione.state';
+import { CentroMappaState } from '../store/states/centro-mappa.state';
+import { SetDirectionTravelData } from '../store/actions/maps-direction.actions';
+import { ESRI_LAYERS_CONFIG } from '../../../core/settings/esri-layers-config';
+import { DirectionTravelDataInterface } from '../maps-interface/direction-travel-data.interface';
+import { SetVisualizzaPercosiRichiesta } from '../../home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { environment } from '../../../../environments/environment';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -64,6 +79,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() idRichiestaSelezionata: string;
     @Input() richiestaModifica: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
+    @Input() richiestaComposizione: SintesiRichiesta;
     @Input() chiamateMarkers: ChiamataMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() direction: DirectionInterface;
@@ -73,12 +89,18 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() schedeContattoStatus: boolean;
     @Input() composizionePartenzaStatus: boolean;
     @Input() mezziInServizioStatus: boolean;
+    @Input() idMezzoInServizioSelezionato: string;
+    @Input() idSchedaContattoSelezionata: string;
     @Input() areaMappaLoading: boolean;
+    @Input() richiesteStatus: boolean;
+    @Input() travelDataNuovaPartenza: DirectionTravelDataInterface;
+    @Input() visualizzaPercorsiRichiesta: boolean;
 
     @Output() mapIsLoaded: EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }> = new EventEmitter<{ areaMappa: AreaMappa, spatialReference?: SpatialReference }>();
     @Output() boundingBoxChanged: EventEmitter<{ spatialReference?: SpatialReference }> = new EventEmitter<{ spatialReference?: SpatialReference }>();
 
-    operatore: Utente;
+    @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
+    @ViewChild('contextMenu', { static: false }) private contextMenu: ElementRef;
 
     map: Map;
     view: any = null;
@@ -92,10 +114,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     sediOperativeFeatureLayer: FeatureLayer;
     sediOperativeMarkersGraphics = [];
 
+    operatore: Utente;
     RoutesPath = RoutesPath;
-
-    @ViewChild('mapViewNode', { static: true }) private mapViewEl: ElementRef;
-    @ViewChild('contextMenu', { static: false }) private contextMenu: ElementRef;
 
     constructor(private http: HttpClient,
                 private mapService: MapService,
@@ -132,18 +152,18 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.areaCambiata(bounds, event.zoom);
                 });
 
-                // Lista layer (client) da aggiungere alla mappa all'init della mappa
+                // Lista layer (client) da aggiungere alla mappa
                 const layersToInitialize = [
                     this.initializeChiamateInCorsoLayer(),
                     this.initializeSediOperativeLayer()
                 ];
                 Promise.all(layersToInitialize).then(() => {
-                    // Feature Layers da spegnere all'init della mappa
-                    const layersToShutdown = [
+                    // Feature Layers da nascondere
+                    const layersToHide = [
                         'Sedi Operative'
                     ];
-                    for (const lShutdown of layersToShutdown) {
-                        this.toggleLayer(lShutdown, false).then();
+                    for (const layerToHide of layersToHide) {
+                        this.toggleLayer(layerToHide, false).then();
                     }
 
                     // Se ci sono aggiungo i markers chiamata
@@ -236,7 +256,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const center = [newPCenter.coordinateCentro.longitudine, newPCenter.coordinateCentro.latitudine];
             this.changeCenter(center).then(() => {
                 const zoom = newPCenter.zoom;
-                this.changeZoom(zoom).then();
+                this.changeZoom(zoom).then(() => {
+                });
             });
         }
 
@@ -260,43 +281,100 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.direction?.currentValue) {
             const direction = changes?.direction?.currentValue;
             if (direction?.isVisible) {
-                this.getRoute(direction);
-            } else {
-                this.clearDirection();
+                this.getRoute('nuovaPartenza', direction, { clearPrevious: true, color: [255, 0, 0] });
+            } else if (!direction?.isVisible) {
+                const zoom = 19;
+                const centroMappa = this.store.selectSnapshot(CentroMappaState.centroMappa);
+                this.store.dispatch(new SetCentroMappa({ coordinateCentro: centroMappa.coordinateCentro, zoom }));
+                this.clearDirection('nuovaPartenza');
             }
         }
 
         // Controllo il valore di "idRichiestaSelezionata"
         if (changes?.idRichiestaSelezionata?.currentValue && this.map && this.view?.ready) {
-            const richieste = this.store.selectSnapshot(RichiesteState.richieste);
+            let richiestaSelezionata: SintesiRichiesta;
+            let coordinateCentro: Coordinate;
             const idRichiestaSelezionata = changes?.idRichiestaSelezionata?.currentValue;
-            const richiestaSelezionata = richieste.filter((r: SintesiRichiesta) => r.id === idRichiestaSelezionata)[0];
-            const coordinateCentro = richiestaSelezionata.localita.coordinate;
-            const zoom = 16;
-            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+
+            if (this.richiesteStatus) {
+                const richieste = this.store.selectSnapshot(RichiesteState.richieste);
+                richiestaSelezionata = richieste.filter((r: SintesiRichiesta) => r.id === idRichiestaSelezionata)[0];
+            } else if (this.composizionePartenzaStatus) {
+                richiestaSelezionata = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+            }
+
+            if (richiestaSelezionata) {
+                coordinateCentro = richiestaSelezionata.localita.coordinate;
+                const zoom = 19;
+                this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+                richiestaSelezionata.partenze.forEach((p: Partenza, index: number) => {
+                    if (index === 0) {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    }
+                    if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
+                        const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
+                        const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
+                        const genereMezzo = p.partenza.mezzo.genere;
+                        const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                        this.getRoute('partenzeRichiestaSelezionata', direction);
+                    }
+                });
+            }
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
+            this.clearDirection('partenzeRichiestaSelezionata');
+            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
         }
 
         // Controllo il valore di "richiestaModifica"
         if (changes?.richiestaModifica?.currentValue && this.map && this.view?.ready) {
             const richiestaModifica = changes?.richiestaModifica?.currentValue;
             const coordinateCentro = richiestaModifica.localita.coordinate;
-            const zoom = 16;
+            const zoom = 19;
             this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
         } else if (changes?.richiestaModifica?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
         }
 
-        // Controllo il valore di "richiestaGestione"
-        // if (changes?.richiestaGestione?.currentValue && this.map && this.view?.ready) {
-        //     const richiestaGestione = changes?.richiestaGestione?.currentValue;
-        //     const coordinateCentro = richiestaGestione.localita.coordinate;
-        //     const zoom = 16;
-        //     this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
-        // } else if (changes?.richiestaGestione?.currentValue === null && changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
-        //         this.store.dispatch(new GetInitCentroMappa());
-        // }
+        // Controllo il valore di "richiestaComposizione"
+        if (changes?.richiestaComposizione?.currentValue && this.map && this.view?.ready) {
+            const richiestaComposizione = changes?.richiestaComposizione?.currentValue;
+            const coordinateCentro = richiestaComposizione.localita.coordinate;
+            const zoom = 19;
+            this.store.dispatch([
+                new SetCentroMappa({ coordinateCentro, zoom }),
+                new SetVisualizzaPercosiRichiesta(true)
+            ]);
+        } else if (changes?.richiestaComposizione?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
+        }
+
+        // Controllo il valore di "visualizzaPercorsiRichiesta"
+        if (changes?.visualizzaPercorsiRichiesta?.currentValue && this.map && this.view?.ready) {
+            if (this.richiestaComposizione) {
+                this.richiestaComposizione.partenze.forEach((p: Partenza, index: number) => {
+                    if (index === 0) {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    }
+                    if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
+                        const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
+                        const destination = { lat: this.richiestaComposizione.localita.coordinate.latitudine, lng: this.richiestaComposizione.localita.coordinate.longitudine };
+                        const genereMezzo = p.partenza.mezzo.genere;
+                        const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                        this.getRoute('partenzeRichiestaComposizione', direction);
+                    }
+                });
+            }
+        } else if (changes?.visualizzaPercorsiRichiesta?.currentValue === false && this.map && this.view?.ready) {
+            if (this.direction?.isVisible) {
+                const totalKilometers = this.travelDataNuovaPartenza?.totalKilometers;
+                this.store.dispatch(new SetZoomCentroMappaByKilometers(totalKilometers));
+            } else if (!this.direction?.isVisible) {
+                const zoom = 19;
+                this.store.dispatch(new SetZoomCentroMappa(zoom));
+            }
+            this.clearDirection('partenzeRichiestaComposizione');
+        }
 
         // Controllo il valore di "filtriRichiesteSelezionati"
         if (changes?.filtriRichiesteSelezionati?.currentValue) {
@@ -306,15 +384,25 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     const codFiltro = filtro.codice.toLocaleLowerCase().replace(/\s+/g, '');
                     switch (codFiltro) {
                         case 'interventichiusi':
-                            this.toggleLayer('Interventi - Chiusi', true).then();
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, true).then();
                             break;
                         default:
-                            this.toggleLayer('Interventi - Chiusi', false).then();
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, false).then();
                             break;
                     }
                 });
             } else {
-                this.toggleLayer('Interventi - Chiusi', false).then();
+                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, false).then();
+            }
+        }
+
+        // Controllo se la feature "Chiamate/Interventi" viene attivata
+        if (changes?.richiesteStatus?.currentValue) {
+            const richiesteActive = changes?.richiesteStatus?.currentValue;
+            switch (richiesteActive) {
+                case true:
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+                    break;
             }
         }
 
@@ -323,14 +411,26 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const schedeContattoActive = changes?.schedeContattoStatus?.currentValue;
             switch (schedeContattoActive) {
                 case true:
-                    this.toggleLayer('SchedeContatto - Non Gestita', true).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, true).then();
                     break;
                 case false:
-                    this.toggleLayer('SchedeContatto - Non Gestita', false).then(() => {
-                        this.toggleLayer('SchedeContatto - Gestita', false).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, false).then(() => {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.gestite, false).then();
                     });
                     break;
             }
+        }
+
+        // Controllo il valore di "idSchedaContattoSelezionata"
+        if (changes?.idSchedaContattoSelezionata?.currentValue && this.map && this.view?.ready) {
+            const schedeContatto = this.store.selectSnapshot(SchedeContattoState.schedeContatto);
+            const idSchedaContattoSelezionata = changes?.idSchedaContattoSelezionata?.currentValue;
+            const schedaContattoSelezionata = schedeContatto.filter((s: SchedaContatto) => s.codiceScheda === idSchedaContattoSelezionata)[0];
+            const coordinateCentro = new Coordinate(schedaContattoSelezionata.localita.coordinate.latitudine, schedaContattoSelezionata.localita.coordinate.longitudine);
+            const zoom = 19;
+            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        } else if (changes?.idSchedaContattoSelezionata?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
         }
 
         // Controllo se la feature "Composizione Partenza" viene attivata
@@ -338,10 +438,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const composizionePartenzaActive = changes?.composizionePartenzaStatus?.currentValue;
             switch (composizionePartenzaActive) {
                 case true:
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
                     break;
                 case false:
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false);
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
                     break;
             }
         }
@@ -351,16 +451,47 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const mezziInServizioActive = changes?.mezziInServizioStatus?.currentValue;
             switch (mezziInServizioActive) {
                 case true:
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', true).then();
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
                     break;
                 case false:
-                    this.toggleLayer('LOCALIZZAZIONE_MEZZI_VVF_0', false).then();
+                    const backupView = this.store.selectSnapshot(ViewComponentState.colorButton)?.backupViewComponent?.view;
+                    if (backupView && backupView.mezziInServizio && backupView.mezziInServizio.active) {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    } else {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+                    }
                     break;
             }
+        }
+
+        // Controllo il valore di "idMezzoInServizioSelezionato"
+        if (changes?.idMezzoInServizioSelezionato?.currentValue && this.map && this.view?.ready) {
+            let lat: number;
+            let lon: number;
+            const idMezzoInServizioSelezionato = changes?.idMezzoInServizioSelezionato?.currentValue;
+
+            if (this.mezziInServizioStatus) {
+                const mezziInServizio = this.store.selectSnapshot(MezziInServizioState.mezziInServizio);
+                const mezzoInServizioSelezionato = mezziInServizio.filter((m: MezzoInServizio) => m.mezzo.mezzo.codice === idMezzoInServizioSelezionato)[0];
+                lat = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[0];
+                lon = +mezzoInServizioSelezionato.mezzo.mezzo.coordinateStrg[1];
+            } else if (this.richiesteStatus) {
+                const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
+                const partenza = richiestaGestione.partenze.filter((p: Partenza) => p.partenza.mezzo.codice === idMezzoInServizioSelezionato)[0];
+                lat = +partenza.partenza.mezzo.coordinateStrg[0];
+                lon = +partenza.partenza.mezzo.coordinateStrg[1];
+            }
+            const coordinateCentro = new Coordinate(lat, lon);
+            const zoom = 19;
+            this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
+        } else if (changes?.idMezzoInServizioSelezionato?.currentValue === null && this.map && this.view?.ready) {
+            this.store.dispatch(new GetInitCentroMappa());
         }
     }
 
     ngOnDestroy(): void {
+        this.store.dispatch(new SetVisualizzaPercosiRichiesta(false));
+        this.clearDirection();
         this.view?.destroy();
         this.map?.destroy();
     }
@@ -395,8 +526,15 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
         EsriConfig.apiKey = 'AAPK36ded91859154c2cad9002a686434a34Jt_FmrqMObHesjY_bYHlJu-HZZrTDGJzsQMKnxd8f4TmYY_Vi-f8-4y-7G6WbcVf';
 
+        let portalItemId = '55fdd15730524dedbff72e285cba3795';
+        if (environment.productionTest) {
+            portalItemId = 'f0debe8268ac461588abca904a434ec2';
+        } else if (environment.production) {
+            portalItemId = '2b1e7d22c775479985b6129f842e9d7c';
+        }
+
         const portalItem = new PortalItem({
-            id: '55fdd15730524dedbff72e285cba3795'
+            id: portalItemId
         });
 
         this.map = new WebMap({
@@ -820,8 +958,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         locatorTask.locationToAddress(params).then((response) => {
             console.log('locationToAddress response', response);
 
-            this.changeCenter([lon, lat]).then();
-            this.changeZoom(19).then();
+            this.changeCenter([lon, lat]).then(() => {
+                const zoom = 19;
+                this.changeZoom(zoom).then(() => {
+                });
+            });
 
             // Apro il modale con FormChiamata con lat, lon e address
             const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
@@ -854,19 +995,25 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             this.setContextMenuVisible(false);
         }
 
-        this.changeCenter([lon, lat]).then();
-        this.changeZoom(19).then();
+        this.changeCenter([lon, lat]).then(() => {
+            const zoom = 19;
+            this.changeZoom(zoom).then(() => {
+            });
+        });
 
         const modalNuovaEmergenza = this.modalService.open(ZonaEmergenzaModalComponent, {
             windowClass: 'modal-holder',
             size: 'md'
         });
 
-        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const allTipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.allTipologieZonaEmergenza);
+        const tipologieEmergenza = this.store.selectSnapshot(ZoneEmergenzaState.tipologieZonaEmergenza);
 
+        modalNuovaEmergenza.componentInstance.apertoFromMappa = true;
         modalNuovaEmergenza.componentInstance.mapPoint = mapPoint;
         modalNuovaEmergenza.componentInstance.lat = lat;
         modalNuovaEmergenza.componentInstance.lon = lon;
+        modalNuovaEmergenza.componentInstance.allTipologieEmergenza = allTipologieEmergenza;
         modalNuovaEmergenza.componentInstance.tipologieEmergenza = tipologieEmergenza;
 
         modalNuovaEmergenza.result.then((result: string) => {
@@ -945,7 +1092,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    getRoute(direction: DirectionInterface): void {
+    getRoute(idDirectionSymbols: string, direction: DirectionInterface, options?: { clearPrevious?: boolean, color?: number[] }): void {
+        if (options?.clearPrevious) {
+            this.clearDirection('nuovaPartenza');
+        }
+
         const pointPartenza = new Point({
             longitude: direction.origin.lng,
             latitude: direction.origin.lat,
@@ -985,18 +1136,27 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             // @ts-ignore
             data.routeResults.forEach((result: any) => {
                 result.route.symbol = {
+                    id: idDirectionSymbols,
                     type: 'simple-line',
-                    color: [5, 150, 255],
+                    color: options?.color ? options.color : [5, 150, 255],
                     width: 3
                 };
+                const totalKilometers = result.route?.attributes?.Total_Kilometers;
+                const totalTravelTime = result.route?.attributes?.Total_TravelTime;
+                this.store.dispatch(new SetDirectionTravelData(idDirectionSymbols, { totalKilometers, totalTravelTime }));
                 this.view.graphics.add(result.route);
             });
         });
     }
 
-    clearDirection(): void {
+    clearDirection(idSymbol?: string): void {
         if (this.view?.graphics?.length) {
-            this.view.graphics.removeAll();
+            if (!idSymbol) {
+                this.view.graphics.items = [];
+            } else {
+                // @ts-ignore
+                this.view.graphics.items = this.view.graphics.items.filter((item: Graphic) => item.symbol.id !== idSymbol);
+            }
         }
     }
 

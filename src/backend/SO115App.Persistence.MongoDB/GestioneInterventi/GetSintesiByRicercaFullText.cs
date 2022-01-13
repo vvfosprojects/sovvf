@@ -24,7 +24,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
 
-        public GetSintesiByRicercaFullText(DbContext dbContext, 
+        public GetSintesiByRicercaFullText(DbContext dbContext,
                                            IGetSottoSediByCodSede getSottoSediByCodSede,
                                            IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC,
                                            IMapperRichiestaSuSintesi mapperSintesi)
@@ -43,24 +43,35 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                 .In(richiesta => richiesta.CodSOCompetente, listaCodiciSediInteressate);
 
             var filtroFullText = Builders<RichiestaAssistenza>.Filter.Text(TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("codice", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("codRichiesta", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("codSOCompetente", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("descrizione", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("indirizzo", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("nominativo", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("telefono", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("notePubbliche", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("notePrivate", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("noteNue", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("tags", TextToSearch);
 
             var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
 
             List<CreateIndexModel<RichiestaAssistenza>> indexes = new List<CreateIndexModel<RichiestaAssistenza>>();
             indexes.Add(indexWildcardTextSearch);
 
-            _dbContext.RichiestaAssistenzaCollection.Indexes.CreateMany(indexes); 
+            _dbContext.RichiestaAssistenzaCollection.Indexes.CreateMany(indexes);
             var listaRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText).ToList();
 
-            var listaSistesiRichieste = listaRichieste.Where(richiesta => listaCodiciSediInteressate.Any(s=> richiesta.CodUOCompetenza.Any(c => c.Contains(s)))).Select(richiesta =>
-            {
-                var rubrica = new List<EnteDTO>();
-                var sintesi = new SintesiRichiesta();
-                sintesi = _mapperSintesi.Map(richiesta);
-                sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
-                return sintesi;
-            });
+            var listaSistesiRichieste = listaRichieste.Where(richiesta => listaCodiciSediInteressate.Any(s => richiesta.CodUOCompetenza.Any(c => c.Contains(s)))).Select(richiesta =>
+             {
+                 var rubrica = new List<EnteDTO>();
+                 var sintesi = new SintesiRichiesta();
+                 sintesi = _mapperSintesi.Map(richiesta);
+                 sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
+                 sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
+                 return sintesi;
+             });
 
             return listaSistesiRichieste
                     .Distinct()
@@ -72,7 +83,6 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenByDescending(x => x.IstanteRicezioneRichiesta)
                     .ToList();
-
         }
 
         private List<Sede> MapCompetenze(string[] codUOCompetenza)
@@ -95,6 +105,5 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
 
             return listaSedi;
         }
-
     }
 }

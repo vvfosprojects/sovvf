@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold">
+        {{ 'Importazione Triage' | uppercase }}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="onDismiss()">
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body height pt-4 px-5">
+    <form [formGroup]="importTriageForm" ngxsForm="importTriageModal.importTriageForm">
+        <div class="form-group">
+            <label for="dettaglioTipologia">Dettaglio Tipologia</label>
+            <ng-select class="align-self-center"
+                       id="dettaglioTipologia"
+                       [items]="dettagliTipologie"
+                       bindLabel="descrizione"
+                       [clearSearchOnAdd]="true"
+                       [hideSelected]="true"
+                       [searchable]="!f.codiceDettaglioTipologia?.value"
+                       formControlName="dettaglioTipologia"
+                       (change)="onChangeDettaglioTipologia($event)"
+                       placeholder="Seleziona il Dettaglio Tipologia da cui importare">
+            </ng-select>
+        </div>
+    </form>
+    <ng-container *ngIf="errore">
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ errore | uppercase }}
+        </div>
+    </ng-container>
+</div>
+<div class="modal-footer" style="place-content: space-between;">
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover"
+            [disabled]="!formValid"
+            (click)="onConferma()">
+        {{ 'Conferma' | uppercase }}
+    </button>
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover"
+            (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
+</div>

@@ -65,9 +65,9 @@ export class TriageSummarySintesiRichiestaComponent implements OnInit, OnChanges
                         document.body.removeChild(a);
                         break;
                 }
-            }, error => console.log('Errore Stampa POS')); 
+            }, () => console.log('Errore Stampa POS'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 
@@ -90,9 +90,9 @@ export class TriageSummarySintesiRichiestaComponent implements OnInit, OnChanges
                         document.body.removeChild(a);
                         break;
                 }
-            }, error => console.log('Errore visualizzazione POS'));
+            }, () => console.log('Errore visualizzazione POS'));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 }

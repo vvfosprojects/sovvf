@@ -15,17 +15,17 @@ import { ModificaEntiModalComponent } from '../modifica-enti-modal/modifica-enti
 import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
-import { PatchEntiIntervenutiRichiesta, PatchRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
+import { PatchEntiIntervenutiRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor, defineChiamataIntervento } from '../../helper/function-richieste';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { EnteInterface } from '../../interface/ente.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { EntiState } from '../../store/states/enti/enti.state';
 import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
-import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { StampaRichiestaService } from '../../../core/service/stampa-richieste/stampa-richiesta.service';
 import { HttpEventType } from '@angular/common/http';
 import { ListaMezziSganciamentoModalComponent } from '../lista-mezzi-sganciamento-modal/lista-mezzi-sganciamento-modal.component';
+import { VisualizzaDocumentoModalComponent } from '../visualizza-documento-modal/visualizza-documento-modal.component';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -73,10 +73,9 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     onSganciamentoMezzo(richiesta: SintesiRichiesta): void {
         let sganciamentoMezziModal;
         sganciamentoMezziModal = this.modalService.open(ListaMezziSganciamentoModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'xxlModal modal-holder',
             backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
+            centered: true
         });
         sganciamentoMezziModal.componentInstance.richiesta = richiesta;
         sganciamentoMezziModal.result.then(
@@ -215,52 +214,29 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    onStampaPDF(): void {
-        let modalConfermaReset;
-        modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
-        modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
-        modalConfermaReset.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'STAMPA CHIAMATA' : 'STAMPA INTERVENTO';
-        modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler eseguire la stampa?';
-        modalConfermaReset.componentInstance.messaggioAttenzione = 'Verrà effettuato il download automatico.';
-        modalConfermaReset.componentInstance.stampa = true;
-
-        modalConfermaReset.result.then(
-            (val) => {
-                switch (val.slice(0, 2)) {
-                    case 'ok':
-                        const obj = {
-                            idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
-                            contentType: val.slice(2, 5) === 'csv' ? 'text/' + val.slice(2, 5) : 'application/' + val.slice(2, 5),
-                        };
-                        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
-                            switch (data.type) {
-                                case HttpEventType.DownloadProgress :
-                                    break;
-                                case HttpEventType.Response :
-                                    const downloadedFile = new Blob([data.body], { type: data.body.type });
-                                    const a = document.createElement('a');
-                                    a.setAttribute('style', 'display:none;');
-                                    document.body.appendChild(a);
-                                    a.download = val.slice(2, 5) === 'csv' ? 'Stampa:' + obj.idRichiesta + '.csv' : 'Stampa:' + obj.idRichiesta;
-                                    a.href = URL.createObjectURL(downloadedFile);
-                                    a.target = '_blank';
-                                    a.click();
-                                    document.body.removeChild(a);
-                                    break;
-                            }
-                        }, error => console.log('Errore Stampa ' + val.slice(2, 5).toUpperCase()));
-                        break;
-                    case 'ko':
-                        break;
-                }
-                console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
+    onVisualizzaPDF(): void {
+        const obj = {
+            idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
+            contentType: 'application/pdf'
+        };
+        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    break;
+                case HttpEventType.Response:
+                    const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
+                        windowClass: 'xxlModal modal-holder',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true
+                    });
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    console.log('test', 'Stampa ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta));
+                    const codRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+                    modalVisualizzaPdf.componentInstance.titolo = 'Stampa ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codRichiesta;
+                    modalVisualizzaPdf.componentInstance.blob = downloadedFile;
+                    break;
+            }
+        }, () => console.log('Errore Stampa PDF'));
     }
 
     onModificaEntiIntervenuti(): void {

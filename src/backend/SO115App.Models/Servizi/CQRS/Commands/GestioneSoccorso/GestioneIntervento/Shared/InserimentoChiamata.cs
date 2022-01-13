@@ -206,5 +206,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
 
         public string NoteNue { get; set; }
 
+        public string[] CodCompetenze { get; set; }
     }
 }

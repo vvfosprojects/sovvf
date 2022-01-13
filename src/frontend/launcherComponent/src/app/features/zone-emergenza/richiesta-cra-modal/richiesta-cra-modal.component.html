@@ -1,0 +1,82 @@
+<div class="modal-header">
+    <div class="modal-title">
+        {{ 'Richiesta Creazione CRA, DOA' | uppercase }}
+    </div>
+    <button type="button"
+            class="btn btn-light close"
+            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="modal.dismiss('cross')">
+        <span class="text-danger"><i class="fas fa-times"></i></span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="richiestaCraZonaEmergenzaForm" ngxsForm="zoneEmergenza.richiestaCraZonaEmergenzaForm">
+        <div class="form-group">
+            <label for="numeroDOA">
+                Numero DOA
+            </label>
+            <input id="numeroDOA"
+                   class="form-control"
+                   type="number"
+                   placeholder="Numero DOA"
+                   formControlName="numeroDOA">
+        </div>
+        <div class="form-group">
+            <label for="comandanteRegionale">Comandante Regionale</label>
+            <input id="comandanteRegionale"
+                   class="form-control"
+                   type="text"
+                   placeholder="Comandante Regionale"
+                   formControlName="comandanteRegionale">
+        </div>
+        <div class="form-group">
+            <label for="responsabileDistrettoAreaColpita">
+                Responsabile Distretto Area Colpita
+            </label>
+            <input id="responsabileDistrettoAreaColpita"
+                   class="form-control"
+                   type="text"
+                   placeholder="Responsabile Distretto Area Colpita"
+                   formControlName="responsabileDistrettoAreaColpita">
+        </div>
+        <div class="form-group">
+            <label for="responsabile">Responsabile</label>
+            <input id="responsabile"
+                   class="form-control"
+                   type="text"
+                   placeholder="Responsabile"
+                   formControlName="responsabile">
+        </div>
+        <div class="form-group">
+            <label for="responsabileCampiBaseMezziOperativi">
+                Responsabile Campi Base e Mezzi Operativi
+            </label>
+            <input id="responsabileCampiBaseMezziOperativi"
+                   class="form-control"
+                   type="text"
+                   placeholder="Responsabile Campi Base e Mezzi Operativi"
+                   formControlName="responsabileCampiBaseMezziOperativi">
+        </div>
+        <div class="form-group">
+            <label for="responsabileGestionePersonaleContratti">
+                Responsabile Gestione Personale e Contratti
+            </label>
+            <input id="responsabileGestionePersonaleContratti"
+                   class="form-control"
+                   type="text"
+                   placeholder="Responsabile Gestione Personale e Contratti"
+                   formControlName="responsabileGestionePersonaleContratti">
+        </div>
+    </form>
+</div>
+<div class="modal-footer" style="place-content: space-between;">
+    <button class="btn btn-lg btn-danger text-right btn-no-hover font-weight-bold"
+            (click)="close('ok')"
+            [disabled]="!richiestaCraZonaEmergenzaForm?.valid">
+        {{ 'Conferma Richiesta' | uppercase }}
+    </button>
+    <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"
+            (click)="close('ko')">
+        {{ 'Esci' | uppercase }}
+    </button>
+</div>

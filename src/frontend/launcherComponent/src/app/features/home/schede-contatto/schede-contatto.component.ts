@@ -4,11 +4,13 @@ import {
     ClearFiltriSchedeContatto,
     ClearListaSchedeContatto,
     ClearSchedaContattoHover,
+    ClearSchedaContattoSelezionata,
     GetListaSchedeContatto,
-    OpenDetailSC,
+    OpenDettaglioSchedaContatto,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
     SetSchedaContattoHover,
+    SetSchedaContattoSelezionata,
     SetSchedaContattoTelefonata,
     SetTabAttivo,
     ToggleCollapsed,
@@ -32,6 +34,7 @@ import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterb
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { ConfermaMergeModalComponent } from './conferma-merge-modal/conferma-merge-modal.component';
+import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -53,11 +56,15 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
 
+    @Select(SchedeContattoState.filtriSelezionati) filtriSelezionatiSchedeContatto$: Observable<VoceFiltro[]>;
+
     @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
     @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;
 
     @Select(SchedeContattoState.codiceSchedaContattoHover) codiceSchedaContattoHover$: Observable<string>;
     codiceSchedaContattoHover: string;
+    @Select(SchedeContattoState.codiceSchedaContattoSelezionata) codiceSchedaContattoSelezionata$: Observable<string>;
+    codiceSchedaContattoSelezionata: string;
     @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
     contatoriSchedeContatto: ContatoriSchedeContatto;
     @Select(SchedeContattoState.rangeVisualizzazione) rangeVisualizzazione$: Observable<RangeSchedeContattoEnum>;
@@ -82,6 +89,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.getRicerca();
         this.getSchedeContatto();
         this.getSchedeContattoHover();
+        this.getSchedeContattoSelezionata();
         this.getRangeVisualizzazioneContatoriSchedeContatto();
         this.getContatoriSchedeContatto();
         this.subscriptions.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
@@ -98,6 +106,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ClearFiltriSchedeContatto(),
             new ClearListaSchedeContatto(),
+            new ClearSchedaContattoHover(),
+            new ClearSchedaContattoSelezionata(),
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
@@ -132,6 +142,14 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         );
     }
 
+    getSchedeContattoSelezionata(): void {
+        this.subscriptions.add(
+            this.codiceSchedaContattoSelezionata$.subscribe((codiceSchedaContattoSelezionata: string) => {
+                this.codiceSchedaContattoSelezionata = codiceSchedaContattoSelezionata;
+            })
+        );
+    }
+
     getContatoriSchedeContatto(): void {
         this.subscriptions.add(
             this.contatoriSchedeContatto$.subscribe((contatoriSchede: ContatoriSchedeContatto) => {
@@ -162,7 +180,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     onDettaglioScheda(idSchedaContatto: string): void {
-        this.store.dispatch(new OpenDetailSC(idSchedaContatto));
+        this.store.dispatch(new OpenDettaglioSchedaContatto(idSchedaContatto));
     }
 
     onHoverIn(idSchedaContatto: string): void {
@@ -171,6 +189,14 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     onHoverOut(): void {
         this.store.dispatch(new ClearSchedaContattoHover());
+    }
+
+    onSelezione(codiceScheda: string): void {
+        this.store.dispatch(new SetSchedaContattoSelezionata(codiceScheda));
+    }
+
+    onDeselezione(): void {
+        this.store.dispatch(new ClearSchedaContattoSelezionata());
     }
 
     onTornaIndietro(): void {

@@ -14,6 +14,7 @@ export class StepDomandeComponent implements OnChanges {
     domandaVisualizzata: TreeviewItem;
 
     @Output() risposta: EventEmitter<RispostaTriage> = new EventEmitter<RispostaTriage>();
+    @Output() domandeTerminate: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     constructor() {
     }
@@ -53,8 +54,10 @@ export class StepDomandeComponent implements OnChanges {
     nextDomanda(risposta: TreeviewItem): void {
         if (risposta?.children?.length) {
             this.domandaVisualizzata = risposta.children[0];
+            this.domandeTerminate.emit(false);
         } else {
             this.domandaVisualizzata = null;
+            this.domandeTerminate.emit(true);
         }
     }
 }

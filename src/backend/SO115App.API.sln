@@ -18,12 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{C6D125
 		shared\SO115.licenseheader = shared\SO115.licenseheader
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Models.Test", "SO115App.Models.Test\SO115App.Models.Test.csproj", "{3B43664C-E2A8-4626-9F2A-4F37684D0CA7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.GeneratoreFakeRichieste.Test", "SO115App.GeneratoreFakeRichieste.Test\SO115App.GeneratoreFakeRichieste.Test.csproj", "{91327105-7826-4948-A289-40741D5F1324}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.GeneratoreFakeRichieste.ConsoleRunner", "SO115App.GeneratoreFakeRichieste.ConsoleRunner\SO115App.GeneratoreFakeRichieste.ConsoleRunner.csproj", "{532CDBDD-C932-44AF-A892-C76930968EAE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.SignalR", "SO115App.SignalR\SO115App.SignalR.csproj", "{378DBC3E-B058-4EC4-8B25-7C073BA9989C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.ExternalAPI.Fake", "SO115App.FakePersistance.ExternalAPI\SO115App.ExternalAPI.Fake.csproj", "{89A072D6-8D05-443C-A891-04EBCB6D8542}"
@@ -31,8 +25,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementations", "Implementations", "{83C8C0F1-2DD5-4131-8D26-76AD74F9113A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Persistence.MongoDB", "SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj", "{C8530E72-948D-4D90-9A08-8BB307E7FC89}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Persistence.MongoDB.Test", "SO115App.Persistence.MongoDB.Test\SO115App.Persistence.MongoDB.Test.csproj", "{2F4AD395-F933-4E68-8EE9-53B961B03EAB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C1A254C5-4745-4A76-8175-33F0B8822362}"
 	ProjectSection(SolutionItems) = preProject
@@ -42,8 +34,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.ExternalAPI.Client", "SO115App.ExternalApi.Client\SO115App.ExternalAPI.Client.csproj", "{2B44637C-3484-403E-B9A6-B65479F209C7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Persistence.File", "SO115App.Persistence.File\SO115App.Persistence.File.csproj", "{9063ED5D-44A0-4D98-A004-00CAB8E972F9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.API.SOVVF.FakeImplementations", "SO115App.API.SOVVF.FakeImplementations\SO115App.API.SOVVF.FakeImplementations.csproj", "{50C5EF26-2829-4683-ACF0-9E038B03A14E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,15 +61,6 @@ Global
 		{894B71B1-BCB5-4FE5-8835-D752C44E92A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{894B71B1-BCB5-4FE5-8835-D752C44E92A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{894B71B1-BCB5-4FE5-8835-D752C44E92A2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B43664C-E2A8-4626-9F2A-4F37684D0CA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B43664C-E2A8-4626-9F2A-4F37684D0CA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B43664C-E2A8-4626-9F2A-4F37684D0CA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91327105-7826-4948-A289-40741D5F1324}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91327105-7826-4948-A289-40741D5F1324}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91327105-7826-4948-A289-40741D5F1324}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{532CDBDD-C932-44AF-A892-C76930968EAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{532CDBDD-C932-44AF-A892-C76930968EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{532CDBDD-C932-44AF-A892-C76930968EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{378DBC3E-B058-4EC4-8B25-7C073BA9989C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{378DBC3E-B058-4EC4-8B25-7C073BA9989C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{378DBC3E-B058-4EC4-8B25-7C073BA9989C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -92,9 +73,6 @@ Global
 		{C8530E72-948D-4D90-9A08-8BB307E7FC89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8530E72-948D-4D90-9A08-8BB307E7FC89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8530E72-948D-4D90-9A08-8BB307E7FC89}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F4AD395-F933-4E68-8EE9-53B961B03EAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F4AD395-F933-4E68-8EE9-53B961B03EAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F4AD395-F933-4E68-8EE9-53B961B03EAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B44637C-3484-403E-B9A6-B65479F209C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B44637C-3484-403E-B9A6-B65479F209C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B44637C-3484-403E-B9A6-B65479F209C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -103,10 +81,6 @@ Global
 		{9063ED5D-44A0-4D98-A004-00CAB8E972F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9063ED5D-44A0-4D98-A004-00CAB8E972F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9063ED5D-44A0-4D98-A004-00CAB8E972F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50C5EF26-2829-4683-ACF0-9E038B03A14E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50C5EF26-2829-4683-ACF0-9E038B03A14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50C5EF26-2829-4683-ACF0-9E038B03A14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50C5EF26-2829-4683-ACF0-9E038B03A14E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,9 +88,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{89A072D6-8D05-443C-A891-04EBCB6D8542} = {83C8C0F1-2DD5-4131-8D26-76AD74F9113A}
 		{C8530E72-948D-4D90-9A08-8BB307E7FC89} = {83C8C0F1-2DD5-4131-8D26-76AD74F9113A}
-		{2F4AD395-F933-4E68-8EE9-53B961B03EAB} = {83C8C0F1-2DD5-4131-8D26-76AD74F9113A}
 		{9063ED5D-44A0-4D98-A004-00CAB8E972F9} = {83C8C0F1-2DD5-4131-8D26-76AD74F9113A}
-		{50C5EF26-2829-4683-ACF0-9E038B03A14E} = {83C8C0F1-2DD5-4131-8D26-76AD74F9113A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F66AAE40-C020-4A6A-A20A-D82EDD3083EA}

@@ -82,7 +82,12 @@ import { FiltroComponent } from './components/filtro/filtro.component';
 import { AzioniAreaDocumentaleModalComponent } from './modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
 import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { ListaMezziSganciamentoModalComponent } from './modal/lista-mezzi-sganciamento-modal/lista-mezzi-sganciamento-modal.component';
-
+import { MezzoInServizioComponent } from './components/mezzo-in-servizio/mezzo-in-servizio.component';
+import { RisultatiAlertComponent } from './components/risultati-alert/risultati-alert.component';
+import { GestisciSchedaContattoModalComponent } from './modal/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.component';
+import { PosDettaglioModalComponent } from './modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
+import { VisualizzaDocumentoModalComponent } from './modal/visualizza-documento-modal/visualizza-documento-modal.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -157,7 +162,12 @@ const COMPONENTS = [
     FormRichiestaComponent,
     RicercaIndirizzoComponent,
     AzioniAreaDocumentaleModalComponent,
-    ListaMezziSganciamentoModalComponent
+    ListaMezziSganciamentoModalComponent,
+    MezzoInServizioComponent,
+    RisultatiAlertComponent,
+    GestisciSchedaContattoModalComponent,
+    PosDettaglioModalComponent,
+    VisualizzaDocumentoModalComponent
 ];
 const MODULES = [
     PipeModule
@@ -179,7 +189,8 @@ const MODULES = [
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }
         }),
-        TagInputModule
+        TagInputModule,
+        NgxExtendedPdfViewerModule
     ],
     declarations: [
         ...COMPONENTS,

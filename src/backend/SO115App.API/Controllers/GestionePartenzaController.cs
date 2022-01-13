@@ -5,7 +5,7 @@ using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.SostituzionePartenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SostituzionePartenza;
 using System;
@@ -19,13 +19,13 @@ namespace SO115App.API.Controllers
     public class GestionePartenzaController : ControllerBase
     {
         private readonly ICommandHandler<AggiornaStatoMezzoCommand> _addhandler;
-        private readonly ICommandHandler<AnnullaPartenzaCommand> _annullaPartenzahandler;
+        private readonly ICommandHandler<AnnullaStatoPartenzaCommand> _annullaPartenzahandler;
         private readonly ICommandHandler<ModificaPartenzaCommand> _modificaPartenzahandler;
         private readonly ICommandHandler<SostituzionePartenzaCommand> _sostituzionePartenzahandler;
 
         public GestionePartenzaController(
             ICommandHandler<AggiornaStatoMezzoCommand> Addhandler,
-            ICommandHandler<AnnullaPartenzaCommand> AnnullaPartenzahandler,
+            ICommandHandler<AnnullaStatoPartenzaCommand> AnnullaPartenzahandler,
             ICommandHandler<ModificaPartenzaCommand> ModificaPartenzahandler,
             ICommandHandler<SostituzionePartenzaCommand> SostituzionePartenzahandler)
         {
@@ -57,8 +57,8 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpPost("AnnullaPartenza")]
-        public async Task<IActionResult> AnnullaPartenzaCommand([FromBody] AnnullaPartenzaCommand command)
+        [HttpPost("AnnullaStatoPartenza")]
+        public async Task<IActionResult> AnnullaStatoPartenza([FromBody] AnnullaStatoPartenzaCommand command)
         {
             command.IdOperatore = Request.Headers["IdUtente"];
             command.CodiciSedi = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);

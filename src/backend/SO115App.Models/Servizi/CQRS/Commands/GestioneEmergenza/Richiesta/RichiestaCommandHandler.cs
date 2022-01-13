@@ -29,8 +29,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Richiesta
         private readonly IUpDateEmergenza _upDateEmergenza;
         private readonly IGetEmergenzaById _getEmergenzaById;
 
-        public RichiestaCommandHandler(IUpDateEmergenza upDateEmergenza,
-                                              IGetEmergenzaById getEmergenzaById)
+        public RichiestaCommandHandler(IUpDateEmergenza upDateEmergenza, IGetEmergenzaById getEmergenzaById)
         {
             _upDateEmergenza = upDateEmergenza;
             _getEmergenzaById = getEmergenzaById;
@@ -39,7 +38,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.Richiesta
         public void Handle(RichiestaCommand command)
         {
             var InfoEmergenza = _getEmergenzaById.Get(command.Id);
-            InfoEmergenza.AddEvento(new RichiestaEmergenza(DateTime.UtcNow, InfoEmergenza.CodEmergenza, command.CodOperatore, InfoEmergenza.Tipologia.emergenza[0], command.TipologieModuli));
+            InfoEmergenza.AddEvento(new RichiestaEmergenza(DateTime.UtcNow, command.CodOperatore, InfoEmergenza.CodEmergenza, InfoEmergenza.Tipologia.emergenza[0], command.TipologieModuli));
 
             command.InfoEmergenza = InfoEmergenza;
             _upDateEmergenza.Update(InfoEmergenza);

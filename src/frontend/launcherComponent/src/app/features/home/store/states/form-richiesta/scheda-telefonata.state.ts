@@ -15,6 +15,7 @@ import {
     ReducerSchedaTelefonata,
     ResetChiamata,
     SetCompetenze,
+    SetCompetenzeSuccess,
     SetCountInterventiProssimita,
     SetInterventiProssimita,
     SetRedirectComposizionePartenza,
@@ -197,7 +198,6 @@ export class SchedaTelefonataState {
 
     @Action(ReducerSchedaTelefonata)
     reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
-
         const state = getState();
         const coordinate = action.schedaTelefonata?.markerChiamata?.localita?.coordinate ? action.schedaTelefonata.markerChiamata.localita.coordinate : {
             latitudine: state.richiestaForm?.model?.latitudine,
@@ -273,15 +273,8 @@ export class SchedaTelefonataState {
                 const codCompetenze = competenze.map((c: Sede) => {
                     return c.codice;
                 });
-                dispatch([
-                    new SetCountInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
-                    new SetInterventiProssimita(action.indirizzo, action.coordinate, codCompetenze),
-                    new StopLoadingCompetenze()
-                ]);
 
-                if (action.markerChiamata) {
-                    dispatch(new MarkerChiamata(action.markerChiamata, codCompetenze));
-                }
+                dispatch(new SetCompetenzeSuccess(action.coordinate, action.indirizzo, codCompetenze, action.markerChiamata));
 
                 patchState({
                     competenze
@@ -291,8 +284,29 @@ export class SchedaTelefonataState {
                     new ClearCompetenze(),
                     new StopLoadingCompetenze()
                 ]);
+                patchState({
+                    competenze: []
+                });
             }
+        }, () => {
+            dispatch(new StopLoadingCompetenze());
+            patchState({
+                competenze: []
+            });
         });
+    }
+
+    @Action(SetCompetenzeSuccess)
+    setCompetenzeSuccess({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenzeSuccess): void {
+        dispatch([
+            new SetCountInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze),
+            new SetInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze),
+            new StopLoadingCompetenze()
+        ]);
+
+        if (action.markerChiamata) {
+            dispatch(new MarkerChiamata(action.markerChiamata, action.codCompetenze));
+        }
     }
 
     @Action(ClearCompetenze)
@@ -358,12 +372,16 @@ export class SchedaTelefonataState {
         let tipologia: Tipologia;
 
         if (f) {
-
             if (f.codTipologia) {
                 tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
             }
 
             const competenze = state.competenze;
+            let codCompetenze: string[];
+            if (competenze?.length <= 0) {
+                codCompetenze = [f.codPrimaCompetenza, f.codSecondaCompetenza, f.codTerzaCompetenza];
+            }
+
             const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
             const tipiTerreno = [] as TipoTerreno[];
 
@@ -412,6 +430,7 @@ export class SchedaTelefonataState {
                     },
                 },
                 competenze,
+                codCompetenze,
                 f.complessita,
                 f.istantePresaInCarico,
                 f.istantePrimaAssegnazione,
@@ -449,7 +468,7 @@ export class SchedaTelefonataState {
         this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
             if (chiamataResult && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([
-                    new CestinaChiamata(),
+                    new CestinaChiamata({ bypassInitCentroMappa: true }),
                     new SetIdChiamataInviaPartenza(chiamataResult),
                     new ShowToastr(
                         ToastrType.Success,
@@ -462,6 +481,7 @@ export class SchedaTelefonataState {
                 ]);
             } else if (chiamataResult && chiamata.chiamataUrgente) {
                 this.store.dispatch([
+                    new CestinaChiamata(),
                     new ToggleChiamata(),
                     new SetRichiestaModifica(chiamataResult),
                     new SetTriageSummary(chiamataResult.triageSummary),
@@ -524,45 +544,55 @@ export class SchedaTelefonataState {
     }
 
     @Action(AnnullaChiamata)
-    annullaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
-        this.ngZone.run(() => {
-            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-            modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
-            modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
-            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
+    annullaChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+        const state = getState();
+        const formIsDirty = state.richiestaForm.dirty;
+        if (formIsDirty) {
+            this.ngZone.run(() => {
+                const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+                    windowClass: 'modal-holder',
+                    backdropClass: 'light-blue-backdrop',
+                    centered: true
+                });
+                modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+                modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
+                modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
+                modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
 
-            modalConfermaAnnulla.result.then(
-                (val) => {
-                    switch (val) {
-                        case 'ok':
-                            dispatch([
-                                new CestinaChiamata(),
-                                new ToggleChiamata()
-                            ]);
-                            break;
-                        case 'ko':
-                            console.log('[AnnullaChiamata] Azione annullata');
-                            break;
-                    }
-                    console.log('Modal chiusa con val ->', val);
-                },
-                (err) => console.log('[AnnullaChiamata] Modale chiusa senza bottoni. Err ->', err)
-            );
-        });
+                modalConfermaAnnulla.result.then(
+                    (val) => {
+                        switch (val) {
+                            case 'ok':
+                                dispatch([
+                                    new CestinaChiamata(),
+                                    new ToggleChiamata()
+                                ]);
+                                break;
+                            case 'ko':
+                                console.log('[AnnullaChiamata] Azione annullata');
+                                break;
+                        }
+                        console.log('Modal chiusa con val ->', val);
+                    },
+                    (err) => console.log('[AnnullaChiamata] Modale chiusa senza bottoni. Err ->', err)
+                );
+            });
+        } else {
+            dispatch([
+                new CestinaChiamata(),
+                new ToggleChiamata()
+            ]);
+        }
     }
 
     @Action(CestinaChiamata)
-    cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+    cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: CestinaChiamata): void {
+        const bypassInitCentroMappa = action.options?.bypassInitCentroMappa;
         dispatch([
             new ClearMarkerChiamata(),
             new ResetChiamata(),
             new ClearChiamata(),
-            new GetInitCentroMappa()
+            !bypassInitCentroMappa && new GetInitCentroMappa()
         ]);
     }
 

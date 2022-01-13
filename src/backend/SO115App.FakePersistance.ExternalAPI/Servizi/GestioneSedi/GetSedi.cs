@@ -25,7 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede,
         IGetSediMarker, IGetCoordinateByCodSede, IGetStringCoordinateByCodSede
     {
-        private string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
+        private const string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
         private readonly IHttpRequestManager<List<SedeUC>> _serviceDirezioni;
         private readonly IHttpRequestManager<DistaccamentoUC> _serviceSedi;
         private readonly IConfiguration _config;
@@ -51,20 +51,31 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         public async Task<List<SedeUC>> GetDirezioniProvinciali(string codSede = null)
         {
             var baseurl = URLProvvisorio; //_config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+
+            List<SedeUC> result = null;
+
             if (codSede != null)
             {
                 var url = new Uri(baseurl + "/GetComandiProvinciali" + "?codSede=" + codSede);
                 _serviceDirezioni.SetCache(url.AbsoluteUri);
-                var lstSediProvinciali = await _serviceDirezioni.GetAsync(url);
-                return lstSediProvinciali;
+                result = await _serviceDirezioni.GetAsync(url);
             }
             else
             {
                 var url = new Uri(baseurl + "/GetComandiProvinciali");
                 _serviceDirezioni.SetCache(url.AbsoluteUri);
-                var lstSediProvinciali = await _serviceDirezioni.GetAsync(url);
-                return lstSediProvinciali;
+                result = await _serviceDirezioni.GetAsync(url);
             }
+
+            result = result.Select(f =>
+            {
+                if ((f?.descrizione.ToUpper().Contains("CENTRALE") ?? false) || (f?.descrizione.ToUpper().Contains("COMANDO VV.F. ") ?? false))
+                    f.descrizione = "CENTRALE " + f.id;
+
+                return f;
+            }).ToList();
+
+            return result;
         }
 
         public async Task<List<SedeUC>> GetDirezioniRegionali(string codSede = null)
@@ -75,6 +86,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             _serviceDirezioni.SetCache(url.AbsoluteUri);
 
             var lstSediRegionali = await _serviceDirezioni.GetAsync(url);
+
+            lstSediRegionali = lstSediRegionali.Select(f =>
+            {
+                if ((f?.descrizione.ToUpper().Contains("CENTRALE") ?? false) || (f?.descrizione.ToUpper().Contains("COMANDO VV.F. ") ?? false))
+                    f.descrizione = "CENTRALE " + f.id;
+
+                return f;
+            }).ToList();
 
             return lstSediRegionali;
         }
@@ -88,7 +107,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var lstFigli = await _serviceDirezioni.GetAsync(url);
 
-            return lstFigli;
+            lstFigli = lstFigli.Select(f =>
+            {
+                if ((f?.descrizione.ToUpper().Contains("CENTRALE") ?? false) || (f?.descrizione.ToUpper().Contains("COMANDO VV.F. ") ?? false))
+                    f.descrizione = "CENTRALE " + f.provincia;
+
+                return f;
+            }).ToList();
+
+            return lstFigli.Where(f => f.tipologiaDistaccamento.codice != "14" && f.tipologiaDistaccamento.codice != "9").ToList();
         }
 
         public async Task<DistaccamentoUC> GetInfoSede(string codSede)
@@ -100,9 +127,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var sede = _serviceSedi.GetAsync(url).Result;
 
-            if (sede != null)
-                if (sede.Descrizione.Equals("CENTRALE"))
-                    sede.Descrizione = sede.Descrizione + " " + sede.IdSedePadre;
+            if ((sede?.Descrizione.ToUpper().Contains("CENTRALE") ?? false) || (sede?.Descrizione.ToUpper().Contains("COMANDO VV.F.") ?? false))
+                sede.Descrizione = "CENTRALE " + sede.IdSedePadre;
 
             return sede;
         }
@@ -132,7 +158,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
             {
                 Codice = ff.Codice,
-                Descrizione = ff.Nome,
+                Descrizione = ff.Nome.ToUpper().Replace("COMANDO VV.F. ", "CENTRALE "),
                 Coordinate = ff.Coordinate,
                 Indirizzo = null
             })));
@@ -162,13 +188,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                     var lstProvinciali = GetDirezioniProvinciali().Result;
 
-                    List<SedeUC> lstFigli = new List<SedeUC>();
-                    foreach (var sede in lstProvinciali)
-                    {
-                        var figli = GetFigli(sede.id).Result;
-                        lstFigli.AddRange(figli);
-                    }
-
                     //Le coordinate sono fisse perchè il CON prende tutta italia
                     var con = GetInfoSede("00").Result;
                     con.coordinate = "42.28313392189123,11.682171591796926";
@@ -185,7 +204,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     {
                         var info = GetInfoSede(regionale.id).Result;
 
-                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, info.Coordinate));
+                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString()))));
                     };
 
                     //PROVINCE
@@ -193,10 +212,35 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     {
                         var info = GetInfoSede(provinciale.id).Result;
 
-                        //if(info != null) {
-                        var lstComunali = GetFigli(provinciale.id).Result
-                        .Select(comunale => new UnitaOperativa(comunale.id, comunale.descrizione, comunale.Coordinate)).ToHashSet().ToList();
+                        var listaComuni = GetFigli(provinciale.id).Result;
 
+                        var lstComunali = new List<UnitaOperativa>();
+
+                        foreach (var comune in listaComuni)
+                        {
+                            if (comune.coordinate.Trim().Length > 0)
+                            {
+                                try
+                                {
+                                    var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',')[0].ToString()), Convert.ToDouble(comune.coordinate.Split(',')[1].ToString())));
+                                    lstComunali.Add(unita);
+                                }
+                                catch
+                                {
+                                    if (comune.coordinate.Contains("°"))
+                                    {
+                                        comune.coordinate = comune.DmsToDdString(comune.coordinate);
+                                        var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',')[0].ToString()), Convert.ToDouble(comune.coordinate.Split(',')[1].ToString())));
+                                        lstComunali.Add(unita);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(0, 0));
+                                lstComunali.Add(unita);
+                            }
+                        }
                         var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
 
                         if (centrale != null)
@@ -205,16 +249,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                             try
                             {
-                                var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, info.Coordinate);
-                                lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
-                                result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?
-                                    .AddFiglio(unitaComunali);
+                                if (info.coordinate.Trim().Length > 0)
+                                {
+                                    var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString())));
+
+                                    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+
+                                    result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
+                                }
+                                //else
+                                //{
+                                //    var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(0, 0));
+
+                                //    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+
+                                //    result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
+
+                                //}
                             }
-                            catch
-                            {
+                            catch 
+                            { 
                             }
                         }
-                        //}
                     };
 
                     ListaSediAlberate = result;
@@ -314,7 +370,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             return listaSediMarker.ToList();
         }
 
-        private string GetTipoSede(Sede sede)
+        private static string GetTipoSede(Sede sede)
         {
             if (sede.Descrizione.Contains("Comando"))
                 return "Comando";
@@ -331,7 +387,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         string[] IGetStringCoordinateByCodSede.Get(string codiceSede)
         {
-            return GetInfoSede(codiceSede).Result.coordinate.Split(',');
+            if (GetInfoSede(codiceSede).Result.coordinate.Length > 0)
+                return GetInfoSede(codiceSede).Result.coordinate.Split(',');
+            else
+                return null;
         }
     }
 }

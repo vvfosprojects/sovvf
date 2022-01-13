@@ -1,13 +1,14 @@
 <div class="modal-header">
     <h4 class="modal-title" style="font-weight: 700">
-        {{ 'Dettaglio intervento' | uppercase }}
+        {{ 'Dettaglio ' + defineChiamataIntervento(sintesiRichiesta?.codice, sintesiRichiesta?.codiceRichiesta) | uppercase }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="close('ko')">
         <i class="fas fa-times text-danger"></i>
     </button>
 </div>
-<div *ngIf="sintesiRichiesta" class="modal-body">
+<div *ngIf="sintesiRichiesta"
+     class="modal-body px-0">
     <app-partial-loader *ngIf="!sintesiRichiesta"></app-partial-loader>
     <app-sintesi-richiesta class="rounded"
                            [richiesta]="sintesiRichiesta"

@@ -19,7 +19,11 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
+using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
@@ -29,11 +33,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizioneSquadreQueryHandler : IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult>
     {
-        private readonly IGetComposizioneSquadre _iGetComposizioneSquadre;
+        private readonly ISetComposizioneSquadre _setSquadreDB;
+        private readonly IGetComposizioneSquadreDB _getSquadreDB;
+        private readonly IGetComposizioneSquadre _getSquadre;
 
-        public ComposizioneSquadreQueryHandler(IGetComposizioneSquadre iGetComposizioneSquadre)
+        private const string msgErroreCaricamento = "Errore caricamento elenco squadre";
+
+        public ComposizioneSquadreQueryHandler(IGetComposizioneSquadre getSquadre, ISetComposizioneSquadre set, IGetComposizioneSquadreDB getSquadreDB)
         {
-            this._iGetComposizioneSquadre = iGetComposizioneSquadre;
+            _getSquadre = getSquadre;
+            _setSquadreDB = set;
+            _getSquadreDB = getSquadreDB;
         }
 
         /// <summary>
@@ -45,8 +55,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Squadre Composizione Handler");
 
-            var composizioneSquadre = _iGetComposizioneSquadre.Get(query);
-                
+            List<ComposizioneSquadra> composizioneSquadre = null;
+
+            try
+            {
+                composizioneSquadre = _getSquadre.Get(query);
+
+                if (composizioneSquadre != null && composizioneSquadre.Count > 0)
+                    _setSquadreDB.Set(composizioneSquadre);
+
+                if (composizioneSquadre == null || composizioneSquadre.Count == 0)
+                    composizioneSquadre = _getSquadreDB.Get();
+            }
+            catch
+            {
+                if (composizioneSquadre == null || composizioneSquadre.Count == 0)
+                    composizioneSquadre = _getSquadreDB.Get();
+
+                if (composizioneSquadre == null || composizioneSquadre.Count == 0)
+                    throw new Exception(msgErroreCaricamento);
+            }
+
             Log.Debug("Fine elaborazione Lista Squadre Composizione Handler");
 
             return new ComposizioneSquadreResult()

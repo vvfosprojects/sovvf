@@ -14,6 +14,7 @@ export class SchedaContattoComponent implements OnChanges {
 
     @Input() scheda: SchedaContatto;
     @Input() idSchedaContattoHover: string;
+    @Input() idSchedaContattoSelezionata: string;
     @Input() editSchedaContatto: boolean;
     @Input() schedeContattoSelezionate: string[];
     @Input() classificazione: ClassificazioneSchedaContatto;
@@ -27,6 +28,8 @@ export class SchedaContattoComponent implements OnChanges {
 
     @Output() hoverIn: EventEmitter<string> = new EventEmitter<string>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
+    @Output() selezionata: EventEmitter<string> = new EventEmitter<string>();
+    @Output() deselezionata: EventEmitter<string> = new EventEmitter<string>();
     @Output() dettaglioScheda: EventEmitter<string> = new EventEmitter<string>();
     @Output() setSchedaContattoTelefonata: EventEmitter<SchedaContatto> = new EventEmitter<SchedaContatto>();
     @Output() setSchedaContattoGestita: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -61,7 +64,7 @@ export class SchedaContattoComponent implements OnChanges {
 
     cardClasses(id: string): string {
         let cardClasses = '';
-        if (this.idSchedaContattoHover === id && !this.scheda.gestita) {
+        if (this.idSchedaContattoHover === id) {
             cardClasses = ' bg-scheda-contatto';
         }
         switch (this.scheda.classificazione) {
@@ -80,11 +83,27 @@ export class SchedaContattoComponent implements OnChanges {
             cardClasses += ' gestita';
         }
 
+        if (this.scheda.codiceScheda === this.idSchedaContattoSelezionata) {
+            cardClasses += ' selezionata';
+        }
+
         return cardClasses;
     }
 
     isVisible(): boolean {
         return this.idVisualizzati?.length ? this.idVisualizzati.includes(this.scheda.codiceScheda) : true;
+    }
+
+    reducerSelezione(codiceScheda: string): void {
+        if (!this.idSchedaContattoSelezionata || this.idSchedaContattoSelezionata !== codiceScheda) {
+            this.selezionata.emit(this.scheda.codiceScheda);
+        } else {
+            this.deselezionata.emit();
+        }
+    }
+
+    onDettaglioScheda(codiceScheda: string): void {
+        this.dettaglioScheda.emit(codiceScheda);
     }
 
     getCheckboxState(scheda: SchedaContatto): CheckboxInterface {

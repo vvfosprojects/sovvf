@@ -27,7 +27,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichieste
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
@@ -69,7 +69,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _getGerarchiaToSend = getGerarchiaToSend;
         }
 
-        public async Task SendNotification(AnnullaPartenzaCommand command)
+        public async Task SendNotification(AnnullaStatoPartenzaCommand command)
         {
             var SediDaNotificare = new List<string>();
             if (command.Richiesta.CodSOAllertate != null)
@@ -90,14 +90,17 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                         },
                         CodiciSede = new string[] { sede }
                     };
-                    var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-                    command.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == command.CodiceRichiesta);
+                    //var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
+                    //command.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == command.CodiceRichiesta);
                     var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
                     {
                         CodiciSedi = new string[] { sede }
                     };
+
                     var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
+
                     return command.Chiamata;
                 }).ContinueWith(chiamata => _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command));
 

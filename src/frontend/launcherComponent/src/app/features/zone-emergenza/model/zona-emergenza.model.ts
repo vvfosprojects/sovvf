@@ -1,5 +1,4 @@
 import { Localita } from '../../../shared/model/localita.model';
-import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { ModuloColonnaMobile } from '../interface/modulo-colonna-mobile.interface';
 import { Cra } from '../interface/cra.interface';
 
@@ -33,7 +32,7 @@ export class ZonaEmergenza {
         /**
          * Eventi Zona Emergenza
          */
-        public listaEventi?: EventoRichiesta[],
+        public listaEventi?: EventoEmergenza[],
         /**
          * Definisce se la Zona Emergenza è stata annullata
          */
@@ -42,10 +41,6 @@ export class ZonaEmergenza {
          * Definisce se la Zona Emergenza è stata allertata al CON
          */
         public allertata?: boolean,
-        /**
-         * Dirigenti assegnati dalla Direzione Regionale quando viene allertato il CON
-         */
-        public dirigenti?: string[],
         /**
          * Moduli "mob_Immediata" assegnati alla Zona Emergenza
          */
@@ -83,6 +78,23 @@ export class ModuliColonnaMobile {
         public mob_Pot_Int: string[],
         // tslint:disable-next-line:variable-name
         public mob_Consolidamento: string[]
+    ) {
+    }
+}
+
+export class EventoEmergenza {
+    constructor(
+        public codiceFonte: string,
+        public codiceRichiesta: string,
+        public dataOraInserimento: string,
+        public istante: string,
+        public sedeOperatore: string,
+        public tipoEvento: string,
+        public tipologiaEmergenza: string,
+        public tipologiaModuli: string[],
+        public gestita: boolean,
+        public numDoa: number,
+        public dirigenti: string[]
     ) {
     }
 }

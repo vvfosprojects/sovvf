@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CQRS.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSedi;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -13,17 +12,34 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneSediController : ControllerBase
     {
-        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IQueryHandler<GetSediQuery, GetSediResult> _getSediHandler;
 
-        public GestioneSediController(IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public GestioneSediController(IQueryHandler<GetSediQuery, GetSediResult> getSediHandler)
         {
-            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getSediHandler = getSediHandler;
         }
 
-        //[HttpGet("GetAllSedi")]
-        //public Task<IActionResult> GetAllSedi()
-        //{
-        //    return Ok(_getAlberaturaUnitaOperative.ListaSediAlberata());
-        //}
+        [HttpGet("GetAllSedi")]
+        public async Task<IActionResult> GetAllSedi()
+        {
+            try
+            {
+                var query = new GetSediQuery
+                {
+                    CodiciSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries),
+                    IdUtente = Request.Headers["IdUtente"]
+                };
+
+                var result = _getSediHandler.Handle(query);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                e = e.GetBaseException();
+
+                return BadRequest(new { message = e.Message, stackTrace = e.StackTrace });
+            }
+        }
     }
 }

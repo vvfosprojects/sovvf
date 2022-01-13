@@ -47,7 +47,9 @@
                     (click)="onAllertaCON(zE)">
                 <i class="fas fa-exclamation-triangle"></i>
             </button>
-            <button *ngIf="isDirRegionale || isCON"
+            <!-- Fasi al momento non utilizzate -->
+            <!-- Fase 1 -->
+            <!-- <button *ngIf="isDirRegionale || isCON"
                     class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"
@@ -55,18 +57,20 @@
                     placement="right"
                     (click)="onColonneMobili(zE, '1')">
                 F.1
-            </button>
-            <button *ngIf="isDirRegionale || isCON"
-                    class="btn btn-sm float-left mr-2"
-                    [class.btn-outline-dark]="!nightMode"
-                    [class.btn-outline-light]="nightMode"
-                    ngbTooltip="Colonne Mobili: Fase 2"
-                    placement="right"
-                    [disabled]="!zE.listaModuliImmediata"
-                    (click)="onColonneMobili(zE, '2')">
-                F.2
-            </button>
-            <button *ngIf="isDirRegionale || isCON"
+            </button> -->
+            <!-- Fase 2 -->
+            <!-- <button *ngIf="isDirRegionale || isCON"
+                     class="btn btn-sm float-left mr-2"
+                     [class.btn-outline-dark]="!nightMode"
+                     [class.btn-outline-light]="nightMode"
+                     ngbTooltip="Colonne Mobili: Fase 2"
+                     placement="right"
+                     [disabled]="!zE.listaModuliImmediata"
+                     (click)="onColonneMobili(zE, '2')">
+                 F.2
+             </button> -->
+            <!-- Fase 3 -->
+            <!-- <button *ngIf="isDirRegionale || isCON"
                     class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"
@@ -75,8 +79,8 @@
                     [disabled]="!zE.listaModuliImmediata || !zE.listaModuliPotInt"
                     (click)="onColonneMobili(zE, '3')">
                 F.3
-            </button>
-            <button *ngIf="isCON && zE.dirigenti?.length"
+            </button> -->
+            <button *ngIf="isCON && getEventiRichiestaCreazioneCraZonaEmergenza(zE)"
                     class="btn btn-sm float-left mr-2"
                     [class.btn-outline-dark]="!nightMode"
                     [class.btn-outline-light]="nightMode"

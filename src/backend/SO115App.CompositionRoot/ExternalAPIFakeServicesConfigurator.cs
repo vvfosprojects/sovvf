@@ -156,11 +156,7 @@ namespace SO115App.CompositionRoot
             container.Register<IModificaInterventoChiuso, ModificaInterventoChiuso>();
             container.Register<ISetRientroMezzo, SetRientroMezzo>();
             container.Register<ISetUscitaMezzo, SetUscitaMezzo>();
-            container.Register<IGetMezziByICCID, GetMezziByICCID>();
             container.Register<IGetMezziByCodiceMezzo, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziByCodiceMezzo>();
-            container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
-            container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
-            container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezziInServizio,
                 GetMezziInServizio>();

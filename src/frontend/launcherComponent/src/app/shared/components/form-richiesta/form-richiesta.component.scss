@@ -1,3 +1,7 @@
+.ng-select-no-border .ng-select-container {
+  border: none !important;
+}
+
 .dropdownAnnulla {
   border-color: #dc3545 !important;
 
@@ -8,7 +12,6 @@
     }
   }
 }
-
 
 .dropdownConferma {
   border-color: #28a745 !important;
@@ -144,6 +147,25 @@ ng-select {
 }
 */
 
+.row-creazione {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  place-content: space-between !important;
+  width: 100% !important;
+}
 
+.btn-creazione {
+  width: 18%;
+}
+
+.row-modifica {
+  display: flex !important;
+  place-content: space-between !important;
+  width: 100% !important;
+}
+
+.btn-modifica {
+  width: 32.5% !important;
+}
 
 

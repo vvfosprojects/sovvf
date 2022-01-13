@@ -1,6 +1,6 @@
 <div class="text-center">
     <div class="btn-group" role="group">
-        <button type="button" class="btn"
+        <button *ngIf="!viewState.mezziInServizio?.active && !(viewState.mappa.active && backupView?.mezziInServizio?.active)" type="button" class="btn"
                 ngbTooltip="Visualizzazione solo lista Chiamate/Interventi"
                 [class.text-white]="nightMode"
                 [ngClass]="colorButtonView[0]"
@@ -8,6 +8,15 @@
                 (click)="buttonViewMode(AppFeature.Richieste)">
             <i class="fas fa-list-ul"></i>
             Chiamate/Interventi
+        </button>
+        <button *ngIf="viewState.mezziInServizio?.active || (viewState.mappa.active && backupView?.mezziInServizio?.active)" type="button" class="btn"
+                ngbTooltip="Visualizzazione Mezzi in Servizio"
+                [class.text-white]="nightMode"
+                [ngClass]="colorButtonView[3]"
+                [disableTooltip]="colorButtonView[3] === 'btn-secondary'"
+                (click)="buttonViewMode(AppFeature.MezziInServizio)">
+            <i class="fas fa-list-ul"></i>
+            Mezzi in Servizio
         </button>
         <button type="button" class="btn"
                 ngbTooltip="Visualizzazione solo Mappa"

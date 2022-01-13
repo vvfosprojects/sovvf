@@ -79,7 +79,7 @@ export class SidebarComponent {
     }
 
     onOpenOpservice(): void {
-        window.open('https://opservice-demo.dipvvf.it', '_blank', 'toolbar=0,location=0,menubar=0,height=' + screen.availHeight + ',width=' + screen.availWidth);
+        window.open('https://opservice-test.dipvvf.it/login-so-web', '_blank', 'toolbar=0,location=0,menubar=0,height=' + screen.availHeight + ',width=' + screen.availWidth);
     }
 
     onLogout(): void {

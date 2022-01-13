@@ -6,7 +6,7 @@
         <form [formGroup]="richiestaForm"
               ngxsForm="schedaTelefonata.richiestaForm"
               autocomplete="off">
-            <!-- TIPOLOGIA  -->
+            <!-- TIPOLOGIA -->
             <div class="row">
                 <div class="col-12 px-0">
                     <div class="px-2 mb-2 bg-secondary font-weight-bold" style="color: #ffffff">TIPOLOGIA</div>
@@ -17,7 +17,7 @@
                             <div class="float-left w-75">
                                 <label class="d-none">Tipologia intervento</label>
                                 <div class="required-field">
-                                    <ng-select class="border"
+                                    <ng-select class="ng-select-no-border"
                                                [class.errore]="submitted && !checkTipologie()"
                                                bindLabel="codiceDescrizione"
                                                bindValue="codice"
@@ -36,12 +36,26 @@
                                     <small>Almeno una tipologia è richiesta</small>
                                 </div>
                             </div>
-                            <div class="float-left w-25 px-2">
-                                <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()"
-                                        [disabled]="!f.dettaglioTipologia.value || modifica">
-                                    {{ 'Inizia Triage' | uppercase }}
-                                </button>
-                            </div>
+                            <ng-container *ngIf="!modifica">
+                                <div class="float-left w-25 px-2">
+                                    <button class="btn btn-primary btn-block btn-no-hover"
+                                            (click)="!!((!loadingTriageChiamata && triage) || triageSummary) && openTriage()"
+                                            [disabled]="loadingTriageChiamata || !f.dettaglioTipologia.value || modifica || (!loadingTriageChiamata && !triage && !triageSummary)">
+                                        <ng-container *ngIf="loadingTriageChiamata && !modifica">
+                                            <i class="fas fa-spin fa-spinner mr-1"></i>
+                                            {{ 'Caricamento Triage' | uppercase}}
+                                        </ng-container>
+                                        <ng-container
+                                                *ngIf="!loadingTriageChiamata && !triage && !triageSummary">
+                                            {{ 'Triage non presente' | uppercase}}
+                                        </ng-container>
+                                        <ng-container
+                                                *ngIf="(!loadingTriageChiamata && triage) || triageSummary">
+                                            {{ 'Inizia Triage' | uppercase}}
+                                        </ng-container>
+                                    </button>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
@@ -50,152 +64,213 @@
                         <div class="clearfix">
                             <div class="float-left w-75">
                                 <label class="d-none">Dettaglio tipologia</label>
-                                <div class="">
-                                    <ng-select class="border"
-                                               bindLabel="descrizione"
-                                               clearAllText="Clear"
-                                               placeholder="Seleziona Dettaglio Tipologia"
-                                               formControlName="dettaglioTipologia"
-                                               [notFoundText]="'Nessun dettaglio tipologia trovato'"
-                                               [items]="dettagliTipologia"
-                                               [multiple]="false"
-                                               [closeOnSelect]="true"
-                                               [searchable]="false"
-                                               [hideSelected]="true"
-                                               [readonly]="!f.codTipologia.value"
-                                               (change)="onChangeDettaglioTipologia($event)">
-                                    </ng-select>
-                                </div>
+                                <ng-select bindLabel="descrizione"
+                                           clearAllText="Clear"
+                                           placeholder="Seleziona Dettaglio Tipologia"
+                                           formControlName="dettaglioTipologia"
+                                           [notFoundText]="'Nessun dettaglio tipologia trovato'"
+                                           [items]="dettagliTipologia"
+                                           [multiple]="false"
+                                           [closeOnSelect]="true"
+                                           [searchable]="true"
+                                           [hideSelected]="true"
+                                           [readonly]="!f.codTipologia.value"
+                                           (change)="onChangeDettaglioTipologia($event)">
+                                </ng-select>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="loadingDettagliTipologia" class="font-xlarge pl-2 pt-1">
-                        <i class="fas fa-spinner fa-spin mr-2"></i>
-                        Recupero Dettaglio Tipologia
-                    </div>
+                    <ng-container *ngIf="loadingDettagliTipologia">
+                        <div class="font-xlarge pl-2 py-1">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                            Recupero Dettaglio Tipologia
+                        </div>
+                    </ng-container>
                 </div>
             </div>
-            <!-- INDIRIZZO  -->
+            <!-- INDIRIZZO -->
             <div class="row">
                 <div class="col-12 px-0">
                     <div class="px-2 my-2 bg-secondary font-weight-bold" style="color: #ffffff">INDIRIZZO</div>
                 </div>
-                <div class="col-5">
-                    <div class="form-group mb-0">
-                        <ng-container *ngIf="!apertoFromMappa">
-                            <app-ricerca-indirizzo
-                                    [indirizzo]="f?.indirizzo?.value"
-                                    [requiredFieldClass]="f?.indirizzo?._rawValidators[0]?.name === 'required'"
-                                    [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
-                                    (changeIndirizzo)="modificaIndirizzo($event)"
-                                    (selectCandidate)="reducerIndirizzo($event)">
-                            </app-ricerca-indirizzo>
-                        </ng-container>
-                        <ng-container *ngIf="apertoFromMappa">
-                            <label class="d-none" for="indirizzo">Indirizzo</label>
-                            <input id="indirizzo"
-                                   class="form-control"
-                                   [class.is-invalid]="submitted && f.indirizzo.errors"
-                                   type="text"
-                                   placeholder="Indirizzo"
-                                   formControlName="indirizzo"/>
-                        </ng-container>
-                        <div *ngIf="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
-                             class="invalid-feedback">
-                            <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
+            </div>
+            <div class="row">
+                <div class="col-9">
+                    <!-- SELECT INDIRIZZO -->
+                    <div class="row">
+                        <div class="col-7 pr-0">
+                            <div class="form-group mb-0">
+                                <ng-container *ngIf="!apertoFromMappa">
+                                    <app-ricerca-indirizzo
+                                            [indirizzo]="f?.indirizzo?.value"
+                                            [requiredFieldClass]="f?.indirizzo?._rawValidators[0]?.name === 'required'"
+                                            [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
+                                            (changeIndirizzo)="modificaIndirizzo($event)"
+                                            (selectCandidate)="reducerIndirizzo($event)">
+                                    </app-ricerca-indirizzo>
+                                </ng-container>
+                                <ng-container *ngIf="apertoFromMappa">
+                                    <label class="d-none" for="indirizzo">Indirizzo</label>
+                                    <input id="indirizzo"
+                                           class="form-control"
+                                           [class.is-invalid]="submitted && f.indirizzo.errors"
+                                           type="text"
+                                           placeholder="Indirizzo"
+                                           formControlName="indirizzo">
+                                </ng-container>
+                                <div *ngIf="submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value))"
+                                     class="invalid-feedback">
+                                    <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="d-flex align-items-baseline">
+                                <div class="form-group px-1 mb-0">
+                                    <label for="latitudine"
+                                           class="d-none">Latitudine</label>
+                                    <input id="latitudine"
+                                           class="form-control"
+                                           [class.required-field]="!apertoFromMappa"
+                                           [class.is-invalid]="submitted && f.latitudine.errors"
+                                           type="tel"
+                                           placeholder="Latitudine"
+                                           formControlName="latitudine"
+                                           appDebounceKeyUp
+                                           [debounceTime]="1000"
+                                           (debounceKeyUp)="onChangeCoordinate()"
+                                           (keypress)="checkInputPattern($event, 'LAT_LON')"
+                                           (paste)="checkInputPattern($event, 'LAT_LON')">
+                                    <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
+                                        <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
+                                        <div *ngIf="f.latitudine.errors.pattern">La latitudine non è corretta</div>
+                                    </div>
+                                </div>
+                                <div class="form-group px-1 mb-0">
+                                    <label class="d-none" for="longitudine">Longitudine</label>
+                                    <input id="longitudine"
+                                           class="form-control"
+                                           [class.required-field]="!apertoFromMappa"
+                                           [class.is-invalid]="submitted && f.longitudine.errors"
+                                           type="tel"
+                                           placeholder="Longitudine"
+                                           formControlName="longitudine"
+                                           appDebounceKeyUp
+                                           [debounceTime]="1000"
+                                           (debounceKeyUp)="onChangeCoordinate()"
+                                           (keypress)="checkInputPattern($event, 'LAT_LON')"
+                                           (paste)="checkInputPattern($event, 'LAT_LON')">
+                                    <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
+                                        <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
+                                        <div *ngIf="f.longitudine.errors.pattern">La longitudine non è corretta
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-secondary btn-no-hover"
+                                        [ngbTooltip]="coordsTooltip"
+                                        placement="bottom"
+                                        (click)="onCopiaCoordinate()"
+                                        [disabled]="!(f.latitudine.value && f.longitudine.value)">
+                                    <i class="fas fa-clipboard"></i>
+                                </button>
+                                <ng-template #coordsTooltip>
+                                    Copia: {{ f.latitudine.value }}
+                                    - {{ f.longitudine.value }}
+                                </ng-template>
+                            </div>
                         </div>
                     </div>
+                    <!-- NOTE INDIRIZZO -->
+                    <ng-container *ngIf="!apertoFromMappa">
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="d-none" for="noteIndirizzo">Note Indirizzo</label>
+                                <textarea id="noteIndirizzo"
+                                          class="form-control my-2"
+                                          [class.is-invalid]="submitted && f.noteIndirizzo.errors"
+                                          placeholder="Inserisci le Note Indirizzo"
+                                          formControlName="noteIndirizzo"
+                                          style="height: 77px; max-height: 77px"
+                                          role="presentation">
+                                </textarea>
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
-                <div class="col-7">
-                    <div class="clearfix">
-                        <div class="float-left form-group w-25 mr-1 mb-0">
-                            <label for="latitudine"
-                                   class="d-none">Latitudine</label>
-                            <input id="latitudine"
-                                   class="form-control"
-                                   [class.required-field]="!apertoFromMappa"
-                                   [class.is-invalid]="submitted && f.latitudine.errors"
-                                   type="tel"
-                                   placeholder="Latitudine"
-                                   formControlName="latitudine"
-                                   appDebounceKeyUp
-                                   [debounceTime]="1000"
-                                   (debounceKeyUp)="onChangeCoordinate()"
-                                   (keypress)="checkInputPattern($event, 'LAT_LON')"
-                                   (paste)="checkInputPattern($event, 'LAT_LON')"/>
-                            <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
-                                <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
-                                <div *ngIf="f.latitudine.errors.pattern">La latitudine non è corretta</div>
-                            </div>
+                <div class="col-3">
+                    <!-- LOADING COMPETENZE -->
+                    <ng-template [ngIf]="loadingCompetenze">
+                        <div class="font-xlarge">
+                            <i class="fas fa-spinner fa-spin mr-1"></i>
+                            Recupero Competenze
                         </div>
-                        <div class="float-left form-group w-25 mb-0">
-                            <label class="d-none" for="longitudine">Longitudine</label>
-                            <input id="longitudine"
-                                   class="form-control"
-                                   [class.required-field]="!apertoFromMappa"
-                                   [class.is-invalid]="submitted && f.longitudine.errors"
-                                   type="tel"
-                                   placeholder="Longitudine"
-                                   formControlName="longitudine"
-                                   appDebounceKeyUp
-                                   [debounceTime]="1000"
-                                   (debounceKeyUp)="onChangeCoordinate()"
-                                   (keypress)="checkInputPattern($event, 'LAT_LON')"
-                                   (paste)="checkInputPattern($event, 'LAT_LON')"/>
-                            <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
-                                <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
-                                <div *ngIf="f.longitudine.errors.pattern">La longitudine non è corretta</div>
-                            </div>
+                    </ng-template>
+                    <!-- COMPETENZE -->
+                    <ng-template [ngIf]="!loadingCompetenze && competenze?.length">
+                        <div class="font-xxlarge">
+                            <app-competenza *ngFor="let c of competenze; let i = index"
+                                            [competenza]="c" [i]="i">
+                            </app-competenza>
                         </div>
-                        <div class="float-left mx-2">
-                            <label class="d-none">Copia</label>
-                            <button type="button" class="btn btn-secondary btn-no-hover"
-                                    [ngbTooltip]="coordsTooltip"
-                                    placement="bottom"
-                                    (click)="onCopiaCoordinate()"
-                                    [disabled]="!(f.latitudine.value && f.longitudine.value)">
-                                <i class="fas fa-clipboard"></i>
-                            </button>
-                            <ng-template #coordsTooltip>
-                                Copia: {{ f.latitudine.value }}
-                                - {{ f.longitudine.value }}
-                            </ng-template>
+                    </ng-template>
+                    <!-- INPUT COMPETENZE -->
+                    <ng-template [ngIf]="!loadingCompetenze && competenze?.length === 0 && !modifica">
+                        <div class="form-group mb-2">
+                            <label for="competenza_1"
+                                   class="d-none">Competenza 1</label>
+                            <ng-select id="competenza_1"
+                                       class="required-field"
+                                       [items]="distaccamentiFiltered"
+                                       bindLabel="descDistaccamento"
+                                       bindValue="id"
+                                       placeholder="Seleziona 1ᵃ Competenza"
+                                       formControlName="codPrimaCompetenza"
+                                       [searchable]="!f.codPrimaCompetenza.value"
+                                       [notFoundText]="'Nessun risultato'"
+                                       (ngModelChange)="onSelectCompetenza(1, $event)">
+                            </ng-select>
                         </div>
-                        <!-- COMPETENZE -->
-                        <ng-template [ngIf]="!loadingCompetenze && competenze?.length">
-                            <div class="float-left"
-                                 style="font-size: xx-large">
-                                <app-competenza *ngFor="let c of competenze; let i = index"
-                                                [competenza]="c" [i]="i">
-                                </app-competenza>
-                            </div>
-                        </ng-template>
-                        <ng-template [ngIf]="loadingCompetenze">
-                            <div class="font-xlarge pl-2 pt-1">
-                                <i class="fas fa-spinner fa-spin mr-2"></i>
-                                Recupero Competenze
-                            </div>
-                        </ng-template>
-                    </div>
+                        <div class="form-group mb-2">
+                            <label for="competenza_2"
+                                   class="d-none">Competenza 2</label>
+                            <ng-select id="competenza_2"
+                                       [items]="distaccamentiFiltered"
+                                       bindLabel="descDistaccamento"
+                                       bindValue="id"
+                                       placeholder="Seleziona 2ᵃ Competenza"
+                                       formControlName="codSecondaCompetenza"
+                                       [searchable]="!f.codSecondaCompetenza.value"
+                                       [notFoundText]="'Nessun risultato'"
+                                       (ngModelChange)="onSelectCompetenza(2, $event)">
+                            </ng-select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="competenza_3"
+                                   class="d-none">Competenza 3</label>
+                            <ng-select id="competenza_3"
+                                       [items]="distaccamentiFiltered"
+                                       bindLabel="descDistaccamento"
+                                       bindValue="id"
+                                       placeholder="Seleziona 3ᵃ Competenza"
+                                       formControlName="codTerzaCompetenza"
+                                       [searchable]="!f.codTerzaCompetenza.value"
+                                       [notFoundText]="'Nessun risultato'"
+                                       (ngModelChange)="onSelectCompetenza(3, $event)">
+                            </ng-select>
+                        </div>
+                    </ng-template>
+                    <!-- COMPETENZE RICHIESTA -->
+                    <ng-template
+                            [ngIf]="!loadingCompetenze && !competenze?.length && richiestaModifica?.competenze?.length">
+                        <div class="font-xxlarge">
+                            <app-competenza *ngFor="let c of richiestaModifica?.competenze; let i = index"
+                                            [competenza]="c" [i]="i">
+                            </app-competenza>
+                        </div>
+                    </ng-template>
                 </div>
             </div>
-            <!-- NOTE INDIRIZZO -->
-            <ng-container *ngIf="!apertoFromMappa">
-                <div class="row">
-                    <div class="col-12">
-                        <label class="d-none" for="noteIndirizzo">Note Indirizzo</label>
-                        <textarea id="noteIndirizzo"
-                                  class="form-control my-2"
-                                  [class.is-invalid]="submitted && f.noteIndirizzo.errors"
-                                  placeholder="Inserisci le Note Indirizzo"
-                                  formControlName="noteIndirizzo"
-                                  style="max-height: 50px; min-height: 50px;"
-                                  role="presentation">
-                    </textarea>
-                    </div>
-                </div>
-            </ng-container>
-            <!-- RICHIEDENTE  -->
+            <!-- RICHIEDENTE -->
             <div class="row">
                 <div class="col-9">
                     <!-- RICHIEDENTE  -->
@@ -208,9 +283,10 @@
                                        class="form-control required-field"
                                        [class.is-invalid]="submitted && f.nominativo.errors"
                                        type="text"
+                                       (keyup)="checkNominativoSchedaContatto()"
                                        placeholder="Nominativo"
                                        formControlName="nominativo"
-                                       role="presentation"/>
+                                       role="presentation">
                                 <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
                                     <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
                                 </div>
@@ -221,9 +297,10 @@
                                 <label class="d-none" for="telefono">Telefono</label>
                                 <input id="telefono" type="tel" placeholder="Inserisci il Telefono"
                                        formControlName="telefono" (keypress)="checkInputPattern($event, 'PHONE')"
+                                       (keyup)="checkNumeroSchedaContatto()"
                                        (paste)="checkInputPattern($event, 'PHONE')"
                                        class="form-control required-field"
-                                       [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
+                                       [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }">
                                 <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
                                     <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
                                     <div *ngIf="f.telefono.errors.pattern">Il Telefono è non è corretto</div>
@@ -237,18 +314,18 @@
                                 <label class="d-none" for="palazzo">Palazzo</label>
                                 <input id="palazzo" type="text" placeholder="Palazzo/Citofono/Info"
                                        formControlName="palazzo"
-                                       class="form-control"/>
+                                       class="form-control">
                             </div>
                             <div class="col-2 px-1">
                                 <label class="d-none" for="scala">Scala</label>
                                 <input id="scala" type="text" placeholder="Scala" formControlName="scala"
-                                       class="form-control"/>
+                                       class="form-control">
                             </div>
                             <div class="col-2 px-1">
                                 <label class="d-none" for="piano">Piano</label>
                                 <input id="piano" type="text" placeholder="Piano" formControlName="piano"
                                        class="form-control"
-                                       [ngClass]="{ 'is-invalid': submitted && f.piano.errors }"/>
+                                       [ngClass]="{ 'is-invalid': submitted && f.piano.errors }">
                                 <div *ngIf="submitted && f.piano.errors" class="invalid-feedback">
                                     <div *ngIf="f.piano.errors.required">Il Piano è richiesto</div>
                                 </div>
@@ -256,18 +333,20 @@
                             <div class="col-2 px-1">
                                 <label class="d-none" for="interno">Interno</label>
                                 <input id="interno" type="text" placeholder="Interno" formControlName="interno"
-                                       class="form-control"/>
+                                       class="form-control">
                             </div>
-                            <div class="col-2 pl-1">
+                            <div class="col-2 pl-1 cursor-pointer"
+                                 (click)="onDettaglioSchedaContatto(f?.codSchedaContatto?.value)">
                                 <ng-template [ngIf]="f?.codSchedaContatto?.value">
                                     <label class="d-none" for="contatto">Contatto</label>
                                     <input id="contatto" type="text" placeholder="Contatto"
                                            formControlName="codSchedaContatto"
-                                           class="form-control"/>
+                                           class="form-control">
                                 </ng-template>
                                 <ng-template [ngIf]="!f?.codSchedaContatto?.value">
                                     <button class="btn btn-secondary btn-block btn-no-hover"
-                                            (click)="openModalSchedeContatto()">S. Contatto
+                                            (click)="openModalSchedeContatto()">
+                                        S. Contatto
                                     </button>
                                 </ng-template>
                             </div>
@@ -335,10 +414,12 @@
                     </div>
                 </ng-container>
             </div>
-            <!-- NOTE  -->
+            <!-- NOTE -->
             <ng-container *ngIf="!apertoFromMappa">
                 <div class="row p-2 my-2 bg-secondary"></div>
-                <div class="row mb-5">
+                <div class="row"
+                     [class.mb-5]="!modifica"
+                     [class.mb-4]="modifica">
                     <div class="col-8">
                         <div class="row">
                             <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 mb-2 pr-2">
@@ -350,7 +431,7 @@
                                            min="0"
                                            placeholder="Inserisci HA"
                                            formControlName="boschi"
-                                           class="form-control"/>
+                                           class="form-control">
                                     <span class="input-group-text h6" id="boschi-group-text">
                                         Boschi
                                     </span>
@@ -365,7 +446,7 @@
                                            min="0"
                                            placeholder="Inserisci HA"
                                            formControlName="campi"
-                                           class="form-control"/>
+                                           class="form-control">
                                     <span class="input-group-text h6" id="campi-group-text">
                                         Campi
                                     </span>
@@ -380,7 +461,7 @@
                                            min="0"
                                            placeholder="Inserisci HA"
                                            formControlName="sterpaglie"
-                                           class="form-control"/>
+                                           class="form-control">
                                     <span class="input-group-text h6" id="sterpaglie-group-text">
                                         Sterpaglie
                                     </span>
@@ -411,7 +492,7 @@
                                            [class.is-invalid]="submitted && f.zoneEmergenza.errors"
                                            type="text"
                                            placeholder="Inserisci il Codice Emergenza"
-                                           formControlName="zoneEmergenza" class="form-control"/>
+                                           formControlName="zoneEmergenza" class="form-control">
                                 </div>
                                 <div class="form-group mb-2">
                                     <label class="d-none" for="etichette">Tag</label>
@@ -480,69 +561,45 @@
             <!-- BOTTONI -->
             <div class="clearfix"
                  [class.py-3]="apertoFromMappa">
-                <div class="float-left">
+                <div class="row-creazione">
                     <ng-template [ngIf]="!modifica">
-                        <button class="btn btn-primary btn-no-hover btn-xlarge mr-3"
-                                style="min-width: 100px"
-                                [disabled]="loadingCompetenze || disabledInviaPartenza || formIsInvalid()"
+                        <button class="btn btn-primary btn-no-hover btn-xlarge" style="width: 25%"
+                                [disabled]="loadingCompetenze || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value)) || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
                                 placement="top">
                             Conferma e Invia Partenza
                         </button>
-                        <button class="btn btn-danger btn-no-hover btn-xlarge mr-3"
-                                style="min-width: 100px"
-                                [disabled]="loadingCompetenze || formIsInvalid()"
+                        <button class="btn btn-danger btn-no-hover btn-xlarge btn-creazione"
+                                [disabled]="loadingCompetenze || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value)) || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
                                 ngbTooltip="Metti In Coda"
                                 placement="top">
-                            Conferma
+                            Conferma ed Esci
                         </button>
                         <ng-container *ngIf="!apertoFromMappa">
-                            <button class="btn btn-outline-secondary btn-no-hover btn-xlarge"
+                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge btn-creazione"
+                                    (click)="onAnnullaChiamata()">
+                                Annulla
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="!apertoFromMappa">
+                            <button class="btn btn-outline-secondary btn-no-hover btn-xlarge btn-creazione"
                                     type="button"
-                                    [disabled]="loadingCompetenze || formIsInvalid()"
+                                    [disabled]="loadingCompetenze || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value)) || formIsInvalid()"
                                     (click)="onInAttesa()">
                                 <i class="fas fa-pause mr-1"></i>
                                 In Attesa
                             </button>
                         </ng-container>
-                    </ng-template>
-                    <ng-template [ngIf]="modifica">
-                        <button class="btn btn-primary btn-no-hover mr-3 btn-xlarge"
-                                style="min-width: 100px"
-                                [disabled]="loadingCompetenze || disabledInviaPartenza || formIsInvalid()"
-                                [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
-                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
-                                ngbTooltip="Invia Partenza"
-                                placement="top">
-                            Salva e Invia Partenza
-                        </button>
-                        <button class="btn btn-success btn-no-hover btn-xlarge"
-                                style="min-width: 100px"
-                                [disabled]="loadingCompetenze || formIsInvalid()"
-                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
-                                ngbTooltip="Conferma Modifica"
-                                placement="top">
-                            Salva e Chiudi
-                        </button>
-                    </ng-template>
-                </div>
-                <div class="float-right">
-                    <ng-template [ngIf]="!modifica">
                         <ng-container *ngIf="!apertoFromMappa">
-                            <button class="btn btn-outline-secondary mr-2 btn-no-hover btn-xlarge mx-3"
+                            <button class="btn btn-outline-secondary btn-no-hover btn-xlarge btn-creazione"
+                                    style="width: 19%"
                                     type="button"
                                     (click)="onResetChiamata()">
                                 <i class="fas fa-recycle mr-1"></i>
                                 Ripulisci Campi
-                            </button>
-                        </ng-container>
-                        <ng-container *ngIf="!apertoFromMappa">
-                            <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
-                                    (click)="onAnnullaChiamata()">
-                                Torna Indietro
                             </button>
                         </ng-container>
                         <ng-container *ngIf="apertoFromMappa">
@@ -552,10 +609,28 @@
                             </button>
                         </ng-container>
                     </ng-template>
+                </div>
+                <div class="row-modifica">
                     <ng-template [ngIf]="modifica">
-                        <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge"
+                        <button type="button" class="btn btn-outline-danger btn-no-hover btn-xlarge btn-modifica"
                                 (click)="onChiudiModifica()">
                             Annulla Modifiche
+                        </button>
+                        <button class="btn btn-success btn-no-hover btn-xlarge btn-modifica"
+                                [disabled]="!richiestaModifica?.competenze?.length || formIsInvalid()"
+                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
+                                ngbTooltip="Conferma Modifica"
+                                placement="top">
+                            Salva e Chiudi
+                        </button>
+                        <button class="btn btn-primary btn-no-hover btn-xlarge btn-modifica"
+                                style="min-width: 100px; width: 400px"
+                                [disabled]="loadingCompetenze || !richiestaModifica?.competenze?.length || disabledInviaPartenza || formIsInvalid()"
+                                [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
+                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
+                                ngbTooltip="Invia Partenza"
+                                placement="top">
+                            Salva e Invia Partenza
                         </button>
                     </ng-template>
                 </div>
@@ -563,11 +638,13 @@
         </form>
     </div>
     <!-- Resoconto triage -->
-
-    <div class="col-4 h-100 scroll-y py-3"
+    <div class="col-4 h-100 scroll-y px-0 pb-3"
          [class.bg-resoconto-triage]="!apertoFromMappa">
-        <div class="px-2 mb-2 bg-secondary font-weight-bold" style="color: #ffffff">INFO AGGIUNTIVE</div>
-        <div>
+        <div class="bg-secondary font-weight-bold border-bottom border-light text-center"
+             style="color: #ffffff">
+            INFO AGGIUNTIVE
+        </div>
+        <div class="px-3">
             <app-triage-summary [tipologia]="getTipologia(f.codTipologia.value)"
                                 [dettaglioTipologia]="f.dettaglioTipologia?.value"
                                 [codSchedaContatto]="schedaContatto?.codiceScheda"

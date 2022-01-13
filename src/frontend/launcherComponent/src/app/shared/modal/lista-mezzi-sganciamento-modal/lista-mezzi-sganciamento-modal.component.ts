@@ -9,6 +9,10 @@ import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Mezzo } from '../../model/mezzo.model';
 import { SganciamentoMezzoComposizione } from '../../store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { SganciamentoInterface } from '../../interface/sganciamento.interface';
+import { SetRichiestaById } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { SintesiRichiestaModalComponent } from '../sintesi-richiesta-modal/sintesi-richiesta-modal.component';
+import { ClearEventiRichiesta, SetFiltroTargaMezzo, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
+import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
 
 @Component({
     selector: 'app-lista-mezzi-sganciamento-modal',
@@ -45,8 +49,7 @@ export class ListaMezziSganciamentoModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetListaMezziSganciamento());
         this.subscriptions.add(
             this.mezzi$.subscribe((mezzi: MezzoInServizio[]) => {
-                const mezziFiltered = mezzi?.length ? mezzi.filter((m: MezzoInServizio) => m.mezzo.mezzo.idRichiesta !== this.richiesta.codice) : null;
-                this.mezzi = mezziFiltered;
+                this.mezzi = mezzi?.length ? mezzi.filter((m: MezzoInServizio) => m.mezzo.mezzo.idRichiesta !== this.richiesta.codice) : null;
             })
         );
     }
@@ -59,7 +62,33 @@ export class ListaMezziSganciamentoModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onSganciamento(mezzo: Mezzo): void {
+    /* Apre il modal per visualizzare la richiesta */
+    onDettaglioRichiesta(idRichiesta: string): void {
+        this.store.dispatch(new SetRichiestaById(idRichiesta));
+        this.modalService.open(SintesiRichiestaModalComponent, {
+            windowClass: 'xxlModal modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
+    }
+
+    /* Apre il modal per visualizzare gli eventi-richiesta-richiesta relativi alla richiesta cliccata */
+    onVisualizzaEventiRichiesta(mezzo: Mezzo): void {
+        this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
+        this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
+        let modal;
+        modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            backdrop: true
+        });
+        modal.result.then(() => {
+        }, () => this.store.dispatch(new ClearEventiRichiesta()));
+    }
+
+    onSganciamento(mezzoInServizio: MezzoInServizio): void {
+        const mezzo = mezzoInServizio.mezzo.mezzo;
         const objSganciamento = {
             idRichiesta: this.richiesta.codice,
             idRichiestaDaSganciare: mezzo.idRichiesta,

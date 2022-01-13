@@ -25,6 +25,13 @@ export class SetCompetenze {
     }
 }
 
+export class SetCompetenzeSuccess {
+    static readonly type = '[SchedaTelefonata] Set Competenze Success';
+
+    constructor(public coordinate: Coordinate, public indirizzo: string, public codCompetenze: string[], public markerChiamata?: ChiamataMarker) {
+    }
+}
+
 export class ClearCompetenze {
     static readonly type = '[SchedaTelefonata] Clear Competenze';
 }
@@ -87,6 +94,9 @@ export class AnnullaChiamata {
 
 export class CestinaChiamata {
     static readonly type = '[SchedaTelefonata] Cestina chiamata';
+
+    constructor(public options?: { bypassInitCentroMappa: boolean }) {
+    }
 }
 
 export class ResetChiamata {

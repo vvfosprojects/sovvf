@@ -15,9 +15,5 @@ export interface ZonaEmergenzaForm {
     listaModuliImmediata?: ModuloColonnaMobile[];
     listaModuliConsolidamento?: ModuloColonnaMobile[];
     listaModuliPotInt?: ModuloColonnaMobile[];
-    comandanteRegionale?: string;
-    responsabileDistrettoAreaColpita?: string;
-    responsabile?: string;
-    responsabileCampiBaseMezziOperativi?: string;
-    responsabileGestionePersonaleContratti?: string;
+    tipologieModuli?: string[];
 }

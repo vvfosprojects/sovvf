@@ -14,7 +14,7 @@ import { PermissionFeatures } from '../../enum/permission-features.enum';
 import {
     ClearSchedaContattoHover,
     GetListaSchedeContatto,
-    OpenDetailSC,
+    OpenDettaglioSchedaContatto,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
     SetSchedaContattoHover,
@@ -156,7 +156,7 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
     }
 
     onDettaglioScheda(idSchedaContatto: string): void {
-        this.store.dispatch(new OpenDetailSC(idSchedaContatto));
+        this.store.dispatch(new OpenDettaglioSchedaContatto(idSchedaContatto));
     }
 
     onHoverIn(idSchedaContatto: string): void {

@@ -12,7 +12,7 @@
 </ng-template>
 <ng-template [ngIf]="!richiestaModifica && getActive()">
     <div class="pl-2">
-        <h4 class="d-inline-block mt-2 mb-0">
+        <h4 class="d-inline-block mb-0">
             <i class="fas fa-phone-alt mr-1"></i>
             {{ 'Stai inserendo una nuova chiamata' | uppercase }}
         </h4>
@@ -20,7 +20,7 @@
 </ng-template>
 <ng-template [ngIf]="!!richiestaModifica">
     <div class="pl-2">
-        <h4 class="d-inline-block mt-2 mb-0">
+        <h4 class="d-inline-block mb-0">
             <i class="fas fa-edit mr-1"></i>
             Stai modificando la richiesta
             <b>{{ this.richiestaModifica.codiceRichiesta ? this.richiestaModifica.codiceRichiesta : this.richiestaModifica.codice }}</b>

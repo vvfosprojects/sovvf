@@ -19,8 +19,12 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
@@ -29,11 +33,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizioneMezziQueryHandler : IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult>
     {
+        private readonly ISetComposizioneMezzi _setMezzi;
+        private readonly IGetComposizioneMezziDB _getMezzi;
+
         private readonly IGetComposizioneMezzi _iGetComposizioneMezzi;
 
-        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi)
+        private const string msgErroreCaricamento = "Errore caricamento elenco mezzi";
+
+        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi, ISetComposizioneMezzi setMezzi, IGetComposizioneMezziDB getMezzi)
         {
             _iGetComposizioneMezzi = iGetComposizioneMezzi;
+            _setMezzi = setMezzi;
+            _getMezzi = getMezzi;
         }
 
         /// <summary>
@@ -45,7 +56,34 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Mezzi per Composizione Handler");
 
-            var composizioneMezzi = _iGetComposizioneMezzi.Get(query).ToList();;
+            List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi = null;
+
+            try
+            {
+                composizioneMezzi = _iGetComposizioneMezzi.Get(query);
+
+                if (composizioneMezzi != null && composizioneMezzi.Count > 0)
+                    _setMezzi.Set(composizioneMezzi);
+
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
+                    composizioneMezzi = _getMezzi.Get();
+            }
+            catch (Exception e)
+            {
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
+                    composizioneMezzi = _getMezzi.Get();
+
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
+                {
+                    e = e.GetBaseException();
+
+                    var coordinate = query.Richiesta.Localita.Coordinate;
+
+                    var x = new Exception($"Coordinate: lat {coordinate?.Latitudine}, lon {coordinate?.Longitudine} - {msgErroreCaricamento}: {e.Message}");
+
+                    throw x;
+                }
+            }
 
             Log.Debug("Fine elaborazione Lista Mezzi per Composizione Handler");
 

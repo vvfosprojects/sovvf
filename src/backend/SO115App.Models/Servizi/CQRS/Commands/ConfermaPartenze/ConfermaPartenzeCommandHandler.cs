@@ -24,6 +24,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
@@ -42,15 +43,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
+        private readonly IGetPosizioneByCodiceMezzo _getPosizione;
+        private readonly IGetTurno _getTurno;
 
         private readonly ISendSTATRIItem _sendNewItemSTATRI;
         private readonly ICheckCongruitaPartenze _checkCongruita;
-        private readonly IGetTurno _getTurno;
 
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
             IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza,
-            ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita, IGetTurno getTurno)
+            ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita, IGetTurno getTurno, IGetPosizioneByCodiceMezzo getPosizione)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
@@ -61,6 +63,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _sendNewItemSTATRI = sendNewItemSTATRI;
             _checkCongruita = checkCongruita;
             _getTurno = getTurno;
+            _getPosizione = getPosizione;
         }
 
         public void Handle(ConfermaPartenzeCommand command)
@@ -187,12 +190,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     Stato = Costanti.MezzoInUscita
                 }, _sendNewItemSTATRI, _checkCongruita);
 
+                //var posizioneMezzo = _getPosizione.Get(partenza.Mezzo.Codice).Result?.ToCoordinate();
+
                 command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
                 {
                     CodMezzo = partenza.Mezzo.Codice,
                     Istante = dataAdesso,
                     Stato = Costanti.MezzoInViaggio
-                }, _sendNewItemSTATRI, _checkCongruita);
+                }, _sendNewItemSTATRI, _checkCongruita, partenza.Mezzo.CoordinateStrg);
 
                 dataAdesso = dataAdesso.AddSeconds(1);
             }

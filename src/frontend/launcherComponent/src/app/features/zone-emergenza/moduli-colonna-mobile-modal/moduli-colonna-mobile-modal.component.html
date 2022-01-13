@@ -23,16 +23,16 @@
         <ng-container *ngIf="fase === '1'">
             <ng-container *ngFor="let m of tipologiaEmergenza?.moduli?.mob_Immediata; let i = index">
                 <ng-wizard-step
-                        [title]="m"
+                        [title]="moduliMobImmediataRichiesti.indexOf(m) !== -1 ? 'Richiesto - ' + m : m"
                         [description]="getStepDescription(m)"
                         [canEnter]="true"
                         [canExit]="true">
-                    <ng-container *ngIf="!moduliColonnaMobile[m]?.length">
+                    <ng-container *ngIf="moduliColonnaMobile && !moduliColonnaMobile[m]?.length">
                         <div class="alert alert-danger">
                             Nessun modulo presente per la tipologia {{ m }}
                         </div>
                     </ng-container>
-                    <ng-container *ngIf="moduliColonnaMobile[m]?.length">
+                    <ng-container *ngIf="moduliColonnaMobile && moduliColonnaMobile[m]?.length">
                         <div class="row pt-2">
                             <ng-container *ngFor="let mCM of moduliColonnaMobile[m]; let i = index">
                                 <div class="col-2 mb-2">
@@ -54,7 +54,6 @@
                         [description]="getStepDescription(m)"
                         [canEnter]="true"
                         [canExit]="true">
-
                     <ng-container *ngIf="!moduliColonnaMobile[m]?.length">
                         <div class="alert alert-danger">
                             Nessun modulo presente per la tipologia {{ m }}
@@ -102,7 +101,7 @@
                 [canExit]="true">
             <div class="row pt-2">
                 <ng-container *ngFor="let mCM of moduliSelezionati">
-                    <div class="col-3 mb-2">
+                    <div class="col-2 mb-2">
                         <app-modulo-colonna-mobile [modulo]="mCM">
                         </app-modulo-colonna-mobile>
                     </div>

@@ -26,6 +26,11 @@ import { defineChiamataIntervento } from '../../helper/function-richieste';
 import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
 import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
 import { EnteInterface } from '../../interface/ente.interface';
+import { OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { ClearMezzoInServizioSelezionato, SetMezzoInServizioSelezionato } from '../../../features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { Mezzo } from '../../model/mezzo.model';
+import { MezziInServizioState } from '../../../features/home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { PosDettaglioModalComponent } from '../../modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -63,6 +68,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() annullaStatoMezzi: string[];
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
+    @Output() clickIndirizzo = new EventEmitter<SintesiRichiesta>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();
     @Output() fissaInAlto = new EventEmitter<SintesiRichiesta>();
     @Output() nuovaPartenza = new EventEmitter<SintesiRichiesta>();
@@ -116,6 +122,12 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     richiestaClick(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.clickRichiesta.emit(richiesta);
+        }
+    }
+
+    indirizzoClick(richiesta: SintesiRichiesta): void {
+        if (richiesta) {
+            this.clickIndirizzo.emit(richiesta);
         }
     }
 
@@ -197,6 +209,12 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     checkNumeroPartenzeAttive(partenze: Partenza[]): number {
         return checkNumeroPartenzeAttive(partenze);
+    }
+
+    onDettaglioSchedaContatto(codiceScheda: string): void {
+        if (codiceScheda) {
+            this.store.dispatch(new OpenDettaglioSchedaContatto(codiceScheda));
+        }
     }
 
     openDettaglioTriage(): void {
@@ -294,6 +312,19 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
     }
 
+    onDettaglioPos(): void {
+        let modalDettaglioPos;
+        modalDettaglioPos = this.modalService.open(PosDettaglioModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            size: 'lg',
+            centered: true,
+        });
+        modalDettaglioPos.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+        modalDettaglioPos.componentInstance.pos = this.richiesta.dettaglioTipologia ? this.richiesta.dettaglioTipologia.pos : null;
+        modalDettaglioPos.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata: ' : 'Intervento: ';
+    }
+
     onSostituzioneFineTurno(partenze: Partenza[]): void {
         let modalSostituzioneFineTurno;
         modalSostituzioneFineTurno = this.modalService.open(SostituzionePartenzeFineTunoModalComponent, {
@@ -315,6 +346,18 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
                     break;
             }
         });
+    }
+
+    onSelezioneMezzoPartenza(mezzo: Mezzo): void {
+        const idMezzoInServizioSelezionato = this.store.selectSnapshot(MezziInServizioState.idMezzoInServizioSelezionato);
+        if (idMezzoInServizioSelezionato === mezzo.codice) {
+            this.store.dispatch(new ClearMezzoInServizioSelezionato());
+            setTimeout(() => {
+                this.store.dispatch(new SetMezzoInServizioSelezionato(mezzo.codice));
+            }, 1);
+        } else {
+            this.store.dispatch(new SetMezzoInServizioSelezionato(mezzo.codice));
+        }
     }
 
     openDettaglioSoccorsoAereoModal(open: any): void {

@@ -83,6 +83,17 @@ export class ClearSchedaContattoHover {
     static readonly type = '[SchedeContatto] Clear Scheda Contatto Hover';
 }
 
+export class SetSchedaContattoSelezionata {
+    static readonly type = '[SchedeContatto] Set Scheda Contatto Selezionata';
+
+    constructor(public codiceSchedaContatto: string) {
+    }
+}
+
+export class ClearSchedaContattoSelezionata {
+    static readonly type = '[SchedeContatto] Clear Scheda Contatto Selezionata';
+}
+
 export class ReducerSetFiltroSchedeContatto {
     static readonly type = '[SchedeContatto] Reducer Set Filtro Schede Contatto';
 
@@ -113,7 +124,7 @@ export class ResetFiltriSelezionatiSchedeContatto {
 }
 
 export class SetRangeVisualizzazioneSchedeContatto {
-    static readonly type = '[SchedeContatto]Set Range Visualizzazione Schede Contatto';
+    static readonly type = '[SchedeContatto] Set Range Visualizzazione Schede Contatto';
 
     constructor(public range: RangeSchedeContattoEnum) {
     }
@@ -147,8 +158,8 @@ export class ToggleCollapsed {
     }
 }
 
-export class OpenDetailSC {
-    static readonly type = '[SchedeContatto] Open Detail';
+export class OpenDettaglioSchedaContatto {
+    static readonly type = '[SchedeContatto] Open Dettaglio Scheda Contatto';
 
     constructor(public codiceScheda: string) {
     }

@@ -4,6 +4,7 @@ import { Store } from '@ngxs/store';
 import { SoccorsoAereoModalComponent } from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
 import { GetAzioniRichiesta } from '../../../store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { TurnOffComposizione } from '../../../store/actions/view/view.actions';
 
 @Component({
     selector: 'app-composizione-confirm-button',
@@ -66,4 +67,7 @@ export class ComposizioneConfirmButtonComponent implements OnInit {
         });
     }
 
+    turnOffComposizione(): void {
+        this.store.dispatch(new TurnOffComposizione());
+    }
 }
