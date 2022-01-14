@@ -194,9 +194,6 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
         if (codSede) {
             this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
                 switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + documento.fileName + ')');
-                        break;
                     case HttpEventType.Response:
                         const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
                             windowClass: 'xxlModal modal-holder',
@@ -204,7 +201,6 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                             centered: true
                         });
                         const downloadedFile = new Blob([data.body], { type: data.body.type });
-                        // const codRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
                         modalVisualizzaPdf.componentInstance.titolo = documento?.descrizioneDocumento?.toLocaleUpperCase();
                         modalVisualizzaPdf.componentInstance.blob = downloadedFile;
                         break;
