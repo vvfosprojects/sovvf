@@ -24,6 +24,10 @@ import {
     ResetZonaEmergenzaForm,
     SaveCraZonaEmergenza,
     SetEventoRichiestaGestitoZonaEmergenza,
+    SetFiltriAttiviGeneriModuliColonnaMobile,
+    SetFiltriAttiviStatiModuliColonnaMobile,
+    SetFiltriGeneriModuliColonnaMobile,
+    SetFiltriStatiModuliColonnaMobile,
     SetMappaActiveValue,
     SetTipologieEmergenza,
     SetZonaEmergenzaById,
@@ -56,10 +60,14 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { RichiestaModuliZonaEmergenzaForm } from '../../../interface/richiesta-moduli-form.interface';
 import { RichiestaCraZonaEmergenzaForm } from '../../../interface/richiesta-cra-doa-form.interface';
+import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
+import { FiltriZonaEmergenzaInterface } from '../../../interface/filtri-zona-emergenza.interface';
 
 export interface ZoneEmergenzaStateModel {
     zoneEmergenza: ZonaEmergenza[];
     zonaEmergenzaById: ZonaEmergenza;
+    filtri: FiltriZonaEmergenzaInterface;
+    filtriAttivi: FiltriZonaEmergenzaInterface;
     tipologieZonaEmergenza: TipologiaEmergenza[];
     allTipologieZonaEmergenza: { id: string, desc: string }[];
     zonaEmergenzaForm: {
@@ -123,6 +131,14 @@ export interface ZoneEmergenzaStateModel {
 export const ZoneEmergenzaStateModelDefaults: ZoneEmergenzaStateModel = {
     zoneEmergenza: null,
     zonaEmergenzaById: null,
+    filtri: {
+        generiModuliColonnaMobile: [],
+        statiModuliColonnaMobile: []
+    },
+    filtriAttivi: {
+        generiModuliColonnaMobile: [],
+        statiModuliColonnaMobile: []
+    },
     tipologieZonaEmergenza: null,
     allTipologieZonaEmergenza: null,
     zonaEmergenzaForm: {
@@ -199,6 +215,21 @@ export class ZoneEmergenzaState {
     @Selector()
     static zonaEmergenzaById(state: ZoneEmergenzaStateModel): ZonaEmergenza {
         return state.zonaEmergenzaById;
+    }
+
+    @Selector()
+    static filtri(state: ZoneEmergenzaStateModel): FiltriZonaEmergenzaInterface {
+        return state.filtri;
+    }
+
+    @Selector()
+    static filtriAttivi(state: ZoneEmergenzaStateModel): FiltriZonaEmergenzaInterface {
+        return state.filtriAttivi;
+    }
+
+    @Selector()
+    static listaModuliImmediataZonaEmergenzaById(state: ZoneEmergenzaStateModel): ModuloColonnaMobile[] {
+        return state.zonaEmergenzaById?.listaModuliImmediata;
     }
 
     @Selector()
@@ -285,6 +316,50 @@ export class ZoneEmergenzaState {
     setZonaEmergenzaById({ patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetZonaEmergenzaById): void {
         patchState({
             zonaEmergenzaById: action.zonaEmergenza
+        });
+    }
+
+    @Action(SetFiltriStatiModuliColonnaMobile)
+    setFiltriStatiModuliColonnaMobile({ getState, patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetFiltriStatiModuliColonnaMobile): void {
+        const state = getState();
+        patchState({
+            filtri: {
+                ...state.filtri,
+                statiModuliColonnaMobile: action.statiModuliColonnaMobile
+            }
+        });
+    }
+
+    @Action(SetFiltriGeneriModuliColonnaMobile)
+    setFiltriGeneriModuliColonnaMobile({ getState, patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetFiltriGeneriModuliColonnaMobile): void {
+        const state = getState();
+        patchState({
+            filtri: {
+                ...state.filtri,
+                generiModuliColonnaMobile: action.generiModuliColonnaMobile
+            }
+        });
+    }
+
+    @Action(SetFiltriAttiviStatiModuliColonnaMobile)
+    setFiltriAttiviStatiModuliColonnaMobile({ getState, patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetFiltriAttiviStatiModuliColonnaMobile): void {
+        const state = getState();
+        patchState({
+            filtriAttivi: {
+                ...state.filtriAttivi,
+                statiModuliColonnaMobile: action.statiModuliColonnaMobile
+            }
+        });
+    }
+
+    @Action(SetFiltriAttiviGeneriModuliColonnaMobile)
+    setFiltriAttiviGeneriModuliColonnaMobile({ getState, patchState }: StateContext<ZoneEmergenzaStateModel>, action: SetFiltriAttiviGeneriModuliColonnaMobile): void {
+        const state = getState();
+        patchState({
+            filtriAttivi: {
+                ...state.filtriAttivi,
+                generiModuliColonnaMobile: action.generiModuliColonnaMobile
+            }
         });
     }
 

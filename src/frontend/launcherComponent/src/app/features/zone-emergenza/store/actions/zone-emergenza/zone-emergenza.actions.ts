@@ -31,6 +31,34 @@ export class SetZonaEmergenzaById {
     }
 }
 
+export class SetFiltriStatiModuliColonnaMobile {
+    static readonly type = '[ZoneEmergenza] Set Filtri Stati Moduli Colonna Mobile';
+
+    constructor(public statiModuliColonnaMobile: string[]) {
+    }
+}
+
+export class SetFiltriGeneriModuliColonnaMobile {
+    static readonly type = '[ZoneEmergenza] Set Filtri Generi Moduli Colonna Mobile';
+
+    constructor(public generiModuliColonnaMobile: string[]) {
+    }
+}
+
+export class SetFiltriAttiviStatiModuliColonnaMobile {
+    static readonly type = '[ZoneEmergenza] Set Filtri Attivi Stati Moduli Colonna Mobile';
+
+    constructor(public statiModuliColonnaMobile: string[]) {
+    }
+}
+
+export class SetFiltriAttiviGeneriModuliColonnaMobile {
+    static readonly type = '[ZoneEmergenza] Set Filtri Attivi Generi Moduli Colonna Mobile';
+
+    constructor(public generiModuliColonnaMobile: string[]) {
+    }
+}
+
 export class StartLoadingZoneEmergenza {
     static readonly type = '[ZoneEmergenza] Start Loading Zone Emergenza';
 }

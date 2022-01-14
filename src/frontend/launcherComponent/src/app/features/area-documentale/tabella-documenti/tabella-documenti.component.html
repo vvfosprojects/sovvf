@@ -31,18 +31,14 @@
         <td style="width:22%" class="align-middle">
             <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
                href="javascript:void(0)"
-               style="max-width: 400px;"
                (click)="onViewDocumento(d)">
                 {{ d?.descrizioneDocumento }}
             </a>
         </td>
         <td style="width:22%" class="align-middle">
-            <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
-               href="javascript:void(0)"
-               style="max-width: 400px;"
-               (click)="onViewDocumento(d)">
+            <span class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate">
                 {{ d?.descrizioneCategoria }}
-            </a>
+            </span>
         </td>
     </tr>
     <tr *ngIf="documenti?.length <= 0">

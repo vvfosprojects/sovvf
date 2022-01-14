@@ -230,7 +230,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                         centered: true
                     });
                     const downloadedFile = new Blob([data.body], { type: data.body.type });
-                    console.log('test', 'Stampa ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta));
                     const codRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
                     modalVisualizzaPdf.componentInstance.titolo = 'Stampa ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codRichiesta;
                     modalVisualizzaPdf.componentInstance.blob = downloadedFile;
