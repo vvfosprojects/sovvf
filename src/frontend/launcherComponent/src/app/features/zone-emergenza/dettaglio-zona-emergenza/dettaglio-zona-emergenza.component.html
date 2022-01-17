@@ -120,177 +120,257 @@
                     </div>
                 </div>
             </ng-container>
+
             <!-- Moduli Richiesti -->
             <div class="col-12">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <div class="clearfix d-flex align-items-center">
-                            <div class="float-left">
-                                {{ 'Moduli Richiesti' | uppercase }}
-                                <ng-container *ngIf="getEventiRichiesteZonaEmergenza()?.length >0">
-                                    ({{getEventiRichiesteZonaEmergenza()?.length}})
-                                </ng-container>
-                                <ng-container *ngIf="!getEventiRichiesteZonaEmergenza()?.length">
-                                    (0)
-                                </ng-container>
-                            </div>
-                            <ng-container *ngIf="isDirRegionale">
-                                <div class="float-left ml-3">
-                                    <button class="btn btn-no-hover btn-light border-secondary"
-                                            (click)="onInvioColonneMobiliByDirezione()">
-                                        <i class="fas fa-truck mr-1"></i>
-                                        {{ 'Seleziona moduli' | uppercase }}
-                                    </button>
-                                </div>
+                <ul ngbNav #navRichiesteModuli="ngbNav" [(activeId)]="activeIdNavRichiesteModuli" class="nav-tabs">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>
+                            {{ 'Richieste da evadere' | uppercase }}
+                            <ng-container *ngIf="getEventiRichiesteZonaEmergenza()?.length >0">
+                                ({{getEventiRichiesteZonaEmergenza()?.length}})
                             </ng-container>
-                            <ng-container *ngIf="!isDirRegionale && !isCON">
-                                <div class="float-left ml-3">
-                                    <button class="btn btn-no-hover btn-primary"
-                                            (click)="reducerRichiestaModuli()">
-                                        <i class="fas fa-plus"></i>
-                                        {{ 'Richiedi Moduli' | uppercase }}
-                                    </button>
-                                </div>
+                            <ng-container *ngIf="!getEventiRichiesteZonaEmergenza()?.length">
+                                (0)
                             </ng-container>
-                        </div>
-                    </div>
-                    <div class="card-body py-3"
-                         style="max-height: 140px; overflow-y: auto">
-                        <ng-container *ngIf="getEventiRichiesteZonaEmergenza()?.length">
-                            <div *ngFor="let e of getEventiRichiesteZonaEmergenza(); let i = index"
-                                 class="card"
-                                 [class.mb-2]="(i + 1) !== getEventiRichiesteZonaEmergenza()?.length">
-                                <div class="card-body">
-                                    {{ e.istante | date: 'dd/MM/YYYY HH:mm' }}
-                                    - Moduli richiesti:
-                                    <div *ngFor="let tipologiaModulo of e.tipologiaModuli, let i = index"
-                                         class="d-inline-block mr-1">
-                                        {{ tipologiaModulo }}<span *ngIf="(i + 1) < e.tipologiaModuli?.length"
-                                                                   class="d-inline-block">,</span>
-                                    </div>
-                                </div>
-                                <ng-container *ngIf="isDirRegionale || (isCON && zonaEmergenzaById.allertata)">
-                                    <div class="card-footer">
-                                        <button class="btn btn-no-hover btn-light border-secondary"
-                                                (click)="onColonneMobili(e)">
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <ng-container *ngIf="isDirRegionale">
+                                        <button class="btn btn-sm btn-no-hover btn-primary"
+                                                (click)="onInvioColonneMobiliByDirezione()">
                                             <i class="fas fa-truck mr-1"></i>
-                                            {{ 'Seleziona moduli' | uppercase }}
+                                            {{ 'Seleziona moduli' }}
                                         </button>
-                                        <ng-container *ngIf="isDirRegionale && !isCON">
-                                            <button class="btn btn-no-hover btn-light border-secondary ml-2">
-                                                <i class="fas fa-paper-plane mr-1"></i>
-                                                {{ 'Invia richiesta al CON' | uppercase }}
-                                            </button>
-                                        </ng-container>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
-                        <ng-container *ngIf="!getEventiRichiesteZonaEmergenza()?.length">
-                            <div class="alert alert-danger mb-0">
-                                Nessun Modulo richiesto
-                            </div>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <!-- Moduli Assegnati-->
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    {{ 'Moduli Assegnati' | uppercase }}
-                                    <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length >0">
-                                        ({{zonaEmergenzaById?.listaModuliImmediata?.length}})
                                     </ng-container>
-                                    <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
-                                        (0)
+                                    <ng-container *ngIf="!isDirRegionale && !isCON">
+                                        <button class="btn btn-no-hover btn-primary"
+                                                (click)="reducerRichiestaModuli()">
+                                            <i class="fas fa-plus"></i>
+                                            {{ 'Richiedi Moduli' | uppercase }}
+                                        </button>
                                     </ng-container>
                                 </div>
-                                <div class="ml-3">
-                                    <ng-select [items]="filtri?.statiModuliColonnaMobile"
-                                               [multiple]="true"
-                                               [hideSelected]="true"
-                                               [searchable]="true"
-                                               [clearable]="true"
-                                               [notFoundText]="'Stato non trovato'"
-                                               placeholder="Stato: Tutti"
-                                               (change)="onChangeFiltroStatoColonnaMobile($event)">
-                                    </ng-select>
-                                </div>
-                                <div class="ml-2">
-                                    <ng-select [items]="filtri?.generiModuliColonnaMobile"
-                                               [multiple]="true"
-                                               [hideSelected]="true"
-                                               [searchable]="true"
-                                               [clearable]="true"
-                                               [notFoundText]="'Genere non trovato'"
-                                               placeholder="Genere: Tutti"
-                                               (change)="onChangeFiltroGenereColonnaMobile($event)">
-                                    </ng-select>
+                                <div class="card-body py-3"
+                                     style="max-height: 205px; overflow-y: auto">
+                                    <ng-container *ngIf="getEventiRichiesteZonaEmergenza()?.length">
+                                        <div *ngFor="let e of getEventiRichiesteZonaEmergenza(); let i = index"
+                                             class="card"
+                                             [class.mb-2]="(i + 1) !== getEventiRichiesteZonaEmergenza()?.length">
+                                            <div class="card-body">
+                                                {{ e.istante | date: 'dd/MM/YYYY HH:mm' }}
+                                                - Moduli richiesti:
+                                                <div *ngFor="let tipologiaModulo of e.tipologiaModuli, let i = index"
+                                                     class="d-inline-block mr-1">
+                                                    {{ tipologiaModulo }}<span
+                                                        *ngIf="(i + 1) < e.tipologiaModuli?.length"
+                                                        class="d-inline-block">,</span>
+                                                </div>
+                                            </div>
+                                            <ng-container
+                                                    *ngIf="isDirRegionale || (isCON && zonaEmergenzaById.allertata)">
+                                                <div class="card-footer">
+                                                    <button class="btn btn-no-hover btn-light border-secondary"
+                                                            (click)="onColonneMobili(e)">
+                                                        <i class="fas fa-truck mr-1"></i>
+                                                        {{ 'Seleziona moduli' | uppercase }}
+                                                    </button>
+                                                    <ng-container *ngIf="isDirRegionale && !isCON">
+                                                        <button class="btn btn-no-hover btn-light border-secondary ml-2">
+                                                            <i class="fas fa-paper-plane mr-1"></i>
+                                                            {{ 'Invia richiesta al CON' | uppercase }}
+                                                        </button>
+                                                    </ng-container>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!getEventiRichiesteZonaEmergenza()?.length">
+                                        <div class="alert alert-danger mb-0">
+                                            Nessun Modulo richiesto
+                                        </div>
+                                    </ng-container>
                                 </div>
                             </div>
-                            <button class="btn"
-                                    [class.btn-primary]="!moduliAssegnatiExpanded"
-                                    [class.btn-danger]="moduliAssegnatiExpanded"
-                                    (click)="onToggleModuliAssegnati()">
-                                <ng-container *ngIf="!moduliAssegnatiExpanded">
-                                    <i class="fas fa-plus"></i>
-                                    Espandi
-                                </ng-container>
-                                <ng-container *ngIf="moduliAssegnatiExpanded">
-                                    <i class="fas fa-minus"></i>
-                                    Riduci
-                                </ng-container>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body py-3"
-                         [class.moduli-assegnati-h-180]="getEventiRichiesteZonaEmergenza()?.length === 2"
-                         [class.moduli-assegnati-h-245]="getEventiRichiesteZonaEmergenza()?.length === 1"
-                         [class.moduli-assegnati-h-260]="!getEventiRichiesteZonaEmergenza()?.length">
-                        <div class="row">
-                            <ng-container *ngIf="!listaModuliImmediataZonaEmergenzaByIdFiltered?.length">
-                                <div class="col-12">
-                                    <div class="alert alert-danger mb-0">
-                                        Nessun Modulo assegnato
-                                    </div>
-                                </div>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink>
+                            {{ 'Richieste evase' | uppercase }}
+                            <ng-container *ngIf="getEventiRichiesteGestiteZonaEmergenza()?.length >0">
+                                ({{getEventiRichiesteGestiteZonaEmergenza()?.length}})
                             </ng-container>
-                            <ng-container *ngIf="listaModuliImmediataZonaEmergenzaByIdFiltered?.length">
-                                <ng-container *ngIf="!moduliAssegnatiExpanded">
-                                    <div *ngFor="let modulo_mob_Immediata of listaModuliImmediataZonaEmergenzaByIdFiltered; let i = index"
-                                         class="col-2 mb-2">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <div class="clearfix">
-                                                    <div class="float-left">
-                                                        <h6 class="mb-0">{{ modulo_mob_Immediata.nomeModulo }}</h6>
-                                                    </div>
-                                                    <div class="float-left ml-1">
-                                                        <h6 class="mb-0">{{ ' - ' + modulo_mob_Immediata.stato }}</h6>
-                                                    </div>
-                                                    <div class="float-right">
-                                                        <h6 class="mb-0">{{ modulo_mob_Immediata.codComando }}</h6>
-                                                    </div>
+                            <ng-container *ngIf="!getEventiRichiesteGestiteZonaEmergenza()?.length">
+                                (0)
+                            </ng-container>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <ng-container *ngIf="isDirRegionale">
+                                        <button class="btn btn-sm btn-no-hover btn-primary"
+                                                (click)="onInvioColonneMobiliByDirezione()">
+                                            <i class="fas fa-truck mr-1"></i>
+                                            {{ 'Seleziona moduli' }}
+                                        </button>
+                                    </ng-container>
+                                    <ng-container *ngIf="!isDirRegionale && !isCON">
+                                        <button class="btn btn-no-hover btn-primary"
+                                                (click)="reducerRichiestaModuli()">
+                                            <i class="fas fa-plus"></i>
+                                            {{ 'Richiedi Moduli' | uppercase }}
+                                        </button>
+                                    </ng-container>
+                                </div>
+                                <div class="card-body py-3"
+                                     style="max-height: 210px; overflow-y: auto">
+                                    <ng-container *ngIf="getEventiRichiesteGestiteZonaEmergenza()?.length">
+                                        <div *ngFor="let e of getEventiRichiesteGestiteZonaEmergenza(); let i = index"
+                                             class="card"
+                                             [class.mb-2]="(i + 1) !== getEventiRichiesteGestiteZonaEmergenza()?.length">
+                                            <div class="card-body">
+                                                {{ e.istante | date: 'dd/MM/YYYY HH:mm' }}
+                                                - Moduli richiesti:
+                                                <div *ngFor="let tipologiaModulo of e.tipologiaModuli, let i = index"
+                                                     class="d-inline-block mr-1">
+                                                    {{ tipologiaModulo }}<span
+                                                        *ngIf="(i + 1) < e.tipologiaModuli?.length"
+                                                        class="d-inline-block">,</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </ng-container>
-                                <ng-container *ngIf="moduliAssegnatiExpanded">
-                                    <div *ngFor="let modulo_mob_Immediata of listaModuliImmediataZonaEmergenzaByIdFiltered"
-                                         class="col-2 mb-2">
-                                        <app-modulo-colonna-mobile [modulo]="modulo_mob_Immediata">
-                                        </app-modulo-colonna-mobile>
-                                    </div>
-                                </ng-container>
+                                    </ng-container>
+                                    <ng-container *ngIf="!getEventiRichiesteGestiteZonaEmergenza()?.length">
+                                        <div class="alert alert-danger mb-0">
+                                            Nessuna richiesta evasa
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                </ul>
+                <div [ngbNavOutlet]="navRichiesteModuli"></div>
+            </div>
+
+            <!-- Moduli Assegnati-->
+            <div class="col-12">
+                <ul ngbNav #navModuliAssegnati="ngbNav" [(activeId)]="activeIdNavModuliAssegnati" class="nav-tabs">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>
+                            {{ 'Moduli Assegnati' | uppercase }}
+                            <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length >0">
+                                ({{zonaEmergenzaById?.listaModuliImmediata?.length}})
                             </ng-container>
-                        </div>
-                    </div>
-                </div>
+                            <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
+                                (0)
+                            </ng-container>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <ng-select [items]="filtri?.statiModuliColonnaMobile"
+                                                           [multiple]="true"
+                                                           [hideSelected]="true"
+                                                           [searchable]="true"
+                                                           [clearable]="true"
+                                                           [notFoundText]="'Stato non trovato'"
+                                                           placeholder="Stato: Tutti"
+                                                           (change)="onChangeFiltroStatoColonnaMobile($event)">
+                                                </ng-select>
+                                            </div>
+                                            <div class="ml-2">
+                                                <ng-select [items]="filtri?.generiModuliColonnaMobile"
+                                                           [multiple]="true"
+                                                           [hideSelected]="true"
+                                                           [searchable]="true"
+                                                           [clearable]="true"
+                                                           [notFoundText]="'Genere non trovato'"
+                                                           placeholder="Genere: Tutti"
+                                                           (change)="onChangeFiltroGenereColonnaMobile($event)">
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                        <button class="btn"
+                                                [class.btn-primary]="!moduliAssegnatiExpanded"
+                                                [class.btn-danger]="moduliAssegnatiExpanded"
+                                                (click)="onToggleModuliAssegnati()">
+                                            <ng-container *ngIf="!moduliAssegnatiExpanded">
+                                                <i class="fas fa-plus"></i>
+                                                Espandi
+                                            </ng-container>
+                                            <ng-container *ngIf="moduliAssegnatiExpanded">
+                                                <i class="fas fa-minus"></i>
+                                                Riduci
+                                            </ng-container>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body py-3"
+                                     style="max-height: 220px; overflow-y: auto;">
+                                    <div class="row">
+                                        <ng-container *ngIf="!listaModuliImmediataZonaEmergenzaByIdFiltered?.length">
+                                            <div class="col-12">
+                                                <div class="alert alert-danger mb-0">
+                                                    Nessun Modulo assegnato
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="listaModuliImmediataZonaEmergenzaByIdFiltered?.length">
+                                            <ng-container *ngIf="!moduliAssegnatiExpanded">
+                                                <div *ngFor="let modulo_mob_Immediata of listaModuliImmediataZonaEmergenzaByIdFiltered; let i = index"
+                                                     class="col-2 mb-2">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="clearfix">
+                                                                <div class="float-left">
+                                                                    <h6 class="mb-0">{{ modulo_mob_Immediata.nomeModulo }}</h6>
+                                                                </div>
+                                                                <div class="float-left ml-1">
+                                                                    <h6 class="mb-0">{{ ' - ' + modulo_mob_Immediata.stato }}</h6>
+                                                                </div>
+                                                                <div class="float-right">
+                                                                    <h6 class="mb-0">{{ modulo_mob_Immediata.codComando }}</h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            <ng-container *ngIf="moduliAssegnatiExpanded">
+                                                <div *ngFor="let modulo_mob_Immediata of listaModuliImmediataZonaEmergenzaByIdFiltered"
+                                                     class="col-2 mb-2">
+                                                    <app-modulo-colonna-mobile [modulo]="modulo_mob_Immediata">
+                                                    </app-modulo-colonna-mobile>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink>
+                            {{ 'Grafico Moduli Assegnati' | uppercase }}
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="card">
+                                <div class="card-header">
+                                    {{ 'Resoconto moduli' | uppercase }}
+                                </div>
+                                <div class="card-body">
+                                    <!-- TODO: inserire grafici a torta -->
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                </ul>
+                <div [ngbNavOutlet]="navModuliAssegnati"></div>
             </div>
 
             <!-- Fasi al momento non utilizzate -->

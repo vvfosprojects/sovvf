@@ -12,7 +12,9 @@ import {
     RequestCra,
     RequestTipologieModuli,
     SetFiltriAttiviGeneriModuliColonnaMobile,
-    SetFiltriAttiviStatiModuliColonnaMobile, SetFiltriGeneriModuliColonnaMobile, SetFiltriStatiModuliColonnaMobile,
+    SetFiltriAttiviStatiModuliColonnaMobile,
+    SetFiltriGeneriModuliColonnaMobile,
+    SetFiltriStatiModuliColonnaMobile,
     UpdateModuliMobImmediataZonaEmergenza
 } from '../store/actions/zone-emergenza/zone-emergenza.actions';
 import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
@@ -53,6 +55,8 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
 
     idZonaEmergenza: string;
 
+    activeIdNavRichiesteModuli = 1;
+    activeIdNavModuliAssegnati = 1;
     moduliAssegnatiExpanded: boolean;
 
     private subscriptions: Subscription = new Subscription();
@@ -189,6 +193,10 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
 
     getEventiRichiesteZonaEmergenza(): EventoEmergenza[] {
         return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaEmergenza' && !e.gestita);
+    }
+
+    getEventiRichiesteGestiteZonaEmergenza(): EventoEmergenza[] {
+        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaEmergenza' && e.gestita);
     }
 
     getEventiRichiestaCreazioneCraZonaEmergenza(): EventoEmergenza {
