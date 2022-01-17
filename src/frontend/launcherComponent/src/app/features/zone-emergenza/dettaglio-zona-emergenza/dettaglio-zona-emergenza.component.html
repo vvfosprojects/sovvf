@@ -356,15 +356,52 @@
                     </li>
                     <li [ngbNavItem]="2">
                         <a ngbNavLink>
-                            {{ 'Grafico Moduli Assegnati' | uppercase }}
+                            {{ 'Reportistica' | uppercase }}
                         </a>
                         <ng-template ngbNavContent>
                             <div class="card">
                                 <div class="card-header">
                                     {{ 'Resoconto moduli' | uppercase }}
                                 </div>
-                                <div class="card-body">
-                                    <!-- TODO: inserire grafici a torta -->
+                                <div class="card-body p-0">
+                                    <div class="d-flex" style="justify-content: space-evenly">
+                                        <ng-container *ngIf="statiModuliGraphData?.length">
+                                            <ngx-charts-pie-chart
+                                                    [results]="statiModuliGraphData"
+                                                    [view]="[380, 270]"
+                                                    [scheme]="colorScheme"
+                                                    [gradient]="gradient"
+                                                    [legend]="showLegend"
+                                                    [legendPosition]="legendPosition"
+                                                    [labels]="showLabels"
+                                                    [doughnut]="isDoughnut">
+                                            </ngx-charts-pie-chart>
+                                        </ng-container>
+                                        <ng-container *ngIf="generiModuliGraphData?.length">
+                                            <ngx-charts-pie-chart
+                                                    [results]="generiModuliGraphData"
+                                                    [view]="[380, 270]"
+                                                    [scheme]="colorScheme"
+                                                    [gradient]="gradient"
+                                                    [legend]="showLegend"
+                                                    [legendPosition]="legendPosition"
+                                                    [labels]="showLabels"
+                                                    [doughnut]="isDoughnut">
+                                            </ngx-charts-pie-chart>
+                                        </ng-container>
+                                        <ng-container *ngIf="comandiModuliGraphData?.length">
+                                            <ngx-charts-pie-chart
+                                                    [results]="comandiModuliGraphData"
+                                                    [view]="[380, 270]"
+                                                    [scheme]="colorScheme"
+                                                    [gradient]="gradient"
+                                                    [legend]="showLegend"
+                                                    [legendPosition]="legendPosition"
+                                                    [labels]="showLabels"
+                                                    [doughnut]="isDoughnut">
+                                            </ngx-charts-pie-chart>
+                                        </ng-container>
+                                    </div>
                                 </div>
                             </div>
                         </ng-template>

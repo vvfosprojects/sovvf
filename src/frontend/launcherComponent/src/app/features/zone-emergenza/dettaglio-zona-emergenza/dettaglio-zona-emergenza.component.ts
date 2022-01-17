@@ -59,6 +59,20 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
     activeIdNavModuliAssegnati = 1;
     moduliAssegnatiExpanded: boolean;
 
+    statiModuliGraphData: any[];
+    generiModuliGraphData: any[];
+    comandiModuliGraphData: any[];
+
+    colorScheme = {
+        domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    };
+    // options
+    gradient = true;
+    showLegend = false;
+    showLabels = true;
+    isDoughnut = false;
+    legendPosition = 'right';
+
     private subscriptions: Subscription = new Subscription();
 
     constructor(private route: ActivatedRoute,
@@ -156,6 +170,9 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
                 if (listaModuliImmediataZonaEmergenzaById?.length) {
                     this.listaModuliImmediataZonaEmergenzaById = listaModuliImmediataZonaEmergenzaById;
                     this.listaModuliImmediataZonaEmergenzaByIdFiltered = listaModuliImmediataZonaEmergenzaById;
+                    this.setStatiModuliGraphData();
+                    this.setGeneriModuliGraphData();
+                    this.setComandiModuliGraphData();
                     const uniqueStati = [...new Set(listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.stato))];
                     const uniqueGeneri = [...new Set(listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.nomeModulo))];
                     this.store.dispatch([
@@ -271,7 +288,6 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
         });
     }
 
-
     onRichiestaCra(): void {
         if (this.isCON || this.isDirRegionale) {
             return;
@@ -325,6 +341,48 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
             }
             this.store.dispatch(new ResetForm({ path: 'zoneEmergenza.richiestaModuliZonaEmergenzaForm' }));
         });
+    }
+
+    setStatiModuliGraphData(): any {
+        const uniqueStati = [...new Set(this.listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.stato))];
+        const graphData = [];
+        if (uniqueStati?.length) {
+            uniqueStati.forEach((stato: string) => {
+                graphData.push({
+                    name: stato,
+                    value: this.listaModuliImmediataZonaEmergenzaById.filter((item: ModuloColonnaMobile) => item.stato === stato).length
+                });
+            });
+        }
+        this.statiModuliGraphData = graphData;
+    }
+
+    setGeneriModuliGraphData(): any {
+        const uniqueGeneri = [...new Set(this.listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.nomeModulo))];
+        const graphData = [];
+        if (uniqueGeneri?.length) {
+            uniqueGeneri.forEach((genere: string) => {
+                graphData.push({
+                    name: genere,
+                    value: this.listaModuliImmediataZonaEmergenzaById.filter((item: ModuloColonnaMobile) => item.nomeModulo === genere).length
+                });
+            });
+        }
+        this.generiModuliGraphData = graphData;
+    }
+
+    setComandiModuliGraphData(): any {
+        const uniqueComandi = [...new Set(this.listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.codComando))];
+        const graphData = [];
+        if (uniqueComandi?.length) {
+            uniqueComandi.forEach((codComando: string) => {
+                graphData.push({
+                    name: codComando,
+                    value: this.listaModuliImmediataZonaEmergenzaById.filter((item: ModuloColonnaMobile) => item.codComando === codComando).length
+                });
+            });
+        }
+        this.comandiModuliGraphData = graphData;
     }
 
     goToGestioneEmergenze(): void {
