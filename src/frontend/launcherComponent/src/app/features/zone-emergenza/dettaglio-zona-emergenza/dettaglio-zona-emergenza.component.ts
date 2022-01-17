@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { EventoEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -35,7 +35,7 @@ import { FiltriZonaEmergenzaInterface } from '../interface/filtri-zona-emergenza
     templateUrl: './dettaglio-zona-emergenza.component.html',
     styleUrls: ['./dettaglio-zona-emergenza.component.css']
 })
-export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
+export class DettaglioZonaEmergenzaComponent implements OnInit, OnChanges, OnDestroy {
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
@@ -66,7 +66,6 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
     colorScheme = {
         domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
     };
-    // options
     gradient = true;
     showLegend = false;
     showLabels = true;
@@ -102,6 +101,12 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible(false),
             new StopBigLoading()
         ]);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.activeIdNavModuliAssegnati.currentValue) {
+            console.log('test');
+        }
     }
 
     ngOnDestroy(): void {
@@ -169,7 +174,7 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
             this.listaModuliImmediataZonaEmergenzaById$.subscribe((listaModuliImmediataZonaEmergenzaById: ModuloColonnaMobile[]) => {
                 if (listaModuliImmediataZonaEmergenzaById?.length) {
                     this.listaModuliImmediataZonaEmergenzaById = listaModuliImmediataZonaEmergenzaById;
-                    this.listaModuliImmediataZonaEmergenzaByIdFiltered = listaModuliImmediataZonaEmergenzaById;
+                    this.resetListaModuliImmediataZonaEmergenzaById();
                     this.setStatiModuliGraphData();
                     this.setGeneriModuliGraphData();
                     this.setComandiModuliGraphData();
@@ -182,6 +187,10 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    resetListaModuliImmediataZonaEmergenzaById(): void {
+        this.listaModuliImmediataZonaEmergenzaByIdFiltered = this.listaModuliImmediataZonaEmergenzaById;
     }
 
     onToggleModuliAssegnati(): void {

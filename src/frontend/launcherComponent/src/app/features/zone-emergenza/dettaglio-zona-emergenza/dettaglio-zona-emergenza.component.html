@@ -123,7 +123,10 @@
 
             <!-- Moduli Richiesti -->
             <div class="col-12">
-                <ul ngbNav #navRichiesteModuli="ngbNav" [(activeId)]="activeIdNavRichiesteModuli" class="nav-tabs">
+                <ul class="nav-tabs"
+                    ngbNav #navRichiesteModuli="ngbNav"
+                    [(activeId)]="activeIdNavRichiesteModuli"
+                    (navChange)="resetListaModuliImmediataZonaEmergenzaById()">
                     <li [ngbNavItem]="1">
                         <a ngbNavLink>
                             {{ 'Richieste da evadere' | uppercase }}
@@ -256,7 +259,10 @@
 
             <!-- Moduli Assegnati-->
             <div class="col-12">
-                <ul ngbNav #navModuliAssegnati="ngbNav" [(activeId)]="activeIdNavModuliAssegnati" class="nav-tabs">
+                <ul class="nav-tabs"
+                    ngbNav #navModuliAssegnati="ngbNav"
+                    [(activeId)]="activeIdNavModuliAssegnati"
+                    (navChange)="resetListaModuliImmediataZonaEmergenzaById()">
                     <li [ngbNavItem]="1">
                         <a ngbNavLink>
                             {{ 'Moduli Assegnati' | uppercase }}
@@ -368,7 +374,7 @@
                                         <ng-container *ngIf="statiModuliGraphData?.length">
                                             <ngx-charts-pie-chart
                                                     [results]="statiModuliGraphData"
-                                                    [view]="[380, 270]"
+                                                    [view]="[370, 260]"
                                                     [scheme]="colorScheme"
                                                     [gradient]="gradient"
                                                     [legend]="showLegend"
@@ -380,7 +386,7 @@
                                         <ng-container *ngIf="generiModuliGraphData?.length">
                                             <ngx-charts-pie-chart
                                                     [results]="generiModuliGraphData"
-                                                    [view]="[380, 270]"
+                                                    [view]="[370, 260]"
                                                     [scheme]="colorScheme"
                                                     [gradient]="gradient"
                                                     [legend]="showLegend"
@@ -392,7 +398,7 @@
                                         <ng-container *ngIf="comandiModuliGraphData?.length">
                                             <ngx-charts-pie-chart
                                                     [results]="comandiModuliGraphData"
-                                                    [view]="[380, 270]"
+                                                    [view]="[370, 260]"
                                                     [scheme]="colorScheme"
                                                     [gradient]="gradient"
                                                     [legend]="showLegend"
