@@ -12,15 +12,15 @@
                 </h4>
             </div>
             <div class="clearfix">
-            <!-- Informazioni Emergenza -->
-            <div class="float-left w-50 px-3" >
-              <div class="card mt-3 mb-3">
-                  <div class="card-header py-2">
-                      {{ 'Informazioni Emergenza' | uppercase }}
-                  </div>
-                  <div class="card-body py-2"
-                       style="max-height: 170px; overflow-y: auto">
-                      <h5>
+                <!-- Informazioni Emergenza -->
+                <div class="float-left w-50 px-3">
+                    <div class="card mt-3 mb-3">
+                        <div class="card-header py-2">
+                            {{ 'Informazioni Emergenza' | uppercase }}
+                        </div>
+                        <div class="card-body py-2"
+                             style="max-height: 170px; overflow-y: auto">
+                            <h5>
                           <span class="text-muted">
                               Tipologia:
                           </span>
@@ -44,32 +44,32 @@
                           <span class="text-muted">
                               Descrizione:
                           </span>
-                          {{ zonaEmergenzaById.descrizione }}
-                      </h5>
-                  </div>
-              </div>
-          </div>
-          <!-- SEZIONE EVENTI-->
-          <div class="float-left w-50 px-3">
-            <div class="card mt-3 mb-3">
-              <div class="card-header py-2">
-                  {{ 'Log Eventi Emergenza' | uppercase }}
-              </div>
-              <div class="card-body py-2"
-                   style="max-height: 170px; overflow-y: auto">
-                   <ng-container *ngIf="getEventi()?.length" >
-                    <div *ngFor="let e of getEventi(); let i = index"
-                         class="card"
-                         [class.mb-2]="(i + 1) !== getEventi()?.length">
-                        <div class="card-body">
-                            {{ e.istante | date: 'dd/MM/YYYY HH:mm' }} |
-                            {{ e.tipoEvento}}
+                                {{ zonaEmergenzaById.descrizione }}
+                            </h5>
                         </div>
                     </div>
-                </ng-container>
-              </div>
-            </div>
-          </div>
+                </div>
+                <!-- SEZIONE EVENTI-->
+                <div class="float-left w-50 px-3">
+                    <div class="card mt-3 mb-3">
+                        <div class="card-header py-2">
+                            {{ 'Log Eventi Emergenza' | uppercase }}
+                        </div>
+                        <div class="card-body py-2"
+                             style="max-height: 170px; overflow-y: auto">
+                            <ng-container *ngIf="getEventi()?.length">
+                                <div *ngFor="let e of getEventi(); let i = index"
+                                     class="card"
+                                     [class.mb-2]="(i + 1) !== getEventi()?.length">
+                                    <div class="card-body">
+                                        {{ e.istante | date: 'dd/MM/YYYY HH:mm' }} |
+                                        {{ e.tipoEvento}}
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Richiesta CRA, DOA -->
             <ng-container *ngIf="getEventiRichiestaCreazioneCraZonaEmergenza()">
@@ -198,38 +198,53 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="clearfix d-flex align-items-center">
-                            <div class="float-left">
-                                {{ 'Moduli Assegnati' | uppercase }}
-                                <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length >0">
-                                    ({{zonaEmergenzaById?.listaModuliImmediata?.length}})
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    {{ 'Moduli Assegnati' | uppercase }}
+                                    <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length >0">
+                                        ({{zonaEmergenzaById?.listaModuliImmediata?.length}})
+                                    </ng-container>
+                                    <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
+                                        (0)
+                                    </ng-container>
+                                </div>
+                                <div class="ml-3">
+                                    <ng-select [items]="filtri?.statiModuliColonnaMobile"
+                                               [multiple]="true"
+                                               [hideSelected]="true"
+                                               [searchable]="true"
+                                               [clearable]="true"
+                                               [notFoundText]="'Stato non trovato'"
+                                               placeholder="Stato: Tutti"
+                                               (change)="onChangeFiltroStatoColonnaMobile($event)">
+                                    </ng-select>
+                                </div>
+                                <div class="ml-2">
+                                    <ng-select [items]="filtri?.generiModuliColonnaMobile"
+                                               [multiple]="true"
+                                               [hideSelected]="true"
+                                               [searchable]="true"
+                                               [clearable]="true"
+                                               [notFoundText]="'Genere non trovato'"
+                                               placeholder="Genere: Tutti"
+                                               (change)="onChangeFiltroGenereColonnaMobile($event)">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <button class="btn"
+                                    [class.btn-primary]="!moduliAssegnatiExpanded"
+                                    [class.btn-danger]="moduliAssegnatiExpanded"
+                                    (click)="onToggleModuliAssegnati()">
+                                <ng-container *ngIf="!moduliAssegnatiExpanded">
+                                    <i class="fas fa-plus"></i>
+                                    Espandi
                                 </ng-container>
-                                <ng-container *ngIf="!zonaEmergenzaById?.listaModuliImmediata?.length">
-                                    (0)
+                                <ng-container *ngIf="moduliAssegnatiExpanded">
+                                    <i class="fas fa-minus"></i>
+                                    Riduci
                                 </ng-container>
-                            </div>
-                            <div class="float-left ml-3">
-                                <ng-select [items]="filtri?.statiModuliColonnaMobile"
-                                           [multiple]="true"
-                                           [hideSelected]="true"
-                                           [searchable]="true"
-                                           [clearable]="true"
-                                           [notFoundText]="'Stato non trovato'"
-                                           placeholder="Stato: Tutti"
-                                           (change)="onChangeFiltroStatoColonnaMobile($event)">
-                                </ng-select>
-                            </div>
-                            <div class="float-left ml-2">
-                                <ng-select [items]="filtri?.generiModuliColonnaMobile"
-                                           [multiple]="true"
-                                           [hideSelected]="true"
-                                           [searchable]="true"
-                                           [clearable]="true"
-                                           [notFoundText]="'Genere non trovato'"
-                                           placeholder="Genere: Tutti"
-                                           (change)="onChangeFiltroGenereColonnaMobile($event)">
-                                </ng-select>
-                            </div>
+                            </button>
                         </div>
                     </div>
                     <div class="card-body py-3"
@@ -245,11 +260,33 @@
                                 </div>
                             </ng-container>
                             <ng-container *ngIf="listaModuliImmediataZonaEmergenzaByIdFiltered?.length">
-                                <div *ngFor="let moduli_mob_Immediata of listaModuliImmediataZonaEmergenzaByIdFiltered"
-                                     class="col-2 mb-2">
-                                    <app-modulo-colonna-mobile [modulo]="moduli_mob_Immediata">
-                                    </app-modulo-colonna-mobile>
-                                </div>
+                                <ng-container *ngIf="!moduliAssegnatiExpanded">
+                                    <div *ngFor="let modulo_mob_Immediata of listaModuliImmediataZonaEmergenzaByIdFiltered; let i = index"
+                                         class="col-2 mb-2">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="clearfix">
+                                                    <div class="float-left">
+                                                        <h6 class="mb-0">{{ modulo_mob_Immediata.nomeModulo }}</h6>
+                                                    </div>
+                                                    <div class="float-left ml-1">
+                                                        <h6 class="mb-0">{{ ' - ' + modulo_mob_Immediata.stato }}</h6>
+                                                    </div>
+                                                    <div class="float-right">
+                                                        <h6 class="mb-0">{{ modulo_mob_Immediata.codComando }}</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="moduliAssegnatiExpanded">
+                                    <div *ngFor="let modulo_mob_Immediata of listaModuliImmediataZonaEmergenzaByIdFiltered"
+                                         class="col-2 mb-2">
+                                        <app-modulo-colonna-mobile [modulo]="modulo_mob_Immediata">
+                                        </app-modulo-colonna-mobile>
+                                    </div>
+                                </ng-container>
                             </ng-container>
                         </div>
                     </div>

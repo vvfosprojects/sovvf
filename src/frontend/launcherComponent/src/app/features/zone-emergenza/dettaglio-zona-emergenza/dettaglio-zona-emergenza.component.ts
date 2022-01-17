@@ -53,6 +53,8 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
 
     idZonaEmergenza: string;
 
+    moduliAssegnatiExpanded: boolean;
+
     private subscriptions: Subscription = new Subscription();
 
     constructor(private route: ActivatedRoute,
@@ -159,6 +161,10 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    onToggleModuliAssegnati(): void {
+        this.moduliAssegnatiExpanded = !this.moduliAssegnatiExpanded;
     }
 
     getIsDirRegionale(): void {
