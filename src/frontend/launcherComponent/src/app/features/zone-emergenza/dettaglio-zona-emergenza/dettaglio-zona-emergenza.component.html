@@ -72,54 +72,54 @@
                 </div>
             </div>
             <!-- Richiesta CRA, DOA -->
-            <ng-container *ngIf="getEventiRichiestaCreazioneCraZonaEmergenza()">
-                <div class="col-12">
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <div class="clearfix d-flex align-items-center">
-                                <div class="float-left">
-                                    {{ 'Richiesta creazione CRA' | uppercase }}
-                                </div>
-                                <ng-container
-                                        *ngIf="!isDirRegionale && !isCON && !getEventiRichiestaCreazioneCraZonaEmergenza()">
-                                    <div class="float-left ml-3">
-                                        <button class="btn btn-no-hover btn-primary"
-                                                (click)="onRichiestaCra()">
-                                            <i class="fas fa-plus"></i>
-                                            {{ 'Richiedi Creazione CRA' | uppercase }}
-                                        </button>
-                                    </div>
-                                </ng-container>
+            <div class="col-12">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <div class="clearfix d-flex align-items-center">
+                            <div class="float-left">
+                                {{ 'Richiesta creazione CRA' | uppercase }}
                             </div>
-                        </div>
-                        <div class="card-body py-3"
-                             style="max-height: 280px; overflow-y: auto">
-                            <ng-container *ngIf="getEventiRichiestaCreazioneCraZonaEmergenza() as eventoRichiestaCra">
-                                <div class="card">
-                                    <div class="card-body">
-                                        {{ eventoRichiestaCra.istante | date: 'dd/MM/YYYY HH:mm' }} - Richiesta
-                                        Creazione
-                                        CRA con {{ eventoRichiestaCra.numDoa }} DOA
-                                    </div>
-                                    <ng-container *ngIf="isCON && getEventiRichiestaCreazioneCraZonaEmergenza()">
-                                        <div class="card-footer">
-                                            <button class="btn btn-no-hover btn-light border-secondary">
-                                                <i class="fas fa-stream mr-1"></i>
-                                                {{ 'Creazione Sedi Emergenza' | uppercase }}
-                                            </button>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </ng-container>
-                            <ng-container *ngIf="!getEventiRichiestaCreazioneCraZonaEmergenza()">
-                                <div class="alert alert-danger mb-0">
-                                    Nessun CRA richiesto
+                            <ng-container
+                                    *ngIf="!isDirRegionale && !isCON && !getEventiRichiestaCreazioneCraZonaEmergenza()">
+                                <div class="float-left ml-3">
+                                    <button class="btn btn-no-hover btn-primary"
+                                            (click)="onRichiestaCra()">
+                                        <i class="fas fa-plus"></i>
+                                        {{ 'Richiedi Creazione CRA' | uppercase }}
+                                    </button>
                                 </div>
                             </ng-container>
                         </div>
                     </div>
+                    <div class="card-body py-3"
+                         style="max-height: 280px; overflow-y: auto">
+                        <ng-container *ngIf="getEventiRichiestaCreazioneCraZonaEmergenza() as eventoRichiestaCra">
+                            <div class="card">
+                                <div class="card-body">
+                                    {{ eventoRichiestaCra.istante | date: 'dd/MM/YYYY HH:mm' }} - Richiesta
+                                    Creazione
+                                    CRA con {{ eventoRichiestaCra.numDoa }} DOA
+                                </div>
+                                <ng-container
+                                        *ngIf="(isCON || isDirRegionale) && getEventiRichiestaCreazioneCraZonaEmergenza()">
+                                    <div class="card-footer">
+                                        <button class="btn btn-no-hover btn-light border-secondary"
+                                                (click)="onCreazioneSedi()">
+                                            <i class="fas fa-stream mr-1"></i>
+                                            {{ 'Creazione Sedi Emergenza' | uppercase }}
+                                        </button>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!getEventiRichiestaCreazioneCraZonaEmergenza()">
+                            <div class="alert alert-danger mb-0">
+                                Nessun CRA richiesto
+                            </div>
+                        </ng-container>
+                    </div>
                 </div>
-            </ng-container>
+            </div>
 
             <!-- Moduli Richiesti -->
             <div class="col-12">
@@ -142,7 +142,7 @@
                                 <div class="card-header">
                                     <ng-container *ngIf="isDirRegionale">
                                         <button class="btn btn-sm btn-no-hover btn-primary"
-                                                (click)="onInvioColonneMobiliByDirezione()">
+                                                (click)="onColonneMobili()">
                                             <i class="fas fa-truck mr-1"></i>
                                             {{ 'Seleziona moduli' }}
                                         </button>
@@ -156,7 +156,7 @@
                                     </ng-container>
                                 </div>
                                 <div class="card-body py-3"
-                                     style="max-height: 205px; overflow-y: auto">
+                                     style="max-height: 320px; overflow-y: auto">
                                     <ng-container *ngIf="getEventiRichiesteZonaEmergenza()?.length">
                                         <div *ngFor="let e of getEventiRichiesteZonaEmergenza(); let i = index"
                                              class="card"
@@ -174,15 +174,15 @@
                                             <ng-container
                                                     *ngIf="isDirRegionale || (isCON && zonaEmergenzaById.allertata)">
                                                 <div class="card-footer">
-                                                    <button class="btn btn-no-hover btn-light border-secondary"
+                                                    <button class="btn btn-no-hover btn-sm btn-light border-secondary"
                                                             (click)="onColonneMobili(e)">
                                                         <i class="fas fa-truck mr-1"></i>
-                                                        {{ 'Seleziona moduli' | uppercase }}
+                                                        {{ 'Seleziona moduli' }}
                                                     </button>
                                                     <ng-container *ngIf="isDirRegionale && !isCON">
-                                                        <button class="btn btn-no-hover btn-light border-secondary ml-2">
+                                                        <button class="btn btn-no-hover btn-sm btn-light border-secondary ml-2">
                                                             <i class="fas fa-paper-plane mr-1"></i>
-                                                            {{ 'Invia richiesta al CON' | uppercase }}
+                                                            {{ 'Invia richiesta al CON' }}
                                                         </button>
                                                     </ng-container>
                                                 </div>
@@ -213,7 +213,7 @@
                                 <div class="card-header">
                                     <ng-container *ngIf="isDirRegionale">
                                         <button class="btn btn-sm btn-no-hover btn-primary"
-                                                (click)="onInvioColonneMobiliByDirezione()">
+                                                (click)="onColonneMobili()">
                                             <i class="fas fa-truck mr-1"></i>
                                             {{ 'Seleziona moduli' }}
                                         </button>
@@ -227,7 +227,7 @@
                                     </ng-container>
                                 </div>
                                 <div class="card-body py-3"
-                                     style="max-height: 210px; overflow-y: auto">
+                                     style="max-height: 320px; overflow-y: auto">
                                     <ng-container *ngIf="getEventiRichiesteGestiteZonaEmergenza()?.length">
                                         <div *ngFor="let e of getEventiRichiesteGestiteZonaEmergenza(); let i = index"
                                              class="card"
@@ -253,17 +253,7 @@
                             </div>
                         </ng-template>
                     </li>
-                </ul>
-                <div [ngbNavOutlet]="navRichiesteModuli"></div>
-            </div>
-
-            <!-- Moduli Assegnati-->
-            <div class="col-12">
-                <ul class="nav-tabs"
-                    ngbNav #navModuliAssegnati="ngbNav"
-                    [(activeId)]="activeIdNavModuliAssegnati"
-                    (navChange)="resetListaModuliImmediataZonaEmergenzaById()">
-                    <li [ngbNavItem]="1">
+                    <li [ngbNavItem]="3">
                         <a ngbNavLink>
                             {{ 'Moduli Assegnati' | uppercase }}
                             <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length >0">
@@ -306,18 +296,18 @@
                                                 [class.btn-danger]="moduliAssegnatiExpanded"
                                                 (click)="onToggleModuliAssegnati()">
                                             <ng-container *ngIf="!moduliAssegnatiExpanded">
-                                                <i class="fas fa-plus"></i>
-                                                Espandi
+                                                <i class="fas fa-plus mr-1"></i>
+                                                {{ 'Espandi' | uppercase }}
                                             </ng-container>
                                             <ng-container *ngIf="moduliAssegnatiExpanded">
-                                                <i class="fas fa-minus"></i>
-                                                Riduci
+                                                <i class="fas fa-minus mr-1"></i>
+                                                {{ 'Riduci' | uppercase }}
                                             </ng-container>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="card-body py-3"
-                                     style="max-height: 220px; overflow-y: auto;">
+                                     style="max-height: 320px; overflow-y: auto;">
                                     <div class="row">
                                         <ng-container *ngIf="!listaModuliImmediataZonaEmergenzaByIdFiltered?.length">
                                             <div class="col-12">
@@ -360,7 +350,7 @@
                             </div>
                         </ng-template>
                     </li>
-                    <li [ngbNavItem]="2">
+                    <li [ngbNavItem]="4">
                         <a ngbNavLink>
                             {{ 'Reportistica' | uppercase }}
                         </a>
@@ -369,7 +359,8 @@
                                 <div class="card-header">
                                     {{ 'Resoconto moduli' | uppercase }}
                                 </div>
-                                <div class="card-body p-0">
+                                <div class="card-body p-0"
+                                     style="max-height: 320px; overflow-y: auto;">
                                     <div class="d-flex" style="justify-content: space-evenly">
                                         <ng-container *ngIf="statiModuliGraphData?.length">
                                             <ngx-charts-pie-chart
@@ -413,7 +404,7 @@
                         </ng-template>
                     </li>
                 </ul>
-                <div [ngbNavOutlet]="navModuliAssegnati"></div>
+                <div [ngbNavOutlet]="navRichiesteModuli"></div>
             </div>
 
             <!-- Fasi al momento non utilizzate -->

@@ -237,7 +237,7 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnChanges, OnDes
         this.store.dispatch(new SetFiltriAttiviGeneriModuliColonnaMobile(generiModuliColonnaMobile));
     }
 
-    onColonneMobili(evento: EventoEmergenza): void {
+    onColonneMobili(evento?: EventoEmergenza): void {
         const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
             windowClass: 'modal-holder xxlModal',
             centered: true
@@ -245,47 +245,19 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnChanges, OnDes
 
         colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
         colonneMobiliEmergenzaModal.componentInstance.fase = '1';
-        colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = evento != null ? evento.tipologiaModuli : 'all';
+        colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = evento ? evento.tipologiaModuli : 'all';
 
         colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
             switch (result.esito) {
                 case 'ok':
                     switch (result.fase) {
                         case '1':
-                            const eventoCopy = makeCopy(evento);
-                            const eventoGestito = eventoCopy;
-                            eventoGestito.gestita = true;
+                            const eventoCopy = evento ? makeCopy(evento) : null;
+                            const eventoGestito = eventoCopy ? eventoCopy : null;
+                            if (eventoGestito) {
+                                eventoGestito.gestita = true;
+                            }
                             this.store.dispatch(new UpdateModuliMobImmediataZonaEmergenza(this.zonaEmergenzaById, result.moduliSelezionati, eventoGestito));
-                            break;
-                    }
-                    break;
-                case 'ko':
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-
-    onInvioColonneMobiliByDirezione(): void {
-        const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
-            windowClass: 'modal-holder xxlModal',
-            centered: true
-        });
-
-        colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
-        colonneMobiliEmergenzaModal.componentInstance.fase = '1';
-        colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = 'all';
-
-        colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
-            switch (result.esito) {
-                case 'ok':
-                    switch (result.fase) {
-                        case '1':
-                            // const eventoCopy = makeCopy(evento);
-                            // const eventoGestito = eventoCopy;
-                            // eventoGestito.gestita = true;
-                            // this.store.dispatch(new UpdateModuliMobImmediataZonaEmergenza(this.zonaEmergenzaById, result.moduliSelezionati, eventoGestito));
                             break;
                     }
                     break;
@@ -321,6 +293,10 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnChanges, OnDes
             }
             this.store.dispatch(new ResetForm({ path: 'zoneEmergenza.richiestaCraDoaZonaEmergenzaForm' }));
         });
+    }
+
+    onCreazioneSedi(): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/sedi/' + this.zonaEmergenzaById.id]));
     }
 
     reducerRichiestaModuli(): void {

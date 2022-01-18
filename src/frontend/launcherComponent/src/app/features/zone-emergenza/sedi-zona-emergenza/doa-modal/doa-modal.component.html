@@ -56,10 +56,15 @@
                        [items]="moduli"
                        bindLabel="nomeModulo"
                        [multiple]="true"
-                       [hideSelected]="true"
                        [disabled]="!moduli?.length"
                        placeholder="Moduli Colonna Mobile"
                        formControlName="listaModuliColonnaMobile">
+                <ng-template ng-label-tmp let-item="item">
+                    <b>{{ item.nomeModulo }}</b> - {{ item.codComando }}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                    <b>{{ item.nomeModulo }}</b> - {{ item.codComando }}
+                </ng-template>
             </ng-select>
         </div>
         <ng-container *ngIf="!moduli?.length">
@@ -85,8 +90,8 @@
 </div>
 <div class="modal-footer" style="place-content: space-between;">
     <button class="btn btn-lg btn-danger text-right btn-no-hover font-weight-bold"
-            (click)="onInserisciDoa()"
-            [disabled]="!doaForm?.valid">
+            [disabled]="!doaForm?.valid"
+            (click)="onInserisciDoa()">
         {{ 'Conferma' | uppercase }}
     </button>
     <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"

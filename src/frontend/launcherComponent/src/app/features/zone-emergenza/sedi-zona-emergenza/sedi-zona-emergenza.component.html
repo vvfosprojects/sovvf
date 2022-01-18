@@ -12,7 +12,7 @@
                 </h4>
             </div>
             <!-- Informazioni Emergenza -->
-            <div class="col-12">
+            <div class="col-10 mx-auto">
                 <div class="card my-3">
                     <div class="card-header">
                         {{ 'Informazioni Emergenza' | uppercase }}
@@ -156,8 +156,7 @@
                             [canExit]="craZonaEmergenzaForm.valid">
                         <div class="row py-2 px-3">
                             <div class="col-12">
-                                <button class="btn btn-primary mb-3"
-                                        [disabled]="f?.listaDoa?.value?.length && (getEventiRichiestaCreazioneCraZonaEmergenza()?.numDoa >= f?.listaDoa?.value?.length)"
+                                <button class="btn btn-primary btn-no-hover mb-3"
                                         (click)="onAddDoa(zonaEmergenzaById)">
                                     <i class="fas fa-plus"></i>
                                     Inserisci DOA
@@ -170,9 +169,15 @@
                                     </div>
                                 </ng-container>
                                 <ng-container *ngIf="f?.listaDoa?.value?.length">
-                                    <div *ngFor="let d of f.listaDoa.value" class="mb-3">
-                                        <app-doa [doa]="d"></app-doa>
-                                    </div>
+                                    <ngb-accordion #accordionDoa="ngbAccordion">
+                                        <ngb-panel *ngFor="let d of f.listaDoa.value; let i = index"
+                                                   id="toggle-doa-{{ i + 1 }}"
+                                                   title="{{ i + 1 + '. ' + d.nome | uppercase }}">
+                                            <ng-template ngbPanelContent>
+                                                <app-doa [doa]="d"></app-doa>
+                                            </ng-template>
+                                        </ngb-panel>
+                                    </ngb-accordion>
                                 </ng-container>
                             </div>
                         </div>
@@ -190,18 +195,24 @@
                                     </div>
                                 </ng-container>
                                 <ng-container *ngIf="f?.listaDoa?.value?.length">
-                                    <div *ngFor="let d of f.listaDoa.value" class="mb-3">
-                                        <app-doa [doa]="d"
-                                                 [addPcaButton]="true"
-                                                 (addPca)="onAddPca($event)">
-                                        </app-doa>
-                                    </div>
+                                    <ngb-accordion #accordionDoaPca="ngbAccordion">
+                                        <ngb-panel *ngFor="let d of f.listaDoa.value; let i = index"
+                                                   id="toggle-pca-{{ i + 1 }}"
+                                                   title="{{ i + 1 + '. ' + d.nome | uppercase }}">
+                                            <ng-template ngbPanelContent>
+                                                <app-doa [doa]="d"
+                                                         [addPcaButton]="true"
+                                                         (addPca)="onAddPca($event)">
+                                                </app-doa>
+                                            </ng-template>
+                                        </ngb-panel>
+                                    </ngb-accordion>
                                 </ng-container>
                             </div>
                             <div class="col-12">
                                 <div class="clearfix">
                                     <div class="float-right">
-                                        <button class="btn btn-success"
+                                        <button class="btn btn-success mt-4"
                                                 (click)="saveCraZonaEmergenza()">
                                             Salva Modifiche
                                         </button>
