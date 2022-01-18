@@ -34,10 +34,13 @@
                 <h6 class="mb-0">Mezzi</h6>
             </div>
             <div class="float-right">
-                <div class="badge badge-success"
+                <div class="badge"
+                     [class.badge-success]="modulo.mezzi?.length"
+                     [class.badge-danger]="!modulo.mezzi?.length"
                      [ngbTooltip]="tooltipMezzi"
-                     placement="bottom">
-                    {{ modulo.mezzi?.length }}
+                     placement="bottom"
+                     [disableTooltip]="!modulo.mezzi?.length">
+                    {{ modulo.mezzi?.length ? modulo.mezzi.length : 0 }}
                 </div>
             </div>
             <ng-template #tooltipMezzi>
