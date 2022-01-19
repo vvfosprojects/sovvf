@@ -53,10 +53,10 @@
         <div class="form-group">
             <label for="listaModuliColonnaMobile">Moduli Colonna Mobile</label>
             <ng-select id="listaModuliColonnaMobile"
-                       [items]="moduli"
+                       [items]="listaModuliImmediataZonaEmergenzaById"
                        bindLabel="nomeModulo"
                        [multiple]="true"
-                       [disabled]="!moduli?.length"
+                       [disabled]="!listaModuliImmediataZonaEmergenzaById?.length"
                        placeholder="Moduli Colonna Mobile"
                        formControlName="listaModuliColonnaMobile">
                 <ng-template ng-label-tmp let-item="item">
@@ -67,13 +67,19 @@
                 </ng-template>
             </ng-select>
         </div>
-        <ng-container *ngIf="!moduli?.length">
+        <ng-container *ngIf="!listaModuliImmediataZonaEmergenzaById?.length">
             <div class="alert alert-danger">
-                Non ci sono moduli associati, la selezione è obbligatoria.
-                <button class="btn btn-outline-light"
-                        (click)="onColonneMobili()">
-                    Associa Moduli
-                </button>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        Non ci sono moduli associati, la selezione è obbligatoria.
+                    </div>
+                    <div>
+                        <button class="btn btn-primary btn-no-hover"
+                                (click)="onColonneMobili()">
+                            Associa Moduli
+                        </button>
+                    </div>
+                </div>
             </div>
         </ng-container>
         <div class="form-group">
