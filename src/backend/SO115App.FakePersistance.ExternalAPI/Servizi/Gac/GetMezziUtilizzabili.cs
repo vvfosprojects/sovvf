@@ -156,6 +156,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
             var codici = string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct());
 
+            var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
             var lstMezziDto = new List<MezzoDTO>();
 
             try
@@ -174,17 +177,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             }
 
             //MAPPING
-            var ListaMezzi = lstMezziDto.Select(m => MapMezzo(m)).ToList();
+            var ListaMezzi = lstMezziDto.Select(m => MapMezzo(m, ListaPosizioneFlotta, listaSediAlberate)).ToList();
 
             ListaMezzi.RemoveAll(m => m == null);
 
             return ListaMezzi;
         }
 
-        private Mezzo MapMezzo(MezzoDTO mezzoDto)
+        private Mezzo MapMezzo(MezzoDTO mezzoDto, Task<List<MessaggioPosizione>> ListaPosizioneFlotta = null, Task<UnitaOperativa> listaSediAlberate = null)
         {
-            var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
-            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            if (listaSediAlberate == null || ListaPosizioneFlotta == null)
+            {
+                ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
+                listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            }
+
             try
             {
                 List<PinNodo> pinNodi = new List<PinNodo>();
@@ -194,7 +201,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 string IndirizzoSede = "";
                 Coordinate coordinate = null;
                 string[] coordinateStrg = new string[2];
-                var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
+                var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Result.Find(x => x.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
                 if (CoordinateMezzoGeoFleet != null)
                 {
                     coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
@@ -208,7 +215,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                         descSede = figlio.Nome;
 
                         if (coordinate == null)
-                            coordinate = figlio.Coordinate;
+                        {
+                            coordinateStrg = _getStringCoordinateByCodSede.Get(figlio.Codice);
+                            
+                            if(coordinateStrg != null)
+                            {
+                                coordinate = new Coordinate(Convert.ToDouble(coordinateStrg[0].Replace(".", ",")), Convert.ToDouble(coordinateStrg[1].Replace(".", ",")));
+                            }
+                            else
+                            {
+                                coordinateStrg = new string[] { "0", "0" };
+                            }
+                        }
                     }
                 }
 
@@ -218,7 +236,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 };
 
                 return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
-                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(coordinate.Latitudine, coordinate.Longitudine))
+                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0))
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
                     CoordinateStrg = coordinateStrg[0] != null ? coordinateStrg : sede.CoordinateString

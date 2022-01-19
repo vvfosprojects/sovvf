@@ -21,6 +21,8 @@
                           [areaMappaLoading]="areaMappaLoading$ | async"
                           [tastoChiamataMappaActive]="tastoChiamataMappaActive"
                           [tastoZonaEmergenzaMappaActive]="tastoZonaEmergenzaMappaActive"
+                          [travelDataNuovaPartenza]="travelDataNuovaPartenza$ | async"
+                          [visualizzaPercorsiRichiesta]="visualizzaPercorsiRichiesta"
                           (mapIsLoaded)="mapIsLoaded($event.areaMappa, $event?.spatialReference)">
             </app-map-esri>
         </div>

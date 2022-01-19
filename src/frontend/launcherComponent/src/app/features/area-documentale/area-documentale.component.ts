@@ -6,13 +6,7 @@ import { RicercaAreaDocumentaleState } from './store/states/ricerca-area-documen
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import {
-    ClearCodCategoriaAreaDocumentale,
-    GetDocumentiAreaDocumentale,
-    SetCodCategoriaAreaDocumentale,
-    StartLoadingDocumentiAreaDocumentale,
-    StopLoadingDocumentiAreaDocumentale
-} from './store/actions/area-documentale/area-documentale.actions';
+import { ClearCodCategoriaAreaDocumentale, GetDocumentiAreaDocumentale, SetCodCategoriaAreaDocumentale, StartLoadingDocumentiAreaDocumentale, StopLoadingDocumentiAreaDocumentale } from './store/actions/area-documentale/area-documentale.actions';
 import { ClearRicercaAreaDocumentale, SetRicercaAreaDocumentale, } from './store/actions/ricerca-area-documentale/ricerca-area-documentale.actions';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
@@ -29,6 +23,7 @@ import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confir
 import { ActivatedRoute } from '@angular/router';
 import { Navigate } from '@ngxs/router-plugin';
 import { LSNAME } from '../../core/settings/config';
+import { VisualizzaDocumentoModalComponent } from '../../shared/modal/visualizza-documento-modal/visualizza-documento-modal.component';
 
 @Component({
     selector: 'app-area-documentale',
@@ -61,6 +56,8 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                 private store: Store,
                 private route: ActivatedRoute,
                 private areaDocumentaleService: AreaDocumentaleService) {
+        // TODO: modificare quando verranno inserite nuove tipologie di documentazione
+        localStorage.setItem(LSNAME.areaDocumentale, '1');
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
@@ -197,18 +194,15 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
         if (codSede) {
             this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
                 switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + documento.fileName + ')');
-                        break;
                     case HttpEventType.Response:
+                        const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
+                            windowClass: 'xxlModal modal-holder',
+                            backdropClass: 'light-blue-backdrop',
+                            centered: true
+                        });
                         const downloadedFile = new Blob([data.body], { type: data.body.type });
-                        const a = document.createElement('a');
-                        a.setAttribute('style', 'display:none;');
-                        document.body.appendChild(a);
-                        a.href = URL.createObjectURL(downloadedFile);
-                        a.target = '_blank';
-                        a.click();
-                        document.body.removeChild(a);
+                        modalVisualizzaPdf.componentInstance.titolo = documento?.descrizioneDocumento?.toLocaleUpperCase();
+                        modalVisualizzaPdf.componentInstance.blob = downloadedFile;
                         break;
                 }
             }, () => console.log('Errore visualizzazione Documento'));

@@ -16,6 +16,7 @@ import { ComposizioneConfirmButtonComponent } from './shared/composizione-button
 import { FormsModule } from '@angular/forms';
 import { ComposizioneSoccorsoAereoState } from '../store/states/composizione-partenza/composizione-soccorso-aereo.state';
 import { BoxPreaccoppiatoComponent } from './shared/box-preaccoppiato/box-preaccoppiato.component';
+import { ListaPartenzeComposizioneComponent } from './shared/lista-partenze-composizione/lista-partenze-composizione.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { BoxPreaccoppiatoComponent } from './shared/box-preaccoppiato/box-preacc
         ComposizioneAvanzataComponent,
         BoxNuovaPartenzaComponent,
         BoxPreaccoppiatoComponent,
-        ComposizioneConfirmButtonComponent
+        ComposizioneConfirmButtonComponent,
+        ListaPartenzeComposizioneComponent
     ],
     imports: [
         CommonModule,

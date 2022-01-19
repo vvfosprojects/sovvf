@@ -7,7 +7,6 @@ export interface Doa {
     nome: string;
     coordinate: Coordinate;
     indirizzo: string;
-    dirigente: string;
     listaModuliColonnaMobile: ModuloColonnaMobile[];
     listaComuniInteressati: string[];
     listaPca: Pca[];

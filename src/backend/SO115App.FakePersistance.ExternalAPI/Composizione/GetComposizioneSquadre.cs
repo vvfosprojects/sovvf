@@ -102,8 +102,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 if (string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato))
                 {
-                    Parallel.ForEach(query.Filtro.CodiciDistaccamenti?.Select(sede => sede.Split('.')[0]).Distinct() ?? lstSedi.Result.Select(sede => sede.Codice.Split('.')[0]).Distinct(),
-                        codice => workshift.Add(_getSquadre.GetAllByCodiceDistaccamento(codice).Result));
+                    if (query.Filtro.CodiciDistaccamenti != null)
+                    {
+                        Parallel.ForEach(query.Filtro.CodiciDistaccamenti?.Select(sede => sede.Split('.')[0]).Distinct() ?? lstSedi.Result.Select(sede => sede.Codice.Split('.')[0]).Distinct(),
+                            codice => workshift.Add(_getSquadre.GetAllByCodiceDistaccamento(codice).Result));
+                    }
+                    else
+                        workshift.Add(_getSquadre.GetAllByCodiceDistaccamento(query.CodiciSede[0].Split('.')[0]).Result);
                 }
                 else workshift.Add(_getSquadre.GetAllByCodiceDistaccamento(query.Filtro.CodDistaccamentoSelezionato.Split('.')[0]).Result);
 
@@ -119,7 +124,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 var codMezziPreaccoppiati = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList();
                 lstMezziPreaccoppiati = _getMezzi.GetInfo(codMezziPreaccoppiati);
 
-                return lstSquadre.ToList();
+                return lstSquadre.ToList().FindAll(s=>s.spotType.Equals("WORKSHIFT"));
             })
             .ContinueWith(squadre => //MAPPING
             {
@@ -191,8 +196,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoSulPosto))
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoOccupato))
                     .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti?[0].Equals(squadra.Distaccamento?.Codice) ?? false)
-                    .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti.Length > 1 ? query.Filtro?.CodiciDistaccamenti[1].Equals(squadra.Distaccamento?.Codice) : false)
-                    .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti.Length > 2 ? query.Filtro?.CodiciDistaccamenti[2].Equals(squadra.Distaccamento?.Codice) : false)
+                    .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti?.Length > 1 ? query.Filtro?.CodiciDistaccamenti[1].Equals(squadra.Distaccamento?.Codice) : false)
+                    .ThenByDescending(squadra => query.Filtro.CodiciDistaccamenti?.Length > 2 ? query.Filtro?.CodiciDistaccamenti[2].Equals(squadra.Distaccamento?.Codice) : false)
                     .ThenBy(squadra => squadra.Nome);
             });
 

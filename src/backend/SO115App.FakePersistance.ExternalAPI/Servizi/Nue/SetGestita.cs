@@ -43,11 +43,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// <param name="codiceSede">il codice sede dell'operatore</param>
         /// <param name="codiceFiscale">il codice fiscale dell'operatore</param>
         /// <param name="gestita">la booleana gestita</param>
-        public void Gestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
+        public void Gestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita, string codiceIntervento)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            _setSchedaContatto.SetGestita(codiceScheda, codiceSede, codiceFiscale, gestita);//json
+            _setSchedaContatto.SetGestita(codiceScheda, codiceSede, codiceFiscale, gestita, codiceIntervento);//json
 
             //---------------------------------------------------------------------------------------
         }

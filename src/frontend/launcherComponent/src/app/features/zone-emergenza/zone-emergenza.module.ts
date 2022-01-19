@@ -8,6 +8,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MapsModule } from '../maps/maps.module';
+import { PieChartModule } from '@swimlane/ngx-charts';
 import { NgWizardConfig, NgWizardModule, THEME } from 'ng-wizard';
 /**
  * Component
@@ -25,6 +26,8 @@ import { DoaModalComponent } from './sedi-zona-emergenza/doa-modal/doa-modal.com
 import { PcaModalComponent } from './sedi-zona-emergenza/pca-modal/pca-modal.component';
 import { DoaComponent } from './sedi-zona-emergenza/doa/doa.component';
 import { PcaComponent } from './sedi-zona-emergenza/pca/pca.component';
+import { RichiestaModuliModalComponent } from './richiesta-moduli-modal/richiesta-moduli-modal.component';
+import { RichiestaCraModalComponent } from './richiesta-cra-modal/richiesta-cra-modal.component';
 /**
  * Routing
  */
@@ -34,7 +37,6 @@ import { ZoneEmergenzaRouting } from './zone-emergenza.routing';
  */
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
-import { RichiestaModuliModalComponent } from './richiesta-moduli-modal/richiesta-moduli-modal.component';
 
 const ngWizardConfig: NgWizardConfig = {
     theme: THEME.default
@@ -48,6 +50,7 @@ const ngWizardConfig: NgWizardConfig = {
         AnnullaZonaEmergenzaModalComponent,
         AllertaCONZonaEmergenzaModalComponent,
         RichiestaModuliModalComponent,
+        RichiestaCraModalComponent,
         ModuloColonnaMobileComponent,
         DettaglioZonaEmergenzaComponent,
         ZonaEmergenzaModalComponent,
@@ -73,6 +76,7 @@ const ngWizardConfig: NgWizardConfig = {
         SharedModule,
         MapsModule,
         ReactiveFormsModule,
+        PieChartModule,
     ],
     providers: []
 })

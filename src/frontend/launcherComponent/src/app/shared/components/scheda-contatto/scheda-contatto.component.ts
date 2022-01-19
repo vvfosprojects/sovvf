@@ -103,9 +103,7 @@ export class SchedaContattoComponent implements OnChanges {
     }
 
     onDettaglioScheda(codiceScheda: string): void {
-        if (!this.editSchedaContatto) {
-            this.dettaglioScheda.emit(codiceScheda);
-        }
+        this.dettaglioScheda.emit(codiceScheda);
     }
 
     getCheckboxState(scheda: SchedaContatto): CheckboxInterface {

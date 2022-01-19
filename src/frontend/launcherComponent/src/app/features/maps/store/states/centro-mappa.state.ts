@@ -9,7 +9,7 @@ import {
     SetCentroMappa,
     SetCoordCentroMappa,
     SetInitCentroMappa,
-    SetZoomCentroMappa
+    SetZoomCentroMappa, SetZoomCentroMappaByKilometers
 } from '../actions/centro-mappa.actions';
 import { Injectable } from '@angular/core';
 
@@ -90,6 +90,43 @@ export class CentroMappaState {
             centroMappa: {
                 coordinateCentro: state.centroMappa.coordinateCentro,
                 zoom: action.zoom
+            }
+        });
+    }
+
+    /**
+     * Imposta lo stato attuale del centro Mappa (solo il livello di zoom) calcolandolo in base ai km
+     * @param: getState
+     * @param: patchState
+     * @param: action
+     */
+    @Action(SetZoomCentroMappaByKilometers)
+    setZoomCentroMappaByKilometers({ getState, patchState }: StateContext<CentroMappaStateModel>, action: SetZoomCentroMappaByKilometers): void {
+        const state = getState();
+        let zoom: number;
+        const totalKilometers = action.totalKilometers;
+        if (totalKilometers < 2) {
+            zoom = 17;
+        } else if (totalKilometers < 5) {
+            zoom = 15;
+        } else if (totalKilometers < 15) {
+            zoom = 14;
+        } else if (totalKilometers < 25) {
+            zoom = 13;
+        } else if (totalKilometers < 50) {
+            zoom = 11;
+        } else if (totalKilometers < 150) {
+            zoom = 9;
+        } else if (totalKilometers < 200) {
+            zoom = 7;
+        } else {
+            zoom = 6;
+        }
+        patchState({
+            ...state,
+            centroMappa: {
+                coordinateCentro: state.centroMappa.coordinateCentro,
+                zoom
             }
         });
     }

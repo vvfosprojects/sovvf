@@ -16,7 +16,7 @@
                         [(activeId)]="tabFunzionariActive">
                         <li [ngbNavItem]="1">
                             <a ngbNavLink>
-                                <span class="text-dark">Turno {{ turnoPrev }}</span>
+                                <span>Turno {{ turnoPrev }}</span>
                             </a>
                             <ng-template ngbNavContent>
                                 <!-- Funzionario Guardia -->
@@ -55,7 +55,7 @@
                         </li>
                         <li [ngbNavItem]="2">
                             <a ngbNavLink>
-                                <span class="text-dark">Turno {{ turnoCurrent }}</span>
+                                <span>Turno {{ turnoCurrent }}</span>
                             </a>
                             <ng-template ngbNavContent>
                                 <!-- Funzionario Guardia -->
@@ -94,7 +94,7 @@
                         </li>
                         <li [ngbNavItem]="3">
                             <a ngbNavLink>
-                                <span class="text-dark">Turno {{ turnoNext }}</span>
+                                <span>Turno {{ turnoNext }}</span>
                             </a>
                             <ng-template ngbNavContent>
                                 <!-- Funzionario Guardia -->
@@ -142,7 +142,7 @@
                         [(activeId)]="tabTecniciActive">
                         <li [ngbNavItem]="1">
                             <a ngbNavLink (click)="$event.stopPropagation()">
-                                <span class="text-dark">Turno {{ turnoPrev }}</span>
+                                <span>Turno {{ turnoPrev }}</span>
                             </a>
                             <ng-template ngbNavContent>
                                 <!-- Primo -->
@@ -178,7 +178,7 @@
                         </li>
                         <li [ngbNavItem]="2">
                             <a ngbNavLink (click)="$event.stopPropagation()">
-                                <span class="text-dark">Turno {{ turnoCurrent }}</span>
+                                <span>Turno {{ turnoCurrent }}</span>
                             </a>
                             <ng-template ngbNavContent>
                                 <!-- Primo -->
@@ -214,7 +214,7 @@
                         </li>
                         <li [ngbNavItem]="3">
                             <a ngbNavLink (click)="$event.stopPropagation()">
-                                <span class="text-dark">Turno {{ turnoNext }}</span>
+                                <span>Turno {{ turnoNext }}</span>
                             </a>
                             <ng-template ngbNavContent>
                                 <!-- Primo -->

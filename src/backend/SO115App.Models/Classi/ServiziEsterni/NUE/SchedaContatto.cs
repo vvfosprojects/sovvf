@@ -128,6 +128,11 @@ namespace SO115App.Models.Classi.NUE
         ///   Contiene il log di tutti gli eventi generati durante l'import della scheda NUE
         /// </summary>
         public List<Evento> listaEventiWS { get; set; }
+
+        /// <summary>
+        ///   Se la scheda è stata gestita in un intervento qui verrà scritto il numero dell'intervento
+        /// </summary>
+        public string CodiceInterventoAssociato { get; set; }
     }
 
     public class Evento

@@ -1,3 +1,7 @@
+.ng-select-no-border .ng-select-container {
+  border: none !important;
+}
+
 .dropdownAnnulla {
   border-color: #dc3545 !important;
 
@@ -8,7 +12,6 @@
     }
   }
 }
-
 
 .dropdownConferma {
   border-color: #28a745 !important;

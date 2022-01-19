@@ -26,6 +26,7 @@ import { HttpEventType } from '@angular/common/http';
 import { PosService } from '../../core/service/pos-service/pos.service';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 import { AuthState } from '../auth/store/auth.state';
+import { VisualizzaDocumentoModalComponent } from '../../shared/modal/visualizza-documento-modal/visualizza-documento-modal.component';
 
 @Component({
     selector: 'app-pos',
@@ -180,7 +181,7 @@ export class PosComponent implements OnInit, OnDestroy {
                         document.body.removeChild(a);
                         break;
                 }
-            }, error => console.log('Errore Stampa POS'));
+            }, () => console.log('Errore Stampa POS'));
         } else {
             console.error('CodSede utente non trovato');
         }
@@ -191,21 +192,18 @@ export class PosComponent implements OnInit, OnDestroy {
         if (codSede) {
             this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
                 switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + pos.fileName + ')');
-                        break;
                     case HttpEventType.Response:
+                        const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
+                            windowClass: 'xxlModal modal-holder',
+                            backdropClass: 'light-blue-backdrop',
+                            centered: true
+                        });
                         const downloadedFile = new Blob([data.body], { type: data.body.type });
-                        const a = document.createElement('a');
-                        a.setAttribute('style', 'display:none;');
-                        document.body.appendChild(a);
-                        a.href = URL.createObjectURL(downloadedFile);
-                        a.target = '_blank';
-                        a.click();
-                        document.body.removeChild(a);
+                        modalVisualizzaPdf.componentInstance.titolo = pos?.descrizionePos?.toLocaleUpperCase();
+                        modalVisualizzaPdf.componentInstance.blob = downloadedFile;
                         break;
                 }
-            }, error => console.log('Errore visualizzazione POS'));
+            }, () => console.log('Errore visualizzazione POS'));
         } else {
             console.error('CodSede utente non trovato');
         }
@@ -250,7 +248,7 @@ export class PosComponent implements OnInit, OnDestroy {
                         );
                         break;
                 }
-            }, error => console.log('Errore Stampa POS'));
+            }, () => console.log('Errore Stampa POS'));
         } else {
             console.error('CodSede utente non trovato');
         }

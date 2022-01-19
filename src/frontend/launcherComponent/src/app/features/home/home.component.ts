@@ -9,8 +9,7 @@ import { NavbarState } from '../navbar/store/states/navbar.state';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
-import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
-import { GetDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { GetAllDettagliTipologie } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { GetTipologie } from '../../shared/store/actions/tipologie/tipologie.actions';
 import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
@@ -19,13 +18,10 @@ import { GetBoxPersonale } from './store/actions/boxes/box-personale.actions';
 import { GetBoxMezzi } from './store/actions/boxes/box-mezzi.actions';
 import { GetBoxRichieste } from './store/actions/boxes/box-richieste.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
+import { ComposizionePartenzaState } from './store/states/composizione-partenza/composizione-partenza.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
-
-    private subscription = new Subscription();
-    viewState: ViewLayouts;
-    columnState: Grids;
 
     @Select(NavbarState.navbarIsLoaded) navbarLoaded: Observable<boolean>;
 
@@ -48,10 +44,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     @Select(ImpostazioniState.boxAttivi) boxAttivi$: Observable<boolean>;
     boxAttivi: boolean;
 
+    // Percorsi Richiesta Composizione
+    @Select(ComposizionePartenzaState.visualizzaPercorsiRichiesta) visualizzaPercorsiRichiesta$: Observable<boolean>;
+
     @Select(ImpostazioniState.ModalitaNotte) nightMode$: Observable<boolean>;
 
+    viewState: ViewLayouts;
+    columnState: Grids;
+
+    private subscription = new Subscription();
+
     constructor(private store: Store) {
-        this.getDettagliTipologie(true);
+        this.getAllDettagliTipologie();
         this.getIsCON();
         this.getIsDirRegionale();
         this.getViewState();
@@ -96,12 +100,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetSediTrasferimenti());
     }
 
-    getDettagliTipologie(pageAttuale: boolean): void {
-        let page = null;
-        if (pageAttuale) {
-            page = this.store.selectSnapshot(PaginationState.page);
-        }
-        this.store.dispatch(new GetDettagliTipologie(page));
+    getAllDettagliTipologie(): void {
+        this.store.dispatch(new GetAllDettagliTipologie());
     }
 
     getIsCON(): void {

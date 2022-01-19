@@ -1,9 +1,18 @@
-import { DirectionInterface } from '../../maps-interface/direction-interface';
+import { DirectionInterface } from '../../maps-interface/direction.interface';
+import { DirectionTravelDataInterface } from '../../maps-interface/direction-travel-data.interface';
 
 export class SetDirection {
     static readonly type = '[MapsDirection] Set Direction';
 
-    constructor(public direction: DirectionInterface) { }
+    constructor(public direction: DirectionInterface) {
+    }
+}
+
+export class SetDirectionTravelData {
+    static readonly type = '[MapsDirection] Set Direction Travel Data';
+
+    constructor(public idDirectionSymbols: string, public travelData: DirectionTravelDataInterface) {
+    }
 }
 
 export class ClearDirection {

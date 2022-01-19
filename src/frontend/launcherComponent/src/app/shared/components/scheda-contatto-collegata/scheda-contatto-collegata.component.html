@@ -2,8 +2,8 @@
     <div class="row">
         <div class="offset-1">
         </div>
-        <div class="col-2 px-0 py-1">
-            <div class="d-inline-block">
+        <div class="col-2 px-0 d-flex align-items-center">
+            <div class="d-inline-block mr-2">
                 <i [ngClass]="scheda.priorita | contattoPriorita"
                    [ngbTooltip]="scheda.priorita === priorita.Altissima ? altaPriorita : bassaPriorita"></i>
                 <ng-template #altaPriorita><b>Scheda ad alta priorità</b></ng-template>
@@ -11,13 +11,18 @@
             </div>
             {{ scheda.dataInserimento | date: 'dd/MM/yyyy HH:mm:ss' }}
         </div>
-        <div class="col py-1">
-            <i class="fas fa-map-marker-alt mr-1"></i>
-            {{ scheda.localita.indirizzo }}
+        <div class="col d-flex align-items-center">
+            <i class="fas fa-map-marker-alt mr-2"></i>
+            <span class="d-inline-block mr-2">
+                {{ scheda.localita?.indirizzo }}
+            </span>
+            <span [class.font-weight-bolder]="!scheda.localita?.indirizzo">
+                {{ 'lat: ' + scheda.localita?.coordinate?.latitudine + ' lon: ' + scheda.localita?.coordinate?.longitudine }}
+            </span>
         </div>
-        <div class="col-1 px-1 py-1 text-right cursor-pointer" ngbTooltip="Postazione Operatore">
+        <div class="col-1 d-flex align-items-center">
+            <i class="fas fa-desktop mr-2" ngbTooltip="Postazione Operatore" placement="left"></i>
             {{ scheda?.operatoreChiamata?.codicePostazioneOperatore ? scheda.operatoreChiamata.codicePostazioneOperatore : 'N/D' }}
-            <i class="fas fa-desktop ml-1"></i>
         </div>
         <div class="offset-2">
         </div>

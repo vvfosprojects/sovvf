@@ -7,6 +7,7 @@ import { Store } from '@ngxs/store';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
+import { Mezzo } from '../../model/mezzo.model';
 
 @Component({
     selector: 'app-lista-partenze',
@@ -28,6 +29,7 @@ export class ListaPartenzeComponent {
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
+    @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
     @Output() sostituzioneFineTurno: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(private store: Store) {

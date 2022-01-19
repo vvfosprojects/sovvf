@@ -3,7 +3,8 @@
 </div>
 <ul *ngIf="checkNumeroPartenzeAttive(partenze) > 0" class="list-unstyled">
     <div *ngFor="let p of partenze; let index = index">
-        <li *ngIf="!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata" class="border-bottom">
+        <li *ngIf="!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata"
+            class="border-bottom">
             <app-partial-loader
                     *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
             <app-partenza [partenza]="p.partenza"
@@ -18,7 +19,8 @@
                           (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre)"
                           (actionMezzo)="onActionMezzo($event)"
                           (eliminaPartenza)="eliminaPartenza.emit($event)"
-                          (modificaPartenza)="modificaPartenza.emit($event)">
+                          (modificaPartenza)="modificaPartenza.emit($event)"
+                          (selezioneMezzo)="selezioneMezzo.emit($event)">
             </app-partenza>
         </li>
     </div>

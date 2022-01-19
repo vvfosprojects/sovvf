@@ -1,33 +1,28 @@
-<div class="card">
-    <div class="card-header">
-        <h4 class="mb-0 font-weight-bolder">{{ doa.nome | uppercase }}</h4>
-    </div>
-    <div class="card-body">
-        <ng-container *ngIf="!doa.listaPca?.length">
-            <div class="alert alert-danger mb-0">
-                Nessun PCA Creato per il DOA {{ doa.nome | uppercase }}
-            </div>
-        </ng-container>
-        <div class="mb-3">
-            <h5>Moduli assegnati a {{ doa.nome | uppercase }}</h5>
-            <hr>
-            <div class="row">
-                <div *ngFor="let m of doa.listaModuliColonnaMobile" class="col-3 mb-3">
-                    <app-modulo-colonna-mobile [modulo]="m"></app-modulo-colonna-mobile>
-                </div>
-            </div>
-        </div>
-        <h5>PCA creati per {{ doa.nome | uppercase }}</h5>
-        <hr>
-        <ng-container *ngIf="addPcaButton">
-            <button class="btn btn-primary mb-3"
-                    (click)="onAddPca(doa)">
-                <i class="fas fa-plus"></i>
-                Inserisci PCA
-            </button>
-        </ng-container>
-        <div *ngFor="let p of doa.listaPca" class="mb-3">
-            <app-pca [pca]="p"></app-pca>
+<div class="mb-3">
+    <h5 class="mb-3">Moduli assegnati a {{ doa.nome | uppercase }}</h5>
+    <div class="row">
+        <div *ngFor="let m of doa.listaModuliColonnaMobile" class="col-3 mb-3">
+            <app-modulo-colonna-mobile [modulo]="m"></app-modulo-colonna-mobile>
         </div>
     </div>
 </div>
+<ng-container *ngIf="addPcaButton">
+    <div class="d-flex align-items-center">
+        <h4 class="mb-3">PCA creati per {{ doa.nome | uppercase }}</h4>
+        <button class="btn btn-primary btn-no-hover mb-3 ml-3"
+                (click)="onAddPca(doa)">
+            <i class="fas fa-plus"></i>
+            Inserisci PCA
+        </button>
+    </div>
+    <ng-container *ngIf="!doa.listaPca?.length">
+        <div class="alert alert-danger mb-0">
+            Nessun PCA Creato per {{ doa.nome | uppercase }}
+        </div>
+    </ng-container>
+    <ng-container *ngIf="doa.listaPca?.length">
+        <div *ngFor="let p of doa.listaPca">
+            <app-pca [pca]="p"></app-pca>
+        </div>
+    </ng-container>
+</ng-container>

@@ -58,7 +58,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
 
                 return result;
             }
-            catch 
+            catch
             {
                 return null;
             }

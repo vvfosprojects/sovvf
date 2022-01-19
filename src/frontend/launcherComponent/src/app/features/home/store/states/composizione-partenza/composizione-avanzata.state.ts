@@ -1,27 +1,15 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
-import {
-    ClearComposizioneAvanzata,
-    GetListeComposizioneAvanzata,
-    UnselectMezziAndSquadreComposizioneAvanzata
-} from '../../actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearComposizioneAvanzata, GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { ClearSelectedMezziComposizione, SetListaMezziComposizione, UnselectMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import {
-    ListaComposizioneAvanzata, MezziComposizioneAvanzata,
-    SquadreComposizioneAvanzata,
-} from '../../../../../shared/interface/lista-composizione-avanzata-interface';
+import { ListaComposizioneAvanzata, MezziComposizioneAvanzata, SquadreComposizioneAvanzata, } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
 import { RemoveBoxPartenza, RemoveMezzoBoxPartenzaSelezionato } from '../../actions/composizione-partenza/box-partenza.actions';
-import {
-    StartListaMezziComposizioneLoading,
-    StartListaSquadreComposizioneLoading,
-    StopListaMezziComposizioneLoading,
-    StopListaSquadreComposizioneLoading
-} from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { StartListaMezziComposizioneLoading, StartListaSquadreComposizioneLoading, StopListaMezziComposizioneLoading, StopListaSquadreComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { Injectable } from '@angular/core';

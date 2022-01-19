@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { BoxPartenza, BoxPartenzaPreAccoppiati } from './interface/box-partenza-interface';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { ComposizioneVeloceState } from '../store/states/composizione-partenza/composizione-veloce.state';
-import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
+import { DirectionInterface } from '../../maps/maps-interface/direction.interface';
 import { ClearDirection, SetDirection } from '../../maps/store/actions/maps-direction.actions';
 import { SetCoordCentroMappa } from '../../maps/store/actions/centro-mappa.actions';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
@@ -40,6 +40,8 @@ import { makeCopy } from '../../../shared/helper/function-generiche';
 import { TipologicaComposizionePartenza } from './interface/filtri/tipologica-composizione-partenza.interface';
 import { FiltroTurnoSquadre } from '../../../shared/enum/filtro-turno-composizione-partenza.enum';
 import { TipologicheMezziState } from '../store/states/composizione-partenza/tipologiche-mezzi.state';
+import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
+import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -55,6 +57,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     // Richiesta Composizione
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    // Percorsi Richiesta Composizione
+    @Select(ComposizionePartenzaState.visualizzaPercorsiRichiesta) visualizzaPercorsiRichiesta$: Observable<boolean>;
 
     // Loading
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
@@ -147,7 +151,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                         d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
                         return d;
                     });
-                    this.tipologicheMezzi.turni = [FiltroTurnoSquadre[0], FiltroTurnoSquadre[1]];
+                    this.tipologicheMezzi.turni = [FiltroTurnoSquadre.Precedente, FiltroTurnoSquadre.Successivo];
                     this.store.dispatch(new GetFiltriComposizione());
                 }
             })
@@ -185,6 +189,18 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     centraMappa(): void {
         this.store.dispatch(new SetCoordCentroMappa(this.richiesta.localita.coordinate));
+    }
+
+    onClickIndirizzoRichiesta(event: SintesiRichiesta): void {
+        const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
+        if (idRichiestaSelezionata === event.id) {
+            this.store.dispatch(new ClearRichiestaSelezionata());
+            setTimeout(() => {
+                this.store.dispatch(new SetRichiestaSelezionata(event.id));
+            }, 1);
+        } else {
+            this.store.dispatch(new SetRichiestaSelezionata(event.id));
+        }
     }
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {

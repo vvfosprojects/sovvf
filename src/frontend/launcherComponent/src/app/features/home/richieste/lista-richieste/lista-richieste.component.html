@@ -1,7 +1,7 @@
 <div class="row">
     <app-partial-loader [ngClass]="loadHeightControl()" *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
-    <div class="col-12 px-0 py-1"
+    <div class="col-12 px-0 pb-1"
          [ngClass]="heightControl()"
          style="overflow-x: hidden; overflow-y: hidden; position: relative; display: block;">
         <ng-container *ngIf="richieste?.length">

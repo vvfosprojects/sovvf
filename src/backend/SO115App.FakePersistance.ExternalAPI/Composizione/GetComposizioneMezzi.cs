@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
-            _geofleet = geofleet;
+            //_geofleet = geofleet;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -57,7 +57,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstSquadreWS = query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
 
-            List<Models.Classi.ServiziEsterni.OPService.Squadra> lstSquadre = new List<SO115App.Models.Classi.ServiziEsterni.OPService.Squadra>();
+            var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.Squadra>();
             if (lstSquadreWS[0] != null)
                 lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Squadre).ToList();
 
@@ -102,9 +102,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     var coord = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
 
-                    //double latitudine;
-                    //double.TryParse(m.Coordinate.Latitudine, NumberStyles.Any, CultureInfo.InvariantCulture, out latitudine);
-
                     Coordinate coordinateMezzo = null;
 
                     if (m.CoordinateStrg != null)
@@ -119,14 +116,19 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     var distanzaKm = "";
                     if (coordinateMezzo != null)
                     {
+#if !DEBUG
                         distanzaKm = (new GeoCoordinate(coordinateMezzo.Latitudine, coordinateMezzo.Longitudine)
                             .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
                             / 1000).ToString("N1");
+#endif
+#if DEBUG
+                        distanzaKm = "0";
+#endif
                     }
 
                     var mc = new ComposizioneMezzi()
                     {
-                        //Id = m.Codice,
+                        Id = m.Codice,
                         Mezzo = m,
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,

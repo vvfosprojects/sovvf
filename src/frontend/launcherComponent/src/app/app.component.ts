@@ -20,7 +20,7 @@ import { LSNAME } from './core/settings/config';
 import { Logout, SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
 import { ViewComponentState } from './features/home/store/states/view/view.state';
-import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
+import { ViewComponentStateModel, ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -29,6 +29,8 @@ import { NavbarState } from './features/navbar/store/states/navbar.state';
 import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
 import { NotificaInterface } from './shared/interface/notifica.interface';
 import { RouterState } from '@ngxs/router-plugin';
+import { ChangeView } from './features/home/store/actions/view/view.actions';
+import { AppFeatures } from './shared/enum/app-features.enum';
 
 @Component({
     selector: 'app-root',
@@ -47,6 +49,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
     viewState: ViewLayouts;
     @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
+    backupView: ViewComponentStateModel;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
     private listeSediLoaded: boolean;
@@ -103,6 +106,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.getDoubleMonitorMode();
         this.getRouterEvents();
         this.getViewState();
+        this.getBackupView();
         this.getImpostazioniLocalStorage();
         this.getSessionData();
         this.initSubscription();
@@ -189,7 +193,15 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     getViewState(): void {
-        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+        this.subscription.add(this.viewState$.subscribe(r => {
+            this.viewState = r;
+        }));
+    }
+
+    getBackupView(): void {
+        this.subscription.add(this.colorButton$.subscribe(r => {
+            this.backupView = r ? r.backupViewComponent : null;
+        }));
     }
 
     getImpostazioniLocalStorage(): void {
@@ -252,7 +264,16 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         if (innerWidth) {
             if (this.width !== innerWidth) {
                 this.width = innerWidth;
+                const maxInnerWidthDoubleMonitor = this.store.selectSnapshot(ViewportState.maxInnerWidthDoubleMonitor);
                 this.store.dispatch(new SetInnerWidth(innerWidth));
+                this.setLoaderPosition();
+                if (this.viewState?.mappa?.active && this.backupView && (innerWidth > maxInnerWidthDoubleMonitor)) {
+                    if (this.backupView.view.richieste.active) {
+                        this.store.dispatch(new ChangeView(AppFeatures.Richieste));
+                    } else if (this.backupView.view.mezziInServizio.active) {
+                        this.store.dispatch(new ChangeView(AppFeatures.MezziInServizio));
+                    }
+                }
             }
         }
     }

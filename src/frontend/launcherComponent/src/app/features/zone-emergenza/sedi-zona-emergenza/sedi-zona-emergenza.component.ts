@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ZonaEmergenza } from '../model/zona-emergenza.model';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { EventoEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
@@ -19,13 +19,14 @@ import { DoaForm } from '../interface/doa-form.interface';
 import { roundToDecimal } from '../../../shared/helper/function-generiche';
 import { PcaForm } from '../interface/pca-form.interface';
 import { PcaModalComponent } from './pca-modal/pca-modal.component';
-import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import { ResetForm } from '@ngxs/form-plugin';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
     selector: 'app-sedi-zona-emergenza',
     templateUrl: './sedi-zona-emergenza.component.html',
-    styleUrls: ['./sedi-zona-emergenza.component.css']
+    styleUrls: ['./sedi-zona-emergenza.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
 
@@ -91,12 +92,16 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
         );
     }
 
+    getEventiRichiestaCreazioneCraZonaEmergenza(): EventoEmergenza {
+        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaCreazioneCRA' && !e.gestita)[0];
+    }
+
     getZonaEmergenzaById(): void {
         this.subscriptions.add(
             this.zonaEmergenzaById$.subscribe((zonaEmergenza: ZonaEmergenza) => {
                 if (zonaEmergenza) {
                     this.zonaEmergenzaById = zonaEmergenza;
-                    if (this.zonaEmergenzaById.dirigenti?.length && this.craZonaEmergenzaForm) {
+                    if (this.getEventiRichiestaCreazioneCraZonaEmergenza() && this.craZonaEmergenzaForm) {
                         this.patchDirigentiForm();
                     }
                     if (this.zonaEmergenzaById.cra && this.craZonaEmergenzaForm) {
@@ -121,7 +126,7 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
             listaDoa: [null]
         });
 
-        if (this.zonaEmergenzaById?.dirigenti?.length) {
+        if (this.getEventiRichiestaCreazioneCraZonaEmergenza()?.dirigenti?.length) {
             this.patchDirigentiForm();
         }
         if (this.zonaEmergenzaById?.cra) {
@@ -141,17 +146,12 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
 
     patchDirigentiForm(): void {
         this.craZonaEmergenzaForm.patchValue({
-            comandanteRegionale: this.zonaEmergenzaById.dirigenti[0],
-            responsabileDistrettoAreaColpita: this.zonaEmergenzaById.dirigenti[1],
-            responsabile: this.zonaEmergenzaById.dirigenti[2],
-            responsabileCampiBaseMezziOperativi: this.zonaEmergenzaById.dirigenti[3],
-            responsabileGestionePersonaleContratti: this.zonaEmergenzaById.dirigenti[4],
+            comandanteRegionale: this.getEventiRichiestaCreazioneCraZonaEmergenza().dirigenti[0],
+            responsabileDistrettoAreaColpita: this.getEventiRichiestaCreazioneCraZonaEmergenza().dirigenti[1],
+            responsabile: this.getEventiRichiestaCreazioneCraZonaEmergenza().dirigenti[2],
+            responsabileCampiBaseMezziOperativi: this.getEventiRichiestaCreazioneCraZonaEmergenza().dirigenti[3],
+            responsabileGestionePersonaleContratti: this.getEventiRichiestaCreazioneCraZonaEmergenza().dirigenti[4],
         });
-        this.f.comandanteRegionale.disable();
-        this.f.responsabileDistrettoAreaColpita.disable();
-        this.f.responsabile.disable();
-        this.f.responsabileCampiBaseMezziOperativi.disable();
-        this.f.responsabileGestionePersonaleContratti.disable();
     }
 
     onAddDoa(zonaEmergenza: ZonaEmergenza): void {
