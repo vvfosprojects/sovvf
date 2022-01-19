@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { EventoEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -6,7 +6,17 @@ import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { Observable, Subscription } from 'rxjs';
-import { GetTipologieEmergenza, GetZonaEmergenzaById, RequestCra, RequestTipologieModuli, UpdateModuliMobImmediataZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
+import {
+    GetTipologieEmergenza,
+    GetZonaEmergenzaById,
+    RequestCra,
+    RequestTipologieModuli,
+    SetFiltriAttiviGeneriModuliColonnaMobile,
+    SetFiltriAttiviStatiModuliColonnaMobile,
+    SetFiltriGeneriModuliColonnaMobile,
+    SetFiltriStatiModuliColonnaMobile,
+    UpdateModuliMobImmediataZonaEmergenza
+} from '../store/actions/zone-emergenza/zone-emergenza.actions';
 import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
@@ -18,24 +28,49 @@ import { makeCopy } from '../../../shared/helper/function-generiche';
 import { RichiestaModuliModalComponent } from '../richiesta-moduli-modal/richiesta-moduli-modal.component';
 import { ResetForm } from '@ngxs/form-plugin';
 import { RichiestaCraModalComponent } from '../richiesta-cra-modal/richiesta-cra-modal.component';
+import { FiltriZonaEmergenzaInterface } from '../interface/filtri-zona-emergenza.interface';
 
 @Component({
     selector: 'app-dettaglio-zona-emergenza',
     templateUrl: './dettaglio-zona-emergenza.component.html',
     styleUrls: ['./dettaglio-zona-emergenza.component.css']
 })
-export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
+export class DettaglioZonaEmergenzaComponent implements OnInit, OnChanges, OnDestroy {
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
     @Select(ZoneEmergenzaState.zonaEmergenzaById) zonaEmergenzaById$: Observable<ZonaEmergenza>;
     zonaEmergenzaById: ZonaEmergenza;
+    @Select(ZoneEmergenzaState.filtri) filtri$: Observable<FiltriZonaEmergenzaInterface>;
+    filtri: FiltriZonaEmergenzaInterface;
+    @Select(ZoneEmergenzaState.filtriAttivi) filtriAttivi$: Observable<FiltriZonaEmergenzaInterface>;
+    filtriAttivi: FiltriZonaEmergenzaInterface;
+    @Select(ZoneEmergenzaState.listaModuliImmediataZonaEmergenzaById) listaModuliImmediataZonaEmergenzaById$: Observable<ModuloColonnaMobile[]>;
+    listaModuliImmediataZonaEmergenzaById: ModuloColonnaMobile[];
+    listaModuliImmediataZonaEmergenzaByIdFiltered: ModuloColonnaMobile[];
     @Select(SediTreeviewState.isDirRegionale) isDirRegionale$: Observable<boolean>;
     isDirRegionale: boolean;
     @Select(SediTreeviewState.isCON) isCON$: Observable<boolean>;
     isCON: boolean;
 
     idZonaEmergenza: string;
+
+    activeIdNavRichiesteModuli = 1;
+    activeIdNavModuliAssegnati = 1;
+    moduliAssegnatiExpanded: boolean;
+
+    statiModuliGraphData: any[];
+    generiModuliGraphData: any[];
+    comandiModuliGraphData: any[];
+
+    colorScheme = {
+        domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    };
+    gradient = true;
+    showLegend = false;
+    showLabels = true;
+    isDoughnut = false;
+    legendPosition = 'right';
 
     private subscriptions: Subscription = new Subscription();
 
@@ -44,6 +79,9 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.getDoubleMonitorMode();
         this.getZonaEmergenzaById();
+        this.getFiltri();
+        this.getFiltriAttivi();
+        this.getListaModuliImmediataZonaEmergenzaById();
         this.getIsDirRegionale();
         this.getIsCon();
 
@@ -63,6 +101,12 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible(false),
             new StopBigLoading()
         ]);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.activeIdNavModuliAssegnati.currentValue) {
+            console.log('test');
+        }
     }
 
     ngOnDestroy(): void {
@@ -90,6 +134,69 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
         );
     }
 
+    getFiltri(): void {
+        this.subscriptions.add(
+            this.filtri$.subscribe((filtri: FiltriZonaEmergenzaInterface) => {
+                if (filtri) {
+                    this.filtri = filtri;
+                }
+            })
+        );
+    }
+
+    getFiltriAttivi(): void {
+        this.subscriptions.add(
+            this.filtriAttivi$.subscribe((filtriAttivi: FiltriZonaEmergenzaInterface) => {
+                if (filtriAttivi) {
+                    this.filtriAttivi = filtriAttivi;
+                    const statiModuliColonnaMobile = filtriAttivi.statiModuliColonnaMobile;
+                    const generiModuliColonnaMobile = filtriAttivi.generiModuliColonnaMobile;
+                    if (!statiModuliColonnaMobile?.length && !generiModuliColonnaMobile?.length) {
+                        this.listaModuliImmediataZonaEmergenzaByIdFiltered = this.listaModuliImmediataZonaEmergenzaById;
+                    }
+                    if (statiModuliColonnaMobile?.length && generiModuliColonnaMobile?.length) {
+                        // tslint:disable-next-line:max-line-length
+                        this.listaModuliImmediataZonaEmergenzaByIdFiltered = this.listaModuliImmediataZonaEmergenzaById.filter((moduloColonnaMobile: ModuloColonnaMobile) => statiModuliColonnaMobile.includes(moduloColonnaMobile.stato) && generiModuliColonnaMobile.includes(moduloColonnaMobile.nomeModulo));
+                    }
+                    if (statiModuliColonnaMobile?.length && !generiModuliColonnaMobile?.length) {
+                        this.listaModuliImmediataZonaEmergenzaByIdFiltered = this.listaModuliImmediataZonaEmergenzaById.filter((moduloColonnaMobile: ModuloColonnaMobile) => statiModuliColonnaMobile.includes(moduloColonnaMobile.stato));
+                    }
+                    if (generiModuliColonnaMobile?.length && !statiModuliColonnaMobile?.length) {
+                        this.listaModuliImmediataZonaEmergenzaByIdFiltered = this.listaModuliImmediataZonaEmergenzaById.filter((moduloColonnaMobile: ModuloColonnaMobile) => generiModuliColonnaMobile.includes(moduloColonnaMobile.nomeModulo));
+                    }
+                }
+            })
+        );
+    }
+
+    getListaModuliImmediataZonaEmergenzaById(): void {
+        this.subscriptions.add(
+            this.listaModuliImmediataZonaEmergenzaById$.subscribe((listaModuliImmediataZonaEmergenzaById: ModuloColonnaMobile[]) => {
+                if (listaModuliImmediataZonaEmergenzaById?.length) {
+                    this.listaModuliImmediataZonaEmergenzaById = listaModuliImmediataZonaEmergenzaById;
+                    this.resetListaModuliImmediataZonaEmergenzaById();
+                    this.setStatiModuliGraphData();
+                    this.setGeneriModuliGraphData();
+                    this.setComandiModuliGraphData();
+                    const uniqueStati = [...new Set(listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.stato))];
+                    const uniqueGeneri = [...new Set(listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.nomeModulo))];
+                    this.store.dispatch([
+                        new SetFiltriStatiModuliColonnaMobile(uniqueStati),
+                        new SetFiltriGeneriModuliColonnaMobile(uniqueGeneri)
+                    ]);
+                }
+            })
+        );
+    }
+
+    resetListaModuliImmediataZonaEmergenzaById(): void {
+        this.listaModuliImmediataZonaEmergenzaByIdFiltered = this.listaModuliImmediataZonaEmergenzaById;
+    }
+
+    onToggleModuliAssegnati(): void {
+        this.moduliAssegnatiExpanded = !this.moduliAssegnatiExpanded;
+    }
+
     getIsDirRegionale(): void {
         this.subscriptions.add(
             this.isDirRegionale$.subscribe((isDirRegionale: boolean) => {
@@ -107,19 +214,30 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
     }
 
     getEventi(): EventoEmergenza[] {
-      return this.zonaEmergenzaById?.listaEventi;
-  }
-
+        return this.zonaEmergenzaById?.listaEventi;
+    }
 
     getEventiRichiesteZonaEmergenza(): EventoEmergenza[] {
         return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaEmergenza' && !e.gestita);
+    }
+
+    getEventiRichiesteGestiteZonaEmergenza(): EventoEmergenza[] {
+        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaEmergenza' && e.gestita);
     }
 
     getEventiRichiestaCreazioneCraZonaEmergenza(): EventoEmergenza {
         return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaCreazioneCRA' && !e.gestita)[0];
     }
 
-    onColonneMobili(evento: EventoEmergenza): void {
+    onChangeFiltroStatoColonnaMobile(statiModuliColonnaMobile: string[]): void {
+        this.store.dispatch(new SetFiltriAttiviStatiModuliColonnaMobile(statiModuliColonnaMobile));
+    }
+
+    onChangeFiltroGenereColonnaMobile(generiModuliColonnaMobile: string[]): void {
+        this.store.dispatch(new SetFiltriAttiviGeneriModuliColonnaMobile(generiModuliColonnaMobile));
+    }
+
+    onColonneMobili(evento?: EventoEmergenza): void {
         const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
             windowClass: 'modal-holder xxlModal',
             centered: true
@@ -127,16 +245,18 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
 
         colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
         colonneMobiliEmergenzaModal.componentInstance.fase = '1';
-        colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = evento != null ? evento.tipologiaModuli : "all";
+        colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = evento ? evento.tipologiaModuli : 'all';
 
         colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
             switch (result.esito) {
                 case 'ok':
                     switch (result.fase) {
                         case '1':
-                            const eventoCopy = makeCopy(evento);
-                            const eventoGestito = eventoCopy;
-                            eventoGestito.gestita = true;
+                            const eventoCopy = evento ? makeCopy(evento) : null;
+                            const eventoGestito = eventoCopy ? eventoCopy : null;
+                            if (eventoGestito) {
+                                eventoGestito.gestita = true;
+                            }
                             this.store.dispatch(new UpdateModuliMobImmediataZonaEmergenza(this.zonaEmergenzaById, result.moduliSelezionati, eventoGestito));
                             break;
                     }
@@ -148,37 +268,6 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
             }
         });
     }
-
-    onInvioColonneMobiliByDirezione(): void {
-      const colonneMobiliEmergenzaModal = this.modalService.open(ModuliColonnaMobileModalComponent, {
-          windowClass: 'modal-holder xxlModal',
-          centered: true
-      });
-
-      colonneMobiliEmergenzaModal.componentInstance.zonaEmergenza = this.zonaEmergenzaById;
-      colonneMobiliEmergenzaModal.componentInstance.fase = '1';
-      colonneMobiliEmergenzaModal.componentInstance.moduliMobImmediataRichiesti = "all";
-
-      colonneMobiliEmergenzaModal.result.then((result: { esito: string, moduliSelezionati: ModuloColonnaMobile[], fase: string }) => {
-          switch (result.esito) {
-              case 'ok':
-                  switch (result.fase) {
-                      case '1':
-                          //const eventoCopy = makeCopy(evento);
-                          //const eventoGestito = eventoCopy;
-                          //eventoGestito.gestita = true;
-                          //this.store.dispatch(new UpdateModuliMobImmediataZonaEmergenza(this.zonaEmergenzaById, result.moduliSelezionati, eventoGestito));
-                          break;
-                  }
-                  break;
-              case 'ko':
-                  break;
-              default:
-                  break;
-          }
-      });
-  }
-
 
     onRichiestaCra(): void {
         if (this.isCON || this.isDirRegionale) {
@@ -204,6 +293,10 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
             }
             this.store.dispatch(new ResetForm({ path: 'zoneEmergenza.richiestaCraDoaZonaEmergenzaForm' }));
         });
+    }
+
+    onCreazioneSedi(): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/sedi/' + this.zonaEmergenzaById.id]));
     }
 
     reducerRichiestaModuli(): void {
@@ -233,6 +326,48 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnDestroy {
             }
             this.store.dispatch(new ResetForm({ path: 'zoneEmergenza.richiestaModuliZonaEmergenzaForm' }));
         });
+    }
+
+    setStatiModuliGraphData(): any {
+        const uniqueStati = [...new Set(this.listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.stato))];
+        const graphData = [];
+        if (uniqueStati?.length) {
+            uniqueStati.forEach((stato: string) => {
+                graphData.push({
+                    name: stato,
+                    value: this.listaModuliImmediataZonaEmergenzaById.filter((item: ModuloColonnaMobile) => item.stato === stato).length
+                });
+            });
+        }
+        this.statiModuliGraphData = graphData;
+    }
+
+    setGeneriModuliGraphData(): any {
+        const uniqueGeneri = [...new Set(this.listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.nomeModulo))];
+        const graphData = [];
+        if (uniqueGeneri?.length) {
+            uniqueGeneri.forEach((genere: string) => {
+                graphData.push({
+                    name: genere,
+                    value: this.listaModuliImmediataZonaEmergenzaById.filter((item: ModuloColonnaMobile) => item.nomeModulo === genere).length
+                });
+            });
+        }
+        this.generiModuliGraphData = graphData;
+    }
+
+    setComandiModuliGraphData(): any {
+        const uniqueComandi = [...new Set(this.listaModuliImmediataZonaEmergenzaById.map((item: ModuloColonnaMobile) => item.codComando))];
+        const graphData = [];
+        if (uniqueComandi?.length) {
+            uniqueComandi.forEach((codComando: string) => {
+                graphData.push({
+                    name: codComando,
+                    value: this.listaModuliImmediataZonaEmergenzaById.filter((item: ModuloColonnaMobile) => item.codComando === codComando).length
+                });
+            });
+        }
+        this.comandiModuliGraphData = graphData;
     }
 
     goToGestioneEmergenze(): void {
