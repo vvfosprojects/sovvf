@@ -152,11 +152,6 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
             responsabileCampiBaseMezziOperativi: this.getEventiRichiestaCreazioneCraZonaEmergenza().dirigenti[3],
             responsabileGestionePersonaleContratti: this.getEventiRichiestaCreazioneCraZonaEmergenza().dirigenti[4],
         });
-        this.f.comandanteRegionale.disable();
-        this.f.responsabileDistrettoAreaColpita.disable();
-        this.f.responsabile.disable();
-        this.f.responsabileCampiBaseMezziOperativi.disable();
-        this.f.responsabileGestionePersonaleContratti.disable();
     }
 
     onAddDoa(zonaEmergenza: ZonaEmergenza): void {
