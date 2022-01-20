@@ -1,0 +1,199 @@
+<div class="container-fluid pt-3 pb-2">
+    <ng-container *ngIf="zonaEmergenzaById"
+                  class="row">
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
+            <div class="col-12">
+                <h4 class="cursor-pointer"
+                    (click)="goToGestioneEmergenze()">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <span class="font-weight-bold">Gestione Emergenze</span>
+                    - CRA, DOA e PCA Emergenza {{ zonaEmergenzaById?.codEmergenza }}
+                </h4>
+            </div>
+            <!-- Stepper -->
+            <div class="col-10 mx-auto mt-4">
+                <ng-wizard [config]="config">
+                    <ng-wizard-step
+                            [title]="'CRA'"
+                            [description]="'Componi il CRA'"
+                            [canEnter]="true"
+                            [canExit]="craZonaEmergenzaForm.valid">
+                        <div class="row py-2 px-3">
+                            <div class="col-12">
+                                <form [formGroup]="craZonaEmergenzaForm"
+                                      ngxsForm="zoneEmergenza.craZonaEmergenzaForm">
+                                    <div class="form-group">
+                                        <label for="nome">Nome</label>
+                                        <input id="nome"
+                                               class="form-control"
+                                               type="text"
+                                               placeholder="Nome CRA"
+                                               formControlName="nome">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="selectIndirizzo">Indirizzo</label>
+                                                <app-ricerca-indirizzo id="selectIndirizzo"
+                                                                       [indirizzo]="f.indirizzo?.value"
+                                                                       [requiredFieldClass]="false"
+                                                                       (selectCandidate)="onSetIndirizzo($event)">
+                                                </app-ricerca-indirizzo>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="latitudine">Latitudine</label>
+                                                <input id="latitudine"
+                                                       class="form-control"
+                                                       type="tel"
+                                                       placeholder="Latitudine"
+                                                       formControlName="latitudine">
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="longitudine">Longitudine</label>
+                                                <input id="longitudine"
+                                                       class="form-control"
+                                                       type="tel"
+                                                       placeholder="Longitudine"
+                                                       formControlName="longitudine">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="comandanteRegionale">Comandante Regionale</label>
+                                        <input id="comandanteRegionale"
+                                               class="form-control"
+                                               type="text"
+                                               placeholder="Comandante Regionale"
+                                               formControlName="comandanteRegionale">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="responsabileDistrettoAreaColpita">
+                                            Responsabile Distretto Area Colpita
+                                        </label>
+                                        <input id="responsabileDistrettoAreaColpita"
+                                               class="form-control"
+                                               type="text"
+                                               placeholder="Responsabile Distretto Area Colpita"
+                                               formControlName="responsabileDistrettoAreaColpita">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="responsabile">Responsabile</label>
+                                        <input id="responsabile"
+                                               class="form-control"
+                                               type="text"
+                                               placeholder="Responsabile"
+                                               formControlName="responsabile">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="responsabileCampiBaseMezziOperativi">
+                                            Responsabile Campi Base e Mezzi Operativi
+                                        </label>
+                                        <input id="responsabileCampiBaseMezziOperativi"
+                                               class="form-control"
+                                               type="text"
+                                               placeholder="Responsabile Campi Base e Mezzi Operativi"
+                                               formControlName="responsabileCampiBaseMezziOperativi">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="responsabileGestionePersonaleContratti">
+                                            Responsabile Gestione Personale e Contratti
+                                        </label>
+                                        <input id="responsabileGestionePersonaleContratti"
+                                               class="form-control"
+                                               type="text"
+                                               placeholder="Responsabile Gestione Personale e Contratti"
+                                               formControlName="responsabileGestionePersonaleContratti">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </ng-wizard-step>
+                    <ng-wizard-step
+                            [title]="'DOA'"
+                            [description]="'Componi i DOA'"
+                            [canEnter]="craZonaEmergenzaForm.valid"
+                            [canExit]="craZonaEmergenzaForm.valid">
+                        <div class="row py-2 px-3">
+                            <div class="col-12">
+                                <button class="btn btn-primary btn-no-hover mb-3"
+                                        [disabled]="getEventiRichiestaCreazioneCraZonaEmergenza()?.numDoa - f?.listaDoa?.value?.length <= 0"
+                                        (click)="onAddDoa(zonaEmergenzaById)">
+                                    <i class="fas fa-plus"></i>
+                                    Inserisci DOA
+                                    ({{ (getEventiRichiestaCreazioneCraZonaEmergenza()?.numDoa - f?.listaDoa?.value?.length) }}
+                                    rimanenti)
+                                </button>
+                                <ng-container *ngIf="!f?.listaDoa?.value?.length">
+                                    <div class="alert alert-danger">
+                                        Nessun DOA Creato per {{ f.nome.value | uppercase }}
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="f?.listaDoa?.value?.length">
+                                    <ngb-accordion #accordionDoa="ngbAccordion">
+                                        <ngb-panel *ngFor="let d of f.listaDoa.value; let i = index"
+                                                   id="toggle-doa-{{ i + 1 }}"
+                                                   title="{{ i + 1 + '. ' + d.nome | uppercase }}">
+                                            <ng-template ngbPanelContent>
+                                                <app-doa [doa]="d"></app-doa>
+                                            </ng-template>
+                                        </ngb-panel>
+                                    </ngb-accordion>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-wizard-step>
+                    <ng-wizard-step
+                            [title]="'PCA'"
+                            [description]="'Componi i PCA'"
+                            [canEnter]="craZonaEmergenzaForm.valid"
+                            [canExit]="craZonaEmergenzaForm.valid">
+                        <div class="row py-2 px-3">
+                            <div class="col-12">
+                                <ng-container *ngIf="!f?.listaDoa?.value?.length">
+                                    <div class="alert alert-danger">
+                                        Nessun DOA Creato per il CRA {{ f.nome.value }}
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="f?.listaDoa?.value?.length">
+                                    <ngb-accordion #accordionDoaPca="ngbAccordion">
+                                        <ngb-panel *ngFor="let d of f.listaDoa.value; let i = index"
+                                                   id="toggle-pca-{{ i + 1 }}"
+                                                   title="{{ i + 1 + '. ' + d.nome | uppercase }}">
+                                            <ng-template ngbPanelContent>
+                                                <app-doa [doa]="d"
+                                                         [addPcaButton]="true"
+                                                         (addPca)="onAddPca($event)">
+                                                </app-doa>
+                                            </ng-template>
+                                        </ngb-panel>
+                                    </ngb-accordion>
+                                </ng-container>
+                            </div>
+                            <div class="col-12">
+                                <div class="clearfix">
+                                    <div class="float-right">
+                                        <button class="btn btn-success mt-4"
+                                                (click)="saveCraZonaEmergenza()">
+                                            Salva Modifiche
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-wizard-step>
+                </ng-wizard>
+            </div>
+        </div>
+        <div *ngIf="doubleMonitor" class="col-6">
+            <div class="mt-2"
+                 style="height:920px">
+                <app-maps></app-maps>
+            </div>
+        </div>
+    </ng-container>
+</div>
