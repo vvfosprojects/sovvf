@@ -21,9 +21,12 @@
 <div class="modal-body p-0">
     <ng-wizard [config]="config">
         <ng-container *ngIf="fase === '1'">
+            <ng-container *ngIf="!tipologiaEmergenza?.moduli?.mob_Immediata">
+                <app-partial-loader></app-partial-loader>
+            </ng-container>
             <ng-container *ngFor="let m of tipologiaEmergenza?.moduli?.mob_Immediata; let i = index">
                 <ng-wizard-step
-                        [title]="moduliMobImmediataRichiesti.indexOf(m) !== -1 ? 'Richiesto - ' + m : m"
+                        [title]="moduliMobImmediataRichiesti && moduliMobImmediataRichiesti.indexOf(m) !== -1 ? 'Richiesto - ' + m : m"
                         [description]="getStepDescription(m)"
                         [canEnter]="true"
                         [canExit]="true">
@@ -113,16 +116,6 @@
                         </div>
                     </div>
                 </ng-container>
-                <div class="col-12">
-                    <hr>
-                </div>
-                <div class="col-12 text-right">
-                    <button class="btn btn-no-hover btn-success"
-                            [disabled]="!moduliSelezionati?.length"
-                            (click)="onConfermaModuli()">
-                        Conferma Moduli
-                    </button>
-                </div>
             </div>
         </ng-wizard-step>
     </ng-wizard>

@@ -8,6 +8,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MapsModule } from '../maps/maps.module';
+import { PieChartModule } from '@swimlane/ngx-charts';
 import { NgWizardConfig, NgWizardModule, THEME } from 'ng-wizard';
 /**
  * Component
@@ -75,6 +76,7 @@ const ngWizardConfig: NgWizardConfig = {
         SharedModule,
         MapsModule,
         ReactiveFormsModule,
+        PieChartModule,
     ],
     providers: []
 })

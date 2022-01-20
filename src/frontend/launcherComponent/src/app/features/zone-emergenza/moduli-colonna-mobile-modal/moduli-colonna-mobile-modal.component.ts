@@ -44,6 +44,15 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
         selected: 0,
         lang: { next: 'Avanti', previous: 'Indietro' },
         cycleSteps: false,
+        toolbarSettings: {
+            toolbarExtraButtons: [
+                {
+                    text: 'Conferma Moduli', class: 'btn btn-success btn-no-hover', event: () => {
+                        this.onConfermaModuli();
+                    }
+                }
+            ]
+        }
     };
 
     private subscriptions: Subscription = new Subscription();
@@ -124,8 +133,7 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
 
     getRiepilogoStepDescription(): string {
         const count = this.moduliSelezionati?.length;
-        const description = count ? count + ' totali' : '';
-        return description;
+        return count ? count + ' totali' : '';
     }
 
     filterTipologiaEmergenzaModuliMobImmediata(): void {
@@ -150,7 +158,9 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
     }
 
     onConfermaModuli(): void {
-        this.close('ok', this.moduliSelezionati, this.fase);
+        if (this.moduliSelezionati?.length) {
+            this.close('ok', this.moduliSelezionati, this.fase);
+        }
     }
 
     close(esito: string, moduliSelezionati?: ModuloColonnaMobile[], fase?: string): void {
