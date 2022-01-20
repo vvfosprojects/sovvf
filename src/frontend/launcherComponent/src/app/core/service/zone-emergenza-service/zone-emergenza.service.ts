@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { TipologiaEmergenza, ZonaEmergenza } from '../../../features/zone-emergenza/model/zona-emergenza.model';
+import { Cra } from '../../../features/zone-emergenza/interface/cra.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_ZONE_EMERGENZA = BASE_URL + environment.apiUrl.zoneEmergenza;
@@ -57,5 +58,9 @@ export class ZoneEmergenzaService {
 
     requestCra(params: { id: string, dirigenti: string[], numeroDOA: number }): Observable<any> {
         return this.http.post<any>(API_ZONE_EMERGENZA + '/AddRichiestaCreazioneCraEmergenza', params);
+    }
+
+    addCra(params: { idEmergenza: string, cra: Cra }): Observable<any> {
+        return this.http.post<any>(API_ZONE_EMERGENZA + '/CreazioneCra', params);
     }
 }

@@ -21,11 +21,10 @@ import { ModuloColonnaMobileComponent } from './shared/modulo-colonna-mobile/mod
 import { AllertaCONZonaEmergenzaModalComponent } from './allerta-CON-zona-emergenza-modal/allerta-CON-zona-emergenza-modal.component';
 import { DettaglioZonaEmergenzaComponent } from './dettaglio-zona-emergenza/dettaglio-zona-emergenza.component';
 import { ZonaEmergenzaModalComponent } from './zona-emergenza-modal/zona-emergenza-modal.component';
-import { SediZonaEmergenzaComponent } from './sedi-zona-emergenza/sedi-zona-emergenza.component';
-import { DoaModalComponent } from './sedi-zona-emergenza/doa-modal/doa-modal.component';
-import { PcaModalComponent } from './sedi-zona-emergenza/pca-modal/pca-modal.component';
-import { DoaComponent } from './sedi-zona-emergenza/doa/doa.component';
-import { PcaComponent } from './sedi-zona-emergenza/pca/pca.component';
+import { DoaModalComponent } from './sedi-zona-emergenza/creazione-sedi/doa-modal/doa-modal.component';
+import { PcaModalComponent } from './sedi-zona-emergenza/creazione-sedi/pca-modal/pca-modal.component';
+import { DoaComponent } from './sedi-zona-emergenza/creazione-sedi/doa/doa.component';
+import { PcaComponent } from './sedi-zona-emergenza/creazione-sedi/pca/pca.component';
 import { RichiestaModuliModalComponent } from './richiesta-moduli-modal/richiesta-moduli-modal.component';
 import { RichiestaCraModalComponent } from './richiesta-cra-modal/richiesta-cra-modal.component';
 /**
@@ -37,6 +36,8 @@ import { ZoneEmergenzaRouting } from './zone-emergenza.routing';
  */
 import { ZoneEmergenzaState } from './store/states/zone-emergenza/zone-emergenza.state';
 import { ModuliColonnaMobileState } from './store/states/moduli-colonna-mobile/moduli-colonna-mobile.state';
+import { CreazioneSediComponent } from './sedi-zona-emergenza/creazione-sedi/creazione-sedi.component';
+import { DettaglioSediComponent } from './sedi-zona-emergenza/dettaglio-sedi/dettaglio-sedi.component';
 
 const ngWizardConfig: NgWizardConfig = {
     theme: THEME.default
@@ -54,7 +55,8 @@ const ngWizardConfig: NgWizardConfig = {
         ModuloColonnaMobileComponent,
         DettaglioZonaEmergenzaComponent,
         ZonaEmergenzaModalComponent,
-        SediZonaEmergenzaComponent,
+        CreazioneSediComponent,
+        DettaglioSediComponent,
         DoaModalComponent,
         PcaModalComponent,
         DoaComponent,

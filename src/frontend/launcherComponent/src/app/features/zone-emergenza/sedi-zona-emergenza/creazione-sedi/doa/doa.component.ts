@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Doa } from '../../interface/doa.interface';
+import { Doa } from '../../../interface/doa.interface';
 
 @Component({
     selector: 'app-doa',

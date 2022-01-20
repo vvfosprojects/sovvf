@@ -675,16 +675,6 @@ export class ZoneEmergenzaState {
     @Action(UpdateModuliMobConsolidamentoZonaEmergenza)
     updateModuliMobConsolidamentoZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>, action: UpdateModuliMobConsolidamentoZonaEmergenza): void {
         dispatch(new StartLoadingZoneEmergenza());
-        const state = getState();
-
-        // Costruzione oggetto CRA
-        const craZonaEmergenzaFormValue = state.craZonaEmergenzaForm.model as CraZonaEmergenzaForm;
-        const cra = {
-            nome: craZonaEmergenzaFormValue.nome,
-            coordinate: new Coordinate(+craZonaEmergenzaFormValue.latitudine, +craZonaEmergenzaFormValue.longitudine),
-            indirizzo: craZonaEmergenzaFormValue.indirizzo,
-            listaDoa: craZonaEmergenzaFormValue.listaDoa
-        } as Cra;
 
         const zonaEmergenzaValue = action.zonaEmergenza;
         const moduliMobConsolidamento = action.moduliMobConsolidamento;
@@ -714,8 +704,7 @@ export class ZoneEmergenzaState {
             zonaEmergenzaValue.allertata,
             zonaEmergenzaValue.listaModuliImmediata,
             moduliMobConsolidamento,
-            zonaEmergenzaValue.listaModuliPotInt,
-            cra
+            zonaEmergenzaValue.listaModuliPotInt
         );
         this.zoneEmergenzaService.edit(zonaEmergenza).subscribe(() => {
             dispatch([
@@ -861,8 +850,7 @@ export class ZoneEmergenzaState {
             })
         );
         state = getState();
-        const doaList = state.craZonaEmergenzaForm.model.listaDoa;
-        const newDoaList = doaList ? [...doaList, ...state.doa] : state.doa;
+        const newDoaList = state.doa;
         dispatch(new UpdateFormValue({ value: { listaDoa: newDoaList }, path: 'zoneEmergenza.craZonaEmergenzaForm' }));
     }
 
@@ -928,44 +916,28 @@ export class ZoneEmergenzaState {
             nome: craZonaEmergenzaFormValue.nome,
             coordinate: new Coordinate(+craZonaEmergenzaFormValue.latitudine, +craZonaEmergenzaFormValue.longitudine),
             indirizzo: craZonaEmergenzaFormValue.indirizzo,
-            listaDoa: craZonaEmergenzaFormValue.listaDoa
+            listaDoa: craZonaEmergenzaFormValue.listaDoa,
+            dirigenti: [
+                craZonaEmergenzaFormValue.comandanteRegionale,
+                craZonaEmergenzaFormValue.responsabileDistrettoAreaColpita,
+                craZonaEmergenzaFormValue.responsabile,
+                craZonaEmergenzaFormValue.responsabileCampiBaseMezziOperativi,
+                craZonaEmergenzaFormValue.responsabileGestionePersonaleContratti
+            ]
         } as Cra;
 
-        const zonaEmergenzaValue = state.zonaEmergenzaById;
-        const zonaEmergenza = new ZonaEmergenza(
-            zonaEmergenzaValue.id,
-            zonaEmergenzaValue.codEmergenza,
-            zonaEmergenzaValue.codComandoRichiedente,
-            zonaEmergenzaValue.descrizione,
-            zonaEmergenzaValue.tipologia,
-            new Localita(
-                {
-                    latitudine: zonaEmergenzaValue.localita.coordinate.latitudine,
-                    longitudine: zonaEmergenzaValue.localita.coordinate.longitudine
-                },
-                zonaEmergenzaValue.localita.indirizzo,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                zonaEmergenzaValue.localita.provincia,
-                zonaEmergenzaValue.localita.regione
-            ),
-            zonaEmergenzaValue.listaEventi,
-            zonaEmergenzaValue.annullata,
-            zonaEmergenzaValue.allertata,
-            zonaEmergenzaValue.listaModuliImmediata,
-            zonaEmergenzaValue.listaModuliConsolidamento,
-            zonaEmergenzaValue.listaModuliPotInt,
+        const paramsAddCra = {
+            // TODO: inserire "istante" dell'evento "RichiestaCreazioneCRA" che sto gestendo creando il CRA
+            istanteRichiestaCra: null,
+            idEmergenza: state.zonaEmergenzaById.id,
             cra
-        );
-        this.zoneEmergenzaService.edit(zonaEmergenza).subscribe(() => {
+        } as { idEmergenza: string, cra: Cra };
+        this.zoneEmergenzaService.addCra(paramsAddCra).subscribe(() => {
             dispatch([
                 new GetZoneEmergenza(),
                 new StopLoadingZoneEmergenza(),
                 new ShowToastr(ToastrType.Success, 'Gestione Emergenza', 'Salvataggio avvenuto con successo', 3),
+                new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail-sedi/' + state.zonaEmergenzaById.id])
             ]);
         }, () => {
             dispatch([

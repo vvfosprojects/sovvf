@@ -1,0 +1,98 @@
+<div class="container-fluid pt-3 pb-2">
+    <div *ngIf="zonaEmergenzaById"
+         class="row">
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
+            <div class="col-12">
+                <h4 class="cursor-pointer"
+                    (click)="goToGestioneEmergenze()">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <span class="font-weight-bold">Gestione Emergenze</span>
+                    - CRA, DOA e PCA Emergenza {{ zonaEmergenzaById?.codEmergenza }}
+                </h4>
+            </div>
+            <!-- Informazioni Emergenza -->
+            <div class="col-10 mx-auto">
+                <div class="card my-3">
+                    <div class="card-header">
+                        {{ 'Informazioni Emergenza' | uppercase }}
+                    </div>
+                    <div class="card-body py-2">
+                        <h5>
+                            <div class="d-inline-block text-muted">
+                                Tipologia:
+                            </div>
+                            {{ zonaEmergenzaById.tipologia.emergenza[0] }}
+                        </h5>
+                        <h5>
+                            <div class="d-inline-block text-muted">
+                                Indirizzo:
+                            </div>
+                            {{ zonaEmergenzaById?.localita.indirizzo }} -
+                            Lat: {{ zonaEmergenzaById?.localita.coordinate.latitudine }} -
+                            Lon: {{ zonaEmergenzaById?.localita.coordinate.longitudine }}
+                        </h5>
+                        <h5>
+                            <div class="d-inline-block text-muted">
+                                Cod. Sede Richiedente:
+                            </div>
+                            {{ zonaEmergenzaById.codComandoRichiedente }}
+                        </h5>
+                        <h5>
+                            <div class="d-inline-block text-muted">
+                                Descrizione:
+                            </div>
+                            {{ zonaEmergenzaById.descrizione }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <!-- Treeview CRA -->
+            <ng-container *ngFor="let eventoCra of getEventiCreazioneCraZonaEmergenza(); let i = index">
+                <div class="col-10 mx-auto">
+                    <!-- TODO: visualizzare CRA con la treeview -->
+                    <h4>Cra {{ i + 1 }}</h4>
+                    <h5>
+                        <div class="d-inline-block text-muted">
+                            Comando | Comandante Regionale di Area Colpita:
+                        </div>
+                        {{ eventoCra.cra.dirigenti[0] }}
+                    </h5>
+                    <h5>
+                        <div class="d-inline-block text-muted">
+                            Operazioni | Responsabile del Distretto Operativo di Area Colpita:
+                        </div>
+                        {{ eventoCra.cra.dirigenti[1] }}
+                    </h5>
+                    <h5>
+                        <div class="d-inline-block text-muted">
+                            Pianificazione | Responsabile:
+                        </div>
+                        {{ eventoCra.cra.dirigenti[2] }}
+                    </h5>
+                    <h5>
+                        <div class="d-inline-block text-muted">
+                            Logistica | Responsabile generale dei campi base e dei mezzi operativi
+                        </div>
+                        {{ eventoCra.cra.dirigenti[3] }}
+                    </h5>
+                    <h5 class="mb-0">
+                        <div class="d-inline-block text-muted">
+                            Amministrativo - Contabile | Responsabile per la gestione del personale e dei contratti:
+                        </div>
+                        {{ eventoCra.cra.dirigenti[4] }}
+                    </h5>
+                    <pre>
+                        {{ eventoCra.cra | json }}
+                    </pre>
+                </div>
+            </ng-container>
+        </div>
+        <div *ngIf="doubleMonitor" class="col-6">
+            <div class="mt-2"
+                 style="height:920px">
+                <app-maps></app-maps>
+            </div>
+        </div>
+    </div>
+</div>

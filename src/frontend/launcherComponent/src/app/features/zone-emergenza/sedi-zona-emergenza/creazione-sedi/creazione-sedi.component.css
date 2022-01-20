@@ -1,0 +1,6 @@
+.ng-wizard-container {
+    min-height: 10px !important;
+    max-height: 670px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
