@@ -27,8 +27,7 @@ namespace SO115App.Models.Classi.Emergenza
         public string CodSedePresaInCarico { get; set; }
         public bool Annullata { get; set; }
         public bool Allertata { get; set; }
-        public string[] Dirigenti { get; set; }
-        public CraModel Cra { get; set; }
+        public List<CraModel> Cra { get; set; }
         public List<ModuliColonnaMobile> ListaModuliImmediata { get; set; }
         public List<ModuliColonnaMobile> ListaModuliPotInt { get; set; }
         public List<ModuliColonnaMobile> ListaModuliConsolidamento { get; set; }

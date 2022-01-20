@@ -96,6 +96,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenz
                     emergenza.ListaModuliConsolidamento.AddRange(command.InfoEmergenza.ListaModuliConsolidamento);
                 }
             }
+
             command.Emergenza = emergenza;
             _upDateEmergenza.Update(emergenza);
         }

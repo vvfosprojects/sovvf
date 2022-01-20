@@ -164,6 +164,7 @@ namespace SO115App.CompositionRoot
             container.Register<INotifyAllerta, NotificationAllertaEmergenza>();
             container.Register<INotifyRichiestaEmergenza, NotificationRichiestaEmergenza>();
             container.Register<INotifyRichiestaCraEmergenza, NotificationRichiestaCraEmergenza>();
+            container.Register<INotifyCreazioneCra, NotificationCreazioneCra>();
 
             #endregion Emergenza
         }
