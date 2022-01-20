@@ -7,7 +7,9 @@ namespace SO115App.Models.Classi.Emergenza
     {
         //Id MongoDB
         public string Id { get; set; }
+
         public string Nome { get; set; }
+        public string[] Dirigenti { get; set; }
         public Coordinate Coordinate { get; set; }
         public string Indirizzo { get; set; }
         public List<DoaModel> ListaDoa { get; set; }
