@@ -11,6 +11,9 @@ import { StopBigLoading } from '../../../../shared/store/actions/loading/loading
 import { ZoneEmergenzaState } from '../../store/states/zone-emergenza/zone-emergenza.state';
 import { ViewportState } from '../../../../shared/store/states/viewport/viewport.state';
 import { ResetForm } from '@ngxs/form-plugin';
+import { TreeviewConfig, TreeviewItem } from 'ngx-treeview';
+import { Doa } from '../../interface/doa.interface';
+import { Pca } from '../../interface/pca.interface';
 
 @Component({
     selector: 'app-dettaglio-sedi-zona-emergenza',
@@ -26,6 +29,16 @@ export class DettaglioSediComponent implements OnInit, OnDestroy {
     zonaEmergenzaById: ZonaEmergenza;
 
     idZonaEmergenza: string;
+
+    tConfig = {
+        hasAllCheckBox: false,
+        hasFilter: true,
+        hasCollapseExpand: false,
+        decoupleChildFromParent: false,
+        maxHeight: 500
+    } as TreeviewConfig;
+    tItems: TreeviewItem[];
+
 
     private subscriptions: Subscription = new Subscription();
 
@@ -71,6 +84,12 @@ export class DettaglioSediComponent implements OnInit, OnDestroy {
             this.zonaEmergenzaById$.subscribe((zonaEmergenza: ZonaEmergenza) => {
                 if (zonaEmergenza) {
                     this.zonaEmergenzaById = zonaEmergenza;
+
+                    if (!this.getEventiCreazioneCraZonaEmergenza()?.length) {
+                        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/create-sedi/' + this.zonaEmergenzaById.id]));
+                    } else {
+                        this.createCRATreeview();
+                    }
                 }
             })
         );
@@ -78,6 +97,31 @@ export class DettaglioSediComponent implements OnInit, OnDestroy {
 
     getEventiCreazioneCraZonaEmergenza(): EventoEmergenza[] {
         return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'CreazioneCra');
+    }
+
+    createCRATreeview(): void {
+        const eventiCreazioneCra = this.getEventiCreazioneCraZonaEmergenza();
+        this.tItems = [];
+        eventiCreazioneCra?.forEach((evento: EventoEmergenza, indexCra: number) => {
+            this.tItems.push(
+                new TreeviewItem({
+                    value: '' + indexCra,
+                    text: evento.cra.nome,
+                    children: evento.cra.listaDoa?.map((doa: Doa, indexDoa: number) => {
+                        return {
+                            value: '' + indexCra + '-' + indexDoa,
+                            text: doa.nome,
+                            children: doa.listaPca?.map((pca: Pca, indexPca: number) => {
+                                return {
+                                    value: '' + indexCra + '-' + indexDoa + '-' + indexPca,
+                                    text: pca.nome
+                                };
+                            })
+                        };
+                    })
+                })
+            );
+        });
     }
 
     goToGestioneEmergenze(): void {
