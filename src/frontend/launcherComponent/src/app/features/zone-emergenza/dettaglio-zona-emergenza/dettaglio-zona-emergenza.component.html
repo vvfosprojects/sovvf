@@ -80,13 +80,17 @@
                     <!-- Richieste Moduli -->
                     <li [ngbNavItem]="1">
                         <a ngbNavLink>
-                            {{ 'Richieste da evadere' | uppercase }}
-                            <ng-container *ngIf="getEventiRichiesteZonaEmergenza()?.length >0">
-                                ({{getEventiRichiesteZonaEmergenza()?.length}})
-                            </ng-container>
-                            <ng-container *ngIf="!getEventiRichiesteZonaEmergenza()?.length">
-                                (0)
-                            </ng-container>
+                            <div [ngClass]="{ 'h5 font-weight-bold text-danger mb-0': getEventiRichiesteZonaEmergenza()?.length }">
+                                <div class="d-inline-block">
+                                    {{ 'Richieste moduli' | uppercase }}
+                                </div>
+                                <ng-container *ngIf="getEventiRichiesteZonaEmergenza()?.length >0">
+                                    ({{ getEventiRichiesteZonaEmergenza()?.length }})
+                                </ng-container>
+                                <ng-container *ngIf="!getEventiRichiesteZonaEmergenza()?.length">
+                                    (0)
+                                </ng-container>
+                            </div>
                         </a>
                         <ng-template ngbNavContent>
                             <div class="card mb-3">
@@ -152,7 +156,7 @@
                     <!-- Richieste Moduli Evase -->
                     <li [ngbNavItem]="2">
                         <a ngbNavLink>
-                            {{ 'Richieste evase' | uppercase }}
+                            {{ 'Richieste moduli evase' | uppercase }}
                             <ng-container *ngIf="getEventiRichiesteGestiteZonaEmergenza()?.length >0">
                                 ({{getEventiRichiesteGestiteZonaEmergenza()?.length}})
                             </ng-container>
@@ -198,7 +202,7 @@
                                     </ng-container>
                                     <ng-container *ngIf="!getEventiRichiesteGestiteZonaEmergenza()?.length">
                                         <div class="alert alert-danger mb-0">
-                                            Nessuna richiesta evasa
+                                            Nessuna richiesta moduli evasa
                                         </div>
                                     </ng-container>
                                 </div>
@@ -208,11 +212,94 @@
                     <!-- Richieste CRA -->
                     <li [ngbNavItem]="3">
                         <a ngbNavLink>
-                            {{ 'Richieste CRA' | uppercase }}
-                            <ng-container *ngIf="getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
-                                ({{ getEventiRichiestaCreazioneCraZonaEmergenza()?.length }})
+                            <div [ngClass]="{ 'h5 font-weight-bold text-danger mb-0': getEventiRichiestaCreazioneCraZonaEmergenza()?.length }">
+                                {{ 'Richieste CRA' | uppercase }}
+                                <ng-container *ngIf="getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
+                                    ({{ getEventiRichiestaCreazioneCraZonaEmergenza()?.length }})
+                                </ng-container>
+                                <ng-container *ngIf="!getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
+                                    (0)
+                                </ng-container>
+                            </div>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="clearfix d-flex align-items-center">
+                                        <ng-container
+                                                *ngIf="!isDirRegionale && !isCON">
+                                            <div class="float-left">
+                                                <button class="btn btn-no-hover btn-primary"
+                                                        (click)="onRichiestaCra()">
+                                                    <i class="fas fa-plus"></i>
+                                                    {{ 'Richiedi Creazione CRA' | uppercase }}
+                                                </button>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container
+                                                *ngIf="isDirRegionale || isCON">
+                                            <div class="float-left">
+                                                <button class="btn btn-sm btn-no-hover btn-primary"
+                                                        [class.mr-2]="!isCON && isDirRegionale">
+                                                    <!-- (click)="onCreazioneSedi()" -->
+                                                    <i class="fas fa-plus mr-1"></i>
+                                                    {{ 'Creazione CRA' }}
+                                                </button>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <div class="card-body py-3"
+                                     style="max-height: 500px; overflow-y: auto">
+                                    <ng-container
+                                            *ngFor="let eventoRichiestaCra of getEventiRichiestaCreazioneCraZonaEmergenza(); let i = index">
+                                        <div class="card"
+                                             [class.mb-2]="(i + 1) < getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
+                                            <div class="card-body">
+                                                {{ eventoRichiestaCra.istante | date: 'dd/MM/YYYY HH:mm' }} - Richiesta
+                                                Creazione
+                                                CRA con {{ eventoRichiestaCra.numDoa }} DOA
+                                            </div>
+                                            <ng-container
+                                                    *ngIf="(isCON || isDirRegionale) && getEventiRichiestaCreazioneCraZonaEmergenza()">
+                                                <div class="card-footer">
+                                                    <ng-container *ngIf="!eventoRichiestaCra?.gestita">
+                                                        <button class="btn btn-sm btn-no-hover btn-light border-secondary"
+                                                                [class.mr-2]="!isCON && isDirRegionale"
+                                                                (click)="onCreazioneSedi(eventoRichiestaCra)">
+                                                            <i class="fas fa-plus mr-1"></i>
+                                                            {{ 'Creazione CRA richiesto' }}
+                                                        </button>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="eventoRichiestaCra?.gestita">
+                                                        <button class="btn btn-sm btn-no-hover btn-light border-secondary"
+                                                                [class.mr-2]="!isCON && isDirRegionale"
+                                                                (click)="onVisualizzaSedi(eventoRichiestaCra)">
+                                                            <i class="fas fa-stream mr-1"></i>
+                                                            {{ 'Visualizza CRA' }}
+                                                        </button>
+                                                    </ng-container>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
+                                        <div class="alert alert-danger mb-0">
+                                            Nessuna richiesta CRA
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                    <!-- Richieste CRA Evase -->
+                    <li [ngbNavItem]="4">
+                        <a ngbNavLink>
+                            {{ 'Richieste CRA Evase' | uppercase }}
+                            <ng-container *ngIf="getEventiRichiestaCreazioneGestitiCraZonaEmergenza()?.length">
+                                ({{ getEventiRichiestaCreazioneGestitiCraZonaEmergenza()?.length }})
                             </ng-container>
-                            <ng-container *ngIf="!getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
+                            <ng-container *ngIf="!getEventiRichiestaCreazioneGestitiCraZonaEmergenza()?.length">
                                 (0)
                             </ng-container>
                         </a>
@@ -234,8 +321,8 @@
                                                 *ngIf="isDirRegionale || isCON">
                                             <div class="float-left">
                                                 <button class="btn btn-sm btn-no-hover btn-primary"
-                                                        [class.mr-2]="!isCON && isDirRegionale"
-                                                        (click)="onCreazioneSedi()">
+                                                        [class.mr-2]="!isCON && isDirRegionale">
+                                                    <!-- (click)="onCreazioneSedi()" -->
                                                     <i class="fas fa-plus mr-1"></i>
                                                     {{ 'Creazione CRA' }}
                                                 </button>
@@ -246,39 +333,30 @@
                                 <div class="card-body py-3"
                                      style="max-height: 500px; overflow-y: auto">
                                     <ng-container
-                                            *ngFor="let eventoRichiestaCra of getEventiRichiestaCreazioneCraZonaEmergenza()">
-                                        <div class="card">
+                                            *ngFor="let eventoRichiestaCra of getEventiRichiestaCreazioneGestitiCraZonaEmergenza(); let i = index">
+                                        <div class="card"
+                                             [class.mb-2]="(i + 1) < getEventiRichiestaCreazioneGestitiCraZonaEmergenza()?.length">
                                             <div class="card-body">
                                                 {{ eventoRichiestaCra.istante | date: 'dd/MM/YYYY HH:mm' }} - Richiesta
                                                 Creazione
                                                 CRA con {{ eventoRichiestaCra.numDoa }} DOA
                                             </div>
                                             <ng-container
-                                                    *ngIf="(isCON || isDirRegionale) && getEventiRichiestaCreazioneCraZonaEmergenza()">
+                                                    *ngIf="(isCON || isDirRegionale) && getEventiRichiestaCreazioneGestitiCraZonaEmergenza()">
                                                 <div class="card-footer">
-                                                    <ng-container *ngIf="!eventoRichiestaCra?.gestita">
-                                                        <button class="btn btn-sm btn-no-hover btn-light border-secondary"
-                                                                [class.mr-2]="!isCON && isDirRegionale"
-                                                                (click)="onCreazioneSedi()">
-                                                            <i class="fas fa-plus mr-1"></i>
-                                                            {{ 'Creazione CRA richiesto' }}
-                                                        </button>
-                                                    </ng-container>
-                                                    <ng-container *ngIf="eventoRichiestaCra?.gestita">
-                                                        <button class="btn btn-sm btn-no-hover btn-light border-secondary"
-                                                                [class.mr-2]="!isCON && isDirRegionale"
-                                                                (click)="onCreazioneSedi()">
-                                                            <i class="fas fa-stream mr-1"></i>
-                                                            {{ 'Visualizza CRA' }}
-                                                        </button>
-                                                    </ng-container>
+                                                    <button class="btn btn-sm btn-no-hover btn-light border-secondary"
+                                                            [class.mr-2]="!isCON && isDirRegionale"
+                                                            (click)="onVisualizzaSedi(eventoRichiestaCra)">
+                                                        <i class="fas fa-stream mr-1"></i>
+                                                        {{ 'Visualizza CRA' }}
+                                                    </button>
                                                 </div>
                                             </ng-container>
                                         </div>
                                     </ng-container>
-                                    <ng-container *ngIf="!getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
+                                    <ng-container *ngIf="!getEventiRichiestaCreazioneGestitiCraZonaEmergenza()?.length">
                                         <div class="alert alert-danger mb-0">
-                                            Nessuna richiesta CRA
+                                            Nessuna richiesta CRA evasa
                                         </div>
                                     </ng-container>
                                 </div>
@@ -286,7 +364,7 @@
                         </ng-template>
                     </li>
                     <!-- Moduli Assegnati -->
-                    <li [ngbNavItem]="4">
+                    <li [ngbNavItem]="5">
                         <a ngbNavLink>
                             {{ 'Moduli Assegnati' | uppercase }}
                             <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length >0">
@@ -386,14 +464,14 @@
                         </ng-template>
                     </li>
                     <!-- Report Moduli Assegnati -->
-                    <li [ngbNavItem]="5">
+                    <li [ngbNavItem]="6">
                         <a ngbNavLink>
-                            {{ 'Reportistica' | uppercase }}
+                            {{ 'Reportistica moduli' | uppercase }}
                         </a>
                         <ng-template ngbNavContent>
                             <div class="card">
-                                <div class="card-header">
-                                    {{ 'Report moduli' | uppercase }}
+                                <div class="card-header py-3">
+                                    <h4 class="m-0">{{ 'Report dei moduli assegnati' | uppercase }}</h4>
                                 </div>
                                 <div class="card-body"
                                      [class.p-0]="statiModuliGraphData?.length || generiModuliGraphData?.length || comandiModuliGraphData?.length"

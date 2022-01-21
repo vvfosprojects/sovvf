@@ -11,7 +11,7 @@ import { DettaglioSediComponent } from './sedi-zona-emergenza/dettaglio-sedi/det
 const zoneEmergenzaRoutes: Routes = [
     { path: '', component: ZoneEmergenzaComponent },
     { path: 'detail/:id', component: DettaglioZonaEmergenzaComponent },
-    { path: 'create-sedi/:id', component: CreazioneSediComponent },
+    { path: 'create-sedi/:id/:istanteEvento', component: CreazioneSediComponent },
     { path: 'detail-sedi/:id', component: DettaglioSediComponent }
 ];
 

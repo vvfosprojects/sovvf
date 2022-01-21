@@ -48,69 +48,31 @@
                 </div>
             </div>
             <!-- Treeview CRA -->
-            <ng-container *ngFor="let eventoCra of getEventiCreazioneCraZonaEmergenza(); let i = index">
-                <div class="col-10 mx-auto">
-                    <div class="card">
-                        <div class="card-header">
-                            {{ 'Cra' + (i + 1) | uppercase }}
-                        </div>
-                        <div class="card-body">
-                            <h5>
-                                <div class="d-inline-block text-muted">
-                                    Comando | Comandante Regionale di Area Colpita:
-                                </div>
-                                {{ eventoCra.cra.dirigenti[0] }}
-                            </h5>
-                            <h5>
-                                <div class="d-inline-block text-muted">
-                                    Operazioni | Responsabile del Distretto Operativo di Area Colpita:
-                                </div>
-                                {{ eventoCra.cra.dirigenti[1] }}
-                            </h5>
-                            <h5>
-                                <div class="d-inline-block text-muted">
-                                    Pianificazione | Responsabile:
-                                </div>
-                                {{ eventoCra.cra.dirigenti[2] }}
-                            </h5>
-                            <h5>
-                                <div class="d-inline-block text-muted">
-                                    Logistica | Responsabile generale dei campi base e dei mezzi operativi:
-                                </div>
-                                {{ eventoCra.cra.dirigenti[3] }}
-                            </h5>
-                            <h5 class="mb-0">
-                                <div class="d-inline-block text-muted">
-                                    Amministrativo - Contabile | Responsabile per la gestione del personale e dei
-                                    contratti:
-                                </div>
-                                {{ eventoCra.cra.dirigenti[4] }}
-                            </h5>
-                            <div class="mt-4">
-                                <ngx-treeview [items]="tItems"
-                                              [config]="tConfig"
-                                              [itemTemplate]="itemTemplate">
-                                </ngx-treeview>
+            <div class="col-10 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <ngx-treeview [items]="tItems"
+                                      [config]="tConfig"
+                                      [itemTemplate]="itemTemplate">
+                        </ngx-treeview>
 
-                                <ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand">
-                                    <div class="form-inline row-item mt-3">
-                                        <i *ngIf="item.children" class="mr-2 text-info cursor-pointer"
-                                           (click)="onCollapseExpand()" aria-hidden="true"
-                                           [ngSwitch]="item.collapsed">
-                                            <i *ngSwitchCase="true" class="fas fa-chevron-circle-down"></i>
-                                            <i *ngSwitchCase="false" class="fas fa-chevron-circle-up"></i>
-                                        </i>
-                                        <div class="form-check font-weight-bolder cursor-pointer"
-                                             (click)="onCollapseExpand()">
-                                            {{ item.text | uppercase }}
-                                        </div>
-                                    </div>
-                                </ng-template>
+                        <ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand">
+                            <div class="form-inline row-item mt-3">
+                                <i *ngIf="item.children" class="mr-2 text-info cursor-pointer"
+                                   (click)="onCollapseExpand()" aria-hidden="true"
+                                   [ngSwitch]="item.collapsed">
+                                    <i *ngSwitchCase="true" class="fas fa-chevron-circle-down"></i>
+                                    <i *ngSwitchCase="false" class="fas fa-chevron-circle-up"></i>
+                                </i>
+                                <div class="form-check font-weight-bolder cursor-pointer"
+                                     (click)="onCollapseExpand()">
+                                    {{ item.text | uppercase }}
+                                </div>
                             </div>
-                        </div>
+                        </ng-template>
                     </div>
                 </div>
-            </ng-container>
+            </div>
         </div>
         <div *ngIf="doubleMonitor" class="col-6">
             <div class="mt-2"
