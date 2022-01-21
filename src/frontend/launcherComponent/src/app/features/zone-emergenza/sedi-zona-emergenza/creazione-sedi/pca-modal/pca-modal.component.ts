@@ -2,9 +2,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { ResetPcaForm } from '../../store/actions/zone-emergenza/zone-emergenza.actions';
-import { Pca } from '../../interface/pca.interface';
-import { roundToDecimal } from '../../../../shared/helper/function-generiche';
+import { ResetPcaForm } from '../../../store/actions/zone-emergenza/zone-emergenza.actions';
+import { Pca } from '../../../interface/pca.interface';
+import { roundToDecimal } from '../../../../../shared/helper/function-generiche';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({

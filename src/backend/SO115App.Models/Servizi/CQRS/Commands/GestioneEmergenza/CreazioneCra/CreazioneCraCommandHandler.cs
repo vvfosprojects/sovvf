@@ -41,6 +41,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.CreazioneCra
 
             emergenza.AddEvento(new CreazioneCraCon(DateTime.UtcNow, command.CodOperatore, emergenza.CodEmergenza, emergenza.CodSedePresaInCarico, command.Cra));
 
+            if (command.istanteRichiestaCra != null)
+            {
+                foreach (var evento in emergenza.ListaEventi)
+                {
+                    if (evento is RichiestaCreazioneCRAEmergenza)
+                    {
+                        if (evento.Istante.Equals(command.istanteRichiestaCra))
+                        {
+                            ((RichiestaCreazioneCRAEmergenza)evento).Gestita = true;
+                            ((RichiestaCreazioneCRAEmergenza)evento).istanteGestione = DateTime.Now;
+                        }
+                    }
+                }
+            }
+
             command.Emergenza = emergenza;
             _upDateEmergenza.Update(emergenza);
         }

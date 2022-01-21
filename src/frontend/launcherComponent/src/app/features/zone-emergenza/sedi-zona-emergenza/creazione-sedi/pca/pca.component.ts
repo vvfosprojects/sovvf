@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Pca } from '../../interface/pca.interface';
+import { Pca } from '../../../interface/pca.interface';
 
 @Component({
     selector: 'app-pca',

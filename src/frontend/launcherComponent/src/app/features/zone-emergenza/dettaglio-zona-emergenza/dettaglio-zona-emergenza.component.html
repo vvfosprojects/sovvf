@@ -21,29 +21,29 @@
                         <div class="card-body py-2"
                              style="max-height: 170px; overflow-y: auto">
                             <h5>
-                          <span class="text-muted">
-                              Tipologia:
-                          </span>
+                                <div class="d-inline-block text-muted">
+                                    Tipologia:
+                                </div>
                                 {{ zonaEmergenzaById.tipologia.emergenza[0] }}
                             </h5>
                             <h5>
-                          <span class="text-muted">
-                              Indirizzo:
-                          </span>
+                                <div class="d-inline-block text-muted">
+                                    Indirizzo:
+                                </div>
                                 {{ zonaEmergenzaById?.localita.indirizzo }} -
                                 Lat: {{ zonaEmergenzaById?.localita.coordinate.latitudine }} -
                                 Lon: {{ zonaEmergenzaById?.localita.coordinate.longitudine }}
                             </h5>
                             <h5>
-                          <span class="text-muted">
-                              Cod. Sede Richiedente:
-                          </span>
+                                <div class="d-inline-block text-muted">
+                                    Cod. Sede Richiedente:
+                                </div>
                                 {{ zonaEmergenzaById.codComandoRichiedente }}
                             </h5>
                             <h5 class="mb-0">
-                          <span class="text-muted">
-                              Descrizione:
-                          </span>
+                                <div class="d-inline-block text-muted">
+                                    Descrizione:
+                                </div>
                                 {{ zonaEmergenzaById.descrizione }}
                             </h5>
                         </div>
@@ -56,77 +56,28 @@
                             {{ 'Log Eventi Emergenza' | uppercase }}
                         </div>
                         <div class="card-body py-2"
-                             style="max-height: 170px; overflow-y: auto">
+                             style="max-height: 136px; overflow-y: auto">
                             <ng-container *ngIf="getEventi()?.length">
-                                <div *ngFor="let e of getEventi(); let i = index"
-                                     class="card"
-                                     [class.mb-2]="(i + 1) !== getEventi()?.length">
-                                    <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li *ngFor="let e of getEventi(); let i = index"
+                                        class="py-1"
+                                        [class.border-bottom]="(i + 1) !== getEventi()?.length">
                                         {{ e.istante | date: 'dd/MM/YYYY HH:mm' }} |
                                         {{ e.tipoEvento}}
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                             </ng-container>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Richiesta CRA, DOA -->
-            <div class="col-12">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <div class="clearfix d-flex align-items-center">
-                            <div class="float-left">
-                                {{ 'Richiesta creazione CRA' | uppercase }}
-                            </div>
-                            <ng-container
-                                    *ngIf="!isDirRegionale && !isCON && !getEventiRichiestaCreazioneCraZonaEmergenza()">
-                                <div class="float-left ml-3">
-                                    <button class="btn btn-no-hover btn-primary"
-                                            (click)="onRichiestaCra()">
-                                        <i class="fas fa-plus"></i>
-                                        {{ 'Richiedi Creazione CRA' | uppercase }}
-                                    </button>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                    <div class="card-body py-3"
-                         style="max-height: 280px; overflow-y: auto">
-                        <ng-container *ngIf="getEventiRichiestaCreazioneCraZonaEmergenza() as eventoRichiestaCra">
-                            <div class="card">
-                                <div class="card-body">
-                                    {{ eventoRichiestaCra.istante | date: 'dd/MM/YYYY HH:mm' }} - Richiesta
-                                    Creazione
-                                    CRA con {{ eventoRichiestaCra.numDoa }} DOA
-                                </div>
-                                <ng-container
-                                        *ngIf="(isCON || isDirRegionale) && getEventiRichiestaCreazioneCraZonaEmergenza()">
-                                    <div class="card-footer">
-                                        <button class="btn btn-no-hover btn-light border-secondary"
-                                                (click)="onCreazioneSedi()">
-                                            <i class="fas fa-stream mr-1"></i>
-                                            {{ 'Creazione Sedi Emergenza' | uppercase }}
-                                        </button>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
-                        <ng-container *ngIf="!getEventiRichiestaCreazioneCraZonaEmergenza()">
-                            <div class="alert alert-danger mb-0">
-                                Nessun CRA richiesto
-                            </div>
-                        </ng-container>
                     </div>
                 </div>
             </div>
 
-            <!-- Moduli Richiesti -->
             <div class="col-12">
                 <ul class="nav-tabs"
-                    ngbNav #navRichiesteModuli="ngbNav"
+                    ngbNav #nav="ngbNav"
                     [(activeId)]="activeIdNavRichiesteModuli"
                     (navChange)="resetListaModuliImmediataZonaEmergenzaById()">
+                    <!-- Richieste Moduli -->
                     <li [ngbNavItem]="1">
                         <a ngbNavLink>
                             {{ 'Richieste da evadere' | uppercase }}
@@ -144,7 +95,7 @@
                                         <button class="btn btn-sm btn-no-hover btn-primary"
                                                 (click)="onColonneMobili()">
                                             <i class="fas fa-truck mr-1"></i>
-                                            {{ 'Seleziona moduli' }}
+                                            {{ 'Invia moduli' }}
                                         </button>
                                     </ng-container>
                                     <ng-container *ngIf="!isDirRegionale && !isCON">
@@ -156,7 +107,7 @@
                                     </ng-container>
                                 </div>
                                 <div class="card-body py-3"
-                                     style="max-height: 320px; overflow-y: auto">
+                                     style="max-height: 500px; overflow-y: auto">
                                     <ng-container *ngIf="getEventiRichiesteZonaEmergenza()?.length">
                                         <div *ngFor="let e of getEventiRichiesteZonaEmergenza(); let i = index"
                                              class="card"
@@ -177,7 +128,7 @@
                                                     <button class="btn btn-no-hover btn-sm btn-light border-secondary"
                                                             (click)="onColonneMobili(e)">
                                                         <i class="fas fa-truck mr-1"></i>
-                                                        {{ 'Seleziona moduli' }}
+                                                        {{ 'Invia moduli richiesti' }}
                                                     </button>
                                                     <ng-container *ngIf="isDirRegionale && !isCON">
                                                         <button class="btn btn-no-hover btn-sm btn-light border-secondary ml-2">
@@ -198,6 +149,7 @@
                             </div>
                         </ng-template>
                     </li>
+                    <!-- Richieste Moduli Evase -->
                     <li [ngbNavItem]="2">
                         <a ngbNavLink>
                             {{ 'Richieste evase' | uppercase }}
@@ -215,7 +167,7 @@
                                         <button class="btn btn-sm btn-no-hover btn-primary"
                                                 (click)="onColonneMobili()">
                                             <i class="fas fa-truck mr-1"></i>
-                                            {{ 'Seleziona moduli' }}
+                                            {{ 'Invia moduli' }}
                                         </button>
                                     </ng-container>
                                     <ng-container *ngIf="!isDirRegionale && !isCON">
@@ -227,7 +179,7 @@
                                     </ng-container>
                                 </div>
                                 <div class="card-body py-3"
-                                     style="max-height: 320px; overflow-y: auto">
+                                     style="max-height: 500px; overflow-y: auto">
                                     <ng-container *ngIf="getEventiRichiesteGestiteZonaEmergenza()?.length">
                                         <div *ngFor="let e of getEventiRichiesteGestiteZonaEmergenza(); let i = index"
                                              class="card"
@@ -253,7 +205,88 @@
                             </div>
                         </ng-template>
                     </li>
+                    <!-- Richieste CRA -->
                     <li [ngbNavItem]="3">
+                        <a ngbNavLink>
+                            {{ 'Richieste CRA' | uppercase }}
+                            <ng-container *ngIf="getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
+                                ({{ getEventiRichiestaCreazioneCraZonaEmergenza()?.length }})
+                            </ng-container>
+                            <ng-container *ngIf="!getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
+                                (0)
+                            </ng-container>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="clearfix d-flex align-items-center">
+                                        <ng-container
+                                                *ngIf="!isDirRegionale && !isCON">
+                                            <div class="float-left">
+                                                <button class="btn btn-no-hover btn-primary"
+                                                        (click)="onRichiestaCra()">
+                                                    <i class="fas fa-plus"></i>
+                                                    {{ 'Richiedi Creazione CRA' | uppercase }}
+                                                </button>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container
+                                                *ngIf="isDirRegionale || isCON">
+                                            <div class="float-left">
+                                                <button class="btn btn-sm btn-no-hover btn-primary"
+                                                        [class.mr-2]="!isCON && isDirRegionale"
+                                                        (click)="onCreazioneSedi()">
+                                                    <i class="fas fa-plus mr-1"></i>
+                                                    {{ 'Creazione CRA' }}
+                                                </button>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <div class="card-body py-3"
+                                     style="max-height: 500px; overflow-y: auto">
+                                    <ng-container
+                                            *ngFor="let eventoRichiestaCra of getEventiRichiestaCreazioneCraZonaEmergenza()">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                {{ eventoRichiestaCra.istante | date: 'dd/MM/YYYY HH:mm' }} - Richiesta
+                                                Creazione
+                                                CRA con {{ eventoRichiestaCra.numDoa }} DOA
+                                            </div>
+                                            <ng-container
+                                                    *ngIf="(isCON || isDirRegionale) && getEventiRichiestaCreazioneCraZonaEmergenza()">
+                                                <div class="card-footer">
+                                                    <ng-container *ngIf="!eventoRichiestaCra?.gestita">
+                                                        <button class="btn btn-sm btn-no-hover btn-light border-secondary"
+                                                                [class.mr-2]="!isCON && isDirRegionale"
+                                                                (click)="onCreazioneSedi()">
+                                                            <i class="fas fa-plus mr-1"></i>
+                                                            {{ 'Creazione CRA richiesto' }}
+                                                        </button>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="eventoRichiestaCra?.gestita">
+                                                        <button class="btn btn-sm btn-no-hover btn-light border-secondary"
+                                                                [class.mr-2]="!isCON && isDirRegionale"
+                                                                (click)="onCreazioneSedi()">
+                                                            <i class="fas fa-stream mr-1"></i>
+                                                            {{ 'Visualizza CRA' }}
+                                                        </button>
+                                                    </ng-container>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!getEventiRichiestaCreazioneCraZonaEmergenza()?.length">
+                                        <div class="alert alert-danger mb-0">
+                                            Nessuna richiesta CRA
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                    <!-- Moduli Assegnati -->
+                    <li [ngbNavItem]="4">
                         <a ngbNavLink>
                             {{ 'Moduli Assegnati' | uppercase }}
                             <ng-container *ngIf="zonaEmergenzaById?.listaModuliImmediata?.length >0">
@@ -306,8 +339,10 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="card-body py-3"
-                                     style="max-height: 320px; overflow-y: auto;">
+                                <div class="card-body pt-3"
+                                     [class.pb-2]="listaModuliImmediataZonaEmergenzaByIdFiltered?.length"
+                                     [class.pb-3]="!listaModuliImmediataZonaEmergenzaByIdFiltered?.length"
+                                     style="max-height: 500px; overflow-y: auto;">
                                     <div class="row">
                                         <ng-container *ngIf="!listaModuliImmediataZonaEmergenzaByIdFiltered?.length">
                                             <div class="col-12">
@@ -350,18 +385,29 @@
                             </div>
                         </ng-template>
                     </li>
-                    <li [ngbNavItem]="4">
+                    <!-- Report Moduli Assegnati -->
+                    <li [ngbNavItem]="5">
                         <a ngbNavLink>
                             {{ 'Reportistica' | uppercase }}
                         </a>
                         <ng-template ngbNavContent>
                             <div class="card">
                                 <div class="card-header">
-                                    {{ 'Resoconto moduli' | uppercase }}
+                                    {{ 'Report moduli' | uppercase }}
                                 </div>
-                                <div class="card-body p-0"
-                                     style="max-height: 320px; overflow-y: auto;">
+                                <div class="card-body"
+                                     [class.p-0]="statiModuliGraphData?.length || generiModuliGraphData?.length || comandiModuliGraphData?.length"
+                                     [class.p-3]="!statiModuliGraphData?.length && !generiModuliGraphData?.length && !comandiModuliGraphData?.length"
+                                     style="max-height: 500px; overflow-y: auto;">
                                     <div class="d-flex" style="justify-content: space-evenly">
+                                        <ng-container
+                                                *ngIf="!statiModuliGraphData?.length && !generiModuliGraphData?.length && !comandiModuliGraphData?.length">
+                                            <div class="col-12">
+                                                <div class="alert alert-danger mb-0">
+                                                    Report non disponibile, nessun Modulo assegnato
+                                                </div>
+                                            </div>
+                                        </ng-container>
                                         <ng-container *ngIf="statiModuliGraphData?.length">
                                             <ngx-charts-pie-chart
                                                     [results]="statiModuliGraphData"
@@ -404,7 +450,7 @@
                         </ng-template>
                     </li>
                 </ul>
-                <div [ngbNavOutlet]="navRichiesteModuli"></div>
+                <div [ngbNavOutlet]="nav"></div>
             </div>
 
             <!-- Fasi al momento non utilizzate -->

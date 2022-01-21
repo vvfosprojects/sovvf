@@ -24,5 +24,9 @@ namespace SO115App.Models.Classi.Soccorso.Eventi.Emergenza
         public int NumDoa;
 
         public DateTime istanteRichiesta;
+
+        public bool Gestita;
+
+        public DateTime istanteGestione;
     }
 }
