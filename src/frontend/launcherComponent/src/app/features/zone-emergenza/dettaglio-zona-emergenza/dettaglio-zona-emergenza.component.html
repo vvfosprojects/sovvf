@@ -274,7 +274,7 @@
                                                     <ng-container *ngIf="eventoRichiestaCra?.gestita">
                                                         <button class="btn btn-sm btn-no-hover btn-light border-secondary"
                                                                 [class.mr-2]="!isCON && isDirRegionale"
-                                                                (click)="onVisualizzaSedi(eventoRichiestaCra)">
+                                                                (click)="onVisualizzaSedi()">
                                                             <i class="fas fa-stream mr-1"></i>
                                                             {{ 'Visualizza CRA' }}
                                                         </button>
@@ -346,7 +346,7 @@
                                                 <div class="card-footer">
                                                     <button class="btn btn-sm btn-no-hover btn-light border-secondary"
                                                             [class.mr-2]="!isCON && isDirRegionale"
-                                                            (click)="onVisualizzaSedi(eventoRichiestaCra)">
+                                                            (click)="onVisualizzaSedi()">
                                                         <i class="fas fa-stream mr-1"></i>
                                                         {{ 'Visualizza CRA' }}
                                                     </button>

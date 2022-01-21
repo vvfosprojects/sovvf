@@ -303,8 +303,8 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnChanges, OnDes
         this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/create-sedi/' + this.zonaEmergenzaById.id + '/' + eventoRichiestaCra.istante]));
     }
 
-    onVisualizzaSedi(eventoRichiestaCra: EventoEmergenza): void {
-        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail-sedi/' + this.zonaEmergenzaById.id + '/' + eventoRichiestaCra.istante]));
+    onVisualizzaSedi(): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail-sedi/' + this.zonaEmergenzaById.id]));
     }
 
     reducerRichiestaModuli(): void {
