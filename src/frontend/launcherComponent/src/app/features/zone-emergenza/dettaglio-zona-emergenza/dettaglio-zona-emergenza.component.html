@@ -220,16 +220,24 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="clearfix d-flex align-items-center">
-                                        <div class="float-left">
-                                            {{ 'Richiesta creazione CRA' | uppercase }}
-                                        </div>
                                         <ng-container
                                                 *ngIf="!isDirRegionale && !isCON">
-                                            <div class="float-left ml-3">
+                                            <div class="float-left">
                                                 <button class="btn btn-no-hover btn-primary"
                                                         (click)="onRichiestaCra()">
                                                     <i class="fas fa-plus"></i>
                                                     {{ 'Richiedi Creazione CRA' | uppercase }}
+                                                </button>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container
+                                                *ngIf="isDirRegionale || isCON">
+                                            <div class="float-left">
+                                                <button class="btn btn-sm btn-no-hover btn-primary"
+                                                        [class.mr-2]="!isCON && isDirRegionale"
+                                                        (click)="onCreazioneSedi()">
+                                                    <i class="fas fa-plus mr-1"></i>
+                                                    {{ 'Creazione CRA' }}
                                                 </button>
                                             </div>
                                         </ng-container>
@@ -253,7 +261,7 @@
                                                                 [class.mr-2]="!isCON && isDirRegionale"
                                                                 (click)="onCreazioneSedi()">
                                                             <i class="fas fa-plus mr-1"></i>
-                                                            {{ 'Creazione Sedi Emergenza' }}
+                                                            {{ 'Creazione CRA richiesto' }}
                                                         </button>
                                                     </ng-container>
                                                     <ng-container *ngIf="eventoRichiestaCra?.gestita">
@@ -261,7 +269,7 @@
                                                                 [class.mr-2]="!isCON && isDirRegionale"
                                                                 (click)="onCreazioneSedi()">
                                                             <i class="fas fa-stream mr-1"></i>
-                                                            {{ 'Visualizza Sedi Emergenza' }}
+                                                            {{ 'Visualizza CRA' }}
                                                         </button>
                                                     </ng-container>
                                                 </div>
@@ -387,7 +395,9 @@
                                 <div class="card-header">
                                     {{ 'Report moduli' | uppercase }}
                                 </div>
-                                <div class="card-body p-0"
+                                <div class="card-body"
+                                     [class.p-0]="statiModuliGraphData?.length || generiModuliGraphData?.length || comandiModuliGraphData?.length"
+                                     [class.p-3]="!statiModuliGraphData?.length && !generiModuliGraphData?.length && !comandiModuliGraphData?.length"
                                      style="max-height: 500px; overflow-y: auto;">
                                     <div class="d-flex" style="justify-content: space-evenly">
                                         <ng-container

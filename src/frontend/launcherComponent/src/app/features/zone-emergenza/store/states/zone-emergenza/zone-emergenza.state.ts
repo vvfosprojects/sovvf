@@ -883,11 +883,9 @@ export class ZoneEmergenzaState {
         const doaList = state.craZonaEmergenzaForm.model.listaDoa;
         const doaListCopy = makeCopy(doaList);
         doaListCopy.forEach((doa: Doa) => {
+            doa.listaPca = [];
             newPcaList.forEach((p: { pca: Pca; codiceDoa: string; }) => {
                 if (doa.codice === p.codiceDoa) {
-                    if (!doa.listaPca) {
-                        doa.listaPca = [];
-                    }
                     doa.listaPca.push(p.pca);
                 }
             });
