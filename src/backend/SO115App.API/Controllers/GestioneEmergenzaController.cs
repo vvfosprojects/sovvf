@@ -121,7 +121,8 @@ namespace SO115App.API.Controllers
                 CodOperatore = Request.Headers["IdUtente"].ToString(),
                 CodSede = Request.Headers["codicesede"].ToString().Split(',')[0],
                 Cra = dto.Cra,
-                IdEmergenza = dto.IdEmergenza
+                IdEmergenza = dto.IdEmergenza,
+                istanteRichiestaCra = dto.istanteRichiestaCra
             };
 
             try

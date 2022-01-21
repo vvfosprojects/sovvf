@@ -312,7 +312,7 @@ export class ZoneEmergenzaComponent implements OnInit, OnDestroy {
     }
 
     onSedi(zonaEmergenza: ZonaEmergenza): void {
-        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/sedi/' + zonaEmergenza.id]));
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail-sedi/' + zonaEmergenza.id]));
     }
 
     edit(): void {

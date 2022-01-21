@@ -2,6 +2,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { ModuliColonnaMobileService } from '../../../../../core/service/moduli-colonna-mobile-service/moduli-colonna-mobile.service';
 import {
+    ClearLoadingModuliColonnaMobile,
     GetModuliColonnaMobile,
     ResetModulii,
     ResetModuliSelezionati,
@@ -14,17 +15,17 @@ import {
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
-import { insertItem, patch, removeItem } from '@ngxs/store/operators';
+import { append, insertItem, patch, removeItem } from '@ngxs/store/operators';
 
 export interface ModuliColonnaMobileStateModel {
     moduliColonnaMobile: any;
-    loadingModuliColonnaMobile: boolean;
+    loadingModuliColonnaMobile: string[];
     moduliSelezionati: ModuloColonnaMobile[];
 }
 
 export const ModuliColonnaMobileStateDefaults: ModuliColonnaMobileStateModel = {
     moduliColonnaMobile: null,
-    loadingModuliColonnaMobile: false,
+    loadingModuliColonnaMobile: [],
     moduliSelezionati: []
 };
 
@@ -50,21 +51,21 @@ export class ModuliColonnaMobileState {
     }
 
     @Selector()
-    static loadingModuliColonnaMobile(state: ModuliColonnaMobileStateModel): boolean {
+    static loadingModuliColonnaMobile(state: ModuliColonnaMobileStateModel): string[] {
         return state.loadingModuliColonnaMobile;
     }
 
     @Action(GetModuliColonnaMobile)
     getModuliColonnaMobile({ dispatch }: StateContext<ModuliColonnaMobileStateModel>, action: GetModuliColonnaMobile): void {
-        dispatch(new StartLoadingModuliColonnaMobile());
+        dispatch(new StartLoadingModuliColonnaMobile(action.nomeModulo));
         const nomeModulo = action.nomeModulo;
         this.moduliColonnaMobileService.getListaModuli(nomeModulo).subscribe((response: ResponseInterface) => {
             dispatch([
                 new SetModuliColonnaMobile(nomeModulo, response.dataArray),
-                new StopLoadingModuliColonnaMobile()
+                new StopLoadingModuliColonnaMobile(action.nomeModulo)
             ]);
-        }, error => {
-            dispatch(new StopLoadingModuliColonnaMobile());
+        }, () => {
+            dispatch(new StopLoadingModuliColonnaMobile(action.nomeModulo));
         });
     }
 
@@ -120,16 +121,27 @@ export class ModuliColonnaMobileState {
     }
 
     @Action(StartLoadingModuliColonnaMobile)
-    startLoadingModuliColonnaMobile({ patchState }: StateContext<ModuliColonnaMobileStateModel>): void {
-        patchState({
-            loadingModuliColonnaMobile: true
-        });
+    startLoadingModuliColonnaMobile({ setState }: StateContext<ModuliColonnaMobileStateModel>, action: StartLoadingModuliColonnaMobile): void {
+        setState(
+            patch({
+                loadingModuliColonnaMobile: append([action.tipologiaModulo])
+            })
+        );
     }
 
     @Action(StopLoadingModuliColonnaMobile)
-    stopLoadingModuliColonnaMobile({ patchState }: StateContext<ModuliColonnaMobileStateModel>): void {
+    stopLoadingModuliColonnaMobile({ setState }: StateContext<ModuliColonnaMobileStateModel>, action: StopLoadingModuliColonnaMobile): void {
+        setState(
+            patch({
+                loadingModuliColonnaMobile: removeItem((tipologiaModulo: string) => tipologiaModulo === action.tipologiaModulo)
+            })
+        );
+    }
+
+    @Action(ClearLoadingModuliColonnaMobile)
+    clearLoadingModuliColonnaMobile({ patchState }: StateContext<ModuliColonnaMobileStateModel>): void {
         patchState({
-            loadingModuliColonnaMobile: false
+            loadingModuliColonnaMobile: ModuliColonnaMobileStateDefaults.loadingModuliColonnaMobile
         });
     }
 }

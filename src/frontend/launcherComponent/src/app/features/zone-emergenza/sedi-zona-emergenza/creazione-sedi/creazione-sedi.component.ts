@@ -1,34 +1,34 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { EventoEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
+import { EventoEmergenza, ZonaEmergenza } from '../../model/zona-emergenza.model';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
-import { RoutesPath } from '../../../shared/enum/routes-path.enum';
-import { SetSediNavbarVisible } from '../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
+import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
+import { SetSediNavbarVisible } from '../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { Observable, Subscription } from 'rxjs';
-import { AddDoa, AddPca, DeleteDoa, DeletePca, GetTipologieEmergenza, GetZonaEmergenzaById, SaveCraZonaEmergenza } from '../store/actions/zone-emergenza/zone-emergenza.actions';
-import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
-import { ZoneEmergenzaState } from '../store/states/zone-emergenza/zone-emergenza.state';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
+import { AddDoa, AddPca, DeleteDoa, DeletePca, GetTipologieEmergenza, GetZonaEmergenzaById, SaveCraZonaEmergenza } from '../../store/actions/zone-emergenza/zone-emergenza.actions';
+import { StopBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
+import { ZoneEmergenzaState } from '../../store/states/zone-emergenza/zone-emergenza.state';
+import { ViewportState } from '../../../../shared/store/states/viewport/viewport.state';
 import { NgWizardConfig, THEME } from 'ng-wizard';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Doa } from '../interface/doa.interface';
+import { Doa } from '../../interface/doa.interface';
 import { DoaModalComponent } from './doa-modal/doa-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DoaForm } from '../interface/doa-form.interface';
-import { roundToDecimal } from '../../../shared/helper/function-generiche';
-import { PcaForm } from '../interface/pca-form.interface';
+import { DoaForm } from '../../interface/doa-form.interface';
+import { roundToDecimal } from '../../../../shared/helper/function-generiche';
+import { PcaForm } from '../../interface/pca-form.interface';
 import { PcaModalComponent } from './pca-modal/pca-modal.component';
 import { ResetForm } from '@ngxs/form-plugin';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
-    selector: 'app-sedi-zona-emergenza',
-    templateUrl: './sedi-zona-emergenza.component.html',
-    styleUrls: ['./sedi-zona-emergenza.component.css'],
+    selector: 'app-creazione-sedi-zona-emergenza',
+    templateUrl: './creazione-sedi.component.html',
+    styleUrls: ['./creazione-sedi.component.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
+export class CreazioneSediComponent implements OnInit, OnDestroy {
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
@@ -96,16 +96,22 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
         return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaCreazioneCRA' && !e.gestita)[0];
     }
 
+    getEventiCreazioneCraZonaEmergenza(): EventoEmergenza[] {
+        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'CreazioneCra');
+    }
+
     getZonaEmergenzaById(): void {
         this.subscriptions.add(
             this.zonaEmergenzaById$.subscribe((zonaEmergenza: ZonaEmergenza) => {
                 if (zonaEmergenza) {
                     this.zonaEmergenzaById = zonaEmergenza;
-                    if (this.getEventiRichiestaCreazioneCraZonaEmergenza() && this.craZonaEmergenzaForm) {
-                        this.patchDirigentiForm();
-                    }
-                    if (this.zonaEmergenzaById.cra && this.craZonaEmergenzaForm) {
-                        this.patchForm();
+
+                    if (this.getEventiCreazioneCraZonaEmergenza()?.length) {
+                        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail-sedi/' + this.zonaEmergenzaById.id]));
+                    } else {
+                        if (this.getEventiRichiestaCreazioneCraZonaEmergenza() && this.craZonaEmergenzaForm) {
+                            this.patchDirigentiForm();
+                        }
                     }
                 }
             })
@@ -129,19 +135,6 @@ export class SediZonaEmergenzaComponent implements OnInit, OnDestroy {
         if (this.getEventiRichiestaCreazioneCraZonaEmergenza()?.dirigenti?.length) {
             this.patchDirigentiForm();
         }
-        if (this.zonaEmergenzaById?.cra) {
-            this.patchForm();
-        }
-    }
-
-    patchForm(): void {
-        this.craZonaEmergenzaForm.patchValue({
-            nome: this.zonaEmergenzaById.cra.nome,
-            indirizzo: this.zonaEmergenzaById.cra.indirizzo,
-            latitudine: this.zonaEmergenzaById.cra.coordinate?.latitudine,
-            longitudine: this.zonaEmergenzaById.cra.coordinate?.longitudine,
-            listaDoa: this.zonaEmergenzaById.cra.listaDoa,
-        });
     }
 
     patchDirigentiForm(): void {

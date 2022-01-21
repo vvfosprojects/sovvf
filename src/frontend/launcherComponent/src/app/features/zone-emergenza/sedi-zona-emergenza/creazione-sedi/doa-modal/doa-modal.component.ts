@@ -1,14 +1,14 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Doa } from '../../interface/doa.interface';
+import { Doa } from '../../../interface/doa.interface';
 import { Select, Store } from '@ngxs/store';
-import { ResetDoaForm, UpdateModuliMobImmediataZonaEmergenza } from '../../store/actions/zone-emergenza/zone-emergenza.actions';
-import { roundToDecimal } from '../../../../shared/helper/function-generiche';
-import { ModuloColonnaMobile } from '../../interface/modulo-colonna-mobile.interface';
-import { ZonaEmergenza } from '../../model/zona-emergenza.model';
-import { ModuliColonnaMobileModalComponent } from '../../moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
-import { ZoneEmergenzaState } from '../../store/states/zone-emergenza/zone-emergenza.state';
+import { ResetDoaForm, UpdateModuliMobImmediataZonaEmergenza } from '../../../store/actions/zone-emergenza/zone-emergenza.actions';
+import { roundToDecimal } from '../../../../../shared/helper/function-generiche';
+import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
+import { ZonaEmergenza } from '../../../model/zona-emergenza.model';
+import { ModuliColonnaMobileModalComponent } from '../../../moduli-colonna-mobile-modal/moduli-colonna-mobile-modal.component';
+import { ZoneEmergenzaState } from '../../../store/states/zone-emergenza/zone-emergenza.state';
 import { Observable, Subscription } from 'rxjs';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
