@@ -22,8 +22,8 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
     moduliColonnaMobile: ModuloColonnaMobile;
     @Select(ModuliColonnaMobileState.moduliSelezionati) moduliSelezionati$: Observable<ModuloColonnaMobile[]>;
     moduliSelezionati: ModuloColonnaMobile[];
-    @Select(ModuliColonnaMobileState.loadingModuliColonnaMobile) loadingModuliColonnaMobile$: Observable<boolean>;
-    loadingModuliColonnaMobile: boolean;
+    @Select(ModuliColonnaMobileState.loadingModuliColonnaMobile) loadingModuliColonnaMobile$: Observable<string[]>;
+    loadingModuliColonnaMobile: string[];
 
     fase: string;
 
@@ -113,7 +113,7 @@ export class ModuliColonnaMobileModalComponent implements OnInit, OnDestroy {
 
     getLoadingModuliColonnaMobile(): void {
         this.subscriptions.add(
-            this.loadingModuliColonnaMobile$.subscribe((loadingModuliColonnaMobile: boolean) => {
+            this.loadingModuliColonnaMobile$.subscribe((loadingModuliColonnaMobile: string[]) => {
                 this.loadingModuliColonnaMobile = loadingModuliColonnaMobile;
             })
         );

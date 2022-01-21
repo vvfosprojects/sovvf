@@ -38,8 +38,18 @@ export class ResetModuliSelezionati {
 
 export class StartLoadingModuliColonnaMobile {
     static readonly type = '[Moduli Colonna Mobile] Start Loading Moduli Colonna Mobile';
+
+    constructor(public tipologiaModulo: string) {
+    }
 }
 
 export class StopLoadingModuliColonnaMobile {
     static readonly type = '[Moduli Colonna Mobile] Stop Loading Moduli Colonna Mobile';
+
+    constructor(public tipologiaModulo: string) {
+    }
+}
+
+export class ClearLoadingModuliColonnaMobile {
+    static readonly type = '[Moduli Colonna Mobile] Clear Loading Moduli Colonna Mobile';
 }
