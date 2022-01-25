@@ -18,3 +18,7 @@
     - [Nuovo Dettaglio Tipologia](offices-settings/dettagli-tipologie/new.md)
     - [Modifica Dettaglio Tipologia](offices-settings/dettagli-tipologie/edit.md)
     - [Elimina Dettaglio Tipologia](offices-settings/dettagli-tipologie/delete.md)
+  - [Triage](offices-settings/triage/README.md)
+    - [Ricerca Triage](offices-settings/triage/search.md)
+    - [Creazione Triage](offices-settings/triage/new.md)
+    - [Importazione Triage](offices-settings/triage/import.md)
