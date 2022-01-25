@@ -18,7 +18,7 @@ L'ordine che viene presentato in automatico segue le seguenti regole:
 Selezionando una squadra e un mezzo si forma automaticamente la partenza corrispondente. 
 A questo punto si può o aggiungere un'altra partenza premendo sul tasto ![Composizione Partenza](./img/btn_AddPartenza.png) oppure premere su ![Composizione Partenza](./img/btn_conferma.png) per confermare la partenza.
 
-> Se si ritiene opportuno far intervenire il soccorso aereo, si dovrà premere il tasto ![Composizione Partenza](./img/btn_SocAereo.png). Da li si potrà selezionare la tipolgia di intervento e inserire una descrizione dello stesso. 
+> Se si ritiene opportuno far intervenire il soccorso aereo, si dovrà premere il tasto ![Composizione Partenza](./img/btn_SocAereo.png). Da li si potrà selezionare la tipolgia di intervento e inserire una descrizione dello stesso 
 
 > Qualora ci fosse un Triage sull'intervento, il tasto ![Composizione Partenza](./img/btn_triage.png) permetterà di consultarne il risultato.
 
@@ -28,3 +28,4 @@ A questo punto si può o aggiungere un'altra partenza premendo sul tasto ![Compo
 > Premendo il tasto ![Composizione Partenza](./img/btn_percorsi.png) è possibile visualizzare sulla mappa il percorso di tutti i mezzi che stanno intervenendo sull'intervento.
 
 > <b>N.B. Selezionando un mezzo, sulla mappa, viene visualizzato il percorso migliore per la tipolgia di mezzo, fino all'obiettivo.</b>
+ 
