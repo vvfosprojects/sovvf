@@ -195,4 +195,7 @@ export class DeletePca {
 
 export class SaveCraZonaEmergenza {
     static readonly type = '[ZoneEmergenza] Save Cra Zona Emergenza';
+
+    constructor(public istanteEventoRichiestaCRA: string) {
+    }
 }
