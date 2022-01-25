@@ -27,4 +27,4 @@ A questo punto si può o aggiungere un'altra partenza premendo sul tasto ![Compo
 
 > Premendo il tasto ![Composizione Partenza](./img/btn_percorsi.png) è possibile visualizzare sulla mappa il percorso di tutti i mezzi che stanno intervenendo sull'intervento.
 
-> Selezionando un mezzo, sulla mappa, viene visualizzato il percorso migliore per la tipolgia di mezzo, fino all'obiettivo.
+> <b>N.B. Selezionando un mezzo, sulla mappa, viene visualizzato il percorso migliore per la tipolgia di mezzo, fino all'obiettivo.</b>
