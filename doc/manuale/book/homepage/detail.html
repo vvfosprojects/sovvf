@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Creazione Utente</title>
+        <title>Elenco Interventi</title>
         <!-- Custom HTML head -->
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Introduzione</a></li><li class="chapter-item expanded "><a href="../homepage/index.html"><strong aria-hidden="true">2.</strong> HomePage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../homepage/navbar.html"><strong aria-hidden="true">2.1.</strong> Navbar</a></li><li class="chapter-item expanded "><a href="../homepage/box.html"><strong aria-hidden="true">2.2.</strong> Box</a></li><li class="chapter-item expanded "><a href="../homepage/detail.html"><strong aria-hidden="true">2.3.</strong> Elenco Interventi</a></li><li class="chapter-item expanded "><a href="../homepage/action.html"><strong aria-hidden="true">2.4.</strong> Azioni</a></li><li class="chapter-item expanded "><a href="../homepage/filter.html"><strong aria-hidden="true">2.5.</strong> Filtri</a></li></ol></li><li class="chapter-item expanded "><a href="../newcall/index.html"><strong aria-hidden="true">3.</strong> Nuova Chiamata</a></li><li class="chapter-item expanded "><a href="../users-management/index.html"><strong aria-hidden="true">4.</strong> Gestione Utenti</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../users-management/list.html"><strong aria-hidden="true">4.1.</strong> Lista Utenti</a></li><li class="chapter-item expanded "><a href="../users-management/new.html" class="active"><strong aria-hidden="true">4.2.</strong> Creazione Utente</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Introduzione</a></li><li class="chapter-item expanded "><a href="../homepage/index.html"><strong aria-hidden="true">2.</strong> HomePage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../homepage/navbar.html"><strong aria-hidden="true">2.1.</strong> Navbar</a></li><li class="chapter-item expanded "><a href="../homepage/box.html"><strong aria-hidden="true">2.2.</strong> Box</a></li><li class="chapter-item expanded "><a href="../homepage/detail.html" class="active"><strong aria-hidden="true">2.3.</strong> Elenco Interventi</a></li><li class="chapter-item expanded "><a href="../homepage/action.html"><strong aria-hidden="true">2.4.</strong> Azioni</a></li><li class="chapter-item expanded "><a href="../homepage/filter.html"><strong aria-hidden="true">2.5.</strong> Filtri</a></li></ol></li><li class="chapter-item expanded "><a href="../newcall/index.html"><strong aria-hidden="true">3.</strong> Nuova Chiamata</a></li><li class="chapter-item expanded "><a href="../users-management/index.html"><strong aria-hidden="true">4.</strong> Gestione Utenti</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../users-management/list.html"><strong aria-hidden="true">4.1.</strong> Lista Utenti</a></li><li class="chapter-item expanded "><a href="../users-management/new.html"><strong aria-hidden="true">4.2.</strong> Creazione Utente</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -134,14 +134,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="creazione-utente"><a class="header" href="#creazione-utente">Creazione Utente</a></h1>
+                        <h1 id="elenco-interventi"><a class="header" href="#elenco-interventi">Elenco Interventi</a></h1>
+<p>Sulla Home Page è presente l'elenco di tutte le chiamate e tutti gli interventi che si stanno svolgendo nella sede selezionata.
+La lista non ha un ordine casuale, ma presenta per prime le chiamate e a seguire gli interventi. Il loro stato è definito dal colore dell'intervento</p>
+<p>Per ogni Chiamata/Intervento sono presenti dei tasti funzione sulla destra.</p>
+<p><img src="./img/TastiFunzione.png" alt="Elenco Interventi" /></p>
+<p>Questi Tasti indicano:</p>
+<ul>
+<li>Il numero di squadre impegnate sull'intervento, se si preme sul numero è possibile vedere le squadre impegnate</li>
+<li>Il numero di mezzi impegnati sull'interventi, se si preme sul numero è possible vedere i mezzi impegnati</li>
+<li>Il tasto per bloccare in alto l'intervento. Questo tasto è utile per bloccare la richiesta che si sta gestendo sempre all'inizio della lista. </li>
+<li>Il tasto quadrato: Questo tasto apre la maschera delle azioni possibili sull'intervento.</li>
+<li>Il tasto freccia in basso: Apre il dettaglio della chiamata/intervento</li>
+<li>Il tasto modifica: Consente di modificare le informazioni dell'intervento</li>
+<li>Il tasto freccia a destra: Apre la Composizione Partenza</li>
+</ul>
+<p><b>Dettaglio Intervento</b>
+Tramite il tasto &quot;freccia in basso&quot; è possibile aprire il dettaglio dell'intervento. Da questo dettaglio è possibile gestire le eventuali partenze presenti. 
+E' possibile cambiare lo stato di una partenza, premendo sullo stato desiderato e indicando la data e l'ora nella quale, la partenza, ha assunto lo stato selezionato. 
+E' anche possibile vedere i componenti di una squadra tramite il tasto lente a destra delle squadre.</p>
+<p><img src="./img/DettaglioIntervento.png" alt="Elenco Interventi" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../users-management/list.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../homepage/box.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../homepage/action.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
                     </nav>
@@ -149,8 +171,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../users-management/list.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../homepage/box.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../homepage/action.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
 
