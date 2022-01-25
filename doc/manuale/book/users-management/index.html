@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Introduzione</a></li><li class="chapter-item expanded "><a href="../users-management/index.html" class="active"><strong aria-hidden="true">2.</strong> Gestione Utenti</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../users-management/list.html"><strong aria-hidden="true">2.1.</strong> Lista Utenti</a></li><li class="chapter-item expanded "><a href="../users-management/new.html"><strong aria-hidden="true">2.2.</strong> Creazione Utente</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Introduzione</a></li><li class="chapter-item expanded "><a href="../users-management/index.html" class="active"><strong aria-hidden="true">2.</strong> Gestione Utenti</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../users-management/list.html"><strong aria-hidden="true">2.1.</strong> Lista Utenti</a></li><li class="chapter-item expanded "><a href="../users-management/edit.html"><strong aria-hidden="true">2.2.</strong> Modifica Utente</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -172,7 +172,7 @@
 
         <!-- Livereload script (if served using the cli tool) -->
         <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            var socket = new WebSocket("ws://localhost:3001/__livereload");
             socket.onmessage = function (event) {
                 if (event.data === "reload") {
                     socket.close();
