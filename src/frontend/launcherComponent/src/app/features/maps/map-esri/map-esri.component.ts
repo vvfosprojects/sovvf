@@ -529,7 +529,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         let portalItemId = '55fdd15730524dedbff72e285cba3795';
         if (environment.productionTest) {
             portalItemId = 'f0debe8268ac461588abca904a434ec2';
-        } else if (environment.production) {
+        } else if (environment.productionDemo) {
             portalItemId = '2b1e7d22c775479985b6129f842e9d7c';
         }
 
