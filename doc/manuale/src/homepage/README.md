@@ -8,6 +8,13 @@ Per accedere alla pagina si passa dal menu laterale e si clicca sull'apposito ta
 
 ![Home Page](./img/HomePage.png)
 
+Se si hanno 2 monitor con schermo espanso oppure uno schermo WideScreen la visualizzazione cambierà automaticamente adattandosi ai pixel a disposizione.
+La HomePage quindi si vedrà in questo modo. Sulla destra si vedrà l'area della sede di riferimento e se si seleziona una richiesta la mappa zooma automaticamente
+sull'intervento, inoltre se si hanno dei mezzi che si stanno portando sull'intervento si vedranno sulla mappa.
+
+![Home Page](./img/Home2Screen.png)
+
+
 ---
 
 > ATTENZIONE

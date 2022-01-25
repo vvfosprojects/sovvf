@@ -10,5 +10,9 @@ Da questa sezione è possibile:
 - Impostare una scheda a "Gestita" premendo sul tasto giallo con l'ingranaggio
 - Vedere il dettaglio della scheda contatto premendo sul tasto con la "i"
 
+> Se si hanno 2 monitor con schermo espanso oppure uno schermo WideScreen, la visualizzazione cambia, e sarà come l'immagine seguente
+> ![Schede Contatto](./img/SchedeContatto2Screen.png)
+
+
 In basso a sinistra è presente il tasto "Raggruppa", con questo tasto è possibile raggruppare più schede contatto che fanno riferimento allo stesso intervento
 > Le schede contatto verranno raggruppatte sotto la prima scheda selezionata
