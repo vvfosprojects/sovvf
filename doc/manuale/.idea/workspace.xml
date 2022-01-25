@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8cccd0a9-d7ab-4329-8c71-c7cc1de877c3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/manuale.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/offices-settings/dettagli-tipologie/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/offices-settings/dettagli-tipologie/edit.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/offices-settings/dettagli-tipologie/list.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/offices-settings/dettagli-tipologie/new.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/offices-settings/img/access.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/.nojekyll" beforeDir="false" afterPath="$PROJECT_DIR$/book/.nojekyll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/404.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/FontAwesome/css/font-awesome.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/FontAwesome/css/font-awesome.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/FontAwesome/fonts/fontawesome-webfont.svg" beforeDir="false" afterPath="$PROJECT_DIR$/book/FontAwesome/fonts/fontawesome-webfont.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/ayu-highlight.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/ayu-highlight.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/book.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/book.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/clipboard.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/clipboard.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/css/chrome.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/css/chrome.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/css/general.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/css/general.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/css/print.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/css/print.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/css/variables.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/css/variables.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/elasticlunr.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/elasticlunr.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/favicon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/book/favicon.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/fonts/OPEN-SANS-LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/book/fonts/OPEN-SANS-LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/fonts/SOURCE-CODE-PRO-LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/book/fonts/SOURCE-CODE-PRO-LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/fonts/fonts.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/fonts/fonts.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/highlight.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/highlight.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/highlight.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/highlight.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/mark.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/mark.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/print.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/print.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/searcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/searcher.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/searchindex.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/searchindex.json" beforeDir="false" afterPath="$PROJECT_DIR$/book/searchindex.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/tomorrow-night.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/tomorrow-night.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/users-management/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/users-management/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/users-management/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/users-management/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book/users-management/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/users-management/list.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="24BbzpbpPF2oBkUZWvhUU49QSRJ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\micheledragonetti\sovvf\doc\manuale\src\offices-settings" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8cccd0a9-d7ab-4329-8c71-c7cc1de877c3" name="Changes" comment="" />
+      <created>1643107192058</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1643107192058</updated>
+      <workItem from="1643107193268" duration="1776000" />
+      <workItem from="1643109082235" duration="23000" />
+      <workItem from="1643109107005" duration="8000" />
+      <workItem from="1643109127328" duration="48000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

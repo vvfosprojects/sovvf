@@ -8,6 +8,7 @@ import { ToggleSidebarOpened } from '../navbar/store/actions/navbar.actions';
 import { Store } from '@ngxs/store';
 import { AzioniAreaDocumentaleModalComponent } from '../../shared/modal/azioni-area-documentale-modal/azioni-area-documentale-modal.component';
 import { FiltriAreaDocumentaleState } from '../../shared/store/states/filtri-area-documentale/filtri-area-documentale.state';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-sidebar',
@@ -79,7 +80,8 @@ export class SidebarComponent {
     }
 
     onOpenOpservice(): void {
-        window.open('https://opservice-test.dipvvf.it/login-so-web', '_blank', 'toolbar=0,location=0,menubar=0,height=' + screen.availHeight + ',width=' + screen.availWidth);
+        const url = environment.productionDemo ? 'https://opservice-demo.dipvvf.it/login-so-web' : 'https://opservice-test.dipvvf.it/login-so-web';
+        window.open(url, '_blank', 'toolbar=0,location=0,menubar=0,height=' + screen.availHeight + ',width=' + screen.availWidth);
     }
 
     onLogout(): void {

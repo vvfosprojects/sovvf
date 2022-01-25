@@ -36,6 +36,7 @@ export class CreazioneSediComponent implements OnInit, OnDestroy {
     zonaEmergenzaById: ZonaEmergenza;
 
     idZonaEmergenza: string;
+    istanteEventoRichiestaCRA: string;
 
     config: NgWizardConfig = {
         theme: THEME.default,
@@ -53,6 +54,8 @@ export class CreazioneSediComponent implements OnInit, OnDestroy {
                 private formBuilder: FormBuilder,
                 private modalService: NgbModal) {
         this.idZonaEmergenza = this.route.snapshot.paramMap.get('id');
+        this.istanteEventoRichiestaCRA = this.route.snapshot.paramMap.get('istanteEvento');
+
         if (!this.idZonaEmergenza) {
             this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza]));
         }
@@ -96,8 +99,8 @@ export class CreazioneSediComponent implements OnInit, OnDestroy {
         return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaCreazioneCRA' && !e.gestita)[0];
     }
 
-    getEventiCreazioneCraZonaEmergenza(): EventoEmergenza[] {
-        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'CreazioneCra');
+    getEventiCreazioneCraZonaEmergenzaByIstanteEvento(): EventoEmergenza[] {
+        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'CreazioneCra' && e.istante === this.istanteEventoRichiestaCRA);
     }
 
     getZonaEmergenzaById(): void {
@@ -106,7 +109,7 @@ export class CreazioneSediComponent implements OnInit, OnDestroy {
                 if (zonaEmergenza) {
                     this.zonaEmergenzaById = zonaEmergenza;
 
-                    if (this.getEventiCreazioneCraZonaEmergenza()?.length) {
+                    if (this.getEventiCreazioneCraZonaEmergenzaByIstanteEvento()?.length) {
                         this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail-sedi/' + this.zonaEmergenzaById.id]));
                     } else {
                         if (this.getEventiRichiestaCreazioneCraZonaEmergenza() && this.craZonaEmergenzaForm) {
@@ -249,7 +252,7 @@ export class CreazioneSediComponent implements OnInit, OnDestroy {
 
     saveCraZonaEmergenza(): void {
         if (this.craZonaEmergenzaForm.valid) {
-            this.store.dispatch(new SaveCraZonaEmergenza());
+            this.store.dispatch(new SaveCraZonaEmergenza(this.istanteEventoRichiestaCRA));
         }
     }
 
