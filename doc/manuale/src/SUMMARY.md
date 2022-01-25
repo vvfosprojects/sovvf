@@ -23,3 +23,4 @@
     - [Ricerca Triage](offices-settings/triage/search.md)
     - [Creazione Triage](offices-settings/triage/new.md)
     - [Importazione Triage](offices-settings/triage/import.md)
+    - [Modifica Triage](offices-settings/triage/edit.md)
