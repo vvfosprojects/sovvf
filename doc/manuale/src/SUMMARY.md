@@ -8,6 +8,7 @@
 	- [Azioni](homepage/action.md)
 	- [Filtri](homepage/filter.md)
 - [Nuova Chiamata](newcall/README.md)
+- [Schede Contatto](schedecontatto/README.md) 
 - [Gestione Utenti](users-management/README.md)
 	- [Lista Utenti](users-management/list.md)
 	- [Modifica Utente](users-management/edit.md)
