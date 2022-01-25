@@ -116,9 +116,9 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        let title = 'Aggiungi Dettaglio Tipologia';
+        let title = 'Crea Dettaglio Tipologia';
         if (this.editDettaglioTipologia) {
-            title = 'Modifica ' + this.editDettaglioTipologia.descrizione;
+            title = 'Modifica Dettaglio Tipologia';
         }
         return title;
     }
