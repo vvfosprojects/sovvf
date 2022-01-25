@@ -16,4 +16,4 @@ Partendo da sinistra, le icone indicano:
 - <b>Icona Rubrica</b>: ![Navbar](./img/ico_rubrica.png) Consente di accedere alla funzionalità "Rubrica"
 - <b>Icona Campanella</b>: ![Navbar](./img/ico_campanella.png) Segnala se per la sede selezionata ci sono segnalazioni particolari (Es. Un emergenza creata)
 
- 
+  
