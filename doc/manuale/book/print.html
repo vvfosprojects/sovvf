@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduzione</a></li><li class="chapter-item expanded "><a href="users-management/index.html"><strong aria-hidden="true">2.</strong> Gestione Utenti</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="users-management/list.html"><strong aria-hidden="true">2.1.</strong> Lista Utenti</a></li><li class="chapter-item expanded "><a href="users-management/edit.html"><strong aria-hidden="true">2.2.</strong> Modifica Utente</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduzione</a></li><li class="chapter-item expanded "><a href="homepage/index.html"><strong aria-hidden="true">2.</strong> HomePage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="homepage/navbar.html"><strong aria-hidden="true">2.1.</strong> Navbar</a></li><li class="chapter-item expanded "><a href="homepage/box.html"><strong aria-hidden="true">2.2.</strong> Box</a></li><li class="chapter-item expanded "><a href="homepage/detail.html"><strong aria-hidden="true">2.3.</strong> Elenco Interventi</a></li><li class="chapter-item expanded "><a href="homepage/action.html"><strong aria-hidden="true">2.4.</strong> Azioni</a></li><li class="chapter-item expanded "><a href="homepage/filter.html"><strong aria-hidden="true">2.5.</strong> Filtri</a></li></ol></li><li class="chapter-item expanded "><a href="newcall/index.html"><strong aria-hidden="true">3.</strong> Nuova Chiamata</a></li><li class="chapter-item expanded "><a href="users-management/index.html"><strong aria-hidden="true">4.</strong> Gestione Utenti</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="users-management/list.html"><strong aria-hidden="true">4.1.</strong> Lista Utenti</a></li><li class="chapter-item expanded "><a href="users-management/edit.html"><strong aria-hidden="true">4.2.</strong> Modifica Utente</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -235,6 +235,44 @@ In più è possibile:</p>
 <li>Visualizzare le Chiamate Chiuse</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="nuova-chiamata"><a class="header" href="#nuova-chiamata">Nuova Chiamata</a></h1>
+<p>Premendo sul tasto verde &quot;Nuova Chiamata&quot; presente in Home Page è possibile inserire una nuova chiamata.</p>
+<p><img src="newcall/./img/NuovaChiamata.png" alt="Nuova Chiamata" /></p>
+<p>Il form presenta i seguenti campi:</p>
+<ul>
+<li>Tipologia Intervento: Campo Obbligatorio</li>
+<li>Dettaglio Tipologia: Se presente è possibile selezionare un dettaglio per la tipologia selezionata</li>
+<li>Indirizzo intervento: Campo Obbligatorio</li>
+<li>Coordinate: E' un campo che viene riempito automaticamente quando si inserisce l'indirizzo, ma è comunque modificabile</li>
+<li>Note indirizzo: Campo libero</li>
+<li>Nominativo richiedente: Campo obbligatorio</li>
+<li>Telefono: Campo obbligatorio </li>
+<li>Palazzo/Scala/Interno/Citofono: campi non obbligatori</li>
+<li>Note Pubbliche: campo non obbligatoro</li>
+<li>Note Private: campo non obbligatoro</li>
+<li>Esercitazione: Indica se la chiamata che si sta registrando è per un'esercitazione</li>
+<li>Codice Emergenza: campo non obbligatoro</li>
+<li>Tag: Questa sezione è utile per la ricerca testuale presente in Home Page</li>
+</ul>
+<blockquote>
+<p><b> N.B. Le coordinate definiscono le competenze. </b></p>
+</blockquote>
+<blockquote>
+<p><b> N.B. Una volta inserito l'indirizzo, sulla destra, vengono presentate 2 sezioni: Interventi nelle vicinanze e Interventi sulla stessa via</b></p>
+</blockquote>
+<blockquote>
+<p><b> N.B. Quando si seleziona un dettaglio tipologia, se presente, viene visualizzata la POS associata</b></p>
+</blockquote>
+<blockquote>
+<p><b> N.B. Quando si seleziona un dettaglio tipologia, se presente, si abilita il tasto del TRIAGE</b></p>
+</blockquote>
+<p>Una volta riempiti tutti i campi desiderati è possibile fare una delle seguenti azioni:</p>
+<ul>
+<li><b>&quot;Ripulisci Campi&quot;</b>: Azzera la form ripulendo tutti i campi precedentemente riempiti</li>
+<li><b>&quot;In Attesa&quot;</b>: Salva la chiamata ma rimane sulla form</li>
+<li><b>&quot;Annulla&quot;</b>: Permette di annullare l'inserimento della chiamata</li>
+<li><b>&quot;Conferma ed esci&quot;</b>: Permette di salvare la chiamata e tornare alla Home Page</li>
+<li><b>&quot;Conferma ed invio partenza&quot;</b>: Permette di salvare la chiamata ed andare direttamente alla composizione partenza</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gestione-utenti"><a class="header" href="#gestione-utenti">Gestione Utenti</a></h1>
 <p>Gestione degli utenti dell'applicativo, e dei loro ruoli.</p>
 <p>Per accedere alla pagina si passa dal menu laterale e si clicca sull'apposito tasto:</p>
@@ -294,7 +332,7 @@ In più è possibile:</p>
 
         <!-- Livereload script (if served using the cli tool) -->
         <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3001/__livereload");
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
             socket.onmessage = function (event) {
                 if (event.data === "reload") {
                     socket.close();

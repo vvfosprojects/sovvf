@@ -16,3 +16,4 @@ Partendo da sinistra, le icone indicano:
 - <b>Icona Rubrica</b>: Consente di accedere alla funzionalità "Rubrica"
 - <b>Icona Campanella</b>: Segnala se per la sede selezionata ci sono segnalazioni particolari (Es. Un emergenza creata)
 
+ 
