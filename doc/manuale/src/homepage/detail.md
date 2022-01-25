@@ -8,13 +8,13 @@ Per ogni Chiamata/Intervento sono presenti dei tasti funzione sulla destra.
 ![Elenco Interventi](./img/TastiFunzione.png)
 
 Questi Tasti indicano:
-- Il numero di squadre impegnate sull'intervento, se si preme sul numero è possibile vedere le squadre impegnate
-- Il numero di mezzi impegnati sull'interventi, se si preme sul numero è possible vedere i mezzi impegnati
-- Il tasto per bloccare in alto l'intervento. Questo tasto è utile per bloccare la richiesta che si sta gestendo sempre all'inizio della lista. 
-- Il tasto quadrato: Questo tasto apre la maschera delle azioni possibili sull'intervento.
-- Il tasto freccia in basso: Apre il dettaglio della chiamata/intervento
-- Il tasto modifica: Consente di modificare le informazioni dell'intervento
-- Il tasto freccia a destra: Apre la Composizione Partenza
+- ![Elenco Interventi](./img/ico_squadre.png) Il numero di squadre impegnate sull'intervento, se si preme sul numero è possibile vedere le squadre impegnate
+- ![Elenco Interventi](./img/ico_mezzi.png) Il numero di mezzi impegnati sull'interventi, se si preme sul numero è possible vedere i mezzi impegnati
+- ![Elenco Interventi](./img/ico_pin.png) Il tasto per bloccare in alto l'intervento. Questo tasto è utile per bloccare la richiesta che si sta gestendo sempre all'inizio della lista. 
+- ![Elenco Interventi](./img/ico_azioni.png) Il tasto quadrato: Questo tasto apre la maschera delle azioni possibili sull'intervento.
+- ![Elenco Interventi](./img/ico_dettaglio.png) Il tasto freccia in basso: Apre il dettaglio della chiamata/intervento
+- ![Elenco Interventi](./img/ico_modifica.png) Il tasto modifica: Consente di modificare le informazioni dell'intervento
+- ![Elenco Interventi](./img/ico_composizione.png) Il tasto freccia a destra: Apre la Composizione Partenza
 
 <b>Dettaglio Intervento</b>
 Tramite il tasto "freccia in basso" è possibile aprire il dettaglio dell'intervento. Da questo dettaglio è possibile gestire le eventuali partenze presenti. 
