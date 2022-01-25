@@ -3,23 +3,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { Tipologia } from '../../../shared/model/tipologia.model';
-import {
-    GetDettagliTipologie,
-    ReducerSelezioneFiltroTipologia,
-    ResetFiltroTipologiaSelezionato,
-    SetRicercaDettagliTipologie
-} from '../../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
+import { GetDettagliTipologie, ReducerSelezioneFiltroTipologia, ResetFiltroTipologiaSelezionato, SetRicercaDettagliTipologie } from '../../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { SetPageSize } from '../../../shared/store/actions/pagination/pagination.actions';
 import { DettagliTipologieState } from '../../../shared/store/states/dettagli-tipologie/dettagli-tipologie.state';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { DettaglioTipologiaModalComponent } from './dettaglio-tipologia-modal/dettaglio-tipologia-modal.component';
-import {
-    ClearFormDettaglioTipologia,
-    RequestAddDettaglioTipologia,
-    RequestDeleteDettaglioTipologia,
-    RequestUpdateDettaglioTipologia
-} from '../store/actions/dettaglio-tipologia-modal.actions';
+import { ClearFormDettaglioTipologia, RequestAddDettaglioTipologia, RequestDeleteDettaglioTipologia, RequestUpdateDettaglioTipologia } from '../store/actions/dettaglio-tipologia-modal.actions';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
 import { NgSelectConfig } from '@ng-select/ng-select';
