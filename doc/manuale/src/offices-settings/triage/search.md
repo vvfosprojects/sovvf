@@ -1,6 +1,6 @@
 # Ricerca Triage
 
-Per ricercare un Triage selezionare una Tipologia dalla lista, di seguito selezionare un Dettaglio Tipologia dalla lista, poi premere il pulsante di ricerca
+Per ricercare un Triage selezionare una Tipologia dalla lista, di seguito selezionare un Dettaglio Tipologia dalla lista, poi premere il pulsante di ricerca.
 
 ![Triage](./img/search_button.png)
 
