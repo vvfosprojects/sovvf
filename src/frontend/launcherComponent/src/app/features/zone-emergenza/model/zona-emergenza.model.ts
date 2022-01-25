@@ -52,11 +52,7 @@ export class ZonaEmergenza {
         /**
          * Moduli "mob_Pot_Int" assegnati alla Zona Emergenza
          */
-        public listaModuliPotInt?: ModuloColonnaMobile[],
-        /**
-         * Sedi di Emergenza
-         */
-        public cra?: Cra
+        public listaModuliPotInt?: ModuloColonnaMobile[]
     ) {
     }
 }
@@ -90,11 +86,12 @@ export class EventoEmergenza {
         public istante: string,
         public sedeOperatore: string,
         public tipoEvento: string,
-        public tipologiaEmergenza: string,
-        public tipologiaModuli: string[],
-        public gestita: boolean,
-        public numDoa: number,
-        public dirigenti: string[]
+        public tipologiaEmergenza?: string,
+        public tipologiaModuli?: string[],
+        public gestita?: boolean,
+        public numDoa?: number,
+        public dirigenti?: string[],
+        public cra?: Cra
     ) {
     }
 }

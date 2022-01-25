@@ -225,8 +225,12 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnChanges, OnDes
         return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaEmergenza' && e.gestita);
     }
 
-    getEventiRichiestaCreazioneCraZonaEmergenza(): EventoEmergenza {
-        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaCreazioneCRA' && !e.gestita)[0];
+    getEventiRichiestaCreazioneCraZonaEmergenza(): EventoEmergenza[] {
+        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaCreazioneCRA' && !e.gestita);
+    }
+
+    getEventiRichiestaCreazioneGestitiCraZonaEmergenza(): EventoEmergenza[] {
+        return this.zonaEmergenzaById?.listaEventi.filter((e: EventoEmergenza) => e.tipoEvento === 'RichiestaCreazioneCRA' && e.gestita);
     }
 
     onChangeFiltroStatoColonnaMobile(statiModuliColonnaMobile: string[]): void {
@@ -295,8 +299,12 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnChanges, OnDes
         });
     }
 
-    onCreazioneSedi(): void {
-        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/sedi/' + this.zonaEmergenzaById.id]));
+    onCreazioneSedi(eventoRichiestaCra: EventoEmergenza): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/create-sedi/' + this.zonaEmergenzaById.id + '/' + eventoRichiestaCra.istante]));
+    }
+
+    onVisualizzaSedi(): void {
+        this.store.dispatch(new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail-sedi/' + this.zonaEmergenzaById.id]));
     }
 
     reducerRichiestaModuli(): void {

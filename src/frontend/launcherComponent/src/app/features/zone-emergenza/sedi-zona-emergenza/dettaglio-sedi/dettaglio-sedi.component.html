@@ -1,0 +1,84 @@
+<div class="container-fluid pt-3 pb-2">
+    <div *ngIf="zonaEmergenzaById"
+         class="row">
+        <div [class.col-12]="!doubleMonitor"
+             [class.col-6]="doubleMonitor">
+            <div class="col-12">
+                <h4 class="cursor-pointer"
+                    (click)="goToGestioneEmergenze()">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <span class="font-weight-bold">Gestione Emergenze</span>
+                    - CRA, DOA e PCA Emergenza {{ zonaEmergenzaById?.codEmergenza }}
+                </h4>
+            </div>
+            <!-- Informazioni Emergenza -->
+            <div class="col-10 mx-auto">
+                <div class="card my-3">
+                    <div class="card-header">
+                        {{ 'Informazioni Emergenza' | uppercase }}
+                    </div>
+                    <div class="card-body py-2">
+                        <h5>
+                            <div class="d-inline-block text-muted">
+                                Tipologia:
+                            </div>
+                            {{ zonaEmergenzaById.tipologia.emergenza[0] }}
+                        </h5>
+                        <h5>
+                            <div class="d-inline-block text-muted">
+                                Indirizzo:
+                            </div>
+                            {{ zonaEmergenzaById?.localita.indirizzo }} -
+                            Lat: {{ zonaEmergenzaById?.localita.coordinate.latitudine }} -
+                            Lon: {{ zonaEmergenzaById?.localita.coordinate.longitudine }}
+                        </h5>
+                        <h5>
+                            <div class="d-inline-block text-muted">
+                                Cod. Sede Richiedente:
+                            </div>
+                            {{ zonaEmergenzaById.codComandoRichiedente }}
+                        </h5>
+                        <h5>
+                            <div class="d-inline-block text-muted">
+                                Descrizione:
+                            </div>
+                            {{ zonaEmergenzaById.descrizione }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <!-- Treeview CRA -->
+            <div class="col-10 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <ngx-treeview [items]="tItems"
+                                      [config]="tConfig"
+                                      [itemTemplate]="itemTemplate">
+                        </ngx-treeview>
+
+                        <ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand">
+                            <div class="form-inline row-item mt-3">
+                                <i *ngIf="item.children" class="mr-2 text-info cursor-pointer"
+                                   (click)="onCollapseExpand()" aria-hidden="true"
+                                   [ngSwitch]="item.collapsed">
+                                    <i *ngSwitchCase="true" class="fas fa-chevron-circle-down"></i>
+                                    <i *ngSwitchCase="false" class="fas fa-chevron-circle-up"></i>
+                                </i>
+                                <div class="form-check font-weight-bolder cursor-pointer"
+                                     (click)="onCollapseExpand()">
+                                    {{ item.text | uppercase }}
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="doubleMonitor" class="col-6">
+            <div class="mt-2"
+                 style="height:920px">
+                <app-maps></app-maps>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,12 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
  */
 import { ZoneEmergenzaComponent } from './zone-emergenza.component';
 import { DettaglioZonaEmergenzaComponent } from './dettaglio-zona-emergenza/dettaglio-zona-emergenza.component';
-import { SediZonaEmergenzaComponent } from './sedi-zona-emergenza/sedi-zona-emergenza.component';
+import { CreazioneSediComponent } from './sedi-zona-emergenza/creazione-sedi/creazione-sedi.component';
+import { DettaglioSediComponent } from './sedi-zona-emergenza/dettaglio-sedi/dettaglio-sedi.component';
 
 const zoneEmergenzaRoutes: Routes = [
     { path: '', component: ZoneEmergenzaComponent },
     { path: 'detail/:id', component: DettaglioZonaEmergenzaComponent },
-    { path: 'sedi/:id', component: SediZonaEmergenzaComponent },
+    { path: 'create-sedi/:id/:istanteEvento', component: CreazioneSediComponent },
+    { path: 'detail-sedi/:id', component: DettaglioSediComponent }
 ];
 
 @NgModule({

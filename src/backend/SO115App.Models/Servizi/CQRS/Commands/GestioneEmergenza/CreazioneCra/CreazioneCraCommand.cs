@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="UpdateEmergenzaCommand.cs" company="CNVVF">
+// <copyright file="CreazioneCraCommand.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.Models.Classi.Emergenza;
+using System;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.CreazioneCra
 {
@@ -26,6 +27,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.CreazioneCra
         public string CodOperatore { get; set; }
         public string CodSede { get; set; }
         public string IdEmergenza { get; set; }
+        public DateTime istanteRichiestaCra { get; set; }
         public CraModel Cra { get; set; }
         public Emergenza Emergenza { get; set; }
     }

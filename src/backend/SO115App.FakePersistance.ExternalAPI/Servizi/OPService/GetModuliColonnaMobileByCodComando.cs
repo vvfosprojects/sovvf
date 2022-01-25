@@ -65,7 +65,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                         Nominativo = $"{m?.FirstName} {m?.LastName}",
                         Qualifications = m?.qualifications
                     }).ToList(),
-                    Mezzi = lstMezzi,
+                    Mezzi = lstMezzi.Where(m => s.CodiciMezziPreaccoppiati.Contains(m.Codice)).ToList(),
                     Stato = s?.Stato,
                     NomeModulo = string.Join('.', s?.Codice.Split('.').Take(2))
                 }).ToList();
