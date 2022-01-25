@@ -7,6 +7,7 @@
 	- [Elenco Interventi](homepage/detail.md)
 	- [Azioni](homepage/action.md)
 	- [Filtri](homepage/filter.md)
+- [Nuova Chiamata](newcall/README.md)
 - [Gestione Utenti](users-management/README.md)
 	- [Lista Utenti](users-management/list.md)
 	- [Creazione Utente](users-management/new.md)
