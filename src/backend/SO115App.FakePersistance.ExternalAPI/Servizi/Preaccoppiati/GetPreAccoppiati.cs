@@ -53,7 +53,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
                     lstSquadre.ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                         lstSquadreMezzo.TryAdd(m, lstSquadre
-                            .Where(s => s.Codice.Equals(squadra.Codice))
+                            .Where(s => s.Codice.Equals(squadra.Codice) && !s.spotType.Equals("MODULE"))
                             .Select(s => new Squadra(s.Codice, s.Descrizione, MappaStatoSquadraDaStatoMezzo.MappaStato(squadra.Stato)))
                             .ToArray())));
                 });
