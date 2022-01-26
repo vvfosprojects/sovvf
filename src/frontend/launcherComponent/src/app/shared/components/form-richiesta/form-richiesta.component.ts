@@ -213,6 +213,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             if (changes.schedaContattoDettaglio?.currentValue) {
                 this.f.noteNue.patchValue(this.schedaContattoDettaglio);
             }
+            if (changes.competenze?.currentValue) {
+                if (this.f.indirizzo && this.f.latitudine && this.f.longitudine && !this.modifica) {
+                    this.selectCompetenzaAuto();
+                }
+            }
         }
     }
 
@@ -259,6 +264,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             competenze: [null],
+            codCompetenzaCentrale: [null],
             codPrimaCompetenza: [{ value: null, disabled: true }],
             codSecondaCompetenza: [{ value: null, disabled: true }],
             codTerzaCompetenza: [{ value: null, disabled: true }],
@@ -684,6 +690,19 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
     } */
+
+    selectCompetenzaAuto(): void {
+        const coordinate = {
+            latitudine: this.f.latitudine?.value,
+            longitudine: this.f.longitudine?.value
+        };
+        const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.descDistaccamento.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
+        if (competenzaCentrale) {
+            const codCompetenze = [competenzaCentrale];
+            this.f.codCompetenzaCentrale.patchValue(competenzaCentrale);
+            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
+        }
+    }
 
     onSelectCompetenza(nCompetenza: number, codCompetenza: string): void {
         switch (nCompetenza) {

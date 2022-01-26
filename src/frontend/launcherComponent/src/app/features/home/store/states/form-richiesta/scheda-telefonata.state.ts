@@ -379,7 +379,11 @@ export class SchedaTelefonataState {
             const competenze = state.competenze;
             let codCompetenze: string[];
             if (competenze?.length <= 0) {
-                codCompetenze = [f.codPrimaCompetenza, f.codSecondaCompetenza, f.codTerzaCompetenza];
+                if (f.codPrimaCompetenza || f.codSecondaCompetenza || f.codTerzaCompetenza) {
+                    codCompetenze = [f.codPrimaCompetenza, f.codSecondaCompetenza, f.codTerzaCompetenza];
+                } else {
+                    codCompetenze = [f.codCompetenzaCentrale];
+                }
             }
 
             const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
