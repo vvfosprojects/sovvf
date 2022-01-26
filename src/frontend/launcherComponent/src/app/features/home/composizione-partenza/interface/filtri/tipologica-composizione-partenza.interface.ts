@@ -1,5 +1,8 @@
 export interface TipologicaComposizionePartenza {
     id: string;
-    descrizione?: string;
-    descDistaccamento?: string;
+    descDistaccamento: string;
+    codSede: string;
+    indirizzo: string;
+    cap: string;
+    coordinateString: string[];
 }
