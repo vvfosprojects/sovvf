@@ -1,6 +1,7 @@
 export const environment = {
     production: false,
     productionTest: false,
+    productionDemo: false,
     consoleLog: true,
     toastr: true,
     onlyCas: false,

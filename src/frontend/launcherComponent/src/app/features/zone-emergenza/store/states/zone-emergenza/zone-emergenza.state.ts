@@ -904,7 +904,7 @@ export class ZoneEmergenzaState {
     }
 
     @Action(SaveCraZonaEmergenza)
-    saveCraZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>): void {
+    saveCraZonaEmergenza({ getState, dispatch }: StateContext<ZoneEmergenzaStateModel>, action: SaveCraZonaEmergenza): void {
         dispatch(new StartLoadingZoneEmergenza());
         const state = getState();
 
@@ -925,8 +925,7 @@ export class ZoneEmergenzaState {
         } as Cra;
 
         const paramsAddCra = {
-            // TODO: inserire "istante" dell'evento "RichiestaCreazioneCRA" che sto gestendo creando il CRA
-            istanteRichiestaCra: null,
+            istanteRichiestaCra: action.istanteEventoRichiestaCRA,
             idEmergenza: state.zonaEmergenzaById.id,
             cra
         } as { idEmergenza: string, cra: Cra };
