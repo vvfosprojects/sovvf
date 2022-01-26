@@ -7,6 +7,8 @@
 	- [Elenco Interventi](homepage/detail.md)
 	- [Azioni](homepage/action.md)
 	- [Filtri](homepage/filter.md)
+  - [Sganciamento](homepage/sganciamento.md)
+  - [Sostituzione](homepage/sostituzione.md)
 - [Nuova Chiamata](newcall/README.md)
 - [Schede Contatto](schedecontatto/README.md) 
 - [Composizione Partenza](composition/README.md) 
