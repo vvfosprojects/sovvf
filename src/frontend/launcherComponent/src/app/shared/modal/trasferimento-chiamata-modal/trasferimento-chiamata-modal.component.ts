@@ -9,9 +9,6 @@ import { GetRichiesteTrasferibili } from '../../store/actions/trasferimento-chia
 import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
 import { Sede } from '../../model/sede.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { AuthState } from '../../../features/auth/store/auth.state';
-import { Utente } from '../../model/utente.model';
-import { makeCopy } from '../../helper/function-generiche';
 
 @Component({
     selector: 'app-trasferimento-chiamata-modal',
@@ -26,8 +23,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     formValid: boolean;
     @Select(DistaccamentiState.sediTrasferimenti) distaccamenti$: Observable<Sede[]>;
     distaccamenti: Sede[];
-    @Select(AuthState.currentUser) user$: Observable<Utente>;
-    codiceSedeUser: any;
 
     codRichiesta: string;
 
@@ -42,7 +37,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.initForm();
         this.getFormValid();
         this.getSedi();
-        this.getCodiceSedeUser();
     }
 
     ngOnInit(): void {
@@ -59,7 +53,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         } else {
             this.f.codiceRichiesta.disable();
         }
-        this.removeSedeUser();
     }
 
     initForm(): void {
@@ -92,19 +85,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    getCodiceSedeUser(): void {
-        this.subscription.add(
-            this.user$.subscribe((user: any) => {
-                this.codiceSedeUser = user.sede.codice;
-                const sedeUser = user.sede;
-                if (sedeUser) {
-                    this.f.sedeDa.patchValue(sedeUser);
-                }
-            })
-        );
-
-    }
-
     getTitle(): string {
         let title = 'Trasferimento Chiamata';
         if (this.codRichiesta) {
@@ -119,15 +99,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
                 this.distaccamenti = sedi;
             })
         );
-    }
-
-    removeSedeUser(): void {
-        const distaccamentiUnique = makeCopy(this.distaccamenti);
-        const codiciDistaccamenti = [];
-        distaccamentiUnique.forEach(x => codiciDistaccamenti.push(x.codice));
-        const indexRemove = codiciDistaccamenti.indexOf(this.codiceSedeUser);
-        distaccamentiUnique.splice(indexRemove, 1);
-        this.distaccamenti = distaccamentiUnique;
     }
 
     onPatchSedi(event: Sede): void {
