@@ -102,11 +102,14 @@ export class RicercaIndirizzoComponent implements OnInit {
                 });
             }
             paramsSuggestLocation = {
-                url: urlServiceGeocode,
                 location,
                 text: indirizzo,
-                countryCode: 'IT'
+                countryCode: 'IT',
+                categories: ['address', 'Historical Monument', 'Art Gallery', 'Art Museum', 'Museum', 'Ruin']
+                // https://developers.arcgis.com/rest/geocode/api-reference/geocoding-category-filtering.htm
             } as locatorSuggestLocationsParams;
+            // paramsSuggestLocation.searchTemplate = "{County}, {State}";
+
             Locator.suggestLocations(urlServiceGeocode, paramsSuggestLocation).then(async (suggestionResults: SuggestionResult[]) => {
                 this.addressCandidates = [];
                 const addressToLocationsPromises = [];
