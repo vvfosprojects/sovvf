@@ -36,9 +36,17 @@ export class Localita {
          */
         public provincia?: string,
         /**
+         * cap
+         */
+        public cap?: string,
+        /**
          * regione
          */
         public regione?: string,
+        /**
+         * civico
+         */
+        public civico?: string,
         /**
          * Latitidine [0] e Longitudine [1]
          */

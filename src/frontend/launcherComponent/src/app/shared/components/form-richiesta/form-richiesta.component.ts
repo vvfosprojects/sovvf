@@ -117,6 +117,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Input() lat: number;
     @Input() lon: number;
     @Input() address: string;
+    @Input() provincia: string;
+    @Input() cap: string;
+    @Input() regione: string;
+    @Input() civico: string;
 
     @Output() closeChiamataFromMappa: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -153,7 +157,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         if (this.apertoFromMappa) {
-            this.setIndirizzoFromMappa(this.lat, this.lon, this.address);
+            this.setIndirizzoFromMappa(this.lat, this.lon, this.address, this.provincia, this.cap, this.regione, this.civico);
         }
         if (this.richiestaModifica && this.richiestaModifica.codiceSchedaNue) {
             this.store.dispatch(new SetSchedaContattoTriageSummary(this.richiestaModifica.codiceSchedaNue));
@@ -263,6 +267,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             indirizzo: [null, [Validators.required]],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            provincia: [null, [Validators.required]],
+            cap: [null, [Validators.required]],
+            regione: [null, [Validators.required]],
+            civico: [null],
             competenze: [null],
             codCompetenzaCentrale: [null],
             codPrimaCompetenza: [{ value: null, disabled: true }],
@@ -307,6 +315,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             indirizzo: this.richiestaModifica.localita.indirizzo,
             latitudine: this.richiestaModifica.localita.coordinate.latitudine,
             longitudine: this.richiestaModifica.localita.coordinate.longitudine,
+            provincia: this.richiestaModifica.localita.provincia,
+            cap: this.richiestaModifica.localita.cap,
+            regione: this.richiestaModifica.localita.regione,
+            civico: this.richiestaModifica.localita.civico,
             competenze: this.richiestaModifica.competenze,
             codSchedaContatto: this.richiestaModifica.codiceSchedaNue,
             piano: this.richiestaModifica.localita.piano,
@@ -517,18 +529,18 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.reducerSchedaTelefonata('copiaCoordinate');
     }
 
-    reducerIndirizzo(candidate: AddressCandidate): void {
+    reducerIndirizzo(candidateValue: { candidate: AddressCandidate, candidateAttributes: any }): void {
         if (!this.richiestaModifica) {
-            this.onSetIndirizzo(candidate);
+            this.onSetIndirizzo(candidateValue);
         } else {
-            this.onModificaIndirizzo(candidate);
+            this.onModificaIndirizzo(candidateValue);
         }
     }
 
-    onSetIndirizzo(candidate: AddressCandidate): void {
-        const indirizzo = candidate.address ? candidate.address : null;
-        const lat = roundToDecimal(candidate.location.latitude, 6);
-        const lng = roundToDecimal(candidate.location.longitude, 6);
+    onSetIndirizzo(candidateValue: { candidate: AddressCandidate, candidateAttributes: any }): void {
+        const indirizzo = candidateValue.candidate.address ? candidateValue.candidate.address : null;
+        const lat = roundToDecimal(candidateValue.candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidateValue.candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
         this.chiamataMarker = new ChiamataMarker(
             this.idChiamata,
@@ -541,19 +553,32 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
+        this.f.provincia.patchValue(candidateValue.candidateAttributes.Subregion);
+        this.f.cap.patchValue(candidateValue.candidateAttributes.Postal);
+        this.f.regione.patchValue(candidateValue.candidateAttributes.Region);
+        this.f.civico.patchValue(candidateValue.candidateAttributes.AddNum);
         this.f.indirizzo.markAsDirty();
         this.f.latitudine.markAsDirty();
         this.f.longitudine.markAsDirty();
+        this.f.provincia.markAsDirty();
+        this.f.cap.markAsDirty();
+        this.f.regione.markAsDirty();
+        this.f.civico.markAsDirty();
 
         this.reducerSchedaTelefonata('cerca');
     }
 
-    setIndirizzoFromMappa(lat: number, lon: number, address: string): void {
+    setIndirizzoFromMappa(lat: number, lon: number, address: string, provincia: string, cap: string, regione: string, civico: string): void {
         const latitudine = roundToDecimal(lat, 6);
         const longitudine = roundToDecimal(lon, 6);
+
+        this.f.indirizzo.patchValue(address);
         this.f.latitudine.patchValue(latitudine);
         this.f.longitudine.patchValue(longitudine);
-        this.f.indirizzo.patchValue(address);
+        this.f.provincia.patchValue(provincia);
+        this.f.cap.patchValue(cap);
+        this.f.regione.patchValue(regione);
+        this.f.civico.patchValue(civico);
         this.f.latitudine.disable();
         this.f.longitudine.disable();
         this.f.indirizzo.disable();
@@ -570,16 +595,20 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.reducerSchedaTelefonata('cerca');
     }
 
-    onModificaIndirizzo(candidate: AddressCandidate): void {
-        const indirizzo = candidate.address ? candidate.address : null;
-        const lat = roundToDecimal(candidate.location.latitude, 6);
-        const lng = roundToDecimal(candidate.location.longitude, 6);
+    onModificaIndirizzo(candidateValue: { candidate: AddressCandidate, candidateAttributes: any }): void {
+        const indirizzo = candidateValue.candidate.address ? candidateValue.candidate.address : null;
+        const lat = roundToDecimal(candidateValue.candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidateValue.candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
         const nuovoIndirizzo = new Localita(coordinate ? coordinate : null, indirizzo);
 
+        this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
-        this.f.indirizzo.patchValue(indirizzo);
+        this.f.provincia.patchValue(candidateValue.candidateAttributes.Subregion);
+        this.f.cap.patchValue(candidateValue.candidateAttributes.Postal);
+        this.f.regione.patchValue(candidateValue.candidateAttributes.Region);
+        this.f.civico.patchValue(candidateValue.candidateAttributes.AddNum);
 
         this.store.dispatch([
             new ModificaIndirizzo(nuovoIndirizzo),
