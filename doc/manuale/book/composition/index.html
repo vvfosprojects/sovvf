@@ -196,7 +196,7 @@ A questo punto si può o aggiungere un'altra partenza premendo sul tasto <img sr
 
         <!-- Livereload script (if served using the cli tool) -->
         <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            var socket = new WebSocket("ws://localhost:4201/__livereload");
             socket.onmessage = function (event) {
                 if (event.data === "reload") {
                     socket.close();

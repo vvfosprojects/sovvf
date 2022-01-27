@@ -183,7 +183,7 @@ E' anche possibile vedere i componenti di una squadra tramite il tasto lente a d
 
         <!-- Livereload script (if served using the cli tool) -->
         <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            var socket = new WebSocket("ws://localhost:4201/__livereload");
             socket.onmessage = function (event) {
                 if (event.data === "reload") {
                     socket.close();

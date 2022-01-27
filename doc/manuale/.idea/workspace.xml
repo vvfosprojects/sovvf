@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8cccd0a9-d7ab-4329-8c71-c7cc1de877c3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/manuale.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/offices-settings/dettagli-tipologie/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/offices-settings/dettagli-tipologie/edit.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/offices-settings/dettagli-tipologie/list.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/offices-settings/dettagli-tipologie/new.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/offices-settings/img/access.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book/.nojekyll" beforeDir="false" afterPath="$PROJECT_DIR$/book/.nojekyll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/404.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book/FontAwesome/css/font-awesome.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/FontAwesome/css/font-awesome.css" afterDir="false" />
@@ -36,8 +28,6 @@
       <change beforePath="$PROJECT_DIR$/book/mark.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/mark.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book/print.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/print.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book/searcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/searcher.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/searchindex.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/searchindex.json" beforeDir="false" afterPath="$PROJECT_DIR$/book/searchindex.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book/tomorrow-night.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/tomorrow-night.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book/users-management/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/users-management/edit.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book/users-management/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/users-management/index.html" afterDir="false" />
@@ -93,6 +83,7 @@
       <workItem from="1643109082235" duration="23000" />
       <workItem from="1643109107005" duration="8000" />
       <workItem from="1643109127328" duration="48000" />
+      <workItem from="1643212354080" duration="669000" />
     </task>
     <servers />
   </component>
