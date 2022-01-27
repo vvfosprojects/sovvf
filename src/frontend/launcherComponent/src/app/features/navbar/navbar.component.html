@@ -65,32 +65,35 @@
                 <!-- Zona Destra -->
                 <div [class.col-4]="!doubleMonitor"
                      [class.col-2]="doubleMonitor">
-                    <div class="clearfix">
-                        <div class="float-right">
-                            <button class="btn btn-light mr-2"
-                                    ngbTooltip="Visualizza Gestione Emergenze"
-                                    [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
-                                    [class.btn-nav-selected]="url.indexOf('/zone-emergenza') !== -1"
-                                    [routerLinkActive]="['btn-light-nav', 'text-dark']"
-                                    [class.cursor-not-allowed]="disabledZoneEmergenza"
-                                    [disabled]="disabledZoneEmergenza"
-                                    [disableTooltip]="disabledZoneEmergenza">
-                                <i class="fas fa-exclamation-triangle"></i>
-                            </button>
-                            <button class="btn btn-light mr-2"
-                                    ngbTooltip="Visualizza Rubrica"
-                                    [routerLink]="['/' + RoutesPath.Rubrica]"
-                                    [class.btn-nav-selected]="url === '/rubrica' || url === '/pos'"
-                                    [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                                <i class="fas fa-address-book"></i>
-                            </button>
-                            <app-notifiche [listaNotifiche]="listaNotifiche$ | async"
-                                           [nuoveNotifiche]="nuoveNotifiche$ | async"
-                                           [nightMode]="nightMode"
-                                           (notificheLette)="setNotificheLette()"
-                                           (notificaSelezionata)="onNotificaSelezionata($event)">
-                            </app-notifiche>
-                        </div>
+                    <div class="d-flex align-items-center justify-content-end">
+                        <button class="btn btn-light mr-2"
+                                ngbTooltip="Visualizza Gestione Emergenze"
+                                [routerLink]="['/' + RoutesPath.ZoneEmergenza]"
+                                [class.btn-nav-selected]="url.indexOf('/zone-emergenza') !== -1"
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']"
+                                [class.cursor-not-allowed]="disabledZoneEmergenza"
+                                [disabled]="disabledZoneEmergenza"
+                                [disableTooltip]="disabledZoneEmergenza">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </button>
+                        <button class="btn btn-light mr-2"
+                                ngbTooltip="Visualizza Rubrica"
+                                [routerLink]="['/' + RoutesPath.Rubrica]"
+                                [class.btn-nav-selected]="url === '/rubrica' || url === '/pos'"
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                            <i class="fas fa-address-book"></i>
+                        </button>
+                        <app-notifiche [listaNotifiche]="listaNotifiche$ | async"
+                                       [nuoveNotifiche]="nuoveNotifiche$ | async"
+                                       [nightMode]="nightMode"
+                                       (notificheLette)="setNotificheLette()"
+                                       (notificaSelezionata)="onNotificaSelezionata($event)">
+                        </app-notifiche>
+                        <i class="fas fa-question-circle cursor-pointer"
+                           ngbTooltip="Visualizza Manuale Utente"
+                           placement="left"
+                           (click)="goToManuale()">
+                        </i>
                     </div>
                 </div>
                 <div *ngIf="doubleMonitor" class="offset-6"></div>

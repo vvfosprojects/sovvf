@@ -41,11 +41,12 @@ namespace SO115App.API.Models.Classi.Condivise
         [Required]
         public Coordinate Coordinate { get; set; }
 
-        public string[] CoordinateString {
+        public string[] CoordinateString
+        {
             get
             {
                 string[] coordinate = new string[2];
-                coordinate[0] = this.Coordinate.Latitudine.ToString().Replace(",",".");
+                coordinate[0] = this.Coordinate.Latitudine.ToString().Replace(",", ".");
                 coordinate[1] = this.Coordinate.Longitudine.ToString().Replace(",", ".");
                 return coordinate;
             }
@@ -56,6 +57,7 @@ namespace SO115App.API.Models.Classi.Condivise
         public string Provincia { get; set; }
         public string Regione { get; set; }
         public string Interno { get; set; }
+        public string cap { get; set; }
         public string Palazzo { get; set; }
         public string Scala { get; set; }
         public string Note { get; set; }
@@ -83,7 +85,6 @@ namespace SO115App.API.Models.Classi.Condivise
             }
             catch (System.Exception e)
             {
-
             }
         }
     }
