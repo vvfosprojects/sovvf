@@ -8,6 +8,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 
@@ -65,15 +66,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
                 if (response.results.Find(x => x.paramName.Equals("rank_2")) != null)
                     competenze[1] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("rank_2")).value}";
 
-                if (response.results.Find(x => x.paramName.Equals("rank_3")) != null)
+                if (response.results.Find(x => x.paramName.Equals("rank_3")) != null && Convert.ToInt32(response.results.Find(x => x.paramName.Equals("rank_3")).value) > 0)
                     competenze[2] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("rank_3")).value}";
             }
             else
             {
-#if DEBUG
-                //competenze = new string[3] { "RM.1000", "RM.1002", "RM.1004" };
-#endif
-
                 if (response == null)
                     throw new ArgumentException($"Response == null", nameof(competenze));
                 else if (response.results == null)
@@ -82,7 +79,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
                     throw new ArgumentException($"Coordinate Errate x: {coord.x} y:{coord.y}", nameof(competenze));
             }
 
-            return competenze;
+            return competenze.Where(c => c != null).ToArray();
         }
     }
 }
