@@ -263,6 +263,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
         ]);
     }
 
+    goToManuale(): void {
+        window.open('/book/index.html', '_blank', 'width:auto;height:auto');
+    }
+
     checkCambioTurnoSquadre(): void {
         // Setto la durata a 15 minuti
         let distance = 900000;

@@ -526,7 +526,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
         EsriConfig.apiKey = 'AAPK36ded91859154c2cad9002a686434a34Jt_FmrqMObHesjY_bYHlJu-HZZrTDGJzsQMKnxd8f4TmYY_Vi-f8-4y-7G6WbcVf';
 
-        let portalItemId = '55fdd15730524dedbff72e285cba3795';
+        let portalItemId = 'f0debe8268ac461588abca904a434ec2';
         if (environment.productionTest) {
             portalItemId = 'f0debe8268ac461588abca904a434ec2';
         } else if (environment.productionDemo) {
