@@ -51,9 +51,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 {
                     var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
 
-                    lstSquadre.ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
+                    lstSquadre.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                         lstSquadreMezzo.TryAdd(m, lstSquadre
-                            .Where(s => s.Codice.Equals(squadra.Codice) && !s.spotType.Equals("MODULE"))
+                            .Where(s => s.Codice.Equals(squadra.Codice))
                             .Select(s => new Squadra(s.Codice, s.Descrizione, MappaStatoSquadraDaStatoMezzo.MappaStato(squadra.Stato)))
                             .ToArray())));
                 });
