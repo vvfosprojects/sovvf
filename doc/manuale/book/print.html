@@ -468,15 +468,48 @@ A questo punto si può o aggiungere un'altra partenza premendo sul tasto <img sr
 <p><img src="offices-settings/triage/./img/search_ko.png" alt="Triage" /></p>
 <p>Per effettuare una nuova ricerca premere sul pulsante &quot;Nuova Ricerca&quot;.</p>
 <p><img src="offices-settings/triage/./img/new_search_button.png" alt="Triage" /></p>
-<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="importazione-triage"><a class="header" href="#importazione-triage">Importazione Triage</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="creazione-triage"><a class="header" href="#creazione-triage">Creazione Triage</a></h1>
+<p>Per creare un Triage premere il pulsante &quot;Prima Domanda&quot;.</p>
+<p><img src="offices-settings/triage/./img/add_button.png" alt="Creazione Triage" /></p>
+<p>A questo punto scrivere il testo della domanda che si vuole aggiungere.</p>
+<p><img src="offices-settings/triage/./img/add.png" alt="Creazione Triage" /></p>
+<p>Se si vogliono personalizzare le risposte selezionare la voce &quot;Risposte Personalizzate&quot;.</p>
+<p><img src="offices-settings/triage/./img/add_flag_custom_responses.png" alt="Creazione Triage" /></p>
+<p>A questo punto possiamo personalizzare le risposto e/o aggiungerne delle altre tramite l'apposito pulsante.</p>
+<p><img src="offices-settings/triage/./img/add_custom_response.png" alt="Creazione Triage" /></p>
+<p>Una volta inseriti i dati che si vogliono basterà premere il pulsante di conferma.</p>
+<p><img src="offices-settings/triage/./img/add_modaL_button.png" alt="Creazione Triage" /></p>
+<p>Salviamo i dati inseriti tramite l'apposito pulsante di salvataggio.</p>
+<p><img src="offices-settings/triage/./img/add_save_button.png" alt="Creazione Triage" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="importazione-triage"><a class="header" href="#importazione-triage">Importazione Triage</a></h1>
 <p>Per importare un Triage premere il pulsante &quot;Importa Triage da un altro Dettaglio Tipologia&quot;.</p>
-<p><img src="offices-settings/triage/./img/import_button.png" alt="Triage" /></p>
+<p><img src="offices-settings/triage/./img/import_button.png" alt="Importazione Triage" /></p>
 <p>A questo punto selezionare il Dettaglio Tipologia da cui importare il triage e premere &quot;Conferma&quot;.</p>
-<p><img src="offices-settings/triage/./img/confirm_import.png" alt="Triage" /></p>
+<p><img src="offices-settings/triage/./img/confirm_import.png" alt="Importazione Triage" /></p>
 <p>Se il Dettaglio Tipologia da cui si vuole importare il Triage ne ha uno disponibile, verrà importato e salvato automaticamente.</p>
 <p>Altrimenti verrà mostrato un errore.</p>
-<p><img src="offices-settings/triage/./img/confirm_import_ko.png" alt="Triage" /></p>
-<div style="break-before: page; page-break-before: always;"></div>
+<p><img src="offices-settings/triage/./img/confirm_import_ko.png" alt="Importazione Triage" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="modifica-triage"><a class="header" href="#modifica-triage">Modifica Triage</a></h1>
+<p>Per modificare un Triage selezionare &quot;Abilita Modifica&quot;.</p>
+<p><img src="offices-settings/triage/./img/edit_flag.png" alt="Modifica Triage" /></p>
+<p>Questo abiliterà la modalità di modifica del Triage.</p>
+<p>Per modificare il testo di una domanda bisogna premere il pulsante &quot;Modifica&quot; di fianco alla domanda che vogliamo modificare.</p>
+<p><img src="offices-settings/triage/./img/edit_question_button.png" alt="Modifica Triage" /></p>
+<p>Per confermare la modifica selezionare il pulsante dedicato.</p>
+<p><img src="offices-settings/triage/./img/edit_question_ok_button.png" alt="Modifica Triage" /></p>
+<p>Altrimenti per annullare la modifica selezionare il seguente pulsante.</p>
+<p><img src="offices-settings/triage/./img/edit_question_ko_button.png" alt="Modifica Triage" /></p>
+<p>Altrimenti per annullare la modifica selezionare il seguente pulsante.</p>
+<p><img src="offices-settings/triage/./img/edit_question_ko_button.png" alt="Modifica Triage" /></p>
+<p>Per aggiungere una domanda consecutiva ad una risposta premere sul pulsante di fianco alla risposta scelta.</p>
+<p><img src="offices-settings/triage/./img/add_question_button.png" alt="Modifica Triage" /></p>
+<p>A questo punto apparirà una finestra nel quale possiamo inserire la domanda seguente alla risposta scelta ed altre informazioni.</p>
+<p><img src="offices-settings/triage/./img/add_question_modal.png" alt="Modifica Triage" /></p>
+<p>Una volta inserite le informazioni premere sul pulsante di conferma.</p>
+<p><img src="offices-settings/triage/./img/add_question_modal_ok.png" alt="Modifica Triage" /></p>
+<p>A questo punto ci verrà mostrato il risultato e sarà necessario salvare tramite l'apposito pulsante.</p>
+<p><img src="offices-settings/triage/./img/add_question_result.png" alt="Modifica Triage" /></p>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
@@ -493,7 +526,7 @@ A questo punto si può o aggiungere un'altra partenza premendo sul tasto <img sr
 
         <!-- Livereload script (if served using the cli tool) -->
         <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            var socket = new WebSocket("ws://localhost:4201/__livereload");
             socket.onmessage = function (event) {
                 if (event.data === "reload") {
                     socket.close();
