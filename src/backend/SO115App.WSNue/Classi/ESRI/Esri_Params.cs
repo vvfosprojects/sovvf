@@ -26,6 +26,6 @@ namespace SO115App.WSNue.Classi.ESRI
     {
         public int objectId { get; set; }
 
-        public DateTime LastUpdate { get; set; }
+        public DateTime lastUpdate { get; set; }
     }
 }
