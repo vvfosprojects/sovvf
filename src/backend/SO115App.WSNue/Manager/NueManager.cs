@@ -146,7 +146,7 @@ namespace SO115App.WSNue.Manager
                     schedaSO115.esri_params = new Esri_Params()
                     {
                         objectId = result.addResults[0].objectId,
-                        LastUpdate = DateTime.Now
+                        lastUpdate = DateTime.Now
                     };
 
                     schedaSO115.listaEventiWS.Add(new Evento()
@@ -180,7 +180,7 @@ namespace SO115App.WSNue.Manager
             }
             catch (Exception e)
             {
-               // throw new Exception($"Errore servizio: {e.Message}");
+                // throw new Exception($"Errore servizio: {e.Message}");
             }
         }
 

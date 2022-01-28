@@ -157,6 +157,6 @@ namespace SO115App.Models.Classi.NUE
     {
         public int objectId { get; set; }
 
-        public DateTime LastUpdate { get; set; }
+        public DateTime lastUpdate { get; set; }
     }
 }
