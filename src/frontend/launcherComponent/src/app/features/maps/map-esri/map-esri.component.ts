@@ -265,7 +265,17 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.chiamateMarkers?.currentValue && this.chiamateInCorsoFeatureLayer) {
             const markersChiamate = changes?.chiamateMarkers?.currentValue;
             this.addChiamateMarkersToLayer(markersChiamate, true).then();
+            markersChiamate?.forEach((mC: ChiamataMarker) => {
+                if (mC.mySelf) {
+                    this.searchForARIRAndIdranti(mC.localita.coordinate);
+                }
+            });
+
+            if (!markersChiamate.filter((mC: ChiamataMarker) => mC.mySelf)?.length) {
+                this.clearSearchForARIRAndIdranti();
+            }
         }
+
         // Aggiungo i Sedi Markers con "ApplyEdits"
         if (changes?.sediMarkers?.currentValue && this.sediOperativeFeatureLayer) {
             const markersSedi = changes?.sediMarkers?.currentValue;
@@ -319,64 +329,15 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                         this.getRoute('partenzeRichiestaSelezionata', direction);
                     }
                 });
-
-                const allLayers = this.view.map.allLayers._items;
-                allLayers.forEach((layer: any) => {
-                    if (layer.title === ESRI_LAYERS_CONFIG.layers.arir) {
-                        const queryArir = layer.createQuery();
-                        queryArir.geometry = new Point({
-                            latitude: coordinateCentro.latitudine,
-                            longitude: coordinateCentro.longitudine
-                        });
-                        queryArir.distance = 5000;
-                        queryArir.units = 'meters';
-                        queryArir.spatialRelationship = 'intersects';
-                        queryArir.returnGeometry = true;
-                        queryArir.outFields = ['*'];
-
-                        layer.queryFeatures(queryArir)
-                            .then((aziendeARIR: any) => {
-                                if (aziendeARIR && aziendeARIR.features.length > 0) {
-                                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.arir, true).then();
-
-                                    allLayers.forEach((l: any) => {
-                                        if (l.title === ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici) {
-                                            const queryApprovviggionamentiIdrici = l.createQuery();
-                                            queryApprovviggionamentiIdrici.geometry = new Point({
-                                                latitude: coordinateCentro.latitudine,
-                                                longitude: coordinateCentro.longitudine
-                                            });
-                                            queryApprovviggionamentiIdrici.distance = 500;
-                                            queryApprovviggionamentiIdrici.units = 'meters';
-                                            queryApprovviggionamentiIdrici.spatialRelationship = 'intersects';
-                                            queryApprovviggionamentiIdrici.returnGeometry = true;
-                                            queryApprovviggionamentiIdrici.outFields = ['*'];
-                                            l.queryFeatures(queryApprovviggionamentiIdrici)
-                                                .then((approvvigionamentiIdriciResult: any) => {
-                                                    if (approvvigionamentiIdriciResult && approvvigionamentiIdriciResult.features.length > 0) {
-                                                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici, true).then(() => {
-                                                            const layerApproviggionamentiIdrici = this.view.map.allLayers.toArray().filter((x: Layer) => x.title === ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici)[0];
-                                                            const approviggionamentiIdriciResultObjectIds = approvvigionamentiIdriciResult.features.map((y: any) => y.attributes.objectid);
-                                                            layerApproviggionamentiIdrici.definitionExpression = 'objectid in (' + approviggionamentiIdriciResultObjectIds + ')';
-                                                        });
-                                                    }
-                                                });
-                                        }
-                                    });
-                                }
-                            });
-                    }
-                });
+                this.searchForARIRAndIdranti(coordinateCentro);
             }
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
             this.clearDirection('partenzeRichiestaSelezionata');
             this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
-            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.arir, false).then();
-            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici, false).then(() => {
-                const layerApproviggionamentiIdrici = this.view.map.allLayers.toArray().filter((x: Layer) => x.title === ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici)[0];
-                layerApproviggionamentiIdrici.definitionExpression = '1 = 1';
-            });
+            if (!changes?.richiestaComposizione?.currentValue) {
+                this.clearSearchForARIRAndIdranti();
+            }
         }
 
         // Controllo il valore di "richiestaModifica"
@@ -398,8 +359,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 new SetCentroMappa({ coordinateCentro, zoom }),
                 new SetVisualizzaPercosiRichiesta(true)
             ]);
+            this.searchForARIRAndIdranti(coordinateCentro);
         } else if (changes?.richiestaComposizione?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
+            if (!changes?.idRichiestaSelezionata?.currentValue) {
+                this.clearSearchForARIRAndIdranti();
+            }
         }
 
         // Controllo il valore di "visualizzaPercorsiRichiesta"
@@ -972,6 +937,65 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    searchForARIRAndIdranti(coordinateCentro: { latitudine: number, longitudine: number }): void {
+        const allLayers = this.view.map.allLayers._items;
+        allLayers.forEach((layer: any) => {
+            if (layer.title === ESRI_LAYERS_CONFIG.layers.arir) {
+                const queryArir = layer.createQuery();
+                queryArir.geometry = new Point({
+                    latitude: coordinateCentro.latitudine,
+                    longitude: coordinateCentro.longitudine
+                });
+                queryArir.distance = 5000;
+                queryArir.units = 'meters';
+                queryArir.spatialRelationship = 'intersects';
+                queryArir.returnGeometry = true;
+                queryArir.outFields = ['*'];
+
+                layer.queryFeatures(queryArir)
+                    .then((aziendeARIR: any) => {
+                        if (aziendeARIR && aziendeARIR.features.length > 0) {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.arir, true).then(() => {
+                                allLayers.forEach((l: any) => {
+                                    if (l.title === ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici) {
+                                        const queryApprovviggionamentiIdrici = l.createQuery();
+                                        queryApprovviggionamentiIdrici.geometry = new Point({
+                                            latitude: coordinateCentro.latitudine,
+                                            longitude: coordinateCentro.longitudine
+                                        });
+                                        queryApprovviggionamentiIdrici.distance = 500;
+                                        queryApprovviggionamentiIdrici.units = 'meters';
+                                        queryApprovviggionamentiIdrici.spatialRelationship = 'intersects';
+                                        queryApprovviggionamentiIdrici.returnGeometry = true;
+                                        queryApprovviggionamentiIdrici.outFields = ['*'];
+                                        l.queryFeatures(queryApprovviggionamentiIdrici)
+                                            .then((approvvigionamentiIdriciResult: any) => {
+                                                if (approvvigionamentiIdriciResult && approvvigionamentiIdriciResult.features.length > 0) {
+                                                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici, true).then(() => {
+                                                        const layerApproviggionamentiIdrici = this.view.map.allLayers.toArray().filter((x: Layer) => x.title === ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici)[0];
+                                                        const approviggionamentiIdriciResultObjectIds = approvvigionamentiIdriciResult.features.map((y: any) => y.attributes.objectid);
+                                                        layerApproviggionamentiIdrici.definitionExpression = 'objectid in (' + approviggionamentiIdriciResultObjectIds + ')';
+                                                    });
+                                                }
+                                            });
+                                    }
+                                });
+                            });
+                        }
+                    });
+            }
+        });
+    }
+
+    clearSearchForARIRAndIdranti(): void {
+        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.arir, false).then(() => {
+            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici, false).then(() => {
+                const layerApproviggionamentiIdrici = this.view.map.allLayers.toArray().filter((x: Layer) => x.title === ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici)[0];
+                layerApproviggionamentiIdrici.definitionExpression = '1 = 1';
+            });
+        });
+    }
+
     startNuovaChiamata(): void {
         let lat: number;
         let lon: number;
@@ -1203,20 +1227,19 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 this.store.dispatch(new SetDirectionTravelData(idDirectionSymbols, { totalKilometers, totalTravelTime }));
 
                 let labelText = '';
-                labelText = totalKilometers?.toFixed(2) + ' Km - ' + totalTravelTime?.toFixed(2) + ' min';
+                labelText = totalKilometers?.toFixed(2) + ' KM \n ' + totalTravelTime?.toFixed(2) + ' MIN';
                 const textSymbol = {
                     id: 'textSymbol',
                     type: 'text',  // autocasts as new TextSymbol()
-                    color: 'red',
-                    backgroundColor: 'white',
-                    borderLineColor: 'red',
-                    borderLineSize: 10,
+                    color: 'white',
+                    haloColor: [44, 49, 52],
+                    haloSize: '30px',
                     text: labelText,
                     verticalAlignment: 'bottom',
-                    xoffset: 3,
-                    yoffset: 1,
+                    xoffset: 5,
+                    yoffset: 10,
                     font: {
-                        size: 30,
+                        size: 22,
                         family: 'cursive',
                         weight: 'bolder'
                     }
