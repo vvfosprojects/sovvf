@@ -319,11 +319,64 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                         this.getRoute('partenzeRichiestaSelezionata', direction);
                     }
                 });
+
+                const allLayers = this.view.map.allLayers._items;
+                allLayers.forEach((layer: any) => {
+                    if (layer.title === ESRI_LAYERS_CONFIG.layers.arir) {
+                        const queryArir = layer.createQuery();
+                        queryArir.geometry = new Point({
+                            latitude: coordinateCentro.latitudine,
+                            longitude: coordinateCentro.longitudine
+                        });
+                        queryArir.distance = 5000;
+                        queryArir.units = 'meters';
+                        queryArir.spatialRelationship = 'intersects';
+                        queryArir.returnGeometry = true;
+                        queryArir.outFields = ['*'];
+
+                        layer.queryFeatures(queryArir)
+                            .then((aziendeARIR: any) => {
+                                if (aziendeARIR && aziendeARIR.features.length > 0) {
+                                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.arir, true).then();
+
+                                    allLayers.forEach((l: any) => {
+                                        if (l.title === ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici) {
+                                            const queryApprovviggionamentiIdrici = l.createQuery();
+                                            queryApprovviggionamentiIdrici.geometry = new Point({
+                                                latitude: coordinateCentro.latitudine,
+                                                longitude: coordinateCentro.longitudine
+                                            });
+                                            queryApprovviggionamentiIdrici.distance = 500;
+                                            queryApprovviggionamentiIdrici.units = 'meters';
+                                            queryApprovviggionamentiIdrici.spatialRelationship = 'intersects';
+                                            queryApprovviggionamentiIdrici.returnGeometry = true;
+                                            queryApprovviggionamentiIdrici.outFields = ['*'];
+                                            l.queryFeatures(queryApprovviggionamentiIdrici)
+                                                .then((approvvigionamentiIdriciResult: any) => {
+                                                    if (approvvigionamentiIdriciResult && approvvigionamentiIdriciResult.features.length > 0) {
+                                                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici, true).then(() => {
+                                                            const layerApproviggionamentiIdrici = this.view.map.allLayers.toArray().filter((x: Layer) => x.title === ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici)[0];
+                                                            const approviggionamentiIdriciResultObjectIds = approvvigionamentiIdriciResult.features.map((y: any) => y.attributes.objectid);
+                                                            layerApproviggionamentiIdrici.definitionExpression = 'objectid in (' + approviggionamentiIdriciResultObjectIds + ')';
+                                                        });
+                                                    }
+                                                });
+                                        }
+                                    });
+                                }
+                            });
+                    }
+                });
             }
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
             this.clearDirection('partenzeRichiestaSelezionata');
             this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.arir, false).then();
+            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici, false).then(() => {
+                const layerApproviggionamentiIdrici = this.view.map.allLayers.toArray().filter((x: Layer) => x.title === ESRI_LAYERS_CONFIG.layers.approviggionamentiIdrici)[0];
+                layerApproviggionamentiIdrici.definitionExpression = '1 = 1';
+            });
         }
 
         // Controllo il valore di "richiestaModifica"
@@ -526,11 +579,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
         EsriConfig.apiKey = 'AAPK36ded91859154c2cad9002a686434a34Jt_FmrqMObHesjY_bYHlJu-HZZrTDGJzsQMKnxd8f4TmYY_Vi-f8-4y-7G6WbcVf';
 
-        let portalItemId = 'f0debe8268ac461588abca904a434ec2';
+        let portalItemId = '55fdd15730524dedbff72e285cba3795';
         if (environment.productionTest) {
-            portalItemId = 'f0debe8268ac461588abca904a434ec2';
+            portalItemId = 'c11359cbc7144f628c88db7690234db6';
         } else if (environment.productionDemo) {
-            portalItemId = '2b1e7d22c775479985b6129f842e9d7c';
+            portalItemId = '091fdcc608fb4a6eb3ba5022c36a4a58';
         }
 
         const portalItem = new PortalItem({
@@ -971,6 +1024,10 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             modalNuovaChiamata.componentInstance.lat = lat;
             modalNuovaChiamata.componentInstance.lon = lon;
             modalNuovaChiamata.componentInstance.address = response.attributes.Match_addr;
+            modalNuovaChiamata.componentInstance.provincia = response.attributes.Subregion;
+            modalNuovaChiamata.componentInstance.cap = response.attributes.Postal;
+            modalNuovaChiamata.componentInstance.regione = response.attributes.Region;
+            modalNuovaChiamata.componentInstance.civico = response.attributes.AddNum;
 
             modalNuovaChiamata.result.then(() => {
                 this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
@@ -1142,8 +1199,31 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     width: 3
                 };
                 const totalKilometers = result.route?.attributes?.Total_Kilometers;
-                const totalTravelTime = result.route?.attributes?.Total_TravelTime;
+                const totalTravelTime = result.route?.attributes?.Total_TravelTime ? result.route.attributes.Total_TravelTime : result.route?.attributes?.Total_TruckTravelTime;
                 this.store.dispatch(new SetDirectionTravelData(idDirectionSymbols, { totalKilometers, totalTravelTime }));
+
+                let labelText = '';
+                labelText = totalKilometers?.toFixed(2) + ' Km - ' + totalTravelTime?.toFixed(2) + ' min';
+                const textSymbol = {
+                    id: 'textSymbol',
+                    type: 'text',  // autocasts as new TextSymbol()
+                    color: 'red',
+                    backgroundColor: 'white',
+                    borderLineColor: 'red',
+                    borderLineSize: 10,
+                    text: labelText,
+                    verticalAlignment: 'bottom',
+                    xoffset: 3,
+                    yoffset: 1,
+                    font: {
+                        size: 30,
+                        family: 'cursive',
+                        weight: 'bolder'
+                    }
+                };
+                // @ts-ignore
+                pointPartenzaGraphic.symbol = textSymbol;
+                this.view.graphics.add(pointPartenzaGraphic);
                 this.view.graphics.add(result.route);
             });
         });
@@ -1155,7 +1235,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 this.view.graphics.items = [];
             } else {
                 // @ts-ignore
-                this.view.graphics.items = this.view.graphics.items.filter((item: Graphic) => item.symbol.id !== idSymbol);
+                this.view.graphics.items = this.view.graphics.items.filter((item: Graphic) => item.symbol.id !== idSymbol && item.symbol.id !== 'textSymbol');
             }
         }
     }

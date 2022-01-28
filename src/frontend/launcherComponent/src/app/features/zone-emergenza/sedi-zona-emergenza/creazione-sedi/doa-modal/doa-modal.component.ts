@@ -65,12 +65,12 @@ export class DoaModalComponent implements OnDestroy {
         });
     }
 
-    onSetIndirizzo(candidate: AddressCandidate): void {
-        console.log('onSetIndirizzo', candidate);
-        const lat = roundToDecimal(candidate.location.latitude, 6);
-        const lng = roundToDecimal(candidate.location.longitude, 6);
+    onSetIndirizzo(candidateValue: { candidate: AddressCandidate, candidateAttributes: any }): void {
+        console.log('onSetIndirizzo', candidateValue.candidate);
+        const lat = roundToDecimal(candidateValue.candidate.location.latitude, 6);
+        const lng = roundToDecimal(candidateValue.candidate.location.longitude, 6);
 
-        this.f.indirizzo.patchValue(candidate.address);
+        this.f.indirizzo.patchValue(candidateValue.candidate.address);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
     }
