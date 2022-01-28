@@ -24,7 +24,7 @@ export class RicercaIndirizzoComponent implements OnInit {
     @Input() spatialReference: SpatialReference;
 
     @Output() changeIndirizzo: EventEmitter<string> = new EventEmitter<string>();
-    @Output() selectCandidate: EventEmitter<AddressCandidate> = new EventEmitter<AddressCandidate>();
+    @Output() selectCandidate: EventEmitter<{ candidate: AddressCandidate, candidateAttributes: any }> = new EventEmitter<{ candidate: AddressCandidate, candidateAttributes: any }>();
     mapProperties: { spatialReference?: SpatialReference };
 
     indirizzoBackup: string;
@@ -105,7 +105,7 @@ export class RicercaIndirizzoComponent implements OnInit {
                 location,
                 text: indirizzo,
                 countryCode: 'IT',
-                categories: ['address', 'Historical Monument', 'Art Gallery', 'Art Museum', 'Museum', 'Ruin']
+                categories: ['address', 'Historical Monument', 'Art Gallery', 'Art Museum', 'Museum', 'Ruin', 'Intersection']
                 // https://developers.arcgis.com/rest/geocode/api-reference/geocoding-category-filtering.htm
             } as locatorSuggestLocationsParams;
             // paramsSuggestLocation.searchTemplate = "{County}, {State}";
@@ -146,8 +146,21 @@ export class RicercaIndirizzoComponent implements OnInit {
     }
 
     onSelectCandidate(candidate: AddressCandidate): void {
-        this.selectCandidate.emit(candidate);
-        this.resetAddressCandidates();
+        const latitude = candidate.location.latitude;
+        const longitude = candidate.location.longitude;
+        const locationPOI = new Point({
+            latitude,
+            longitude
+        });
+
+        const params = {
+            location: locationPOI
+        };
+        // @ts-ignore
+        Locator.locationToAddress('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer', params).then((response: supportAddressCandidate) => {
+            this.selectCandidate.emit({ candidate, candidateAttributes: response.attributes });
+            this.resetAddressCandidates();
+        });
     }
 
     resetAddressCandidates(): void {
