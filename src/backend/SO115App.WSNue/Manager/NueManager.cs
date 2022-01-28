@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using SO115App.WSNue.Classi;
 using SO115App.WSNue.Classi.ESRI;
 using SO115App.WSNue.Classi.NUE;
 using SO115App.WSNue.DataContract;
@@ -48,11 +49,24 @@ namespace SO115App.WSNue.Manager
                 SendMessageSO115WEB(SchedaSO115);
                 SendMessageESRI(SchedaSO115);
 
-                return "Ok";
+                return "OK";
             }
             catch (Exception ex)
             {
-                return $"Errore servizio ESRI: {ex.Message}";
+                LogException exception = new LogException()
+                {
+                    CodComando = "NUE",
+                    DataOraEsecuzione = DateTime.Now,
+                    IdOperatore = "WSNue",
+                    Content = $"ENTE DESTINATARIO:{insertSchedaNueRequest.enteDestinatario} / ENTE MITTENTE:{insertSchedaNueRequest.enteMittente} / PROVINCIA DESTINATARIO: {insertSchedaNueRequest.provinciaDestinatario} " +
+                              $"PROVINCIA MITTENTE { insertSchedaNueRequest.provinciaMittente} / SEDE DESTINATARIA: {insertSchedaNueRequest.sedeDestinataria} / SEDE MITTENTE: {insertSchedaNueRequest.sedeMittente} " +
+                              $"SCHEDA CONTATTO: {insertSchedaNueRequest.schedaContatto}",
+                    Response = ex.Message,
+                    Servizio = "WSNUE"
+                };
+
+                database.GetCollection<LogException>("externalApiLog").InsertOne(exception);
+                return $"Error: {ex.Message}";
             }
         }
 
@@ -152,20 +166,21 @@ namespace SO115App.WSNue.Manager
         private void UpDateRichiestaAssistenza(SchedaContatto schedaSO115)
         {
             var conAppo = ConfigurationManager.ConnectionStrings["MongoDbConn"].ConnectionString;
-            var conDB = conAppo.Split(',')[0];
-            var DbName = conAppo.Split(',')[1];
+            var dbName = ConfigurationManager.ConnectionStrings["MongoDbConnDBName"].ConnectionString;
+            var conDB = conAppo;
+            var DbName = dbName;
 
             var client = new MongoClient(conDB);
             var database = client.GetDatabase(DbName.Trim());
 
             try
             {
-                var filter = Builders<SchedaContatto>.Filter.Eq(s => s.Id, schedaSO115.Id);
+                var filter = Builders<SchedaContatto>.Filter.Eq(s => s.codiceScheda, schedaSO115.codiceScheda);
                 database.GetCollection<SchedaContatto>("schedecontatto").ReplaceOne(filter, schedaSO115);
             }
             catch (Exception e)
             {
-                throw new Exception($"Errore servizio ESRI: {e.Message}");
+               // throw new Exception($"Errore servizio: {e.Message}");
             }
         }
 
@@ -203,7 +218,7 @@ namespace SO115App.WSNue.Manager
             }
             catch (Exception e)
             {
-                throw new Exception($"Errore servizio ESRI: {e.Message}");
+                throw new Exception($"Errore servizio TOKEN ESRI: {e.Message}");
             }
 
             return token;
@@ -256,14 +271,6 @@ namespace SO115App.WSNue.Manager
 
         private SchedaContatto MappaScheda(InsertSchedaNueRequest scheda)
         {
-            BsonClassMap.RegisterClassMap<SchedaContatto>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdMember(c => c.Id)
-                    .SetIdGenerator(StringObjectIdGenerator.Instance)
-                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
-            });
-
             Regex regex = new Regex(@">\s*<");
             XmlDocument SchedaXml = new XmlDocument();
             XmlNamespaceManager namespaces = new XmlNamespaceManager(SchedaXml.NameTable);
@@ -286,7 +293,7 @@ namespace SO115App.WSNue.Manager
                             $"{SchedaXml.SelectSingleNode("//nue:Caller/nue:Location/nue:Manual/nue:Address", namespaces).InnerText} " +
                             $"{SchedaXml.SelectSingleNode("//nue:Caller/nue:Location/nue:Manual/nue:CivicNumber", namespaces).InnerText}";
 
-            Coordinate coordinate = new Coordinate(Convert.ToDouble(Latitudine.Replace(".",",")), Convert.ToDouble(Longitudine.Replace(".", ",")));
+            Coordinate coordinate = new Coordinate(Convert.ToDouble(Latitudine.Replace(".", ",")), Convert.ToDouble(Longitudine.Replace(".", ",")));
 
             var ListaConoscenza = SchedaXml.SelectNodes("//nue:Companies/nue:ForwardedTo/nue:Company", namespaces);
 
@@ -297,13 +304,13 @@ namespace SO115App.WSNue.Manager
 
             if (Competenza.Equals("VVF"))
             {
-                if(DettaglioCompetenza.Contains("SOLO SK"))
+                if (DettaglioCompetenza.Contains("SOLO SK"))
                     classificazione = "Deferibile";
                 else
                     classificazione = "Competenza";
-            }else
+            }
+            else
                 classificazione = "Conoscenza";
-
 
             SchedaContatto schedaMapped = new SchedaContatto()
             {
