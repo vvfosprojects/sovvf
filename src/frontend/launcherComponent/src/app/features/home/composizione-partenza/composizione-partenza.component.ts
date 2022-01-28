@@ -18,12 +18,7 @@ import { ClearListaMezziComposizione, SganciamentoMezzoComposizione } from '../.
 import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import {
-    ResetRicercaMezziComposizione,
-    ResetRicercaSquadreComposizione,
-    SetRicercaMezziComposizione,
-    SetRicercaSquadreComposizione
-} from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { ResetRicercaMezziComposizione, ResetRicercaSquadreComposizione, SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
 import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
