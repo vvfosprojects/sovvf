@@ -30,8 +30,6 @@ namespace SO115App.WSNue.Classi.NUE
     /// </summary>
     public class SchedaContatto
     {
-        public string Id { get; set; }
-
         /// <summary>
         ///   E' il codice della scheda contatto, proveniente dal NUE.
         /// </summary>

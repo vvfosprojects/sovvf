@@ -328,6 +328,7 @@
     <Compile Include="Classi\Evento.cs" />
     <Compile Include="Classi\ListaSedi.cs" />
     <Compile Include="Classi\Localita.cs" />
+    <Compile Include="Classi\LogException.cs" />
     <Compile Include="Classi\LoggedUser.cs" />
     <Compile Include="Classi\Notification.cs" />
     <Compile Include="Classi\Operatore.cs" />
