@@ -432,6 +432,10 @@ export class SchedaTelefonataState {
                         longitudine: f.longitudine,
                         latitudine: f.latitudine
                     },
+                    provincia: f.provincia,
+                    cap: f.cap,
+                    regione: f.regione,
+                    civico: f.civico
                 },
                 competenze,
                 codCompetenze,

@@ -37,6 +37,10 @@ export interface RichiestaForm {
     indirizzo: string;
     latitudine: number;
     longitudine: number;
+    provincia: string;
+    cap: string;
+    regione: string;
+    civico?: string;
     piano: string;
     palazzo: string;
     scala: string;

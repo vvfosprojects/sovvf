@@ -8,6 +8,8 @@ export const ESRI_LAYERS_CONFIG = {
         interventi: {
             aperti: 'Interventi - Aperti',
             chiusi: 'Interventi - Chiusi'
-        }
+        },
+        approviggionamentiIdrici: 'Approvvigionamenti Idrici VVF',
+        arir: 'Dato_Nazionale_ARIR'
     }
 };
