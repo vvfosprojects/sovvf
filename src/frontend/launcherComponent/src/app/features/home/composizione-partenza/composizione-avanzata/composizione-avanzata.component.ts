@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
 import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
@@ -18,15 +18,7 @@ import {
 } from '../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
-import {
-    AddBoxPartenza,
-    ClearBoxPartenze,
-    DeselectBoxPartenza,
-    RemoveBoxPartenza,
-    RemoveMezzoBoxPartenzaSelezionato,
-    RemoveSquadraBoxPartenza,
-    RequestAddBoxPartenza
-} from '../../store/actions/composizione-partenza/box-partenza.actions';
+import { AddBoxPartenza, ClearBoxPartenze, DeselectBoxPartenza, RemoveBoxPartenza, RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza, RequestAddBoxPartenza } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
     ClearSelectedSquadreComposizione,
     ClearSquadraComposizione,
@@ -54,6 +46,12 @@ import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-so
 import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
 import { Partenza } from '../../../../shared/model/partenza.model';
 import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
+import { TravelModeService } from '../../../maps/map-service/travel-mode.service';
+import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
+import RouteTask from '@arcgis/core/tasks/RouteTask';
+import RouteParameters from '@arcgis/core/rest/support/RouteParameters';
+import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -129,6 +127,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
+                private travelModeService: TravelModeService,
+                private cdRef: ChangeDetectorRef,
                 private store: Store) {
         // Popover options
         this.popoverConfig.container = 'body';
@@ -146,6 +146,59 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (changes?.richiesta?.currentValue) {
             const richiesta = changes?.richiesta?.currentValue;
             this.partenzeRichiesta = richiesta.partenzeRichiesta;
+        }
+
+        if (changes?.mezziComposizione?.currentValue) {
+            this.mezziComposizione = makeCopy(changes.mezziComposizione.currentValue);
+            this.mezziComposizione?.forEach((m: MezzoComposizione) => {
+                if (!m.km || !m.tempoPercorrenza) {
+                    const pointPartenza = new Point({
+                        longitude: +m.mezzo.coordinateStrg[1],
+                        latitude: +m.mezzo.coordinateStrg[0],
+                        spatialReference: {
+                            wkid: 3857
+                        }
+                    });
+
+                    const pointDestinazione = new Point({
+                        longitude: this.richiesta.localita.coordinate.longitudine,
+                        latitude: this.richiesta.localita.coordinate.latitudine,
+                        spatialReference: {
+                            wkid: 3857
+                        }
+                    });
+
+                    const pointPartenzaGraphic = new Graphic({
+                        geometry: pointPartenza
+                    });
+
+                    const pointDestinazioneGraphic = new Graphic({
+                        geometry: pointDestinazione
+                    });
+                    const routeTask: RouteTask = new RouteTask({
+                        url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World',
+                    });
+
+                    const routeParams = new RouteParameters({
+                        stops: new FeatureSet({
+                            features: [pointPartenzaGraphic, pointDestinazioneGraphic]
+                        }),
+                        travelMode: this.travelModeService.getTravelModeByGenereMezzo(m.mezzo.genere)
+                    });
+
+                    routeTask.solve(routeParams).then((data: any) => {
+                        if (!m.km || m.km === '0') {
+                            const km = data.routeResults[0]?.route?.attributes?.Total_Kilometers;
+                            m.km = km.toFixed(2);
+                        }
+                        if (!m.tempoPercorrenza) {
+                            const tempoPercorrenza = data.routeResults[0]?.route?.attributes?.Total_TravelTime ? data.routeResults[0].route.attributes.Total_TravelTime : data.routeResults[0]?.route?.attributes?.Total_TruckTravelTime;
+                            m.tempoPercorrenza = tempoPercorrenza.toFixed(2);
+                        }
+                        this.cdRef.detectChanges();
+                    });
+                }
+            });
         }
     }
 
