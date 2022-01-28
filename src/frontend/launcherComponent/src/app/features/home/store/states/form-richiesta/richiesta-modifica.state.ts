@@ -175,6 +175,10 @@ export class RichiestaModificaState {
                             longitudine: f.longitudine,
                             latitudine: f.latitudine
                         },
+                        provincia: f.provincia,
+                        cap: f.cap,
+                        regione: f.regione,
+                        civico: f.civico
                     },
                     competenze ? competenze : f.competenze,
                     null,

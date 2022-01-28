@@ -53,6 +53,7 @@ namespace SO115App.API.Models.Classi.Condivise
         }
 
         public string Indirizzo { get; set; }
+        public string Civico { get; set; }
         public string Citta { get; set; }
         public string Provincia { get; set; }
         public string Regione { get; set; }
