@@ -63,7 +63,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             }
             catch (Exception e)
             {
-                throw new Exception("Servizio Utente Comuni non disponibile.");
+                throw new Exception("Servizio Utenti Comuni non disponibile.");
             }
 
             var listaFiltrata = personaleUC.ToList()
