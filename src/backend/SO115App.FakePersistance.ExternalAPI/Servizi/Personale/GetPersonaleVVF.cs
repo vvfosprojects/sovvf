@@ -66,8 +66,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 throw new Exception("Servizio Utente Comuni non disponibile.");
             }
 
-            //Applico i filtri sui dati
-
             var listaFiltrata = personaleUC.ToList()
                 .FindAll(x => lstSegmenti.Contains(x.cognome.ToLower()) && lstSegmenti.Contains(x.nome.ToLower()))
                 .Map()
