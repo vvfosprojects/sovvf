@@ -62,6 +62,8 @@ import { TipologicaComposizionePartenza } from '../../../features/home/composizi
 import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import Point from '@arcgis/core/geometry/Point';
+import * as Locator from '@arcgis/core/rest/locator';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -849,14 +851,30 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     setSchedaContatto(scheda: SchedaContatto): void {
         const f = this.f;
+
+        const latitude = +scheda.localita.coordinateString[0];
+        const longitude = +scheda.localita.coordinateString[1];
+        const locationPOI = new Point({
+            latitude,
+            longitude
+        });
+
         f.noteNue.patchValue(scheda.dettaglio);
         f.codSchedaContatto.patchValue(scheda.codiceScheda);
         f.indirizzo.patchValue(scheda.localita?.indirizzo);
+        f.latitudine.patchValue(latitude);
+        f.longitudine.patchValue(longitude);
 
-        const lat = +scheda.localita.coordinateString[0];
-        const lng = +scheda.localita.coordinateString[1];
-        f.latitudine.patchValue(lat);
-        f.longitudine.patchValue(lng);
+        const params = {
+            location: locationPOI
+        };
+        // @ts-ignore
+        Locator.locationToAddress('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer', params).then((response: supportAddressCandidate) => {
+            f.provincia.patchValue(response.attributes.Subregion);
+            f.cap.patchValue(response.attributes.Postal);
+            f.regione.patchValue(response.attributes.Region);
+            f.civico.patchValue(response.attributes.AddNum);
+        });
 
         if (!this.richiestaModifica?.richiedente) {
             f.nominativo.patchValue(scheda.richiedente?.nominativo);
@@ -864,7 +882,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         if (!this.richiestaModifica) {
-            const coordinate = new Coordinate(lat, lng);
+            const coordinate = new Coordinate(latitude, longitude);
             this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
                 new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo), null
             );
