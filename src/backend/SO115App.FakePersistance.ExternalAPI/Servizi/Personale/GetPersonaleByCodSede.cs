@@ -29,7 +29,7 @@ namespace ExternalAPI.Fake.Servizi.Personale
         {
             List<PersonaleVVF> ListaPersonale = new List<PersonaleVVF>();
 
-            if (!_memoryCache.TryGetValue("ListaPersonale", out ListaPersonale))
+            if (!_memoryCache.TryGetValue("ListaPersonale_" + codSede, out ListaPersonale))
             {
                 _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                 var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(codSede.Split(".")[0]).GetSection("UrlAPIGestioneUtente").Value}/GetPersonaleBySede?codiceSede={codSede.Split(".")[0]}").ConfigureAwait(false);
@@ -40,7 +40,7 @@ namespace ExternalAPI.Fake.Servizi.Personale
                 ListaPersonale = MapORAPersonaleSuPersonaleVVF.MapLista(oraPersonale);
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(6));
-                _memoryCache.Set("ListaPersonale", ListaPersonale, cacheEntryOptions);
+                _memoryCache.Set("ListaPersonale_" + codSede, ListaPersonale, cacheEntryOptions);
             }
 
             return ListaPersonale;
