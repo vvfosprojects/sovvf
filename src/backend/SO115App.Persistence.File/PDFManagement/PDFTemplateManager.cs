@@ -78,7 +78,7 @@ namespace SO115App.Persistence.File.PDFManagement
 
             model.lstRiepiloghi.ForEach(async riepilogo =>
             {
-                double h = altezza(riepilogo.lstPartenze.Count);
+                double h = altezza(riepilogo.lstPartenze?.Count ?? 0);
 
                 checkNewPage(model, _y + h);
 
@@ -169,7 +169,7 @@ namespace SO115App.Persistence.File.PDFManagement
                 _gfx.DrawRectangle(XBrushes.Transparent, rect);
                 tf.DrawString(riepilogo.Comune, _field, XBrushes.Black, rect, XStringFormats.TopLeft);
 
-                riepilogo.lstPartenze.ForEach(async p =>
+                riepilogo.lstPartenze?.ForEach(async p =>
                 {
                     _gfx.DrawString(p.TpSch, _field, XBrushes.Black, 500, y);
                     _gfx.DrawString(p.SiglaSquadra, _field, XBrushes.Black, 540, y);
