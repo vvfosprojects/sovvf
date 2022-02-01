@@ -78,7 +78,7 @@ namespace SO115App.Persistence.File.PDFManagement
 
             model.lstRiepiloghi.ForEach(async riepilogo =>
             {
-                double h = altezza(riepilogo.lstPartenze.Count);
+                double h = altezza(riepilogo.lstPartenze?.Count ?? 0);
 
                 checkNewPage(model, _y + h);
 
@@ -169,7 +169,7 @@ namespace SO115App.Persistence.File.PDFManagement
                 _gfx.DrawRectangle(XBrushes.Transparent, rect);
                 tf.DrawString(riepilogo.Comune, _field, XBrushes.Black, rect, XStringFormats.TopLeft);
 
-                riepilogo.lstPartenze.ForEach(async p =>
+                riepilogo.lstPartenze?.ForEach(async p =>
                 {
                     _gfx.DrawString(p.TpSch, _field, XBrushes.Black, 500, y);
                     _gfx.DrawString(p.SiglaSquadra, _field, XBrushes.Black, 540, y);
@@ -219,17 +219,17 @@ namespace SO115App.Persistence.File.PDFManagement
             _gfx.DrawString(model.Chiamata.Piano ?? "", field, XBrushes.Black, 360, _y);
             _gfx.DrawString(model.Chiamata.Interno ?? "", field, XBrushes.Black, 520, _y);
 
-            _y = AlignY(246);
+            _y = AlignY(253);
             _gfx.DrawString(model.Chiamata.Comune ?? "", field, XBrushes.Black, 100, _y);
             _gfx.DrawString(model.Chiamata.Prov ?? "", field, XBrushes.Black, 500, _y);
 
-            _y = AlignY(285);
+            _y = AlignY(295);
             _gfx.DrawString(model.Chiamata.Richiedente ?? "", field, XBrushes.Black, 110, _y);
             _gfx.DrawString(model.Chiamata.RichiedenteTelefono ?? "", field, XBrushes.Black, 450, _y);
 
             _gfx.DrawString(model.Chiamata.NoteChiamata ?? "", field, XBrushes.Black, 130, AlignY(340));
 
-            _gfx.DrawString(model.Chiamata.Operatore ?? "", field, XBrushes.Black, 400, AlignY(710));
+            _gfx.DrawString(model.Chiamata.Operatore ?? "", field, XBrushes.Black, 400, AlignY(740));
         }
 
         private void generaDettaglioInterventoPDF(DettaglioInterventoModelForm model)

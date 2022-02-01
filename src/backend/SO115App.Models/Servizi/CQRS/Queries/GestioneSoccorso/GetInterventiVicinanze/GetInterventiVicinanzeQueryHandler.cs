@@ -47,7 +47,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
             {
                 DataArray = interventiInProssimita,
                 DataArrayInterventiChiusiStessoIndirizzo = resultChiuseStessoIndirizzo,
-                DataArrayStessaVia = resultStessaVia
+                DataArrayStessaVia = resultStessaVia.Where(v => v.Localita.Indirizzo.Equals(query.Indirizzo.Split(',')[0])).ToList()
             };
         }
     }
