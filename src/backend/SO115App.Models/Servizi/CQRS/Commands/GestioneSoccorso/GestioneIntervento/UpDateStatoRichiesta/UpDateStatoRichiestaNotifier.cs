@@ -46,7 +46,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         {
             _sender.SendNotification(command);
 
-            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
+            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
             var infoESRI = _mappingESRIMessage.Map(sintesi);
             _notifyUpDateRichiesta.UpDate(infoESRI);
         }
