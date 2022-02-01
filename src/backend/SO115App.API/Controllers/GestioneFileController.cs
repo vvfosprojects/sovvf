@@ -35,7 +35,7 @@ namespace SO115App.API.Controllers
                     CodiceRichiesta = codice,
                     ContentType = contentType,
                     IdOperatore = Request.Headers["IdUtente"],
-                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries),
                 };
 
                 var result = _dettaglioRichiestaQuery.Handle(query);

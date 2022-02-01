@@ -142,14 +142,20 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     var dataComposizione = cambioOrarioUscita == true ? stato.Istante : stato.Istante.AddMinutes(1);
 
-                    CoordinateString coordinate = new CoordinateString(coordinatePartenza[0], coordinatePartenza[1]);
+                    if (coordinatePartenza != null)
+                    {
+                        CoordinateString coordinate = new CoordinateString(coordinatePartenza[0], coordinatePartenza[1]);
 
-                    if (codicePartenza == null)
-                        new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza, coordinate);
+                        if (codicePartenza == null)
+                            new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza, coordinate);
+                    }
+                    else
+                    {
+                        if (codicePartenza == null)
+                            new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
+                    }
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
-
-
 
                     partenza.Mezzo.IdRichiesta = Id;
 
