@@ -4,6 +4,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Persistence.File.CSVManagement;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
@@ -18,15 +19,18 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
         private readonly IGetTipologieByCodice _getTipologie;
         private readonly IGetRiepilogoInterventi _getRiepilogoInterventi;
         private readonly IGetUtenteById _getUtente;
+        private readonly IGetSedi _getSedi;
         private readonly IPDFTemplateManager<RiepilogoInterventiModelForm> _pdfManager;
         private readonly ICSVTemplateManager<RiepilogoInterventiModelForm> _csvManager;
 
-        public RiepilogoInterventiPathQueryHandler(IGetRiepilogoInterventi getRiepilogoInterventi,
+        public RiepilogoInterventiPathQueryHandler(IGetSedi getSedi, 
+            IGetRiepilogoInterventi getRiepilogoInterventi,
             IGetUtenteById getUtente,
             IGetTipologieByCodice getTipologie,
             IPDFTemplateManager<RiepilogoInterventiModelForm> pdfManager,
             ICSVTemplateManager<RiepilogoInterventiModelForm> csvManager)
         {
+            _getSedi = getSedi;
             _getUtente = getUtente;
             _getRiepilogoInterventi = getRiepilogoInterventi;
             _pdfManager = pdfManager;
@@ -36,6 +40,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
         {
+            var distaccamento = _getSedi.GetInfoSede(query.IdSede.First());
+
             var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri).Result;
 
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
@@ -48,12 +54,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             {
                 Stato = char.Parse(i.TestoStatoRichiesta),
                 Data = i.Eventi.OfType<Telefonata>().First().DataOraInserimento,
-                Turno = (i.Partenze != null && i.Partenze.Count > 0) ? string.Concat(i?.Partenze?.LastOrDefault()?.Partenza.Squadre.Select(s => s.Turno)) : "",
+                Turno = i.TrnInsChiamata.Substring(0, 1),
                 Indirizzo = i.Localita?.Indirizzo,
                 X = "X: " + i.Localita.Coordinate.Latitudine,
                 Y = "Y: " + i.Localita.Coordinate.Longitudine,
                 Richiedente = i.Richiedente.Nominativo,
-                //Tipologie = string.Concat(lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')).TrimEnd(',').TrimEnd(' '),
+                Tipologie = string.Join(',', lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')).TrimEnd(',').TrimEnd(' '),
                 NumeroIntervento = i.CodRichiesta != null ? int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()) : 0,
                 Comune = i?.Localita?.Citta ?? i?.Localita?.Indirizzo,
                 //KmCiv = i?.Localita?.Indirizzo,
@@ -66,10 +72,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 Telefono = i.Richiedente.Telefono,
                 ZonaEmergenza = i?.CodZoneEmergenza?.Count() > 0 ? "true" : "false",
 
-
                 lstPartenze = i?.Partenze?.Select(p => new RiepilogoPartenza()
                 {
-                    SiglaSquadra = string.Concat(p.Partenza.Squadre.SelectMany(s => s.Codice + " ")),
+                    SiglaSquadra = string.Join("', ", p.Partenza.Squadre.Select(s => s.Codice)),
                     CodMezzo = p.CodiceMezzo,
                     //CapoPartenza = p.Partenza.Squadre.SelectMany(s => s.Membri.Where(m => m.CapoPartenza).Select(m => m.Nominativo)).FirstOrDefault(),
                     MezzoInUscita = p.DataOraInserimento,
@@ -86,7 +91,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 lstRiepiloghi = lstRiepiloghi,
                 A = query.Filtri.A,
                 Da = query.Filtri.Da,
-                DescComando = operatore.Sede.Descrizione,
+                DescComando = distaccamento.Result.Descrizione,
                 TotInterventi = lstInterventi.Count
             };
 

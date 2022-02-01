@@ -328,7 +328,7 @@ namespace SO115App.Persistence.MongoDB
 
             var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
 
-            var distaccamento = string.IsNullOrEmpty(filtri.Distaccamento) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.CodSOCompetente, filtri.Distaccamento); //OK
+            var distaccamento = filtri?.Distaccamenti == null || filtri?.Distaccamenti?.Count() == 0 ? empty : Builders<RichiestaAssistenza>.Filter.In(r => r.CodSOCompetente, filtri?.Distaccamenti); //OK
 
             var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno); //OK
 

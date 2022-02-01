@@ -71,7 +71,7 @@ namespace SO115App.Persistence.File.PDFManagement
 
         private void generaRiepilogoInterventiPDF(RiepilogoInterventiModelForm model)
         {
-            Func<int, double> altezza = partenze => _fieldHeight + 25 * (partenze - 1);
+            Func<int, double> altezza = partenze => _fieldHeight + 15 * partenze;
 
             if (model.lstRiepiloghi.Count == 0)
                 checkNewPage(model, _y);
