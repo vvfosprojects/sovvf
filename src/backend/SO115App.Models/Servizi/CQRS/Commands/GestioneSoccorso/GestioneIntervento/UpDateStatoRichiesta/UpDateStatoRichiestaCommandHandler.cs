@@ -85,6 +85,8 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             if (command.Stato == Costanti.RichiestaRiaperta)
                 richiesta.IstanteChiusura = null;
 
+            command.Richiesta = richiesta;
+
             _updateRichiestaAssistenza.UpDate(richiesta);
         }
     }
