@@ -14,7 +14,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
         private readonly IGetListaSintesi _getListaSintesi;
         private readonly IGetInterventiInProssimita _getInterventiInProssimita;
 
-        public GetCountInterventiVicinanzeQueryHandler(IGetCompetenzeByCoordinateIntervento getCompetenze, 
+        public GetCountInterventiVicinanzeQueryHandler(IGetCompetenzeByCoordinateIntervento getCompetenze,
                                                        IGetListaSintesi getListaSintesi,
                                                        IGetInterventiInProssimita getInterventiInProssimita)
         {
@@ -52,7 +52,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
             {
                 Count = interventiInProssimita.Count,
                 CountInterventiChiusiStessoIndirizzo = resultChiuseStessoIndirizzo.Count,
-                CountStessaVia = resultStessaVia.Count
+                CountStessaVia = resultStessaVia.Where(v => v.Localita.Indirizzo.Equals(query.Indirizzo.Split(',')[0])).ToList().Count()
             };
         }
     }
