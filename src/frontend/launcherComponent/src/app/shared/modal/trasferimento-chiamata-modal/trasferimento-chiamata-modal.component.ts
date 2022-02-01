@@ -9,6 +9,8 @@ import { GetRichiesteTrasferibili } from '../../store/actions/trasferimento-chia
 import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
 import { Sede } from '../../model/sede.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { AuthState } from '../../../features/auth/store/auth.state';
+import { Utente } from '../../model/utente.model';
 
 @Component({
     selector: 'app-trasferimento-chiamata-modal',
@@ -23,6 +25,8 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     formValid: boolean;
     @Select(DistaccamentiState.sediTrasferimenti) distaccamenti$: Observable<Sede[]>;
     distaccamenti: Sede[];
+    @Select(AuthState.currentUser) user$: Observable<Utente>;
+    codiceSedeUser: any;
 
     codRichiesta: string;
 
@@ -37,6 +41,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.initForm();
         this.getFormValid();
         this.getSedi();
+        this.getCodiceSedeUser();
     }
 
     ngOnInit(): void {
@@ -107,6 +112,18 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
 
     getCodiciRichiesteTrasferibili(): void {
         this.store.dispatch(new GetRichiesteTrasferibili());
+    }
+
+    getCodiceSedeUser(): void {
+        this.subscription.add(
+            this.user$.subscribe((user: any) => {
+                this.codiceSedeUser = user.sede.codice;
+                const sedeUser = user.sede;
+                if (sedeUser) {
+                    this.f.sedeDa.patchValue(sedeUser);
+                }
+            })
+        );
     }
 
     onConferma(): void {
