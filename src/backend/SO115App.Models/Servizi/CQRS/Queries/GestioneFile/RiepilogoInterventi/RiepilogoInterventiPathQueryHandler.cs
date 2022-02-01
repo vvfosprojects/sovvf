@@ -71,7 +71,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 Telefono = i.Richiedente.Telefono,
                 ZonaEmergenza = i?.CodZoneEmergenza?.Count() > 0 ? "true" : "false",
 
-                lstPartenze = i?.Partenze?.Select(p => new RiepilogoPartenza()
+                lstPartenze = query.Filtri?.AltriFiltri?.SoloInterventi ?? false ? null : i?.Partenze?.Select(p => new RiepilogoPartenza()
                 {
                     SiglaSquadra = string.Join(", ", p.Partenza.Squadre.Select(s => s.Codice)),
                     CodMezzo = p.CodiceMezzo,
