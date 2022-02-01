@@ -54,7 +54,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
         {
             var lstPosizioneFlotta = new List<MessaggioPosizione>();
 
-            var nomeCache = "lstPosizioneFlotta_" + Secondi;
+            var nomeCache = "lstPosizioneFlotta";
             if (!_memoryCache.TryGetValue(nomeCache, out lstPosizioneFlotta))
             {
                 var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value}posizioneFlotta");

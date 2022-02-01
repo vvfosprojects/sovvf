@@ -118,6 +118,7 @@ namespace SO115App.Persistence.MongoDB
             }
             else
             {
+
                 var filtroFullText = Builders<RichiestaAssistenza>.Filter.AnyEq("descrizione", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.indirizzo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.citta", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
@@ -131,7 +132,6 @@ namespace SO115App.Persistence.MongoDB
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("noteNue", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePubbliche", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePrivate", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.codiceMezzo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.nome", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
 
@@ -328,23 +328,26 @@ namespace SO115App.Persistence.MongoDB
 
             var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
 
-            var distaccamento = string.IsNullOrEmpty(filtri.Distaccamento) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.CodSOCompetente, filtri.Distaccamento); //OK
+            var distaccamento = filtri?.Distaccamenti == null || filtri?.Distaccamenti?.Count() == 0 ? empty : Builders<RichiestaAssistenza>.Filter.In(r => r.CodSOCompetente, filtri?.Distaccamenti); //OK
 
-            var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno); //OK
+            var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno.Substring(0, 1)); //OK
 
-            var lstsq = new List<string> { filtri.Squadra };
-            var squadre = string.IsNullOrEmpty(filtri.Squadra) ? empty : Builders<RichiestaAssistenza>.Filter.AnyIn(r => r.lstSquadre, lstsq);
-
-            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno & squadre).ToList();
+            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno).ToList();
 
             //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB)
 
+            //fonogramma trasmesso
             if (filtri.AltriFiltri?.Trasmessi ?? false)
                 result = result.Where(r => r.ListaEventi.OfType<FonogrammaInviato>().Count() > 0).ToList();
 
+            //data
             result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
 
-            return result;
+            //squadre
+            if(filtri.Squadre?.Count() > 0)
+                result = result.Where(r => r.lstSquadre.Any(sq => filtri.Squadre.Contains(sq))).ToList();
+
+            return result.ToList();
         }
     }
 }
