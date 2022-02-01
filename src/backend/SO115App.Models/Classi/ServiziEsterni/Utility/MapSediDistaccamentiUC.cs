@@ -27,7 +27,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
         {
             Id = distaccamento.Id,
             Cap = distaccamento.Cap,
-            CodDistaccamento = int.Parse(distaccamento.Id.Substring(3)),
+            CodDistaccamento = int.Parse(distaccamento.Id.Substring(0, 3)),
             CodSede = distaccamento.Id,
             Coordinate = distaccamento.Coordinate,
             DescDistaccamento = distaccamento.Descrizione,
