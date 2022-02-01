@@ -118,6 +118,7 @@ namespace SO115App.Persistence.MongoDB
             }
             else
             {
+
                 var filtroFullText = Builders<RichiestaAssistenza>.Filter.AnyEq("descrizione", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.indirizzo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.citta", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
@@ -131,7 +132,6 @@ namespace SO115App.Persistence.MongoDB
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("noteNue", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePubbliche", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePrivate", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.codiceMezzo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.nome", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
 

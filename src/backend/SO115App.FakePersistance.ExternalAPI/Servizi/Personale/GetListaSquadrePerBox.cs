@@ -91,8 +91,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 foreach (string CodSede in ListaCodiciSedi)
                 {
                     List<Squadra> listaSquadraBySede = new List<Squadra>();
-                    if (!_memoryCache.TryGetValue("listaSquadreBox-" + CodSede, out listaSquadraBySede))
-                    {
+                    //if (!_memoryCache.TryGetValue("listaSquadreBox-" + CodSede, out listaSquadraBySede))
+                    //{
                         #region LEGGO DA API ESTERNA
 
                         //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
@@ -121,12 +121,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                         }
 
                         var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
-                        _memoryCache.Set("listaSquadreBox-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
-                    }
-                    else
-                    {
-                        listaSquadre.AddRange(listaSquadraBySede);
-                    }
+                    //    _memoryCache.Set("listaSquadreBox-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
+                    //}
+                    //else
+                    //{
+                    //    listaSquadre.AddRange(listaSquadraBySede);
+                    //}
                 }
 
                 return listaSquadre;

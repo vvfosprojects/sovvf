@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.RubricaDTO;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         public string Stato { get; set; }
         public string IdOperatore { get; set; }
         public SintesiRichiesta Chiamata { get; set; }
+        public RichiestaAssistenza Richiesta { get; set; }
         public string CodiceSede { get; set; }
         public Motivazione Motivazione { get; set; }
         public List<EnteDTO> EntiIntervenuti { get; set; }
