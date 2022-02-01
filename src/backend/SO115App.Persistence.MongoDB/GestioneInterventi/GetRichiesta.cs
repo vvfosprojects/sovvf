@@ -344,8 +344,8 @@ namespace SO115App.Persistence.MongoDB
             result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
 
             //squadre
-            var lstsq = filtri?.Squadre?.Select(s => s).ToArray();
-            result = result.Where(r => r.lstSquadre.Any(sq => lstsq.Contains(sq))).ToList();
+            if(filtri.Squadre?.Count() > 0)
+                result = result.Where(r => r.lstSquadre.Any(sq => filtri.Squadre.Contains(sq))).ToList();
 
             return result.ToList();
         }
