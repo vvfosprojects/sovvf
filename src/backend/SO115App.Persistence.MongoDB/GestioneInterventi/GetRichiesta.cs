@@ -330,7 +330,7 @@ namespace SO115App.Persistence.MongoDB
 
             var distaccamento = filtri?.Distaccamenti == null || filtri?.Distaccamenti?.Count() == 0 ? empty : Builders<RichiestaAssistenza>.Filter.In(r => r.CodSOCompetente, filtri?.Distaccamenti); //OK
 
-            var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno); //OK
+            var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno.Substring(0, 1)); //OK
 
             var lstsq = new List<string> { filtri.Squadra };
             var squadre = string.IsNullOrEmpty(filtri.Squadra) ? empty : Builders<RichiestaAssistenza>.Filter.AnyIn(r => r.lstSquadre, lstsq);
