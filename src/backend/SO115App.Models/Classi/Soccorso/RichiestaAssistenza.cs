@@ -940,7 +940,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             if ((evento is ArrivoSulPosto
                 || evento is PartenzaInRientro
                 || evento is PartenzaRientrata)
-                && evento.Istante > DateTime.UtcNow)
+                && evento.Istante.AddSeconds(-20) > DateTime.UtcNow)
                 throw new Exception(OrarioFuturo);
 
             if (_eventi.Count > 0)
