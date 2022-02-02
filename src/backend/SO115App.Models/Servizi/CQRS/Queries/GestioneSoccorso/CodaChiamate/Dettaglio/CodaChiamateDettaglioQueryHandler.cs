@@ -19,11 +19,13 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.CodaChiamate;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
@@ -84,17 +86,33 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 
             ComposizioneSquadreQuery composizioneSquadreQuery = new ComposizioneSquadreQuery()
             {
-                CodiciSede = new string[] { query.CodiceSede }
+                CodiciSede = new string[] { query.CodiceSede },
+                IdOperatore = query.Filtro.idOperatore,
+                Filtro = new SO115App.Models.Classi.Composizione.FiltriComposizioneSquadra()
+                {
+                    CodiciCompetenze = new string[] { query.CodiceSede },
+                    CodiciDistaccamenti = new string[] { query.CodiceSede },
+                }
             };
 
-            //var listaSquadre = _iGetComposizioneSquadre.Get(composizioneSquadreQuery);
+            var listaSquadre = _iGetComposizioneSquadre.Get(composizioneSquadreQuery);
 
             DettaglioDistaccamento dettaglio = new DettaglioDistaccamento()
             {
                 codDistaccamento = query.CodiceSede,
                 descDistaccamento = listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Codice.Contains("1000") ? "Sede Centrale" : listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome,
                 listaSintesi = listaSintesi != null ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(query.CodiceSede) && (x.Stato.Equals("Chiamata") || x.Sospesa)) : null,
-                //listaSquadre = listaSquadre.FindAll(x => x.Squadra.Distaccamento.Equals(query.CodiceSede) && x.Squadra.Turno.Equals(turnoCorrente)).Select(x => x.Squadra).ToList()
+                listaSquadre = listaSquadre.FindAll(x => x.Distaccamento.Codice.Equals(query.CodiceSede) && x.Turno.Equals(char.Parse(turnoCorrente.Substring(0, 1)))).Select(x => new Squadra()
+                {
+                    Membri = x.Membri.Select(m => new Componente() 
+                    { 
+                        CodiceFiscale = m.CodiceFiscale,
+                    }).ToList(),
+                    Codice = x.Codice,
+                    Turno = x.Turno.ToString(),
+                    Nome = x.Nome,
+                    Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(x.Stato.ToString()),
+                }).ToList()
             };
 
             return new CodaChiamateDettaglioResult()
