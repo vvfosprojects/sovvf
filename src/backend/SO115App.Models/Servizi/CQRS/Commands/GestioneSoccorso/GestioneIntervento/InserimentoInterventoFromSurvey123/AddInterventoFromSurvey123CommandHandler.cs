@@ -94,7 +94,7 @@ namespace DomainModel.CQRS.Commands.AddInterventoFromSurvey123
             intervento.Codice = _generaCodiceRichiesta.GeneraCodiceChiamata(command.CodiceSede, DateTime.UtcNow.Year);
             intervento.CodiceRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(command.CodiceSede, DateTime.UtcNow.Year);
 
-            var listaCodiciTipologie = command.Chiamata.Tipologie?.Select(t => t.Codice).ToList();
+            var listaCodiciTipologie = intervento.Tipologie?.Select(t => t.Codice).ToList();
             var utentiInLavorazione = intervento.ListaUtentiInLavorazione?.Select(u => u.Nominativo).ToList();
             var utentiPresaInCarico = intervento.ListaUtentiPresaInCarico?.Select(u => u.Nominativo).ToList();
 
