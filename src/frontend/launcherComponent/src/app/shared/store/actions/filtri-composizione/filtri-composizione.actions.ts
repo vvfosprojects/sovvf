@@ -13,13 +13,6 @@ export class SetFiltriDistaccamentoDefault {
   }
 }
 
-export class SetGenereMezzoDefault {
-  static readonly type = '[FiltriComposizione] Set Generi Mezzi Default';
-
-  constructor( public genereMezzo: string[]) {
-    }
-}
-
 export class SetFiltriGeneriMezzoTriage {
     static readonly type = '[FiltriComposizione] Set Filtri Generi Mezzo Triage';
 
