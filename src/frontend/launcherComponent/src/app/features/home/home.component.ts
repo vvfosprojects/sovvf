@@ -123,4 +123,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     getBoxAttivi(): void {
         this.subscription.add(this.boxAttivi$.subscribe(bA => this.boxAttivi = bA));
     }
+
 }
