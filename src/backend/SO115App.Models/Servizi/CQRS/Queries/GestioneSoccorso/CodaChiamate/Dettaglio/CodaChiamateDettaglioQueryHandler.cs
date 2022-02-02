@@ -111,7 +111,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                     Codice = x.Codice,
                     Turno = x.Turno.ToString(),
                     Nome = x.Nome,
-                    Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(x.Stato.ToString()),
+                    Stato = MappaStatoSquadraDaStatoMezzo.Mappa(x.Stato.ToString()),
                 }).ToList()
             };
 
