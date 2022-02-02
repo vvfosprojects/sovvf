@@ -6,7 +6,7 @@ import { SwitchComposizione } from '../../../features/home/store/actions/view/vi
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { Observable, Subscription } from 'rxjs';
-import { AddFiltroSelezionatoComposizione, ClearFiltriComposizione, ResetFiltriComposizione, SetGenereMezzoDefault } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { AddFiltroSelezionatoComposizione, ClearFiltriComposizione, ResetFiltriComposizione, SetFiltriGeneriMezzoTriage } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
@@ -69,8 +69,8 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes?.triageSummary?.currentValue && !changes?.triageSummary?.previousValue) {
-            this.setGenereMezzoDefault();
+        if (changes?.triageSummary?.currentValue && !changes?.triageSummary?.previousValue && !changes?.generiMezzoSelezionato?.currentValue?.length) {
+            this.setGenereMezzoTriage();
         }
 
         if (this.richiesta && (changes?.loadingMezzi || changes?.loadingMezzi)) {
@@ -90,7 +90,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
 
     checkDistaccamenti(): void {
         const distaccamentiDefault = [];
-        if ( this.richiesta &&  this.richiesta.competenze) {
+        if (this.richiesta && this.richiesta.competenze) {
             this.richiesta.competenze.forEach(x => distaccamentiDefault.push(x.codice));
             JSON.stringify(distaccamentiDefault) === JSON.stringify(this.distaccamentiSelezionati) ? this.disableDefaultDistaccamenti = true : this.disableDefaultDistaccamenti = false;
         }
@@ -100,17 +100,17 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         this.distaccamentiSelezionati = [];
         const distaccamentiDefault = [];
 
-        if ( this.richiesta &&  this.richiesta.competenze) {
+        if (this.richiesta && this.richiesta.competenze) {
             this.richiesta.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
             this.richiesta.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
             this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
         }
     }
 
-    setGenereMezzoDefault(): void {
+    setGenereMezzoTriage(): void {
         this.generiMezzoSelezionato = [];
         this.generiMezzoSelezionato = getGeneriMezzoTriageSummary(this.triageSummary);
-        this.store.dispatch(new SetGenereMezzoDefault(this.generiMezzoSelezionato));
+        this.store.dispatch(new SetFiltriGeneriMezzoTriage(this.generiMezzoSelezionato));
     }
 
     getViewState(): void {

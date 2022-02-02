@@ -9,7 +9,6 @@ import {
     SetFiltriComposizione,
     ClearFiltriComposizione,
     SetFiltriDistaccamentoDefault,
-    SetGenereMezzoDefault,
     SetFiltriGeneriMezzoTriage
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
@@ -85,13 +84,6 @@ export class FiltriComposizioneState {
         console.log('SetFiltriGeneriMezzoTriage', action.generiMezzo);
         patchState({
             tipoMezzo: action.generiMezzo
-        });
-    }
-
-    @Action(SetGenereMezzoDefault)
-    setGenereMezzoDefault({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: any): void {
-        patchState({
-            tipoMezzo: action.genereMezzo,
         });
     }
 
