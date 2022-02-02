@@ -32,6 +32,7 @@ import { RouterState } from '@ngxs/router-plugin';
 import { ChangeView } from './features/home/store/actions/view/view.actions';
 import { AppFeatures } from './shared/enum/app-features.enum';
 
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
