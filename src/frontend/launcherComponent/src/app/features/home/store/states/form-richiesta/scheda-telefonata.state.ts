@@ -61,6 +61,8 @@ import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
 import { TipoTerrenoEnum } from 'src/app/shared/enum/tipo-terreno.enum';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/function-triage';
+import { SetFiltriGeneriMezzoTriage } from '../../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 
 export interface SchedaTelefonataStateModel {
     richiestaForm: {
@@ -539,6 +541,11 @@ export class SchedaTelefonataState {
                     new SetRichiestaComposizione(action.nuovaRichiesta),
                     new ToggleComposizione(Composizione.Avanzata)
                 ]);
+
+                const generiMezzoTriage = getGeneriMezzoTriageSummary(action.nuovaRichiesta?.triageSummary);
+                if (generiMezzoTriage?.length) {
+                    this.store.dispatch(new SetFiltriGeneriMezzoTriage(generiMezzoTriage));
+                }
             }
             dispatch(new StopLoadingSchedaRichiesta());
         } else if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
