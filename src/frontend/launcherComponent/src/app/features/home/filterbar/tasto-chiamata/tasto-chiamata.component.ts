@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { defineChiamataIntervento } from '../../../../shared/helper/function-richieste';
 
 @Component({
     selector: 'app-tasto-chiamata',
@@ -40,5 +41,17 @@ export class TastoChiamataComponent {
 
     getActive(): boolean {
         return this.colorButtonChiamata !== this.defaultColorButtonChiamata;
+    }
+
+    defineChiamataIntervento(): string {
+        const definizione = defineChiamataIntervento(this.richiestaModifica?.codice, this.richiestaModifica?.codiceRichiesta);
+        switch (definizione) {
+            case 'Chiamata':
+                return `la ${definizione}`;
+            case 'Intervento':
+                return `l'${definizione}`;
+            default:
+                return 'la richiesta';
+        }
     }
 }
