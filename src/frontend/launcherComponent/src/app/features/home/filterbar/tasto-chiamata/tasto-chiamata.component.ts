@@ -41,4 +41,5 @@ export class TastoChiamataComponent {
     getActive(): boolean {
         return this.colorButtonChiamata !== this.defaultColorButtonChiamata;
     }
+
 }
