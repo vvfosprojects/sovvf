@@ -272,17 +272,22 @@ namespace SO115App.WSNue.Manager
         private SchedaContatto MappaScheda(InsertSchedaNueRequest scheda)
         {
             Regex regex = new Regex(@">\s*<");
+            Regex regexSpazi = new Regex(@"\n");
+            Regex regex2 = new Regex(@"\t");
             XmlDocument SchedaXml = new XmlDocument();
             XmlNamespaceManager namespaces = new XmlNamespaceManager(SchedaXml.NameTable);
             namespaces.AddNamespace("nue", "http://NUE.112.it/NUE112");
             string cleanedXml = regex.Replace(scheda.schedaContatto, "><");
+            cleanedXml = regex2.Replace(cleanedXml, "");
+            cleanedXml = regexSpazi.Replace(cleanedXml, "");
             cleanedXml = cleanedXml.Replace(@"<?xml version=""1.0"" encoding=""utf-8"" ?>", "")
+                         .Replace(@"<?xml version=""1.0"" encoding=""UTF-8"" standalone=""no""?>","")
                          .Replace(@"<?xml version=""1.0"" encoding=""UTF-8""?>", "")
                          .Replace(@"<!DOCTYPE svc_result SYSTEM ""CENTAURO_MLP_CO_CED_SVC_RESULT_10.dtd"">", "");
             cleanedXml = @"<?xml version=""1.0"" encoding=""utf-8"" ?>" + cleanedXml;
 
             SchedaXml.LoadXml(cleanedXml);
-
+            SchedaXml.PreserveWhitespace = false;
             var Nome = SchedaXml.SelectSingleNode("//nue:Caller/nue:Name", namespaces).InnerText;
             var Cognome = SchedaXml.SelectSingleNode("//nue:Caller/nue:Surname", namespaces).InnerText;
             var Telefono = SchedaXml.SelectSingleNode("//nue:Caller/nue:Number", namespaces).InnerText;
