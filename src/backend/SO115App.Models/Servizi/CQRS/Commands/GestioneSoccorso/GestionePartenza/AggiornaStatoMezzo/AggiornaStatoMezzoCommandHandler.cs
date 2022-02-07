@@ -97,7 +97,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 CodMezzo = command.IdMezzo,
                 Istante = istante,
                 Stato = command.StatoMezzo
-            }, _sendNewItemSTATRI, _checkCongruita);
+            }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
 
             if (command.AzioneIntervento != null && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenza.Partenza.Codice).Count() == 0)
             {

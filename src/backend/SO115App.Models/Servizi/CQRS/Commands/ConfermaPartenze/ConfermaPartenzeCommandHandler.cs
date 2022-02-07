@@ -171,7 +171,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                             CodMezzo = partenzaDaRientrare.Mezzo.Codice,
                             Istante = dataAdesso,
                             Stato = Costanti.MezzoRientrato
-                        }, _sendNewItemSTATRI, _checkCongruita);
+                        }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id);
 
                         _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
 
@@ -188,7 +188,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     CodMezzo = partenza.Mezzo.Codice,
                     Istante = dataAdesso,
                     Stato = Costanti.MezzoInUscita
-                }, _sendNewItemSTATRI, _checkCongruita);
+                }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id);
 
                 //var posizioneMezzo = _getPosizione.Get(partenza.Mezzo.Codice).Result?.ToCoordinate();
 
@@ -197,7 +197,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     CodMezzo = partenza.Mezzo.Codice,
                     Istante = dataAdesso,
                     Stato = Costanti.MezzoInViaggio
-                }, _sendNewItemSTATRI, _checkCongruita, partenza.Mezzo.CoordinateStrg);
+                }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id, partenza.Mezzo.CoordinateStrg);
 
                 dataAdesso = dataAdesso.AddSeconds(1);
             }
