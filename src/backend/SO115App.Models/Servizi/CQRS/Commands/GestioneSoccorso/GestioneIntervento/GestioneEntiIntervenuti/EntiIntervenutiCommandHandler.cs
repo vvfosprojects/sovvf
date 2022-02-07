@@ -63,9 +63,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
                             nuovo = false;
                     }
 
-                    if (nuovo)
-                        new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, ente.Descrizione + "(cod. " + ente.Codice + ")", command.CodSede);
-                }
+                    //if (nuovo)
+                    new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, ente.Descrizione + " (cod. " + ente.Codice + ")", command.CodSede);
+                }else
+                    new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, ente.Descrizione + " (cod. " + ente.Codice + ")", command.CodSede);
+
             }
 
             this._saveRichiestaAssistenza.UpDate(command.Richiesta);

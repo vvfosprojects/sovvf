@@ -113,7 +113,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
-        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string[] coordinatePartenza = null, string codicePartenza = null)
+        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string CodOperatore, string[] coordinatePartenza = null, string codicePartenza = null)
         {
             bool cambioOrarioUscita = partenza.Mezzo.Stato == stato.Stato;
 
@@ -937,11 +937,18 @@ namespace SO115App.API.Models.Classi.Soccorso
             const string OrarioFuturo = "Impossibile aggiungere un evento con data futura.";
             const string EventoGiaPresente = "Impossibile aggiungere l'evento specificato. L'evento è già presente.";
 
-            if ((evento is ArrivoSulPosto
-                || evento is PartenzaInRientro
-                || evento is PartenzaRientrata)
-                && evento.Istante > DateTime.UtcNow)
-                throw new Exception(OrarioFuturo);
+            try
+            {
+                if ((evento is ArrivoSulPosto
+                   || evento is PartenzaInRientro
+                   || evento is PartenzaRientrata)
+                   && evento.Istante > DateTime.UtcNow)
+                    throw new Exception(OrarioFuturo);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"{e.Message}\n Istante selezionato: {evento.Istante}, Orario server: {DateTime.UtcNow}");
+            }
 
             if (_eventi.Count > 0)
             {

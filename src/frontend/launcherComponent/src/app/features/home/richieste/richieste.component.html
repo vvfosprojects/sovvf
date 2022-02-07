@@ -8,6 +8,7 @@
                            [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: richiestaFissata.codUOCompetenza : richiestaFissata.codSOCompetente : richiestaFissata.codSOAllertate) || richiestaFissata.stato === statoRichiesta.Chiusa"
                            [loadingActionRichiesta]="loadingActionRichiesta$ | async"
                            [listaEnti]="enti$ | async"
+                           (clickIndirizzo)="onSelezione($event)"
                            (statoPartenza)="toggleComposizione()"
                            (composizionePartenza)="nuovaPartenza($event)"
                            (defissa)="onDefissa()"

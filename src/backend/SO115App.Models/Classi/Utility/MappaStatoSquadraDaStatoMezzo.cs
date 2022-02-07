@@ -52,5 +52,29 @@ namespace SO115App.Models.Classi.Utility
                 return StatoSquadraComposizione.InSede;
             }
         }
+
+        public static Squadra.StatoSquadra Mappa(string statoSquadraComposizione)
+        {
+            if (statoSquadraComposizione == string.Concat(Costanti.MezzoInUscita.Split(' ')))
+            {
+                return Squadra.StatoSquadra.InUscita;
+            }
+            else if (statoSquadraComposizione == string.Concat(Costanti.MezzoInViaggio.Split(' ')))
+            {
+                return Squadra.StatoSquadra.InViaggio;
+            }
+            else if (statoSquadraComposizione == string.Concat(Costanti.MezzoSulPosto.Split(' ')))
+            {
+                return Squadra.StatoSquadra.SulPosto;
+            }
+            else if (statoSquadraComposizione == string.Concat(Costanti.MezzoInRientro.Split(' ')))
+            {
+                return Squadra.StatoSquadra.InRientro;
+            }
+            else
+            {
+                return Squadra.StatoSquadra.InSede;
+            }
+        }
     }
 }

@@ -147,6 +147,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     return ((InserimentoEnteIntervenuto)evento).Note;
 
                 case AllertaSedi _:
+                    return "Allertata sede " + string.Join(",",((AllertaSedi)evento).CodiceSediAllertate);
 
                 case STATRI_InivioRichiesta _:
                     return ((STATRI_InivioRichiesta)evento).Messaggio;

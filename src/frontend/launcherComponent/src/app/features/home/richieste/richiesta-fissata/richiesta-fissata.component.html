@@ -23,6 +23,7 @@
                                        (nuovaPartenza)="nuovaPartenza($event)"
                                        (modificaRichiesta)="onModificaRichiesta($event)"
                                        (gestioneRichiesta)="onGestioneRichiesta($event)"
+                                       (clickIndirizzo)="clickIndirizzo.emit({ idRichiesta: $event.id, coordinate: $event.localita.coordinate })"
                                        (actionMezzo)="actionMezzo.emit($event)"
                                        (eliminaPartenza)="eliminaPartenza.emit($event)">
                 </app-sintesi-richiesta>

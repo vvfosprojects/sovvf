@@ -5,6 +5,7 @@ import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { EnteInterface } from '../../../../shared/interface/ente.interface';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-richiesta-fissata',
@@ -35,6 +36,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
+    @Output() clickIndirizzo = new EventEmitter<{ idRichiesta: string, coordinate: Coordinate }>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
