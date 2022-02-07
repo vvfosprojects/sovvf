@@ -65,23 +65,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if (composizioneMezzi != null && composizioneMezzi.Count > 0)
                     _setMezzi.Set(composizioneMezzi);
 
-                //if (composizioneMezzi == null || composizioneMezzi.Count == 0)
-                //    composizioneMezzi = _getMezzi.Get();
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
+                    composizioneMezzi = _getMezzi.GetByCodiciSede(query.Filtro?.CodiciDistaccamenti);
             }
             catch (Exception e)
             {
-                //if (composizioneMezzi == null || composizioneMezzi.Count == 0)
-                //    composizioneMezzi = _getMezzi.Get();
+                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
+                    composizioneMezzi = _getMezzi.GetByCodiciSede(query.Filtro?.CodiciDistaccamenti);
 
                 if (composizioneMezzi == null || composizioneMezzi.Count == 0)
                 {
-                    e = e.GetBaseException();
-
-                    var coordinate = query.Richiesta.Localita.Coordinate;
-
-                    var x = new Exception($"Coordinate: lat {coordinate?.Latitudine}, lon {coordinate?.Longitudine} - {msgErroreCaricamento}: {e.Message}");
-
-                    throw x;
+                    return null;
                 }
             }
 
