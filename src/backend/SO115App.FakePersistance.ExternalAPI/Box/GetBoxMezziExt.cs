@@ -22,6 +22,7 @@ using SO115App.API.Models.Classi.Boxes;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Box
@@ -49,7 +50,13 @@ namespace SO115App.ExternalAPI.Fake.Box
         /// <returns>BoxMezzi</returns>
         public BoxMezzi Get(string[] codiciSede)
         {
-            var listaMezzi = _getMezziUtilizzabili.Get(codiciSede).Result;
+            var listaMezzi = new Dictionary<string, string>();
+
+            try
+            {
+                listaMezzi = _getMezziUtilizzabili.Get(codiciSede).Result;
+            }
+            catch (System.Exception) { }
 
             var mezzi = new BoxMezzi()
             {
