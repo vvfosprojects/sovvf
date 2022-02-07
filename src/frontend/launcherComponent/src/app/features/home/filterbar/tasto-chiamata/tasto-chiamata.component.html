@@ -14,7 +14,7 @@
     <div class="pl-2">
         <h4 class="d-inline-block mb-0">
             <i class="fas fa-phone-alt mr-1"></i>
-            {{ 'Stai inserendo una nuova chiamata' | uppercase }}
+            {{ 'Stai inserendo una nuova chiamata' }}
         </h4>
     </div>
 </ng-template>
@@ -22,7 +22,7 @@
     <div class="pl-2">
         <h4 class="d-inline-block mb-0">
             <i class="fas fa-edit mr-1"></i>
-            Stai modificando la richiesta
+            Stai modificando {{ defineChiamataIntervento() }}
             <b>{{ this.richiestaModifica.codiceRichiesta ? this.richiestaModifica.codiceRichiesta : this.richiestaModifica.codice }}</b>
             del giorno <b>{{ this.richiestaModifica.istanteRicezioneRichiesta | date: 'dd-MM-yyyy' }}</b>
             alle <b>{{ this.richiestaModifica.istanteRicezioneRichiesta | date: 'HH:mm:ss' }}</b>

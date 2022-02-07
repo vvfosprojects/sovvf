@@ -1,5 +1,4 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { StartListaComposizioneLoading } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { Injectable } from '@angular/core';
 import { MezziInServizioService } from '../../../../core/service/mezzi-in-servizio-service/mezzi-in-servizio.service';
 import { ClearListaMezziSganciamento, GetListaMezziSganciamento, SetListaMezziSganciamento, StartLoadingMezziSganciamento, StopLoadingMezziSganciamento } from '../../actions/sganciamento-mezzi/sganciamento-mezzi.actions';
@@ -42,7 +41,7 @@ export class SganciamentoMezziState {
         dispatch(new StartLoadingMezziSganciamento());
         const filters = {
             search: '',
-            statiMezzo: [StatoMezzo.InViaggio, StatoMezzo.SulPosto, StatoMezzo.InRientro]
+            statiMezzo: [StatoMezzo.InViaggio, StatoMezzo.SulPosto]
         };
         const pagination = {
             page: 1,
