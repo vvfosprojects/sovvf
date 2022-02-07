@@ -138,7 +138,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var lstMezziDto = new ConcurrentQueue<MezzoDTO>();
 
-            //_clientMezzi.SetCache("Mezzi_" + codiciMezzi);
+            _clientMezzi.SetCache("Mezzi_" + codiciMezzi);
 
             string queryString = string.Join("&codiciMezzo=", codiciMezzi.ToArray());
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetCodiceMezzo}?codiciMezzo={queryString}");
@@ -163,7 +163,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             try
             {
-                //_clientMezzi.SetCache("GacMezzi_" + codici);
+                _clientMezzi.SetCache("GacMezzi_" + codici);
 
                 var token = _getToken.GeneraToken();
 
