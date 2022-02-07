@@ -113,7 +113,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         /// <param name="partenza">La partenza la quale devo cambiarne lo stato</param>
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
-        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string[] coordinatePartenza = null, string codicePartenza = null)
+        internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string CodOperatore, string[] coordinatePartenza = null, string codicePartenza = null)
         {
             bool cambioOrarioUscita = partenza.Mezzo.Stato == stato.Stato;
 
