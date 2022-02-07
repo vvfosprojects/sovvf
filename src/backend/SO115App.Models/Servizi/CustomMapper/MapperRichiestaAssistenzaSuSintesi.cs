@@ -113,14 +113,14 @@ namespace SO115App.Models.Servizi.CustomMapper
             }
             else
             {
-                foreach (var lavorazione in richiesta.UtInLavorazione)
-                {
-                    AttivitaUtente attivita = new AttivitaUtente()
-                    {
-                        Nominativo = lavorazione.Replace(".", " ")
-                    };
-                    ListaAttivita.Add(attivita);
-                };
+                //foreach (var lavorazione in richiesta.UtInLavorazione)
+                //{
+                //    AttivitaUtente attivita = new AttivitaUtente()
+                //    {
+                //        Nominativo = lavorazione.Replace(".", " ")
+                //    };
+                //    ListaAttivita.Add(attivita);
+                //};
             }
 
             return ListaAttivita.Distinct().ToList();
