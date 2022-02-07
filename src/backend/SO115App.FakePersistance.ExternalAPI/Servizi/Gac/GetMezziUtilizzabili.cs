@@ -64,11 +64,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 }
             }
 
-            var ListaPosizioneFlotta = new List<MessaggioPosizione>();
-            if (posizioneFlotta == null)
-                ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
-            else
-                ListaPosizioneFlotta = posizioneFlotta;
+            //var ListaPosizioneFlotta = new List<MessaggioPosizione>();
+            //if (posizioneFlotta == null)
+            //    ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
+            //else
+            //    ListaPosizioneFlotta = posizioneFlotta;
 
             #region LEGGO DA API ESTERNA
 
@@ -102,18 +102,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
                 if (mezzo != null)
                 {
-                    var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
+                    //var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
 
-                    if (CoordinateMezzoGeoFleet == null)
-                    {
-                        mezzo.Coordinate = mezzo.Distaccamento.Coordinate;
-                        mezzo.CoordinateFake = true;
-                    }
-                    else
-                    {
-                        mezzo.Coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
-                        mezzo.CoordinateFake = false;
-                    }
+                    //if (CoordinateMezzoGeoFleet == null)
+                    //{
+                    //    mezzo.Coordinate = mezzo.Distaccamento.Coordinate;
+                    //    mezzo.CoordinateFake = true;
+                    //}
+                    //else
+                    //{
+                    //    mezzo.Coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
+                    //    mezzo.CoordinateFake = false;
+                    //}
 
                     var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
                     if (ListaStatoOperativoMezzo.Count > 0)
