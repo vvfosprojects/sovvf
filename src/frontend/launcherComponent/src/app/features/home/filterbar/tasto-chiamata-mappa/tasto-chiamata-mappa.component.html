@@ -3,7 +3,8 @@
         class="btn"
         [class.btn-danger]="active"
         [class.btn-outline-success]="!active"
-        [class.btn-no-hover]="false"
+        [class.btn-no-hover]="disabled"
+        [class.cursor-not-allowed]="disabled"
         [disabled]="disabled"
         (click)="onActiveChiamataFromMappa()">
     <i class="fas fa-phone-alt mr-1"></i>
