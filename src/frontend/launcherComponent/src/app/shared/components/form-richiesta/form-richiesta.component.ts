@@ -959,7 +959,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const id = 'check-chiamata-emergenza';
         const status = this.f.urgenza.value;
         const label = this.f.urgenza.value ? 'URGENZA SEGNALATA' : 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE';
-        const disabled = this.f.urgenza.value || this.formIsInvalid() || (this.richiestaModifica && !this.f.urgenza.value);
+        const disabled = this.f.urgenza.value || this.formIsInvalid() || (this.richiestaModifica && !this.f.urgenza.value) || this.loadingCompetenze;
         return { id, status, label, disabled };
     }
 
