@@ -95,7 +95,7 @@ export class MezzoActionsComponent implements OnInit {
                             mezzoAction: this.statoMezzoActions,
                             oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
                             dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
-                            azioneIntervento,
+                            azioneIntervento
                         });
                     } else {
                         this.actionMezzo.emit();
