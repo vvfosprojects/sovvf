@@ -30,6 +30,7 @@ import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
 import { SetRedirectComposizionePartenza, StartLoadingSchedaRichiesta, StopLoadingSchedaRichiesta } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
@@ -65,7 +66,8 @@ export class RichiestaModificaState {
     }
 
     @Action(SetRichiestaModifica)
-    setRichiestaModifica({ patchState }: StateContext<RichiestaModificaStateModel>, action: SetRichiestaModifica): void {
+    setRichiestaModifica({ patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: SetRichiestaModifica): void {
+        dispatch(new SetTriageSummary(action.richiesta.triageSummary));
         patchState({
             richiestaModifica: action.richiesta
         });

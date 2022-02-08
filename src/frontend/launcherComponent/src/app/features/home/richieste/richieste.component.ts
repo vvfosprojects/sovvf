@@ -27,7 +27,6 @@ import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filt
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
-import { SetTriageSummary } from '../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { EntiState } from '../../../shared/store/states/enti/enti.state';
 import { EnteInterface } from '../../../shared/interface/ente.interface';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
@@ -272,7 +271,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onModificaRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch([
             new SetRichiestaModifica(richiesta),
-            new SetTriageSummary(richiesta.triageSummary),
             new ToggleModifica()
         ]);
     }
