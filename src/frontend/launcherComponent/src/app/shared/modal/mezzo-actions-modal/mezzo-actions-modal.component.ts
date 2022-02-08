@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbCalendar, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -7,7 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
     templateUrl: './mezzo-actions-modal.component.html',
     styleUrls: ['./mezzo-actions-modal.component.css']
 })
-export class MezzoActionsModalComponent implements OnInit {
+export class MezzoActionsModalComponent implements OnInit, OnDestroy {
 
     @ViewChild('timepickerRef') timepickerRef: NgbTimepicker;
 
@@ -37,17 +37,25 @@ export class MezzoActionsModalComponent implements OnInit {
     };
     azioneIntervento: string;
 
+    nowDateInterval: any;
+
     constructor(public modal: NgbActiveModal, private fb: FormBuilder, calendar: NgbCalendar) {
         this.todayDate = calendar.getToday();
         this.dateNow = calendar.getToday();
     }
 
     ngOnInit(): void {
-        setInterval(() => {
+        this.nowDateInterval = setInterval(() => {
             this.updateNowDate();
         }, 1000);
         this.initForm();
         this.checkUltimoMezzo();
+    }
+
+    ngOnDestroy(): void {
+        if (this.nowDateInterval) {
+            clearInterval(this.nowDateInterval);
+        }
     }
 
     initForm(): void {
