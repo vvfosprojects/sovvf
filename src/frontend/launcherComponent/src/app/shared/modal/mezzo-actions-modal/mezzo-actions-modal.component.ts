@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbCalendar, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ClockService } from '../../../features/navbar/clock/clock-service/clock.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-mezzo-actions-modal',
@@ -11,6 +13,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
 
     @ViewChild('timepickerRef') timepickerRef: NgbTimepicker;
 
+    dateSync: Date;
     time = { hour: 13, minute: 30, second: 0 };
 
     timeActionForm: FormGroup;
@@ -39,7 +42,13 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
 
     nowDateInterval: any;
 
-    constructor(public modal: NgbActiveModal, private fb: FormBuilder, calendar: NgbCalendar) {
+    private subscriptions = new Subscription();
+
+    constructor(public modal: NgbActiveModal,
+                private fb: FormBuilder,
+                private calendar: NgbCalendar,
+                private clockService: ClockService) {
+        this.getClock();
         this.todayDate = calendar.getToday();
         this.dateNow = calendar.getToday();
     }
@@ -56,6 +65,15 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
         if (this.nowDateInterval) {
             clearInterval(this.nowDateInterval);
         }
+        this.subscriptions.unsubscribe();
+    }
+
+    getClock(): void {
+        this.subscriptions.add(() => {
+            this.clockService.getClock().subscribe((dateSync: Date) => {
+                this.dateSync = dateSync;
+            });
+        });
     }
 
     initForm(): void {
@@ -63,7 +81,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
         this.timeActionForm = this.fb.group({
             orarioAttuale: [this.title !== 'Modifica'],
             orarioPersonalizzato: [this.title === 'Modifica'],
-            nowDate: [new Date()],
+            nowDate: [this.dateSync],
             time: [this.time, Validators.required]
         });
     }
@@ -73,7 +91,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     }
 
     updateNowDate(): void {
-        this.f.nowDate.patchValue(new Date());
+        this.f.nowDate.patchValue(this.dateSync);
     }
 
     formatTime(): void {
@@ -99,9 +117,9 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
             return false;
         }
         let isInvalid;
-        const timeSelected = new Date();
+        const timeSelected = this.dateSync;
         timeSelected.setHours(this.time.hour, this.time.minute);
-        const dateNow = new Date();
+        const dateNow = this.dateSync;
         const dateOutOfRange = this.dateNow.before({ year: this.todayDate.year, month: this.todayDate.month, day: this.todayDate.day });
         const dateEquals = this.dateNow.equals({ year: this.todayDate.year, month: this.todayDate.month, day: this.todayDate.day });
         isInvalid = !!(((timeSelected > dateNow) && dateEquals) || dateOutOfRange);
@@ -128,7 +146,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     }
 
     onDateNow(): void {
-        const d = new Date();
+        const d = this.dateSync;
         this.time.hour = d.getHours();
         this.time.minute = d.getMinutes();
         this.time.second = d.getSeconds();
