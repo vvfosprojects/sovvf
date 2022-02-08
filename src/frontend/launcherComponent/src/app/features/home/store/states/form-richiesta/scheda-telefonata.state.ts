@@ -51,7 +51,6 @@ import { Tipologia } from '../../../../../shared/model/tipologia.model';
 import { TriageSummaryState } from '../../../../../shared/store/states/triage-summary/triage-summary.state';
 import { Richiedente } from '../../../../../shared/model/richiedente.model';
 import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
-import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CountInterventiProssimitaResponse } from '../../../../../shared/interface/response/count-interventi-prossimita-response.interface';
@@ -494,7 +493,6 @@ export class SchedaTelefonataState {
                     new CestinaChiamata(),
                     new ToggleChiamata(),
                     new SetRichiestaModifica(chiamataResult),
-                    new SetTriageSummary(chiamataResult.triageSummary),
                     new ToggleModifica()
                 ]);
             } else if (chiamataResult && (action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
