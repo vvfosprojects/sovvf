@@ -110,9 +110,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     if (coordinateMezzo != null)
                     {
 #if !DEBUG
-                        distanzaKm = (new GeoCoordinate(coordinateMezzo.Latitudine, coordinateMezzo.Longitudine)
-                            .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
-                            / 1000).ToString("N1");
+                        //distanzaKm = (new GeoCoordinate(coordinateMezzo.Latitudine, coordinateMezzo.Longitudine)
+                        //    .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
+                        //    / 1000).ToString("N1");
 #endif
 #if DEBUG
                         distanzaKm = "0";
