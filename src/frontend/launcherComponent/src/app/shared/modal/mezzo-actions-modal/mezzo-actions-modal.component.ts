@@ -149,11 +149,19 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     }
 
     onChangeCheckboxOrarioAttuale(): void {
-        this.f?.orarioPersonalizzato.patchValue(false);
+        if (!this.f?.orarioPersonalizzato.value) {
+            this.f?.orarioPersonalizzato.patchValue(true);
+        } else {
+            this.f?.orarioPersonalizzato.patchValue(false);
+        }
     }
 
     onChangeCheckboxOrarioPersonalizzato(): void {
-        this.f?.orarioAttuale.patchValue(false);
+        if (!this.f?.orarioAttuale.value) {
+            this.f?.orarioAttuale.patchValue(true);
+        } else {
+            this.f?.orarioAttuale.patchValue(false);
+        }
     }
 
     onCheck(key: string): void {
