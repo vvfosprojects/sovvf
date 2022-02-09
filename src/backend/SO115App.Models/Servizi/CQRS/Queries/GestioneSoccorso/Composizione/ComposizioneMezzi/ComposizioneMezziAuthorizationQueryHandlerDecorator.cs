@@ -60,6 +60,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 else
                 {
                     bool abilitato = false;
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                        abilitato = true;
+
                     foreach (var competenza in richiesta.CodUOCompetenza)
                     {
                         if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
