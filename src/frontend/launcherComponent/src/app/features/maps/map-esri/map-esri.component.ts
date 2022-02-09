@@ -322,11 +322,19 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                         this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
                     }
                     if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
-                        const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
-                        const destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
-                        const genereMezzo = p.partenza.mezzo.genere;
-                        const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
-                        this.getRoute('partenzeRichiestaSelezionata', direction);
+                        let origin: { lat: number, lng: number };
+                        let destination: { lat: number, lng: number };
+                        if (p.partenza.coordinate) {
+                            origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
+                        }
+                        if (richiestaSelezionata.localita.coordinate) {
+                            destination = { lat: richiestaSelezionata.localita.coordinate.latitudine, lng: richiestaSelezionata.localita.coordinate.longitudine };
+                        }
+                        if (origin && destination) {
+                            const genereMezzo = p.partenza.mezzo.genere;
+                            const direction = { origin, destination, genereMezzo, isVisible: true } as DirectionInterface;
+                            this.getRoute('partenzeRichiestaSelezionata', direction);
+                        }
                     }
                 });
                 this.searchForARIRAndIdranti(coordinateCentro);
