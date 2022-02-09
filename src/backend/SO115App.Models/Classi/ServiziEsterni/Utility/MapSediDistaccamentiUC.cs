@@ -2,6 +2,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
+using System.Linq;
 
 namespace SO115App.Models.Classi.ServiziEsterni.Utility
 {
@@ -27,7 +28,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
         {
             Id = distaccamento.Id,
             Cap = distaccamento.Cap,
-            CodDistaccamento = int.Parse(distaccamento.Id.Split('.').Length > 2 ? distaccamento.Id.Split('.')[0] : distaccamento.Id.Split('.')[1]),
+            CodDistaccamento = int.Parse(distaccamento.Id.Split('.').Last()),
             CodSede = distaccamento.Id,
             Coordinate = distaccamento.Coordinate,
             DescDistaccamento = distaccamento.Descrizione,
