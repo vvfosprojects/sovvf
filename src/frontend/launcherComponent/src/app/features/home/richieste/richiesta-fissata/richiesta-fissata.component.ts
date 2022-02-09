@@ -17,6 +17,8 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
+    @Input() idRichiestaSelezionata: string;
+    @Input() richiestaHover: SintesiRichiesta;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
 
@@ -37,6 +39,8 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
     @Output() clickIndirizzo = new EventEmitter<{ idRichiesta: string, coordinate: Coordinate }>();
+    @Output() selezione = new EventEmitter<{ idRichiesta: string, coordinate: Coordinate }>();
+    @Output() deselezione = new EventEmitter<boolean>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
@@ -58,6 +62,20 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         console.log('Componente RichiestaFissata distrutto');
+    }
+
+    /* Gestisce il singolo click sulla richiesta */
+    richiestaClick(richiesta: SintesiRichiesta): void {
+        if (richiesta?.id !== this.idRichiestaSelezionata) {
+            this.selezione.emit({ idRichiesta: richiesta.id, coordinate: richiesta.localita.coordinate });
+        } else if (richiesta?.id !== this.richiestaGestione?.id) {
+            this.deselezione.emit(true);
+        }
+    }
+
+    /* Gestisce il singolo click sulla richiesta */
+    onDeselezionaRichiesta(value: boolean): void {
+        this.deselezione.emit(value);
     }
 
     // Ritorna la richiesta nella lista, defissandola
@@ -152,12 +170,10 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         this.gestioneRichiesta.emit(richiesta);
     }
 
-    setEspanso(): void {
-        this.outEspanso.emit();
-    }
-
-    cardFissataClasses(): any {
-        return this.methods.cardFissataClasses(this.richiestaFissata);
+    cardClasses(r: SintesiRichiesta): any {
+        const richiestaSelezionataId = this.idRichiestaSelezionata ? this.idRichiestaSelezionata : null;
+        const richiestaHoverId = this.richiestaHover ? this.richiestaHover.id : null;
+        return this.methods.cardClasses(r, richiestaSelezionataId, richiestaHoverId);
     }
 
     translatePositionRichiesta(r: SintesiRichiesta): string {

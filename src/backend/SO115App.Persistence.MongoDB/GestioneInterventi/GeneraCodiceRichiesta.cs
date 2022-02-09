@@ -64,10 +64,12 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
             int MaxIdSintesi = Convert.ToInt32(_configuration.GetSection("AppSettings").GetSection("CallStartNumeber").Value);
             var codiceProvincia = codiceSede.Split('.')[0];
 
+            var data = DateTime.Now.Day + "-" + DateTime.Now.Month + "-" + DateTime.Now.Year;
+
             var ListaRichieste = _dbContext.RichiestaAssistenzaCollection
                 .Find(Builders<RichiestaAssistenza>.Filter.Empty)
                 .ToList()
-                .Where(x => x.Codice.IndexOf(codiceProvincia) != -1);
+                .Where(x => x.Codice.IndexOf(codiceProvincia) != -1 && (x.IstanteRicezioneRichiesta.Value.Day.ToString() + "-" + x.IstanteRicezioneRichiesta.Value.Month.ToString() + "-" + x.IstanteRicezioneRichiesta.Value.Year.ToString()).Equals(data));
 
             if (ListaRichieste.Any())
             {
