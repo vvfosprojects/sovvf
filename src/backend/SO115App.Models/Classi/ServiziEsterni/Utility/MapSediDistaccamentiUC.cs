@@ -32,7 +32,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             Coordinate = distaccamento.Coordinate,
             DescDistaccamento = distaccamento.Descrizione,
             Indirizzo = distaccamento.Indirizzo,
-            CoordinateString = string.IsNullOrEmpty(distaccamento.coordinate) ? distaccamento.coordinate.Split(',') : new string[] { "", "" },
+            CoordinateString = !string.IsNullOrEmpty(distaccamento.coordinate) && distaccamento.coordinate.Contains(',') ? distaccamento.coordinate.Split(',') : new string[] { "", "" },
         };
 
         public static Distaccamento MapDistaccamento(this Sede sede) => new Distaccamento()
