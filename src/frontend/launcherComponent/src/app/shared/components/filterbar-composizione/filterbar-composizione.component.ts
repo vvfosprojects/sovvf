@@ -17,6 +17,7 @@ import { TriageSummary } from '../../interface/triage-summary.interface';
 import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
 import { getGeneriMezzoTriageSummary } from '../../helper/function-triage';
 import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -73,11 +74,11 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             this.setGenereMezzoTriage();
         }
 
-        if (this.richiesta && (changes?.loadingMezzi || changes?.loadingMezzi)) {
+        if (this.richiesta && changes?.loadingMezzi) {
             this.checkDistaccamenti();
         }
 
-        if (changes?.competenze && !changes?.competenze?.previousValue && this.richiesta) {
+        if (this.richiesta && changes?.competenze && !changes?.competenze?.previousValue) {
             this.setDistaccamentiDefault();
             this.checkDistaccamenti();
         }
@@ -101,9 +102,16 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         const distaccamentiDefault = [];
 
         if (this.richiesta && this.richiesta.competenze) {
-            this.richiesta.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
             this.richiesta.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
-            this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+            if (distaccamentiDefault?.length) {
+                const distaccamentiIds = this.filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => d.id);
+                if (distaccamentiIds.includes(distaccamentiDefault[0].id)) {
+                    this.richiesta.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
+                    this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+                } else {
+                    this.addFiltro([], 'codiceDistaccamento');
+                }
+            }
         }
     }
 
