@@ -3,7 +3,7 @@
          [ngClass]="translatePositionRichiesta(richiestaFissata)">
         <div #richiestaContainer
              class="col-12 px-0"
-             [ngClass]="cardFissataClasses()">
+             [ngClass]="cardClasses(richiestaFissata)">
             <div #richiesta
                  class="w-100 rounded bg-light">
                 <app-partial-loader *ngIf="loadingActionRichiesta?.includes(richiestaFissata.id)"></app-partial-loader>
@@ -19,6 +19,8 @@
                                        [disabledModificaRichiesta]="disabledModificaRichiesta"
                                        [disabledGestisciRichiesta]="disabledGestisciRichiesta"
                                        [disabledComposizionePartenza]="disabledComposizionePartenza"
+                                       (deseleziona)="onDeselezionaRichiesta($event)"
+                                       (clickRichiesta)="richiestaClick($event)"
                                        (fissaInAlto)="onDefissa()"
                                        (nuovaPartenza)="nuovaPartenza($event)"
                                        (modificaRichiesta)="onModificaRichiesta($event)"
