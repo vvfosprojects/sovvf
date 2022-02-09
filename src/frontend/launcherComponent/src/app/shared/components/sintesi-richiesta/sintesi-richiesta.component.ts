@@ -321,7 +321,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             centered: true,
         });
         modalDettaglioPos.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
-        modalDettaglioPos.componentInstance.pos = this.richiesta.dettaglioTipologia ? this.richiesta.dettaglioTipologia.pos : null;
+        modalDettaglioPos.componentInstance.pos = this.richiesta.dettaglioTipologia?.pos ? this.richiesta.dettaglioTipologia.pos : null;
         modalDettaglioPos.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata: ' : 'Intervento: ';
     }
 

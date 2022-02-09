@@ -70,7 +70,7 @@
                                     style="height: 36px; width: 36px; border-radius: 65% ">
                                 <i class="fas fa-bell fa-fw" style="padding-left: 7px; color: #ffc107"></i>
                             </button>
-                            <button *ngIf="richiesta?.dettaglioTipologia?.pos" (click)="onDettaglioPos()"
+                            <button *ngIf="richiesta?.dettaglioTipologia?.pos?.length" (click)="onDettaglioPos()"
                                     class="btn btn-light border big_font py-0 mx-1 float-right" style="margin: 0; width: 45px"
                                     ngbTooltip="Visualizza POS">
                                 <i class="fas fa-folder-open"></i>
