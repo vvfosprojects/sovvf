@@ -379,8 +379,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     onChangeTipologia(codTipologia: string): void {
         // Ripulisco eventuali info triage e dettaglio tipologia presenti
         this.f.dettaglioTipologia.patchValue(null);
-        clearTriageSummary(this.store);
-        clearTriageChiamataModalData(this.store);
+        if (!this.modifica) {
+            clearTriageSummary(this.store);
+            clearTriageChiamataModalData(this.store);
+        }
         this.pos = null;
         if (codTipologia && !this.richiestaModifica) {
             // Prendo i dettagli tipologia
@@ -391,8 +393,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     onChangeDettaglioTipologia(dettaglioTipologia: DettaglioTipologia): void {
         // Ripulisco eventuali info triage e dettaglio tipologia presenti
         this.f.dettaglioTipologia.patchValue(null);
-        clearTriageSummary(this.store);
-        clearTriageChiamataModalData(this.store);
+        if (!this.modifica) {
+            clearTriageSummary(this.store);
+            clearTriageChiamataModalData(this.store);
+        }
         this.pos = null;
         if (dettaglioTipologia) {
             // Trovo il dettaglio tipologia nella lista dei dettagli e aggiorno il valore
@@ -955,7 +959,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const id = 'check-chiamata-emergenza';
         const status = this.f.urgenza.value;
         const label = this.f.urgenza.value ? 'URGENZA SEGNALATA' : 'SEGNALA URGENZA E CONDIVIDI IN GESTIONE';
-        const disabled = this.f.urgenza.value || this.formIsInvalid() || (this.richiestaModifica && !this.f.urgenza.value);
+        const disabled = this.f.urgenza.value || this.formIsInvalid() || (this.richiestaModifica && !this.f.urgenza.value) || this.loadingCompetenze;
         return { id, status, label, disabled };
     }
 
@@ -1062,7 +1066,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 if (this.apertoFromMappa) {
                     this.onAnnullaChiamataFromMappa();
                 }
-
             } else if (this.modifica) {
                 if (this.richiestaModifica && this.richiestaModifica.tipologie[0] && this.f.codTipologia && (this.richiestaModifica.tipologie[0].codice !== this.f.codTipologia.value)) {
                     clearTriageSummary(this.store);

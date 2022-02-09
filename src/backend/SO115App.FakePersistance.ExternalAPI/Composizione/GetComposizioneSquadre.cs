@@ -124,7 +124,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 var codMezziPreaccoppiati = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList();
                 lstMezziPreaccoppiati = _getMezzi.GetInfo(codMezziPreaccoppiati);
 
-                return lstSquadre.ToList().FindAll(s=>s.spotType.Equals("WORKSHIFT"));
+                return lstSquadre.ToList().FindAll(s => s.spotType.Equals("WORKSHIFT"));
             })
             .ContinueWith(squadre => //MAPPING
             {

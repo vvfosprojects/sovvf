@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Composizione
 {
     public interface IGetComposizioneMezziDB
     {
-        List<ComposizioneMezzi> Get();
+        List<ComposizioneMezzi> GetByCodiciSede(params string[] codiciSede);
     }
 }

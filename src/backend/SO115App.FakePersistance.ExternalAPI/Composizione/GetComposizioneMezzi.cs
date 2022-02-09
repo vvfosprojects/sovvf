@@ -1,13 +1,10 @@
-﻿using GeoCoordinatePortable;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.ExternalAPI.Client;
-using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
@@ -17,7 +14,6 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,16 +31,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private readonly IGetSedi _getSedi;
 
-        private readonly IGetPosizioneByCodiceMezzo _geofleet;
-
-        public GetComposizioneMezzi(IGetPosizioneByCodiceMezzo geofleet, IGetSedi getSedi, IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
+        public GetComposizioneMezzi(IGetSedi getSedi, IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
-            //_geofleet = geofleet;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -117,9 +110,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     if (coordinateMezzo != null)
                     {
 #if !DEBUG
-                        distanzaKm = (new GeoCoordinate(coordinateMezzo.Latitudine, coordinateMezzo.Longitudine)
-                            .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
-                            / 1000).ToString("N1");
+                        //distanzaKm = (new GeoCoordinate(coordinateMezzo.Latitudine, coordinateMezzo.Longitudine)
+                        //    .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
+                        //    / 1000).ToString("N1");
 #endif
 #if DEBUG
                         distanzaKm = "0";
