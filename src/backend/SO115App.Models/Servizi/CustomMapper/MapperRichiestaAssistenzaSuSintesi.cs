@@ -5,9 +5,13 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.RicercaElencoPOS;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using System;
@@ -22,13 +26,16 @@ namespace SO115App.Models.Servizi.CustomMapper
         private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetStatoMezzi _getStatoMezzi;
+        private readonly IGetPOS _getPOS;
 
-        public MapperRichiestaAssistenzaSuSintesi(IMapper mapper, IGetTipologieByCodice getTipologieByCodice, IGetUtenteById getUtenteById, IGetStatoMezzi getStatoMezzi)
+        public MapperRichiestaAssistenzaSuSintesi(IMapper mapper, IGetTipologieByCodice getTipologieByCodice, IGetUtenteById getUtenteById,
+                                                  IGetStatoMezzi getStatoMezzi, IGetPOS getPOS)
         {
             _mapper = mapper;
             _getTipologieByCodice = getTipologieByCodice;
             _getUtenteById = getUtenteById;
             _getStatoMezzi = getStatoMezzi;
+            _getPOS = getPOS;
         }
 
         public SintesiRichiesta Map(RichiestaAssistenza richiesta)
@@ -49,7 +56,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                   .ForMember(x => x.Presidiata, y => y.MapFrom(z => z.Presidiata))
                   .ForMember(x => x.Aperta, y => y.MapFrom(z => z.Aperta))
                   .ForMember(x => x.Sospesa, y => y.MapFrom(z => z.Sospesa))
-                  .ForMember(x => x.DettaglioTipologia, y => y.MapFrom(z => z.DettaglioTipologia)));
+                  .ForMember(x => x.DettaglioTipologia, y => MapDettaglioTipologia(richiesta.DettaglioTipologia, richiesta.CodSOCompetente)));
 
                 _mapper = mapConfing.CreateMapper();
 
@@ -124,6 +131,33 @@ namespace SO115App.Models.Servizi.CustomMapper
             }
 
             return ListaAttivita.Distinct().ToList();
+        }
+
+        private TipologiaDettaglio MapDettaglioTipologia(TipologiaDettaglio dettaglio, string codSede)
+        {
+            if (dettaglio != null)
+            {
+                var filtroPos = new FiltriPOS()
+                {
+                    idDettaglioTipologia = dettaglio.CodiceDettaglioTipologia,
+                    idTipologia = dettaglio.CodiceTipologia
+                };
+
+                var filtro = new GetElencoPOSQuery()
+                {
+                    CodiceSede = codSede.Split('.')[0] + ".1000",
+                    Filters = filtroPos
+                };
+
+                var pos = _getPOS.GetPosByCodTipologiaCodDettaglio(filtro);
+
+                if (pos != null)
+                    dettaglio.Pos = pos;
+
+                return dettaglio;
+            }
+            else
+                return null;
         }
     }
 }
