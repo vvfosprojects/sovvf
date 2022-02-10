@@ -15,6 +15,8 @@ import { RispostaTriage } from '../../interface/risposta-triage.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
+import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
+import { SchedaTelefonataState } from '../../../features/home/store/states/form-richiesta/scheda-telefonata.state';
 
 @Component({
     selector: 'app-triage-chiamata-modal',
@@ -25,6 +27,14 @@ export class TriageChiamataModalComponent implements OnDestroy {
 
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
+    @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
+    chiamataStatus: boolean;
+    @Select(ViewComponentState.chiamataFromMappaStatus) chiamataFromMappaStatus$: Observable<boolean>;
+    chiamataFromMappaStatus: boolean;
+    @Select(ViewComponentState.modificaRichiestaStatus) modificaRichiestaStatus$: Observable<boolean>;
+    modificaRichiestaStatus: boolean;
+    @Select(SchedaTelefonataState.loadingSchedaRichiesta) loadingSchedaRichiesta$: Observable<boolean>;
+    loadingSchedaRichiesta: boolean;
 
     triage: TreeviewItem;
     triageData: ItemTriageData[];
@@ -46,10 +56,46 @@ export class TriageChiamataModalComponent implements OnDestroy {
     constructor(private modal: NgbActiveModal,
                 private store: Store,
                 private modalService: NgbModal) {
+        this.getChiamataStatus();
+        this.getChiamataFromMappaStatus();
+        this.getModificaRichiestaStatus();
+        this.getLoadingSchedaRichiesta();
     }
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
+    }
+
+    getChiamataStatus(): void {
+        this.subscriptions.add(
+            this.chiamataStatus$.subscribe((status: boolean) => {
+                this.chiamataStatus = status;
+            })
+        );
+    }
+
+    getChiamataFromMappaStatus(): void {
+        this.subscriptions.add(
+            this.chiamataFromMappaStatus$.subscribe((status: boolean) => {
+                this.chiamataFromMappaStatus = status;
+            })
+        );
+    }
+
+    getModificaRichiestaStatus(): void {
+        this.subscriptions.add(
+            this.modificaRichiestaStatus$.subscribe((status: boolean) => {
+                this.modificaRichiestaStatus = status;
+            })
+        );
+    }
+
+    getLoadingSchedaRichiesta(): void {
+        this.subscriptions.add(
+            this.loadingSchedaRichiesta$.subscribe((status: boolean) => {
+                this.loadingSchedaRichiesta = status;
+            })
+        );
     }
 
     setRisposta(rispostaTriage: RispostaTriage): void {
