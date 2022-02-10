@@ -38,6 +38,7 @@ import { ESRI_LAYERS_CONFIG } from '../../../core/settings/esri-layers-config';
 import { DirectionTravelDataInterface } from '../maps-interface/direction-travel-data.interface';
 import { SetVisualizzaPercosiRichiesta } from '../../home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { environment } from '../../../../environments/environment';
+import { SetChiamataFromMappaStatus } from '../../home/store/actions/view/view.actions';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -1061,8 +1062,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             modalNuovaChiamata.componentInstance.regione = response.attributes.Region;
             modalNuovaChiamata.componentInstance.civico = response.attributes.AddNum;
 
+            this.store.dispatch(new SetChiamataFromMappaStatus(true));
             modalNuovaChiamata.result.then(() => {
-                this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
+                this.store.dispatch([
+                    new SetChiamataFromMappaStatus(false),
+                    new SetChiamataFromMappaActiveValue(false)
+                ]);
             });
         });
     }

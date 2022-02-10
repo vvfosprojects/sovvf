@@ -100,6 +100,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     case Costanti.MezzoInRientro:
                         nuovoStatoMezzo = Costanti.MezzoInRientro;
                         break;
+                    case Costanti.EventoMezzoInRientro:
+                        nuovoStatoMezzo = Costanti.MezzoInRientro;
+                        break;
 
                     case Costanti.ComposizionePartenza:
                         nuovoStatoMezzo = Costanti.MezzoInViaggio;

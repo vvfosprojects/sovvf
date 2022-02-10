@@ -19,6 +19,13 @@ export class ToggleChiamata {
     }
 }
 
+export class SetChiamataFromMappaStatus {
+    static readonly type = '[Chiamata] Set chiamata from mappa status';
+
+    constructor(public value: boolean) {
+    }
+}
+
 export class ToggleRichieste {
     static readonly type = '[Richieste] Toggle richieste';
 
