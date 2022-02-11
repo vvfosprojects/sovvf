@@ -81,24 +81,26 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     }
 
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
-        if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
-            if (!this.itemSelezionato) {
-                this.selezionata.emit(this.squadraComposizione);
-            } else {
-                this.deselezionata.emit(this.squadraComposizione);
-            }
-        } else if (inRientro) {
-            if (!this.itemSelezionato) {
-                this.selezionataInRientro.emit(this.squadraComposizione);
-            } else {
-                this.deselezionataInRientro.emit(this.squadraComposizione);
-            }
-        } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
-            if (this.squadraComposizione.mezziPreaccoppiati[0]?.mezzo.stato === 'In Sede') {
+        if (!this.loadingMezzi) {
+            if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
                 if (!this.itemSelezionato) {
-                    this.selezionataPreAccoppiati.emit(this.squadraComposizione);
+                    this.selezionata.emit(this.squadraComposizione);
                 } else {
-                    this.deselezionataPreAccoppiati.emit(this.squadraComposizione);
+                    this.deselezionata.emit(this.squadraComposizione);
+                }
+            } else if (inRientro) {
+                if (!this.itemSelezionato) {
+                    this.selezionataInRientro.emit(this.squadraComposizione);
+                } else {
+                    this.deselezionataInRientro.emit(this.squadraComposizione);
+                }
+            } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
+                if (this.squadraComposizione.mezziPreaccoppiati[0]?.mezzo.stato === 'In Sede') {
+                    if (!this.itemSelezionato) {
+                        this.selezionataPreAccoppiati.emit(this.squadraComposizione);
+                    } else {
+                        this.deselezionataPreAccoppiati.emit(this.squadraComposizione);
+                    }
                 }
             }
         }
