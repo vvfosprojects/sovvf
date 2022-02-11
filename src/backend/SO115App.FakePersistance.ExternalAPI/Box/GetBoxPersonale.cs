@@ -60,7 +60,7 @@ namespace SO115App.ExternalAPI.Fake.Box
                 codiciSede = _sedi.GetAll().Result.Select(s => s.Codice).ToArray();
             }
 
-            var listaCodiciSedeConSottoSedi = _getSottoSediByCodSede.Get(codiciSede);
+            var listaCodiciSedeConSottoSedi = _getSottoSediByCodSede.Get(codiciSede).Distinct().ToList();
 
             var statoSquadre = _getStatoSquadra.Get(_getTurno.Get().Codice, listaCodiciSedeConSottoSedi);
 
