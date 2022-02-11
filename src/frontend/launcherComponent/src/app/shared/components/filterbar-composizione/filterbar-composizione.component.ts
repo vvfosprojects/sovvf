@@ -106,8 +106,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         const distaccamentiDefault = [];
 
         if (this.competenze) {
-            console.log('this.filtri.distaccamenti', this.filtri.distaccamenti);
-            console.log('this.richiesta.competenze', this.richiesta.competenze);
             this.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
             if (distaccamentiDefault?.length) {
                 const distaccamentiIds = this.filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => d.id);
