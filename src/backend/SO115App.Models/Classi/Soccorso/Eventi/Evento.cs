@@ -83,7 +83,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <summary>
         ///   E' l'istante in cui si è verificato l'evento.
         /// </summary>
-        public DateTime Istante { get; private set; }
+        public DateTime Istante { get; set; }
 
         /// <summary>
         ///   E' l'identificativo univoco della fonte informativa sull'evento, che ha anche la

@@ -8,7 +8,6 @@ import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
-import { makeCopy } from '../../helper/function-generiche';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -40,7 +39,6 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     @Output() hoverOut = new EventEmitter<SquadraComposizione>();
     @Output() sbloccata = new EventEmitter<SquadraComposizione>();
 
-    squadraComp: any;
     disableBtnFeature = false;
     autistaInSquadra = false;
 
@@ -51,22 +49,18 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     }
 
     ngOnInit(): void {
-        // TODO: RIVEDERE LOGICA PER DIVERSO MODELLO DATI BE
-        this.squadraComp = makeCopy(this.squadraComposizione);
-        if (this.squadraComposizione && this.squadraComposizione.mezziPreaccoppiati) {
-            this.squadraComp.mezziPreaccoppiati.forEach((x, i) => x.mezzo = makeCopy(this.squadraComposizione.mezziPreaccoppiati[i]));
-            this.squadraComp.mezziPreaccoppiati.forEach(x => x.mezzo.distaccamento = { descrizione: x.mezzo.distaccamento });
-        }
         this.checkAutista();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         const boxPartenzaList = changes?.boxPartenzaList;
-        if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.listaMezzi) {
-            boxPartenzaList?.currentValue.forEach(x => x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnFeature = true : null);
+        if (boxPartenzaList?.currentValue && this.squadraComposizione?.mezziInRientro?.length) {
+            const boxesPartenza = boxPartenzaList.currentValue;
+            this.disableButtonMezziInRientroBusy(boxesPartenza);
         }
-        if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezziPreaccoppiati && this.squadraComp.mezziPreaccoppiati.length) {
-            boxPartenzaList?.currentValue.forEach(x => x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.mezziPreaccoppiati[0].mezzo.codice) ? this.disableBtnFeature = true : null);
+        if (boxPartenzaList?.currentValue && this.squadraComposizione?.mezziPreaccoppiati?.length) {
+            const boxesPartenza = boxPartenzaList.currentValue;
+            this.disableButtonMezziPreaccoppiatiBusy(boxesPartenza);
         }
     }
 
@@ -78,38 +72,44 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
         this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
+    disableButtonMezziPreaccoppiatiBusy(boxPartenzaList: BoxPartenza[]): void {
+        boxPartenzaList.forEach(x => x.mezzoComposizione?.id === this.squadraComposizione.mezziPreaccoppiati[0].mezzo.codice ? this.disableBtnFeature = true : null);
+    }
+
+    disableButtonMezziInRientroBusy(boxPartenzaList: BoxPartenza[]): void {
+        boxPartenzaList.forEach(x => x.mezzoComposizione?.id === this.squadraComposizione.mezziInRientro[0].id ? this.disableBtnFeature = true : null);
+    }
+
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
-        if (!this.loadingMezzi) {
-            if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
+        if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
+            if (!this.itemSelezionato) {
+                this.selezionata.emit(this.squadraComposizione);
+            } else {
+                this.deselezionata.emit(this.squadraComposizione);
+            }
+        } else if (inRientro) {
+            if (!this.itemSelezionato) {
+                this.selezionataInRientro.emit(this.squadraComposizione);
+            } else {
+                this.deselezionataInRientro.emit(this.squadraComposizione);
+            }
+        } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
+            if (this.squadraComposizione.mezziPreaccoppiati[0]?.mezzo.stato === 'In Sede') {
                 if (!this.itemSelezionato) {
-                    this.selezionata.emit(this.squadraComp);
+                    this.selezionataPreAccoppiati.emit(this.squadraComposizione);
                 } else {
-                    this.deselezionata.emit(this.squadraComp);
-                }
-            } else if (inRientro) {
-                if (!this.itemSelezionato) {
-                    this.selezionataInRientro.emit(this.squadraComp);
-                } else {
-                    this.deselezionataInRientro.emit(this.squadraComp);
-                }
-            } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
-                if (this.squadraComp.mezziPreaccoppiati[0]?.mezzo.stato === 'In Sede') {
-                    if (!this.itemSelezionato) {
-                        this.selezionataPreAccoppiati.emit(this.squadraComp);
-                    } else {
-                        this.deselezionataPreAccoppiati.emit(this.squadraComp);
-                    }
+                    this.deselezionataPreAccoppiati.emit(this.squadraComposizione);
                 }
             }
         }
     }
 
     onHoverIn(): void {
-        this.hoverIn.emit(this.squadraComp);
+        this.hoverIn.emit(this.squadraComposizione);
     }
 
     onHoverOut(): void {
-        this.hoverOut.emit(this.squadraComp);
+        this.hoverOut.emit(this.squadraComposizione);
     }
 
     _nomeStatiSquadra(statoSquadra: number): string {
@@ -141,8 +141,8 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     }
 
     squadraComposizioneBusy(): boolean {
-        if (this.squadraComp) {
-            return squadraComposizioneBusy(this.squadraComp.stato);
+        if (this.squadraComposizione) {
+            return squadraComposizioneBusy(this.squadraComposizione.stato);
         } else {
             return true;
         }
@@ -151,8 +151,8 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     badgeDistaccamentoClass(): string {
         let result = 'badge-terza-competenza';
 
-        if (this.richiesta && this.squadraComp && this.squadraComp.distaccamento) {
-            const distaccamentoSquadra = this.squadraComp.distaccamento.descrizione.replace(/\s+/g, ' ').trim();
+        if (this.richiesta && this.squadraComposizione && this.squadraComposizione.distaccamento) {
+            const distaccamentoSquadra = this.squadraComposizione.distaccamento.descrizione.replace(/\s+/g, ' ').trim();
 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 this.richiesta.competenze.forEach((competenza: Sede, index: number) => {
@@ -170,8 +170,8 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     }
 
     checkAutista(): void {
-        if (this.squadraComp) {
-            this.squadraComp.membri.forEach(x => x.autista ? this.autistaInSquadra = true : null);
+        if (this.squadraComposizione) {
+            this.squadraComposizione.membri.forEach(x => x.autista ? this.autistaInSquadra = true : null);
         }
     }
 }
