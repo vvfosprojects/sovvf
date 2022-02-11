@@ -58,11 +58,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
                 private dropdownConfig: NgbDropdownConfig,
                 private modalService: NgbModal) {
         dropdownConfig.placement = 'right';
-        this.subscription.add(
-            this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
-                this.richiesta = r;
-            })
-        );
+        this.getRichiestaComposizione();
         this.getViewState();
     }
 
@@ -74,19 +70,27 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             this.setGenereMezzoTriage();
         }
 
-        if (this.richiesta && changes?.loadingMezzi) {
-            this.checkDistaccamenti();
+        if (changes?.loadingMezzi) {
+                this.checkDistaccamenti();
         }
 
-        if (this.richiesta && changes?.competenze && !changes?.competenze?.previousValue) {
-            this.setDistaccamentiDefault();
-            this.checkDistaccamenti();
+        if (changes?.competenze?.currentValue && changes?.filtri?.currentValue) {
+                this.setDistaccamentiDefault();
+                this.checkDistaccamenti();
         }
     }
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearFiltriComposizione());
         this.subscription.unsubscribe();
+    }
+
+    getRichiestaComposizione(): void {
+        this.subscription.add(
+            this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
+                this.richiesta = r;
+            })
+        );
     }
 
     checkDistaccamenti(): void {
@@ -101,12 +105,14 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         this.distaccamentiSelezionati = [];
         const distaccamentiDefault = [];
 
-        if (this.richiesta && this.richiesta.competenze) {
-            this.richiesta.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
+        if (this.competenze) {
+            console.log('this.filtri.distaccamenti', this.filtri.distaccamenti);
+            console.log('this.richiesta.competenze', this.richiesta.competenze);
+            this.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
             if (distaccamentiDefault?.length) {
                 const distaccamentiIds = this.filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => d.id);
                 if (distaccamentiIds.includes(distaccamentiDefault[0].id)) {
-                    this.richiesta.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
+                    this.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
                     this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
                 } else {
                     this.addFiltro([], 'codiceDistaccamento');
