@@ -97,15 +97,12 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onToggleVisualizzaPercorsi(value: boolean): void {
-        // TODO: logica viualizzazione percorsi con bottone
         this.store.dispatch(new SetVisualizzaPercosiRichiesta(value));
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenzaPreAccoppiati): void {
-        // TODO: Verificare condizione
-        // if (!preAcc.coordinateFake) {
-        //     this.mezzoCoordinate(preAcc.coordinate);
-        // }
+        // TODO: togliere commento quando ci saranno le coordinate del mezzo nel preaccoppiato
+        // this.mezzoCoordinate(preAcc.coordinate);
         if (preAcc && preAcc.statoMezzo === 'In Sede') {
             this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
         }

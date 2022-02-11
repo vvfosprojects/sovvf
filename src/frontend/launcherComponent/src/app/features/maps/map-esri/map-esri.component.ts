@@ -895,9 +895,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         //     this.setDrawContextMenuVisible(false);
         // });
 
-        // Altre possibili posizioni standard o manuale
-        // "bottom-leading"|"bottom-left"|"bottom-right"|"bottom-trailing"|"top-leading"|"top-left"|"top-right"|"top-trailing"|"manual"
-
         this.view.ui.add(llExpand, 'top-right');
         this.view.ui.add(leExpand, 'top-right');
         this.view.ui.add(bgExpand, 'top-right');
