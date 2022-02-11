@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
@@ -141,22 +143,25 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         DiEmergenza = squadra.Emergenza,
                         Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione() ?? null,
                         Membri = MappaMembriOPInSO(squadra.Membri),
-                        MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Count() > 0 ? lstMezziPreaccoppiati.Result?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new MezzoPreaccoppiato()
+                        MezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Count() > 0 ? lstMezziPreaccoppiati.Result?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new ComposizioneMezzi()
                         {
-                            Codice = m.CodiceMezzo,
-                            Descrizione = m.Descrizione,
-                            Genere = m.Genere,
-                            Distaccamento = m.DescrizioneAppartenenza,
-                            Stato = lstStatiMezzi.Result?.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
-                        }).ToList() : null,
-                        MezziInRientro = lstMezziInRientro.Result?.Where(m => lstStatiSquadre.Result.Find(s => s.CodMezzo.Equals(m.CodiceMezzo)).IdSquadra.Equals(squadra.Codice)).Select(m => new MezzoInRientro()
-                        {
-                            Id = m.CodiceMezzo,
-                            Mezzo = new MezzoPreaccoppiato()
+                            Mezzo = new Mezzo()
                             {
                                 Codice = m.CodiceMezzo,
                                 Descrizione = m.Descrizione,
-                                Distaccamento = m.CodiceDistaccamento,
+                                Genere = m.Genere,
+                                Distaccamento = new Sede(m.DescrizioneAppartenenza),
+                                Stato = lstStatiMezzi.Result?.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
+                            }
+                        }).ToList() : null,
+                        MezziInRientro = lstMezziInRientro.Result?.Where(m => lstStatiSquadre.Result.Find(s => s.CodMezzo.Equals(m.CodiceMezzo)).IdSquadra.Equals(squadra.Codice)).Select(m => new ComposizioneMezzi()
+                        {
+                            Id = m.CodiceMezzo,
+                            Mezzo = new Mezzo()
+                            {
+                                Codice = m.CodiceMezzo,
+                                Descrizione = m.Descrizione,
+                                Distaccamento = new Sede(m.CodiceDistaccamento),
                                 Genere = m.Genere,
                                 Stato = Costanti.MezzoInRientro
                             }

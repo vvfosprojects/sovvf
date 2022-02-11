@@ -1,7 +1,7 @@
-﻿using SO115App.API.Models.Classi.Condivise;
+﻿using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.Composizione
 {
@@ -16,8 +16,8 @@ namespace SO115App.Models.Classi.Composizione
         public string Tipologia { get; set; }
         public DistaccamentoComposizione Distaccamento { get; set; }
         public List<MembroComposizione> Membri { get; set; } = null;
-        public List<MezzoPreaccoppiato> MezziPreaccoppiati { get; set; } = null;
-        public List<MezzoInRientro> MezziInRientro { get; set; } = null;
+        public List<ComposizioneMezzi> MezziPreaccoppiati { get; set; } = null;
+        public List<ComposizioneMezzi> MezziInRientro { get; set; } = null;
     }
 
     public class MezzoInRientro
