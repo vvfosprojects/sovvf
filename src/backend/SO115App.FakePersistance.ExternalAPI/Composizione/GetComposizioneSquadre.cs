@@ -149,9 +149,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             Distaccamento = m.DescrizioneAppartenenza,
                             Stato = lstStatiMezzi.Result?.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
                         }).ToList() : null,
-                        MezziInRientro = lstMezziInRientro.Result?.Select(m => new MezzoInRientro()
+                        MezziInRientro = lstMezziInRientro.Result?.Where(m => lstStatiSquadre.Result.Find(s => s.CodMezzo.Equals(m.CodiceMezzo)).IdSquadra.Equals(squadra.Codice)).Select(m => new MezzoInRientro()
                         {
-                            IDD = m.CodiceMezzo,
+                            Id = m.CodiceMezzo,
                             Mezzo = new MezzoPreaccoppiato()
                             {
                                 Codice = m.CodiceMezzo,

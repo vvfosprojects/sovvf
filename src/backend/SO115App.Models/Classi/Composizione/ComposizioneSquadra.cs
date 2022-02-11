@@ -22,8 +22,7 @@ namespace SO115App.Models.Classi.Composizione
 
     public class MezzoInRientro
     {
-        [JsonPropertyName("Id")]
-        public string IDD { get; set; }
+        public string Id { get; set; }
         public MezzoPreaccoppiato Mezzo { get; set; }
     }
 
