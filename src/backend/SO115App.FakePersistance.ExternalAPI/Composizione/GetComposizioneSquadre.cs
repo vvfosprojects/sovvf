@@ -147,6 +147,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         {
                             Mezzo = new Mezzo()
                             {
+                                Appartenenza = m.CodiceDistaccamento,
                                 Codice = m.CodiceMezzo,
                                 Descrizione = m.Descrizione,
                                 Genere = m.Genere,
