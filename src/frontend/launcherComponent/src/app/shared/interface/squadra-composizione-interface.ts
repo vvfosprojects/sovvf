@@ -1,4 +1,4 @@
-import { MezzoComposizione, MezzoPreaccoppiato } from './mezzo-composizione-interface';
+import { MezzoComposizione } from './mezzo-composizione-interface';
 import { StatoSquadra } from '../enum/stato-squadra.enum';
 import { Sede } from '../model/sede.model';
 import { Componente } from '../model/componente.model';
@@ -11,7 +11,7 @@ export interface SquadraComposizione {
     membri: Componente[];
     distaccamento: Sede;
     turno: string;
-    mezziPreaccoppiati?: MezzoPreaccoppiato[];
+    mezziPreaccoppiati?: MezzoComposizione[];
     mezziInRientro?: MezzoComposizione[];
     idOpService?: string;
     spotId?: string;
