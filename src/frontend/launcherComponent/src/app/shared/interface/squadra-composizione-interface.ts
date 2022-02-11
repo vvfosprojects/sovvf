@@ -11,8 +11,8 @@ export interface SquadraComposizione {
     membri: Componente[];
     distaccamento: Sede;
     turno: string;
-    mezziPreaccoppiati: MezzoPreaccoppiato[];
-    listaMezzi?: MezzoComposizione[];
+    mezziPreaccoppiati?: MezzoPreaccoppiato[];
+    mezziInRientro?: MezzoComposizione[];
     idOpService?: string;
     spotId?: string;
     spotType?: string;

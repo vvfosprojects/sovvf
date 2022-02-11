@@ -62,7 +62,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
 
     ngOnChanges(changes: SimpleChanges): void {
         const boxPartenzaList = changes?.boxPartenzaList;
-        if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.listaMezzi) {
+        if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezziInRientro) {
             boxPartenzaList?.currentValue.forEach(x => x.mezzoComposizione && (x.mezzoComposizione.id === this.squadraComp.listaMezzi[0].id) ? this.disableBtnFeature = true : null);
         }
         if (boxPartenzaList?.currentValue && this.squadraComp && this.squadraComp.mezziPreaccoppiati && this.squadraComp.mezziPreaccoppiati.length) {

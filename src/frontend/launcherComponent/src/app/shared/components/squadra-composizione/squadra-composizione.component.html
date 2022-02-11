@@ -88,7 +88,7 @@
             </ng-template>
 
             <!-- Mezzi su cui è presente la squadra per Intervento -->
-            <ng-template [ngIf]="squadraComp.listaMezzi?.length">
+            <ng-template [ngIf]="squadraComp.mezziInRientro?.length">
                 <div class="d-inline-block nowrap">
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover mx-1"
@@ -105,7 +105,7 @@
                             <i class="fas fa-truck fa-fw"></i>
                         </button>
                         <ng-template #popMezziIntervento>
-                            <div *ngFor="let m of squadraComp.listaMezzi" class="h6 text-center">
+                            <div *ngFor="let m of squadraComp.mezziInRientro" class="h6 text-center">
                                 <div class="d-inline font-weight-bold">{{ m.mezzo.descrizione }}</div>
                                 <div class="d-inline">({{ m.mezzo.genere }})</div>
                                 <div class="d-inline"> - {{ m.mezzo.stato }}</div>

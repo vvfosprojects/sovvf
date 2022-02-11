@@ -381,7 +381,7 @@ export class BoxPartenzaState {
 
         const newBoxes = [];
         // creo boxes
-        for (const mezzoComp of squadraComp.listaMezzi) {
+        for (const mezzoComp of squadraComp.mezziInRientro) {
             const id = makeID();
             newBoxes.push({
                 id,
