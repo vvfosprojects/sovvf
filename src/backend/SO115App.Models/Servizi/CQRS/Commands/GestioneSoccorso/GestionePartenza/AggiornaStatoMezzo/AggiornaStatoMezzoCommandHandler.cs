@@ -25,6 +25,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Gac;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -65,6 +66,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var richiesta = command.Richiesta;
             var istante = command.DataOraAggiornamento;
 
+            var ultimoEvento = richiesta.ListaEventi.OfType<AbstractPartenza>().OrderByDescending(e => e.DataOraInserimento).First();
+            var partenza = richiesta.Partenze.LastOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
+
+            if(command.StatoMezzo != Costanti.MezzoRientrato && command.StatoMezzo != Costanti.MezzoInRientro )
+            new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
+            {
+                VecchioIstante = ultimoEvento.Istante,
+                Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
+                SedeOperatore = command.CodiciSede.First()
+            };
+
             if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
                 richiesta.Partenze.Last().Istante = istante;
@@ -73,8 +85,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
             else
             {
-                var partenza = richiesta.Partenze.LastOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
-
                 var statoAttuale = _statoMezzi.Get(command.CodiciSede, command.IdMezzo).First().StatoOperativo;
                 string statoMezzoReale = "";
 
@@ -89,9 +99,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         statoMezzoReale = statoAttuale;
 
                     if (command.StatoMezzo.Equals("In Rientro") || command.StatoMezzo.Equals("Rientrato"))
-                    {
                         statoMezzoReale = command.StatoMezzo;
-                    }
                 }
                 else if (statoAttuale.Equals("In Rientro"))
                 {
@@ -120,8 +128,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
 
                 //SE CAMBIO ORARIO DI UNO STATO AVVISO GAC
-                //var statoAttuale = _statoMezzi.Get(command.CodiciSede, command.IdMezzo).First();
-
                 var dataRientro = richiesta.ListaEventi.OfType<PartenzaRientrata>().LastOrDefault(p => p.CodicePartenza == partenza.CodicePartenza)?.Istante;
                 if (command.StatoMezzo.Equals(statoAttuale) && statoAttuale.Equals(Costanti.MezzoInViaggio)) _modificaGac.Send(new ModificaMovimentoGAC()
                 {
