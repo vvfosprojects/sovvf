@@ -328,6 +328,7 @@ export class RichiesteState {
         dispatch(new StartLoadingActionMezzo(action.mezzoAction.mezzo.codice));
         const obj = {
             codRichiesta: action.mezzoAction.codRichiesta,
+            codicePartenza: action.mezzoAction.codicePartenza,
             idMezzo: action.mezzoAction.mezzo.codice,
             statoMezzo: action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
             dataOraAggiornamento: action.mezzoAction.data
