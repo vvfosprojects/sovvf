@@ -1,4 +1,5 @@
 ﻿using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
 using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
@@ -55,6 +56,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             var lstStatoSquadre = Task.Run(() => _getStatoSquadre.Get(_getTurno.Get().Codice, query.CodiceSede.ToList()));
 
             var lstSquadreWS = query.CodiceSede.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
+            
+                       
             var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.Squadra>();
             if (lstSquadreWS[0] != null)
                 lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Squadre).ToList();
@@ -62,19 +65,35 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
             return await Task.Run(() => //OTTENGO I DATI
             {
-                var lstSquadreMezzo = new ConcurrentDictionary<string, Squadra[]>();
+                var lstSquadreMezzo = new ConcurrentDictionary<string, SO115App.API.Models.Classi.Composizione.Squadra[]>();
 
-                Parallel.ForEach(query.CodiceSede, codice =>
+
+                if (query.Filtri.CodiceDistaccamento != null)
                 {
-                    var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
+                    Parallel.ForEach(query.Filtri.CodiceDistaccamento, codice =>
+                    {
+                        var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
 
-                    lstSquadre.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
-                        lstSquadreMezzo.TryAdd(m, lstSquadre
-                            .Where(s => s.Codice.Equals(squadra.Codice))
-                            .Select(s => new Squadra(s.Codice, s.Descrizione, MappaStatoSquadraDaStatoMezzo.MappaStato(squadra.Stato)))
-                            .ToArray())));
-                });
+                        lstSquadre.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
+                            lstSquadreMezzo.TryAdd(m, lstSquadre
+                                .Where(s => s.Codice.Equals(squadra.Codice))
+                                .Select(s => new SO115App.API.Models.Classi.Composizione.Squadra(s.Codice, s.Descrizione, MappaStatoSquadra(lstStatoSquadre, s.Codice), MapMembriInComponenti(s.Membri.ToList())))
+                                .ToArray())));
+                    });
+                }
+                else
+                {
+                    Parallel.ForEach(query.CodiceSede, codice =>
+                    {
+                        var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
 
+                        lstSquadre.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
+                            lstSquadreMezzo.TryAdd(m, lstSquadre
+                                .Where(s => s.Codice.Equals(squadra.Codice))
+                                .Select(s => new SO115App.API.Models.Classi.Composizione.Squadra(s.Codice, s.Descrizione, MappaStatoSquadra(lstStatoSquadre, s.Codice), MapMembriInComponenti(s.Membri.ToList())))
+                                .ToArray())));
+                    });
+                }
                 lstMezzi = _getMezzi.GetInfo(lstSquadreMezzo.Select(lst => lst.Key).ToList());
 
                 return lstSquadreMezzo;
@@ -101,6 +120,43 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             }).ToList());
         }
 
+        private API.Models.Classi.Condivise.Squadra.StatoSquadra MappaStatoSquadra(Task<List<StatoOperativoSquadra>> lstStatoSquadre, string codiceSquadra)
+        {
+            var squadra = lstStatoSquadre.Result.Find(s => s.IdSquadra.Equals(codiceSquadra));
+
+            if(squadra!=null)
+            {
+                if (squadra.StatoSquadra.Equals("In Viaggio"))
+                    return API.Models.Classi.Condivise.Squadra.StatoSquadra.InViaggio;
+                else if (squadra.StatoSquadra.Equals("Sul Posto"))
+                    return API.Models.Classi.Condivise.Squadra.StatoSquadra.SulPosto;
+                else if (squadra.StatoSquadra.Equals("In Rientro"))
+                    return API.Models.Classi.Condivise.Squadra.StatoSquadra.InRientro;
+                else
+                    return API.Models.Classi.Condivise.Squadra.StatoSquadra.InSede;
+            }
+            else
+                return API.Models.Classi.Condivise.Squadra.StatoSquadra.InSede;
+        }
+
+        private List<API.Models.Classi.Condivise.Componente> MapMembriInComponenti(List<Models.Classi.ServiziEsterni.OPService.Membro> membri)
+        {
+            List<Componente> componenti = new List<Componente>();
+
+            foreach (var membro in membri)
+            {
+                var comp = new Componente(membro.Ruolo, membro.FirstName + " " + membro.LastName)
+                {
+                    CodiceFiscale = membro.CodiceFiscale,
+                    qualifications = membro.qualifications
+                };
+
+                componenti.Add(comp);
+            }
+
+            return componenti;
+        }
+
         private API.Models.Classi.Condivise.Coordinate GetCoordinateMezzo(string codiceMezzo, Distaccamento distaccamento)
         {
             var posizioneMezzo = pFlotta.Find(m => m.CodiceMezzo.Equals(codiceMezzo));
@@ -117,11 +173,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     Latitudine = distaccamento.Coordinate.Latitudine,
                     Longitudine = distaccamento.Coordinate.Longitudine
                 };
-        }
-
-        private ComposizioneSquadra MapComposizioneSquadra(Models.Classi.ServiziEsterni.OPService.Squadra squadra)
-        {
-            throw new NotImplementedException();
         }
     }
 }

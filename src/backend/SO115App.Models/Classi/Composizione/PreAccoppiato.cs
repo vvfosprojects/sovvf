@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using System.Collections.Generic;
 using static SO115App.API.Models.Classi.Condivise.Squadra;
 
@@ -28,9 +29,9 @@ namespace SO115App.API.Models.Classi.Composizione
     {
         public string Id => CodiceMezzo;
         public string CodiceMezzo { get; set; }
-        
+
         public string Appartenenza { get; set; }
-        
+
         public string GenereMezzo { get; set; }
         public string StatoMezzo { get; set; }
         public string DescrizioneMezzo { get; set; }
@@ -46,8 +47,8 @@ namespace SO115App.API.Models.Classi.Composizione
     /// </summary>
     public class Squadra
     {
-        public Squadra(string codice, string nome, StatoSquadra stato) =>
-            (Codice, Nome, Stato) = (codice, nome, stato);
+        public Squadra(string codice, string nome, StatoSquadra stato, List<Componente> membri) =>
+            (Codice, Nome, Stato, Membri) = (codice, nome, stato, membri);
 
         public Squadra()
         { }
@@ -55,5 +56,7 @@ namespace SO115App.API.Models.Classi.Composizione
         public string Codice { get; set; }
         public StatoSquadra Stato { get; set; }
         public string Nome { get; set; }
+
+        public List<Componente> Membri { get; set; }
     }
 }

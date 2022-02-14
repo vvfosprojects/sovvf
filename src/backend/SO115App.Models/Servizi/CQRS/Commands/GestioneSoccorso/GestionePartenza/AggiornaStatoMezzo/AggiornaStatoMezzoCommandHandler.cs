@@ -18,7 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -31,7 +31,6 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -67,25 +66,62 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var istante = command.DataOraAggiornamento;
 
             var ultimoEvento = richiesta.ListaEventi.OfType<AbstractPartenza>().OrderByDescending(e => e.DataOraInserimento).First();
-            var partenza = richiesta.Partenze.LastOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
+            var partenza = richiesta.Partenze.LastOrDefault(p => p.Partenza.Codice.Equals(command.CodicePartenza));
             var statoAttuale = _statoMezzi.Get(command.CodiciSede, command.IdMezzo).First().StatoOperativo;
 
-            if(command.StatoMezzo != Costanti.MezzoRientrato && command.StatoMezzo != Costanti.MezzoInRientro && statoAttuale == command.StatoMezzo)
-                new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
-                {
-                    VecchioIstante = ultimoEvento.Istante,
-                    Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
-                    SedeOperatore = command.CodiciSede.First()
-                };
-
-            if (command.StatoMezzo == Costanti.MezzoInViaggio)
+            //SE AGGIORNAMENTO
+            if (StatoEsistente(richiesta, command.StatoMezzo, command.CodicePartenza))
             {
-                richiesta.Partenze.Last().Istante = istante;
+                switch (command.StatoMezzo)
+                {
+                    case Costanti.MezzoInViaggio:
+                        new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
+                        {
+                            VecchioIstante = richiesta.ListaEventi.ToList().Find(e => e is ComposizionePartenze partenze && partenze.CodicePartenza == command.CodicePartenza).Istante,
+                            Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
+                            SedeOperatore = command.CodiciSede.First()
+                        };
+                        richiesta.ListaEventi.ToList().Find(e => e is ComposizionePartenze partenze && partenze.CodicePartenza == command.CodicePartenza).Istante = command.DataOraAggiornamento;
+                        break;
+
+                    case Costanti.MezzoSulPosto:
+                        new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
+                        {
+                            VecchioIstante = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante,
+                            Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
+                            SedeOperatore = command.CodiciSede.First()
+                        };
+                        richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante = command.DataOraAggiornamento;
+                        break;
+
+                    case Costanti.MezzoInRientro:
+                        new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
+                        {
+                            VecchioIstante = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante,
+                            Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
+                            SedeOperatore = command.CodiciSede.First()
+                        };
+                        richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante = command.DataOraAggiornamento;
+                        break;
+                }
 
                 _upDateRichiesta.UpDate(richiesta);
             }
             else
             {
+                switch (command.StatoMezzo)
+                {
+                    case Costanti.MezzoInViaggio:
+                        if (ultimoEvento is ArrivoSulPosto || ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
+                            throw new System.Exception("Sequenza stati non congurente.");
+                        break;
+
+                    case Costanti.MezzoSulPosto:
+                        if (ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
+                            throw new System.Exception("Sequenza stati non congurente.");
+                        break;
+                }
+
                 string statoMezzoReale = "";
 
                 if (statoAttuale.Equals("In Viaggio"))
@@ -162,6 +198,33 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     StatoMezzo = statoMezzoReale,
                     IdMezzo = command.IdMezzo
                 });
+            }
+        }
+
+        private bool StatoEsistente(RichiestaAssistenza richiesta, string statoMezzo, string codicePartenza)
+        {
+            switch (statoMezzo)
+            {
+                case Costanti.MezzoInViaggio:
+                    if (richiesta.ListaEventi.ToList().FindAll(e => e is ComposizionePartenze partenze && partenze.CodicePartenza == codicePartenza).Count > 0)
+                        return true;
+                    else
+                        return false;
+
+                case Costanti.MezzoSulPosto:
+                    if (richiesta.ListaEventi.ToList().FindAll(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == codicePartenza).Count > 0)
+                        return true;
+                    else
+                        return false;
+
+                case Costanti.MezzoInRientro:
+                    if (richiesta.ListaEventi.ToList().FindAll(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == codicePartenza).Count > 0)
+                        return true;
+                    else
+                        return false;
+
+                default: 
+                    return false;
             }
         }
     }
