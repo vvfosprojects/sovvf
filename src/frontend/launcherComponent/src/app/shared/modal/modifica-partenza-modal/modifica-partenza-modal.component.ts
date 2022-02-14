@@ -6,7 +6,6 @@ import { Subscription, Observable } from 'rxjs';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
 import { Partenza } from '../../model/partenza.model';
-import { StatoMezzoSequenze } from '../../enum/stato-mezzo.enum';
 import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
@@ -30,11 +29,9 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     singolaPartenza: Partenza;
     richiesta: SintesiRichiesta;
-    idRichiesta: string;
     codRichiesta: string;
     time = { hour: 13, minute: 30, second: 30 };
     timeAnnullamento = { hour: 13, minute: 30 };
-    listaStatoMezzo: string[];
     sequenze: SequenzaValoriSelezionati[] = [];
     inSostituzione = false;
     hideBox = true;
@@ -43,11 +40,10 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     nuoveSquadre: Squadra[];
     nonModificabile = false;
     statiMezzo: any[] = [
-        { name: 'In Uscita' },
         { name: 'In Viaggio' },
         { name: 'Sul Posto' },
         { name: 'In Rientro' },
-        { name: 'Rientrato' },
+        { name: 'Rientrato' }
     ];
     valid = false;
     sequenzeValid = true;
@@ -68,7 +64,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.listaStatoMezzo = Object.values(StatoMezzoSequenze);
         this.modificaPartenzaForm.reset();
         this.f.codRichiesta.patchValue(this.codRichiesta);
         this.f.mezzo.patchValue(this.singolaPartenza.partenza.mezzo);
@@ -118,7 +113,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     checkStatoMezzoSequenza(): void {
-        for (let i = 0; i < this.statiMezzo.length - 2; i++) {
+        for (let i = 0; i < this.statiMezzo.length - 1; i++) {
             if (this.singolaPartenza.partenza.mezzo.stato === this.statiMezzo[i].name) {
                 this.statiMezzo[i + 1].disabled = false;
                 this.statiMezzo.splice(0, i + 1);
@@ -197,7 +192,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             backdrop: 'static',
             keyboard: false,
         });
-        sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
+        sostituzioneModal.componentInstance.idRichiesta = this.richiesta.id;
         sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
         sostituzioneModal.componentInstance.partenza = this.singolaPartenza;
