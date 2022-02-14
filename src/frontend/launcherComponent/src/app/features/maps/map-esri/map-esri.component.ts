@@ -431,6 +431,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
                     break;
             }
+            this.store.dispatch(new GetInitCentroMappa());
         }
 
         // Controllo se la feature "Schede Contatto" viene attivata
