@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { BoxPartenzaPreAccoppiati } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
@@ -27,6 +27,12 @@ import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-so
 import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
 import { Partenza } from '../../../../shared/model/partenza.model';
 import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
+import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
+import RouteTask from '@arcgis/core/tasks/RouteTask';
+import RouteParameters from '@arcgis/core/rest/support/RouteParameters';
+import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
+import { TravelModeService } from '../../../maps/map-service/travel-mode.service';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -71,7 +77,9 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     partenzeRichiesta: Partenza[];
 
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private travelModeService: TravelModeService,
+                private cdRef: ChangeDetectorRef) {
     }
 
     ngOnInit(): void {
@@ -82,6 +90,59 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.richiesta?.currentValue) {
             const richiesta = changes?.richiesta?.currentValue;
             this.partenzeRichiesta = richiesta.partenze;
+        }
+
+        if (changes?.preAccoppiati?.currentValue) {
+            this.preAccoppiati = makeCopy(changes.preAccoppiati.currentValue);
+            this.preAccoppiati?.forEach((p: BoxPartenzaPreAccoppiati) => {
+                if (!p.km || !p.tempoPercorrenza) {
+                    const pointPartenza = new Point({
+                        longitude: +p.coordinate.longitudine,
+                        latitude: +p.coordinate.latitudine,
+                        spatialReference: {
+                            wkid: 3857
+                        }
+                    });
+
+                    const pointDestinazione = new Point({
+                        longitude: this.richiesta.localita.coordinate.longitudine,
+                        latitude: this.richiesta.localita.coordinate.latitudine,
+                        spatialReference: {
+                            wkid: 3857
+                        }
+                    });
+
+                    const pointPartenzaGraphic = new Graphic({
+                        geometry: pointPartenza
+                    });
+
+                    const pointDestinazioneGraphic = new Graphic({
+                        geometry: pointDestinazione
+                    });
+                    const routeTask: RouteTask = new RouteTask({
+                        url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World',
+                    });
+
+                    const routeParams = new RouteParameters({
+                        stops: new FeatureSet({
+                            features: [pointPartenzaGraphic, pointDestinazioneGraphic]
+                        }),
+                        travelMode: this.travelModeService.getTravelModeByGenereMezzo(p.genereMezzo)
+                    });
+
+                    routeTask.solve(routeParams).then((data: any) => {
+                        if (!p.km || p.km === '0') {
+                            const km = data.routeResults[0]?.route?.attributes?.Total_Kilometers;
+                            p.km = km.toFixed(2);
+                        }
+                        if (!p.tempoPercorrenza) {
+                            const tempoPercorrenza = data.routeResults[0]?.route?.attributes?.Total_TravelTime ? data.routeResults[0].route.attributes.Total_TravelTime : data.routeResults[0]?.route?.attributes?.Total_TruckTravelTime;
+                            p.tempoPercorrenza = tempoPercorrenza.toFixed(2);
+                        }
+                        this.cdRef.detectChanges();
+                    });
+                }
+            });
         }
     }
 
