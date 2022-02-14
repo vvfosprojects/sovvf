@@ -8,6 +8,7 @@
             <app-partial-loader
                     *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
             <app-partenza [partenza]="p.partenza"
+                          [codicePartenza]="p.codicePartenza"
                           [infoPartenza]="p"
                           [listaEventi]="listaEventi"
                           [inGestione]="inGestione"

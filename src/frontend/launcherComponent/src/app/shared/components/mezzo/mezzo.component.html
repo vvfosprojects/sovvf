@@ -11,7 +11,9 @@
     </div>
 </div>
 
-<app-mezzo-actions *ngIf="actionsAttive && !mezzoInServizioPage" [mezzo]="mezzo"
+<app-mezzo-actions *ngIf="actionsAttive && !mezzoInServizioPage"
+                   [mezzo]="mezzo"
+                   [codicePartenza]="codicePartenza"
                    [listaEventi]="listaEventi"
                    [listaEventiMezzo]="listaEventiMezzo"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>

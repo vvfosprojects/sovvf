@@ -27,6 +27,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     navigation: 'select';
     outsideDays: 'visible';
 
+    codicePartenza: string;
     title: string;
     titleStato: string;
     statoMezzo: string;
@@ -225,10 +226,10 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
             const nowDate = this.f.nowDate.value;
             const oraEvento = { hour: nowDate.getHours(), minute: nowDate.getMinutes(), second: nowDate.getSeconds() };
             const dataEvento = { day: nowDate.getDate(), month: (+nowDate.getMonth() + 1), year: nowDate.getFullYear() };
-            return { oraEvento, dataEvento, azioneIntervento: this.azioneIntervento };
+            return { oraEvento, dataEvento, azioneIntervento: this.azioneIntervento, codicePartenza: this.codicePartenza };
         } else {
             this.time.second = this.f?.nowDate.value.getSeconds();
-            return { oraEvento: this.time, dataEvento: this.todayDate, azioneIntervento: this.azioneIntervento };
+            return { oraEvento: this.time, dataEvento: this.todayDate, azioneIntervento: this.azioneIntervento, codicePartenza: this.codicePartenza };
         }
     }
 }

@@ -12,5 +12,6 @@ export interface MezzoActionEmit {
       mese: number,
       anno: number
     };
+    codicePartenza: string;
     azioneIntervento?: string;
 }
