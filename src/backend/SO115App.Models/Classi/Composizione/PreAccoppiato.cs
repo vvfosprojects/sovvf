@@ -28,6 +28,9 @@ namespace SO115App.API.Models.Classi.Composizione
     {
         public string Id => CodiceMezzo;
         public string CodiceMezzo { get; set; }
+        
+        public string Appartenenza { get; set; }
+        
         public string GenereMezzo { get; set; }
         public string StatoMezzo { get; set; }
         public string DescrizioneMezzo { get; set; }

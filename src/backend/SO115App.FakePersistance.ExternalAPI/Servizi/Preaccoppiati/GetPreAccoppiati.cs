@@ -87,6 +87,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
                 return new PreAccoppiato()
                 {
+                    Appartenenza = MezzoSquadra.CodiceDistaccamento,
                     Coordinate = GetCoordinateMezzo(MezzoSquadra.CodiceMezzo, DescSede),
                     CodiceMezzo = MezzoSquadra.CodiceMezzo,
                     Distaccamento = DescSede.DescDistaccamento/*.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "")*/.ToUpper(),
