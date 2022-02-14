@@ -56,8 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             var lstStatoSquadre = Task.Run(() => _getStatoSquadre.Get(_getTurno.Get().Codice, query.CodiceSede.ToList()));
 
             var lstSquadreWS = query.CodiceSede.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
-            
-                       
+
             var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.Squadra>();
             if (lstSquadreWS[0] != null)
                 lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Squadre).ToList();
@@ -67,14 +66,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             {
                 var lstSquadreMezzo = new ConcurrentDictionary<string, SO115App.API.Models.Classi.Composizione.Squadra[]>();
 
-
                 if (query.Filtri.CodiceDistaccamento != null)
                 {
-                    Parallel.ForEach(query.Filtri.CodiceDistaccamento, codice =>
+                    Parallel.ForEach(query.CodiceSede, codice =>
                     {
                         var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
 
-                        lstSquadre.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
+                        lstSquadre.Where(s => !s.spotType.Equals("MODULE") && query.Filtri.CodiceDistaccamento.Any(x => x.Equals(s.Distaccamento))).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                             lstSquadreMezzo.TryAdd(m, lstSquadre
                                 .Where(s => s.Codice.Equals(squadra.Codice))
                                 .Select(s => new SO115App.API.Models.Classi.Composizione.Squadra(s.Codice, s.Descrizione, MappaStatoSquadra(lstStatoSquadre, s.Codice), MapMembriInComponenti(s.Membri.ToList())))
@@ -124,7 +122,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         {
             var squadra = lstStatoSquadre.Result.Find(s => s.IdSquadra.Equals(codiceSquadra));
 
-            if(squadra!=null)
+            if (squadra != null)
             {
                 if (squadra.StatoSquadra.Equals("In Viaggio"))
                     return API.Models.Classi.Condivise.Squadra.StatoSquadra.InViaggio;
