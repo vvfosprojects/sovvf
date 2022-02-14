@@ -214,6 +214,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
                     distaccamento: {
                         descrizione: null,
                     },
+                    appartenenza: null
                 },
                 squadre: null
             };
@@ -224,6 +225,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
                 rObj.mezzo.stato = obj.statoMezzo;
                 rObj.mezzo.genere = obj.genereMezzo;
                 rObj.mezzo.distaccamento.descrizione = obj.distaccamento;
+                rObj.mezzo.appartenenza = obj.appartenenza;
             } else {
                 rObj.mezzo = null;
             }

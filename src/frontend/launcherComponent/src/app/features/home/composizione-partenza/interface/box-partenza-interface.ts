@@ -19,5 +19,6 @@ export interface BoxPartenzaPreAccoppiati {
     km: string;
     tempoPercorrenza: string;
     distaccamento: string;
+    appartenenza: string;
     coordinate: Coordinate;
 }
