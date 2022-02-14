@@ -1,8 +1,12 @@
 ﻿using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
+using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -24,17 +28,24 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetStatoSquadra _getStatoSquadre;
         private readonly IGetTurno _getTurno;
+        private readonly IGetPosizioneFlotta _getPosizioneFlotta;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
 
+        private List<MessaggioPosizione> pFlotta = new List<MessaggioPosizione>();
+
         public GetPreAccoppiati(IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSedeUC, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezzi,
-                                IGetStatoMezzi getStatoMezzi, IGetStatoSquadra getStatoSquadre, IGetTurno getTurno)
+                                IGetStatoMezzi getStatoMezzi, IGetStatoSquadra getStatoSquadre, IGetTurno getTurno,
+                                IGetPosizioneFlotta getPosizioneFlotta)
         {
             _getSquadre = getSquadre;
             _getMezzi = getMezzi;
             _getStatoMezzi = getStatoMezzi;
             _getStatoSquadre = getStatoSquadre;
             _getTurno = getTurno;
+            _getPosizioneFlotta = getPosizioneFlotta;
             _getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
+
+            pFlotta = _getPosizioneFlotta.Get(0).Result;
         }
 
         public async Task<List<PreAccoppiato>> GetAsync(PreAccoppiatiQuery query)
@@ -42,6 +53,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             Task<List<MezzoDTO>> lstMezzi = null;
             var lstStatoMezzi = Task.Run(() => _getStatoMezzi.Get(query.CodiceSede));
             var lstStatoSquadre = Task.Run(() => _getStatoSquadre.Get(_getTurno.Get().Codice, query.CodiceSede.ToList()));
+
+            var lstSquadreWS = query.CodiceSede.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
+            var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.Squadra>();
+            if (lstSquadreWS[0] != null)
+                lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Squadre).ToList();
+            var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).ToList();
 
             return await Task.Run(() => //OTTENGO I DATI
             {
@@ -70,6 +87,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
                 return new PreAccoppiato()
                 {
+                    Coordinate = GetCoordinateMezzo(MezzoSquadra.CodiceMezzo, DescSede),
                     CodiceMezzo = MezzoSquadra.CodiceMezzo,
                     Distaccamento = DescSede.DescDistaccamento/*.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "")*/.ToUpper(),
                     DescrizioneMezzo = MezzoSquadra.Descrizione,
@@ -80,6 +98,29 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     TempoPercorrenza = null,
                 };
             }).ToList());
+        }
+
+        private API.Models.Classi.Condivise.Coordinate GetCoordinateMezzo(string codiceMezzo, Distaccamento distaccamento)
+        {
+            var posizioneMezzo = pFlotta.Find(m => m.CodiceMezzo.Equals(codiceMezzo));
+
+            if (posizioneMezzo != null)
+                return new API.Models.Classi.Condivise.Coordinate()
+                {
+                    Latitudine = posizioneMezzo.Localizzazione.Lat,
+                    Longitudine = posizioneMezzo.Localizzazione.Lon
+                };
+            else
+                return new API.Models.Classi.Condivise.Coordinate()
+                {
+                    Latitudine = distaccamento.Coordinate.Latitudine,
+                    Longitudine = distaccamento.Coordinate.Longitudine
+                };
+        }
+
+        private ComposizioneSquadra MapComposizioneSquadra(Models.Classi.ServiziEsterni.OPService.Squadra squadra)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Composizione;
 using System.Collections.Generic;
 using static SO115App.API.Models.Classi.Condivise.Squadra;
 
@@ -33,17 +35,19 @@ namespace SO115App.API.Models.Classi.Composizione
         public string Km { get; set; }
         public string TempoPercorrenza { get; set; }
         public List<Squadra> Squadre { get; set; }
+        public Coordinate Coordinate { get; set; }
     }
 
     /// <summary>
-    /// Squadra del preaccoppiato
+    ///   Squadra del preaccoppiato
     /// </summary>
     public class Squadra
     {
         public Squadra(string codice, string nome, StatoSquadra stato) =>
             (Codice, Nome, Stato) = (codice, nome, stato);
 
-        public Squadra() { }
+        public Squadra()
+        { }
 
         public string Codice { get; set; }
         public StatoSquadra Stato { get; set; }
