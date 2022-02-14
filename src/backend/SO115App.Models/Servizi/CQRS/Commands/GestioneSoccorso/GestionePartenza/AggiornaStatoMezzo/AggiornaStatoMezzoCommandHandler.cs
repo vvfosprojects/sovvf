@@ -69,7 +69,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var partenza = richiesta.Partenze.LastOrDefault(p => p.Partenza.Codice.Equals(command.CodicePartenza));
             var statoAttuale = _statoMezzi.Get(command.CodiciSede, command.IdMezzo).First().StatoOperativo;
 
-
             //SE AGGIORNAMENTO
             if (StatoEsistente(richiesta, command.StatoMezzo, command.CodicePartenza))
             {
@@ -110,6 +109,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
             else
             {
+                switch (command.StatoMezzo)
+                {
+                    case Costanti.MezzoInViaggio:
+                        if (ultimoEvento is ArrivoSulPosto || ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
+                            throw new System.Exception("Sequenza stati non congurente.");
+                        break;
+
+                    case Costanti.MezzoSulPosto:
+                        if (ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
+                            throw new System.Exception("Sequenza stati non congurente.");
+                        break;
+                }
+
                 string statoMezzoReale = "";
 
                 if (statoAttuale.Equals("In Viaggio"))
