@@ -101,8 +101,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenzaPreAccoppiati): void {
-        // TODO: togliere commento quando ci saranno le coordinate del mezzo nel preaccoppiato
-        // this.mezzoCoordinate(preAcc.coordinate);
+        this.mezzoCoordinate(preAcc.coordinate);
         if (preAcc && preAcc.statoMezzo === 'In Sede') {
             this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
         }
