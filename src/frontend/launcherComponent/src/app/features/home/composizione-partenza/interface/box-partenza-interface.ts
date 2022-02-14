@@ -1,6 +1,7 @@
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
 import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 export interface BoxPartenza {
     id: string;
@@ -18,4 +19,5 @@ export interface BoxPartenzaPreAccoppiati {
     km: string;
     tempoPercorrenza: string;
     distaccamento: string;
+    coordinate: Coordinate;
 }
