@@ -68,14 +68,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             var ultimoEvento = richiesta.ListaEventi.OfType<AbstractPartenza>().OrderByDescending(e => e.DataOraInserimento).First();
             var partenza = richiesta.Partenze.LastOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
+            var statoAttuale = _statoMezzi.Get(command.CodiciSede, command.IdMezzo).First().StatoOperativo;
 
-            if(command.StatoMezzo != Costanti.MezzoRientrato && command.StatoMezzo != Costanti.MezzoInRientro )
-            new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
-            {
-                VecchioIstante = ultimoEvento.Istante,
-                Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
-                SedeOperatore = command.CodiciSede.First()
-            };
+            if(command.StatoMezzo != Costanti.MezzoRientrato && command.StatoMezzo != Costanti.MezzoInRientro && statoAttuale == command.StatoMezzo)
+                new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
+                {
+                    VecchioIstante = ultimoEvento.Istante,
+                    Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
+                    SedeOperatore = command.CodiciSede.First()
+                };
 
             if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
@@ -85,7 +86,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
             else
             {
-                var statoAttuale = _statoMezzi.Get(command.CodiciSede, command.IdMezzo).First().StatoOperativo;
                 string statoMezzoReale = "";
 
                 if (statoAttuale.Equals("In Viaggio"))
