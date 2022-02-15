@@ -288,7 +288,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
         modalModificaPartenza.componentInstance.richiesta = this.richiesta;
-        modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :

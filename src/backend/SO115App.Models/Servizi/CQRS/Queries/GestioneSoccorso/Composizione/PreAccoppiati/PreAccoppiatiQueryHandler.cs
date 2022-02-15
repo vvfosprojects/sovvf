@@ -31,6 +31,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class PreAccoppiatiQueryHandler : IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult>
     {
         private readonly IGetPreAccoppiati _GetPreAccoppiati;
+
         public PreAccoppiatiQueryHandler(IGetPreAccoppiati iGetPreAccoppiati) => _GetPreAccoppiati = iGetPreAccoppiati;
 
         /// <summary>
@@ -43,6 +44,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
 
             var ListapreAccoppiati = _GetPreAccoppiati.GetAsync(query).Result;
+
+            if (query.Filtri.TipoMezzo != null)
+            {
+                ListapreAccoppiati = ListapreAccoppiati.FindAll(m => m.GenereMezzo.Equals(query.Filtri.TipoMezzo));
+            }
+
+            if (query.Filtri.StatoMezzo != null)
+            {
+                ListapreAccoppiati = ListapreAccoppiati.FindAll(m => query.Filtri.StatoMezzo.Any(s => s.Equals(m.StatoMezzo)));
+            }
 
             Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");
 

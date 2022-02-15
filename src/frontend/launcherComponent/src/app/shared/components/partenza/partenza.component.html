@@ -4,7 +4,8 @@
     <div class="float-left font-xxlarge cursor-pointer"
          style="display: inline-flex; align-items: center;"
          (click)="selezioneMezzo.emit(partenza.mezzo)">
-        <app-mezzo [mezzo]="partenza.mezzo"
+        <app-mezzo [codicePartenza]="codicePartenza"
+                   [mezzo]="partenza.mezzo"
                    [listaEventiMezzo]="listaEventiMezzo"
                    [listaEventi]="listaEventi"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"

@@ -43,8 +43,10 @@
                                    ngbDatepicker
                                    #d="ngbDatepicker">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary btn-no-hover calendar" (click)="d.toggle()"
-                                        type="button"><i class="fas fa-calendar"></i></button>
+                                <button class="btn btn-outline-secondary btn-no-hover calendar"
+                                        (click)="d.toggle()"
+                                        type="button"><i class="fas fa-calendar"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -64,7 +66,7 @@
                 </div>
             </ng-container>
 
-            <div *ngIf="statoMezzo === 'In Rientro' && ultimoMezzo && !titleStato" class="mb-4 alert alert-warning">
+            <div *ngIf="statoMezzo === 'In Rientro' && ultimoMezzo && !titleStato" class="alert alert-warning mt-2 mb-0">
                 <span class="mr-4">Scegliere azione Intervento:</span>
                 <div class="form-check-inline">
                     <input class="form-check-input radio-custom" type="radio" id="sospesa" name="sospesa"

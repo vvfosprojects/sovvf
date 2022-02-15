@@ -17,6 +17,7 @@ import { EventoMezzo } from '../../../interface/evento-mezzo.interface';
 export class MezzoActionsComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
+    @Input() codicePartenza: string;
     @Input() doubleMonitor: Mezzo;
     @Input() listaEventi: any;
     @Input() listaEventiMezzo: any;
@@ -78,6 +79,7 @@ export class MezzoActionsComponent implements OnInit {
             size: 'lg',
             centered: true
         });
+        modal.componentInstance.codicePartenza = this.codicePartenza;
         modal.componentInstance.statoMezzo = this.mezzo.stato;
         modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
         modal.componentInstance.titleStato = !ora ? '' : ': ' + action;
@@ -95,7 +97,8 @@ export class MezzoActionsComponent implements OnInit {
                             mezzoAction: this.statoMezzoActions,
                             oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
                             dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
-                            azioneIntervento
+                            azioneIntervento,
+                            codicePartenza: this.codicePartenza
                         });
                     } else {
                         this.actionMezzo.emit();

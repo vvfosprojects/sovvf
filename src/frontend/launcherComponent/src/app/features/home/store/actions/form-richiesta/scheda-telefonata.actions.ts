@@ -3,6 +3,7 @@ import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.mode
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.interface';
 
 export class ReducerSchedaTelefonata {
     static readonly type = '[SchedaTelefonata] Reduce completato';
@@ -69,7 +70,7 @@ export class ClearChiamata {
 export class InsertChiamata {
     static readonly type = '[SchedaTelefonata] Insert chiamata';
 
-    constructor(public azioneChiamata: AzioneChiamataEnum, public options?: { urgente?: boolean, fromMappa?: boolean }) {
+    constructor(public azioneChiamata: AzioneChiamataEnum, public componentFormValue: RichiestaForm, public options?: { urgente?: boolean, fromMappa?: boolean }) {
     }
 }
 

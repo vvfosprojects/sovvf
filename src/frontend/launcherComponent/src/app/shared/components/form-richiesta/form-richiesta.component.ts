@@ -187,15 +187,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             }
             if (changes.schedaContatto?.currentValue) {
                 const schedaContatto = changes.schedaContatto.currentValue;
-                if (schedaContatto && schedaContatto.codiceScheda) {
-                    this.setSchedaContatto(schedaContatto);
-                }
-                // Controllo scorciatoia numero da Scheda Contatto
-                const telefono = schedaContatto.richiedente.telefono;
-                const checkTelefono = JSON.stringify(Object.keys(this.scorciatoieTelefono));
-                if (checkTelefono.includes(telefono)) {
-                    this.onCheckScorciatoiaNumero(telefono);
-                }
+                this.onChangeSchedaContatto(schedaContatto);
             }
             if (changes.resetChiamata?.currentValue) {
                 const reset = changes.resetChiamata.currentValue;
@@ -230,6 +222,18 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.clearFormDisconnection();
+    }
+
+    onChangeSchedaContatto(schedaContatto: SchedaContatto): void {
+        if (schedaContatto?.codiceScheda) {
+            this.setSchedaContatto(schedaContatto);
+        }
+        // Controllo scorciatoia numero da Scheda Contatto
+        const telefono = schedaContatto.richiedente.telefono;
+        const checkTelefono = JSON.stringify(Object.keys(this.scorciatoieTelefono));
+        if (checkTelefono.includes(telefono)) {
+            this.onCheckScorciatoiaNumero(telefono);
+        }
     }
 
     clearFormDisconnection(): void {
@@ -1080,7 +1084,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     reducerSchedaTelefonata(tipo: string, azione?: AzioneChiamataEnum, options?: { urgente?: boolean }): void {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo,
-            markerChiamata: this.chiamataMarker
+            markerChiamata: this.chiamataMarker,
+            formValue: this.richiestaForm.value
         };
 
         if (azione) {
