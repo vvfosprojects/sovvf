@@ -9,5 +9,6 @@ namespace SO115App.Models.Classi.Filtri
         public Paginazione Pagination { get; set; }
         public string[] StatoMezzo { get; set; }
         public string[] TipoMezzo { get; set; }
+        public string Turno { get; set; }
     }
 }
