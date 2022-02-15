@@ -92,7 +92,7 @@ namespace SO115App.API.Controllers
         [HttpPost("AddFromSurvey123")]
         public async Task<IActionResult> AddFromSurvey123([FromBody] ChiamataFromSurvey123 chiamata)
         {
-            var codiceSede = Request.Headers["codicesede"];
+            var codiceSede = chiamata.Localita.Provincia + ".1000";
             var idUtente = Request.Headers["IdUtente"];
 
             var command = new AddInterventoFromSurvey123Command()

@@ -1,6 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { ComposizioneFilterbar } from '../../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { Composizione } from '../../../enum/composizione.enum';
 import {
     AddFiltroSelezionatoComposizione,
     GetFiltriComposizione,
@@ -14,8 +13,6 @@ import {
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { Injectable } from '@angular/core';
-import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
-import { GetListaComposizioneVeloce } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { TipologicaComposizionePartenza } from '../../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { makeCopy } from '../../../helper/function-generiche';
 import { FiltroTurnoSquadre } from '../../../enum/filtro-turno-composizione-partenza.enum';
@@ -88,15 +85,7 @@ export class FiltriComposizioneState {
     }
 
     @Action(SetFiltriComposizione)
-    setFiltriComposizione({ patchState, dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
-        const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
-        if (composizioneMode === Composizione.Avanzata && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
-            // Lista loadata in filterbar-composizione per distaccamenti di competenza default.
-            // dispatch(new GetListeComposizioneAvanzata());
-        }
-        if (composizioneMode === Composizione.Veloce) {
-            dispatch(new GetListaComposizioneVeloce());
-        }
+    setFiltriComposizione({ patchState }: StateContext<FiltriComposizioneStateStateModel>): void {
         const filtri = makeCopy(this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche));
         if (filtri) {
             filtri.distaccamenti = filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => {

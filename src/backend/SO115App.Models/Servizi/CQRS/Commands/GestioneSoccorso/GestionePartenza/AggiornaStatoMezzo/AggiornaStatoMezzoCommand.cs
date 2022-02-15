@@ -31,6 +31,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public string IdMezzo { get; set; }
         public string StatoMezzo { get; set; }
+        public string CodicePartenza { get; set; }
 
         public DateTime DataOraAggiornamento { get; set; }
 

@@ -227,7 +227,7 @@ export class SchedaTelefonataState {
             case 'inserita':
                 const urgente = action.options?.urgente;
                 const fromMappa = action.options?.fromMappa;
-                dispatch(new InsertChiamata(action.schedaTelefonata.azioneChiamata, { urgente, fromMappa }));
+                dispatch(new InsertChiamata(action.schedaTelefonata.azioneChiamata, action.schedaTelefonata.formValue, { urgente, fromMappa }));
                 break;
             case 'modificata':
                 dispatch(new PatchRichiesta());
@@ -366,6 +366,7 @@ export class SchedaTelefonataState {
         dispatch(new StartLoadingSchedaRichiesta());
         const state = getState();
         const f = state.richiestaForm.model;
+        const componentFormValue = action.componentFormValue;
         const azioneChiamata = action.azioneChiamata;
         const urgente = action.options?.urgente;
 
@@ -373,8 +374,10 @@ export class SchedaTelefonataState {
         let tipologia: Tipologia;
 
         if (f) {
-            if (f.codTipologia) {
-                tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
+            const codTipologia = f.codTipologia ? f.codTipologia : componentFormValue.codTipologia;
+            if (codTipologia) {
+                const tipologie = this.store.selectSnapshot(TipologieState.tipologie);
+                tipologia = tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
             }
 
             const competenze = state.competenze;

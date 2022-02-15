@@ -22,6 +22,7 @@ export class PartenzaComponent implements OnInit {
 
     @Input() idDaSganciare: string;
     @Input() partenza: DettaglioPartenza;
+    @Input() codicePartenza: string;
     @Input() infoPartenza: Partenza;
     @Input() listaEventi: EventoMezzo[];
     @Input() inGestione: boolean;

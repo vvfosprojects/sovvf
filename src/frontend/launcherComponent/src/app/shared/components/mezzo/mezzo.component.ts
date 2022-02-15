@@ -17,6 +17,7 @@ import { statoMezzoColor } from '../../helper/function-mezzo';
 export class MezzoComponent {
 
     @Input() mezzo: Mezzo;
+    @Input() codicePartenza: string;
     @Input() listaEventi: any;
     @Input() mostraRichiestaAssociata: boolean;
     @Input() actionsAttive: boolean;
@@ -48,7 +49,7 @@ export class MezzoComponent {
             data.setSeconds(orario.secondi);
             data.setMilliseconds(0);
             data = new Date(data.getTime());
-            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento: action.azioneIntervento };
+            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento: action.azioneIntervento, codicePartenza: this.codicePartenza };
         } else {
             actionMezzo = { mezzo: this.mezzo, action: null };
         }
