@@ -70,9 +70,11 @@
                                     style="height: 36px; width: 36px; border-radius: 65% ">
                                 <i class="fas fa-bell fa-fw" style="padding-left: 7px; color: #ffc107"></i>
                             </button>
-                            <button *ngIf="richiesta?.dettaglioTipologia?.pos?.length" (click)="onDettaglioPos()"
-                                    class="btn btn-light border big_font py-0 mx-1 float-right" style="margin: 0; width: 45px"
-                                    ngbTooltip="Visualizza POS">
+                            <button *ngIf="richiesta?.dettaglioTipologia?.pos?.length"
+                                    class="btn btn-light border big_font py-0 mx-1 float-right"
+                                    style="margin: 0; width: 45px"
+                                    ngbTooltip="Visualizza POS"
+                                    (click)="onDettaglioPos(); $event.stopPropagation()">
                                 <i class="fas fa-folder-open"></i>
                             </button>
                         </div>
@@ -91,9 +93,9 @@
                                 <button *ngIf="richiesta?.fonogramma"
                                         class="btn btn-light border big_font py-0 mr-1"
                                         [ngClass]="{'btn-success text-light': richiesta?.fonogramma?.stato === StatoFonogramma.Inviato, 'btn-secondary text-light': richiesta?.fonogramma?.stato === StatoFonogramma.NonNecessario, 'btn-warning text-light': richiesta?.fonogramma?.stato === StatoFonogramma.DaInviare}"
-                                        (click)="onDettaglioStatoFonogramma(); $event.stopPropagation()"
                                         style="margin: 0; vertical-align: bottom"
-                                        ngbTooltip="Visualizza Fonogramma">
+                                        ngbTooltip="Visualizza Fonogramma"
+                                        (click)="onDettaglioStatoFonogramma(); $event.stopPropagation()">
                                     <i class="guida far fa-paper-plane fa-fw"></i>
                                     {{ getStatoFonogrammaStringByEnum(richiesta?.fonogramma?.stato) }}
                                 </button>
