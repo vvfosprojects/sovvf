@@ -94,8 +94,8 @@ export class RicercaIndirizzoComponent implements OnInit {
             let paramsSuggestLocation: locatorSuggestLocationsParams;
 
             if (sedeUtenteLoggato) {
-                const latitude = sedeUtenteLoggato.coordinate.latitudine;
-                const longitude = sedeUtenteLoggato.coordinate.longitudine;
+                const latitude = sedeUtenteLoggato.coordinateString[0] ? +sedeUtenteLoggato.coordinateString[0] : sedeUtenteLoggato.coordinate.latitudine;
+                const longitude = sedeUtenteLoggato.coordinateString[1] ? +sedeUtenteLoggato.coordinateString[1] : sedeUtenteLoggato.coordinate.longitudine;
                 location = new Point({
                     latitude,
                     longitude
