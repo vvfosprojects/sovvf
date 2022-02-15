@@ -96,12 +96,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                     listaSquadre = listaAttuale[0].Squadre.Where(s => s.Distaccamento.Equals(unita.Codice)).ToList();
 
                     var statoSquadre = _getStatoSquadra.Get(turnoCorrente, new List<string> { unita.Codice });
-
-
+                    
                     var infoDistaccamento = new Istogramma()
                     {
                         codDistaccamento = unita.Codice,
-                        descDistaccamento = unita.Codice.Contains("1000") ? "Centrale" : unita.Nome,
+                        descDistaccamento = /*unita.Codice.Contains("1000") ? "Comando VV.F. " + :*/ unita.Nome,
                         numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
                         squadreLibere = listaSquadre != null ? listaSquadre.Count() - statoSquadre.Count : 0,
                         squadreOccupate = statoSquadre.Count

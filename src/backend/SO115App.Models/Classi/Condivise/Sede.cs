@@ -55,9 +55,9 @@ namespace SO115App.API.Models.Classi.Condivise
         {
             get
             {
-                if (VisualizzazioneCentrale) return _descrizione
-                    .Replace("Comando VV.F.", "Centrale")
-                    .Replace("COMANDO VV.F.", "CENTRALE");
+                if (VisualizzazioneCentrale) return _descrizione;
+                //.Replace("Comando VV.F.", "Centrale")
+                //.Replace("COMANDO VV.F.", "CENTRALE");
                 else return _descrizione;
             }
 
