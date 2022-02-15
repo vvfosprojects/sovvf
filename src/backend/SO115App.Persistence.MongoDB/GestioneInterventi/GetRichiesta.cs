@@ -20,14 +20,12 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Persistence.MongoDB;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Utility;
@@ -48,17 +46,20 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IGetRubrica _getRubrica;
         private readonly IGetTurno _getTurno;
+        private readonly IGetSedi _getSedi;
 
         public GetRichiesta(DbContext dbContext,
             IMapperRichiestaSuSintesi mapperSintesi,
             IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC,
-            IGetRubrica getRubrica, IGetTurno getTurno)
+            IGetRubrica getRubrica, IGetTurno getTurno,
+            IGetSedi getSedi)
         {
             _dbContext = dbContext;
             _mapperSintesi = mapperSintesi;
             _getDistaccamentoUC = getDistaccamentoUC;
             _getRubrica = getRubrica;
             _getTurno = getTurno;
+            _getSedi = getSedi;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -261,8 +262,8 @@ namespace SO115App.Persistence.MongoDB
                 var rubrica = new List<EnteDTO>();
                 var sintesi = new SintesiRichiesta();
                 sintesi = _mapperSintesi.Map(richiesta);
-                sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
+                sintesi.Competenze = richiesta.Competenze;
+                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? richiesta.CodSOAllertate.ToArray().MapCompetenze(_getSedi) : null;
                 return sintesi;
             });
 
@@ -279,27 +280,6 @@ namespace SO115App.Persistence.MongoDB
                     .ToList();
         }
 
-        private List<Sede> MapCompetenze(string[] codUOCompetenza)
-        {
-            var listaSedi = new List<Sede>();
-            int i = 1;
-            foreach (var codCompetenza in codUOCompetenza)
-            {
-                if (i <= 3)
-                {
-                    var Distaccamento = _getDistaccamentoUC.Get(codCompetenza).Result;
-                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate);
-
-                    if (sede != null)
-                        listaSedi.Add(sede);
-                }
-
-                i++;
-            }
-
-            return listaSedi;
-        }
-
         public SintesiRichiesta GetSintesi(string codiceRichiesta)
         {
             var richiesta = GetByCodice(codiceRichiesta);
@@ -313,8 +293,8 @@ namespace SO115App.Persistence.MongoDB
             {
                 sintesi = _mapperSintesi.Map(richiesta);
                 //sintesi.CodEntiIntervenuti = rubrica.Count > 0 ? rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false) : null;
-                sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
+                sintesi.Competenze = richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
+                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? richiesta.CodSOAllertate.ToArray().MapCompetenze(_getSedi) : null;
             }
 
             return sintesi;
@@ -344,7 +324,7 @@ namespace SO115App.Persistence.MongoDB
             result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
 
             //squadre
-            if(filtri.Squadre?.Count() > 0)
+            if (filtri.Squadre?.Count() > 0)
                 result = result.Where(r => r.lstSquadre.Any(sq => filtri.Squadre.Contains(sq))).ToList();
 
             return result.ToList();
