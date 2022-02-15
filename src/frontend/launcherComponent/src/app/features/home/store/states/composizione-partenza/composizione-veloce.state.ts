@@ -86,7 +86,7 @@ export class ComposizioneVeloceState {
                 page: action.options && action.options.page && action.options.page ? action.options.page : paginationPreaccoppiati.page,
                 pageSize: paginationPreaccoppiati.pageSize
             },
-            turno: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno : null,
+            turno: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno !== null ? '' + this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno : null,
             codiceDistaccamento: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
             statoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null,
             // tslint:disable-next-line:max-line-length
@@ -186,15 +186,14 @@ export class ComposizioneVeloceState {
     }
 
     @Action(HoverInPreAccoppiatoComposizione)
-    hoverInPreAccoppiatoComposizione({ getState, patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: HoverInPreAccoppiatoComposizione): void {
-        const state = getState();
+    hoverInPreAccoppiatoComposizione({ patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: HoverInPreAccoppiatoComposizione): void {
         patchState({
             idPreaccoppiatoHover: action.idBoxPartenzaHover.idBoxPartenza
         });
     }
 
     @Action(HoverOutPreAccoppiatoComposizione)
-    hoverOutPreAccoppiatoComposizione({ patchState, dispatch }: StateContext<ComposizioneVeloceStateModel>): void {
+    hoverOutPreAccoppiatoComposizione({ patchState }: StateContext<ComposizioneVeloceStateModel>): void {
         patchState({
             idPreaccoppiatoHover: null
         });
