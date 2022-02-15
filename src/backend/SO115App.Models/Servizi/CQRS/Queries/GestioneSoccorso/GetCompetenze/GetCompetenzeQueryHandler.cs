@@ -10,11 +10,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCompetenze
     public class GetCompetenzeQueryHandler : IQueryHandler<GetCompetenzeQuery, GetCompetenzeResult>
     {
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
-        private readonly IGetDistaccamentoByCodiceSedeUC _getCodiciDistaccamenti;
-        public GetCompetenzeQueryHandler(IGetCompetenzeByCoordinateIntervento getCompetenze, IGetDistaccamentoByCodiceSedeUC getCodiciDistaccamenti)
+        private readonly IGetSedi _getSede;
+
+        public GetCompetenzeQueryHandler(IGetCompetenzeByCoordinateIntervento getCompetenze, IGetSedi getSede)
         {
             _getCompetenze = getCompetenze;
-            _getCodiciDistaccamenti = getCodiciDistaccamenti;
+            _getSede = getSede;
         }
 
         public GetCompetenzeResult Handle(GetCompetenzeQuery query)
@@ -32,20 +33,38 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCompetenze
         private List<Sede> MapCompetenze(string[] codUOCompetenza)
         {
             var listaSedi = new List<Sede>();
-            int i = 1;
-            foreach (var codCompetenza in codUOCompetenza)
+
+            try
             {
-                if (i <= 3)
+                var alberatura = _getSede.GetAll();
+
+                int i = 1;
+
+                foreach (var codCompetenza in codUOCompetenza)
                 {
-                    var Distaccamento = _getCodiciDistaccamenti.Get(codCompetenza).Result;
+                    if (i <= 3)
+                    {
+                        var Distaccamento = _getSede.GetInfoSede(codCompetenza).Result;
+                        var info = alberatura.Result.Find(a => a.Codice.Equals(codCompetenza));
 
-                    var sede = Distaccamento.MapSede();
+                        var x = Distaccamento.Descrizione.ToUpper().Replace("CENTRALE", info.Descrizione);
 
-                    if (sede != null)
-                        listaSedi.Add(sede);
+                        var sede = Distaccamento.MapSede();
+
+                        if (sede != null)
+                        {
+                            sede.Descrizione = x;
+
+                            listaSedi.Add(sede);
+                        }
+                    }
+
+                    i++;
                 }
-
-                i++;
+            }
+            catch (System.Exception e)
+            {
+                return null;
             }
 
             return listaSedi;
