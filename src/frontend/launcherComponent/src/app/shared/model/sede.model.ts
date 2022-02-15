@@ -1,4 +1,4 @@
-import {Coordinate} from './coordinate.model';
+import { Coordinate } from './coordinate.model';
 
 export class Sede {
     constructor(
@@ -37,7 +37,11 @@ export class Sede {
         /**
          * icona della sede
          */
-        public icona?: string
+        public icona?: string,
+        /**
+         * coordinate sede string
+         */
+        public coordinateString?: string[]
     ) {
     }
 }
