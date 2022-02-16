@@ -67,13 +67,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 result = await _serviceDirezioni.GetAsync(url);
             }
 
-            result = result.Select(f =>
-            {
-                if ((f?.descrizione.ToUpper().Contains("CENTRALE") ?? false) || (f?.descrizione.ToUpper().Contains("COMANDO VV.F. ") ?? false))
-                    f.descrizione = "CENTRALE " + f.id;
+            //result = result.Select(f =>
+            //{
+            //    if ((f?.descrizione.ToUpper().Contains("CENTRALE") ?? false) || (f?.descrizione.ToUpper().Contains("COMANDO VV.F. ") ?? false))
+            //        f.descrizione = "CENTRALE " + f.id;
 
-                return f;
-            }).ToList();
+            //    return f;
+            //}).ToList();
 
             return result;
         }
@@ -87,13 +87,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var lstSediRegionali = await _serviceDirezioni.GetAsync(url);
 
-            lstSediRegionali = lstSediRegionali.Select(f =>
-            {
-                if ((f?.descrizione.ToUpper().Contains("CENTRALE") ?? false) || (f?.descrizione.ToUpper().Contains("COMANDO VV.F. ") ?? false))
-                    f.descrizione = "CENTRALE " + f.id;
+            //lstSediRegionali = lstSediRegionali.Select(f =>
+            //{
+            //    if ((f?.descrizione.ToUpper().Contains("CENTRALE") ?? false) || (f?.descrizione.ToUpper().Contains("COMANDO VV.F. ") ?? false))
+            //        f.descrizione = "CENTRALE " + f.id;
 
-                return f;
-            }).ToList();
+            //    return f;
+            //}).ToList();
 
             return lstSediRegionali;
         }
@@ -107,13 +107,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var lstFigli = await _serviceDirezioni.GetAsync(url);
 
-            lstFigli = lstFigli.Select(f =>
-            {
-                if ((f?.descrizione.ToUpper().Contains("CENTRALE") ?? false) || (f?.descrizione.ToUpper().Contains("COMANDO VV.F. ") ?? false))
-                    f.descrizione = "CENTRALE " + f.provincia;
+            //lstFigli = lstFigli.Select(f =>
+            //{
+            //    if ((f?.descrizione.ToUpper().Contains("CENTRALE") ?? false) || (f?.descrizione.ToUpper().Contains("COMANDO VV.F. ") ?? false))
+            //        f.descrizione = "CENTRALE " + f.provincia;
 
-                return f;
-            }).ToList();
+            //    return f;
+            //}).ToList();
 
             return lstFigli.Where(f => f.tipologiaDistaccamento.codice != "14" && f.tipologiaDistaccamento.codice != "9").ToList();
         }
@@ -127,8 +127,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             var sede = _serviceSedi.GetAsync(url).Result;
 
-            if ((sede?.Descrizione.ToUpper().Contains("CENTRALE") ?? false) || (sede?.Descrizione.ToUpper().Contains("COMANDO VV.F.") ?? false))
-                sede.Descrizione = "CENTRALE " + sede.IdSedePadre;
+            //if ((sede?.Descrizione.ToUpper().Contains("CENTRALE") ?? false) || (sede?.Descrizione.ToUpper().Contains("COMANDO VV.F.") ?? false))
+            //    sede.Descrizione = "CENTRALE " + sede.IdSedePadre;
 
             return sede;
         }
@@ -158,7 +158,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
             {
                 Codice = ff.Codice,
-                Descrizione = ff.Nome.ToUpper().Replace("COMANDO VV.F. ", "CENTRALE "),
+                Descrizione = ff.Nome/*.ToUpper().Replace("COMANDO VV.F. ", "CENTRALE ")*/,
                 Coordinate = ff.Coordinate,
                 Indirizzo = null
             })));
@@ -257,19 +257,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                                     result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
                                 }
-                                //else
-                                //{
-                                //    var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(0, 0));
-
-                                //    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
-
-                                //    result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
-
-                                //}
                             }
-                            catch 
-                            { 
-                            }
+                            catch { }
                         }
                     };
 

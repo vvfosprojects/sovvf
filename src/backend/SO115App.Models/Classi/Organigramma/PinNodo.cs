@@ -67,10 +67,10 @@ namespace SO115App.API.Models.Classi.Organigramma
         ///   Restituisce l'hascode del codice unità operativa
         /// </summary>
         /// <returns>Hashcode dell'istanza</returns>
-        public override int GetHashCode()
-        {
-            return this.Codice.GetHashCode() ^
-                this.Ricorsivo.GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+        //    return this.Codice.GetHashCode() ^
+        //        this.Ricorsivo.GetHashCode();
+        //}
     }
 }
