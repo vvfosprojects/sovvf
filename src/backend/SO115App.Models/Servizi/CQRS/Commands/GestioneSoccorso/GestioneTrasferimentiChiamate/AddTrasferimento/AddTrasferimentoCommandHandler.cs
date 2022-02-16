@@ -32,7 +32,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
             var sedeA = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeA).Descrizione;
 
             if (!sedeA.ToUpper().Contains("CENTRALE"))
-                throw new Exception("Puoi trasferire la chiamata solo verso le centrali");
+                throw new Exception("Puoi trasferire la chiamata solo verso i comandi");
 
             var sedeDa = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeDa).Descrizione;
 
