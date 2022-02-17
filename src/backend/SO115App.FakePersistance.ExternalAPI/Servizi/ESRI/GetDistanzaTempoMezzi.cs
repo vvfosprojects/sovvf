@@ -3,6 +3,7 @@ using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ESRI;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
@@ -21,15 +22,25 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
         {
             try
             {
-                var uri = new Uri($"{_config.GetSection("").Value}/sfosidufs");
+                var uri = new Uri($"{_config.GetSection("ESRI").GetSection("URLDistanzaTempoMezzo").Value}");
 
-                var result = await _client.GetAsync(uri);
+                var result = await _client.PostAsync(uri);
 
                 return result;
             }
             catch (Exception e)
             {
-                throw new Exception("Errore servizio ESRI (Distanza tempo mezzi).");
+                return new ESRI_DistanzaTempoMezzoResponse()
+                {
+                    ArrayMezzi = obj.Mezzi.Select(m => new ESRI_MezzoResponse()
+                    {
+                        Codice = m.CodiceMezzo,
+                        Km = "41.200",
+                        Minuti = "12.9"
+                    }).ToList()
+                };
+
+                throw new Exception("Errore servizio ESRI (distanza e tempo mezzi).");
             }
         }
     }

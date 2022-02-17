@@ -20,6 +20,8 @@
 using ExternalAPI.Fake.Servizi.Personale;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
+using SO115App.ExternalAPI.Fake.Composizione;
+using SO115App.ExternalAPI.Fake.GestioneMezzi;
 using SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
@@ -50,6 +52,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
@@ -225,18 +228,11 @@ namespace SO115App.CompositionRoot
 
             #region Mezzi
 
-            //container.Register<
-            //   SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
-            //   SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
-
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
-            //    SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
             container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
 
-            container.Register<
-                IGetMezziUtilizzabiliByAreaMappa,
-                ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabiliByAreaMappa>();
+            container.Register<IGetMezziUtilizzabiliByAreaMappa, GetMezziUtilizzabiliByAreaMappa>();
+
+            container.Register<IOrdinamentoMezzi, OrdinamentoMezzi>();
 
             #endregion Mezzi
 

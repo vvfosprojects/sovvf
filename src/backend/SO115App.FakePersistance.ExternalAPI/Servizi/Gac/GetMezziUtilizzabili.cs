@@ -12,6 +12,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Concurrent;
@@ -28,7 +29,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
         private readonly IGetStringCoordinateByCodSede _getStringCoordinateByCodSede;
         private readonly IConfiguration _configuration;
-        private readonly OrdinamentoMezzi _ordinamento;
 
         private readonly IGetToken _getToken;
         private readonly IHttpRequestManager<IEnumerable<MezzoDTO>> _clientMezzi;
@@ -45,7 +45,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getPosizioneFlotta = getPosizioneFlotta;
             _getStringCoordinateByCodSede = getStringCoordinateByCodSede;
-            _ordinamento = new OrdinamentoMezzi(getTipologieByCodice, getDistanzaTempo);
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)

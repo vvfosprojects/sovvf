@@ -10,6 +10,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System;
 using System.Collections.Concurrent;
@@ -26,16 +27,21 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoMezzi _getMezziPrenotati;
+        private readonly IOrdinamentoMezzi _ordinamento;
 
         private readonly IGetSedi _getSedi;
 
-        public GetComposizioneMezzi(IGetSedi getSedi, IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
+        public GetComposizioneMezzi(IGetSedi getSedi, 
+            IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, 
+            IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
+            IOrdinamentoMezzi ordinamento)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
+            _ordinamento = ordinamento;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -60,6 +66,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
+
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
                 Parallel.ForEach(mezzi.Result, m =>
@@ -133,6 +140,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         }
                     }
 
+                    var lstOrdinamento = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList());
+
                     lstMezzi.Add(mc);
                 });
 
@@ -156,7 +165,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })).ContinueWith(lstMezzi =>
             {
                 return lstMezzi.Result //ORDINAMENTO
-                //.OrderBy(mezzo => mezzo.IndiceOrdinamento)
+                .OrderBy(mezzo => mezzo.IndiceOrdinamento)
                 .OrderBy(mezzo => (!query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => (!query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
