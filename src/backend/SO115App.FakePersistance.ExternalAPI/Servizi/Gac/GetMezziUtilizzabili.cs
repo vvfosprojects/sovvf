@@ -28,7 +28,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
         private readonly IGetStringCoordinateByCodSede _getStringCoordinateByCodSede;
         private readonly IConfiguration _configuration;
-        private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly OrdinamentoMezzi _ordinamento;
 
         private readonly IGetToken _getToken;
@@ -37,7 +36,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken, 
             IConfiguration configuration, IGetStatoMezzi GetStatoMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, 
             IGetPosizioneFlotta getPosizioneFlotta, IGetStringCoordinateByCodSede getStringCoordinateByCodSede,
-            IGetDistanzaTempoMezzi getDistanzaTempo)
+            IGetDistanzaTempoMezzi getDistanzaTempo, IGetTipologieByCodice getTipologieByCodice)
         {
             _getStatoMezzi = GetStatoMezzi;
             _clientMezzi = clientMezzi;
@@ -46,7 +45,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getPosizioneFlotta = getPosizioneFlotta;
             _getStringCoordinateByCodSede = getStringCoordinateByCodSede;
-            _ordinamento = new OrdinamentoMezzi(_getTipologieByCodice, getDistanzaTempo);
+            _ordinamento = new OrdinamentoMezzi(getTipologieByCodice, getDistanzaTempo);
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
@@ -66,10 +65,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 var codice = figlio.Codice;
                 string codiceE = "";
                 codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
+
                 if (string.IsNullOrEmpty(codiceE))
                 {
                     if (!ListaCodiciComandi.Contains(codice.Split('.')[0]))
                         ListaCodiciComandi.Add(codice.Split('.')[0]);
+
                     ListaCodiciSedi.Add(codice);
                 }
             }
@@ -98,16 +99,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             #endregion LEGGO DA API ESTERNA
 
             //MAPPING
-            var ListaMezzi = new List<Mezzo>();
-
-            foreach (var m in lstMezziDto)
+            var ListaMezzi = lstMezziDto.Select(m =>
             {
-                var mezzo = MapMezzo(m);
+                var mezzo = MapMezzo(m, ListaPosizioneFlotta, listaSediAlberate);
 
                 if (mezzo != null)
                 {
-                    var CoordinateMezzoGeoFleet = ListaPosizioneFlotta == null ? 
-                        posizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)) : 
+                    var CoordinateMezzoGeoFleet = ListaPosizioneFlotta == null ?
+                        posizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)) :
                         ListaPosizioneFlotta.Result.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
 
                     if (CoordinateMezzoGeoFleet == null)
@@ -128,9 +127,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                         mezzo.IdRichiesta = ListaStatoOperativoMezzo.FirstOrDefault(x => x.CodiceMezzo.Equals(mezzo.Codice)).CodiceRichiesta;
                     }
 
-                    ListaMezzi.Add(mezzo);
+                    return mezzo;
                 }
-            };
+                else return null;
+
+            }).ToList();
 
             return ListaMezzi;
         }
@@ -190,7 +191,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             return ListaMezzi;
         }
 
-        private Mezzo MapMezzo(MezzoDTO mezzoDto, Task<List<MessaggioPosizione>> ListaPosizioneFlotta = null, Task<UnitaOperativa> listaSediAlberate = null)
+        private Mezzo MapMezzo(MezzoDTO mezzoDto, Task<List<MessaggioPosizione>> ListaPosizioneFlotta, Task<UnitaOperativa> listaSediAlberate)
         {
             if (listaSediAlberate == null || ListaPosizioneFlotta == null)
             {
@@ -200,7 +201,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             try
             {
-                List<PinNodo> pinNodi = new List<PinNodo>();
+                var pinNodi = new List<PinNodo>();
                 pinNodi.Add(new PinNodo(mezzoDto.CodiceDistaccamento, true));
 
                 string descSede = "";
@@ -208,6 +209,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 Coordinate coordinate = null;
                 string[] coordinateStrg = new string[2];
                 var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Result.Find(x => x.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
+
                 if (CoordinateMezzoGeoFleet != null)
                 {
                     coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
@@ -225,13 +227,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                             coordinateStrg = _getStringCoordinateByCodSede.Get(figlio.Codice);
                             
                             if(coordinateStrg != null)
-                            {
                                 coordinate = new Coordinate(Convert.ToDouble(coordinateStrg[0].Replace(".", ",")), Convert.ToDouble(coordinateStrg[1].Replace(".", ",")));
-                            }
                             else
-                            {
                                 coordinateStrg = new string[] { "0", "0" };
-                            }
                         }
                     }
                 }
