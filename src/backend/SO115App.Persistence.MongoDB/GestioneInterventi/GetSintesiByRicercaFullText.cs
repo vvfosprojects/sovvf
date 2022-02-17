@@ -23,16 +23,19 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
+        private readonly IGetSedi _getSedi;
 
         public GetSintesiByRicercaFullText(DbContext dbContext,
                                            IGetSottoSediByCodSede getSottoSediByCodSede,
                                            IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC,
-                                           IMapperRichiestaSuSintesi mapperSintesi)
+                                           IMapperRichiestaSuSintesi mapperSintesi,
+                                           IGetSedi getSedi)
         {
             _dbContext = dbContext;
             _getSottoSediByCodSede = getSottoSediByCodSede;
             _getDistaccamentoUC = getDistaccamentoUC;
             _mapperSintesi = mapperSintesi;
+            _getSedi = getSedi;
         }
 
         public List<SintesiRichiesta> GetListaSintesi(string[] CodSede, string TextToSearch)
@@ -68,8 +71,8 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                  var rubrica = new List<EnteDTO>();
                  var sintesi = new SintesiRichiesta();
                  sintesi = _mapperSintesi.Map(richiesta);
-                 sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                 sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
+                 sintesi.Competenze = richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
+                 sintesi.SediAllertate = richiesta.CodSOAllertate != null ? richiesta.CodSOAllertate.ToArray().MapCompetenze(_getSedi) : null;
                  return sintesi;
              });
 
@@ -83,27 +86,6 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenByDescending(x => x.IstanteRicezioneRichiesta)
                     .ToList();
-        }
-
-        private List<Sede> MapCompetenze(string[] codUOCompetenza)
-        {
-            var listaSedi = new List<Sede>();
-            int i = 1;
-            foreach (var codCompetenza in codUOCompetenza)
-            {
-                if (i <= 3)
-                {
-                    var Distaccamento = _getDistaccamentoUC.Get(codCompetenza).Result;
-                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate);
-
-                    if (sede != null)
-                        listaSedi.Add(sede);
-                }
-
-                i++;
-            }
-
-            return listaSedi;
         }
     }
 }

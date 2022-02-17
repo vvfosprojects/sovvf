@@ -43,37 +43,28 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetTurno _getTurno;
-        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamento;
         private readonly ISetStatoGestioneSchedaContatto _setStatoGestioneSchedaContatto;
         private readonly IGetUtenteById _getUtenteById;
-        //private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
+        private readonly IGetSedi _getSedi;
 
         public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza,
                                            IGeneraCodiceRichiesta generaCodiceRichiesta,
                                            IGetTurno getTurno,
-                                           //IGetCompetenzeByCoordinateIntervento getCompetenze,
-                                           IGetDistaccamentoByCodiceSedeUC getDistaccamento,
                                            ISetStatoGestioneSchedaContatto setStatoGestioneSchedaContatto,
-                                           IGetUtenteById getUtenteById)
+                                           IGetUtenteById getUtenteById,
+                                           IGetSedi getSedi)
         {
             _saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
             _getTurno = getTurno;
-            //_getCompetenze = getCompetenze;
-            _getDistaccamento = getDistaccamento;
             _setStatoGestioneSchedaContatto = setStatoGestioneSchedaContatto;
             _getUtenteById = getUtenteById;
+            _getSedi = getSedi;
         }
 
         public void Handle(AddInterventoCommand command)
         {
-            var lstCompetenze = new List<Distaccamento>();
-
-            if (command.CodCompetenze != null)
-            {
-                lstCompetenze = command.CodCompetenze.Select(c => _getDistaccamento.Get(c).Result).ToList();
-                lstCompetenze.RemoveAll(c => c == null);
-            }
+            var sedi = _getSedi.GetAll().Result.Where(s => command.CodCompetenze.Contains(s.Codice)).ToList();
 
             command.Chiamata.Codice = _generaCodiceRichiesta.GeneraCodiceChiamata(command.CodiceSede, DateTime.UtcNow.Year);
 
@@ -98,7 +89,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
                 CodUOCompetenza = command.CodCompetenze.ToArray(),
-                Competenze = lstCompetenze.Select(d => d.MapSede()).ToList(),
+                Competenze = sedi,
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = command.CodCompetenze.ToList()[0],
                 CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c).ToList(),
@@ -110,7 +101,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             };
 
             //Aggiungo le competenze alla chiamata per la gestione delle notifiche di CodaChiamate
-            command.Chiamata.Competenze = lstCompetenze.Select(d => new Sede(d.Id.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate)).ToList();
+            command.Chiamata.Competenze = sedi;
 
             if (command.Chiamata.Tags != null)
                 richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);
