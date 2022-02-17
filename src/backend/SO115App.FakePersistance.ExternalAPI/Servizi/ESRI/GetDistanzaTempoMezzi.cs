@@ -43,7 +43,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
                 {
                     ArrayMezzi = obj.Mezzi.Select(m => new ESRI_MezzoResponse()
                     {
-                        codice = m.CodiceMezzo,
+                        codice = m.codiceMezzo,
                         distanza = "41.200",
                         tempo = "12.9"
                     }).ToList()

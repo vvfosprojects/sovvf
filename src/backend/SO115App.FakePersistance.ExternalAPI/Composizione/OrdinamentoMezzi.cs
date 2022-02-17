@@ -32,9 +32,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         {
             var lstMezziEsri = composizioni.Select(c => new ESRI_Mezzo()
             {
-                CodiceMezzo = c.Mezzo.Codice,
-                Coordinate = string.Join(',', c.Mezzo?.CoordinateStrg ?? new string[] { "0", "0" }),
-                Track = !c.Mezzo.Genere.Equals("AV"),
+                codiceMezzo = c.Mezzo.Codice,
+                coordinate = string.Join(", ", c.Mezzo?.CoordinateStrg ?? new string[] { "0", "0" }),
+                track = !c.Mezzo.Genere.Equals("AV"),
             }).ToList();
 
             foreach (var composizione in composizioni)
@@ -45,7 +45,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     var distanzaTempo = _getDistanzaTempoMezzi.Get(new ESRI_DistanzaTempoMezzi()
                     {
-                        CoordinateIntervento = string.Join(',', Richiesta.Localita.CoordinateString ?? new string[] { "0", "0" }),
+                        CoordinateIntervento = string.Join(", ", Richiesta.Localita.CoordinateString ?? new string[] { "0", "0" }),
                         Mezzi = lstMezziEsri
                     });
 
