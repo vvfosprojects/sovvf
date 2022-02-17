@@ -100,7 +100,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             DettaglioDistaccamento dettaglio = new DettaglioDistaccamento()
             {
                 codDistaccamento = query.CodiceSede,
-                descDistaccamento = listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Codice.Contains("1000") ? "Sede Centrale" : listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome,
+                descDistaccamento = listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Codice.Contains("1000") ? 
+                    "Comando VV.F. " + listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome 
+                    : listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome,
                 listaSintesi = listaSintesi != null ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(query.CodiceSede) && (x.Stato.Equals("Chiamata") || x.Sospesa)) : null,
                 listaSquadre = listaSquadre.FindAll(x => x.Distaccamento.Codice.Equals(query.CodiceSede) && x.Turno.Equals(char.Parse(turnoCorrente.Substring(0, 1)))).Select(x => new Squadra()
                 {

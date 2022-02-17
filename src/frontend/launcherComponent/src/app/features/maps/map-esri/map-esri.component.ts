@@ -815,35 +815,41 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     // Aggiunge i widget sulla mappa
     async initializeWidget(): Promise<any> {
+        console.log('view', this.view);
+
         const layerList = new LayerList({
-            view: this.view,
+            view: this.view
         });
 
         const llExpand = new Expand({
+            id: 'layerList',
             view: this.view,
-            content: layerList,
+            content: layerList
         });
 
         const legend = new Legend({
-            view: this.view,
+            view: this.view
         });
 
         const leExpand = new Expand({
+            id: 'legend',
             view: this.view,
-            content: legend,
+            content: legend
         });
 
         const basemapGallery = new BasemapGallery({
-            view: this.view,
+            view: this.view
         });
 
         const bgExpand = new Expand({
+            id: 'basemapList',
             view: this.view,
-            content: basemapGallery,
+            content: basemapGallery
         });
 
         const search = new Search({
-            view: this.view,
+            id: 'search',
+            view: this.view
         });
 
         // TODO: implementare in un secondo momento
@@ -896,13 +902,24 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         //     this.setDrawContextMenuVisible(false);
         // });
 
-        this.view.ui.add(llExpand, 'top-right');
-        this.view.ui.add(leExpand, 'top-right');
-        this.view.ui.add(bgExpand, 'top-right');
-        this.view.ui.add(search, {
-            position: 'top-left',
-            index: 0 // indico la posizione nella UI
-        });
+        console.log('this.view.ui._components', this.view.ui._components);
+
+        if (!this.view.ui._components?.filter((c) => c.id === 'layerList')?.length) {
+            this.view.ui.add(llExpand, 'top-right');
+        }
+        if (!this.view.ui._components?.filter((c) => c.id === 'legend')?.length) {
+            this.view.ui.add(leExpand, 'top-right');
+        }
+        if (!this.view.ui._components?.filter((c) => c.id === 'basemapList')?.length) {
+            this.view.ui.add(bgExpand, 'top-right');
+        }
+
+        if (!this.view.ui._components?.filter((c) => c.id === 'search')?.length) {
+            this.view.ui.add(search, {
+                position: 'top-left',
+                index: 0 // indico la posizione nella UI
+            });
+        }
 
         // TODO: implementare in un secondo momento
         // this.view.ui.add(sketch, 'bottom-right');
