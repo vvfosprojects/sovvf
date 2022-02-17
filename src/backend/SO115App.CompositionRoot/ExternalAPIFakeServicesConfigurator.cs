@@ -47,6 +47,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
@@ -334,6 +335,7 @@ namespace SO115App.CompositionRoot
             container.Register<IMappingESRIMessage, MappingESRIMessage>();
             container.Register<INotifyUpDateSchedaContatto, SendUpDateSchedaContatto>();
             container.Register<IGetCompetenzeByCoordinateIntervento, GetCompetenzeByCoordinateIntervento>();
+            container.Register<IGetDistanzaTempoMezzi, GetDistanzaTempoMezzi>();
 
             #endregion ESRI
 

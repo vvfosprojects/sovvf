@@ -2,12 +2,15 @@
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
+using SO115App.ExternalAPI.Fake.Composizione;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
@@ -21,27 +24,29 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     public class GetMezziUtilizzabili : IGetMezziUtilizzabili
     {
         private readonly IGetStatoMezzi _getStatoMezzi;
-        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
         private readonly IGetStringCoordinateByCodSede _getStringCoordinateByCodSede;
         private readonly IConfiguration _configuration;
+        private readonly IGetTipologieByCodice _getTipologieByCodice;
+        private readonly OrdinamentoMezzi _ordinamento;
 
         private readonly IGetToken _getToken;
         private readonly IHttpRequestManager<IEnumerable<MezzoDTO>> _clientMezzi;
 
-        public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
-            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetPosizioneFlotta getPosizioneFlotta, IGetStringCoordinateByCodSede getStringCoordinateByCodSede)
+        public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken, 
+            IConfiguration configuration, IGetStatoMezzi GetStatoMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, 
+            IGetPosizioneFlotta getPosizioneFlotta, IGetStringCoordinateByCodSede getStringCoordinateByCodSede,
+            IGetDistanzaTempoMezzi getDistanzaTempo)
         {
             _getStatoMezzi = GetStatoMezzi;
             _clientMezzi = clientMezzi;
             _configuration = configuration;
             _getToken = getToken;
-            _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getPosizioneFlotta = getPosizioneFlotta;
             _getStringCoordinateByCodSede = getStringCoordinateByCodSede;
+            _ordinamento = new OrdinamentoMezzi(_getTipologieByCodice, getDistanzaTempo);
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
@@ -49,7 +54,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var pinNodi = sedi.Select(s => new PinNodo(s, true));
             var ListaCodiciComandi = new List<string>();
             var ListaCodiciSedi = new List<string>();
+            Task<List<MessaggioPosizione>> ListaPosizioneFlotta = null;
+
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
+            if (posizioneFlotta == null)
+                ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
 
             foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
             {
@@ -63,12 +73,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     ListaCodiciSedi.Add(codice);
                 }
             }
-
-            var ListaPosizioneFlotta = new List<MessaggioPosizione>();
-            if (posizioneFlotta == null)
-                ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
-            else
-                ListaPosizioneFlotta = posizioneFlotta;
 
             #region LEGGO DA API ESTERNA
 
@@ -102,7 +106,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
                 if (mezzo != null)
                 {
-                    var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
+                    var CoordinateMezzoGeoFleet = ListaPosizioneFlotta == null ? 
+                        posizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)) : 
+                        ListaPosizioneFlotta.Result.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
 
                     if (CoordinateMezzoGeoFleet == null)
                     {
