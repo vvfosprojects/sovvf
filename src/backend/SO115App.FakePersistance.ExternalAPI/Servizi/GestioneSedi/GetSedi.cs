@@ -341,10 +341,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 {
                     listaSediMarker.Add(sedeMarker);
                 }
-                else if ((sede.Coordinate.Latitudine >= Filtro.BottomLeft.Latitudine)
-                        && (sede.Coordinate.Latitudine <= Filtro.TopRight.Latitudine)
-                        && (sede.Coordinate.Longitudine >= Filtro.BottomLeft.Longitudine)
-                        && (sede.Coordinate.Longitudine <= Filtro.TopRight.Longitudine))
+                //else if ((sede.Coordinate.Latitudine >= Filtro.BottomLeft.Latitudine)
+                //        && (sede.Coordinate.Latitudine <= Filtro.TopRight.Latitudine)
+                //        && (sede.Coordinate.Longitudine >= Filtro.BottomLeft.Longitudine)
+                //        && (sede.Coordinate.Longitudine <= Filtro.TopRight.Longitudine))
+                else
                 {
                     sedeMarker.Codice = sede.Codice;
                     sedeMarker.Coordinate = sede.Coordinate;
@@ -354,6 +355,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                     listaSediMarker.Add(sedeMarker);
                 }
+
             });
 
             return listaSediMarker.ToList();
