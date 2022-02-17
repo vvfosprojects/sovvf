@@ -23,18 +23,18 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getDistanzaTempoMezzi = getDistanzaTempoMezzi;
         }
 
-        public async Task<List<decimal>> GetIndiceOrdinamento(RichiestaAssistenza Richiesta, List<ComposizioneMezzi> composizioni)
+        public async Task<List<ComposizioneMezzi>> GetIndiceOrdinamento(RichiestaAssistenza Richiesta, List<ComposizioneMezzi> composizioni)
         {
             return GetIndiceOrdinamentoFunc(Richiesta, composizioni).ToList();
         }
 
-        private IEnumerable<decimal> GetIndiceOrdinamentoFunc(RichiestaAssistenza Richiesta, List<ComposizioneMezzi> composizioni)
+        private IEnumerable<ComposizioneMezzi> GetIndiceOrdinamentoFunc(RichiestaAssistenza Richiesta, List<ComposizioneMezzi> composizioni)
         {
             var lstMezziEsri = composizioni.Select(c => new ESRI_Mezzo()
             {
                 CodiceMezzo = c.Mezzo.Codice,
-                Coordinate = string.Concat(c.Mezzo.CoordinateStrg),
-                Track = c.Mezzo.Genere.Equals("AV") ? false : true,
+                Coordinate = string.Concat(c.Mezzo?.CoordinateStrg ?? new string[] { "", "" }),
+                Track = !c.Mezzo.Genere.Equals("AV"),
             }).ToList();
 
             foreach (var composizione in composizioni)
@@ -49,18 +49,19 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Mezzi = lstMezziEsri
                     });
 
-                    var tempodist = distanzaTempo.Result.ArrayMezzi.Find(m => m.Codice.Equals(composizione.Mezzo.Codice));
-
-                    composizione.Km = tempodist.Km;
-                    composizione.TempoPercorrenza = tempodist.Minuti;
+                    var tempodist = distanzaTempo.Result.ArrayMezzi.Find(m => m.codice.Equals(composizione.Mezzo.Codice));
 
                     var ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie, composizione.Mezzo.Genere);
 
                     result = 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreAdeguatezzaMezzo.Result;
+
+                    composizione.Km = tempodist.distanza;
+                    composizione.TempoPercorrenza = tempodist.tempo;
+                    composizione.IndiceOrdinamento = result;
                 }
                 catch (Exception) { }
 
-                yield return result;
+                yield return composizione;
             }
         }
 
