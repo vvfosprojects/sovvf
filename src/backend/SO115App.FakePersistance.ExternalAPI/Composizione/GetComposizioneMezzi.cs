@@ -10,6 +10,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using System;
 using System.Collections.Concurrent;
@@ -21,23 +22,26 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
-        //private readonly OrdinamentoMezzi _ordinamento;
-
         private readonly IGetSquadre _getSquadre;
         private readonly IGetStatoSquadra _getStatoSquadre;
 
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoMezzi _getMezziPrenotati;
+        private readonly IOrdinamentoMezzi _ordinamento;
 
         private readonly IGetSedi _getSedi;
 
-        public GetComposizioneMezzi(IGetSedi getSedi, IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili, IGetTipologieByCodice getTipologieCodice, IConfiguration config, IHttpRequestManager<Google_API.DistanceMatrix> clientMatrix)
+        public GetComposizioneMezzi(IGetSedi getSedi, 
+            IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, 
+            IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
+            IOrdinamentoMezzi ordinamento)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
+            _ordinamento = ordinamento;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -62,6 +66,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
+
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
                 Parallel.ForEach(mezzi.Result, m =>
@@ -93,30 +98,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     m.PreAccoppiato = lstSqPreacc.Result?.Count > 0;
                     m.IdRichiesta = statiOperativiMezzi.FirstOrDefault(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
 
-                    var coord = query.Richiesta.Localita.CoordinateString.Select(c => c.Replace(',', '.')).ToArray();
-
                     Coordinate coordinateMezzo = null;
 
                     if (m.CoordinateStrg != null)
                     {
                         if (m.CoordinateStrg[0] == null)
-                        {
                             coordinateMezzo = new Coordinate(m.Distaccamento.Coordinate.Latitudine, m.Distaccamento.Coordinate.Longitudine);
-                        }
                         else
                             coordinateMezzo = new Coordinate(Convert.ToDouble(m.CoordinateStrg[0]), Convert.ToDouble(m.CoordinateStrg[1]));
-                    }
-                    var distanzaKm = "";
-                    if (coordinateMezzo != null)
-                    {
-#if !DEBUG
-                        //distanzaKm = (new GeoCoordinate(coordinateMezzo.Latitudine, coordinateMezzo.Longitudine)
-                        //    .GetDistanceTo(new GeoCoordinate(Convert.ToDouble(coord[0]), Convert.ToDouble(coord[1])))
-                        //    / 1000).ToString("N1");
-#endif
-#if DEBUG
-                        distanzaKm = "0";
-#endif
                     }
 
                     var mc = new ComposizioneMezzi()
@@ -125,9 +114,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Mezzo = m,
                         IndirizzoIntervento = m.Stato != Costanti.MezzoInSede ? query?.Richiesta?.Localita.Indirizzo : null,
                         SquadrePreaccoppiate = lstSqPreacc.Result,
-                        ListaSquadre = lstSquadreInRientro.Result,
-                        Km = distanzaKm,
-                        TempoPercorrenza = null
+                        ListaSquadre = lstSquadreInRientro.Result
                     };
 
                     var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
@@ -140,7 +127,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         {
                             case Costanti.MezzoInViaggio:
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
-                                mc.Km = distanzaKm;
                                 break;
 
                             case Costanti.MezzoSulPosto:
@@ -153,6 +139,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 goto case Costanti.MezzoInViaggio;
                         }
                     }
+
+                    var lstOrdinamento = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList());
 
                     lstMezzi.Add(mc);
                 });
@@ -174,9 +162,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 bool stato = query.Filtro?.Stato?.Contains(mezzo.Mezzo.Stato) ?? true;
 
                 return ricerca && distaccamento && genere && stato;
-            })).ContinueWith(lstMezzi =>//ORDINAMENTO
+            })).ContinueWith(lstMezzi =>
             {
-                return lstMezzi.Result
+                return lstMezzi.Result //ORDINAMENTO
+                .OrderBy(mezzo => mezzo.IndiceOrdinamento)
                 .OrderBy(mezzo => (!query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => (!query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
@@ -191,9 +180,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 .ToList();
             });
 
-            var result = lstMezziComposizione.Result.ToList();
-
-            return result;
+            return lstMezziComposizione.Result;
         }
     }
 }
