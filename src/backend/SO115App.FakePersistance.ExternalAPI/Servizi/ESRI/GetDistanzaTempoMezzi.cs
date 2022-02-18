@@ -39,15 +39,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             }
             catch (Exception e)
             {
-                return new ESRI_DistanzaTempoMezzoResponse()
-                {
-                    ArrayMezzi = obj.Mezzi.Select(m => new ESRI_MezzoResponse()
-                    {
-                        codice = m.codiceMezzo,
-                        distanza = "41.200",
-                        tempo = "12.9"
-                    }).ToList()
-                };
+                //return new ESRI_DistanzaTempoMezzoResponse()
+                //{
+                //    ArrayMezzi = obj.Mezzi.Select(m => new ESRI_MezzoResponse()
+                //    {
+                //        codice = m.codiceMezzo,
+                //        distanza = "41.200",
+                //        tempo = "12.9"
+                //    }).ToList()
+                //};
 
                 throw new Exception("Errore servizio ESRI (distanza e tempo mezzi).");
             }
