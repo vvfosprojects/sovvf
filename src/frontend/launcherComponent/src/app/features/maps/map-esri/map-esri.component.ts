@@ -60,7 +60,6 @@ import RouteParameters from '@arcgis/core/rest/support/RouteParameters';
 import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import RouteTask from '@arcgis/core/tasks/RouteTask';
 import RouteResult from '@arcgis/core/tasks/support/RouteResult';
-import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
@@ -155,18 +154,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
                 // Lista layer (client) da aggiungere alla mappa
                 const layersToInitialize = [
-                    this.initializeChiamateInCorsoLayer(),
-                    this.initializeSediOperativeLayer()
+                    this.initializeChiamateInCorsoLayer()
                 ];
                 Promise.all(layersToInitialize).then(() => {
-                    // Feature Layers da nascondere
-                    const layersToHide = [
-                        'Sedi Operative'
-                    ];
-                    for (const layerToHide of layersToHide) {
-                        this.toggleLayer(layerToHide, false).then();
-                    }
-
                     // Se ci sono aggiungo i markers chiamata
                     if (this.chiamateMarkers?.length) {
                         this.addChiamateMarkersToLayer(this.chiamateMarkers, true).then();
@@ -275,12 +265,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             if (!markersChiamate.filter((mC: ChiamataMarker) => mC.mySelf)?.length) {
                 this.clearSearchForARIRAndIdranti();
             }
-        }
-
-        // Aggiungo i Sedi Markers con "ApplyEdits"
-        if (changes?.sediMarkers?.currentValue && this.sediOperativeFeatureLayer) {
-            const markersSedi = changes?.sediMarkers?.currentValue;
-            this.addSediMarkersToLayer(markersSedi, true).then();
         }
 
         // Controllo il valore di "tastoChiamataMappaActive"
@@ -632,80 +616,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         this.map.add(this.chiamateInCorsoFeatureLayer);
     }
 
-    // Inizializza il layer "Sedi Operative"
-    async initializeSediOperativeLayer(): Promise<any> {
-        // creazione renderer SediOperative
-        const rendererSediOperative = new UniqueValueRenderer({
-            field: 'tipo',
-            uniqueValueInfos: [
-                {
-                    value: 'Comando',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/sedi/ns/sede5.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-                {
-                    value: 'Distaccamento',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/sedi/ns/sede5.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                }
-            ],
-        });
-
-        // creazione feature layer
-        this.sediOperativeFeatureLayer = new FeatureLayer({
-            title: 'Sedi Operative',
-            outFields: ['*'],
-            source: [],
-            objectIdField: 'ID',
-            popupEnabled: true,
-            labelsVisible: true,
-            // featureReduction: clusterConfigSediOperative,
-            renderer: rendererSediOperative,
-            fields: [
-                {
-                    name: 'ID',
-                    alias: 'id',
-                    type: 'oid',
-                },
-                {
-                    name: 'codice',
-                    alias: 'codice',
-                    type: 'string',
-                },
-                {
-                    name: 'tipo',
-                    alias: 'tipo',
-                    type: 'string',
-                },
-                {
-                    name: 'descrizione',
-                    alias: 'descrizione',
-                    type: 'string',
-                }
-            ],
-            spatialReference: {
-                wkid: 3857
-            },
-            popupTemplate: {
-                title: 'ID: {id}',
-                content:
-                    '<ul><li>Tipo: {tipo} </li>' +
-                    '<ul><li>Codice: {codice} </li>' +
-                    '<ul><li>Descrizione: {descrizione} </li>'
-            },
-            geometryType: 'point'
-        });
-
-        // aggiungo il feature layer alla mappa
-        this.map.add(this.sediOperativeFeatureLayer);
-    }
-
     // Aggiunge i marker delle chiamate in corso al layer "Chiamate in Corso"
     async addChiamateMarkersToLayer(chiamateMarkers: ChiamataMarker[], applyEdits?: boolean): Promise<any> {
         if (this.chiamateMarkersGraphics?.length) {
@@ -755,61 +665,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             }
 
             return chiamateMarkersGraphicsToAdd;
-        }
-    }
-
-    // Aggiunge i marker delle sedi al layer "Sedi Operative"
-    async addSediMarkersToLayer(sediMarkers: SedeMarker[], applyEdits?: boolean): Promise<any> {
-        if (this.sediOperativeMarkersGraphics?.length) {
-            const query = { where: '1=1' };
-            this.sediOperativeFeatureLayer.queryFeatures(query).then((results) => {
-                const deleteFeatures = results.features;
-                deleteFeatureSediOperativeLayer(this.sediOperativeFeatureLayer, deleteFeatures).then(() => {
-                    addMarkers(this.sediOperativeFeatureLayer).then((sediOperativeMarkersGraphics: any[]) => {
-                        this.sediOperativeMarkersGraphics = sediOperativeMarkersGraphics;
-                        this.sediOperativeFeatureLayer.refresh();
-                    });
-                });
-            });
-        } else {
-            addMarkers(this.sediOperativeFeatureLayer).then((sediOperativeMarkersGraphics: any[]) => {
-                this.sediOperativeMarkersGraphics = sediOperativeMarkersGraphics;
-            });
-        }
-
-        async function deleteFeatureSediOperativeLayer(sediOperativeFeatureLayer: FeatureLayer, deleteFeatures: any): Promise<any> {
-            await sediOperativeFeatureLayer.applyEdits({ deleteFeatures });
-            sediOperativeFeatureLayer.refresh();
-        }
-
-        async function addMarkers(sediOperativeFeatureLayer: FeatureLayer): Promise<any[]> {
-            const sediOperativeMarkersGraphicsToAdd = [];
-            for (const markerDaStampare of sediMarkers) {
-                const long = markerDaStampare.coordinate.longitudine;
-                const lat = markerDaStampare.coordinate.latitudine;
-                const p: any = [long, lat];
-                const mp = new Point(p);
-                const graphic = new Graphic({
-                    geometry: mp,
-                    attributes: {
-                        ID: markerDaStampare.codice,
-                        codice: markerDaStampare.codice,
-                        tipo: markerDaStampare.tipo,
-                        descrizione: markerDaStampare.descrizione
-                    }
-                });
-                sediOperativeMarkersGraphicsToAdd.push(graphic);
-            }
-
-            if (!applyEdits) {
-                sediOperativeFeatureLayer.source.addMany(sediOperativeMarkersGraphicsToAdd);
-            } else if (applyEdits) {
-                sediOperativeFeatureLayer.applyEdits({ addFeatures: sediOperativeMarkersGraphicsToAdd }).then(() => {
-                    sediOperativeFeatureLayer.refresh();
-                });
-            }
-
-            return sediOperativeMarkersGraphicsToAdd;
         }
     }
 
