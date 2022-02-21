@@ -65,7 +65,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         public RichiestaAssistenza()
         {
             this._eventi = new List<Evento>();
-            this.Tipologie = new List<string>();
+            this.Tipologie = new List<Tipologia>();
             this.Tags = new HashSet<string>();
             this.UtInLavorazione = new List<string>();
             this.UtPresaInCarico = new List<string>();
@@ -443,7 +443,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Per es. è la lista { valanga, soccorso a persona, ricerca disperso, messa in sicurezza
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
-        public virtual List<string> Tipologie { get; set; }
+        public virtual List<Tipologia> Tipologie { get; set; }
 
         public TipologiaDettaglio DettaglioTipologia { get; set; }
 

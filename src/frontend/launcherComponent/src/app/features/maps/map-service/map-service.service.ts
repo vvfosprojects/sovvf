@@ -6,7 +6,6 @@ import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetCentroMappa } from '../store/actions/centro-mappa.actions';
 import { AreaMappa } from '../maps-model/area-mappa-model';
-import { SetAreaMappa } from '../store/actions/area-mappa.actions';
 import { MAPSOPTIONS } from '../../../core/settings/maps-options';
 import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../shared/helper/mappa/function-mappa';
 
@@ -27,14 +26,9 @@ export class MapService {
          */
         this.getCentro().subscribe(
             centroMappa => {
-                // console.log('Centro mappa aggiornato', centroMappa);
                 this.store.dispatch(new SetCentroMappa(centroMappa));
             }
         );
-        /**
-         * Subject Coordinate Area Mappa Attuale
-         */
-        this.getArea().subscribe(area => this.store.dispatch(new SetAreaMappa(area)));
     }
 
     setCentro(centroMappa: CentroMappa): void {
@@ -57,14 +51,6 @@ export class MapService {
             this.area$.next(area);
         }
         this.wipeTopRight = area.topRight;
-    }
-
-    private getArea(): Observable<AreaMappa> {
-        return this.area$.asObservable().pipe(debounceTime(MAPSOPTIONS.panMarkerRefresh));
-    }
-
-    setRefresh(value: boolean): void {
-        this.refresh$.next(true);
     }
 
     getRefresh(): Observable<boolean> {

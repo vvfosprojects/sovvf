@@ -12,18 +12,17 @@ import { ModalNuovaChiamataComponent } from './modal-nuova-chiamata/modal-nuova-
 /**
  * Provider
  */
-import { SediMarkerService, ChiamateMarkerService } from '../../core/service/maps-service';
+import { ChiamateMarkerService } from '../../core/service/maps-service';
 import { MapService } from './map-service/map-service.service';
 /**
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
 import { MapsDirectionState } from './store/states/maps-direction.state';
-import { SediMarkersState } from './store/states/sedi-markers.state';
 import { CentroMappaState } from './store/states/centro-mappa.state';
 import { ChiamateMarkersState } from './store/states/chiamate-markers.state';
-import { AreaMappaState } from './store/states/area-mappa.state';
 import { TravelModeService } from './map-service/travel-mode.service';
+import { EsriService } from './map-service/esri.service';
 
 @NgModule({
     imports: [
@@ -35,8 +34,6 @@ import { TravelModeService } from './map-service/travel-mode.service';
             [
                 MapsDirectionState,
                 CentroMappaState,
-                AreaMappaState,
-                SediMarkersState,
                 ChiamateMarkersState
             ]
         )
@@ -50,9 +47,9 @@ import { TravelModeService } from './map-service/travel-mode.service';
         MapsComponent
     ],
     providers: [
-        SediMarkerService,
         ChiamateMarkerService,
         MapService,
+        EsriService,
         TravelModeService
     ]
 })

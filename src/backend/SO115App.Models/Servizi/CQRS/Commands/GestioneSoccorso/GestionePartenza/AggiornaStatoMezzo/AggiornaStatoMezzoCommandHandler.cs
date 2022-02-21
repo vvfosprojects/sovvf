@@ -183,8 +183,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     dataUscita = command.DataOraAggiornamento,
                     tipoUscita = new TipoUscita()
                     {
-                        codice = richiesta.Tipologie.First(),
-                        descrizione = _getTipologie.Get(new List<string>() { richiesta.Tipologie.First() }).First().Descrizione
+                        codice = richiesta.Tipologie.Select(t => t.Codice).First(),
+                        descrizione = _getTipologie.Get(new List<string>() { richiesta.Tipologie.Select(t => t.Codice).First() }).First().Descrizione
                     }
                 });
 
@@ -223,7 +223,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     else
                         return false;
 
-                default: 
+                default:
                     return false;
             }
         }

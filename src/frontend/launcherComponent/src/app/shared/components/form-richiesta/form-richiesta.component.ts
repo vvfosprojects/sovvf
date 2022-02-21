@@ -635,19 +635,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     modificaIndirizzo(indirizzo: string): void {
         this.f.indirizzo.patchValue(indirizzo);
-        const lat = roundToDecimal(this.f.latitudine.value, 6);
-        const lng = roundToDecimal(this.f.longitudine.value, 6);
-        if (!indirizzo && (lat && lng)) {
-            this.f.indirizzo.setValidators([]);
-
-            // TODO: risolvere glitch
-            this.f.indirizzo.patchValue(' ');
-            setTimeout(() => {
-                this.f.indirizzo.patchValue('');
-            }, 1);
-        } else if (!lat || !lng) {
-            this.f.indirizzo.setValidators([Validators.required]);
-        }
         this.f.codPrimaCompetenza.patchValue(null);
         this.f.codSecondaCompetenza.patchValue(null);
         this.f.codTerzaCompetenza.patchValue(null);
@@ -685,16 +672,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     null
                 );
                 this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
-            }
-
-            if (!indirizzoInserito) {
-                this.f.indirizzo.setValidators([]);
-
-                // TODO: risolvere glitch
-                this.f.indirizzo.patchValue(' ');
-                setTimeout(() => {
-                    this.f.indirizzo.patchValue('');
-                }, 1);
             }
         } else {
             this.store.dispatch([

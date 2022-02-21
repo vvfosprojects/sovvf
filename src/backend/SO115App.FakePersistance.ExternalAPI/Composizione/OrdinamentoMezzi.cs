@@ -51,7 +51,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     var tempodist = distanzaTempo.Result.ArrayMezzi.Find(m => m.codice.Equals(composizione.Mezzo.Codice));
 
-                    var ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie, composizione.Mezzo.Genere);
+                    var ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie.Select(c => c.Codice).ToList(), composizione.Mezzo.Genere);
 
                     result = 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreAdeguatezzaMezzo.Result;
 
@@ -70,20 +70,20 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var tipologie = _getTipologieByCodice.Get(codiciTipologie);
 
             if (tipologie != null) foreach (var tipologia in tipologie)
-            {
-                if (tipologia != null)
                 {
-                    return genere switch
+                    if (tipologia != null)
                     {
-                        "APS" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Aps),
-                        "AS" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.As),
-                        "AB" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Ab),
-                        "AV" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Av),
-                        "AG" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Ag),
-                        _ => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Default),
-                    };
+                        return genere switch
+                        {
+                            "APS" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Aps),
+                            "AS" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.As),
+                            "AB" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Ab),
+                            "AV" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Av),
+                            "AG" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Ag),
+                            _ => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Default),
+                        };
+                    }
                 }
-            }
 
             return 10;
         }

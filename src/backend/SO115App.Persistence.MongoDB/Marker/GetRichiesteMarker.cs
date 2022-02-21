@@ -69,7 +69,7 @@ namespace SO115App.Persistence.MongoDB.Marker
                     RilevanteGrave = richiesta.RilevanteGrave,
                     RilevanteStArCu = richiesta.RilevanteStArCu,
                     Sospesa = richiesta.Sospesa,
-                    Tipologie = _getTipologie.Get(richiesta.Tipologie)
+                    Tipologie = _getTipologie.Get(richiesta.Tipologie.Select(c => c.Codice).ToList())
                 };
 
                 listaSintesiRichiesteMarker.Add(sintesi);

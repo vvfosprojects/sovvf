@@ -23,7 +23,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
         private readonly IPDFTemplateManager<RiepilogoInterventiModelForm> _pdfManager;
         private readonly ICSVTemplateManager<RiepilogoInterventiModelForm> _csvManager;
 
-        public RiepilogoInterventiPathQueryHandler(IGetSedi getSedi, 
+        public RiepilogoInterventiPathQueryHandler(IGetSedi getSedi,
             IGetRiepilogoInterventi getRiepilogoInterventi,
             IGetUtenteById getUtente,
             IGetTipologieByCodice getTipologie,
@@ -46,7 +46,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
 
-            var lstTipologie = _getTipologie.Get(lstInterventi?.SelectMany(i => i.Tipologie).ToList());
+            var lstTipologie = _getTipologie.Get(lstInterventi?.SelectMany(i => i.Tipologie.Select(c => c.Codice).ToList()).ToList());
 
             var filename = "Riepilogo_interventi_" + DateTime.UtcNow.ToString("dd/MM/yyyy") + ".pdf";
 
@@ -95,8 +95,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             };
 
             MemoryStream memoryStream;
-            
-            if(query.ContentType == "application/pdf")
+
+            if (query.ContentType == "application/pdf")
                 memoryStream = _pdfManager.GenerateAndDownload(form, filename, "RiepiloghiInterventi");
             else
                 memoryStream = _csvManager.GenerateAndDownload(form, filename, "RiepiloghiInterventi");
