@@ -142,7 +142,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         var dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(p => p.CodicePartenza.Equals(partenza.Codice)).Istante;
 
-                        var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+                        var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.Select(c => c.Codice).First() }).First();
 
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
