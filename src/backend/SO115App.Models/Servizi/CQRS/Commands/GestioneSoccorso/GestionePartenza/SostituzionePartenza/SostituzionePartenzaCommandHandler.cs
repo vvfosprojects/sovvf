@@ -31,7 +31,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public async void Handle(SostituzionePartenzaCommand command)
         {
-            var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+            var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.Select(t => t.Codice).First() }).First();
 
             var PartenzaMontante = command.Richiesta.Partenze.First(x => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoMontante.Equals(x.Partenza.Mezzo.Codice)) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
             var PartenzaSmontante = command.Richiesta.Partenze.First(x => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoSmontante.Equals(x.Partenza.Mezzo.Codice)) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);

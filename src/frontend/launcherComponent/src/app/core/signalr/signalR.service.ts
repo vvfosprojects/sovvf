@@ -52,7 +52,6 @@ import {
 } from '../../features/home/store/actions/coda-chiamate/coda-chiamate.actions';
 import { ChangeCodaChiamate } from '../../shared/interface/change-coda-chiamate.interface';
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/maps/store/actions/chiamate-markers.actions';
-import { RefreshMappa } from '../../features/maps/store/actions/area-mappa.actions';
 import { GetZonaEmergenzaById, GetZoneEmergenza } from '../../features/zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenza.model';
 
@@ -232,8 +231,7 @@ export class SignalRService {
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamata', data);
             this.store.dispatch([
-                new InsertChiamataSuccess(data),
-                new RefreshMappa(true)
+                new InsertChiamataSuccess(data)
             ]);
         });
         this.hubNotification.on('SaveAndNotifySuccessChiamataTrasferita', (data: SintesiRichiesta) => {
