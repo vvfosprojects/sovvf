@@ -30,7 +30,6 @@ import { CompPartenzaService } from '../../../../../core/service/comp-partenza-s
 import { ClearDirection } from '../../../../maps/store/actions/maps-direction.actions';
 import { GetInitCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
-import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../../../maps/store/actions/area-mappa.actions';
 import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
@@ -58,7 +57,6 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     loadingInvioPartenza: false,
     loaded: null
 };
-
 
 @Injectable()
 @State<ComposizionePartenzaStateModel>({
@@ -278,72 +276,51 @@ export class ComposizionePartenzaState {
     }
 
     @Action(StartListaComposizioneLoading)
-    startListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+    startListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingListe: true,
             loaded: false
         });
-
-        dispatch(new StartLoadingAreaMappa());
     }
 
     @Action(StartListaSquadreComposizioneLoading)
-    startListaSquadreComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+    startListaSquadreComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingSquadre: true,
             loaded: false
         });
-
-        dispatch(new StartLoadingAreaMappa());
     }
 
     @Action(StartListaMezziComposizioneLoading)
-    startListaMezziComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+    startListaMezziComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingMezzi: true,
             loaded: false
         });
-
-        dispatch(new StartLoadingAreaMappa());
     }
 
     @Action(StopListaComposizioneLoading)
-    stopListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+    stopListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingListe: false,
             loaded: true
         });
-
-        dispatch([
-            new StopLoadingAreaMappa(),
-            new GetMarkersMappa()
-        ]);
     }
 
     @Action(StopListaSquadreComposizioneLoading)
-    stopListaSquadreComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+    stopListaSquadreComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingSquadre: false,
             loaded: true
         });
-
-        dispatch([
-            new StopLoadingAreaMappa(),
-            new GetMarkersMappa()
-        ]);
     }
 
     @Action(StopListaMezziComposizioneLoading)
-    stopListaMezziComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+    stopListaMezziComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingMezzi: false,
             loaded: true
         });
-
-        dispatch([
-            new StopLoadingAreaMappa(),
-            new GetMarkersMappa()
-        ]);
     }
 
     @Action(StartInvioPartenzaLoading)

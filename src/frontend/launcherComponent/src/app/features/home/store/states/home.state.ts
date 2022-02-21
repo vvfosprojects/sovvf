@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetBoundsIniziale } from '../actions/home.actions';
 import { ClearRichieste } from '../actions/richieste/richieste.actions';
-import { ClearSediMarkers } from '../../../maps/store/actions/sedi-markers.actions';
 import { ClearCentroMappa } from '../../../maps/store/actions/centro-mappa.actions';
 import { ClearBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi } from '../actions/boxes/box-mezzi.actions';
@@ -66,7 +65,6 @@ export class HomeState {
     clearDataHome({ patchState, dispatch }: StateContext<HomeStateModel>): void {
         dispatch([
             new ClearCentroMappa(),
-            new ClearSediMarkers(),
             new ClearChiamateMarkers(),
             new ClearBoxRichieste(),
             new ClearBoxMezzi(),
