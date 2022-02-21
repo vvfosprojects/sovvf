@@ -10,8 +10,8 @@ namespace SO115App.Models.Classi.ESRI
 
     public class ESRI_Mezzo
     {
-        public string CodiceMezzo { get; set; }
-        public string Coordinate { get; set; }
-        public bool Track { get; set; }
+        public string codiceMezzo { get; set; }
+        public string coordinate { get; set; }
+        public bool track { get; set; }
     }
 }

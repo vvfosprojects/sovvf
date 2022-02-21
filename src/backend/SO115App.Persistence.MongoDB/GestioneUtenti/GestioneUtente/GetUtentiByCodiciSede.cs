@@ -37,20 +37,36 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
             if (cercaBy != null)
                 lstSegmenti = cercaBy.ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
-            return string.IsNullOrEmpty(cercaBy)
+            var lista = string.IsNullOrEmpty(cercaBy)
                 ? _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
                     .OrderByDescending(x => x.Nome)
                     .ThenByDescending(x => x.Cognome)
                     .ToList()
 
-                : _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
-                    .FindAll(x =>
-                        lstSegmenti.Any(c => x.Nome.ToLower().Contains(c))
-                        || lstSegmenti.Any(c => x.Cognome.ToLower().Contains(c)
-                        || lstSegmenti.Any(c => x.Sede.Codice.Replace(".", "").ToLower().Contains(c))))
-                    .OrderByDescending(x => x.Nome)
-                    .ThenByDescending(x => x.Cognome)
-                    .ToList();
+                : _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList();
+
+            var filtroByKeySearch = new List<Utente>();
+            if (cercaBy != null)
+                filtroByKeySearch = lista.FindAll(x => (x.Nome.ToLower() + " " + x.Cognome.ToLower()).Contains(cercaBy.ToLower())
+                                                    || (x.Cognome.ToLower() + " " + x.Nome.ToLower()).Contains(cercaBy.ToLower()))
+                        .OrderByDescending(x => x.Nome)
+                        .ThenByDescending(x => x.Cognome)
+                        .ToList();
+            else
+                filtroByKeySearch = lista.OrderByDescending(x => x.Nome)
+                                         .ThenByDescending(x => x.Cognome)
+                                         .ToList();
+
+            return filtroByKeySearch;
+
+            //_dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
+            //        .FindAll(x =>
+            //            lstSegmenti.Any(c => x.Nome.ToLower().Contains(c))
+            //            || lstSegmenti.Any(c => x.Cognome.ToLower().Contains(c)
+            //            || lstSegmenti.Any(c => x.Sede.Codice.Replace(".", "").ToLower().Contains(c))))
+            //        .OrderByDescending(x => x.Nome)
+            //        .ThenByDescending(x => x.Cognome)
+            //        .ToList();
         }
     }
 }
