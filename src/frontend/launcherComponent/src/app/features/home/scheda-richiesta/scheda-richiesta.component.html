@@ -1,6 +1,7 @@
 <div class="px-3 m-h-820-richiesta">
     <app-partial-loader *ngIf="loadingSchedaRichiesta"></app-partial-loader>
-    <app-form-richiesta [tipologie]="(tipologie$ | async)"
+    <app-form-richiesta [submitted]="formSubmitted$ | async"
+                        [tipologie]="(tipologie$ | async)"
                         [operatore]="(utente$ | async)"
                         [enti]="enti$ | async"
                         [loadingSchedaRichiesta]="loadingSchedaRichiesta"

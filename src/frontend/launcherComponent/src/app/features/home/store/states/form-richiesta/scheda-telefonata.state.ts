@@ -3,7 +3,6 @@ import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
     AnnullaChiamata,
     CestinaChiamata,
-    ClearChiamata,
     ClearCompetenze,
     ClearCountInterventiProssimita,
     ClearIndirizzo,
@@ -14,9 +13,11 @@ import {
     MarkerChiamata,
     ReducerSchedaTelefonata,
     ResetChiamata,
+    ResetChiamataForm,
     SetCompetenze,
     SetCompetenzeSuccess,
     SetCountInterventiProssimita,
+    SetFormSubmitted,
     SetInterventiProssimita,
     SetRedirectComposizionePartenza,
     StartChiamata,
@@ -51,7 +52,7 @@ import { Tipologia } from '../../../../../shared/model/tipologia.model';
 import { TriageSummaryState } from '../../../../../shared/store/states/triage-summary/triage-summary.state';
 import { Richiedente } from '../../../../../shared/model/richiedente.model';
 import { TipologieState } from '../../../../../shared/store/states/tipologie/tipologie.state';
-import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.interface';
+import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CountInterventiProssimitaResponse } from '../../../../../shared/interface/response/count-interventi-prossimita-response.interface';
 import { InterventiProssimitaResponse } from '../../../../../shared/interface/response/interventi-prossimita-response.interface';
@@ -62,14 +63,19 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/function-triage';
 import { SetFiltriGeneriMezzoTriage } from '../../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
+import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
+import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
 
 export interface SchedaTelefonataStateModel {
+    idChiamata: string;
     richiestaForm: {
         model: RichiestaForm,
         dirty: boolean,
         status: string,
         errors: any
     };
+    submitted: boolean;
     coordinate: Coordinate;
     competenze: Sede[];
     countInterventiProssimita: number;
@@ -89,12 +95,14 @@ export interface SchedaTelefonataStateModel {
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
+    idChiamata: undefined,
     richiestaForm: {
         model: undefined,
         dirty: false,
         status: '',
         errors: {}
     },
+    submitted: false,
     coordinate: null,
     competenze: null,
     countInterventiProssimita: undefined,
@@ -128,8 +136,18 @@ export class SchedaTelefonataState {
     }
 
     @Selector()
+    static idChiamata(state: SchedaTelefonataStateModel): string {
+        return state.idChiamata;
+    }
+
+    @Selector()
     static formValue(state: SchedaTelefonataStateModel): RichiestaForm {
         return state.richiestaForm.model;
+    }
+
+    @Selector()
+    static formSubmitted(state: SchedaTelefonataStateModel): boolean {
+        return state.submitted;
     }
 
     @Selector()
@@ -240,6 +258,7 @@ export class SchedaTelefonataState {
     @Action(MarkerChiamata)
     markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
         const state = getState();
+        console.log('MarkerChiamata', action.marker);
         if (state.idChiamataMarker) {
             dispatch(new UpdateChiamataMarker(action.marker, action.codCompetenze));
         } else {
@@ -268,6 +287,7 @@ export class SchedaTelefonataState {
     @Action(SetCompetenze)
     setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
         dispatch(new StartLoadingCompetenze());
+        console.log('SetCompetenze', action.markerChiamata);
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
             if (res?.dataArray) {
                 const competenze = res.dataArray as Sede[];
@@ -358,6 +378,13 @@ export class SchedaTelefonataState {
             interventiProssimita: null,
             interventiStessaVia: null,
             interventiChiusiStessoIndirizzo: null
+        });
+    }
+
+    @Action(SetFormSubmitted)
+    setFormSubmitted({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetFormSubmitted): void {
+        patchState({
+            submitted: action.value
         });
     }
 
@@ -494,18 +521,19 @@ export class SchedaTelefonataState {
             } else if (chiamataResult && chiamata.chiamataUrgente) {
                 this.store.dispatch([
                     new CestinaChiamata(),
-                    new ToggleChiamata(),
                     new SetRichiestaModifica(chiamataResult),
                     new ToggleModifica()
                 ]);
             } else if (chiamataResult && (action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
                 this.store.dispatch([
                     new CestinaChiamata(),
-                    new ToggleChiamata()
+                    new ResetChiamataForm(),
+                    new StartChiamata()
                 ]);
             } else {
                 dispatch(new CestinaChiamata());
             }
+            dispatch(new StopLoadingSchedaRichiesta());
         }, () => {
             dispatch(new StopLoadingSchedaRichiesta());
             dispatch(new SetRedirectComposizionePartenza(false));
@@ -534,13 +562,16 @@ export class SchedaTelefonataState {
         if (idUtenteLoggato === action.nuovaRichiesta.operatore.id && !action.options?.trasferimento) {
             const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
             const redirectComposizionePartenza = this.store.selectSnapshot(SchedaTelefonataState.redirectComposizionePartenza);
-            if (chiamataStatus && !redirectComposizionePartenza) {
-                dispatch(new ToggleChiamata(false, true));
+            if (chiamataStatus && !action.nuovaRichiesta.chiamataUrgente && !redirectComposizionePartenza) {
+                // dispatch(new ToggleChiamata(false, true));
+            } else if (chiamataStatus && action.nuovaRichiesta.chiamataUrgente) {
+                // dispatch(new ToggleModifica());
             } else if (chiamataStatus && redirectComposizionePartenza) {
                 // Se 'Conferma e Invia Partenza' allora lancio il toggle della composizione avanzata
                 dispatch([
                     new SetRichiestaComposizione(action.nuovaRichiesta),
-                    new ToggleComposizione(Composizione.Avanzata)
+                    new ToggleComposizione(Composizione.Avanzata),
+                    new StopLoadingSchedaRichiesta()
                 ]);
 
                 const generiMezzoTriage = getGeneriMezzoTriageSummary(action.nuovaRichiesta?.triageSummary);
@@ -548,7 +579,6 @@ export class SchedaTelefonataState {
                     this.store.dispatch(new SetFiltriGeneriMezzoTriage(generiMezzoTriage));
                 }
             }
-            dispatch(new StopLoadingSchedaRichiesta());
         } else if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
@@ -557,6 +587,14 @@ export class SchedaTelefonataState {
     @Action(ResetChiamata)
     resetChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState(SchedaTelefonataStateDefaults);
+    }
+
+    @Action(ResetChiamataForm)
+    resetChiamataForm({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+        dispatch(new UpdateFormValue({
+            value: new RichiestaForm(),
+            path: 'schedaTelefonata.richiestaForm'
+        }));
     }
 
     @Action(AnnullaChiamata)
@@ -607,19 +645,28 @@ export class SchedaTelefonataState {
         dispatch([
             new ClearMarkerChiamata(),
             new ResetChiamata(),
-            new ClearChiamata(),
             !bypassInitCentroMappa && new GetInitCentroMappa()
         ]);
     }
 
-    @Action(ClearChiamata)
-    clearChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
-        patchState(SchedaTelefonataStateDefaults);
-    }
-
     @Action(StartChiamata)
-    startChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+    startChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+        const currentUser = this.store.selectSnapshot(AuthState.currentUser);
+        dispatch(new UpdateFormValue({
+            path: 'schedaTelefonata.richiestaForm',
+            value: {
+                operatore: currentUser,
+                stato: StatoRichiesta.Chiamata,
+                istanteRicezioneRichiesta: new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]),
+                rilevanzaGrave: false,
+                rilevanzaStArCu: false,
+                prioritaRichiesta: 3,
+                urgenza: false,
+                esercitazione: false
+            }
+        }));
         patchState({
+            idChiamata: makeIdChiamata(currentUser),
             resetChiamata: false
         });
     }
