@@ -26,6 +26,8 @@ import { TriageSummary } from '../../../shared/interface/triage-summary.interfac
 })
 export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
+    @Select(SchedaTelefonataState.idChiamata) idChiamata$: Observable<string>;
+    @Select(SchedaTelefonataState.formSubmitted) formSubmitted$: Observable<boolean>;
     @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
     @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
     @Select(SchedaTelefonataState.interventiProssimita) interventiProssimita$: Observable<SintesiRichiesta[]>;
