@@ -7,6 +7,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi
 {
     public interface IOrdinamentoMezzi
     {
-        Task<List<decimal>> GetIndiceOrdinamento(RichiestaAssistenza Richiesta, List<ComposizioneMezzi> composizioni);
+        Task<List<ComposizioneMezzi>> GetIndiceOrdinamento(RichiestaAssistenza Richiesta, List<ComposizioneMezzi> composizioni);
     }
 }

@@ -66,7 +66,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
-
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
                 Parallel.ForEach(mezzi.Result, m =>
@@ -140,12 +139,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         }
                     }
 
-                    var lstOrdinamento = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList());
-
                     lstMezzi.Add(mc);
                 });
 
+                //var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList()).Result;
                 return lstMezzi;
+                //return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
                 bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
