@@ -47,6 +47,9 @@ namespace SO115App.API.Controllers
             _config = config;
         }
 
+        /// <summary>
+        ///   EndPoint per la login
+        /// </summary>
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] AuthLogIn credenziali)
         {
@@ -84,6 +87,10 @@ namespace SO115App.API.Controllers
             }
         }
 
+
+        /// <summary>
+        ///   Verifica Ticket CAS
+        /// </summary>
         [HttpPost("TicketLogin")]
         public async Task<IActionResult> TicketLogin([FromBody] CasLogin credenziali)
         {

@@ -27,6 +27,9 @@ namespace SO115App.API.Controllers
             _rimozionePresaInCaricohandler = RimozionePresaInCaricohandler;
         }
 
+        /// <summary>
+        ///   EndPoint per la login
+        /// </summary>
         [HttpPost("AddPresaInCarico")]
         public async Task<IActionResult> AddPresaInCarico([FromBody] SintesiRichiesta intervento)
         {
