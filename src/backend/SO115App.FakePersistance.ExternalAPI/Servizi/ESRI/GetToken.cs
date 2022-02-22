@@ -1,16 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 {
@@ -29,18 +23,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
         {
             string token = "";
 
-            Dictionary<string, string> postData = new Dictionary<string, string>();
-            postData.Add("username", _configuration.GetSection("ESRI").GetSection("User").Value);
-            postData.Add("password", _configuration.GetSection("ESRI").GetSection("Password").Value);
-            postData.Add("referer", _configuration.GetSection("ESRI").GetSection("URLRichieste").Value);
-            postData.Add("f", "json");
+            Dictionary<string, string> postData = new Dictionary<string, string>
+            {
+                { "username", _configuration.GetSection("ESRI").GetSection("User").Value },
+                { "password", _configuration.GetSection("ESRI").GetSection("Password").Value },
+                { "referer", _configuration.GetSection("ESRI").GetSection("URLRichieste").Value },
+                { "f", "json" }
+            };
 
             var multipartFormDataContent = new MultipartFormDataContent();
 
             foreach (var keyValuePair in postData)
             {
-                multipartFormDataContent.Add(new StringContent(keyValuePair.Value),
-                    String.Format("\"{0}\"", keyValuePair.Key));
+                multipartFormDataContent.Add(new StringContent(keyValuePair.Value), string.Format("\"{0}\"", keyValuePair.Key));
             }
 
             var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLToken").Value}");
