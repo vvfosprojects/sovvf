@@ -100,7 +100,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var flotta = ListaPosizioneFlotta.Result;
 
-            var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), flotta, listaSediAlberate.Result);
+            var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), flotta, listaSediAlberate.Result).ToList();
 
             //MAPPING
             var ListaMezzi = lstMezziDto.Select(m =>
@@ -174,8 +174,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             try
             {
-                //_clientMezzi.SetCache("GacMezzi_" + codici);
-
                 var token = _getToken.GeneraToken();
 
                 var data = _clientMezzi.GetAsync(url, token).Result;
@@ -187,21 +185,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
             }
 
-            var flotta = ListaPosizioneFlotta.Result;
-
-            var lstSedi = GetListaSediMezzi(lstMezziDto, flotta, listaSediAlberate.Result);
+            var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
 
             //MAPPING
-            var ListaMezzi = lstMezziDto.Select(m => MapMezzo(m, flotta, listaSediAlberate.Result, lstSedi)).ToList();
-
-            ListaMezzi.RemoveAll(m => m == null);
+            var ListaMezzi = lstMezziDto
+                .Select(m => MapMezzo(m, ListaPosizioneFlotta.Result, listaSediAlberate.Result, lstSedi))
+                .ToList();
 
             return ListaMezzi;
         }
 
-        private List<Sede> GetListaSediMezzi(List<MezzoDTO> lstMezzi, List<MessaggioPosizione> flotta, UnitaOperativa listaSediAlberate)
+        private IEnumerable<Sede> GetListaSediMezzi(List<MezzoDTO> lstMezzi, List<MessaggioPosizione> flotta, UnitaOperativa listaSediAlberate)
         {
-            var lstSedi = new List<Sede>();
+            var lstCodSedi = new List<string>();
 
             foreach (var mezzoDto in lstMezzi)
             {
@@ -212,6 +208,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 string IndirizzoSede = "";
                 Coordinate coordinate = null;
                 string[] coordinateStrg = new string[2];
+
                 var CoordinateMezzoGeoFleet = flotta.Find(x => x.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
 
                 if (CoordinateMezzoGeoFleet != null)
@@ -222,7 +219,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
                 foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
                 {
-                    if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento))
+                    if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento) && !lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
                     {
                         descSede = figlio.Nome;
 
@@ -238,15 +235,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     }
                 }
 
-                var sede = new Sede(mezzoDto.CodiceDistaccamento, descSede ?? "", IndirizzoSede ?? "", coordinate ?? null)
+                if(!lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
                 {
-                    CoordinateString = _getStringCoordinateByCodSede.Get(mezzoDto.CodiceDistaccamento)
-                };
+                    lstCodSedi.Add(mezzoDto.CodiceDistaccamento);
 
-                lstSedi.Add(sede);
+                    yield return new Sede(mezzoDto.CodiceDistaccamento, descSede ?? "", IndirizzoSede ?? "", coordinate ?? null)
+                    {
+                        CoordinateString = _getStringCoordinateByCodSede.Get(mezzoDto.CodiceDistaccamento)
+                    };
+                }
             }
-
-            return lstSedi;
         }
 
         private Mezzo MapMezzo(MezzoDTO mezzoDto, List<MessaggioPosizione> ListaPosizioneFlotta, UnitaOperativa listaSediAlberate, List<Sede> lstSedi)
@@ -269,7 +267,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 return new Mezzo()
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                    //CoordinateStrg = coordinateStrg[0] != null ? coordinateStrg : sede.CoordinateString,
+                    CoordinateStrg = coordinateStrg ?? sede.CoordinateString,
                     Codice = mezzoDto.CodiceMezzo,
                     Descrizione = mezzoDto.Descrizione,
                     Genere = mezzoDto.Genere,

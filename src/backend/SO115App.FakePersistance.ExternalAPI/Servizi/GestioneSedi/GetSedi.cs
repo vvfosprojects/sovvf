@@ -123,7 +123,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
             var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
 
-            _serviceSedi.SetCache(url.AbsoluteUri);
+            _serviceSedi.SetCache(codSede);
 
             var sede = _serviceSedi.GetAsync(url).Result;
 
