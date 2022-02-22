@@ -97,10 +97,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             #endregion LEGGO DA API ESTERNA
 
-
-            var flotta = ListaPosizioneFlotta.Result;
-
-            var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), flotta, listaSediAlberate.Result).ToList();
+            var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
 
             //MAPPING
             var ListaMezzi = lstMezziDto.Select(m =>
