@@ -259,7 +259,6 @@ export class SchedaTelefonataState {
     @Action(MarkerChiamata)
     markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
         const state = getState();
-        console.log('MarkerChiamata', action.marker);
         if (state.idChiamataMarker) {
             dispatch(new UpdateChiamataMarker(action.marker, action.codCompetenze));
         } else {
@@ -288,7 +287,6 @@ export class SchedaTelefonataState {
     @Action(SetCompetenze)
     setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
         dispatch(new StartLoadingCompetenze());
-        console.log('SetCompetenze', action.markerChiamata);
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
             if (res?.dataArray) {
                 const competenze = res.dataArray as Sede[];
