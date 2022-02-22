@@ -31,6 +31,9 @@ namespace SO115App.API.Controllers
             _handlerGetDistaccamentiBycodSede = handlerGetDistaccamentiBycodSede;
         }
 
+        /// <summary>
+        ///   Restituisce la lista di tutte le sedi
+        /// </summary>
         [HttpGet("Get")]
         public async Task<IActionResult> GetAll()
         {
@@ -54,6 +57,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei distaccamenti di un comando
+        /// </summary>
         [HttpGet("GetDistaccamentiByCodSede")]
         public async Task<IActionResult> GetDistaccamentiByCodSede()
         {
@@ -77,6 +83,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei soli comandi
+        /// </summary>
         [HttpGet("GetSediTrasferimenti")]
         public async Task<IActionResult> GetSediTrasferimenti()
         {
@@ -100,6 +109,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce la lista delle sedi da poter allertare
+        /// </summary>
         [HttpGet("GetSediAllerta")]
         public async Task<IActionResult> GetSediAllerta()
         {

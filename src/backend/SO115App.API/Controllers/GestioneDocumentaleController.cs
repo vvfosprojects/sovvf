@@ -42,6 +42,9 @@ namespace SO115App.API.Controllers
             _getDocByIdHandler = GetDocByIdHandler;
         }
 
+        /// <summary>
+        ///   Aggiunge un nuovo documento nell'area documentale
+        /// </summary>
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromForm] DtoDocumentale doc)
         {
@@ -63,6 +66,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei documenti presenti
+        /// </summary>
         [HttpPost("")]
         public async Task<IActionResult> Get([FromBody] GetElencoDocQuery getListaDocQuery)
         {
@@ -78,6 +84,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce uno specifico documento
+        /// </summary>
         [HttpGet("GetDocumentoById")]
         public async Task<IActionResult> GetDocById(string Id, string CodSede)
         {
@@ -99,6 +108,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Cancella uno specifico documento
+        /// </summary>
         [HttpGet("Delete")]
         public async Task<IActionResult> Delete(string Id, string CodSede)
         {
@@ -121,6 +133,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Modifica uno specifico documento
+        /// </summary>
         [HttpPost("Edit")]
         public async Task<IActionResult> Edit([FromForm] DtoDocumentale doc)
         {

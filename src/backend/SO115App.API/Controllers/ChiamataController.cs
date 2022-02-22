@@ -62,6 +62,9 @@ namespace SO115App.API.Controllers
             _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
         }
 
+        /// <summary>
+        ///   Aggiunta intervento
+        /// </summary>
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] Intervento chiamata)
         {
@@ -89,6 +92,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Aggiunta interventi direttamente da Survey123
+        /// </summary>
         [HttpPost("AddFromSurvey123")]
         public async Task<IActionResult> AddFromSurvey123([FromBody] ChiamataFromSurvey123 chiamata)
         {
@@ -115,6 +121,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Modifica Intervento
+        /// </summary>
         [HttpPost("UpdateIntervento")]
         public async Task<IActionResult> UpdateIntervento([FromBody] SintesiRichiesta chiamata)
         {

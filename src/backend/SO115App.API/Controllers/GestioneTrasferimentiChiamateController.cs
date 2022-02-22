@@ -1,4 +1,4 @@
-﻿using CQRS.Commands;
+using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +32,10 @@ namespace SO115App.API.Controllers
             _deleteCommandHandler = deleteCommandHandler;
             _richiesteQueryHandler = richiesteQueryHandler;
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di Trasferire una Chiamata
+        /// </summary>
         [HttpPost("Add")]
         public async Task<IActionResult> Add(TrasferimentoChiamata trasferimento)
         {
@@ -58,7 +61,10 @@ namespace SO115App.API.Controllers
                     return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce la lista dei Trasferimenti
+        /// </summary>
         [HttpPost("")]
         public async Task<IActionResult> Get(TrasferimentiChiamateQuery query)
         {
@@ -77,7 +83,10 @@ namespace SO115App.API.Controllers
                     return BadRequest(ex);
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce la lista dei codici delle Chiamate
+        /// </summary>
         [HttpGet("GetCodiciChiamate")]
         public async Task<IActionResult> GetCodiciChiamate()
         {
@@ -99,7 +108,10 @@ namespace SO115App.API.Controllers
                     return BadRequest(ex);
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di rimuovere un Trasferimento
+        /// </summary>
         [HttpGet("Delete")]
         private async Task<IActionResult> Delete(string Id)
         {
