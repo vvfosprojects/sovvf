@@ -243,21 +243,19 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     clearFormDisconnection(): void {
-        this.submitted = false;
         this.pos = null;
         this.store.dispatch([
+            new ClearSchedaContattoTelefonata(),
             new SetFormSubmitted(false),
             new ClearClipboard(),
             new DelChiamataMarker(this.idChiamata),
             new ClearCompetenze(),
             new ClearCountInterventiProssimita(),
-            new ClearInterventiProssimita(),
+            new ClearInterventiProssimita()
         ]);
 
         if (this.richiestaModifica) {
             this.store.dispatch(new ChiudiRichiestaModifica());
-        } else {
-            this.store.dispatch(new ClearSchedaContattoTelefonata());
         }
 
         clearSummaryData(this.store);
