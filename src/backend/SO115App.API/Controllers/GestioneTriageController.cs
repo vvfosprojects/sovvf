@@ -1,4 +1,4 @@
-﻿using CQRS.Commands;
+using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +29,10 @@ namespace SO115App.API.Controllers
             _updatehandler = Updatehandler;
             _getHandler = GetHandler;
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di aggiungere un Triage
+        /// </summary>
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] AddTriageCommand triage)
         {
@@ -62,7 +65,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce uno specifico Triage
+        /// </summary>
         [HttpPost("Get")]
         public async Task<IActionResult> Get([FromBody] GetTriageQuery getTriageQuery)
         {
@@ -81,7 +87,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di aggiornare uno specifico Triage
+        /// </summary>
         [HttpPost("UpDate")]
         public async Task<IActionResult> UpDate([FromBody] UpDateTriageCommand triage)
         {

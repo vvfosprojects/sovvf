@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="NavbarController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -41,11 +41,11 @@ namespace SO115App.API.Controllers
         {
             this.handler = handler;
         }
-
+    
+    
         /// <summary>
-        ///   Metodo di accesso alle richieste di assistenza
+        ///   Metodo che restituisce i dati relativi alla Navbar
         /// </summary>
-        /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {

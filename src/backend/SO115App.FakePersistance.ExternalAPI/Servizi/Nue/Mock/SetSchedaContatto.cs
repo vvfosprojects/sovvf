@@ -88,7 +88,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             }
             else
             {
-                schedaContatto.OperatoreChiamata = new Operatore();
+                schedaContatto.OperatoreChiamata = new OperatoreNue();
                 schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
                 schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
             }

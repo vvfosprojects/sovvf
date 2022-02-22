@@ -51,7 +51,7 @@ using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Evento = SO115App.Models.Classi.NUE.Evento;
+using Evento = SO115App.Models.Classi.NUE.EventoNue;
 
 [assembly: InternalsVisibleTo("SO115App.CompositionRoot")]
 

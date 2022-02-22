@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="PersonaleVVFController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -34,7 +34,11 @@ namespace SO115App.API.Controllers
         {
             _queryHandlerPersonale = queryHandlerPersonale;
         }
-
+    
+    
+        /// <summary>
+        ///   Metodo che restituisce la lista del personale VVF
+        /// </summary>
         [HttpGet()]
         public IActionResult Get(string text)
         {

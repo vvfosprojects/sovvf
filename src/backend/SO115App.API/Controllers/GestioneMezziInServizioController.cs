@@ -24,6 +24,9 @@ namespace SO115App.API.Controllers
             _filtriHandler = filtriHandler;
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei mezzi in servizio
+        /// </summary>
         [HttpPost("GetListaMezzi")]
         public async Task<IActionResult> GetListaMezzi([FromBody] ListaMezziInServizioQuery query)
         {
@@ -45,6 +48,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei generi mezzo
+        /// </summary>
         [HttpGet("GetGeneriMezzo")]
         public async Task<IActionResult> GetGeneriMezzo()
         {

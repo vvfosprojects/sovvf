@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="GestioneSchedeContattoController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -60,7 +60,10 @@ namespace SO115App.API.Controllers
             _queryhandlerSchede = queryhandlerSchede;
             _queryhandlerContatoriSchede = queryhandlerContatoriSchede;
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce le Schede Contatto
+        /// </summary>
         [HttpPost("GetSchede")]
         public async Task<IActionResult> Get([FromBody] GetSchedeFiltrateQuery query)
         {
@@ -78,7 +81,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce i contatori relativi alle Schede Contatto
+        /// </summary>
         [HttpGet("GetContatoriSchede")]
         public async Task<IActionResult> GetContatoriSchede()
         {
@@ -98,7 +104,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce una specifica Scheda Contatto
+        /// </summary>
         [HttpGet("GetByCodiceScheda")]
         public async Task<IActionResult> Get(string codice)
         {
@@ -115,7 +124,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che gestisce una specifica Scheda Contatto
+        /// </summary>
         [HttpPut("SetGestita")]
         public async Task<IActionResult> SetGestita([FromBody] SetSchedaGestitaCommand command)
         {
@@ -134,7 +146,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di raggruppare una lista di Schede Contatto
+        /// </summary>
         [HttpPost("MergeSchede")]
         public async Task<IActionResult> MergeSchede([FromBody] string[] scheda)
         {
@@ -159,7 +174,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che permettere di eliminare le schede raggruppate ad una specifica Scheda Contatto
+        /// </summary>
         [HttpPost("UndoMergeSchede")]
         public async Task<IActionResult> UndoMerge([FromBody] SchedaContatto scheda)
         {

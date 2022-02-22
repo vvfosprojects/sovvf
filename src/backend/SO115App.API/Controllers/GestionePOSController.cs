@@ -1,4 +1,4 @@
-﻿using CQRS.Commands;
+using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +42,9 @@ namespace SO115App.API.Controllers
             _getPosByIdHandler = GetPosByIdHandler;
         }
 
+        /// <summary>
+        ///   Metodo che permette di inserire una POS
+        /// </summary>
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromForm] DtoPos pos)
         {
@@ -66,6 +69,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che restituisce la lista delle POS
+        /// </summary>
         [HttpPost("")]
         public async Task<IActionResult> Get([FromBody] GetElencoPOSQuery getListaPosQuery)
         {
@@ -81,6 +87,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che restituisce una specifica POS
+        /// </summary>
         [HttpGet("GetPosById")]
         public async Task<IActionResult> GetPosById(string Id, string CodSede)
         {
@@ -104,6 +113,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che permette di eliminare una POS
+        /// </summary>
         [HttpGet("Delete")]
         public async Task<IActionResult> Delete(string Id, string CodSede)
         {
@@ -127,6 +139,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che permette di modificare una POS
+        /// </summary>
         [HttpPost("Edit")]
         public async Task<IActionResult> Edit([FromForm] DtoPos pos)
         {

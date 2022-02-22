@@ -40,6 +40,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.SignalR;
 using StackExchange.Redis;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Principal;
@@ -103,6 +104,8 @@ namespace SO115App.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("SO115", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SO115", Version = "v1.0" });
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "SO115App.API.xml");
+                c.IncludeXmlComments(filePath);
             });
 
             ///<summary>
