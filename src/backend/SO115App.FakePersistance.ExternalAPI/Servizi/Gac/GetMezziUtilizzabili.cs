@@ -97,10 +97,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             #endregion LEGGO DA API ESTERNA
 
+
+            var flotta = ListaPosizioneFlotta.Result;
+
+            var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), flotta, listaSediAlberate.Result).ToList();
+
             //MAPPING
             var ListaMezzi = lstMezziDto.Select(m =>
             {
-                var mezzo = MapMezzo(m, ListaPosizioneFlotta, listaSediAlberate);
+                var mezzo = MapMezzo(m, ListaPosizioneFlotta.Result, listaSediAlberate.Result, lstSedi);
 
                 if (mezzo != null)
                 {
@@ -169,8 +174,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             try
             {
-                //_clientMezzi.SetCache("GacMezzi_" + codici);
-
                 var token = _getToken.GeneraToken();
 
                 var data = _clientMezzi.GetAsync(url, token).Result;
@@ -182,23 +185,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
             }
 
-            //MAPPING
-            var ListaMezzi = lstMezziDto.Select(m => MapMezzo(m, ListaPosizioneFlotta, listaSediAlberate)).ToList();
+            var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
 
-            ListaMezzi.RemoveAll(m => m == null);
+            //MAPPING
+            var ListaMezzi = lstMezziDto
+                .Select(m => MapMezzo(m, ListaPosizioneFlotta.Result, listaSediAlberate.Result, lstSedi))
+                .ToList();
 
             return ListaMezzi;
         }
 
-        private Mezzo MapMezzo(MezzoDTO mezzoDto, Task<List<MessaggioPosizione>> ListaPosizioneFlotta, Task<UnitaOperativa> listaSediAlberate)
+        private IEnumerable<Sede> GetListaSediMezzi(List<MezzoDTO> lstMezzi, List<MessaggioPosizione> flotta, UnitaOperativa listaSediAlberate)
         {
-            if (listaSediAlberate == null || ListaPosizioneFlotta == null)
-            {
-                ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
-                listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            }
+            var lstCodSedi = new List<string>();
 
-            try
+            foreach (var mezzoDto in lstMezzi)
             {
                 var pinNodi = new List<PinNodo>();
                 pinNodi.Add(new PinNodo(mezzoDto.CodiceDistaccamento, true));
@@ -207,7 +208,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 string IndirizzoSede = "";
                 Coordinate coordinate = null;
                 string[] coordinateStrg = new string[2];
-                var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Result.Find(x => x.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
+
+                var CoordinateMezzoGeoFleet = flotta.Find(x => x.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
 
                 if (CoordinateMezzoGeoFleet != null)
                 {
@@ -215,39 +217,72 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     coordinateStrg = new string[2] { coordinate.Latitudine.ToString(), coordinate.Longitudine.ToString() };
                 }
 
-                foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
+                if (!lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
                 {
-                    if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento))
+                    foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
                     {
-                        descSede = figlio.Nome;
-
-                        if (coordinate == null)
+                        if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento))
                         {
-                            coordinateStrg = _getStringCoordinateByCodSede.Get(figlio.Codice);
-                            
-                            if(coordinateStrg != null)
-                                coordinate = new Coordinate(Convert.ToDouble(coordinateStrg[0].Replace(".", ",")), Convert.ToDouble(coordinateStrg[1].Replace(".", ",")));
-                            else
-                                coordinateStrg = new string[] { "0", "0" };
+                            descSede = figlio.Nome;
+
+                            if (coordinate == null)
+                            {
+                                coordinateStrg = _getStringCoordinateByCodSede.Get(figlio.Codice);
+
+                                if (coordinateStrg != null)
+                                    coordinate = new Coordinate(Convert.ToDouble(coordinateStrg[0].Replace(".", ",")), Convert.ToDouble(coordinateStrg[1].Replace(".", ",")));
+                                else
+                                    coordinateStrg = new string[] { "0", "0" };
+                            }
                         }
                     }
                 }
 
-                var sede = new Sede(mezzoDto.CodiceDistaccamento, descSede ?? "", IndirizzoSede ?? "", coordinate ?? null)
+                if(!lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
                 {
-                    CoordinateString = _getStringCoordinateByCodSede.Get(mezzoDto.CodiceDistaccamento)
-                };
+                    lstCodSedi.Add(mezzoDto.CodiceDistaccamento);
 
-                return new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, Costanti.MezzoInSede,
-                    mezzoDto.CodiceDistaccamento, sede, new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0))
+                    yield return new Sede(mezzoDto.CodiceDistaccamento, descSede ?? "", IndirizzoSede ?? "", coordinate ?? null)
+                    {
+                        CoordinateString = _getStringCoordinateByCodSede.Get(mezzoDto.CodiceDistaccamento)
+                    };
+                }
+            }
+        }
+
+        private Mezzo MapMezzo(MezzoDTO mezzoDto, List<MessaggioPosizione> ListaPosizioneFlotta, UnitaOperativa listaSediAlberate, List<Sede> lstSedi)
+        {
+            if (ListaPosizioneFlotta == null)
+                ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
+
+            if (listaSediAlberate == null)
+                listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata().Result;
+
+            try
+            {
+                var sede = lstSedi.FirstOrDefault(s => s.Codice.Equals(mezzoDto.CodiceDistaccamento));
+
+                var posizioneMezzo = ListaPosizioneFlotta.FirstOrDefault(p => p.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
+
+                var coordinate = posizioneMezzo == null ? sede.Coordinate : posizioneMezzo.ToCoordinate();
+                var coordinateStrg = posizioneMezzo == null ? sede.CoordinateString : new string[2] { coordinate.Latitudine.ToString(), coordinate.Longitudine.ToString() };
+
+                return new Mezzo()
                 {
                     DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                    CoordinateStrg = coordinateStrg[0] != null ? coordinateStrg : sede.CoordinateString
+                    CoordinateStrg = coordinateStrg ?? sede.CoordinateString,
+                    Codice = mezzoDto.CodiceMezzo,
+                    Descrizione = mezzoDto.Descrizione,
+                    Genere = mezzoDto.Genere,
+                    Stato = Costanti.MezzoInSede,
+                    Appartenenza = mezzoDto.CodiceDistaccamento,
+                    Distaccamento = sede,
+                    Coordinate = new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0)
                 };
             }
             catch (Exception e)
             {
-                return null;
+                throw new Exception("Errore mapping mezzi.");
             }
         }
     }

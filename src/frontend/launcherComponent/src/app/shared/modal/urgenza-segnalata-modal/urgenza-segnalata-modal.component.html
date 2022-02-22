@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h4 class="modal-title font-weight-bold">
+        {{ titolo | uppercase }}
+    </h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="onClose()">
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body py-4">
+    <div class="alert alert-danger m-0">
+        La chiamata urgente è stata correttamente registrata e condivisa in gestione
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover"
+            style="font-weight:600"
+            (click)="onClose()">
+        {{ 'chiudi' | uppercase }}
+    </button>
+</div>

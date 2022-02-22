@@ -61,8 +61,8 @@ import { TipologicaComposizionePartenza } from '../../../features/home/composizi
 import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import { EsriService } from '../../../features/maps/map-service/esri.service';
 import Point from '@arcgis/core/geometry/Point';
-import * as Locator from '@arcgis/core/rest/locator';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -148,7 +148,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(private formBuilder: FormBuilder,
                 private store: Store,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private esriService: EsriService) {
         this.store.dispatch(new StartChiamata());
         this.getIdChiamata();
         this.initForm();
@@ -243,21 +244,19 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     clearFormDisconnection(): void {
-        this.submitted = false;
         this.pos = null;
         this.store.dispatch([
+            new ClearSchedaContattoTelefonata(),
             new SetFormSubmitted(false),
             new ClearClipboard(),
             new DelChiamataMarker(this.idChiamata),
             new ClearCompetenze(),
             new ClearCountInterventiProssimita(),
-            new ClearInterventiProssimita(),
+            new ClearInterventiProssimita()
         ]);
 
         if (this.richiestaModifica) {
             this.store.dispatch(new ChiudiRichiestaModifica());
-        } else {
-            this.store.dispatch(new ClearSchedaContattoTelefonata());
         }
 
         clearSummaryData(this.store);
@@ -860,8 +859,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const params = {
             location: locationPOI
         };
-        // @ts-ignore
-        Locator.locationToAddress('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer', params).then((response: supportAddressCandidate) => {
+        this.esriService.getLocationToAddress(params).then((response: any) => {
             f.provincia.patchValue(response.attributes.Subregion);
             f.cap.patchValue(response.attributes.Postal);
             f.regione.patchValue(response.attributes.Region);

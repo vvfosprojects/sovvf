@@ -666,8 +666,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     // Aggiunge i widget sulla mappa
     async initializeWidget(): Promise<any> {
-        console.log('view', this.view);
-
         const layerList = new LayerList({
             view: this.view
         });
@@ -752,8 +750,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         //     this.drawGraphicLayer.removeAll();
         //     this.setDrawContextMenuVisible(false);
         // });
-
-        console.log('this.view.ui._components', this.view.ui._components);
 
         if (!this.view.ui._components?.filter((c) => c.id === 'layerList')?.length) {
             this.view.ui.add(llExpand, 'top-right');
@@ -903,8 +899,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
         // Trovo l'indirizzo tramite le coordinate
         this.esriService.getLocationToAddress(params).then((response) => {
-            console.log('locationToAddress response', response);
-
             this.changeCenter([lon, lat]).then(() => {
                 const zoom = 19;
                 this.changeZoom(zoom).then(() => {
