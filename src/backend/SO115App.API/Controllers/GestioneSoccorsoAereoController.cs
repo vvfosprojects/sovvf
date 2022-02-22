@@ -1,4 +1,4 @@
-﻿using CQRS.Commands;
+using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +40,10 @@ namespace SO115App.API.Controllers
             _inserisci = inserisci;
             _annulla = annulla;
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce la lista delle categorie
+        /// </summary>
         [HttpGet("GetCategorie")]
         public async Task<IActionResult> GetCategorieSoccorsoAereo()
         {
@@ -61,7 +64,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(e.GetBaseException().Message);
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce la lista delle tipologie
+        /// </summary>
         [HttpGet("GetTipologie")]
         private async Task<IActionResult> GetTipologieSoccorsoAereo()
         {
@@ -82,7 +88,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(e.GetBaseException().Message);
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce lo storico
+        /// </summary>
         [HttpGet("GetStorico")]
         public async Task<IActionResult> GetStoricoRichiestaSoccorsoAereo(string requestKey)
         {
@@ -105,7 +114,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(e.GetBaseException().Message);
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce le info
+        /// </summary>
         [HttpGet("GetInfo")]
         public async Task<IActionResult> GetInfoRichiestaSoccorsoAereo(string requestKey)
         {
@@ -128,7 +140,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(e.GetBaseException().Message);
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di inserire una Richiesta di Soccorso Aereo
+        /// </summary>
         [HttpPost("Inserisci")]
         public async Task<IActionResult> InserisciRichiestaSoccorsoAereo([FromBody] NuovaRichiestaAFM richiesta)
         {
@@ -155,7 +170,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(e.GetBaseException().Message);
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di annullare una specifica Richiesta di Soccorso Aereo
+        /// </summary>
         [HttpPost("Annulla")]
         public async Task<IActionResult> AnnullaRichiestaSoccorsoAereo([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
         {

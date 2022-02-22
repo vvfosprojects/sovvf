@@ -98,7 +98,7 @@ namespace SO115App.Models.Classi.NUE
         /// <summary>
         ///   Contiente informazioni sull'operatore che gestisce la scheda contatto
         /// </summary>
-        public Operatore OperatoreChiamata { get; set; }
+        public OperatoreNue OperatoreChiamata { get; set; }
 
         /// <summary>
         ///   Indica il tipo di scheda contatto: Competenza, Conoscenza, Differibile
@@ -127,7 +127,7 @@ namespace SO115App.Models.Classi.NUE
         /// <summary>
         ///   Contiene il log di tutti gli eventi generati durante l'import della scheda NUE
         /// </summary>
-        public List<Evento> listaEventiWS { get; set; }
+        public List<EventoNue> listaEventiWS { get; set; }
 
         /// <summary>
         ///   Se la scheda è stata gestita in un intervento qui verrà scritto il numero dell'intervento
@@ -135,7 +135,7 @@ namespace SO115App.Models.Classi.NUE
         public string CodiceInterventoAssociato { get; set; }
     }
 
-    public class Evento
+    public class EventoNue
     {
         public DateTime istante { get; set; }
         public string descrizione { get; set; }

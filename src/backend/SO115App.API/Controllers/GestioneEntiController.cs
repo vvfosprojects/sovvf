@@ -42,6 +42,9 @@ namespace SO115App.API.Controllers
             _insertEnteintervenuto = insertEnteintervenuto;
         }
 
+        /// <summary>
+        ///   Restituisce l'elenco degli elementi presenti in rubrica
+        /// </summary>
         [HttpPost("")]
         public async Task<IActionResult> Get([FromBody] RubricaQuery rubricaQuery)
         {
@@ -61,6 +64,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Aggiunge un nuovo elemento in rubrica
+        /// </summary>
         [HttpPost("Add")]
         public async Task<IActionResult> Add(EnteIntervenuto ente)
         {
@@ -86,6 +92,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Aggiorna un elemento in rubrica
+        /// </summary>
         [HttpPost("Update")]
         public async Task<IActionResult> Update(EnteIntervenuto ente)
         {
@@ -111,6 +120,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Cancella un elemento in rubrica
+        /// </summary>
         [HttpGet("Delete")]
         public async Task<IActionResult> Delete(string Id)
         {
@@ -136,6 +148,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce l'elenco delle categorie presenti in rubrica
+        /// </summary>
         [HttpGet("GetCategorie")]
         public async Task<IActionResult> GetCategorie()
         {
@@ -158,6 +173,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Aggiunge un ente intervenuto in un intervento
+        /// </summary>
         [HttpPost("AddEnteIntervenuto")]
         public async Task<IActionResult> AddEnteIntervenuto(EntiIntervenutiCommand enteIntervenuto)
         {

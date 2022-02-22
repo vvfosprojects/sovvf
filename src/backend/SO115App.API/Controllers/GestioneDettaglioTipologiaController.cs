@@ -38,6 +38,9 @@ namespace SO115App.API.Controllers
             _getListaDettagliTipologieByIdTipologia = getListaDettagliTipologieByIdTipologia;
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei dettagli tipoogia di un comando
+        /// </summary>
         [HttpPost("Get")]
         public async Task<IActionResult> Get([FromBody] DettaglioTipologiaQuery query)
         {
@@ -57,6 +60,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei dettagli tipoogia di una specifica tipologia
+        /// </summary>
         [HttpGet("GetByIdTipologia")]
         public async Task<IActionResult> GetByIdTipologia(int idTipologia)
         {
@@ -79,6 +85,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Aggiunge un dettaglio tipologia associato ad una tipologia
+        /// </summary>
         [HttpPost("Add")]
         public async Task<IActionResult> Add(TipologiaDettaglio dettaglio)
         {
@@ -104,6 +113,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Cancella un dettaglio tipologia associato ad una tipologia
+        /// </summary>
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete([FromBody] TipologiaDettaglioDelete Dettaglio)
         {
@@ -129,6 +141,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Modifica un dettaglio tipologia associato ad una tipologia
+        /// </summary>
         [HttpPost("Modify")]
         public async Task<IActionResult> Modify(TipologiaDettaglio dettaglio)
         {

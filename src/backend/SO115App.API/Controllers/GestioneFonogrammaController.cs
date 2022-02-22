@@ -36,6 +36,9 @@ namespace SO115App.API.Controllers
             _addFonogramma = addFonogramma;
         }
 
+        /// <summary>
+        ///   Restituisce le informazioni relative al fonogramma di uno specifico intervento
+        /// </summary>
         [HttpPost("InfoFonogramma")]
         public IActionResult InfoFonogramma([FromBody] Fonogramma fonogramma)
         {

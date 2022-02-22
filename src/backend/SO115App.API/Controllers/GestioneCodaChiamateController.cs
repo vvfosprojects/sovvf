@@ -25,6 +25,9 @@ namespace SO115App.API.Controllers
             _getCodaChiamateDettaglio = getCodaChiamateDettaglio;
         }
 
+        /// <summary>
+        ///   Restituisce le informazioni utili a formare l'istogramma di Coda Chiamate
+        /// </summary>
         [HttpGet("GetInfoIstogramma")]
         public async Task<IActionResult> GetInfoIstogramma()
         {
@@ -48,6 +51,10 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce il dettaglio delle informazioni di una specifica sede, visualizzate su
+        ///   Coda Chiamate
+        /// </summary>
         [HttpGet("GetDettaglioSede")]
         public async Task<IActionResult> GetDettaglioSede(string codiceSede)
         {

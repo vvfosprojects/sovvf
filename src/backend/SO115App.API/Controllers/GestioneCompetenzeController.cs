@@ -15,11 +15,15 @@ namespace SO115App.API.Controllers
     public class GestioneCompetenzeController : ControllerBase
     {
         private readonly IQueryHandler<GetCompetenzeQuery, GetCompetenzeResult> _getCompetenze;
+
         public GestioneCompetenzeController(IQueryHandler<GetCompetenzeQuery, GetCompetenzeResult> getCompetenze)
         {
             _getCompetenze = getCompetenze;
         }
 
+        /// <summary>
+        ///   Restituisce le competenze di una richiesta, in base alle coordinate di un indirizzo
+        /// </summary>
         [HttpPost("GetCompetenze")]
         public async Task<IActionResult> GetCompetenze([FromBody] Coordinate coordinate)
         {

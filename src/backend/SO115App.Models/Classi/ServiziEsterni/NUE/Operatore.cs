@@ -3,7 +3,7 @@
     /// <summary>
     ///   descrive l'operatore che gestisce la scheda contatto in uscita dal NUE
     /// </summary>
-    public class Operatore
+    public class OperatoreNue
     {
         /// <summary>
         ///   indica il codice della postazione da cui opera l'operatore
