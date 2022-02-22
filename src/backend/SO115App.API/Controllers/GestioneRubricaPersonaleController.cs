@@ -1,4 +1,4 @@
-﻿using CQRS.Queries;
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale;
@@ -18,7 +18,10 @@ namespace SO115App.API.Controllers
         {
             _queryHandler = queryHandler;
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce la rubrica del Personale VVF
+        /// </summary>
         [HttpPost("")]
         public async Task<IActionResult> GetAll(RubricaPersonaleQuery query)
         {

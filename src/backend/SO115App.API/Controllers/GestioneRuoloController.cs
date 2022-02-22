@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="GestioneRuoloController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -39,7 +39,10 @@ namespace SO115App.API.Controllers
             _addRuoliCommand = addRuoliCommand;
             _deleteRuoliCommand = deleteRuoliCommand;
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di aggiungere un ruolo ad un Utente
+        /// </summary>
         [HttpPost("AddRuolo")]
         public IActionResult AddRuolo(AddRuoliUtenteCommand command)
         {
@@ -60,7 +63,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di rimuovere un ruolo ad un Utente
+        /// </summary>
         [HttpPost("DeleteRuolo")]
         public IActionResult DeleteRuolo(DeleteRuoliUtenteCommand command)
         {
