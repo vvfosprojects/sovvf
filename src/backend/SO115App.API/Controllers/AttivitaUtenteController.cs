@@ -28,7 +28,7 @@ namespace SO115App.API.Controllers
         }
 
         /// <summary>
-        ///   EndPoint per la login
+        ///   EndPoint per la registrazione dell'utente che ha preso in carico un'intervento.
         /// </summary>
         [HttpPost("AddPresaInCarico")]
         public async Task<IActionResult> AddPresaInCarico([FromBody] SintesiRichiesta intervento)
@@ -58,6 +58,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   EndPoint per la deregistrazione dell'utente che ha preso in carico un'intervento.
+        /// </summary>
         [HttpPost("DeletePresaInCarico")]
         public async Task<IActionResult> DeletePresaInCarico([FromBody] SintesiRichiesta intervento)
         {

@@ -35,6 +35,9 @@ namespace SO115App.API.Controllers
             _sostituzionePartenzahandler = SostituzionePartenzahandler;
         }
 
+        /// <summary>
+        ///   Aggiorna lo stato di una partenza
+        /// </summary>
         [HttpPost("AggiornaPartenza")]
         public async Task<IActionResult> AggiornaPartenza([FromBody] AggiornaStatoMezzoCommand command)
         {
@@ -57,12 +60,15 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Annulla uno stato precedentemente inserito, di una specifica partenza
+        /// </summary>
         [HttpPost("AnnullaStatoPartenza")]
         public async Task<IActionResult> AnnullaStatoPartenza([FromBody] AnnullaStatoPartenzaCommand command)
         {
             command.IdOperatore = Request.Headers["IdUtente"];
             command.CodiciSedi = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);
-            
+
             try
             {
                 _annullaPartenzahandler.Handle(command);
@@ -80,6 +86,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Modifica una partenza
+        /// </summary>
         [HttpPost("ModificaPartenza")]
         public async Task<IActionResult> ModificaPartenza([FromBody] ModificaPartenza partenza)
         {
@@ -108,6 +117,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Registra una sostituzione all'interno di una partenza
+        /// </summary>
         [HttpPost("SostituzionePartenza")]
         public async Task<IActionResult> SostituzionePartenza([FromBody] SostituzioneDTO partenzeDaSostituire)
         {
@@ -135,4 +147,3 @@ namespace SO115App.API.Controllers
             }
         }
     }
-}

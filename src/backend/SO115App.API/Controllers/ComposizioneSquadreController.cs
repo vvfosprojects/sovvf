@@ -59,10 +59,8 @@ namespace SO115App.API.Controllers
         }
 
         /// <summary>
-        ///   Metodo di accesso alle richieste di assistenza
+        ///   Restituisce la lista delle squadre utilizzabili in un determinato comando
         /// </summary>
-        /// <param name="filtro">Il filtro per le richieste</param>
-        /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizioneSquadra filtri)
         {
@@ -70,7 +68,7 @@ namespace SO115App.API.Controllers
             {
                 Filtro = filtri,
                 CodiciSede = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries)
-        };
+            };
 
             if (ModelState.IsValid)
             {

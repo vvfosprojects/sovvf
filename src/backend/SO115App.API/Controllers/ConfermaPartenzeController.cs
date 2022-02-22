@@ -57,9 +57,8 @@ namespace SO115App.API.Controllers
         }
 
         /// <summary>
-        ///   Metodo di accesso alle richieste di assistenza
+        ///   Registra una partenza all'interno di una richiesta
         /// </summary>
-        /// <returns>il modello del mezzo prenotato</returns>
         [HttpPost]
         public async Task<IActionResult> Post(ConfermaPartenze conferma)
         {

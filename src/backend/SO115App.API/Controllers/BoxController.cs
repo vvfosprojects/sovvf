@@ -26,6 +26,9 @@ namespace SO115App.API.Controllers
             _richiesteHandler = RichiesteHandler;
         }
 
+        /// <summary>
+        ///   EndPoint per il caricamento del Box riassuntivo delle Richieste
+        /// </summary>
         [HttpGet("GetBoxRichieste")]
         public async Task<IActionResult> GetBoxRichieste()
         {
@@ -48,6 +51,9 @@ namespace SO115App.API.Controllers
             };
         }
 
+        /// <summary>
+        ///   EndPoint per il caricamento del Box riassuntivo dei Mezzi
+        /// </summary>
         [HttpGet("GetBoxMezzi")]
         public async Task<IActionResult> GetBoxMezzi()
         {
@@ -70,6 +76,9 @@ namespace SO115App.API.Controllers
             };
         }
 
+        /// <summary>
+        ///   EndPoint per il caricamento del Box riassuntivo del Personale
+        /// </summary>
         [HttpGet("GetBoxPersonale")]
         public async Task<IActionResult> GetBoxPersonale()
         {
