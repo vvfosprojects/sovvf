@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="GestioneUtentiController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -49,6 +49,9 @@ namespace SO115App.API.Controllers
             _dettaglioUtente = dettaglioUtente;
         }
 
+        /// <summary>
+        ///   Metodo che permette di aggiungere un nuovo utente
+        /// </summary>
         [HttpPost("AddUtente")]
         public IActionResult AddUtente([FromBody] AddUtenteCommand command)
         {
@@ -71,6 +74,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che permette di rimuovere utente
+        /// </summary>
         [HttpPost("DeleteUtente")]
         public IActionResult DeleteUtente([FromBody] DeleteUtenteCommand command)
         {
@@ -89,7 +95,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message, stackTrace = ex.StackTrace });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce uno specifico Utente
+        /// </summary>
         [HttpGet("GetUtente")]
         public IActionResult GetUtente(string id)
         {
@@ -111,7 +120,10 @@ namespace SO115App.API.Controllers
                     return BadRequest(new { message = ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce la lista degli Utenti
+        /// </summary>
         [HttpPost("GetUtenti")]
         public IActionResult GetUtenti([FromBody] ListaOperatoriQuery query)
         {

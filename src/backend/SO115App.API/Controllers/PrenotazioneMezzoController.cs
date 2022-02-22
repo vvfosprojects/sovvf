@@ -1,4 +1,4 @@
-﻿using CQRS.Commands;
+using CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Condivise;
@@ -20,7 +20,10 @@ namespace SO115App.API.Controllers
         {
             _mezzoPrenotatoHandler = mezzoPrenotatoHandler;
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di bloccare un mezzo selezionato da un altro utente
+        /// </summary>
         [HttpPost("PrenotaMezzo")]
         public async Task<IActionResult> PrenotaMezzo([FromBody] StatoOperativoMezzo mezzoPrenotato)
         {
@@ -48,7 +51,10 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { ex.Message });
             }
         }
-
+    
+        /// <summary>
+        ///   Metodo che permette di sbloccare un mezzo precedentemente selezionato da un altro utente
+        /// </summary>
         [HttpPost("SbloccaMezzo")]
         public async Task<IActionResult> SbloccaMezzo([FromBody] StatoOperativoMezzo mezzoPrenotato)
         {

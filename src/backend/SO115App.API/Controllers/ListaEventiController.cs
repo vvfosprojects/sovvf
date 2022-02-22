@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="ListaEventiController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -50,12 +50,10 @@ namespace SO115App.API.Controllers
         {
             this.handler = handler;
         }
-
+    
         /// <summary>
-        ///   Metodo di accesso alle richieste di assistenza
+        ///   Metodo che restituisce la lista degli eventi di un intervento
         /// </summary>
-        /// <param name="filtro">Il filtro per le richieste</param>
-        /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]
         public async Task<IActionResult> Get(string Id)
         {
@@ -80,7 +78,7 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+    
         [HttpGet("{filtro}")]
         public ListaEventiResult GetMarkerFromId(FiltroRicercaRichiesteAssistenza filtro)
         {

@@ -1,4 +1,4 @@
-﻿using CQRS.Queries;
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,10 @@ namespace SO115App.API.Controllers
         {
             _getAllSquadreHandler = getAllSquadreHandler;
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce la lista delle Squadre
+        /// </summary>
         [HttpPost("GetAllSquadre")]
         public async Task<IActionResult> GetAllSquadre([FromBody] GetAllSquadreQuery par)
         {

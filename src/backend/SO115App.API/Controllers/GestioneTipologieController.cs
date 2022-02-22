@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -18,7 +18,10 @@ namespace SO115App.API.Controllers
         {
             _tipologieQueryHandler = tipologieQueryHandler;
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce la lista delle Tipologie
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> Get()
         {

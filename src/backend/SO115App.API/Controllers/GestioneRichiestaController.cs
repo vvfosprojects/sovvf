@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="GestioneRichiestaController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -77,7 +77,11 @@ namespace SO115App.API.Controllers
             _getCountInterventiVicinanze = getCountInterventiVicinanze;
             _getInterventiVicinanze = getInterventiVicinanze;
         }
-
+    
+    
+        /// <summary>
+        ///   Metodo che restituisce gli Interventi nelle vicinanze
+        /// </summary>
         [HttpPost("GetInterventiVicinanze")]
         public async Task<IActionResult> GetInterventiVicinanze([FromBody] ControlloIndirizzoRichiesta controllo)
         {
@@ -105,6 +109,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che restituisce il contatore degli Interventi nelle vicinanze
+        /// </summary>
         [HttpPost("GetCountInterventiVicinanze")]
         public async Task<IActionResult> GetCountInterventiVicinanze([FromBody] ControlloIndirizzoRichiesta controllo)
         {
@@ -132,6 +139,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che restituisce una specifica Richiesta di Assistenza
+        /// </summary>
         [HttpGet("GetRichiesta")]
         public async Task<IActionResult> GetRichiesta(string idRichiesta)
         {
@@ -153,6 +163,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che restituisce la lista delle Richieste di Assistenza
+        /// </summary>
         [HttpGet("GetRichiesteByFullText")]
         public async Task<IActionResult> GetRichiesteByFullText(string TextToSearch)
         {
@@ -176,6 +189,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che restituisce la lista delle Richieste di Assistenza
+        /// </summary>
         [HttpPost("GetRichieste")]
         public async Task<IActionResult> GetRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
@@ -199,6 +215,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che restituisce la lista dei codici delle Richieste di Assistenza
+        /// </summary>
         [HttpGet("GetCodiciRichieste")]
         public async Task<IActionResult> GetCodiciRichieste(string idRichiesta)
         {
@@ -221,6 +240,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che permette di aggiornare lo stato di una Richieste di Assistenza
+        /// </summary>
         [HttpPost("AggiornaStato")]
         public async Task<IActionResult> AggiornaStato([FromBody] UpDateStatoRichiestaCommand richiesta)
         {
@@ -253,6 +275,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che permette di allertare una o più sedi
+        /// </summary>
         [HttpPost("AllertaAltreSedi")]
         public async Task<IActionResult> AllertaSedi([FromBody] AllertaAltreSediCommand parametri)
         {
@@ -273,6 +298,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Metodo che permette di inserire un nuovo elemento nel LogBook
+        /// </summary>
         [HttpPost("AddLogBook")]
         public async Task<IActionResult> AddLogBook([FromBody] LogBookCommand parametri)
         {
