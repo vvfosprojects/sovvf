@@ -66,6 +66,7 @@ import { SetFiltriGeneriMezzoTriage } from '../../../../../shared/store/actions/
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
+import { UrgenzaSegnalataModalComponent } from '../../../../../shared/modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -524,6 +525,12 @@ export class SchedaTelefonataState {
                     new SetRichiestaModifica(chiamataResult),
                     new ToggleModifica()
                 ]);
+                this.ngZone.run(() => {
+                    this.modalService.open(UrgenzaSegnalataModalComponent, {
+                        centered: true,
+                        size: 'md'
+                    });
+                });
             } else if (chiamataResult && (action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
                 this.store.dispatch([
                     new CestinaChiamata(),
