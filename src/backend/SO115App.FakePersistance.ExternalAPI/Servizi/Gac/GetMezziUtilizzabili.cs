@@ -217,20 +217,23 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     coordinateStrg = new string[2] { coordinate.Latitudine.ToString(), coordinate.Longitudine.ToString() };
                 }
 
-                foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+                if (!lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
                 {
-                    if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento) && !lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
+                    foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
                     {
-                        descSede = figlio.Nome;
-
-                        if (coordinate == null)
+                        if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento))
                         {
-                            coordinateStrg = _getStringCoordinateByCodSede.Get(figlio.Codice);
+                            descSede = figlio.Nome;
 
-                            if (coordinateStrg != null)
-                                coordinate = new Coordinate(Convert.ToDouble(coordinateStrg[0].Replace(".", ",")), Convert.ToDouble(coordinateStrg[1].Replace(".", ",")));
-                            else
-                                coordinateStrg = new string[] { "0", "0" };
+                            if (coordinate == null)
+                            {
+                                coordinateStrg = _getStringCoordinateByCodSede.Get(figlio.Codice);
+
+                                if (coordinateStrg != null)
+                                    coordinate = new Coordinate(Convert.ToDouble(coordinateStrg[0].Replace(".", ",")), Convert.ToDouble(coordinateStrg[1].Replace(".", ",")));
+                                else
+                                    coordinateStrg = new string[] { "0", "0" };
+                            }
                         }
                     }
                 }
