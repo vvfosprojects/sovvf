@@ -56,7 +56,6 @@ import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-f
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { CountInterventiProssimitaResponse } from '../../../../../shared/interface/response/count-interventi-prossimita-response.interface';
 import { InterventiProssimitaResponse } from '../../../../../shared/interface/response/interventi-prossimita-response.interface';
-import { ViewComponentState } from '../view/view.state';
 import { TipoTerreno } from 'src/app/shared/model/tipo-terreno';
 import { TipoTerrenoEnum } from 'src/app/shared/enum/tipo-terreno.enum';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
@@ -515,8 +514,16 @@ export class SchedaTelefonataState {
                         5,
                         null,
                         true
-                    )
+                    ),
+                    new SetRichiestaComposizione(chiamataResult),
+                    new ToggleComposizione(Composizione.Avanzata)
                 ]);
+
+                const generiMezzoTriage = getGeneriMezzoTriageSummary(chiamataResult?.triageSummary);
+                if (generiMezzoTriage?.length) {
+                    this.store.dispatch(new SetFiltriGeneriMezzoTriage(generiMezzoTriage));
+                }
+
             } else if (chiamataResult && chiamata.chiamataUrgente) {
                 this.store.dispatch([
                     new CestinaChiamata(),
@@ -551,7 +558,6 @@ export class SchedaTelefonataState {
 
     @Action(InsertChiamataSuccess)
     insertChiamataSuccess({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess): void {
-        console.log('InsertChiamataSuccess', action.nuovaRichiesta);
         const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
         const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
         const idUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser).id;
@@ -564,27 +570,8 @@ export class SchedaTelefonataState {
         } else {
             dispatch(new SetNeedRefresh(true));
         }
-        if (idUtenteLoggato === action.nuovaRichiesta.operatore.id && !action.options?.trasferimento) {
-            const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
-            const redirectComposizionePartenza = this.store.selectSnapshot(SchedaTelefonataState.redirectComposizionePartenza);
-            if (chiamataStatus && !action.nuovaRichiesta.chiamataUrgente && !redirectComposizionePartenza) {
-                // dispatch(new ToggleChiamata(false, true));
-            } else if (chiamataStatus && action.nuovaRichiesta.chiamataUrgente) {
-                // dispatch(new ToggleModifica());
-            } else if (chiamataStatus && redirectComposizionePartenza) {
-                // Se 'Conferma e Invia Partenza' allora lancio il toggle della composizione avanzata
-                dispatch([
-                    new SetRichiestaComposizione(action.nuovaRichiesta),
-                    new ToggleComposizione(Composizione.Avanzata),
-                    new StopLoadingSchedaRichiesta()
-                ]);
 
-                const generiMezzoTriage = getGeneriMezzoTriageSummary(action.nuovaRichiesta?.triageSummary);
-                if (generiMezzoTriage?.length) {
-                    this.store.dispatch(new SetFiltriGeneriMezzoTriage(generiMezzoTriage));
-                }
-            }
-        } else if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
+        if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
     }
