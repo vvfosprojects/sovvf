@@ -100,6 +100,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     case Costanti.MezzoInRientro:
                         nuovoStatoMezzo = Costanti.MezzoInRientro;
                         break;
+
                     case Costanti.EventoMezzoInRientro:
                         nuovoStatoMezzo = Costanti.MezzoInRientro;
                         break;
@@ -114,14 +115,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, Costanti.AnnullamentoStatoPartenza, command.CodicePartenza, note);
 
                 partenza.Partenza.Squadre.ForEach(squadra => squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(nuovoStatoMezzo));
-                
+
                 partenza.Partenza.Mezzo.Stato = nuovoStatoMezzo;
 
                 command.Richiesta.DeleteEvento(ultimoMovimento);
 
                 #region Chiamata GAC
 
-                var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+                var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.Select(t => t.Codice).First() }).First();
 
                 //SEGNALO LA MODIFICA A GAC
                 var movimento = new ModificaMovimentoGAC()
@@ -158,7 +159,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 _modificaGAC.Send(movimento);
 
                 #endregion Chiamata GAC
-
 
                 //AGGIORNO STATO MEZZO E RICHIESTA
                 var commandStatoMezzo = new AggiornaStatoMezzoCommand()

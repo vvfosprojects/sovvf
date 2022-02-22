@@ -1,6 +1,6 @@
 import { ChiamataMarker } from '../../features/maps/maps-model/chiamata-marker.model';
 import { AzioneChiamataEnum } from '../enum/azione-chiamata.enum';
-import { RichiestaForm } from './forms/richiesta-form.interface';
+import { RichiestaForm } from './forms/richiesta-form.model';
 
 export interface SchedaTelefonataInterface {
     tipo: string;

@@ -12,7 +12,6 @@ import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
 import { DirectionInterface } from '../maps-interface/direction.interface';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
-import { SedeMarker } from '../maps-model/sede-marker.model';
 import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
 import { TravelModeService } from '../map-service/travel-mode.service';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
@@ -39,6 +38,7 @@ import { DirectionTravelDataInterface } from '../maps-interface/direction-travel
 import { SetVisualizzaPercosiRichiesta } from '../../home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { environment } from '../../../../environments/environment';
 import { SetChiamataFromMappaStatus } from '../../home/store/actions/view/view.actions';
+import { EsriService } from '../map-service/esri.service';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -55,7 +55,6 @@ import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
-import Locator from '@arcgis/core/tasks/Locator';
 import RouteParameters from '@arcgis/core/rest/support/RouteParameters';
 import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import RouteTask from '@arcgis/core/tasks/RouteTask';
@@ -81,7 +80,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() richiestaGestione: SintesiRichiesta;
     @Input() richiestaComposizione: SintesiRichiesta;
     @Input() chiamateMarkers: ChiamataMarker[];
-    @Input() sediMarkers: SedeMarker[];
     @Input() direction: DirectionInterface;
     @Input() tastoChiamataMappaActive: boolean;
     @Input() tastoZonaEmergenzaMappaActive: boolean;
@@ -91,7 +89,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() mezziInServizioStatus: boolean;
     @Input() idMezzoInServizioSelezionato: string;
     @Input() idSchedaContattoSelezionata: string;
-    @Input() areaMappaLoading: boolean;
     @Input() richiesteStatus: boolean;
     @Input() travelDataNuovaPartenza: DirectionTravelDataInterface;
     @Input() visualizzaPercorsiRichiesta: boolean;
@@ -111,8 +108,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     chiamateInCorsoFeatureLayer: FeatureLayer;
     chiamateMarkersGraphics = [];
-    sediOperativeFeatureLayer: FeatureLayer;
-    sediOperativeMarkersGraphics = [];
 
     operatore: Utente;
     RoutesPath = RoutesPath;
@@ -123,7 +118,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 private store: Store,
                 private configModal: NgbModalConfig,
                 private renderer: Renderer2,
-                private travelModeService: TravelModeService) {
+                private travelModeService: TravelModeService,
+                private esriService: EsriService) {
         this.configModal.backdrop = 'static';
         this.configModal.keyboard = false;
         this.mapService.getRefresh().subscribe(() => {
@@ -897,11 +893,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (check && !check.checked) {
             return;
         }
-
-        // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
-        const locatorTask = new Locator({
-            url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
-        });
         this.view.popup.autoOpenEnabled = false;
 
         // Params per il servizio "locationToAddress"
@@ -911,7 +902,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         };
 
         // Trovo l'indirizzo tramite le coordinate
-        locatorTask.locationToAddress(params).then((response) => {
+        this.esriService.getLocationToAddress(params).then((response) => {
             console.log('locationToAddress response', response);
 
             this.changeCenter([lon, lat]).then(() => {
@@ -1010,7 +1001,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
     setContextMenuVisible(value: boolean): void {
-        if (value && !this.areaMappaLoading) {
+        if (value) {
             const lat = this.eventClick.mapPoint.latitude;
             const lon = this.eventClick.mapPoint.longitude;
             this.changeCenter([lon, lat]).then(() => {

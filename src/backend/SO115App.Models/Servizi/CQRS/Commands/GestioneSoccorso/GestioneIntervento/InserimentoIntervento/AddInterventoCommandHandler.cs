@@ -76,7 +76,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             var richiesta = new RichiestaAssistenza()
             {
-                Tipologie = listaCodiciTipologie,
+                Tipologie = command.Chiamata.Tipologie,
                 Richiedente = command.Chiamata.Richiedente,
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,

@@ -100,7 +100,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             var priorita = command.Chiamata.PrioritaRichiesta;
 
-            var listaCodiciTipologie = command.Chiamata.Tipologie.Select(t => t.Codice).ToList();
+            var listaCodiciTipologie = command.Chiamata.Tipologie;
 
             var utentiInLavorazione = new List<string>();
             if (command.Chiamata.ListaUtentiInLavorazione != null)

@@ -1,7 +1,6 @@
 <div class="row h-100">
     <div *ngIf="centroMappa" class="col-12 h-100">
         <div class="col-12 h-100">
-            <app-partial-loader *ngIf="areaMappaLoading$ | async"></app-partial-loader>
             <app-map-esri [activeRoute]="activeRoute"
                           [pCenter]="centroMappa"
                           [idRichiestaSelezionata]="idRichiestaSelezionata$ | async"
@@ -10,7 +9,6 @@
                           [richiesteStatus]="richiesteStatus$ | async"
                           [richiestaComposizione]="richiestaComposizione$ | async"
                           [chiamateMarkers]="chiamataMarkers$ | async"
-                          [sediMarkers]="sediMarkers$ | async"
                           [direction]="direction$ | async"
                           [filtriRichiesteSelezionati]="filtriRichiesteSelezionati$ | async"
                           [schedeContattoStatus]="schedeContattoStatus$ | async"
@@ -18,7 +16,6 @@
                           [mezziInServizioStatus]="mezziInServizioStatus$ | async"
                           [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato$ | async"
                           [idSchedaContattoSelezionata]="idSchedaContattoSelezionata$ | async"
-                          [areaMappaLoading]="areaMappaLoading$ | async"
                           [tastoChiamataMappaActive]="tastoChiamataMappaActive"
                           [tastoZonaEmergenzaMappaActive]="tastoZonaEmergenzaMappaActive"
                           [travelDataNuovaPartenza]="travelDataNuovaPartenza$ | async"

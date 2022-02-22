@@ -3,7 +3,7 @@ import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.mode
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
-import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.interface';
+import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.model';
 
 export class ReducerSchedaTelefonata {
     static readonly type = '[SchedaTelefonata] Reduce completato';
@@ -63,8 +63,11 @@ export class ClearMarkerChiamata {
     static readonly type = '[SchedaTelefonata] Clear chiamata Marker';
 }
 
-export class ClearChiamata {
-    static readonly type = '[SchedaTelefonata] Clear chiamata';
+export class SetFormSubmitted {
+    static readonly type = '[SchedaTelefonata] Set Form Submitted';
+
+    constructor(public value: boolean) {
+    }
 }
 
 export class InsertChiamata {
@@ -102,7 +105,10 @@ export class CestinaChiamata {
 
 export class ResetChiamata {
     static readonly type = '[SchedaTelefonata] Reset chiamata';
+}
 
+export class ResetChiamataForm {
+    static readonly type = '[SchedaTelefonata] Reset chiamata form';
 }
 
 export class StartChiamata {

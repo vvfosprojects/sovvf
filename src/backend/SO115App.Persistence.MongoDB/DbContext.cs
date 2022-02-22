@@ -162,6 +162,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaConsolidamento>();
 
             BsonClassMap.RegisterClassMap<LogBook>();
+            BsonClassMap.RegisterClassMap<Tipologia>();
 
             //PER CACHE
             UnitaOperativaMap.Map();
