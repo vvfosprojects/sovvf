@@ -164,7 +164,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
             var codici = string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct());
 
-            var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
+            //var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
             var lstMezziDto = new List<MezzoDTO>();
@@ -181,6 +181,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
             }
+
+            var ListaPosizioneFlotta = _getPosizioneFlotta.GetByCodiceMezzi(lstMezziDto.Select(m => m.CodiceMezzo).ToList());
 
             var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
 

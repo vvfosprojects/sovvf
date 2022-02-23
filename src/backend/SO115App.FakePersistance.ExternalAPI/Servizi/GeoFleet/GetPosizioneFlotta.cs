@@ -20,10 +20,13 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -37,12 +40,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
+        private readonly IHttpRequestManager<MessaggioPosizione> _client2;
 
-        public GetPosizioneFlotta(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
+        public GetPosizioneFlotta(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IHttpRequestManager<MessaggioPosizione> client2)
         {
             _client = client;
             _configuration = configuration;
             _memoryCache = memoryCache;
+            _client2 = client2;
         }
 
         /// <summary>
@@ -70,6 +75,32 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
             }
 
             return lstPosizioneFlotta;
+        }
+
+        public async Task<List<MessaggioPosizione>> GetByCodiceMezzi(List<string> codiciMezzi)
+        {
+            try
+            {
+                var lstPosizioni = new ConcurrentBag<MessaggioPosizione>();
+
+                string baseUrl = $"{_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value}posizioneByCodiceMezzo/";
+
+                Parallel.ForEach(codiciMezzi.Distinct(), codice =>
+                {
+                    var uri = new Uri(baseUrl + codice + "/");
+
+                    var result = _client2.GetAsync(uri).Result;
+
+                    if (result != null)
+                        lstPosizioni.Add(result);
+                });
+
+                return lstPosizioni.ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Errore geofleet: {e.GetBaseException().Message}.");
+            }
         }
     }
 }
