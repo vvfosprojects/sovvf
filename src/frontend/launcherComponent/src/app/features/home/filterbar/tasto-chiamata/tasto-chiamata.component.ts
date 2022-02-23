@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { defineChiamataIntervento } from '../../../../shared/helper/function-richieste';
+import { InsertChiamataTest, StopLoadingSchedaRichiesta } from '../../store/actions/form-richiesta/scheda-telefonata.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-tasto-chiamata',
     templateUrl: './tasto-chiamata.component.html',
-    styleUrls: ['./tasto-chiamata.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./tasto-chiamata.component.css']
 })
 export class TastoChiamataComponent {
 
@@ -20,7 +21,15 @@ export class TastoChiamataComponent {
 
     defaultColorButtonChiamata: string;
 
-    constructor() {
+    testInserimento = {
+        active: false,
+        interval: null,
+        maxCount: 0,
+        msInterval: 0,
+        count: 0
+    };
+
+    constructor(private store: Store) {
         this.defaultColorButtonChiamata = this.colorButtonChiamata;
     }
 
@@ -55,4 +64,28 @@ export class TastoChiamataComponent {
         }
     }
 
+    startTestInserimento(): void {
+        // Parametri modificabili
+        this.testInserimento.maxCount = 500;
+        this.testInserimento.msInterval = 3000;
+        // Fine Parametri modificabili
+
+        this.testInserimento.active = true;
+        this.testInserimento.count = 0;
+        this.testInserimento.interval = setInterval(() => {
+            if (this.testInserimento.count <= this.testInserimento.maxCount) {
+                this.store.dispatch(new InsertChiamataTest());
+                this.testInserimento.count = this.testInserimento.count + 1;
+            } else {
+                this.stopTestInserimento();
+            }
+        }, this.testInserimento.msInterval);
+    }
+
+    stopTestInserimento(): void {
+        this.store.dispatch(new StopLoadingSchedaRichiesta());
+        this.testInserimento.active = false;
+        this.testInserimento.count = 0;
+        clearInterval(this.testInserimento.interval);
+    }
 }
