@@ -19,7 +19,8 @@ import {
     SetFormSubmitted,
     SetRedirectComposizionePartenza,
     StartChiamata,
-    StopLoadingDettagliTipologia
+    StopLoadingDettagliTipologia,
+    UpdateScorciatoiaTelefono
 } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { Priorita, SintesiRichiesta } from '../../model/sintesi-richiesta.model';
@@ -74,6 +75,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     @Select(SchedaTelefonataState.idChiamata) idChiamata$: Observable<string>;
     idChiamata: string;
+    @Select(SchedaTelefonataState.scorciatoieTelefono) scorciatoieTelefono$: Observable<any>;
+    scorciatoieTelefono: any;
 
     @Select(TriageChiamataModalState.triage) triage$: Observable<TreeviewItem>;
     triage: TreeviewItem;
@@ -135,13 +138,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     StatoRichiesta = StatoRichiesta;
     pos: PosInterface[];
 
-    scorciatoieTelefono = {
-        112: false,
-        113: false,
-        118: false,
-        'VV.UU.': false,
-    };
-
     richiestaForm: FormGroup;
 
     private subscription = new Subscription();
@@ -152,6 +148,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 private esriService: EsriService) {
         this.store.dispatch(new StartChiamata());
         this.getIdChiamata();
+        this.getScorciatoieTelefono();
         this.initForm();
         this.getLoadingDettagliTipologia();
         this.getDettagliTipologia();
@@ -215,6 +212,20 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.subscription.add(
             this.idChiamata$.subscribe((idChiamata: string) => {
                 this.idChiamata = idChiamata;
+            })
+        );
+    }
+
+    getScorciatoieTelefono(): void {
+        this.subscription.add(
+            this.scorciatoieTelefono$.subscribe((scorciatoieTelefono: any) => {
+                this.scorciatoieTelefono = scorciatoieTelefono;
+                if (scorciatoieTelefono) {
+                    if (this.f && !Object.keys(this.scorciatoieTelefono).filter((k: string) => this.scorciatoieTelefono[k] === true)?.length) {
+                        this.f.nominativo.enable();
+                        this.f.telefono.enable();
+                    }
+                }
             })
         );
     }
@@ -366,7 +377,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.indirizzo.setValidators([]);
         }
 
-        this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
+        this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono, true);
         this.pos = this.richiestaModifica?.dettaglioTipologia?.pos;
 
         function getHaBoschi(richiestaModifica: SintesiRichiesta): number {
@@ -383,7 +394,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     get f(): any {
-        return this.richiestaForm.controls;
+        return this.richiestaForm?.controls;
     }
 
     onChangeTipologia(codTipologia: string): void {
@@ -906,13 +917,17 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     onCheckScorciatoiaNumero(scorciatoia: string): void {
         const f = this.f;
         if (this.scorciatoieTelefono[scorciatoia]) {
-            this.scorciatoieTelefono[scorciatoia] = false;
+            this.patchScorciatoiaNumero(scorciatoia, false);
             f.codSchedaContatto.value ? f.telefono.patchValue(this.schedaContatto?.richiedente?.telefono) : f.telefono.patchValue('');
             f.codSchedaContatto.value ? f.nominativo.patchValue(this.schedaContatto?.richiedente?.nominativo) : f.nominativo.patchValue('');
             f.nominativo.enable();
             f.telefono.enable();
         } else {
-            Object.keys(this.scorciatoieTelefono).forEach(x => this.scorciatoieTelefono[x] = x === scorciatoia);
+            Object.keys(this.scorciatoieTelefono).forEach(x => {
+                if (x === scorciatoia) {
+                    this.patchScorciatoiaNumero(scorciatoia, true);
+                }
+            });
             let nominativo = this.richiestaModifica?.richiedente?.nominativo ? this.richiestaModifica?.richiedente?.nominativo : null;
             switch (scorciatoia) {
                 case '112':
@@ -924,7 +939,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 case '118':
                     nominativo = 'Servizio Sanitario di Urgenza ed Emergenza';
                     break;
-                case 'VV.UU.':
+                case 'VVUU':
                     nominativo = 'Polizia Municipale';
                     break;
             }
@@ -937,8 +952,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    patchScorciatoiaNumero(scorciatoia: string): void {
-        this.scorciatoieTelefono[scorciatoia] = true;
+    patchScorciatoiaNumero(scorciatoia: string, newValue: boolean): void {
+        this.store.dispatch(new UpdateScorciatoiaTelefono(scorciatoia, newValue));
     }
 
     getCheckboxUrgenzaState(): CheckboxInterface {
