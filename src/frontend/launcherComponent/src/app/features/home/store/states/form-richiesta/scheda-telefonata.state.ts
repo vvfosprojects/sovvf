@@ -71,6 +71,7 @@ import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
 import { UrgenzaSegnalataModalComponent } from '../../../../../shared/modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
+import { TurnoState } from '../../../../navbar/store/states/turno.state';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -435,6 +436,8 @@ export class SchedaTelefonataState {
     insertChiamataTest({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
         dispatch(new StartLoadingSchedaRichiesta());
         const utenteLoggato = this.store.selectSnapshot(AuthState.currentUser);
+        const turno = this.store.selectSnapshot(TurnoState.turnoCalendario).corrente;
+        const tipologie = this.store.selectSnapshot(TipologieState.tipologie);
         const chiamata = new SintesiRichiesta(
             null,
             null,
@@ -443,71 +446,20 @@ export class SchedaTelefonataState {
             new Date(),
             StatoRichiesta.Chiamata,
             3,
-            [{
-                codice: '1',
-                descrizione: 'Incendio normale (generico)',
-                tipoLuogoEvento: null,
-                icona: null,
-                categoria: 'Incendi ed esplosioni',
-                star: false,
-                boschivo: false,
-                codiceDescrizione: 'Incendio normale (generico) (1)'
-            }],
+            [tipologie[0]],
             null,
             'Incendio normale (generico)',
             { telefono: '3518103364', nominativo: 'SANTE SALVATI' },
-            {
-                indirizzo: 'Via Giuseppe Marcotti 70',
-                piano: null,
-                palazzo: null,
-                scala: null,
-                interno: null,
-                contatto: '220175018',
-                note: null,
-                coordinate: { longitudine: 12.538748, latitudine: 41.909511 },
-                provincia: 'Roma',
-                cap: '00157',
-                regione: 'Lazio',
-                civico: '26'
-            },
+            utenteLoggato.sede,
             [
-                {
-                    codice: 'RM.1010',
-                    descrizione: 'TUSCOLANO I',
-                    coordinate: { latitudine: 41.88168, longitudine: 12.5185 },
-                    indirizzo: 'Via Tuscolana, 126',
-                    coordinateString: null,
-                    tipo: '',
-                    regione: '',
-                    provincia: ''
-                },
-                {
-                    codice: 'RM.1000',
-                    descrizione: 'COMANDO VV.F. ROMA',
-                    coordinate: { latitudine: 41.89996, longitudine: 12.49104 },
-                    indirizzo: 'Via Genova, 3/a',
-                    coordinateString: null,
-                    tipo: '',
-                    regione: '',
-                    provincia: ''
-                },
-                {
-                    codice: 'RM.1002',
-                    descrizione: 'NOMENTANO',
-                    coordinate: { latitudine: 41.94018, longitudine: 12.54656 },
-                    indirizzo: 'Via Ettore Romagnoli, 31',
-                    coordinateString: null,
-                    tipo: '',
-                    regione: '',
-                    provincia: ''
-                }
+                utenteLoggato.sede
             ],
-            ['RM.1010', 'RM.1000', 'RM.1001'],
+            [utenteLoggato.sede.codice],
             null,
             null,
             null,
             false,
-            '220175018',
+            null,
             null,
             null,
             null,
@@ -515,7 +467,7 @@ export class SchedaTelefonataState {
             null,
             null,
             AzioneChiamataEnum.MettiInCoda,
-            'A',
+            turno,
             null,
             null,
             null,
