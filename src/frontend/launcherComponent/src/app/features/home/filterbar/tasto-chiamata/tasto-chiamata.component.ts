@@ -67,7 +67,7 @@ export class TastoChiamataComponent {
     startTestInserimento(): void {
         // Parametri modificabili
         this.testInserimento.maxCount = 500;
-        this.testInserimento.msInterval = 3000;
+        this.testInserimento.msInterval = 5000;
         // Fine Parametri modificabili
 
         this.testInserimento.active = true;
