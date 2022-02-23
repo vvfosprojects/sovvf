@@ -87,12 +87,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
 
                 Parallel.ForEach(codiciMezzi.Distinct(), codice =>
                 {
-                    var uri = new Uri(baseUrl + codice + "/");
+                    try
+                    {
+                        var uri = new Uri(baseUrl + codice + "/");
 
-                    var result = _client2.GetAsync(uri).Result;
+                        var result = _client2.GetAsync(uri).Result;
 
-                    if (result != null && result != default)
-                        lstPosizioni.Add(result);
+                        if (result != null && result != default)
+                            lstPosizioni.Add(result);
+                    }
+                    catch (Exception e) { }
                 });
 
                 return lstPosizioni.ToList();
