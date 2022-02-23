@@ -91,7 +91,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
 
                     var result = _client2.GetAsync(uri).Result;
 
-                    if (result != null)
+                    if (result != null && result != default)
                         lstPosizioni.Add(result);
                 });
 
@@ -99,7 +99,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
             }
             catch (Exception e)
             {
-                throw new Exception($"Errore geofleet: {e.GetBaseException().Message}.");
+                return null;
             }
         }
     }
