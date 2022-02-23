@@ -332,6 +332,7 @@ namespace SO115App.CompositionRoot
             container.Register<INotifyUpDateSchedaContatto, SendUpDateSchedaContatto>();
             container.Register<IGetCompetenzeByCoordinateIntervento, GetCompetenzeByCoordinateIntervento>();
             container.Register<IGetDistanzaTempoMezzi, GetDistanzaTempoMezzi>();
+            container.Register<IGetJobId, GetJobId>();
 
             #endregion ESRI
 

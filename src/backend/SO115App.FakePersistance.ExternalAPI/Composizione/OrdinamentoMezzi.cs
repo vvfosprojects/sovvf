@@ -49,7 +49,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Mezzi = lstMezziEsri
                     });
 
-                    var tempodist = distanzaTempo.Result.ArrayMezzi.Find(m => m.codice.Equals(composizione.Mezzo.Codice));
+                    var tempodist = distanzaTempo.Result.Find(m => m.codice.Equals(composizione.Mezzo.Codice));
 
                     var ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie.Select(c => c.Codice).ToList(), composizione.Mezzo.Genere);
 
