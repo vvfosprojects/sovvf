@@ -10,6 +10,7 @@ import {
     ClearMarkerChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
+    InsertChiamataTest,
     MarkerChiamata,
     ReducerSchedaTelefonata,
     ResetChiamata,
@@ -27,7 +28,8 @@ import {
     StartLoadingSchedaRichiesta,
     StopLoadingCompetenze,
     StopLoadingDettagliTipologia,
-    StopLoadingSchedaRichiesta, UpdateScorciatoiaTelefono
+    StopLoadingSchedaRichiesta,
+    UpdateScorciatoiaTelefono
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
 import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
@@ -425,6 +427,105 @@ export class SchedaTelefonataState {
     setFormSubmitted({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetFormSubmitted): void {
         patchState({
             submitted: action.value
+        });
+    }
+
+    @Action(InsertChiamataTest)
+    insertChiamataTest({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+        dispatch(new StartLoadingSchedaRichiesta());
+        const utenteLoggato = this.store.selectSnapshot(AuthState.currentUser);
+        const chiamata = new SintesiRichiesta(
+            null,
+            null,
+            null,
+            utenteLoggato,
+            new Date(),
+            StatoRichiesta.Chiamata,
+            3,
+            [{
+                codice: '1',
+                descrizione: 'Incendio normale (generico)',
+                tipoLuogoEvento: null,
+                icona: null,
+                categoria: 'Incendi ed esplosioni',
+                star: false,
+                boschivo: false,
+                codiceDescrizione: 'Incendio normale (generico) (1)'
+            }],
+            null,
+            'Incendio normale (generico)',
+            { telefono: '3518103364', nominativo: 'SANTE SALVATI' },
+            {
+                indirizzo: 'Via Giuseppe Marcotti 70',
+                piano: null,
+                palazzo: null,
+                scala: null,
+                interno: null,
+                contatto: '220175018',
+                note: null,
+                coordinate: { longitudine: 12.538748, latitudine: 41.909511 },
+                provincia: 'Roma',
+                cap: '00157',
+                regione: 'Lazio',
+                civico: '26'
+            },
+            [
+                {
+                    codice: 'RM.1010',
+                    descrizione: 'TUSCOLANO I',
+                    coordinate: { latitudine: 41.88168, longitudine: 12.5185 },
+                    indirizzo: 'Via Tuscolana, 126',
+                    coordinateString: null,
+                    tipo: '',
+                    regione: '',
+                    provincia: ''
+                },
+                {
+                    codice: 'RM.1000',
+                    descrizione: 'COMANDO VV.F. ROMA',
+                    coordinate: { latitudine: 41.89996, longitudine: 12.49104 },
+                    indirizzo: 'Via Genova, 3/a',
+                    coordinateString: null,
+                    tipo: '',
+                    regione: '',
+                    provincia: ''
+                },
+                {
+                    codice: 'RM.1002',
+                    descrizione: 'NOMENTANO',
+                    coordinate: { latitudine: 41.94018, longitudine: 12.54656 },
+                    indirizzo: 'Via Ettore Romagnoli, 31',
+                    coordinateString: null,
+                    tipo: '',
+                    regione: '',
+                    provincia: ''
+                }
+            ],
+            ['RM.1010', 'RM.1000', 'RM.1001'],
+            null,
+            null,
+            null,
+            false,
+            '220175018',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            AzioneChiamataEnum.MettiInCoda,
+            'A',
+            null,
+            null,
+            null,
+            null,
+            null,
+            false,
+            null,
+            null
+        );
+
+        this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
         });
     }
 
