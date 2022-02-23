@@ -70,6 +70,7 @@ import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum'
 import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
 import { UrgenzaSegnalataModalComponent } from '../../../../../shared/modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
+import { ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -683,10 +684,14 @@ export class SchedaTelefonataState {
                 this.store.dispatch([
                     new CestinaChiamata(),
                     new ResetChiamataForm(),
+                    new ClearSchedaContattoTelefonata(),
                     new StartChiamata()
                 ]);
             } else {
-                dispatch(new CestinaChiamata());
+                dispatch([
+                    new ToggleChiamata(),
+                    new CestinaChiamata()
+                ]);
             }
             dispatch(new StopLoadingSchedaRichiesta());
         }, () => {
