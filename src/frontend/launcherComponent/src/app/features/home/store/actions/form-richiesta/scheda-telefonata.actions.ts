@@ -63,6 +63,17 @@ export class ClearMarkerChiamata {
     static readonly type = '[SchedaTelefonata] Clear chiamata Marker';
 }
 
+export class UpdateScorciatoiaTelefono {
+    static readonly type = '[SchedaTelefonata] Update Scorciatoia Telefono';
+
+    constructor(public scorciatoiaKey: string, public newValue: boolean) {
+    }
+}
+
+export class ResetScorciatoieTelefono {
+    static readonly type = '[SchedaTelefonata] Reset Scorciatoie Telefono';
+}
+
 export class SetFormSubmitted {
     static readonly type = '[SchedaTelefonata] Set Form Submitted';
 

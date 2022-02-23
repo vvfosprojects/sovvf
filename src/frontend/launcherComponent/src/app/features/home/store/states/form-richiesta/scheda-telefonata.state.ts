@@ -14,6 +14,7 @@ import {
     ReducerSchedaTelefonata,
     ResetChiamata,
     ResetChiamataForm,
+    ResetScorciatoieTelefono,
     SetCompetenze,
     SetCompetenzeSuccess,
     SetCountInterventiProssimita,
@@ -26,7 +27,7 @@ import {
     StartLoadingSchedaRichiesta,
     StopLoadingCompetenze,
     StopLoadingDettagliTipologia,
-    StopLoadingSchedaRichiesta
+    StopLoadingSchedaRichiesta, UpdateScorciatoiaTelefono
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
 import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
@@ -66,6 +67,8 @@ import { makeIdChiamata } from '../../../../../shared/helper/function-richieste'
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
 import { UrgenzaSegnalataModalComponent } from '../../../../../shared/modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
+import { makeCopy } from '../../../../../shared/helper/function-generiche';
+import { ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -74,6 +77,12 @@ export interface SchedaTelefonataStateModel {
         dirty: boolean,
         status: string,
         errors: any
+    };
+    scorciatoieTelefono: {
+        112: boolean,
+        113: boolean,
+        118: boolean,
+        VVUU: boolean
     };
     submitted: boolean;
     coordinate: Coordinate;
@@ -101,6 +110,12 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
         dirty: false,
         status: '',
         errors: {}
+    },
+    scorciatoieTelefono: {
+        112: false,
+        113: false,
+        118: false,
+        VVUU: false
     },
     submitted: false,
     coordinate: null,
@@ -143,6 +158,11 @@ export class SchedaTelefonataState {
     @Selector()
     static formValue(state: SchedaTelefonataStateModel): RichiestaForm {
         return state.richiestaForm.model;
+    }
+
+    @Selector()
+    static scorciatoieTelefono(state: SchedaTelefonataStateModel): any {
+        return state.scorciatoieTelefono;
     }
 
     @Selector()
@@ -379,6 +399,29 @@ export class SchedaTelefonataState {
         });
     }
 
+    @Action(UpdateScorciatoiaTelefono)
+    updateScorciatoiaTelefono({ getState, patchState }: StateContext<SchedaTelefonataStateModel>, action: UpdateScorciatoiaTelefono): void {
+        const state = getState();
+        const scorciatoieTelefonoCopy = makeCopy(state.scorciatoieTelefono);
+        Object.keys(scorciatoieTelefonoCopy).forEach((k: string) => {
+            if (k === action.scorciatoiaKey) {
+                scorciatoieTelefonoCopy[k] = action.newValue;
+            } else {
+                scorciatoieTelefonoCopy[k] = false;
+            }
+        });
+        patchState({
+            scorciatoieTelefono: scorciatoieTelefonoCopy
+        });
+    }
+
+    @Action(ResetScorciatoieTelefono)
+    resetScorciatoieTelefono({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            scorciatoieTelefono: SchedaTelefonataStateDefaults.scorciatoieTelefono
+        });
+    }
+
     @Action(SetFormSubmitted)
     setFormSubmitted({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetFormSubmitted): void {
         patchState({
@@ -540,10 +583,14 @@ export class SchedaTelefonataState {
                 this.store.dispatch([
                     new CestinaChiamata(),
                     new ResetChiamataForm(),
+                    new ClearSchedaContattoTelefonata(),
                     new StartChiamata()
                 ]);
             } else {
-                dispatch(new CestinaChiamata());
+                dispatch([
+                    new ToggleChiamata(),
+                    new CestinaChiamata()
+                ]);
             }
             dispatch(new StopLoadingSchedaRichiesta());
         }, () => {
@@ -583,10 +630,13 @@ export class SchedaTelefonataState {
 
     @Action(ResetChiamataForm)
     resetChiamataForm({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
-        dispatch(new UpdateFormValue({
-            value: new RichiestaForm(),
-            path: 'schedaTelefonata.richiestaForm'
-        }));
+        dispatch([
+            new UpdateFormValue({
+                value: new RichiestaForm(),
+                path: 'schedaTelefonata.richiestaForm'
+            }),
+            new ResetScorciatoieTelefono()
+        ]);
     }
 
     @Action(AnnullaChiamata)
