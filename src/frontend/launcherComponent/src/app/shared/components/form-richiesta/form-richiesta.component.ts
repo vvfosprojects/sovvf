@@ -12,7 +12,9 @@ import { ClearClipboard } from '../../../features/home/store/actions/form-richie
 import {
     ClearCompetenze,
     ClearCountInterventiProssimita,
+    ClearIdChiamataMarker,
     ClearInterventiProssimita,
+    ClearMarkerChiamata,
     ReducerSchedaTelefonata,
     SetCompetenze,
     SetCompetenzeSuccess,
@@ -200,6 +202,22 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     this.selectCompetenzaAuto();
                 }
             }
+            if (changes.loadingCompetenze?.currentValue !== null) {
+                if (this.f) {
+                    switch (changes.loadingCompetenze?.currentValue) {
+                        case true:
+                            this.f.latitudine.disable();
+                            this.f.longitudine.disable();
+                            break;
+                        case false:
+                            this.f.latitudine.enable();
+                            this.f.longitudine.enable();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
     }
 
@@ -260,7 +278,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new ClearSchedaContattoTelefonata(),
             new SetFormSubmitted(false),
             new ClearClipboard(),
-            new DelChiamataMarker(this.idChiamata),
+            new ClearMarkerChiamata(),
             new ClearCompetenze(),
             new ClearCountInterventiProssimita(),
             new ClearInterventiProssimita()
@@ -645,9 +663,31 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     modificaIndirizzo(indirizzo: string): void {
         this.f.indirizzo.patchValue(indirizzo);
-        this.f.codPrimaCompetenza.patchValue(null);
-        this.f.codSecondaCompetenza.patchValue(null);
-        this.f.codTerzaCompetenza.patchValue(null);
+        if (!indirizzo) {
+            this.store.dispatch([
+                new ClearCompetenze(),
+                new ClearCountInterventiProssimita(),
+                new ClearInterventiProssimita(),
+                new ClearMarkerChiamata(),
+                new ClearIdChiamataMarker()
+            ]);
+            this.f.codPrimaCompetenza.patchValue(null);
+            this.f.codSecondaCompetenza.patchValue(null);
+            this.f.codTerzaCompetenza.patchValue(null);
+            this.f.latitudine.patchValue(null);
+            this.f.longitudine.patchValue(null);
+            this.f.provincia.patchValue(null);
+            this.f.cap.patchValue(null);
+            this.f.regione.patchValue(null);
+            this.f.civico.patchValue(null);
+            this.f.indirizzo.markAsPristine();
+            this.f.latitudine.markAsPristine();
+            this.f.longitudine.markAsPristine();
+            this.f.provincia.markAsPristine();
+            this.f.cap.markAsPristine();
+            this.f.regione.markAsPristine();
+            this.f.civico.markAsPristine();
+        }
     }
 
     onMsgIndirizzo(): string {
@@ -672,16 +712,37 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const lng = roundToDecimal(this.f.longitudine.value, 6);
 
         if (lat && lng) {
-            const coordinate = new Coordinate(lat, lng);
             if (!this.richiestaModifica) {
-                this.chiamataMarker = new ChiamataMarker(
-                    this.idChiamata,
-                    `${this.operatore.nome} ${this.operatore.cognome}`,
-                    `${this.operatore.sede.codice}`,
-                    new Localita(coordinate ? coordinate : null, indirizzo),
-                    null
-                );
-                this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
+                const coordinate = new Coordinate(lat, lng);
+                const locationPOI = new Point({
+                    latitude: coordinate.latitudine,
+                    longitude: coordinate.longitudine
+                });
+                const params = {
+                    location: locationPOI
+                };
+                this.esriService.getLocationToAddress(params).then((response: any) => {
+                    this.chiamataMarker = new ChiamataMarker(
+                        this.idChiamata,
+                        `${this.operatore.nome} ${this.operatore.cognome}`,
+                        `${this.operatore.sede.codice}`,
+                        new Localita(coordinate ? coordinate : null, indirizzo),
+                        null
+                    );
+                    this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
+                    this.f.indirizzo.patchValue(response.address);
+                    this.f.provincia.patchValue(response.attributes.Subregion);
+                    this.f.cap.patchValue(response.attributes.Postal);
+                    this.f.regione.patchValue(response.attributes.Region);
+                    this.f.civico.patchValue(response.attributes.AddNum);
+                    this.f.indirizzo.markAsDirty();
+                    this.f.latitudine.markAsDirty();
+                    this.f.longitudine.markAsDirty();
+                    this.f.provincia.markAsDirty();
+                    this.f.cap.markAsDirty();
+                    this.f.regione.markAsDirty();
+                    this.f.civico.markAsDirty();
+                });
             }
         } else {
             this.store.dispatch([
@@ -689,7 +750,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 new ClearCountInterventiProssimita(),
                 new ClearInterventiProssimita()
             ]);
-            this.f.indirizzo.setValidators([Validators.required]);
             this.f.codPrimaCompetenza.patchValue(null);
             this.f.codSecondaCompetenza.patchValue(null);
             this.f.codTerzaCompetenza.patchValue(null);

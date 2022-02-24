@@ -21,6 +21,7 @@ export class RicercaIndirizzoComponent implements OnInit {
     @Input() requiredField = true;
     @Input() requiredFieldClass = true;
     @Input() invalid: boolean;
+    @Input() disabled: boolean;
     @Input() spatialReference: SpatialReference;
 
     @Output() changeIndirizzo: EventEmitter<string> = new EventEmitter<string>();
@@ -106,7 +107,6 @@ export class RicercaIndirizzoComponent implements OnInit {
 
             if (parmasFindAddress) {
                 searchPointByCity(urlServiceGeocode, parmasFindAddress).then((point: Point) => {
-                    console.log('point', point);
                     location = point;
                     paramsSuggestLocation = {
                         location,
