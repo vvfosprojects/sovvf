@@ -5,6 +5,7 @@ import {
     CestinaChiamata,
     ClearCompetenze,
     ClearCountInterventiProssimita,
+    ClearIdChiamataMarker,
     ClearIndirizzo,
     ClearInterventiProssimita,
     ClearMarkerChiamata,
@@ -301,6 +302,13 @@ export class SchedaTelefonataState {
         if (state.idChiamataMarker) {
             dispatch(new DelChiamataMarker(state.idChiamataMarker));
         }
+    }
+
+    @Action(ClearIdChiamataMarker)
+    clearIdChiamataMarker({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+           idChiamataMarker: SchedaTelefonataStateDefaults.idChiamataMarker
+        });
     }
 
     @Action(SetCompetenze)
