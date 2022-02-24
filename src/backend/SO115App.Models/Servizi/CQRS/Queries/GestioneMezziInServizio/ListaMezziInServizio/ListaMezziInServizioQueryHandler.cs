@@ -86,7 +86,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
                     var lstStatiMezzo = lstStati.Where(s => s.CodiceMezzo.Equals(m.Mezzo.Mezzo.Codice))?
                         .Select(s => new IstanteCambioStato(s.StatoOperativo, s.IstantePrenotazione));
 
-                    m.Mezzo.Mezzo.IstantiCambiStato.AddRange(lstStatiMezzo);
+                    m.Mezzo.Mezzo.IstantiCambiStato = lstStatiMezzo.Count() > 0 ? lstStatiMezzo.ToList() : null;
 
                     return m;
                 }
