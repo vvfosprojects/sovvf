@@ -63,6 +63,10 @@ export class ClearMarkerChiamata {
     static readonly type = '[SchedaTelefonata] Clear chiamata Marker';
 }
 
+export class ClearIdChiamataMarker {
+    static readonly type = '[SchedaTelefonata] Clear id chiamata Marker';
+}
+
 export class UpdateScorciatoiaTelefono {
     static readonly type = '[SchedaTelefonata] Update Scorciatoia Telefono';
 

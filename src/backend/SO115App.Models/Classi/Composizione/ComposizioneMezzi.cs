@@ -43,11 +43,11 @@ namespace SO115App.API.Models.Classi.Composizione
         /// <summary>
         /// Rappresentato in KM
         /// </summary>
-        public string Km { get; set; }
+        public string Km { get; set; } = "0";
         /// <summary>
         /// Rappresentato in Minuti
         /// </summary>
-        public string TempoPercorrenza { get; set; }
+        public string TempoPercorrenza { get; set; } = "0";
         public DateTime? IstanteScadenzaSelezione { get; set; }
 
         /// <summary>
