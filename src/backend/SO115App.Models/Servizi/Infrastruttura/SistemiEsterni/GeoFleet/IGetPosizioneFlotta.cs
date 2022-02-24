@@ -34,5 +34,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GeoFleet
         /// <param name="Secondi">sono i secondi di delay</param>
         /// <returns>Il messaggio posizione da Geofleet</returns>
         Task<List<MessaggioPosizione>> Get(int Secondi);
+        Task<List<MessaggioPosizione>> GetByCodiceMezzi(List<string> codiciMezzi);
     }
 }
