@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28922.388
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.API", "SO115App.API\SO115App.API.csproj", "{42DE1A08-3415-4767-9D2A-FC4D6B36799B}"
 EndProject
@@ -34,6 +34,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.ExternalAPI.Client", "SO115App.ExternalApi.Client\SO115App.ExternalAPI.Client.csproj", "{2B44637C-3484-403E-B9A6-B65479F209C7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Persistence.File", "SO115App.Persistence.File\SO115App.Persistence.File.csproj", "{9063ED5D-44A0-4D98-A004-00CAB8E972F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.NUnitTest", "SO115App.NUnitTest\SO115App.NUnitTest.csproj", "{614499EF-8D3B-4B64-92EB-DD3A6600E3E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{9063ED5D-44A0-4D98-A004-00CAB8E972F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9063ED5D-44A0-4D98-A004-00CAB8E972F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9063ED5D-44A0-4D98-A004-00CAB8E972F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{614499EF-8D3B-4B64-92EB-DD3A6600E3E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{614499EF-8D3B-4B64-92EB-DD3A6600E3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{614499EF-8D3B-4B64-92EB-DD3A6600E3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{614499EF-8D3B-4B64-92EB-DD3A6600E3E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{89A072D6-8D05-443C-A891-04EBCB6D8542} = {83C8C0F1-2DD5-4131-8D26-76AD74F9113A}
 		{C8530E72-948D-4D90-9A08-8BB307E7FC89} = {83C8C0F1-2DD5-4131-8D26-76AD74F9113A}
 		{9063ED5D-44A0-4D98-A004-00CAB8E972F9} = {83C8C0F1-2DD5-4131-8D26-76AD74F9113A}
+		{614499EF-8D3B-4B64-92EB-DD3A6600E3E8} = {83C8C0F1-2DD5-4131-8D26-76AD74F9113A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F66AAE40-C020-4A6A-A20A-D82EDD3083EA}

@@ -182,7 +182,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
             }
 
-            var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
+            //var ListaPosizioneFlotta = _getPosizioneFlotta.GetByCodiceMezzi(lstMezziDto.Select(m => m.CodiceMezzo).ToList());
+
+            var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result/*.Where(p => p != null).ToList()*/, listaSediAlberate.Result).ToList();
 
             //MAPPING
             var ListaMezzi = lstMezziDto
