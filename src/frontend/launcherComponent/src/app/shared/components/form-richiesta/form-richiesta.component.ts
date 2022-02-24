@@ -21,7 +21,6 @@ import {
     SetFormSubmitted,
     SetRedirectComposizionePartenza,
     StartChiamata,
-    StopLoadingDettagliTipologia,
     UpdateScorciatoiaTelefono
 } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
@@ -66,6 +65,8 @@ import { ItemTriageData } from '../../interface/item-triage-data.interface';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import { EsriService } from '../../../features/maps/map-service/esri.service';
 import Point from '@arcgis/core/geometry/Point';
+import { SetCentroMappa } from '../../../features/maps/store/actions/centro-mappa.actions';
+import { CentroMappa } from '../../../features/maps/maps-model/centro-mappa.model';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -386,14 +387,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
-        this.store.dispatch(new StopLoadingDettagliTipologia());
-
-        const lat = roundToDecimal(this.f.latitudine.value, 6);
-        const lng = roundToDecimal(this.f.longitudine.value, 6);
-        if (lat && lng) {
-            this.onChangeCoordinate();
-            this.f.indirizzo.setValidators([]);
-        }
 
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono, true);
         this.pos = this.richiestaModifica?.dettaglioTipologia?.pos;
@@ -712,16 +705,16 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const lng = roundToDecimal(this.f.longitudine.value, 6);
 
         if (lat && lng) {
-            if (!this.richiestaModifica) {
-                const coordinate = new Coordinate(lat, lng);
-                const locationPOI = new Point({
-                    latitude: coordinate.latitudine,
-                    longitude: coordinate.longitudine
-                });
-                const params = {
-                    location: locationPOI
-                };
-                this.esriService.getLocationToAddress(params).then((response: any) => {
+            const coordinate = new Coordinate(lat, lng);
+            const locationPOI = new Point({
+                latitude: coordinate.latitudine,
+                longitude: coordinate.longitudine
+            });
+            const params = {
+                location: locationPOI
+            };
+            this.esriService.getLocationToAddress(params).then((response: any) => {
+                if (!this.modifica) {
                     this.chiamataMarker = new ChiamataMarker(
                         this.idChiamata,
                         `${this.operatore.nome} ${this.operatore.cognome}`,
@@ -730,20 +723,28 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                         null
                     );
                     this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
-                    this.f.indirizzo.patchValue(response.address);
-                    this.f.provincia.patchValue(response.attributes.Subregion);
-                    this.f.cap.patchValue(response.attributes.Postal);
-                    this.f.regione.patchValue(response.attributes.Region);
-                    this.f.civico.patchValue(response.attributes.AddNum);
-                    this.f.indirizzo.markAsDirty();
-                    this.f.latitudine.markAsDirty();
-                    this.f.longitudine.markAsDirty();
-                    this.f.provincia.markAsDirty();
-                    this.f.cap.markAsDirty();
-                    this.f.regione.markAsDirty();
-                    this.f.civico.markAsDirty();
-                });
-            }
+                } else {
+                    const newCentroMappa = {
+                        coordinateCentro: coordinate
+                    } as CentroMappa;
+                    this.store.dispatch([
+                        new SetCentroMappa(newCentroMappa),
+                        new SetCompetenze(coordinate, indirizzo)
+                    ]);
+                }
+                this.f.indirizzo.patchValue(response.address);
+                this.f.provincia.patchValue(response.attributes.Subregion);
+                this.f.cap.patchValue(response.attributes.Postal);
+                this.f.regione.patchValue(response.attributes.Region);
+                this.f.civico.patchValue(response.attributes.AddNum);
+                this.f.indirizzo.markAsDirty();
+                this.f.latitudine.markAsDirty();
+                this.f.longitudine.markAsDirty();
+                this.f.provincia.markAsDirty();
+                this.f.cap.markAsDirty();
+                this.f.regione.markAsDirty();
+                this.f.civico.markAsDirty();
+            });
         } else {
             this.store.dispatch([
                 new ClearCompetenze(),
