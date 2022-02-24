@@ -81,12 +81,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
 
             var listaMezziConStati = listaMezzi.Select(m =>
             {
-                if (lstStati != null && lstStati.Count() != 0)
+                if (lstStati != null && lstStati.Count != 0)
                 {
                     var lstStatiMezzo = lstStati.Where(s => s.CodiceMezzo.Equals(m.Mezzo.Mezzo.Codice))?
                         .Select(s => new IstanteCambioStato(s.StatoOperativo, s.IstantePrenotazione));
 
-                    m.Mezzo.Mezzo.IstantiCambiStato = lstStatiMezzo.Count() > 0 ? lstStatiMezzo.ToList() : null;
+                    m.Mezzo.Mezzo.IstantiCambiStato = lstStatiMezzo?.Any() ?? 0 > 0 ? lstStatiMezzo.ToList() : null;
 
                     return m;
                 }

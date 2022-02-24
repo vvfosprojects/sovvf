@@ -10,7 +10,9 @@ import {
     SetTriageChiamata,
     ClearTipologiaTriageChiamata,
     ClearDettaglioTipologiaTriageChiamata,
-    ClearTriageChiamata, StartLoadingTriageChiamata, StopLoadingTriageChiamata
+    ClearTriageChiamata,
+    StartLoadingTriageChiamata,
+    StopLoadingTriageChiamata
 } from '../../actions/triage-modal/triage-modal.actions';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
@@ -81,8 +83,15 @@ export class TriageChiamataModalState {
             patchState({
                 dettagliTipologia: response.listaDettaglioTipologie
             });
-            dispatch(new StopLoadingTriageChiamata());
-            dispatch(new StopLoadingDettagliTipologia());
+            dispatch([
+                new StopLoadingTriageChiamata(),
+                new StopLoadingDettagliTipologia()
+            ]);
+        }, () => {
+            dispatch([
+                new StopLoadingTriageChiamata(),
+                new StopLoadingDettagliTipologia()
+            ]);
         });
     }
 
@@ -135,6 +144,8 @@ export class TriageChiamataModalState {
                 triage: res?.triage?.data,
                 triageData: res?.triageData
             });
+            dispatch(new StopLoadingTriageChiamata());
+        }, () => {
             dispatch(new StopLoadingTriageChiamata());
         });
     }
