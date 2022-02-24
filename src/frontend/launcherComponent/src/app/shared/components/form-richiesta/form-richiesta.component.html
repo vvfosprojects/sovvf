@@ -103,7 +103,6 @@
                                 <ng-container *ngIf="!apertoFromMappa">
                                     <app-ricerca-indirizzo
                                             [indirizzo]="f?.indirizzo?.value"
-                                            [requiredFieldClass]="f?.indirizzo?._rawValidators[0]?.name === 'required'"
                                             [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
                                             [disabled]="loadingCompetenze"
                                             (changeIndirizzo)="modificaIndirizzo($event)"

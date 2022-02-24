@@ -30,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Serilog;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
@@ -161,13 +162,16 @@ namespace SO115App.API
             services.AddSimpleInjector(container, option => option.AddAspNetCore().AddControllerActivation());
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
+
+            Log.Information("Avvio");
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSimpleInjector(container);
-            LogConfigurator.Configure(Configuration);
+            //LogConfigurator.Configure(Configuration);
 
             if (env.IsDevelopment())
             {
