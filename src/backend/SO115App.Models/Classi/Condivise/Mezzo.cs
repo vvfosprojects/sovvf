@@ -113,7 +113,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public bool PreAccoppiato { get; set; } = false;
 
-        public List<IstanteCambioStato> IstantiCambiStato { get; set; }
+        public List<IstanteCambioStato> IstantiCambiStato { get; set; } = new List<IstanteCambioStato>();
     }
 
     public class IstanteCambioStato
