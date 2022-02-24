@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../../../store/states/app/app.state';
+import { SediTreeviewState } from '../../../store/states/sedi-treeview/sedi-treeview.state';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
@@ -8,7 +9,6 @@ import * as Locator from '@arcgis/core/rest/locator';
 import SuggestionResult = __esri.SuggestionResult;
 import locatorAddressToLocationsParams = __esri.locatorAddressToLocationsParams;
 import locatorSuggestLocationsParams = __esri.locatorSuggestLocationsParams;
-import { SediTreeviewState } from '../../../store/states/sedi-treeview/sedi-treeview.state';
 
 @Component({
     selector: 'app-ricerca-indirizzo',
@@ -31,18 +31,11 @@ export class RicercaIndirizzoComponent implements OnInit {
     indirizzoBackup: string;
     loadingAddressCandidates: boolean;
 
-    hideAddressCandidates: boolean;
     addressCandidates: AddressCandidate[];
     indexSelectedAddressCandidate = 0;
 
-    @HostListener('document:click', ['$event'])
-    clickOutside(event): void {
-        this.hideAddressCandidates = !this.eRef.nativeElement.contains(event.target);
-    }
-
     constructor(private store: Store,
-                private changeDetectorRef: ChangeDetectorRef,
-                private eRef: ElementRef) {
+                private changeDetectorRef: ChangeDetectorRef) {
         document.addEventListener('keydown', (e: KeyboardEvent) => {
             switch (e.key) {
                 case 'ArrowDown':
@@ -190,6 +183,6 @@ export class RicercaIndirizzoComponent implements OnInit {
     }
 
     getSelectIndirizzoOpen(): boolean {
-        return !!(this.addressCandidates?.length) && !this.hideAddressCandidates;
+        return !!(this.addressCandidates?.length);
     }
 }
