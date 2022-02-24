@@ -26,13 +26,11 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Mezzo
     {
-        public Mezzo()
-        { /*IstantiCambiStato = new List<IstanteCambioStato>();*/ }
+        public Mezzo() { }
 
         public Mezzo(string codice, string descrizione, string genere, string stato,
                      string appartenenza, Sede distaccamento, Coordinate coordinate)
         {
-            IstantiCambiStato = new List<IstanteCambioStato>() { new IstanteCambioStato() };
             Codice = codice;
             Descrizione = descrizione;
             Genere = genere;
@@ -113,7 +111,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public bool PreAccoppiato { get; set; } = false;
 
-        public List<IstanteCambioStato> IstantiCambiStato { get; set; }
+        public List<IstanteCambioStato> IstantiCambiStato { get; set; } = null;
     }
 
     public class IstanteCambioStato
