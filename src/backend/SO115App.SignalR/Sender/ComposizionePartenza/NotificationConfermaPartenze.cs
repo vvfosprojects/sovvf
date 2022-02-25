@@ -37,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
 {
-    public class NotificationConfermaPartenze : INotificationConfermaPartenze
+    public class NotificationConfermaPartenze : IDeleteNotification
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;

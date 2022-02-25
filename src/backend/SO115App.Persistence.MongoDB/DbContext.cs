@@ -34,6 +34,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Documentale;
 using SO115App.Models.Classi.Emergenza;
@@ -164,6 +165,9 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<LogBook>();
             BsonClassMap.RegisterClassMap<Tipologia>();
 
+            //Concorrenza
+            BsonClassMap.RegisterClassMap<Concorrenza>();
+
             //PER CACHE
             UnitaOperativaMap.Map();
             BsonClassMap.RegisterClassMap<ComposizioneMezzi>(cm =>
@@ -180,6 +184,14 @@ namespace Persistence.MongoDB
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
+        }
+
+        public IMongoCollection<Concorrenza> ConcorrenzaCollection
+        {
+            get
+            {
+                return database.GetCollection<Concorrenza>("concorrenza");
+            }
         }
 
         public IMongoCollection<ComposizioneMezzi> ComposizioneMezziCollection

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="INotificationAddPrenotazioneMezzo.cs" company="CNVVF">
+// <copyright file="MezzoPrenotatoQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,14 +17,30 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using CQRS.Commands;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
+using System;
 
-using DomainModel.CQRS.Commands.ConfermaPartenze;
-using System.Threading.Tasks;
-
-namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
 {
-    public interface IDeleteNotification
+    public class AddBlockCommandHandler : ICommandHandler<AddBlockCommand>
     {
-        Task SendNotification(ConfermaPartenzeCommand command);
+        private readonly IAddBlock _addBlock;
+
+        public AddBlockCommandHandler(IAddBlock addBlock)
+        {
+            _addBlock = addBlock;
+        }
+
+        public void Handle(AddBlockCommand command)
+        {
+            try
+            {
+                _addBlock.Add(command.concorrenza);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }
 }
