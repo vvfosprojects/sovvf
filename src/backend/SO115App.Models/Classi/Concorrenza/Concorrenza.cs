@@ -4,8 +4,9 @@
     {
         public string Id { get; set; }
         public string IdOperatore { get; set; }
-        public TipoOperazione Type { get; set; }
         public string Value { get; set; }
+        public TipoOperazione Type { get; set; }
+
         public string CodComando { get; set; }
     }
 }

@@ -166,7 +166,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<Tipologia>();
 
             //Concorrenza
-            BsonClassMap.RegisterClassMap<Concorrenza>();
+            ConcorrenzaMap.Map();
 
             //PER CACHE
             UnitaOperativaMap.Map();

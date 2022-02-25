@@ -44,8 +44,7 @@ namespace SO115App.API.Controllers
                     CodiciSede = new string[1] { Request.Headers["codiceSede"] }
                 };
 
-                _getAll.Handle(query);
-                return Ok();
+                return Ok(_getAll.Handle(query));
             }
             catch (Exception ex)
             {
@@ -56,7 +55,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromForm] Concorrenza concorrenza)
+        public async Task<IActionResult> Add([FromBody] Concorrenza concorrenza)
         {
             try
             {
@@ -80,14 +79,14 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromForm] string idBlock)
+        public async Task<IActionResult> Delete(string idBlock)
         {
             try
             {
                 var command = new DeleteBlockCommand()
                 {
                     IdConcorrenza = idBlock,
-                    CodiceSede = Request.Headers["idUtente"]
+                    CodiceSede = Request.Headers["codiceSede"]
                 };
 
                 _deleteBlockHandler.Handle(command);
