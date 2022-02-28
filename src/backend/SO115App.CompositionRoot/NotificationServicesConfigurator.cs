@@ -1,6 +1,7 @@
 ﻿using SimpleInjector;
 using SO115App.Models.Servizi.Infrastruttura.Notification.AllertaAltreSedi;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDettaglioTipologia;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneDocumentale;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEmergenza;
@@ -12,6 +13,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTriage;
 using SO115App.SignalR.Sender.ComposizionePartenza;
+using SO115App.SignalR.Sender.GestioneConcorrenza;
 using SO115App.SignalR.Sender.GestioneDettaglioTipologia;
 using SO115App.SignalR.Sender.GestioneDocumentale;
 using SO115App.SignalR.Sender.GestioneEmergenze;
@@ -60,7 +62,7 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationAddPrenotazioneMezzo,
                 SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato.NotificationAddPrenotazioneMezzo>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
+                SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.IDeleteNotification,
                 SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();
 
             container.Register<
@@ -167,6 +169,12 @@ namespace SO115App.CompositionRoot
             container.Register<INotifyCreazioneCra, NotificationCreazioneCra>();
 
             #endregion Emergenza
+
+            #region Concorrenza
+            container.Register<INotificationDeleteBlock, NotificationDeleteBlock>();
+            container.Register<INotificationAddBlock, NotificationAddBlock>();
+            container.Register<INotificationDeleteAllBlocks, NotificationDeleteAllBlocks>();
+            #endregion
         }
     }
 }

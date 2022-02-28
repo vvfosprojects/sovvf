@@ -1,6 +1,7 @@
 export enum RoutesPath {
     Home = 'home',
     Login = 'login',
+    SelezioneSede = 'selezione-sede',
     Autorimessa = 'autorimessa',
     Servizi = 'servizi',
     Statistiche = 'statistiche',

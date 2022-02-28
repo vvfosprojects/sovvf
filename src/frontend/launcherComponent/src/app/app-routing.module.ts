@@ -9,6 +9,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('./features/login/login.module').then(m => m.LoginModule)
     },
     {
+        path: RoutesPath.SelezioneSede,
+        loadChildren: () => import('./features/selezione-sede/selezione-sede.module').then(m => m.SelezioneSedeModule)
+    },
+    {
         path: RoutesPath.Auth,
         loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
     },

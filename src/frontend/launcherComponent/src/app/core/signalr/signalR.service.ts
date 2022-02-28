@@ -54,6 +54,7 @@ import { ChangeCodaChiamate } from '../../shared/interface/change-coda-chiamate.
 import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/maps/store/actions/chiamate-markers.actions';
 import { GetZonaEmergenzaById, GetZoneEmergenza } from '../../features/zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenza.model';
+import { GetConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -433,6 +434,14 @@ export class SignalRService {
             this.store.dispatch(new DeleteDettaglioTipologia(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+
+        /**
+         * Concorrenza
+         */
+        this.hubNotification.on('NotifyConcorrenza', (response: any) => {
+            console.log('NotifyConcorrenza', response);
+            this.store.dispatch(new GetConcorrenza());
         });
 
         /**
