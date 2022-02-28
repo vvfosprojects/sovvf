@@ -31,7 +31,7 @@ namespace SO115App.Logging
                 //.WriteTo.Trace()
                 //.MinimumLevel.Debug()
                 .ReadFrom.Configuration(configuration)
-                //.MinimumLevel.Information()
+                .MinimumLevel.Error()
                 .CreateLogger();
 
             Log.Logger = log;
