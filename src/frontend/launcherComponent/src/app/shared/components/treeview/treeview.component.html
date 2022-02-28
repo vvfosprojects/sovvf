@@ -1,8 +1,11 @@
-<div ngbDropdown display="dynamic" #treeviewSedi="ngbDropdown" (openChange)="openDropDown($event)" [placement]="placement">
+<div ngbDropdown display="dynamic" #treeviewSedi="ngbDropdown" (openChange)="openDropDown($event)"
+     [placement]="placement">
     <button class="btn btn-block btn-no-hover" [ngClass]="colorButton" ngbDropdownToggle
             [disabled]="disabled">{{testoSedeSelezionata}}</button>
     <div ngbDropdownMenu class="px-2" (click)="$event.stopPropagation()">
-        <ngx-treeview [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)">
+        <ngx-treeview [config]="config"
+                      [items]="items"
+                      (selectedChange)="onSelectedChange($event)">
         </ngx-treeview>
         <ng-container *ngIf="visualizzaTasti">
             <hr class="mb-0">
