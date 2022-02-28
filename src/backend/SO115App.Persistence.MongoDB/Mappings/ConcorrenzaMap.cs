@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="INotificationAddPrenotazioneMezzo.cs" company="CNVVF">
+// <copyright file="EntityMap.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,14 +17,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
+using SO115App.Models.Classi.Concorrenza;
+using SO115App.Models.Classi.Emergenza;
 
-using DomainModel.CQRS.Commands.ConfermaPartenze;
-using System.Threading.Tasks;
-
-namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza
+namespace SO115App.Persistence.MongoDB.Mappings
 {
-    public interface IDeleteNotification
+    internal static class ConcorrenzaMap
     {
-        Task SendNotification(ConfermaPartenzeCommand command);
+        public static void Map()
+        {
+            BsonClassMap.RegisterClassMap<Concorrenza>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id)
+                    .SetIdGenerator(StringObjectIdGenerator.Instance)
+                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
+        }
     }
 }

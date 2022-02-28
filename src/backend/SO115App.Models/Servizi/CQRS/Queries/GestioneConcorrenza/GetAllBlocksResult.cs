@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="INotificationAddPrenotazioneMezzo.cs" company="CNVVF">
+// <copyright file="GetAllBlocksQueryResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,13 +18,16 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using DomainModel.CQRS.Commands.ConfermaPartenze;
-using System.Threading.Tasks;
+using SO115App.Models.Classi.Concorrenza;
+using System.Collections.Generic;
 
-namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneConcorrenza
 {
-    public interface IDeleteNotification
+    /// <summary>
+    ///   DTO di output
+    /// </summary>
+    public class GetAllBlocksResult
     {
-        Task SendNotification(ConfermaPartenzeCommand command);
+        public List<Concorrenza> BlocksList { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using SO115App.ExternalAPI.Fake.Composizione;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDocumentale;
@@ -21,6 +22,7 @@ using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneComposizioneMezzi;
+using SO115App.Persistence.MongoDB.GestioneConcorrenza;
 using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
 using SO115App.Persistence.MongoDB.GestioneDocumentale;
@@ -70,7 +72,8 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSintesiRichiestaAssistenzaByCodice, GetRichiesta>();
 
             container.Register<SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi, GetListaEventiByCodiceRichiesta>();
-            container.Register<IGetInterventiInProssimita,GetInterventiInProssimita>();
+            container.Register<IGetInterventiInProssimita, GetInterventiInProssimita>();
+
             #endregion Gestione richiesta di assistenza
 
             #region BOX
@@ -90,7 +93,6 @@ namespace SO115App.CompositionRoot
                 SO115App.Persistence.MongoDB.Marker.GetCentroMappa>();
 
             #endregion MARKER
-
 
             #region GestioneChiamataInCorso
 
@@ -311,10 +313,12 @@ namespace SO115App.CompositionRoot
             container.Register<IGetEmergenzeByCodComando, GetEmergenzeByCodiceComando>();
             container.Register<IGetEmergenzaById, GetEmergenzeById>();
             container.Register<IGetTipologieIntervento, GetTipologieEmergenza>();
+
             #endregion Emergenza
 
             #region CACHE MongoDb
-            container.Register<IGetAllSediAlberate, GetListaSediAlberata>(); 
+
+            container.Register<IGetAllSediAlberate, GetListaSediAlberata>();
             container.Register<ISetSediAlberate, SetListaSediAlberate>();
 
             container.Register<IGetComposizioneSquadreDB, GetComposizioneSquadre>();
@@ -323,13 +327,22 @@ namespace SO115App.CompositionRoot
             container.Register<ISetComposizioneMezzi, SetComposizioneMezzi>();
             container.Register<IGetComposizioneMezziDB, GetComposizioneMezzi>();
 
-            #endregion
+            #endregion CACHE MongoDb
 
-            #region Ricerca Full Text         
+            #region Ricerca Full Text
+
             container.Register<IRicercaFullText, GetSintesiByRicercaFullText>();
-            #endregion
 
+            #endregion Ricerca Full Text
 
+            #region Concorrenza
+
+            container.Register<IAddBlock, AddBlock>();
+            container.Register<IDeleteBlock, DeleteBlock>();
+            container.Register<IDeleteAllBlocks, DeleteAllBlocks>();
+            container.Register<IGetAllBlocks, GatAllBlocks>();
+
+            #endregion Concorrenza
         }
     }
 }
