@@ -79,7 +79,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(string idBlock)
+        public async Task<IActionResult> Delete([FromBody] string idBlock)
         {
             try
             {
