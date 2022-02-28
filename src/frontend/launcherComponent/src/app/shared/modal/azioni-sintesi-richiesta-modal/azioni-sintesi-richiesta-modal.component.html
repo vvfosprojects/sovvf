@@ -12,11 +12,13 @@
 
 <div class="modal-body">
     <div class="row">
-        <!-- CHIUDI CHIAMATA -->
+        <!-- CHIUDI CHIAMATA/INTERVENTO -->
         <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Chiusa'"
              class="col-4"
              (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">
             <div class="box-azione"
+                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
+                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content">
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-forward text-secondary"></i>
@@ -30,6 +32,8 @@
         <!-- ALLERTA SEDE -->
         <div class="col-4 mb-3">
             <div class="box-azione"
+                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
+                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onAllertaSede(); $event.stopPropagation()">
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
@@ -45,6 +49,8 @@
         <!-- TRASFERIMENTO CHIAMATA -->
         <div *ngIf="!richiesta.codiceRichiesta" class="col-4">
             <div class="box-azione"
+                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
+                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
@@ -60,7 +66,7 @@
         </div>
         <!-- LISTA EVENTI -->
         <div class="col-4 mb-3">
-            <div class="box-azione"
+            <div class="box-azione cursor-pointer"
                  style="height: fit-content"
                  (click)="visualizzaEventiRichiesta(richiesta.codice)">
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
@@ -76,6 +82,8 @@
         <div *ngIf="richiesta.codiceRichiesta"
              class="col-4 mb-3">
             <div class="box-azione"
+                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
+                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
@@ -89,6 +97,8 @@
         <div *ngIf="richiesta.codiceRichiesta"
              class="col-4">
             <div class="box-azione"
+                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
+                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
@@ -101,6 +111,8 @@
         <!-- SGANCIAMENTO MEZZO -->
         <div class="col-4 mb-3">
             <div class="box-azione"
+                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
+                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onSganciamentoMezzo(richiesta); $event.stopPropagation()">
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
@@ -116,6 +128,8 @@
         <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Riaperta'"
              class="col-4">
             <div class="box-azione"
+                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
+                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
@@ -128,7 +142,7 @@
         </div>
         <!-- STAMPA PDF -->
         <div class="col-4">
-            <div class="box-azione"
+            <div class="box-azione cursor-pointer"
                  style="height: fit-content"
                  (click)="onVisualizzaPDF(); $event.stopPropagation()">
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">

@@ -4,7 +4,8 @@
     <div class="float-left font-xxlarge cursor-pointer"
          style="display: inline-flex; align-items: center;"
          (click)="selezioneMezzo.emit(partenza.mezzo)">
-        <app-mezzo [codicePartenza]="codicePartenza"
+        <app-mezzo [idRichiesta]="idRichiesta"
+                   [codicePartenza]="codicePartenza"
                    [mezzo]="partenza.mezzo"
                    [listaEventiMezzo]="listaEventiMezzo"
                    [listaEventi]="listaEventi"

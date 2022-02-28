@@ -10,6 +10,7 @@ import { Store } from '@ngxs/store';
 import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
 import { Mezzo } from '../../model/mezzo.model';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-partenza',
@@ -20,6 +21,7 @@ import { Mezzo } from '../../model/mezzo.model';
 
 export class PartenzaComponent implements OnInit {
 
+    @Input() idRichiesta: string;
     @Input() idDaSganciare: string;
     @Input() partenza: DettaglioPartenza;
     @Input() codicePartenza: string;
@@ -38,6 +40,8 @@ export class PartenzaComponent implements OnInit {
     @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
 
     statoRichiestaEnum = StatoRichiesta;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
     listaEventiMezzo: EventoMezzo[] = [];
 
     constructor(config: NgbDropdownConfig,
