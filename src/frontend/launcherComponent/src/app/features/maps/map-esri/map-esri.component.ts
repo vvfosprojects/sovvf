@@ -1071,7 +1071,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         const routeTask: RouteTask = new RouteTask({
-            url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World',
+            url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World'
         });
 
         const routeParams = new RouteParameters({

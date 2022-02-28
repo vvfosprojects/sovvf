@@ -1,8 +1,10 @@
-import { State, Selector, Action, StateContext } from '@ngxs/store';
+import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { ConcorrenzaService } from '../../../../core/service/concorrenza-service/concorrenza.service';
-import { AddConcorrenza, DeleteAllConcorrenza, DeleteConcorrenza, GetConcorrenza } from '../../actions/concorrenza/concorrenza.actions';
+import { AddConcorrenza, DeleteAllConcorrenza, DeleteConcorrenza, GetConcorrenza, SetConcorrenza } from '../../actions/concorrenza/concorrenza.actions';
 import { ConcorrenzaInterface } from '../../../interface/concorrenza.interface';
+import { GetAllResponseInterface } from '../../../interface/response/concorrenza/get-all-response.interface';
+import { AuthState } from '../../../../features/auth/store/auth.state';
 
 export interface ConcorrenzaStateModel {
     concorrenza: ConcorrenzaInterface[];
@@ -20,7 +22,8 @@ export const ConcorrenzaStateDefaults: ConcorrenzaStateModel = {
 
 export class ConcorrenzaState {
 
-    constructor(private concorrenzaService: ConcorrenzaService) {
+    constructor(private concorrenzaService: ConcorrenzaService,
+                private store: Store) {
     }
 
     @Selector()
@@ -29,11 +32,16 @@ export class ConcorrenzaState {
     }
 
     @Action(GetConcorrenza)
-    getConcorrenza({ patchState }: StateContext<ConcorrenzaStateModel>): void {
-        this.concorrenzaService.get().subscribe((concorrenza: ConcorrenzaInterface[]) => {
-            patchState({
-                concorrenza
-            });
+    getConcorrenza({ dispatch }: StateContext<ConcorrenzaStateModel>): void {
+        this.concorrenzaService.get().subscribe((response: GetAllResponseInterface) => {
+            dispatch(new SetConcorrenza(response.blocksList));
+        });
+    }
+
+    @Action(SetConcorrenza)
+    setConcorrenza({ patchState }: StateContext<ConcorrenzaStateModel>, action: SetConcorrenza): void {
+        patchState({
+            concorrenza: action.data
         });
     }
 
@@ -44,8 +52,12 @@ export class ConcorrenzaState {
     }
 
     @Action(DeleteConcorrenza)
-    deleteConcorrenza({ patchState }: StateContext<ConcorrenzaStateModel>, action: DeleteConcorrenza): void {
-        this.concorrenzaService.delete(action.idConcorrenza).subscribe(() => {
+    deleteConcorrenza({ getState }: StateContext<ConcorrenzaStateModel>): void {
+        const state = getState();
+        const concorrenza = state.concorrenza;
+        const utenteLoggato = this.store.selectSnapshot(AuthState.currentUser);
+        const concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.idOperatore === utenteLoggato.id)[0];
+        this.concorrenzaService.delete(concorrenzaToDelete.id).subscribe(() => {
         });
     }
 

@@ -31,12 +31,14 @@ import { SquadreComposizioneState } from '../../../shared/store/states/squadre-c
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 import { SquadraComposizione } from '../../../shared/interface/squadra-composizione-interface';
 import { GetFiltriComposizione } from '../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
-import { makeCopy } from '../../../shared/helper/function-generiche';
 import { TipologicaComposizionePartenza } from './interface/filtri/tipologica-composizione-partenza.interface';
 import { FiltroTurnoSquadre } from '../../../shared/enum/filtro-turno-composizione-partenza.enum';
 import { TipologicheMezziState } from '../store/states/composizione-partenza/tipologiche-mezzi.state';
 import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
+import { makeCopy } from '../../../shared/helper/function-generiche';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -121,22 +123,60 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     private subscription = new Subscription();
 
-    constructor(private modalService: NgbModal, private store: Store) {
+    constructor(private modalService: NgbModal,
+                private store: Store) {
+        this.getRichiestaComposizione();
+        this.getLoadingListe();
+        this.getBoxPartenzaList();
+        this.getTipologicheMezzi();
+    }
+
+    ngOnInit(): void {
+        console.log('Componente Composizione creato');
+    }
+
+    ngOnDestroy(): void {
+        this.store.dispatch([
+            new DeleteConcorrenza(),
+            new ClearListaMezziComposizione(),
+            new ClearListaSquadreComposizione(),
+            new ClearPreaccoppiati(),
+            new ResetRicercaMezziComposizione(),
+            new ResetRicercaSquadreComposizione(),
+            new ClearTriageSummary()
+        ]);
+        this.subscription.unsubscribe();
+        console.log('Componente Composizione distrutto');
+    }
+
+    getRichiestaComposizione(): void {
         this.subscription.add(
             this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
-                this.richiesta = r;
+                if (r) {
+                    this.richiesta = r;
+                    this.store.dispatch(new AddConcorrenza({ type: TipoConcorrenzaEnum.Richiesta, value: this.richiesta.id }));
+                }
             })
         );
+    }
+
+    getLoadingListe(): void {
         this.subscription.add(
             this.loadingListe$.subscribe((loading: boolean) => {
                 this.loadingListe = loading;
             })
         );
+    }
+
+    getBoxPartenzaList(): void {
         this.subscription.add(
             this.boxPartenzaList$.subscribe((partenzaLista: any) => {
                 this.boxPartenzaList = partenzaLista;
             })
         );
+    }
+
+    getTipologicheMezzi(): void {
         this.subscription.add(
             this.tipologicheMezzi$.subscribe((tipologiche: any) => {
                 this.tipologicheMezzi = makeCopy(tipologiche);
@@ -151,23 +191,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                 }
             })
         );
-    }
-
-    ngOnInit(): void {
-        console.log('Componente Composizione creato');
-    }
-
-    ngOnDestroy(): void {
-        this.store.dispatch([
-            new ClearListaMezziComposizione(),
-            new ClearListaSquadreComposizione(),
-            new ClearPreaccoppiati(),
-            new ResetRicercaMezziComposizione(),
-            new ResetRicercaSquadreComposizione(),
-            new ClearTriageSummary()
-        ]);
-        this.subscription.unsubscribe();
-        console.log('Componente Composizione distrutto');
     }
 
     cardClasses(r: SintesiRichiesta): any {
