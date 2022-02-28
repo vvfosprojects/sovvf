@@ -532,7 +532,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
-        EsriConfig.apiKey = 'AAPK36ded91859154c2cad9002a686434a34Jt_FmrqMObHesjY_bYHlJu-HZZrTDGJzsQMKnxd8f4TmYY_Vi-f8-4y-7G6WbcVf';
+        EsriConfig.apiKey = 'AAPK389aad189c624df8adee37628bd70259Y01pwMqlEEDV1AA7myI8bMWBp3f_L1-hmx4lhPCOcVaaMTkHurnU2vc1QqGWxgm-';
 
         let portalItemId = '55fdd15730524dedbff72e285cba3795';
         if (environment.productionTest) {
