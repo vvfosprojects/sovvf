@@ -6,6 +6,7 @@ import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
 import { EnteInterface } from '../../../../shared/interface/ente.interface';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -63,6 +64,8 @@ export class ListaRichiesteComponent implements OnChanges {
 
     // Permessi
     permessiFeature = PermissionFeatures;
+    // Concorrenza
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     methods = new HelperSintesiRichiesta();
     scrolling = false;

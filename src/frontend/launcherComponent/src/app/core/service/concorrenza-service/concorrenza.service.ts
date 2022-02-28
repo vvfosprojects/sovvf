@@ -4,9 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { AddConcorrenzaDtoInterface } from '../../../shared/interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { ConcorrenzaInterface } from '../../../shared/interface/concorrenza.interface';
+import { GetAllResponseInterface } from '../../../shared/interface/response/concorrenza/get-all-response.interface';
 
 const BASE_URL = environment.baseUrl;
-const API_CONCORRENZA = BASE_URL + environment.apiUrl.areaDocumentale;
+const API_CONCORRENZA = BASE_URL + environment.apiUrl.concorrenza;
 
 @Injectable({
     providedIn: 'root'
@@ -16,8 +17,8 @@ export class ConcorrenzaService {
     constructor(private http: HttpClient) {
     }
 
-    get(): Observable<ConcorrenzaInterface[]> {
-        return this.http.get<ConcorrenzaInterface[]>(API_CONCORRENZA);
+    get(): Observable<GetAllResponseInterface> {
+        return this.http.get<GetAllResponseInterface>(API_CONCORRENZA + '/GetAll');
     }
 
     add(data: AddConcorrenzaDtoInterface): Observable<ConcorrenzaInterface> {
@@ -29,6 +30,6 @@ export class ConcorrenzaService {
     }
 
     deleteAll(): Observable<any> {
-        return this.http.delete<any>(API_CONCORRENZA + '/DeleteAll');
+        return this.http.post<any>(API_CONCORRENZA + '/DeleteAll', {});
     }
 }

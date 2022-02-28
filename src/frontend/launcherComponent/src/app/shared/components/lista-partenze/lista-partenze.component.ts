@@ -16,6 +16,7 @@ import { Mezzo } from '../../model/mezzo.model';
 })
 export class ListaPartenzeComponent {
 
+    @Input() idRichiesta: string;
     @Input() idDaSganciare: string;
     @Input() partenze: Partenza[];
     @Input() listaEventi: EventoMezzo[];

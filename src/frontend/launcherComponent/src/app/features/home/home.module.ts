@@ -36,6 +36,8 @@ import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
 import { BoxPersonaleService } from '../../core/service/box-service/box-personale.service';
 import { BoxMezziService } from '../../core/service/box-service/box-mezzi.service';
 import { BoxRichiesteService } from '../../core/service/box-service/box-richieste.service';
+import { ConcorrenzaService } from '../../core/service/concorrenza-service/concorrenza.service';
+import { LockedConcorrenzaService } from '../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @NgModule({
     declarations: [
@@ -85,7 +87,9 @@ import { BoxRichiesteService } from '../../core/service/box-service/box-richiest
         BoxPersonaleService,
         BoxMezziService,
         BoxRichiesteService,
-        NgbActiveModal
+        NgbActiveModal,
+        ConcorrenzaService,
+        LockedConcorrenzaService
     ]
 })
 export class HomeModule {

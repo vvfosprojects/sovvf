@@ -16,6 +16,7 @@ import { statoMezzoColor } from '../../helper/function-mezzo';
 })
 export class MezzoComponent {
 
+    @Input() idRichiesta: string;
     @Input() mezzo: Mezzo;
     @Input() codicePartenza: string;
     @Input() listaEventi: any;

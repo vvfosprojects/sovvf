@@ -295,7 +295,7 @@
                                 <button *ngIf="!partenza && composizionePartenza"
                                         class="btn btn-light border py-0 px-2"
                                         ngbTooltip="Invio partenza"
-                                        [disabled]="disabledComposizionePartenza || richiesta.stato === StatoRichiesta.Chiusa"
+                                        [disabled]="disabledComposizionePartenza"
                                         [class.cursor-not-allowed]="disabledComposizionePartenza"
                                         (click)="invioPartenza(richiesta); $event.stopPropagation()">
                                     <i class="fas fa-fw fa-arrow-right text-secondary"></i>
@@ -436,7 +436,8 @@
                                  class="col-8 px-0 border border-lista-partenze">
                                 <div class="scroll-y max-height-richiesta">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
-                                    <app-lista-partenze [partenze]="richiesta?.partenze"
+                                    <app-lista-partenze [idRichiesta]="richiesta.id"
+                                                        [partenze]="richiesta?.partenze"
                                                         [listaEventi]="richiesta?.eventi"
                                                         [statoRichiesta]="richiesta?.stato"
                                                         [inGestione]="inGestione"
