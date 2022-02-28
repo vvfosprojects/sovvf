@@ -39,6 +39,13 @@ export class SetCurrentUser {
     }
 }
 
+export class SetSedeCurrentUser {
+    static readonly type = '[Auth] Set sede current User';
+
+    constructor(public codiceSede: string) {
+    }
+}
+
 export class UpdateCurrentUser {
     static readonly type = '[Auth] Update current User';
 

@@ -1,0 +1,41 @@
+<div class="container-fluid bg-dark" style="height:100vh">
+    <div class="row">
+        <div class="col-3 mx-auto my-4 px-3 bg-white rounded"
+             [style.right]="doubleMonitor ? '25%' : null">
+            <div class="w-50 mx-auto text-center mt-3">
+                <img class="img-fluid" src="assets/img/logo_vvf_600x.jpg" alt="logo vvf">
+            </div>
+            <div class="row">
+                <ng-container *ngIf="currentUser">
+                    <div class="col-11 mx-auto p-3 card shadow-sm bg-light mt-4">
+                        <h6>Nome: {{ currentUser.nome }}</h6>
+                        <h6>Cognome: {{ currentUser.cognome }}</h6>
+                        <h6 class="mb-0">Codice Fiscale: {{ currentUser.codiceFiscale }}</h6>
+                    </div>
+                </ng-container>
+                <div class="col-11 mx-auto p-3 card shadow-sm bg-light my-3">
+                    <form [formGroup]="selezioneSedeForm">
+                        <div class="form-group">
+                            <label for="sedeDiLavoro">Sede di lavoro</label>
+                            <ng-select id="sedeDiLavoro"
+                                       [items]="ruoliUtente"
+                                       bindLabel="descSede"
+                                       bindValue="codSede"
+                                       [clearable]="false"
+                                       [multiple]="false"
+                                       [searchable]="false"
+                                       placeholder="Seleziona una sede dalla lista"
+                                       formControlName="codSede">
+                            </ng-select>
+                        </div>
+                        <button class="btn btn-primary btn-block btn-no-hover"
+                                [disabled]="selezioneSedeForm.invalid"
+                                (click)="onSubmit()">
+                            {{ 'conferma e accedi' | uppercase }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

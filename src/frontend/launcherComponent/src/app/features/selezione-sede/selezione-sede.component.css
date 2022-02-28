@@ -1,0 +1,19 @@
+.btn-sso {
+    background-color: rgba(11, 78, 114, 0.9);
+    font-weight: 600;
+    color: #fff;
+}
+
+.btn-sso:hover {
+    background-color: rgba(11, 78, 114, 1);
+}
+
+.btn-utentepsw {
+     background-color: rgba(214, 36, 48, 0.9);
+     font-weight: 600;
+     color: #fff;
+ }
+
+.btn-utentepsw:hover {
+    background-color: rgba(214, 36, 48, 1);
+}
