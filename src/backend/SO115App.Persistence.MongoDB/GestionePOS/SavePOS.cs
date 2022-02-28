@@ -18,14 +18,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Microsoft.AspNetCore.Http;
-using MongoDB.Driver.GridFS;
 using Persistence.MongoDB;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestionePOS
 {
