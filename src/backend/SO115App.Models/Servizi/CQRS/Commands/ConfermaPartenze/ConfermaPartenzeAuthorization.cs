@@ -58,15 +58,16 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                     var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente });
                     var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
 
-                    var conteggioMezziBloccati = command.ConfermaPartenze.Partenze.FindAll(p => listaOperazioniBloccate.Any(b => b.Value.Equals(p.Mezzo.Codice))).ToList();
+                    var MezziBloccati = command.ConfermaPartenze.Partenze.FindAll(p => listaOperazioniBloccate.Any(b => b.Value.Equals(p.Mezzo.Codice))).ToList();
+                    var SquadreBloccate = command.ConfermaPartenze.Partenze.FindAll(p => p.Squadre.Any(s => listaOperazioniBloccate.Any(l => l.Value.Equals(s.Codice)))).ToList();
 
-                    if (conteggioMezziBloccati.Count > 0)
+                    if (MezziBloccati.Count > 0)
                     {
                         string mezziPrenotati = "";
 
-                        if (conteggioMezziBloccati.Count > 1)
+                        if (MezziBloccati.Count > 1)
                         {
-                            foreach (var mezzo in conteggioMezziBloccati)
+                            foreach (var mezzo in MezziBloccati)
                             {
                                 mezziPrenotati = mezziPrenotati + "," + mezzo.Codice;
                             }
@@ -74,7 +75,24 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                             yield return new AuthorizationResult($"I mezzi {mezziPrenotati} risultano prenotati. Non è possibile confermare l'operazione.");
                         }
                         else
-                            yield return new AuthorizationResult($"Il mezzo {conteggioMezziBloccati[0].Mezzo.Codice} risulta prenotato. Non è possibile confermare l'operazione.");
+                            yield return new AuthorizationResult($"Il mezzo {MezziBloccati[0].Mezzo.Codice} risulta prenotato. Non è possibile confermare l'operazione.");
+                    }
+
+                    if (SquadreBloccate.Count > 0)
+                    {
+                        string SquadrePrenotate = "";
+
+                        if (SquadreBloccate.Count > 1)
+                        {
+                            foreach (var squadra in SquadreBloccate)
+                            {
+                                SquadrePrenotate = SquadrePrenotate + "," + squadra.Codice;
+                            }
+
+                            yield return new AuthorizationResult($"Le squadre {SquadrePrenotate} risultano prenotate. Non è possibile confermare l'operazione.");
+                        }
+                        else
+                            yield return new AuthorizationResult($"La squadra {SquadreBloccate[0].Codice} risulta prenotata. Non è possibile confermare l'operazione.");
                     }
 
                     bool abilitato = false;
