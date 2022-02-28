@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza
 {
-    public interface INotificationConfermaPartenze
+    public interface IDeleteNotification
     {
         Task SendNotification(ConfermaPartenzeCommand command);
     }

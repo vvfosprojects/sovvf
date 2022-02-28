@@ -84,6 +84,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
 import { CustomDatepickerI18nService } from './core/service/custom-datepicker-i18n/custom-datepicker-i18n.service';
 import { GestisciSchedaContattoModalState } from './shared/store/states/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.state';
+import { ConcorrenzaState } from './shared/store/states/concorrenza/concorrenza.state';
 
 @NgModule({
     declarations: [
@@ -146,7 +147,8 @@ import { GestisciSchedaContattoModalState } from './shared/store/states/gestisci
                 TastoChiamataMappaState,
                 TastoZonaEmergenzaMappaState,
                 SganciamentoMezziState,
-                GestisciSchedaContattoModalState
+                GestisciSchedaContattoModalState,
+                ConcorrenzaState
             ],
             { developmentMode: !environment.production }
         ),
