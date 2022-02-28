@@ -79,13 +79,13 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody] string idBlock)
+        public async Task<IActionResult> Delete([FromBody] Concorrenza concorrenza)
         {
             try
             {
                 var command = new DeleteBlockCommand()
                 {
-                    IdConcorrenza = idBlock,
+                    IdConcorrenza = concorrenza.Id,
                     CodiceSede = Request.Headers["codiceSede"]
                 };
 
