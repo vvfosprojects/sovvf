@@ -15,6 +15,9 @@ import { ClearViewState } from '../actions/view/view.actions';
 import { SetEnti } from 'src/app/shared/store/actions/enti/enti.actions';
 import { Injectable } from '@angular/core';
 import { StopBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
+import { ConcorrenzaService } from '../../../../core/service/concorrenza-service/concorrenza.service';
+import { GetAllResponseInterface } from '../../../../shared/interface/response/concorrenza/get-all-response.interface';
+import { SetConcorrenza } from '../../../../shared/store/actions/concorrenza/concorrenza.actions';
 
 export interface HomeStateModel {
     markerLoading: boolean;
@@ -43,21 +46,29 @@ export class HomeState {
         return state.bounds;
     }
 
-    constructor(private homeService: HomeService) {
+    constructor(private concorrenzaService: ConcorrenzaService,
+                private homeService: HomeService) {
     }
 
     @Action(GetDataHome)
     getDataHome({ dispatch }: StateContext<HomeStateModel>): void {
-        this.homeService.getHome().subscribe((data: Welcome) => {
-            console.log('Welcome', data);
-            dispatch([
-                new StopBigLoading(),
-                new SetCurrentUrl(RoutesPath.Home),
-                new SetChiamateMarkers(data.listaChiamateInCorso),
-                new SetTipologicheMezzi(data.listaFiltri),
-                new SetEnti(data.rubrica),
-                // new SetZoneEmergenza(data.zoneEmergenza)
-            ]);
+        this.concorrenzaService.deleteAll().subscribe((deleteAllResponse: any) => {
+            console.log('DeleteAll - Concorrenza', deleteAllResponse);
+            this.concorrenzaService.get().subscribe((getResponse: GetAllResponseInterface) => {
+                console.log('Get - Concorrenza', getResponse);
+                dispatch(new SetConcorrenza(getResponse.blocksList));
+                this.homeService.getHome().subscribe((getHomeResponse: Welcome) => {
+                    console.log('Get - Welcome', getHomeResponse);
+                    dispatch([
+                        new StopBigLoading(),
+                        new SetCurrentUrl(RoutesPath.Home),
+                        new SetChiamateMarkers(getHomeResponse.listaChiamateInCorso),
+                        new SetTipologicheMezzi(getHomeResponse.listaFiltri),
+                        new SetEnti(getHomeResponse.rubrica),
+                        // new SetZoneEmergenza(data.zoneEmergenza)
+                    ]);
+                });
+            });
         });
     }
 

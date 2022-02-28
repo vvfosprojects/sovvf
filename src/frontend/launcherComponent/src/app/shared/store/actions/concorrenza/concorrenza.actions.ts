@@ -1,7 +1,15 @@
+import { ConcorrenzaInterface } from '../../../interface/concorrenza.interface';
 import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 
 export class GetConcorrenza {
     static readonly type = '[Concorrenza] Get Concorrenza';
+}
+
+export class SetConcorrenza {
+    static readonly type = '[Concorrenza] Set Concorrenza';
+
+    constructor(public data: ConcorrenzaInterface[]) {
+    }
 }
 
 export class AddConcorrenza {
@@ -14,7 +22,7 @@ export class AddConcorrenza {
 export class DeleteConcorrenza {
     static readonly type = '[Concorrenza] Delete Concorrenza';
 
-    constructor(public idConcorrenza: string) {
+    constructor(public codMezzo?: string, public codSquadra?: string) {
     }
 }
 
