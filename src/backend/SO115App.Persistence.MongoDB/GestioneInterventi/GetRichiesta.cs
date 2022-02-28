@@ -257,6 +257,24 @@ namespace SO115App.Persistence.MongoDB
             }
 
             //MAPPING
+            if (!filtro.SoloboxRichieste)
+            {
+                filtro.RichiesteTotali = result.Count();
+
+                if (filtro.Page > 0 && filtro.PageSize > 0)
+                {
+                    result = result.Distinct()
+                    .OrderByDescending(c => c.StatoRichiesta.Equals(Costanti.Chiamata) && c.Partenze.Count == 0)
+                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.Chiamata) && c.Partenze.Count > 0)
+                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaAssegnata))
+                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaPresidiata))
+                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaChiusa))
+                    .ThenByDescending(x => x.PrioritaRichiesta)
+                    .ThenByDescending(x => x.IstanteRicezioneRichiesta)
+                    .Skip((filtro.Page - 1) * filtro.PageSize).Take(filtro.PageSize).ToList();
+                }
+            }
+
             var listaSistesiRichieste = result.Where(richiesta => richiesta.CodUOCompetenza != null).Select(richiesta =>
             {
                 var rubrica = new List<EnteDTO>();
