@@ -24,6 +24,7 @@ using SO115App.Models.Classi.Matrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
+using System.Threading.Tasks;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -51,21 +52,24 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         public void Notify(AddInterventoCommand command)
         {
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
-            
+
             command.sintesi = sintesi;
             _sender.SendNotification(command);
 
-            var infoESRI = _mappingESRIMessage.Map(sintesi);
-
-            _notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);
-
-            var messaggio = $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}";
-            var infoMatrix = new MessageMatrix()
+            Task.Run(() =>
             {
-                Messaggio = messaggio,
-                CodSede = sintesi.CodSOCompetente.Split('.')[0]
-            };
-            _callMatrix.SendMessage(infoMatrix);
+                var infoESRI = _mappingESRIMessage.Map(sintesi);
+
+                _notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);
+
+                var messaggio = $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}";
+                var infoMatrix = new MessageMatrix()
+                {
+                    Messaggio = messaggio,
+                    CodSede = sintesi.CodSOCompetente.Split('.')[0]
+                };
+                _callMatrix.SendMessage(infoMatrix);
+            });
         }
     }
 }
