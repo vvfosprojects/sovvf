@@ -74,7 +74,11 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                     var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Chiamata.Codice));
 
                     if (findBlock != null)
-                        yield return new AuthorizationResult(Costanti.InterventoBloccato);
+                    {
+                        var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.CodUtente));
+                        if (verificaUtente.Count == 0)
+                            yield return new AuthorizationResult(Costanti.InterventoBloccato);
+                    }
 
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
