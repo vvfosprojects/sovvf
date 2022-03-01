@@ -35,12 +35,10 @@ import { PosDettaglioModalComponent } from '../../modal/pos-dettaglio-modal/pos-
     selector: 'app-sintesi-richiesta',
     templateUrl: './sintesi-richiesta.component.html',
     styleUrls: ['./sintesi-richiesta.component.css'],
-    providers: [NgbPopoverConfig, NgbTooltipConfig],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
-    @Input() idDaSganciare = '';
     @Input() richiesta: SintesiRichiesta;
     @Input() selezionata: boolean;
     @Input() fissata: boolean;
@@ -52,23 +50,23 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() composizionePartenza = true;
     @Input() modificabile = true;
     @Input() gestibile = true;
-    @Input() sostituzioneFineTurno = false;
-    @Input() disableTooltips = false;
-    @Input() disableFissaInAlto = false;
-    @Input() loadingEliminaPartenza = false;
-    @Input() loadingActionMezzo: any;
+    @Input() sostituzioneFineTurno: boolean;
+    @Input() idDaSganciare: string;
+    @Input() disableTooltips: boolean;
+    @Input() disableFissaInAlto: boolean;
+    @Input() loadingEliminaPartenza: boolean;
+    @Input() loadingActionMezzo: string[];
     @Input() diffDateInfoMezzo: any;
-    @Input() disabledModificaRichiesta = false;
-    @Input() disabledGestisciRichiesta = false;
-    @Input() disabledAzioniRichiesta = false;
-    @Input() disabledComposizionePartenza = false;
+    @Input() disabledModificaRichiesta: boolean;
+    @Input() disabledGestisciRichiesta: boolean;
+    @Input() disabledAzioniRichiesta: boolean;
+    @Input() disabledComposizionePartenza: boolean;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
     @Input() annullaStatoMezzi: string[];
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() clickIndirizzo = new EventEmitter<SintesiRichiesta>();
-    @Output() doubleClickRichiesta = new EventEmitter<any>();
     @Output() fissaInAlto = new EventEmitter<SintesiRichiesta>();
     @Output() nuovaPartenza = new EventEmitter<SintesiRichiesta>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();

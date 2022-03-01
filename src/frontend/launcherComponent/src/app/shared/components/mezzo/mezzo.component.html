@@ -18,7 +18,8 @@
                        [codicePartenza]="codicePartenza"
                        [listaEventi]="listaEventi"
                        [listaEventiMezzo]="listaEventiMezzo"
-                       (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
+                       (actionMezzo)="onActionMezzo($event)">
+    </app-mezzo-actions>
 </ng-container>
 
 <span *ngIf="mezzoInServizioPage && mezzo?.istantiCambiStato" class="ml-3 px-2 text-{{statoMezzoColor(mezzo.stato)}}"

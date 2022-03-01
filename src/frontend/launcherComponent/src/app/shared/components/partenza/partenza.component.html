@@ -49,7 +49,8 @@
                     <button class="btn btn-sm btn-info d-inline-block"
                             ngbTooltip="Gestisci Partenza"
                             placement="top"
-                            (click)="modificaPartenza.emit(index); $event.stopPropagation()">
+                            [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: idRichiesta"
+                            (click)="onModificaPartenza(); $event.stopPropagation()">
                         <i class="fas fa-cog"></i>
                     </button>
                 </ng-template>

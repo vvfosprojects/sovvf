@@ -32,6 +32,7 @@ import { EnteInterface } from '../../../shared/interface/ente.interface';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-richieste',
@@ -82,10 +83,13 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     loaderRichieste = true;
     listHeightClass = 'm-h-720';
+
+    // ENUM
     permessiFeature = PermissionFeatures;
     statoRichiesta = StatoRichiesta;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
-    subscription = new Subscription();
+    private subscriptions = new Subscription();
 
     constructor(private modalService: NgbModal,
                 private filter: FilterPipe,
@@ -107,7 +111,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.subscriptions.unsubscribe();
         this.store.dispatch([
             new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
             new ClearRichieste(),
@@ -129,7 +133,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     getRichieste(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.richieste$.subscribe((richieste: SintesiRichiesta[]) => {
                 this.richieste = richieste;
                 this.loaderRichieste = false;
@@ -147,7 +151,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     // Restituisce la Richiesta Fissata
     getRichiestaFissata(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.richiestaFissata$.subscribe((richiestaFissata: SintesiRichiesta) => {
                 if (richiestaFissata) {
                     this.richiestaFissata = richiestaFissata;
@@ -172,7 +176,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     // Restituisce la Richiesta Hover
     getRichiestaHover(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.idRichiestaHover$.subscribe((idRichiestaHover: string) => {
                 if (idRichiestaHover) {
                     const richiestaHoverArray = this.richieste.filter(r => r.id === idRichiestaHover);
@@ -186,7 +190,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     // Restituisce la Richiesta Selezionata
     getRichiestaSelezionata(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.idRichiestaSelezionata$.subscribe((idRichiestaSelezionata: string) => {
                 if (idRichiestaSelezionata) {
                     this.idRichiestaSelezionata = idRichiestaSelezionata;
@@ -202,7 +206,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     getRichiestaGestione(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.richiestaGestione$.subscribe((richiestaGestione: SintesiRichiesta) => {
                 richiestaGestione ? this.richiestaGestione = richiestaGestione : this.richiestaGestione = null;
             })
@@ -211,7 +215,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     getRicercaRichieste(): void {
         // Restituisce la stringa di ricerca
-        this.subscription.add(
+        this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: any) => {
                 if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
@@ -222,7 +226,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     getFiltriSelezionati(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.filtriRichiesteSelezionati$.subscribe((filtri: VoceFiltro[]) => {
                 this.codiciFiltriSelezionati = filtri.map(filtro => filtro.codice);
             })
@@ -230,7 +234,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     getEnti(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.enti$.subscribe((enti: EnteInterface[]) => {
                 this.enti = enti;
             })
