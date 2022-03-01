@@ -1,5 +1,6 @@
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
@@ -34,11 +35,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
 
             if (_getBlockByValue.Get(command.concorrenza.Value) != null)
             {
-                if (command.concorrenza.Type.Equals(0))
+                if (command.concorrenza.Type.Equals(TipoOperazione.Richiesta))
                     yield return new AuthorizationResult(Costanti.InterventoBloccato);
-                if (command.concorrenza.Type.Equals(1))
+                if (command.concorrenza.Type.Equals(TipoOperazione.Mezzo))
                     yield return new AuthorizationResult(Costanti.MezzoPrenotato);
-                if (command.concorrenza.Type.Equals(3))
+                if (command.concorrenza.Type.Equals(TipoOperazione.Squadra))
                     yield return new AuthorizationResult(Costanti.SquadraPrenotata);
             }
 

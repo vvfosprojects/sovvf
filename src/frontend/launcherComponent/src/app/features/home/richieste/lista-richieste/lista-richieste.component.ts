@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
@@ -11,8 +11,7 @@ import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.en
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
-    styleUrls: ['./lista-richieste.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./lista-richieste.component.scss']
 })
 export class ListaRichiesteComponent implements OnChanges {
 

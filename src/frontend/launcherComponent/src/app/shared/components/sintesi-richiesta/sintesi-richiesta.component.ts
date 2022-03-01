@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbModalOptions, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
@@ -34,8 +34,7 @@ import { PosDettaglioModalComponent } from '../../modal/pos-dettaglio-modal/pos-
 @Component({
     selector: 'app-sintesi-richiesta',
     templateUrl: './sintesi-richiesta.component.html',
-    styleUrls: ['./sintesi-richiesta.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./sintesi-richiesta.component.css']
 })
 export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
