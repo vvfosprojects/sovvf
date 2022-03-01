@@ -79,6 +79,7 @@ namespace SO115App.CompositionRoot
             #region BOX
 
             container.Register<IGetBoxRichieste, GetBoxRichieste>();
+            container.Register<IGetListaRichiesteBox, GetRichiesteBox>();
 
             #endregion BOX
 
