@@ -52,6 +52,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public void Notify(AddInterventoCommand command)
         {
+            Log.Information("Inserimento Intervento - Inizio Invio Notifiche");
+
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
 
             command.sintesi = sintesi;
@@ -76,6 +78,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 _callMatrix.SendMessage(infoMatrix);
                 Log.Information("Matrix - Fine chiamata servizio Matrix");
             });
+
+            Log.Information("Inserimento Intervento - Fine Invio Notifiche");
         }
     }
 }
