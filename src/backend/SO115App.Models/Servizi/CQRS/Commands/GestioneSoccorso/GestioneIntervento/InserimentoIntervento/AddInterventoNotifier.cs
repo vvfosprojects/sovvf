@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
+using Serilog;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.ESRI;
 using SO115App.Models.Classi.Matrix;
@@ -58,10 +59,14 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             Task.Run(() =>
             {
+                Log.Information("ESRI - Inizio mappatura messaggio");
                 var infoESRI = _mappingESRIMessage.Map(sintesi);
 
+                Log.Information("ESRI - Chiamo servizio inserimento marker nuova chiamata");
                 _notify_ESRIAddRichiesta.Call(infoESRI, command.Intervento);
+                Log.Information("ESRI - Fine Chiamata servizio inserimento marker nuova chiamata");
 
+                Log.Information("Matrix - Inizio chiamata servizio Matrix");
                 var messaggio = $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}";
                 var infoMatrix = new MessageMatrix()
                 {
@@ -69,6 +74,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                     CodSede = sintesi.CodSOCompetente.Split('.')[0]
                 };
                 _callMatrix.SendMessage(infoMatrix);
+                Log.Information("Matrix - Fine chiamata servizio Matrix");
             });
         }
     }
