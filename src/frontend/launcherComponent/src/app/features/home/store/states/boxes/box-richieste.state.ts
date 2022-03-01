@@ -30,10 +30,20 @@ export class BoxRichiesteState {
     @Action(GetBoxRichieste)
     getBoxMezzi({ dispatch }: StateContext<BoxRichiesteStateModel>): void {
         this.boxRichiesteService.getDataBoxRichieste().subscribe((data: any) => {
-            dispatch([
-                new SetBoxRichieste(data.boxRichieste),
-            ]);
-        });
+            dispatch(new SetBoxRichieste(data.boxRichieste));
+        }, () => dispatch(new SetBoxRichieste(new BoxInterventi(
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            'N/D',
+            0,
+            'N/D',
+            0,
+            0))));
     }
 
     @Action(SetBoxRichieste)
