@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
@@ -10,9 +10,9 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 @Component({
     selector: 'app-richiesta-fissata',
     templateUrl: './richiesta-fissata.component.html',
-    styleUrls: ['./richiesta-fissata.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./richiesta-fissata.component.css']
 })
+
 export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     @Input() richiestaFissata: SintesiRichiesta;
