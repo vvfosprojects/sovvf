@@ -28,14 +28,18 @@ export class MezzoActionsComponent implements OnInit {
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
     statoMezzoActions: StatoMezzoActions;
-    statoMezzoString: Array<string>;
-    listaEventiMezzoUnique: EventoMezzo[] =
-        [StatoMezzo.InViaggio, StatoMezzo.SulPosto, StatoMezzo.InRientro, StatoMezzo.Rientrato].map(e => ({
-            codiceMezzo: '',
-            note: '',
-            ora: '',
-            stato: e,
-        }));
+    statoMezzoString: string[];
+    listaEventiMezzoUnique: EventoMezzo[] = [
+        StatoMezzo.InViaggio,
+        StatoMezzo.SulPosto,
+        StatoMezzo.InRientro,
+        StatoMezzo.Rientrato
+    ].map(e => ({
+        codiceMezzo: '',
+        note: '',
+        ora: '',
+        stato: e,
+    }));
 
     constructor(dropdownConfig: NgbDropdownConfig,
                 tooltipConfig: NgbTooltipConfig,

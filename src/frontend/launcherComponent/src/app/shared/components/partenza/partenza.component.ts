@@ -11,6 +11,7 @@ import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.act
 import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
 import { Mezzo } from '../../model/mezzo.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-partenza',
@@ -44,9 +45,10 @@ export class PartenzaComponent implements OnInit {
 
     listaEventiMezzo: EventoMezzo[] = [];
 
-    constructor(config: NgbDropdownConfig,
+    constructor(private config: NgbDropdownConfig,
                 private store: Store,
-                private richiesteService: SintesiRichiesteService) {
+                private richiesteService: SintesiRichiesteService,
+                private lockedConcorrenzaService: LockedConcorrenzaService) {
         config.placement = 'bottom-left';
     }
 
@@ -83,6 +85,12 @@ export class PartenzaComponent implements OnInit {
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
         this.actionMezzo.emit(mezzoAction);
+    }
+
+    onModificaPartenza(): void {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, this.idRichiesta)) {
+            this.modificaPartenza.emit(this.index);
+        }
     }
 
     _iconaStatiClass(statoMezzo: any): string {
