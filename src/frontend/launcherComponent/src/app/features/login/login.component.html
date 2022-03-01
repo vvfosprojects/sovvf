@@ -4,13 +4,13 @@
             <div class="col-3 mx-auto my-4 px-3 bg-white rounded"
                  [style.right]="doubleMonitor ? '25%' : null">
                 <div class="w-50 mx-auto text-center my-3">
-                    <img class="img-fluid" src="assets/img/logo_vvf_600x.jpg">
+                    <img class="img-fluid" src="assets/img/logo_vvf_600x.jpg" alt="logo vvf">
                 </div>
                 <!-- <ng-container *ngIf="!onlyCas"> -->
                 <div class="row">
                     <div class="col-11 mx-auto p-3 card shadow-sm bg-light">
                         <form [formGroup]="loginForm">
-                            <div class="form-group">
+                            <div class="form-group text-dark">
                                 <label id="username">Username</label>
                                 <input type="text" formControlName="username" class="form-control"
                                        [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
@@ -18,7 +18,7 @@
                                     <div *ngIf="f['username'].errors">Inserisci un username</div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group text-dark">
                                 <label id="password">Password</label>
                                 <input type="password" formControlName="password" class="form-control"
                                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
@@ -49,7 +49,7 @@
                 <!-- </ng-container> -->
                 <div class="w-100 mx-auto text-center mb-3 p-3 card shadow-sm bg-light">
                     <div class="text-center">
-                        <img class="w-25 img-fluid" src="assets/img/cas.png">
+                        <img class="w-25 img-fluid" src="assets/img/cas.png" alt="logo sso vvf">
                     </div>
                     <button class="btn btn-lg btn-block btn-sso mt-3 btn-no-hover" (click)="onCasLogin()"
                             [disabled]="loading || submitted">
