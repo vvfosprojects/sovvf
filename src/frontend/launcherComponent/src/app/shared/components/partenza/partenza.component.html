@@ -46,9 +46,11 @@
                     </div>
                 </button>
                 <ng-template [ngIf]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
-                    <button class="btn btn-sm btn-info d-inline-block" ngbTooltip="Gestisci Partenza" placement="top"
+                    <button class="btn btn-sm btn-info d-inline-block"
+                            ngbTooltip="Gestisci Partenza"
+                            placement="top"
                             (click)="modificaPartenza.emit(index); $event.stopPropagation()">
-                        <i class="fas fa-cog mr-1"></i>
+                        <i class="fas fa-cog"></i>
                     </button>
                 </ng-template>
                 <div *ngIf="!partenza.squadre || !partenza.squadre?.length"
