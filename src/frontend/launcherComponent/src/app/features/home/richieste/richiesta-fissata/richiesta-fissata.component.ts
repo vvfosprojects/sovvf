@@ -23,9 +23,9 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() nightMode: boolean;
 
     // Permessi
-    @Input() disabledModificaRichiesta = false;
-    @Input() disabledGestisciRichiesta = false;
-    @Input() disabledComposizionePartenza = false;
+    @Input() disabledModificaRichiesta: boolean;
+    @Input() disabledGestisciRichiesta: boolean;
+    @Input() disabledComposizionePartenza: boolean;
 
     @Input() loadingActionRichiesta: string[];
 

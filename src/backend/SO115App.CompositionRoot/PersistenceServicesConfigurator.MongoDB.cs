@@ -342,6 +342,7 @@ namespace SO115App.CompositionRoot
             container.Register<IDeleteBlock, DeleteBlock>();
             container.Register<IDeleteAllBlocks, DeleteAllBlocks>();
             container.Register<IGetAllBlocks, GatAllBlocks>();
+            container.Register<IGetBlockByValue, GetBlockByValue>();
 
             #endregion Concorrenza
         }
