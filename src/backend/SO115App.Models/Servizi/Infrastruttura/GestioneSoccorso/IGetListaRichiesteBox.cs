@@ -1,5 +1,5 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="LogConfigurator.cs" company="CNVVF">
+//-----------------------------------------------------------------------
+// <copyright file="IGetListaRichiesteBox.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,26 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
-using Serilog;
+using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using System.Collections.Generic;
 
-namespace SO115App.Logging
+namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso
 {
-    public static class LogConfigurator
+    public interface IGetListaRichiesteBox
     {
-        public static void Configure(IConfiguration configuration)
-        {
-            var log = new LoggerConfiguration()
-                //.WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
-                //.WriteTo.Trace()
-                //.MinimumLevel.Debug()
-                .ReadFrom.Configuration(configuration)
-                .MinimumLevel.Information()
-                .CreateLogger();
-
-            Log.Logger = log;
-
-            Log.Debug("Log configured");
-        }
+        List<RichiestaAssistenza> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro);
     }
 }

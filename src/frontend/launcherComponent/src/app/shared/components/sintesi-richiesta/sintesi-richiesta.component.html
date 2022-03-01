@@ -271,7 +271,7 @@
                                         [ngbTooltip]="'Visualizza azioni per ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta?.codiceRichiesta) + ' : ' + richiesta.codice"
                                         [disabled]="disabledAzioniRichiesta"
                                         [ngClass]="{'cursor-not-allowed': disabledAzioniRichiesta}"
-                                        (click)="onShowAzioniRichiesta()">
+                                        (click)="onShowAzioniRichiesta(); $event.stopPropagation()">
                                     <i class="fas fa-fw fa-expand text-secondary"></i>
                                 </button>
                                 <button *ngIf="gestibile"

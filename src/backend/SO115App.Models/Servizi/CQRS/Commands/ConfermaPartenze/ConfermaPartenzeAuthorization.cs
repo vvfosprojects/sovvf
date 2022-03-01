@@ -58,8 +58,8 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                     var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente });
                     var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
 
-                    var MezziBloccati = command.ConfermaPartenze.Partenze.FindAll(p => listaOperazioniBloccate.Any(b => b.Value.Equals(p.Mezzo.Codice))).ToList();
-                    var SquadreBloccate = command.ConfermaPartenze.Partenze.FindAll(p => p.Squadre.Any(s => listaOperazioniBloccate.Any(l => l.Value.Equals(s.Codice)))).ToList();
+                    var MezziBloccati = command.ConfermaPartenze.Partenze.FindAll(p => listaOperazioniBloccate.Any(b => b.Value.Equals(p.Mezzo.Codice) && !b.IdOperatore.Equals(command.Utente.Id))).ToList();
+                    var SquadreBloccate = command.ConfermaPartenze.Partenze.FindAll(p => p.Squadre.Any(s => listaOperazioniBloccate.Any(l => l.Value.Equals(s.Codice) && !l.IdOperatore.Equals(command.Utente.Id)))).ToList();
 
                     if (MezziBloccati.Count > 0)
                     {
