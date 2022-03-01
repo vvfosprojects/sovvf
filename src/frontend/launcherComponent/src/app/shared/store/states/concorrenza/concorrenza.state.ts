@@ -57,8 +57,10 @@ export class ConcorrenzaState {
         const concorrenza = state.concorrenza;
         const utenteLoggato = this.store.selectSnapshot(AuthState.currentUser);
         const concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.idOperatore === utenteLoggato.id)[0];
-        this.concorrenzaService.delete(concorrenzaToDelete.id).subscribe(() => {
-        });
+        if (concorrenzaToDelete) {
+            this.concorrenzaService.delete(concorrenzaToDelete.id).subscribe(() => {
+            });
+        }
     }
 
     @Action(DeleteAllConcorrenza)
