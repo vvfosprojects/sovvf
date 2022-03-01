@@ -24,7 +24,6 @@ import { GetDettaglioSoccorsoAereo, GetEventiSoccorsoAereo } from '../../../feat
 import { AzioniSintesiRichiestaModalComponent } from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
 import { defineChiamataIntervento } from '../../helper/function-richieste';
 import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
-import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/triage-summary-modal.component';
 import { EnteInterface } from '../../interface/ente.interface';
 import { OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ClearMezzoInServizioSelezionato, SetMezzoInServizioSelezionato } from '../../../features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
@@ -83,7 +82,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
 
     methods = new HelperSintesiRichiesta();
-    isSingleClick = true;
     live = true;
     dettaglioSoccorsoAereo = false;
 
@@ -217,22 +215,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         }
     }
 
-    openDettaglioTriage(): void {
-        let dettaglioTriageModal: any;
-        dettaglioTriageModal = this.modalService.open(TriageSummaryModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-        });
-        dettaglioTriageModal.componentInstance.codRichiesta = this.richiesta?.codiceRichiesta ? this.richiesta?.codiceRichiesta : this.richiesta?.codice;
-        dettaglioTriageModal.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
-        dettaglioTriageModal.componentInstance.tipologia = this.richiesta.tipologie[0];
-        dettaglioTriageModal.componentInstance.dettaglioTipologia = this.richiesta.dettaglioTipologia;
-        dettaglioTriageModal.componentInstance.schedaContatto = this.richiesta.codiceSchedaNue;
-        dettaglioTriageModal.componentInstance.triageSummary = this.richiesta.triageSummary;
-    }
-
     onListaEnti(): void {
         let modal;
         modal = this.modalService.open(ListaEntiComponent, {
@@ -245,8 +227,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         const listaEntiIntervenuti = this.methods._getEntiByCod(this.listaEnti, this.richiesta.codEntiIntervenuti);
         modal.componentInstance.listaEntiIntervenuti = listaEntiIntervenuti ? listaEntiIntervenuti : null;
         modal.componentInstance.listaEntiPresaInCarico = this.richiesta.listaEntiPresaInCarico ? this.richiesta.listaEntiPresaInCarico : null;
-        modal.result.then(() => console.log('Lista Enti Aperta'),
-            () => console.log('Lista Enti Chiusa'));
     }
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
@@ -285,8 +265,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             keyboard: false
         });
         modalModificaPartenza.componentInstance.singolaPartenza = this.richiesta.partenze[index];
-        const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
-        modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
+        modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.richiesta = this.richiesta;
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
@@ -401,17 +380,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         }
         const modal = this.modalService.open(AzioniSintesiRichiestaModalComponent, modalOptions);
         modal.componentInstance.richiesta = this.richiesta;
-        modal.result.then((res: string) => {
-            switch (res) {
-                case 'ok':
-                    break;
-                case 'ko':
-                    break;
-                default:
-                    this.deseleziona.emit(true);
-                    break;
-            }
-        });
     }
 
     getStatoFonogrammaStringByEnum(statoFonogramma: StatoFonogramma): string {

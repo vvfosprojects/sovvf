@@ -7,7 +7,6 @@ import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ResponseInterface } from '../../../shared/interface/response/response.interface';
 import { InterventiProssimitaResponse } from '../../../shared/interface/response/interventi-prossimita-response.interface';
 import { CountInterventiProssimitaResponse } from '../../../shared/interface/response/count-interventi-prossimita-response.interface';
-import { Sede } from '../../../shared/model/sede.model';
 
 const BASE_URL = environment.baseUrl;
 const API_CHIAMATA = BASE_URL + environment.apiUrl.chiamata;

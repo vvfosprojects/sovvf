@@ -30,9 +30,9 @@ export class BoxMezziState {
     @Action(GetBoxMezzi)
     getBoxMezzi({ dispatch }: StateContext<BoxMezziStateModel>): void {
         this.boxMezziService.getDataBoxMezzi().subscribe((data: any) => {
-            dispatch([
-                new SetBoxMezzi(data.boxMezzi),
-            ]);
+            dispatch(new SetBoxMezzi(data.boxMezzi));
+        }, () => {
+            dispatch(new SetBoxMezzi(new BoxMezzi(0, 0, 0, 0, 0, 0)));
         });
     }
 
