@@ -34,8 +34,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             try
             {
-                //var stringContent = new StringContent(JsonConvert.SerializeObject(obj));
-
                 var uri = new Uri($"{_config.GetSection("ESRI").GetSection("URLDistanzaTempoMezzo").Value.Replace("{jobId}", jobId.Result).Replace("{token}", token)}");
 
                 var result = await _client.GetAsync(uri);
