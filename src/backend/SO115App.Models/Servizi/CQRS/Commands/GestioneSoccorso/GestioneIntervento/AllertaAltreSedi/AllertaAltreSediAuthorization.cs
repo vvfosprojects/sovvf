@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
@@ -40,21 +41,26 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetAllBlocks _getAllBlocks;
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IMapperRichiestaSuSintesi _map;
 
         public AllertaAltreSediAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
-            IGetAutorizzazioni getAutorizzazioni,
+            IGetAutorizzazioni getAutorizzazioni, IMapperRichiestaSuSintesi map,
             IGetRichiesta getRichiestaById, IGetAllBlocks getAllBlocks, IGetSottoSediByCodSede getSottoSediByCodSede)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
             _getRichiestaById = getRichiestaById;
+            _getAllBlocks = getAllBlocks;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
+            _map = map;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AllertaAltreSediCommand command)
         {
             var richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
-            var Competenze = command.Chiamata.Competenze.Select(c => c.Codice).ToArray();
+            var Competenze = richiesta.Competenze.Select(c => c.Codice).ToArray();
+            command.Chiamata = _map.Map(richiesta);
 
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
