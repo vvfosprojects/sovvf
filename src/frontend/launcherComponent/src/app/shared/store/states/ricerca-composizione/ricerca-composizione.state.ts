@@ -1,16 +1,10 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import {
-    ResetRicercaMezziComposizione,
-    ResetRicercaSquadreComposizione,
-    SetRicercaMezziComposizione,
-    SetRicercaSquadreComposizione
-} from '../../actions/ricerca-composizione/ricerca-composizione.actions';
+import { ResetRicercaMezziComposizione, ResetRicercaSquadreComposizione, SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../actions/ricerca-composizione/ricerca-composizione.actions';
 import { Injectable } from '@angular/core';
 
 export interface RicercaComposizioneStateStateModel {
     ricercaMezzi: string;
     ricercaSquadre: string;
-
 }
 
 export const RicercaComposizioneStateDefaults: RicercaComposizioneStateStateModel = {
@@ -26,12 +20,12 @@ export const RicercaComposizioneStateDefaults: RicercaComposizioneStateStateMode
 export class RicercaComposizioneState {
 
     @Selector()
-    static ricercaMezzi(state: RicercaComposizioneStateStateModel) {
+    static ricercaMezzi(state: RicercaComposizioneStateStateModel): string {
         return state.ricercaMezzi;
     }
 
     @Selector()
-    static ricercaSquadre(state: RicercaComposizioneStateStateModel) {
+    static ricercaSquadre(state: RicercaComposizioneStateStateModel): string {
         return state.ricercaSquadre;
     }
 

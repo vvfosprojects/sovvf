@@ -5,6 +5,7 @@ import { AddConcorrenza, DeleteAllConcorrenza, DeleteConcorrenza, GetConcorrenza
 import { ConcorrenzaInterface } from '../../../interface/concorrenza.interface';
 import { GetAllResponseInterface } from '../../../interface/response/concorrenza/get-all-response.interface';
 import { AuthState } from '../../../../features/auth/store/auth.state';
+import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
 
 export interface ConcorrenzaStateModel {
     concorrenza: ConcorrenzaInterface[];
@@ -52,11 +53,23 @@ export class ConcorrenzaState {
     }
 
     @Action(DeleteConcorrenza)
-    deleteConcorrenza({ getState }: StateContext<ConcorrenzaStateModel>): void {
+    deleteConcorrenza({ getState }: StateContext<ConcorrenzaStateModel>, action: DeleteConcorrenza): void {
         const state = getState();
+        const type = action.type;
         const concorrenza = state.concorrenza;
         const utenteLoggato = this.store.selectSnapshot(AuthState.currentUser);
-        const concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.idOperatore === utenteLoggato.id)[0];
+        let concorrenzaToDelete: ConcorrenzaInterface;
+        switch (type) {
+            case TipoConcorrenzaEnum.Richiesta:
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.idOperatore === utenteLoggato.id)[0];
+                break;
+            case TipoConcorrenzaEnum.Mezzo:
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.value === action.value && c.idOperatore === utenteLoggato.id)[0];
+                break;
+            case TipoConcorrenzaEnum.Squadra:
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.value === action.value && c.idOperatore === utenteLoggato.id)[0];
+                break;
+        }
         if (concorrenzaToDelete) {
             this.concorrenzaService.delete(concorrenzaToDelete.id).subscribe(() => {
             });

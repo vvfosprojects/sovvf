@@ -42,7 +42,7 @@ export class RichiestaGestioneState {
         const isInConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === action.richiesta.id)?.length > 0;
         if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id && !action.toggle) {
             dispatch([
-                new DeleteConcorrenza(),
+                new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta),
                 new ClearRichiestaGestione()
             ]);
         } else {

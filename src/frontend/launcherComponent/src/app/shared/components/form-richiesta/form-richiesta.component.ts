@@ -230,7 +230,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.clearFormDisconnection();
 
         if (this.modifica) {
-            this.store.dispatch(new DeleteConcorrenza());
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta));
         }
     }
 

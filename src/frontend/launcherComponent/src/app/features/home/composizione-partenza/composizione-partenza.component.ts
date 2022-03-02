@@ -137,7 +137,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.store.dispatch([
-            new DeleteConcorrenza(),
+            new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta),
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
             new ClearPreaccoppiati(),

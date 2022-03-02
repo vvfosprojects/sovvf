@@ -26,7 +26,7 @@
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
                                 [disabled]="disableBtnFeature || loadingSquadre || itemSelezionato"
-                                (click)="onClick(false, true);$event.stopPropagation()">
+                                (click)="onClick(false, true); $event.stopPropagation()">
                             <div class="d-inline-block ml-2"
                                  style="font-weight: 500">
                                 P
@@ -35,7 +35,7 @@
                         </button>
                         <ng-template #popSquadre>
                             <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate" class="h6 text-center">
-                                <div class="d-inline-block font-weight-bold">{{ s?.nome}}</div>
+                                <div class="d-inline-block font-weight-bold">{{ s?.codice}}</div>
                                 <div *ngIf="s.turno" class="d-inline-block"> ({{ s?.turno }})</div>
                                 <div class="d-inline"> - {{ _nomeStatiSquadra(s?.stato) }}</div>
                             </div>
@@ -89,7 +89,7 @@
                         </button>
                         <ng-template #popSquadreIntervento>
                             <div *ngFor="let s of mezzoComp.listaSquadre" class="h6 text-center">
-                                <div class="d-inline font-weight-bold">{{ s?.nome }}</div>
+                                <div class="d-inline font-weight-bold">{{ s?.codice }}</div>
                                 <div *ngIf="s?.turno" class="d-inline">({{ s?.turno }})</div>
                                 <div class="d-inline"> - {{_nomeStatiSquadra(s?.stato) }}</div>
                             </div>

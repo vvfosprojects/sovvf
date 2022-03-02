@@ -3,4 +3,4 @@ export enum RuoloFunzionarioSo {
     PrimoTecnico = 'PRIMO_TECNICO',
     SecondoTecnico = 'SECONDO_TECNICO',
     Guardia = 'GUARDIA'
-} 
+}
