@@ -42,7 +42,7 @@ export class ChangelogComponent implements OnInit, OnDestroy {
         ]);
         this.subscriptions.unsubscribe();
     }
-    
+
     getDoubleMonitorMode(): void {
         this.subscriptions.add(
             this.doubleMonitor$.subscribe((doubleMonitor: boolean) => {

@@ -36,12 +36,12 @@ export class GraficoDistaccamentiComponent {
     @Input() colorScheme: any;
     @Input() schemeType: string;
 
-    @Output() select: EventEmitter<ItemChartEmit> = new EventEmitter<ItemChartEmit>();
+    @Output() selectChartItem: EventEmitter<ItemChartEmit> = new EventEmitter<ItemChartEmit>();
     @Output() activate: EventEmitter<ItemChartEmit> = new EventEmitter<ItemChartEmit>();
     @Output() deactivate: EventEmitter<ItemChartEmit> = new EventEmitter<ItemChartEmit>();
 
     onSelect(data: ItemChartEmit): void {
-        this.select.emit(data);
+        this.selectChartItem.emit(data);
     }
 
     onActivate(data: ItemChartEmit): void {

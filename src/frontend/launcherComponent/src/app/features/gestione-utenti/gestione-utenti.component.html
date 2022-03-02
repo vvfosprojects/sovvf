@@ -26,7 +26,8 @@
                                                 [sediFiltroSelezionate]="sediFiltroSelezionate$ | async"
                                                 (ricercaChange)="onRicercaUtenti($event)"
                                                 (filtroChange)="onFiltroSediChange($event)"
-                                                (filtriReset)="onFiltriReset()"></app-ricerca-utenti>
+                                                (filtriReset)="onFiltriReset()">
+                            </app-ricerca-utenti>
                         </div>
                     </div>
                 </div>
@@ -41,11 +42,16 @@
                     </app-risultati-alert>
                 </div>
                 <div *ngIf="listaUtenti?.length" class="col-12 col-md-9 mx-auto">
-                    <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [idUtenteLoggato]="utente?.id"
-                                        [totalItems]="totalItems$ | async" [pageSize]="pageSize" [page]="page$ | async"
-                                        [loading]="loading$ | async" [pageSizes]="pageSizes$ | async"
-                                        (removeUser)="onRemoveUtente($event)" (removeRoleUser)="onRemoveRuoloUtente($event)"
-                                        (addRuoloUtente)="onAddRuoloUtente($event)" (pageChange)="onPageChange($event)"
+                    <app-tabella-utenti [listaUtenti]="listaUtenti$ | async"
+                                        [idUtenteLoggato]="utente?.id"
+                                        [totalItems]="totalItems$ | async"
+                                        [pageSize]="pageSize" [page]="page$ | async"
+                                        [loading]="loading$ | async"
+                                        [pageSizes]="pageSizes$ | async"
+                                        (removeUser)="onRemoveUtente($event)"
+                                        (removeRoleUser)="onRemoveRuoloUtente($event)"
+                                        (addRuoloUtente)="onAddRuoloUtente($event)"
+                                        (pageChange)="onPageChange($event)"
                                         (pageSizeChange)="onPageSizeChange($event)">
                     </app-tabella-utenti>
                 </div>
