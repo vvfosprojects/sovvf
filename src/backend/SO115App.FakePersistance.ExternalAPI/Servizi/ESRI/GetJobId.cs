@@ -25,6 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             try
             {
                 var url = new Uri(_config.GetSection("ESRI").GetSection("URLJobId").Value.Replace("{token}", token));
+
                 var json = JsonSerializer.Serialize(obj);
 
                 var result = _client.PostAsync(url, new StringContent(json)).Result;
