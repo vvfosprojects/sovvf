@@ -21,10 +21,13 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 
 namespace DomainModel.CQRS.Commands.AllertaAltreSedi
@@ -35,10 +38,12 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly IGetRichiesta _getRichiestaById;
+        private readonly IGetAllBlocks _getAllBlocks;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
 
         public AllertaAltreSediAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetRichiesta getRichiestaById)
+            IGetRichiesta getRichiestaById, IGetAllBlocks getAllBlocks, IGetSottoSediByCodSede getSottoSediByCodSede)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
@@ -49,6 +54,7 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         public IEnumerable<AuthorizationResult> Authorize(AllertaAltreSediCommand command)
         {
             var richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
+            var Competenze = command.Chiamata.Competenze.Select(c => c.Codice).ToArray();
 
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
@@ -59,6 +65,18 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { Competenze.ToArray()[0].Split('.')[0] + ".1000" });
+                    var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
+
+                    var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Chiamata.Id));
+
+                    if (findBlock != null)
+                    {
+                        var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.CodUtente));
+                        if (verificaUtente.Count == 0)
+                            yield return new AuthorizationResult(Costanti.InterventoBloccato);
+                    }
+
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
