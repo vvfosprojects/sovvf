@@ -32,10 +32,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         {
             var lstMezziEsri = composizioni.Select(c => new ESRI_Mezzo()
             {
-                codiceMezzo = c.Mezzo.Codice,
+                codice = c.Mezzo.Codice,
                 coordinate = string.Join(", ", c.Mezzo?.CoordinateStrg ?? new string[] { "0", "0" }),
                 track = !c.Mezzo.Genere.Equals("AV"),
             }).ToList();
+
+            var distanzaTempo = _getDistanzaTempoMezzi.Get(new ESRI_DistanzaTempoMezzi()
+            {
+                coordinateIntervento = string.Join(", ", Richiesta.Localita.CoordinateString ?? new string[] { "0", "0" }),
+                mezzi = lstMezziEsri
+            });
 
             foreach (var composizione in composizioni)
             {
@@ -43,11 +49,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 try
                 {
-                    var distanzaTempo = _getDistanzaTempoMezzi.Get(new ESRI_DistanzaTempoMezzi()
-                    {
-                        CoordinateIntervento = string.Join(", ", Richiesta.Localita.CoordinateString ?? new string[] { "0", "0" }),
-                        Mezzi = lstMezziEsri
-                    });
 
                     var tempodist = distanzaTempo.Result.Find(m => m.codice.Equals(composizione.Mezzo.Codice));
 
@@ -55,8 +56,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     result = 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreAdeguatezzaMezzo.Result;
 
-                    composizione.Km = tempodist.distanza;
-                    composizione.TempoPercorrenza = tempodist.tempo;
+                    composizione.Km = tempodist.distanza.ToString();
+                    composizione.TempoPercorrenza = tempodist.tempo.ToString();
                     composizione.IndiceOrdinamento = result;
                 }
                 catch (Exception) { }
