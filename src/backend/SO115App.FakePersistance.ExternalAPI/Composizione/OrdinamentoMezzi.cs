@@ -56,8 +56,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     result = 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreAdeguatezzaMezzo.Result;
 
-                    //composizione.Km = tempodist.distanza;
-                    //composizione.TempoPercorrenza = tempodist.tempo;
+                    composizione.Km = tempodist.distanza.ToString();
+                    composizione.TempoPercorrenza = tempodist.tempo.ToString();
                     composizione.IndiceOrdinamento = result;
                 }
                 catch (Exception) { }
