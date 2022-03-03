@@ -54,9 +54,9 @@ export class ComposizioneAvanzataState {
         const mezzoSelezionato = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato)?.mezzo;
         const squadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate)?.map((s: SquadraComposizione) => s) as any;
         const codiceChiamata = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)?.codice;
-        let codDistaccamentoSelezionato;
-        let autistaInPartenza = false;
 
+        let codDistaccamentoSelezionato: string;
+        let autistaInPartenza: boolean;
         if (squadreSelezionate && squadreSelezionate[0]) {
             squadreSelezionate.forEach(x => x.membri ? x.membri.forEach(y => y.autista ? autistaInPartenza = true : null) : null);
             codDistaccamentoSelezionato = squadreSelezionate[0].distaccamento.codice;
@@ -124,7 +124,6 @@ export class ComposizioneAvanzataState {
             codSquadraSelezionata: squadreSelezionate && squadreSelezionate.length ? squadreSelezionate[0].codice : null,
             codMezzoSelezionato: mezzoSelezionato && mezzoSelezionato.codice ? mezzoSelezionato.codice : null,
             autista: !!autistaInPartenza,
-
         } as any;
 
         if (!squadreSelezionate || (squadreSelezionate && squadreSelezionate.length <= 0)) {

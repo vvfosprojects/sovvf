@@ -8,6 +8,7 @@ import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -41,6 +42,8 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
 
     disableBtnFeature = false;
     autistaInSquadra = false;
+
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     private subscription = new Subscription();
 

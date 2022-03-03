@@ -12,6 +12,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ViewLayouts } from '../../interface/view.interface';
 import { Coordinate } from '../../model/coordinate.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -53,6 +54,8 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     sganciamentoDisabilitato = false;
     itemPrenotatoInBox = false;
     disableBtnFeature = false;
+
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     private subscription = new Subscription();
 

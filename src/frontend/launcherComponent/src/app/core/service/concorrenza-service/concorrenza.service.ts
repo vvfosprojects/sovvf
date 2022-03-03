@@ -21,7 +21,7 @@ export class ConcorrenzaService {
         return this.http.get<GetAllResponseInterface>(API_CONCORRENZA + '/GetAll');
     }
 
-    add(data: AddConcorrenzaDtoInterface): Observable<ConcorrenzaInterface> {
+    add(data: AddConcorrenzaDtoInterface[]): Observable<ConcorrenzaInterface> {
         return this.http.post<ConcorrenzaInterface>(API_CONCORRENZA + '/Add', data);
     }
 
