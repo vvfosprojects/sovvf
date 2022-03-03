@@ -73,7 +73,7 @@ export class SediTreeviewState {
     @Selector()
     static sediNavbarTastoConferma(state: SediTreeviewStateModel): boolean {
         const sediNavbar = state.sediNavbarSelezionate;
-        if (sediNavbar.correnti as string[] && sediNavbar.correnti.length > 0) {
+        if (sediNavbar.correnti?.length > 0 && sediNavbar.correnti?.length < 2) {
             return arraysEqual(sediNavbar.iniziali, sediNavbar.correnti);
         } else {
             return true;

@@ -16,6 +16,7 @@ import {
     SetCurrentUserEsri,
     SetLogged,
     SetLoggedCas,
+    SetSedeCurrentUser,
     UpdateCurrentUser,
     UpdateRuoliPersonali
 } from './auth.actions';
@@ -75,6 +76,7 @@ export class AuthState {
     static currentPswEsri(state: AuthStateModel): string {
         return state.currentPswEsri;
     }
+
     @Selector()
     static currentUserEsri(state: AuthStateModel): string {
         return state.currentUserEsri;
@@ -159,11 +161,23 @@ export class AuthState {
         if (cS) {
             cS = JSON.parse(cS);
         }
-        let codice = [currentUser.sede.codice];
+        let codice = [];
         if (cS) {
             codice = cS;
+            dispatch([
+                new SetVistaSedi(codice),
+                new Navigate(['' + RoutesPath.Home])
+            ]);
         }
-        dispatch(new SetVistaSedi(codice));
+    }
+
+    @Action(SetSedeCurrentUser)
+    setSedeCurrentUser({ dispatch }: StateContext<AuthStateModel>, { codiceSede }: SetSedeCurrentUser): void {
+        const codice = [codiceSede];
+        dispatch([
+            new SetVistaSedi(codice),
+            new Navigate(['' + RoutesPath.Home])
+        ]);
     }
 
     @Action(UpdateCurrentUser)
@@ -220,14 +234,7 @@ export class AuthState {
 
     @Action(RecoveryUrl)
     recoveryUrl({ dispatch }: StateContext<AuthStateModel>): void {
-        const currentUrl = JSON.parse(localStorage.getItem(LSNAME.redirectUrl));
-        console.log('RecoveryUrl', currentUrl);
-        if (currentUrl) {
-            localStorage.removeItem(LSNAME.redirectUrl);
-            dispatch(new Navigate([currentUrl]));
-        } else {
-            dispatch(new Navigate(['/' + RoutesPath.Home]));
-        }
+        dispatch(new Navigate(['/' + RoutesPath.SelezioneSede]));
     }
 
     @Action(CasLogin)

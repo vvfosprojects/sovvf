@@ -59,18 +59,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
         /// <returns>Elenco dei mezzi disponibili</returns>
         public CasLoginResult Handle(CasLoginQuery query)
         {
-            var Cas = CheckCasTicket(query).Result;
+            var Cas = new CasResponse();
 
-            if (Cas.serviceResponse.AuthenticationFailure != null)
+            if (!query.Service.Contains("localhost"))
             {
-                Log.Information($"Autenticazione Fallita = {Cas.serviceResponse.AuthenticationFailure.Description}");
-                return new CasLoginResult()
-                {
-                    User = null,
-                    ErrorMessage = Cas.serviceResponse.AuthenticationFailure.Description
-                };
-            }
+                Cas = CheckCasTicket(query).Result;
 
+                if (Cas.serviceResponse.AuthenticationFailure != null)
+                {
+                    Log.Information($"Autenticazione Fallita = {Cas.serviceResponse.AuthenticationFailure.Description}");
+                    return new CasLoginResult()
+                    {
+                        User = null,
+                        ErrorMessage = Cas.serviceResponse.AuthenticationFailure.Description
+                    };
+                }
+            }
+            else
+            {
+                Cas.serviceResponse = new CasResponceService();
+                Cas.serviceResponse.AuthenticationSuccess = new CasAuthSuccess();
+                Cas.serviceResponse.AuthenticationSuccess.Attributes = new CasAttributes();
+                Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName = new string[1] { query.Ticket.Split('-')[1] };
+            }
             if (Cas.serviceResponse.AuthenticationSuccess != null)
             {
                 Log.Information($"sAMAccountName = {Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName}");

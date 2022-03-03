@@ -34,10 +34,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     onlyCas = environment.onlyCas;
     loginVisible = false;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private authenticationService: AuthService,
-        private store: Store) {
+    constructor(private formBuilder: FormBuilder,
+                private authenticationService: AuthService,
+                private store: Store) {
         this.subscription.add(
             this.loading$.subscribe((loading: boolean) => this.loading = loading)
         );

@@ -21,8 +21,10 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,20 +38,28 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
+        private readonly IGetAllBlocks _getAllBlocks;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
 
         public UpDateInterventoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetCompetenzeByCoordinateIntervento getCompetenze)
+            IGetCompetenzeByCoordinateIntervento getCompetenze,
+            IGetAllBlocks getAllBlocks,
+            IGetSottoSediByCodSede getSottoSediByCodSede)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
             _getCompetenze = getCompetenze;
+            _getAllBlocks = getAllBlocks;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(UpDateInterventoCommand command)
         {
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
+            //var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
+
+            var Competenze = command.Chiamata.Competenze.Select(c => c.Codice).ToArray();
 
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
@@ -60,6 +70,18 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { Competenze.ToArray()[0].Split('.')[0] + ".1000" });
+                    var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
+
+                    var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Chiamata.Id));
+
+                    if (findBlock != null)
+                    {
+                        var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.CodUtente));
+                        if (verificaUtente.Count == 0)
+                            yield return new AuthorizationResult(Costanti.InterventoBloccato);
+                    }
+
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Serilog;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.ExternalAPI.Client;
@@ -31,6 +32,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
         public void Call(ESRI_RichiestaMessage message, RichiestaAssistenza richiesta)
         {
+            Log.Information("ESRI - Inizio comunicaizone inserimento intervento");
+
             List<ESRI_RichiestaMessage> listaMsg = new List<ESRI_RichiestaMessage>();
             listaMsg.Add(message);
             var jsonString = JsonConvert.SerializeObject(listaMsg);
@@ -39,6 +42,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             postData.Add("features", jsonString);
             postData.Add("f", "json");
             postData.Add("token", _getToken_ESRI.Get());
+
+            Log.Information("ESRI - Ricevuto il Token");
 
             var multipartFormDataContent = new MultipartFormDataContent();
 
@@ -52,12 +57,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             var result = _client.PostAsyncFormData(uri, multipartFormDataContent).Result;
 
+            Log.Information("ESRI - Ricevuta la risposa di inserimento intervento");
+
             if (result != null && result.addResults[0].success == false)
             {
+                Log.Error($"ESRI - Errore servizio ESRI: {result.addResults[0].error.description}");
+
                 throw new Exception($"Errore servizio ESRI: {result.addResults[0].error.description}");
             }
             else
             {
+                Log.Information($"ESRI - Ricevuti i parametri di risposta");
+
                 richiesta.Esri_Param = new API.Models.Classi.Soccorso.ESRI()
                 {
                     ObjectId = result.addResults[0].objectId,
@@ -65,6 +76,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
                 };
 
                 _upDateRichiestaAssistenza.UpDate(richiesta);
+
+                Log.Information($"ESRI - Fine Elaborazione");
             }
         }
     }

@@ -30,12 +30,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
         {
             var token = _getToken.Get();
 
-            var jobId = _getJobId.Get(token);
+            var jobId = _getJobId.Get(token, obj);
+
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(jobId.Result))
+                throw new Exception("Errore servizio ESRI (token e job)");
 
             try
             {
-                var stringContent = new StringContent(JsonConvert.SerializeObject(obj));
-
                 var uri = new Uri($"{_config.GetSection("ESRI").GetSection("URLDistanzaTempoMezzo").Value.Replace("{jobId}", jobId.Result).Replace("{token}", token)}");
 
                 var result = await _client.GetAsync(uri);

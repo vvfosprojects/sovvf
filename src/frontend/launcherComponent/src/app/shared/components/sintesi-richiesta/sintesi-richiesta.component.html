@@ -271,7 +271,7 @@
                                         [ngbTooltip]="'Visualizza azioni per ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta?.codiceRichiesta) + ' : ' + richiesta.codice"
                                         [disabled]="disabledAzioniRichiesta"
                                         [ngClass]="{'cursor-not-allowed': disabledAzioniRichiesta}"
-                                        (click)="onShowAzioniRichiesta()">
+                                        (click)="onShowAzioniRichiesta(); $event.stopPropagation()">
                                     <i class="fas fa-fw fa-expand text-secondary"></i>
                                 </button>
                                 <button *ngIf="gestibile"
@@ -295,7 +295,7 @@
                                 <button *ngIf="!partenza && composizionePartenza"
                                         class="btn btn-light border py-0 px-2"
                                         ngbTooltip="Invio partenza"
-                                        [disabled]="disabledComposizionePartenza || richiesta.stato === StatoRichiesta.Chiusa"
+                                        [disabled]="disabledComposizionePartenza"
                                         [class.cursor-not-allowed]="disabledComposizionePartenza"
                                         (click)="invioPartenza(richiesta); $event.stopPropagation()">
                                     <i class="fas fa-fw fa-arrow-right text-secondary"></i>
@@ -315,16 +315,17 @@
                                 <div class="clearfix">
                                     <!-- Operatore chiamata -->
                                     <div *ngIf="richiesta?.operatore as op">
-                                        <div [ngbTooltip]="operatoreRegistrazioneChiamata" class="mb-0">
+                                        <h4 class="mb-0"
+                                            [ngbTooltip]="operatoreRegistrazioneChiamata">
                                             <i class="guida fas fa-user fa-fw"></i>
                                             <i class="guida fas fa-phone-alt fa-fw mr-1"></i>
-                                            <span class="font-xxlarge">{{ op?.nome + ' ' + op?.cognome | truncate: 14 }}</span>
+                                            {{ op?.nome + ' ' + op?.cognome | truncate: 14 }}
                                             <ng-template #operatoreRegistrazioneChiamata>
                                                 <div>
                                                     {{ op?.nome + ' ' + op?.cognome }} ha registrato la chiamata
                                                 </div>
                                             </ng-template>
-                                        </div>
+                                        </h4>
                                     </div>
 
                                     <!-- Presa in carico -->
@@ -332,9 +333,7 @@
                                         <h4 *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
                                             class="d-inline-block m-0 mr-1"
                                             [ngbTooltip]="utentePresaInCarico">
-                                            <i class="guida far fa-calendar-check fa-fw mr-1"
-                                               ngbTooltip="Presa in carico"
-                                               placement="right"></i>
+                                            <i class="guida far fa-calendar-check fa-fw mr-1"></i>
                                             {{ utentiPresaInCaricoValue?.nominativo | truncate: 15 }}
                                             <ng-template #utentePresaInCarico>
                                                 <div>
@@ -436,7 +435,8 @@
                                  class="col-8 px-0 border border-lista-partenze">
                                 <div class="scroll-y max-height-richiesta">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
-                                    <app-lista-partenze [partenze]="richiesta?.partenze"
+                                    <app-lista-partenze [idRichiesta]="richiesta.id"
+                                                        [partenze]="richiesta?.partenze"
                                                         [listaEventi]="richiesta?.eventi"
                                                         [statoRichiesta]="richiesta?.stato"
                                                         [inGestione]="inGestione"
@@ -458,14 +458,14 @@
                                 <div class="clearfix">
                                     <!-- turno intervento -->
                                     <div class="text-right">
-                                        <span *ngIf="richiesta?.trnInsChiamata; else nessunTurno"
-                                              class="font-xxlarge">
+                                        <h4 *ngIf="richiesta?.trnInsChiamata; else nessunTurno"
+                                            class="mb-0">
                                             {{ richiesta?.trnInsChiamata }}
                                             <i class="fa-fw far fa-calendar-check guida ml-1"
                                                ngbTooltip="Turno Inserimento"
                                                placement="left">
                                             </i>
-                                        </span>
+                                        </h4>
                                         <ng-template #nessunTurno>
                                             <h4>
                                                 <span class="d-inline-block mr-1">-</span>

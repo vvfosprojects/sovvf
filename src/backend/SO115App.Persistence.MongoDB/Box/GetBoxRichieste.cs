@@ -32,12 +32,12 @@ namespace SO115App.Persistence.MongoDB
 {
     public class GetBoxRichieste : IGetBoxRichieste
     {
-        private readonly IGetListaSintesi _getListaSintesi;
+        private readonly IGetListaRichiesteBox _getListaRichieste;
         private readonly IGetTurno _getTurni;
 
-        public GetBoxRichieste(IGetListaSintesi getListaSintesi, IGetTurno getTurni)
+        public GetBoxRichieste(IGetListaRichiesteBox getListaRichieste, IGetTurno getTurni)
         {
-            _getListaSintesi = getListaSintesi;
+            _getListaRichieste = getListaRichieste;
             _getTurni = getTurni;
         }
 
@@ -48,7 +48,7 @@ namespace SO115App.Persistence.MongoDB
             var turnoSuccessivo = _getTurni.Get(turnoAttuale.DataOraInizio.AddMinutes(1));
 
             var filtro = new FiltroRicercaRichiesteAssistenza { UnitaOperative = listaPin, Chiuse = new string[] { "Chiamate chiuse", "Interventi chiusi" }, SoloboxRichieste = true };
-            var listaSintesi = _getListaSintesi.GetListaSintesiRichieste(filtro);
+            var listaSintesi = _getListaRichieste.GetListaSintesiRichieste(filtro);
 
             var interventi = new BoxInterventi();
 
@@ -64,11 +64,11 @@ namespace SO115App.Persistence.MongoDB
                 interventi.Chiusi = listaSintesi.Count(x => x.Chiusa);
                 interventi.Sospesi = listaSintesi.Count(x => x.Sospesa);
 
-                interventi.TotAnnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year && x.Chiusa);
+                interventi.TotAnnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Value.Year == DateTime.Now.Year && x.Chiusa);
                 interventi.AnnoCorrente = DateTime.Now.Year;
 
-                interventi.TotTurnoCorrente = listaSintesi.Count(x => x.trnInsChiamata.Contains(turnoAttuale.Codice.ToCharArray()[0]));
-                interventi.TotTurnoPrecedente = listaSintesi.Count(x => x.trnInsChiamata.Contains(turnoPrecedente.Codice.ToCharArray()[0]));
+                interventi.TotTurnoCorrente = listaSintesi.Count(x => x.TrnInsChiamata.Contains(turnoAttuale.Codice.ToCharArray()[0]));
+                interventi.TotTurnoPrecedente = listaSintesi.Count(x => x.TrnInsChiamata.Contains(turnoPrecedente.Codice.ToCharArray()[0]));
 
                 interventi.Totale = listaSintesi.Count(x => x.Aperta);
             }

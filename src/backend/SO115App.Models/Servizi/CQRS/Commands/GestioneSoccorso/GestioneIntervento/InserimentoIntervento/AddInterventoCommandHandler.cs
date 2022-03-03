@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using Serilog;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
@@ -64,6 +65,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public void Handle(AddInterventoCommand command)
         {
+            Log.Information("Inserimento Intervento - Inizio scrittura internvento");
+
             var sedi = _getSedi.GetAll().Result.Where(s => command.CodCompetenze.Contains(s.Codice)).ToList();
 
             command.Chiamata.Codice = _generaCodiceRichiesta.GeneraCodiceChiamata(command.CodiceSede, DateTime.UtcNow.Year);
@@ -135,6 +138,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             //Salvo l'intervento nel command per usarlo nella notifica
             command.Intervento = richiesta;
+
+            Log.Information("Inserimento Intervento - Fine scrittura internvento");
         }
     }
 }

@@ -67,6 +67,8 @@ import { EsriService } from '../../../features/maps/map-service/esri.service';
 import Point from '@arcgis/core/geometry/Point';
 import { SetCentroMappa } from '../../../features/maps/store/actions/centro-mappa.actions';
 import { CentroMappa } from '../../../features/maps/maps-model/centro-mappa.model';
+import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -185,6 +187,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             if (changes.richiestaModifica?.currentValue) {
                 const richiestaModifica = changes.richiestaModifica.currentValue;
                 if (richiestaModifica) {
+                    this.store.dispatch(new AddConcorrenza({ type: TipoConcorrenzaEnum.Richiesta, value: richiestaModifica.id }));
                     this.modifica = true;
                     this.patchForm();
                 }
@@ -225,6 +228,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.clearFormDisconnection();
+
+        if (this.modifica) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta));
+        }
     }
 
     getIdChiamata(): void {

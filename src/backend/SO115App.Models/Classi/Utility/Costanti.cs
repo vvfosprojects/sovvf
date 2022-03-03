@@ -25,6 +25,10 @@ namespace SO115App.Models.Classi.Utility
 
         public const string UtenteNonAutorizzato = "Utente non autorizzato";
         public const string DatiMancanti = "Dati Mancanti";
+        public const string MezzoPrenotato = "Il mezzo risulta già prenotato. Non è possibile confermare l'operazione";
+        public const string SquadraPrenotata = "La squadra risulta già prenotata. Non è possibile confermare l'operazione";
+        public const string InterventoBloccato = "L'intervento risulta attualmente in lavorazione da un altro operatore. Non è possibile effettuare operazioni.";
+        public const string CompetenzeNonPresenti = "Non risultano inserite le competenze. Non è possibile inserire l'intervento";
 
         #endregion CondivisaAuthorization
 

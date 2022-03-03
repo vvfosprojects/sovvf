@@ -2,7 +2,7 @@ import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { PosService } from '../../../../core/service/pos-service/pos.service';
 import { AddPos, DeletePos, EditPos, ResetPosModal } from '../../actions/pos-modal/pos-modal.actions';
-import { PosInterface, TipologiaPos } from '../../../interface/pos.interface';
+import { TipologiaPos } from '../../../interface/pos.interface';
 import { Tipologia } from '../../../model/tipologia.model';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { GetPos } from '../../../../features/pos/store/actions/pos/pos.actions';
@@ -79,12 +79,12 @@ export class PosModalState {
         formData.append('codSede', formValue.codSede);
         formData.append('descrizionePos', formValue.descrizionePos);
         formData.append('listaTipologie', JSON.stringify(listaTipologiePos));
-        this.posService.add(formData).subscribe((response: PosInterface) => {
+        this.posService.add(formData).subscribe(() => {
             dispatch([
                 new ResetPosModal(),
                 new GetPos()
             ]);
-        }, (err => dispatch(new ResetPosModal())));
+        }, (() => dispatch(new ResetPosModal())));
     }
 
     @Action(EditPos)
@@ -115,12 +115,12 @@ export class PosModalState {
         formData.append('codSede', formValue.codSede);
         formData.append('descrizionePos', formValue.descrizionePos);
         formData.append('listaTipologie', JSON.stringify(listaTipologiePos));
-        this.posService.edit(formData).subscribe((response: PosInterface) => {
+        this.posService.edit(formData).subscribe(() => {
             dispatch([
                 new ResetPosModal(),
                 new GetPos()
             ]);
-        }, (err => dispatch(new ResetPosModal())));
+        }, (() => dispatch(new ResetPosModal())));
     }
 
     @Action(DeletePos)
@@ -132,9 +132,9 @@ export class PosModalState {
                     new ResetPosModal(),
                     new GetPos()
                 ]);
-            }, (err => dispatch(new ResetPosModal())));
+            }, (() => dispatch(new ResetPosModal())));
         } else {
-            console.error('CodSede utente non trovato')
+            console.error('CodSede utente non trovato');
         }
     }
 

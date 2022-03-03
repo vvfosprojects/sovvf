@@ -1,4 +1,4 @@
-import { RuoloFunzionarioSo } from "./ruolo-funzionario-so.enum";
+import { RuoloFunzionarioSo } from './ruolo-funzionario-so.enum';
 
 export class BoxFunzionariSo {
     constructor(

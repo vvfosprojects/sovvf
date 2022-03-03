@@ -1,9 +1,13 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
 import {
-    ClearBoxPersonale, GetBoxPersonale, SetBoxPersonale,
-    SetBoxPersonaleCurrent, SetBoxPersonaleNext,
-    SetBoxPersonalePresenzeCurrent, SetBoxPersonalePresenzeNext,
+    ClearBoxPersonale,
+    GetBoxPersonale,
+    SetBoxPersonale,
+    SetBoxPersonaleCurrent,
+    SetBoxPersonaleNext,
+    SetBoxPersonalePresenzeCurrent,
+    SetBoxPersonalePresenzeNext,
     SetBoxPersonalePresenzePrevious,
     SetBoxPersonalePrevious,
     SetBoxPersonaleQtyCurrent,
@@ -101,6 +105,13 @@ export class BoxPersonaleState {
             dispatch([
                 new SetBoxPersonale(data.boxPersonale),
             ]);
+        }, () => {
+            dispatch(new SetBoxPersonale(new BoxPersonale(
+                { previous: 0, current: 0, next: 0 },
+                { previous: [], current: [], next: [] },
+                { previous: 0, current: 0, next: 0 },
+                0
+            )));
         });
     }
 
