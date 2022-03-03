@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ESRI
 {
     public class ESRI_DistanzaTempoMezzoResponse
     {
+        [JsonPropertyName("value")]
         public string value { get; set; }
         public List<ESRI_MezzoResponse> lstMezzi
         {
