@@ -6,6 +6,7 @@ import { AddConcorrenza, DeleteConcorrenza } from '../../../../../shared/store/a
 import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
 import { ConcorrenzaState } from '../../../../../shared/store/states/concorrenza/concorrenza.state';
 import { ConcorrenzaInterface } from '../../../../../shared/interface/concorrenza.interface';
+import { AddConcorrenzaDtoInterface } from '../../../../../shared/interface/dto/concorrenza/add-concorrenza-dto.interface';
 
 export interface RichiestaGestioneStateModel {
     richiestaGestione: SintesiRichiesta;
@@ -42,12 +43,16 @@ export class RichiestaGestioneState {
         const isInConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === action.richiesta.id)?.length > 0;
         if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id && !action.toggle) {
             dispatch([
-                new DeleteConcorrenza(),
+                new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta),
                 new ClearRichiestaGestione()
             ]);
         } else {
             if (!isInConcorrenza) {
-                dispatch(new AddConcorrenza({ type: TipoConcorrenzaEnum.Richiesta, value: action.richiesta.id }));
+                const data = {
+                    type: TipoConcorrenzaEnum.Richiesta,
+                    value: action.richiesta.id
+                } as AddConcorrenzaDtoInterface;
+                dispatch(new AddConcorrenza([data]));
             }
             patchState({
                 richiestaGestione: action.richiesta

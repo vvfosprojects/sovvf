@@ -4,6 +4,9 @@
     (mouseenter)="onHoverIn()"
     (mouseleave)="onHoverOut()"
     (click)="onClick()">
+    <ng-container *ngIf="(tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: [squadraComposizione.codice])">
+        <app-locked-concorrenza></app-locked-concorrenza>
+    </ng-container>
     <div class="row px-3">
         <div class="clearfix"
              style="width: 67%">
@@ -88,7 +91,7 @@
             </ng-template>
 
             <!-- Mezzi su cui è presente la squadra per Intervento -->
-            <ng-template [ngIf]="squadraComposizione.mezziInRientro?.length">
+            <!-- <ng-template [ngIf]="squadraComposizione.mezziInRientro?.length">
                 <div class="d-inline-block nowrap">
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover mx-1"
@@ -113,7 +116,7 @@
                         </ng-template>
                     </ng-container>
                 </div>
-            </ng-template>
+            </ng-template> -->
         </div>
         <div *ngIf="viewState?.composizione?.active"
              class="clearfix text-right pr-1"

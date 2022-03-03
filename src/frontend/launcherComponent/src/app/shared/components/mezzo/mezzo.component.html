@@ -12,15 +12,20 @@
     </div>
 </div>
 
-<ng-container *ngIf="actionsAttive && !mezzoInServizioPage">
-    <app-mezzo-actions [idRichiesta]="idRichiesta"
-                       [mezzo]="mezzo"
-                       [codicePartenza]="codicePartenza"
-                       [listaEventi]="listaEventi"
-                       [listaEventiMezzo]="listaEventiMezzo"
-                       (actionMezzo)="onActionMezzo($event)">
-    </app-mezzo-actions>
-</ng-container>
+<div class="d-inline-block position-relative">
+    <ng-container *ngIf="actionsAttive && !mezzoInServizioPage">
+        <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [idRichiesta])">
+            <app-locked-concorrenza></app-locked-concorrenza>
+        </ng-container>
+        <app-mezzo-actions [idRichiesta]="idRichiesta"
+                           [mezzo]="mezzo"
+                           [codicePartenza]="codicePartenza"
+                           [listaEventi]="listaEventi"
+                           [listaEventiMezzo]="listaEventiMezzo"
+                           (actionMezzo)="onActionMezzo($event)">
+        </app-mezzo-actions>
+    </ng-container>
+</div>
 
 <span *ngIf="mezzoInServizioPage && mezzo?.istantiCambiStato" class="ml-3 px-2 text-{{statoMezzoColor(mezzo.stato)}}"
       style="border: solid thin; font-size: 20px">

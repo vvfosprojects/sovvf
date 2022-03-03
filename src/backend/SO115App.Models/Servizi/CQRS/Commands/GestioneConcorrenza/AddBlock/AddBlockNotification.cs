@@ -33,7 +33,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
 
         public void Notify(AddBlockCommand command)
         {
-            _sender.SendNotification(command.concorrenza);
+            _sender.SendNotification(command);
         }
     }
 }

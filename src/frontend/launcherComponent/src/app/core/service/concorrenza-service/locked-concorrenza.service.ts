@@ -13,9 +13,9 @@ export class LockedConcorrenzaService {
     constructor(private store: Store) {
     }
 
-    getLockedConcorrenza(type: TipoConcorrenzaEnum, value: string): boolean {
+    getLockedConcorrenza(type: TipoConcorrenzaEnum, value: string[]): boolean {
         const currentUser = this.store.selectSnapshot(AuthState.currentUser);
         const concorrenza = this.store.selectSnapshot(ConcorrenzaState.concorrenza);
-        return concorrenza?.filter((c: ConcorrenzaInterface) => c.type === type && c.value === value && c.idOperatore !== currentUser.id)?.length > 0;
+        return concorrenza?.filter((c: ConcorrenzaInterface) => c.type === type && value.includes(c.value) && c.idOperatore !== currentUser.id)?.length > 0;
     }
 }

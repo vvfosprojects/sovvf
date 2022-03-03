@@ -74,7 +74,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
                 if (lstSquadre.Count() > 0)
                 {
-                    var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).ToList();
+                    var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && s.CodiciMezziPreaccoppiati.Count() > 0).ToList();
 
                     return await Task.Run(() => //OTTENGO I DATI
                     {
@@ -84,9 +84,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                         {
                             Parallel.ForEach(query.CodiceSede, codice =>
                             {
-                                var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
+                                //var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
 
-                                lstSquadre.Where(s => !s.spotType.Equals("MODULE") && query.Filtri.CodiceDistaccamento.Any(x => x.Equals(s.Distaccamento))).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
+                                lstSquadrePreaccoppiate.Where(s => !s.spotType.Equals("MODULE") && query.Filtri.CodiceDistaccamento.Any(x => x.Equals(s.Distaccamento))).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                                     lstSquadreMezzo.TryAdd(m, lstSquadre
                                         .Where(s => s.Codice.Equals(squadra.Codice))
                                         .Select(s => new SO115App.API.Models.Classi.Composizione.Squadra(s.Codice, s.Descrizione, MappaStatoSquadra(lstStatoSquadre, s.Codice), MapMembriInComponenti(s.Membri.ToList())))
@@ -97,15 +97,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                         {
                             Parallel.ForEach(query.CodiceSede, codice =>
                             {
-                                var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
+                                //var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
 
-                                lstSquadre.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
+                                lstSquadrePreaccoppiate.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                                     lstSquadreMezzo.TryAdd(m, lstSquadre
                                         .Where(s => s.Codice.Equals(squadra.Codice))
                                         .Select(s => new SO115App.API.Models.Classi.Composizione.Squadra(s.Codice, s.Descrizione, MappaStatoSquadra(lstStatoSquadre, s.Codice), MapMembriInComponenti(s.Membri.ToList())))
                                         .ToArray())));
                             });
                         }
+
                         lstMezzi = _getMezzi.GetInfo(lstSquadreMezzo.Select(lst => lst.Key).ToList());
 
                         return lstSquadreMezzo;

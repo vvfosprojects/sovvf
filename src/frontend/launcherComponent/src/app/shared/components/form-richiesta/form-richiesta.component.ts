@@ -69,6 +69,7 @@ import { SetCentroMappa } from '../../../features/maps/store/actions/centro-mapp
 import { CentroMappa } from '../../../features/maps/maps-model/centro-mappa.model';
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -187,7 +188,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             if (changes.richiestaModifica?.currentValue) {
                 const richiestaModifica = changes.richiestaModifica.currentValue;
                 if (richiestaModifica) {
-                    this.store.dispatch(new AddConcorrenza({ type: TipoConcorrenzaEnum.Richiesta, value: richiestaModifica.id }));
+                    const data = {
+                        type: TipoConcorrenzaEnum.Richiesta,
+                        value: richiestaModifica.id
+                    } as AddConcorrenzaDtoInterface;
+                    this.store.dispatch(new AddConcorrenza([data]));
                     this.modifica = true;
                     this.patchForm();
                 }
@@ -230,7 +235,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.clearFormDisconnection();
 
         if (this.modifica) {
-            this.store.dispatch(new DeleteConcorrenza());
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta));
         }
     }
 
