@@ -3,6 +3,9 @@
     (mouseenter)="onHoverIn()"
     (mouseleave)="onHoverOut()"
     (click)="onClick()">
+    <ng-container *ngIf="(tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [mezzoComp.mezzo.codice])">
+        <app-locked-concorrenza></app-locked-concorrenza>
+    </ng-container>
     <div class="row px-3">
         <app-icona-stato [stato]="mezzoComp.mezzo.stato"></app-icona-stato>
         <div class="col pl-2">

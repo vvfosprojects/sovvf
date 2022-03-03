@@ -8,6 +8,8 @@ import { Select } from '@ngxs/store';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -42,9 +44,11 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     disableBtnFeature = false;
     autistaInSquadra = false;
 
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
     private subscription = new Subscription();
 
-    constructor() {
+    constructor(private lockedConcorrenzaService: LockedConcorrenzaService) {
         this.getViewState();
     }
 
@@ -81,25 +85,27 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     }
 
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
-        if (!this.loadingMezzi) {
-            if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
-                if (!this.itemSelezionato) {
-                    this.selezionata.emit(this.squadraComposizione);
-                } else {
-                    this.deselezionata.emit(this.squadraComposizione);
-                }
-            } else if (inRientro) {
-                if (!this.itemSelezionato) {
-                    this.selezionataInRientro.emit(this.squadraComposizione);
-                } else {
-                    this.deselezionataInRientro.emit(this.squadraComposizione);
-                }
-            } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
-                if (this.squadraComposizione.mezziPreaccoppiati[0]?.mezzo.stato === 'In Sede') {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, [this.squadraComposizione.codice])) {
+            if (!this.loadingMezzi) {
+                if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
                     if (!this.itemSelezionato) {
-                        this.selezionataPreAccoppiati.emit(this.squadraComposizione);
+                        this.selezionata.emit(this.squadraComposizione);
                     } else {
-                        this.deselezionataPreAccoppiati.emit(this.squadraComposizione);
+                        this.deselezionata.emit(this.squadraComposizione);
+                    }
+                } else if (inRientro) {
+                    if (!this.itemSelezionato) {
+                        this.selezionataInRientro.emit(this.squadraComposizione);
+                    } else {
+                        this.deselezionataInRientro.emit(this.squadraComposizione);
+                    }
+                } else if (preAccoppiato && !this.squadraComposizioneBusy()) {
+                    if (this.squadraComposizione.mezziPreaccoppiati[0]?.mezzo.stato === 'In Sede') {
+                        if (!this.itemSelezionato) {
+                            this.selezionataPreAccoppiati.emit(this.squadraComposizione);
+                        } else {
+                            this.deselezionataPreAccoppiati.emit(this.squadraComposizione);
+                        }
                     }
                 }
             }

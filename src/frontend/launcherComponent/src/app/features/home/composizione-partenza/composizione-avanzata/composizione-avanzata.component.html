@@ -9,7 +9,7 @@
                 <app-filterbar-composizione [filtri]="filtri"
                                             [nightMode]="nightMode"
                                             [competenze]="richiesta?.competenze"
-                                            [disableComposizioneMode]="loadingListe"
+                                            [disableComposizioneMode]="loadingMezzi || loadingSquadre"
                                             [composizionePartenza]="true"
                                             [loadingSquadre]="loadingSquadre"
                                             [loadingMezzi]="loadingMezzi"
@@ -32,7 +32,7 @@
                             <input id="ricercaSquadre"
                                    class="form-control"
                                    [ngClass]="{'border-danger': ricercaSquadre?.length}"
-                                   type="text"
+                                   type="search"
                                    name="ricercaSquadre"
                                    placeholder="Cerca..."
                                    [(ngModel)]="ricercaSquadre"
@@ -40,10 +40,6 @@
                                    [debounceTime]="1000"
                                    (debounceKeyUp)="onSearchSquadre()"
                                    (search)="onClearSearchSquadre()">
-                            <i *ngIf="ricercaSquadre"
-                               class="fas fa-times text-danger clear-search-squadre"
-                               ngbTooltip="Cancella Ricerca Squadre"
-                               (click)="onClearSearchSquadre()"></i>
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -110,16 +106,14 @@
                             <input id="ricercaMezzi"
                                    class="form-control"
                                    [ngClass]="{'border-danger': ricercaMezzi?.length}"
-                                   type="text"
+                                   type="search"
                                    name="ricercaMezzi"
                                    placeholder="Cerca..."
-                                   [(ngModel)]="ricercaMezzi" appDebounceKeyUp
+                                   [(ngModel)]="ricercaMezzi"
+                                   appDebounceKeyUp
+                                   [debounceTime]="1000"
                                    (debounceKeyUp)="onSearchMezzi()"
-                                   [debounceTime]="1000">
-                            <i *ngIf="ricercaMezzi"
-                               class="fas fa-times text-danger clear-search-mezzi"
-                               ngbTooltip="Cancella Ricerca Mezzi"
-                               (click)="onClearSearchMezzi()"></i>
+                                   (search)="onClearSearchMezzi()">
                         </div>
                     </div>
                     <div class="card-body p-0">
