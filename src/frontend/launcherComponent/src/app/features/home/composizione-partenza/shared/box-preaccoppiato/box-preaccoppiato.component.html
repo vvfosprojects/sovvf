@@ -1,10 +1,10 @@
 <div class="card cursor-pointer p-2 mb-2 font-comp-xl bg-dark-light"
      [ngClass]="ngClass()"
-     (click)="onClick()"
      (mouseleave)="onHoverOut()"
-     (mouseenter)="onHoverIn()">
+     (mouseenter)="onHoverIn()"
+     (click)="onClick()">
     <ng-container
-            *ngIf="(tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [partenzaPreAccopiati.codiceMezzo])">
+            *ngIf="(tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [partenzaPreAccopiati.codiceMezzo]) || (tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: codiciSquadre)">
         <app-locked-concorrenza></app-locked-concorrenza>
     </ng-container>
     <ng-container *ngIf="elimina">
