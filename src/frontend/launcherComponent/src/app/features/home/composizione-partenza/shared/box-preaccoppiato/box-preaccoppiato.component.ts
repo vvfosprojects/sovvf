@@ -11,6 +11,7 @@ import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Observable, Subscription } from 'rxjs';
 import { BoxPartenzaState } from '../../../store/states/composizione-partenza/box-partenza.state';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
+import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-box-preaccoppiato',
@@ -48,9 +49,9 @@ export class BoxPreaccoppiatoComponent implements OnDestroy {
 
     itemBloccato: boolean;
     StatoMezzo = StatoMezzo;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     private subscription = new Subscription();
-
 
     constructor(private store: Store) {
         // Prendo i box partenza

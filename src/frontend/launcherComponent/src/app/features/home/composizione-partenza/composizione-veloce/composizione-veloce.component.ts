@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { BoxPartenzaPreAccoppiati } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
@@ -40,8 +40,7 @@ import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.en
 @Component({
     selector: 'app-composizione-veloce',
     templateUrl: './composizione-veloce.component.html',
-    styleUrls: ['./composizione-veloce.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./composizione-veloce.component.css']
 })
 export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -79,8 +78,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     partenzeRichiesta: Partenza[];
 
     constructor(private store: Store,
-                private travelModeService: TravelModeService,
-                private cdRef: ChangeDetectorRef) {
+                private travelModeService: TravelModeService) {
     }
 
     ngOnInit(): void {
@@ -140,7 +138,6 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
                             const tempoPercorrenza = data.routeResults[0]?.route?.attributes?.Total_TravelTime ? data.routeResults[0].route.attributes.Total_TravelTime : data.routeResults[0]?.route?.attributes?.Total_TruckTravelTime;
                             p.tempoPercorrenza = tempoPercorrenza.toFixed(2);
                         }
-                        this.cdRef.detectChanges();
                     });
                 }
             });

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
 import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
@@ -58,8 +58,7 @@ import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
 @Component({
     selector: 'app-composizione-avanzata',
     templateUrl: './composizione-avanzata.component.html',
-    styleUrls: ['./composizione-avanzata.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./composizione-avanzata.component.css']
 })
 export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -129,7 +128,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
                 private travelModeService: TravelModeService,
-                private cdRef: ChangeDetectorRef,
                 private store: Store) {
         // Popover options
         this.popoverConfig.container = 'body';
@@ -197,7 +195,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                             const tempoPercorrenza = data.routeResults[0]?.route?.attributes?.Total_TravelTime ? data.routeResults[0].route.attributes.Total_TravelTime : data.routeResults[0]?.route?.attributes?.Total_TruckTravelTime;
                             m.tempoPercorrenza = tempoPercorrenza.toFixed(2);
                         }
-                        this.cdRef.detectChanges();
                     });
                 }
             });

@@ -14,7 +14,7 @@
 
 <div class="d-inline-block position-relative">
     <ng-container *ngIf="actionsAttive && !mezzoInServizioPage">
-        <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: idRichiesta)">
+        <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [idRichiesta])">
             <app-locked-concorrenza></app-locked-concorrenza>
         </ng-container>
         <app-mezzo-actions [idRichiesta]="idRichiesta"
