@@ -33,14 +33,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
         {
             command.utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
-            if (_getBlockByValue.Get(command.concorrenza.Value) != null)
+            foreach (var c in command.concorrenza)
             {
-                if (command.concorrenza.Type.Equals(TipoOperazione.Richiesta))
-                    yield return new AuthorizationResult(Costanti.InterventoBloccato);
-                if (command.concorrenza.Type.Equals(TipoOperazione.Mezzo))
-                    yield return new AuthorizationResult(Costanti.MezzoPrenotato);
-                if (command.concorrenza.Type.Equals(TipoOperazione.Squadra))
-                    yield return new AuthorizationResult(Costanti.SquadraPrenotata);
+                if (_getBlockByValue.Get(c.Value) != null)
+                {
+                    if (c.Type.Equals(TipoOperazione.Richiesta))
+                        yield return new AuthorizationResult(Costanti.InterventoBloccato);
+                    if (c.Type.Equals(TipoOperazione.Mezzo))
+                        yield return new AuthorizationResult(Costanti.MezzoPrenotato);
+                    if (c.Type.Equals(TipoOperazione.Squadra))
+                        yield return new AuthorizationResult(Costanti.SquadraPrenotata);
+                }
             }
 
             if (_currentUser.Identity.IsAuthenticated)
@@ -50,10 +53,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
                 else
                 {
                     bool abilitato = false;
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.concorrenza.CodComando, Costanti.GestoreRichieste))
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.CodComando, Costanti.GestoreRichieste))
                         abilitato = true;
 
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.concorrenza.CodComando, Costanti.GestoreChiamate))
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.CodComando, Costanti.GestoreChiamate))
                         abilitato = true;
 
                     if (!abilitato)

@@ -36,7 +36,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
         {
             try
             {
-                _addBlock.Add(command.concorrenza);
+                foreach (var c in command.concorrenza)
+                {
+                    _addBlock.Add(c);
+                }
             }
             catch (Exception ex)
             {
