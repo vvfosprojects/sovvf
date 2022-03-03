@@ -35,6 +35,7 @@ import { ClearRichieste } from '../../home/store/actions/richieste/richieste.act
 import { _isAdministrator } from '../../../shared/helper/function-generiche';
 import { GestioneUtentiStateModel } from '../../gestione-utenti/store/states/gestione-utenti/gestione-utenti.state';
 import { GestioneUtentiService } from '../../../core/service/gestione-utenti-service/gestione-utenti.service';
+import { ConcorrenzaService } from '../../../core/service/concorrenza-service/concorrenza.service';
 
 export interface AuthStateModel {
     currentJwt: string;
@@ -64,7 +65,8 @@ export const AuthStateDefaults: AuthStateModel = {
 export class AuthState {
 
     constructor(private authService: AuthService,
-                private gestioneUtentiService: GestioneUtentiService) {
+                private gestioneUtentiService: GestioneUtentiService,
+                private concorrenzaService: ConcorrenzaService) {
     }
 
     @Selector()
@@ -295,7 +297,9 @@ export class AuthState {
                 dispatch(new ClearDataUser());
             } else {
                 this.authService.clearUserData().subscribe(() => {
-                    dispatch(new ClearDataUser());
+                    this.concorrenzaService.deleteAll().subscribe(() => {
+                        dispatch(new ClearDataUser());
+                    });
                 });
             }
         }
