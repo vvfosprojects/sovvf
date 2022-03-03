@@ -21,8 +21,10 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Security.Principal;
 
@@ -34,15 +36,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly IGetRichiesta _getRichiestaById;
+        private readonly IGetAllBlocks _getAllBlocks;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
 
         public AggiornaStatoMezzoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetRichiesta getRichiestaById)
+            IGetRichiesta getRichiestaById,
+            IGetAllBlocks getAllBlocks,
+            IGetSottoSediByCodSede getSottoSediByCodSede)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
             _getRichiestaById = getRichiestaById;
+            _getAllBlocks = getAllBlocks;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AggiornaStatoMezzoCommand command)
@@ -59,6 +67,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente.Split('.')[0] + ".1000" });
+                    var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
+
+                    var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Richiesta.Id));
+
+                    if (findBlock != null)
+                    {
+                        var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.IdUtente));
+                        if (verificaUtente.Count == 0)
+                            yield return new AuthorizationResult(Costanti.InterventoBloccato);
+                    }
+
                     bool abilitato = false;
                     foreach (var competenza in richiesta.CodUOCompetenza)
                     {
