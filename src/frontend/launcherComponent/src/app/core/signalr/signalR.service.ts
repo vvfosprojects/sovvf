@@ -59,6 +59,7 @@ import { GetConcorrenza } from '../../shared/store/actions/concorrenza/concorren
 //const HUB_URL = environment.baseUrl + environment.signalRHub;
 const HUB_URL = "https://localhost:44381/SubHub";
 
+
 const SIGNALR_BYPASS = !environment.signalR;
 
 @Injectable({
@@ -87,7 +88,6 @@ export class SignalRService {
         this.hubNotification = new HubConnectionBuilder()
             .withUrl(HUB_URL)
             .build();
-
         this.hubNotification.serverTimeoutInMilliseconds = 28800000;
     }
 

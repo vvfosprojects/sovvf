@@ -20,7 +20,6 @@
 
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.AddIntervento;
-using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using Serilog;
@@ -34,6 +33,8 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 using SO115App.SignalR.Utility;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -63,8 +64,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         {
             #region connessione al WSSignalR
 
-            var connection = new Microsoft.AspNet.SignalR.Client.HubConnection("https://localhost:44381");
-            IHubProxy hub = connection.CreateHubProxy("ChiamataHub");
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl("https://localhost:44381/SubHub")
+                        .Build();
 
             #endregion connessione al WSSignalR
 
@@ -78,6 +80,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             try
             {
+                var listaInfoDaSperide = new List<InfoDaSpedire>();
                 Parallel.ForEach(SediDaNotificare, sede =>
                 {
                     var boxRichiesteQuery = new BoxRichiesteQuery
@@ -98,16 +101,35 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
                         count = 1
                     };
 
-                    connection.Start().Wait();
-                    hub.Invoke("NotifyGetBoxInterventi", boxInterventi, sede);
+                    var info = new InfoDaSpedire()
+                    {
+                        sintesiRichiestaMarker = listaSintesiMarker,
+                        boxInterventi = boxInterventi,
+                        counterNotifica = counterCodaChiamate,
+                        sede = sede
+                    };
+                    listaInfoDaSperide.Add(info);
                 });
 
-                connection.Stop();
+                foreach (var info in listaInfoDaSperide)
+                {
+                    await hubConnection.StartAsync();
+                    await hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.sede);
+                    await hubConnection.StopAsync();
+                };
             }
             catch (Exception ex)
             {
-                connection.Stop();
+                await hubConnection.StopAsync();
             }
         }
+    }
+
+    public class InfoDaSpedire
+    {
+        public string sede { get; set; }
+        public BoxInterventi boxInterventi { get; set; }
+        public List<SintesiRichiestaMarker> sintesiRichiestaMarker { get; set; }
+        public CounterNotifica counterNotifica { get; set; }
     }
 }

@@ -67,14 +67,6 @@ namespace WSSignlR
                     options.KeepAliveInterval = TimeSpan.FromMinutes(15);
                     options.HandshakeTimeout = TimeSpan.FromMinutes(480);
                     options.MaximumReceiveMessageSize = 300000;
-                })
-                .AddHubOptions<ChiamataHub>(options =>
-                {
-                    options.EnableDetailedErrors = true;
-                    options.ClientTimeoutInterval = TimeSpan.FromMinutes(480);
-                    options.KeepAliveInterval = TimeSpan.FromMinutes(15);
-                    options.HandshakeTimeout = TimeSpan.FromMinutes(480);
-                    options.MaximumReceiveMessageSize = 300000;
                 });
         }
 
@@ -97,12 +89,6 @@ namespace WSSignlR
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<SubHub>("/SubHub", options =>
-                {
-                    options.Transports =
-                        HttpTransportType.WebSockets |
-                        HttpTransportType.LongPolling;
-                });
-                endpoints.MapHub<ChiamataHub>("/ChiamataHub", options =>
                 {
                     options.Transports =
                         HttpTransportType.WebSockets |

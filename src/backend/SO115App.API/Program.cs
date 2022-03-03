@@ -30,16 +30,6 @@ namespace SO115App.API
             CreateHostBuilder(args).Build().Run();
         }
 
-        //public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-        //    WebHost.CreateDefaultBuilder(args)
-        //        .ConfigureAppConfiguration((hostingContext, config) =>
-        //        {
-        //            config.SetBasePath(Directory.GetCurrentDirectory());
-        //            config.AddJsonFile(
-        //                "appsettings.json", optional: true, reloadOnChange: true);
-        //        })
-        //        .UseStartup<Startup>();
-
         public static IHostBuilder CreateHostBuilder(string[] args) =>
                     Host.CreateDefaultBuilder(args)
                        .ConfigureWebHostDefaults(webBuilder =>
