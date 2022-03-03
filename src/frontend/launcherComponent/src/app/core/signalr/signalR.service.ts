@@ -56,7 +56,9 @@ import { GetZonaEmergenzaById, GetZoneEmergenza } from '../../features/zone-emer
 import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenza.model';
 import { GetConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
 
-const HUB_URL = environment.baseUrl + environment.signalRHub;
+//const HUB_URL = environment.baseUrl + environment.signalRHub;
+const HUB_URL = "https://localhost:44381/SubHub";
+
 const SIGNALR_BYPASS = !environment.signalR;
 
 @Injectable({
@@ -481,8 +483,8 @@ export class SignalRService {
 
     addToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
-            console.warn('addToGroup', notification);
-            this.hubNotification.invoke('AddToGroup', notification).then(
+            console.warn('addToGroup', notification,notification.codiciSede[0]);
+            this.hubNotification.invoke('AddToGroup', notification,notification.codiciSede[0]).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Connessione al gruppo effettuata con successo', null, 3))
             ).catch(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Connessione al gruppo fallita', null, 3))
@@ -492,8 +494,8 @@ export class SignalRService {
 
     removeToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
-            console.warn('removeToGroup', notification);
-            this.hubNotification.invoke('RemoveToGroup', notification).then(
+            console.warn('removeToGroup', notification,notification.codiciSede[0]);
+            this.hubNotification.invoke('RemoveToGroup', notification,notification.codiciSede[0]).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Disconnessione al gruppo effettuata con successo', null, 3))
             ).catch(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Disconnessione al gruppo fallita', null, 3))

@@ -61,7 +61,7 @@ namespace Persistence.MongoDB
     public class DbContext
     {
         private readonly IMongoDatabase database;
-        private MongoClient _client = new MongoClient();
+        public MongoClient _client = new MongoClient();
 
         public DbContext(string mongoUrl, string databaseName)
         {
