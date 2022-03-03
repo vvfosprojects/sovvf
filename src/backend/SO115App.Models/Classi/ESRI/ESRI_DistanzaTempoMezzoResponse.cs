@@ -10,9 +10,7 @@ namespace SO115App.Models.Classi.ESRI
         {
             get
             {
-                var data = value?.Replace("};{", "},{")?.Replace("'", "\"");
-
-                if (data == null) return null; 
+                var data = "[" + value.Replace("};{", "},{").Replace("'", "\"") + "]";
 
                 var result = JsonSerializer.Deserialize<List<ESRI_MezzoResponse>>(data);
 
@@ -24,8 +22,8 @@ namespace SO115App.Models.Classi.ESRI
     public class ESRI_MezzoResponse
     {
         public string codice { get; set; }
-        public string distanza { get; set; }
-        public string tempo { get; set; }
+        public double distanza { get; set; }
+        public double tempo { get; set; }
         public int rank { get; set; }
     }
 
