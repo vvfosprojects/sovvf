@@ -33,13 +33,13 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Latitudine
         /// </summary>
-        [JsonConverter(typeof(string))]
+        //[JsonConverter(typeof(string))]
         public double Latitudine { get; set; }
 
         /// <summary>
         ///   Latitudine
         /// </summary>
-        [JsonConverter(typeof(string))]
+        //[JsonConverter(typeof(string))]
         public double Longitudine { get; set; }
 
         public CoordinateString ToCoordinateString()
@@ -52,20 +52,20 @@ namespace SO115App.API.Models.Classi.Condivise
     {
         public CoordinateString(string Latitudine = "0", string Longitudine = "0")
         {
-            this.Latitudine = Latitudine.Replace(",",".");
+            this.Latitudine = Latitudine.Replace(",", ".");
             this.Longitudine = Longitudine.Replace(",", ".");
         }
 
         /// <summary>
         ///   Latitudine
         /// </summary>
-        [JsonConverter(typeof(string))]
+        //[JsonConverter(typeof(string))]
         public string Latitudine { get; set; }
 
         /// <summary>
         ///   Latitudine
         /// </summary>
-        [JsonConverter(typeof(string))]
+        //[JsonConverter(typeof(string))]
         public string Longitudine { get; set; }
     }
 }

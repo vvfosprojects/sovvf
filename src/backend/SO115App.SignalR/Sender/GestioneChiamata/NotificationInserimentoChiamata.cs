@@ -115,6 +115,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
                 {
                     await hubConnection.StartAsync();
                     await hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.sede);
+                    await hubConnection.InvokeAsync("SaveAndNotifySuccessChiamata", command.sintesi, info.sede);
+                    await hubConnection.InvokeAsync("NotifyGetRichiestaMarker", info.sintesiRichiestaMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice), info.sede);
+                    await hubConnection.InvokeAsync("NotifyAddChiamateCodaChiamate", info.counterNotifica, info.sede);
                     await hubConnection.StopAsync();
                 };
             }
