@@ -117,7 +117,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             DistaccamentoUC get(string codSede)
             {
-                var distaccamento = GetAll().Result.First(s => s.Codice.Equals(codSede));
+                var distaccamento = GetAll().Result.FirstOrDefault(s => s.Codice.Equals(codSede));
+
+                if (distaccamento == null)
+                    return null;
 
                 return new DistaccamentoUC()
                 {
@@ -382,7 +385,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         string[] IGetStringCoordinateByCodSede.Get(string codiceSede)
         {
-            if (GetInfoSede(codiceSede).Result.coordinate == null || GetInfoSede(codiceSede).Result.coordinate.Length > 0)
+            var result = GetInfoSede(codiceSede).Result;
+
+            if (result == null)
+                return null;
+
+            if (result.coordinate == null || result.coordinate.Length > 0)
                 return GetInfoSede(codiceSede).Result.coordinate.Split(',');
             else
                 return null;
