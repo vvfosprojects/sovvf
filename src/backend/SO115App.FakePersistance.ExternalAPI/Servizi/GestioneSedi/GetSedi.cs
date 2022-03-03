@@ -387,6 +387,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             var result = GetInfoSede(codiceSede).Result;
 
+            if (result == null)
+                return null;
+
             if (result.coordinate == null || result.coordinate.Length > 0)
                 return GetInfoSede(codiceSede).Result.coordinate.Split(',');
             else
