@@ -109,9 +109,11 @@
                                    type="search"
                                    name="ricercaMezzi"
                                    placeholder="Cerca..."
-                                   [(ngModel)]="ricercaMezzi" appDebounceKeyUp
+                                   [(ngModel)]="ricercaMezzi"
+                                   appDebounceKeyUp
+                                   [debounceTime]="1000"
                                    (debounceKeyUp)="onSearchMezzi()"
-                                   [debounceTime]="1000">
+                                   (search)="onClearSearchMezzi()">
                         </div>
                     </div>
                     <div class="card-body p-0">
