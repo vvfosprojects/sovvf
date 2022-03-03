@@ -13,6 +13,7 @@ import { ViewLayouts } from '../../interface/view.interface';
 import { Coordinate } from '../../model/coordinate.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -59,7 +60,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
 
     private subscription = new Subscription();
 
-    constructor() {
+    constructor(private lockedConcorrenzaService: LockedConcorrenzaService) {
         this.getViewState();
     }
 
@@ -111,40 +112,26 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     }
 
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
-        if (!this.loadingSquadre) {
-            if (this.mezzoComp.mezzo.stato === StatoMezzo.InViaggio || this.mezzoComp.mezzo.stato === StatoMezzo.SulPosto) {
-                this.onSganciamento();
-            } else {
-                if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato) && !inRientro && !preAccoppiato) {
-                    if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
-                        this.selezionato.emit(this.mezzoComp);
-                        // mappa
-                        if (!this.mezzoComp.mezzo.coordinateFake) {
-                            this.mezzoDirection(this.mezzoComp);
-                        } else {
-                            this.mezzoDirectionClear(this.mezzoComp);
-                        }
-                    } else if (this.itemSelezionato && !this.itemPrenotatoInBox) {
-                        this.deselezionato.emit(this.mezzoComp);
-                    }
-                } else if (inRientro) {
-                    if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
-                        this.selezionatoInRientro.emit(this.mezzoComp);
-                        // mappa
-                        if (!this.mezzoComp.mezzo.coordinateFake) {
-                            this.mezzoDirection(this.mezzoComp);
-                        } else {
-                            this.mezzoDirectionClear(this.mezzoComp);
-                        }
-                    } else {
-                        this.deselezionatoInRientro.emit(this.mezzoComp);
-                    }
-                } else if (preAccoppiato && !mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
-                    let skip = false;
-                    this.mezzoComp.squadrePreaccoppiate.forEach(x => this._nomeStatiSquadra(x.stato) !== StatoMezzo.InSede ? skip = true : null);
-                    if (!skip) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Mezzo, [this.mezzoComp.mezzo.codice])) {
+            if (!this.loadingSquadre) {
+                if (this.mezzoComp.mezzo.stato === StatoMezzo.InViaggio || this.mezzoComp.mezzo.stato === StatoMezzo.SulPosto) {
+                    this.onSganciamento();
+                } else {
+                    if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato) && !inRientro && !preAccoppiato) {
                         if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
-                            this.selezionatoPreAccoppiati.emit(this.mezzoComp);
+                            this.selezionato.emit(this.mezzoComp);
+                            // mappa
+                            if (!this.mezzoComp.mezzo.coordinateFake) {
+                                this.mezzoDirection(this.mezzoComp);
+                            } else {
+                                this.mezzoDirectionClear(this.mezzoComp);
+                            }
+                        } else if (this.itemSelezionato && !this.itemPrenotatoInBox) {
+                            this.deselezionato.emit(this.mezzoComp);
+                        }
+                    } else if (inRientro) {
+                        if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
+                            this.selezionatoInRientro.emit(this.mezzoComp);
                             // mappa
                             if (!this.mezzoComp.mezzo.coordinateFake) {
                                 this.mezzoDirection(this.mezzoComp);
@@ -152,7 +139,23 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
                                 this.mezzoDirectionClear(this.mezzoComp);
                             }
                         } else {
-                            this.deselezionatoPreAccoppiati.emit(this.mezzoComp);
+                            this.deselezionatoInRientro.emit(this.mezzoComp);
+                        }
+                    } else if (preAccoppiato && !mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
+                        let skip = false;
+                        this.mezzoComp.squadrePreaccoppiate.forEach(x => this._nomeStatiSquadra(x.stato) !== StatoMezzo.InSede ? skip = true : null);
+                        if (!skip) {
+                            if (!this.itemSelezionato && !this.itemPrenotatoInBox) {
+                                this.selezionatoPreAccoppiati.emit(this.mezzoComp);
+                                // mappa
+                                if (!this.mezzoComp.mezzo.coordinateFake) {
+                                    this.mezzoDirection(this.mezzoComp);
+                                } else {
+                                    this.mezzoDirectionClear(this.mezzoComp);
+                                }
+                            } else {
+                                this.deselezionatoPreAccoppiati.emit(this.mezzoComp);
+                            }
                         }
                     }
                 }
