@@ -20,6 +20,9 @@
                  [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content">
+                <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)">
+                    <app-locked-concorrenza></app-locked-concorrenza>
+                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-forward text-secondary"></i>
                 </div>
@@ -36,6 +39,9 @@
                  [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onAllertaSede(); $event.stopPropagation()">
+                <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)">
+                    <app-locked-concorrenza></app-locked-concorrenza>
+                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-exclamation-triangle text-secondary"></i>
                 </div>
@@ -53,6 +59,9 @@
                  [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">
+                <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)">
+                    <app-locked-concorrenza></app-locked-concorrenza>
+                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-paper-plane text-secondary"></i>
                 </div>
@@ -86,6 +95,9 @@
                  [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
+                <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)">
+                    <app-locked-concorrenza></app-locked-concorrenza>
+                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-edit text-secondary"></i>
                 </div>
@@ -101,6 +113,9 @@
                  [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
+                <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)">
+                    <app-locked-concorrenza></app-locked-concorrenza>
+                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-edit text-secondary"></i>
                 </div>
@@ -115,6 +130,9 @@
                  [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onSganciamentoMezzo(richiesta); $event.stopPropagation()">
+                <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)">
+                    <app-locked-concorrenza></app-locked-concorrenza>
+                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-truck text-secondary"></i>
                 </div>
@@ -132,6 +150,9 @@
                  [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)"
                  style="height: fit-content"
                  (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">
+                <ng-container *ngIf="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: richiesta.id)">
+                    <app-locked-concorrenza></app-locked-concorrenza>
+                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-forward text-secondary"></i>
                 </div>

@@ -8,6 +8,7 @@ import { Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function-generiche';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import {
+    ClearListaMezziComposizione,
     ClearSelectedMezziComposizione,
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
@@ -20,6 +21,7 @@ import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-p
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import { AddBoxPartenza, ClearBoxPartenze, DeselectBoxPartenza, RemoveBoxPartenza, RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza, RequestAddBoxPartenza } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
+    ClearListaSquadreComposizione,
     ClearSelectedSquadreComposizione,
     ClearSquadraComposizione,
     HoverInSquadraComposizione,
@@ -38,7 +40,7 @@ import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
-import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
@@ -86,7 +88,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Input() idBoxPartenzaSelezionato: string;
 
     // Loading Liste Mezzi e Squadre
-    @Input() loadingListe: boolean;
     @Input() loadingSquadre: boolean;
     @Input() loadingMezzi: boolean;
 
@@ -139,6 +140,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     ngOnInit(): void {
+        console.log('Componente ComposizioneAvanzata creato');
         this.store.dispatch(new GetFiltriComposizione());
     }
 
@@ -210,7 +212,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             new ResetPaginationComposizionePartenza(),
             new SetRicercaMezziComposizione(undefined),
             new SetRicercaSquadreComposizione(undefined),
+            new ClearListaMezziComposizione(),
+            new ClearListaSquadreComposizione(),
+            new UnselectMezziAndSquadreComposizioneAvanzata()
         ]);
+        console.log('Componente ComposizioneAvanzata distrutto');
     }
 
     checkSquadraSelezione(idSquadra: string): boolean {
@@ -412,7 +418,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     eliminaBoxPartenza(boxPartenza: BoxPartenza): void {
         this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
         this.onClearDirection();
-        if (this.boxPartenzaList && this.boxPartenzaList.length === 1) {
+        if (this.boxPartenzaList?.length === 1) {
             this.store.dispatch(new GetListeComposizioneAvanzata());
         }
     }

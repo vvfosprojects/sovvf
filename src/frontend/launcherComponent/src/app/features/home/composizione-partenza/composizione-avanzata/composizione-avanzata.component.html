@@ -9,7 +9,7 @@
                 <app-filterbar-composizione [filtri]="filtri"
                                             [nightMode]="nightMode"
                                             [competenze]="richiesta?.competenze"
-                                            [disableComposizioneMode]="loadingListe"
+                                            [disableComposizioneMode]="loadingMezzi || loadingSquadre"
                                             [composizionePartenza]="true"
                                             [loadingSquadre]="loadingSquadre"
                                             [loadingMezzi]="loadingMezzi"

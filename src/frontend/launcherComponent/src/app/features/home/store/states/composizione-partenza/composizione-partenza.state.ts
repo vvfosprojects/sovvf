@@ -6,9 +6,7 @@ import {
     SetRichiestaComposizione,
     SetComposizioneMode,
     StartInvioPartenzaLoading,
-    StartListaComposizioneLoading,
     StopInvioPartenzaLoading,
-    StopListaComposizioneLoading,
     TerminaComposizione,
     ToggleComposizioneMode,
     UpdateListeComposizione,
@@ -17,7 +15,9 @@ import {
     StartListaMezziComposizioneLoading,
     StopListaSquadreComposizioneLoading,
     StopListaMezziComposizioneLoading,
-    SetVisualizzaPercosiRichiesta
+    SetVisualizzaPercosiRichiesta,
+    StartPreaccoppiatiComposizioneLoading,
+    StopPreaccoppiatiComposizioneLoading
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../../maps/maps-model/composizione-marker.model';
@@ -40,9 +40,9 @@ export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
     composizioneMode: Composizione;
     visualizzaPercorsiRichiesta: boolean;
-    loadingListe: boolean;
     loadingSquadre: boolean;
     loadingMezzi: boolean;
+    loadingPreaccoppiati: boolean;
     loadingInvioPartenza: boolean;
     loaded: boolean;
 }
@@ -51,9 +51,9 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
     visualizzaPercorsiRichiesta: false,
-    loadingListe: false,
     loadingSquadre: false,
     loadingMezzi: false,
+    loadingPreaccoppiati: false,
     loadingInvioPartenza: false,
     loaded: null
 };
@@ -96,11 +96,6 @@ export class ComposizionePartenzaState {
     }
 
     @Selector()
-    static loadingListe(state: ComposizionePartenzaStateModel): boolean {
-        return state.loadingListe;
-    }
-
-    @Selector()
     static loadingSquadre(state: ComposizionePartenzaStateModel): boolean {
         return state.loadingSquadre;
     }
@@ -108,6 +103,11 @@ export class ComposizionePartenzaState {
     @Selector()
     static loadingMezzi(state: ComposizionePartenzaStateModel): boolean {
         return state.loadingMezzi;
+    }
+
+    @Selector()
+    static loadingPreaccoppiati(state: ComposizionePartenzaStateModel): boolean {
+        return state.loadingPreaccoppiati;
     }
 
     @Selector()
@@ -159,19 +159,15 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ToggleComposizioneMode)
-    toggleComposizioneMode({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
+    toggleComposizioneMode({ getState, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
         const composizioneMode = state.composizioneMode as Composizione;
 
         if (composizioneMode === Composizione.Avanzata) {
-            dispatch(new ClearListaMezziComposizione());
-            dispatch(new ClearListaSquadreComposizione());
-            dispatch(new UnselectMezziAndSquadreComposizioneAvanzata());
             patchState({
                 composizioneMode: Composizione.Veloce
             });
         } else {
-            dispatch(new ClearPreaccoppiati());
             patchState({
                 composizioneMode: Composizione.Avanzata
             });
@@ -275,14 +271,6 @@ export class ComposizionePartenzaState {
         patchState(ComposizioneStateDefaults);
     }
 
-    @Action(StartListaComposizioneLoading)
-    startListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
-        patchState({
-            loadingListe: true,
-            loaded: false
-        });
-    }
-
     @Action(StartListaSquadreComposizioneLoading)
     startListaSquadreComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
@@ -299,11 +287,11 @@ export class ComposizionePartenzaState {
         });
     }
 
-    @Action(StopListaComposizioneLoading)
-    stopListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+    @Action(StartPreaccoppiatiComposizioneLoading)
+    StartPreaccoppiatiComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
-            loadingListe: false,
-            loaded: true
+            loadingPreaccoppiati: true,
+            loaded: false
         });
     }
 
@@ -319,6 +307,14 @@ export class ComposizionePartenzaState {
     stopListaMezziComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingMezzi: false,
+            loaded: true
+        });
+    }
+
+    @Action(StopPreaccoppiatiComposizioneLoading)
+    stopPreaccoppiatiComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
+        patchState({
+            loadingPreaccoppiati: false,
             loaded: true
         });
     }

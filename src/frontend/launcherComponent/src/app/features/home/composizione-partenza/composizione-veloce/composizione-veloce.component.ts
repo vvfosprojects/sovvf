@@ -6,6 +6,7 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Store } from '@ngxs/store';
 import { ConfirmPartenze, SetVisualizzaPercosiRichiesta } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import {
+    ClearPreaccoppiati,
     ClearPreAccoppiatiSelezionatiComposizione,
     GetListaComposizioneVeloce,
     HoverInPreAccoppiatoComposizione,
@@ -33,6 +34,8 @@ import RouteTask from '@arcgis/core/tasks/RouteTask';
 import RouteParameters from '@arcgis/core/rest/support/RouteParameters';
 import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import { TravelModeService } from '../../../maps/map-service/travel-mode.service';
+import { DeleteConcorrenza } from '../../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -47,10 +50,8 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() filtri: any;
 
-    // Loading Liste Mezzi e Squadre
-    @Input() loadingListe: boolean;
-    @Input() loadingSquadre: boolean;
-    @Input() loadingMezzi: boolean;
+    // Loading Lista Preaccoppiati
+    @Input() loadingPreaccoppiati: boolean;
 
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
@@ -147,8 +148,19 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.preAccoppiati?.forEach((p: BoxPartenzaPreAccoppiati) => {
+            if (this.idPreAccoppiatiSelezionati.includes(p.id)) {
+                console.log('remove mezzo', p.codiceMezzo);
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, p.codiceMezzo));
+                p.squadre.forEach((sC: SquadraComposizione) => {
+                    console.log('remove squadra', sC.codice);
+                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, sC.codice));
+                });
+            }
+        });
         this.store.dispatch([
             new ClearPreAccoppiatiSelezionatiComposizione(),
+            new ClearPreaccoppiati(),
             new ResetPaginationPreaccoppiati()
         ]);
     }

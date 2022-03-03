@@ -16,7 +16,7 @@ export class SetConcorrenza {
 export class AddConcorrenza {
     static readonly type = '[Concorrenza] Add Concorrenza';
 
-    constructor(public data: AddConcorrenzaDtoInterface) {
+    constructor(public data: AddConcorrenzaDtoInterface[]) {
     }
 }
 

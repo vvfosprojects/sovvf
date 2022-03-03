@@ -7,6 +7,7 @@ import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { statoMezzoColor } from '../../helper/function-mezzo';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-mezzo',
@@ -26,7 +27,10 @@ export class MezzoComponent {
     @Input() listaEventiMezzo: EventoMezzo[];
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
+
     stato = new ColoriStatoMezzo();
+
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     constructor(popoverConfig: NgbPopoverConfig,
                 tooltipConfig: NgbTooltipConfig) {
