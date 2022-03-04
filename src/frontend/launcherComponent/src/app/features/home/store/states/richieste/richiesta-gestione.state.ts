@@ -40,8 +40,8 @@ export class RichiestaGestioneState {
     setRichiestaGestione({ getState, patchState, dispatch }: StateContext<RichiestaGestioneStateModel>, action: SetRichiestaGestione): void {
         const state = getState();
         const concorrenza = this.store.selectSnapshot(ConcorrenzaState.concorrenza);
-        const isInConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === action.richiesta.id)?.length > 0;
-        if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id && !action.toggle) {
+        const isInConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === action.richiesta.codice)?.length > 0;
+        if (state.richiestaGestione && state.richiestaGestione.codice === action.richiesta.codice && !action.toggle) {
             dispatch([
                 new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta),
                 new ClearRichiestaGestione()
@@ -50,7 +50,7 @@ export class RichiestaGestioneState {
             if (!isInConcorrenza) {
                 const data = {
                     type: TipoConcorrenzaEnum.Richiesta,
-                    value: action.richiesta.id
+                    value: action.richiesta.codice
                 } as AddConcorrenzaDtoInterface;
                 dispatch(new AddConcorrenza([data]));
             }
