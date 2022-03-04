@@ -22,7 +22,7 @@ import { LockedConcorrenzaService } from '../../../core/service/concorrenza-serv
 
 export class PartenzaComponent implements OnInit {
 
-    @Input() idRichiesta: string;
+    @Input() codiceRichiesta: string;
     @Input() idDaSganciare: string;
     @Input() partenza: DettaglioPartenza;
     @Input() codicePartenza: string;
@@ -88,7 +88,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     onModificaPartenza(): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.idRichiesta])) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codiceRichiesta])) {
             this.modificaPartenza.emit(this.index);
         }
     }

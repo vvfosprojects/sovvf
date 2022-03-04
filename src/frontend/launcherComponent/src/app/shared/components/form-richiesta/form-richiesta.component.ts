@@ -190,7 +190,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 if (richiestaModifica) {
                     const data = {
                         type: TipoConcorrenzaEnum.Richiesta,
-                        value: richiestaModifica.id
+                        value: richiestaModifica.codice
                     } as AddConcorrenzaDtoInterface;
                     this.store.dispatch(new AddConcorrenza([data]));
                     this.modifica = true;

@@ -10,6 +10,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlocks;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -83,13 +84,13 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody] Concorrenza concorrenza)
+        public async Task<IActionResult> Delete([FromBody] List<Concorrenza> ListaConcorrenze)
         {
             try
             {
                 var command = new DeleteBlockCommand()
                 {
-                    IdConcorrenza = concorrenza.Id,
+                    ListaIdConcorrenza = ListaConcorrenze.Select(c => c.Id).ToList(),
                     CodiceSede = Request.Headers["codiceSede"]
                 };
 

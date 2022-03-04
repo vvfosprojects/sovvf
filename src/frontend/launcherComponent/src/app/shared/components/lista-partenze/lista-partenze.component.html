@@ -7,7 +7,7 @@
             class="border-bottom">
             <app-partial-loader
                     *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
-            <app-partenza [idRichiesta]="idRichiesta"
+            <app-partenza [codiceRichiesta]="codiceRichiesta"
                           [partenza]="p.partenza"
                           [codicePartenza]="p.codicePartenza"
                           [infoPartenza]="p"
