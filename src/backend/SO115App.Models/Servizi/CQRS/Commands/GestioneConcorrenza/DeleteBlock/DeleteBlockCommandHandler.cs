@@ -36,7 +36,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
         {
             try
             {
-                _deleteBlock.Delete(command.IdConcorrenza);
+                foreach (var id in command.ListaIdConcorrenza)
+                {
+                    _deleteBlock.Delete(id);
+                }
             }
             catch (Exception ex)
             {
