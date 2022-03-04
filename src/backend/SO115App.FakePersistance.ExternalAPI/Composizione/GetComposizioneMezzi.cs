@@ -17,6 +17,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -30,7 +31,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IOrdinamentoMezzi _ordinamento;
 
         private readonly IGetSedi _getSedi;
-
+        
         public GetComposizioneMezzi(IGetSedi getSedi, 
             IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, 
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
@@ -140,15 +141,21 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
                     else
                     {
-                        mc.Mezzo.Coordinate = mc.Mezzo.Distaccamento.Coordinate;
-                        mc.Mezzo.CoordinateStrg = mc.Mezzo.Distaccamento.CoordinateString;
+                        var sede = lstSedi.Result.FirstOrDefault(s => s.Codice.Equals(mc.Mezzo.Distaccamento.Codice));
+
+                        mc.Mezzo.Coordinate = sede?.Coordinate;
+                        mc.Mezzo.CoordinateStrg = sede?.CoordinateString;
                     }
 
                     lstMezzi.Add(mc);
                 });
 
-                var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.Where(m => m.Mezzo.Coordinate != null && m.Mezzo.Coordinate.Latitudine != 0).ToList()).Result;
-                //return lstMezzi;
+                var lstMezziPagination = lstMezzi
+                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                    .Take(query.Pagination.PageSize).ToList();
+
+                var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezziPagination).Result;
+
                 return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
