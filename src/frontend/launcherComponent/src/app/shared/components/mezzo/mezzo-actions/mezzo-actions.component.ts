@@ -18,7 +18,7 @@ import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
 })
 export class MezzoActionsComponent implements OnInit {
 
-    @Input() idRichiesta: string;
+    @Input() codiceRichiesta: string;
     @Input() mezzo: Mezzo;
     @Input() codicePartenza: string;
     @Input() doubleMonitor: Mezzo;
@@ -57,7 +57,7 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string, ora?: string, event?: MouseEvent): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.idRichiesta])) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codiceRichiesta])) {
             if (event) {
                 event.stopPropagation();
             }

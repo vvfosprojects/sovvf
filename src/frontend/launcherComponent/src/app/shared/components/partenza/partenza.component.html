@@ -4,7 +4,7 @@
     <div class="float-left font-xxlarge cursor-pointer"
          style="display: inline-flex; align-items: center;"
          (click)="selezioneMezzo.emit(partenza.mezzo)">
-        <app-mezzo [idRichiesta]="idRichiesta"
+        <app-mezzo [codiceRichiesta]="codiceRichiesta"
                    [codicePartenza]="codicePartenza"
                    [mezzo]="partenza.mezzo"
                    [listaEventiMezzo]="listaEventiMezzo"
@@ -49,7 +49,7 @@
                     <button class="btn btn-sm btn-info d-inline-block"
                             ngbTooltip="Gestisci Partenza"
                             placement="top"
-                            [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [idRichiesta]"
+                            [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
                             (click)="onModificaPartenza(); $event.stopPropagation()">
                         <i class="fas fa-cog"></i>
                     </button>

@@ -6,6 +6,7 @@ import { ConcorrenzaInterface } from '../../../interface/concorrenza.interface';
 import { GetAllResponseInterface } from '../../../interface/response/concorrenza/get-all-response.interface';
 import { AuthState } from '../../../../features/auth/store/auth.state';
 import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
+import { DeleteConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/delete-concorrenza-dto.interface';
 
 export interface ConcorrenzaStateModel {
     concorrenza: ConcorrenzaInterface[];
@@ -58,20 +59,23 @@ export class ConcorrenzaState {
         const type = action.type;
         const concorrenza = state.concorrenza;
         const utenteLoggato = this.store.selectSnapshot(AuthState.currentUser);
-        let concorrenzaToDelete: ConcorrenzaInterface;
+        let concorrenzaToDelete: ConcorrenzaInterface[];
         switch (type) {
             case TipoConcorrenzaEnum.Richiesta:
-                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.idOperatore === utenteLoggato.id)[0];
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.idOperatore === utenteLoggato.id);
                 break;
             case TipoConcorrenzaEnum.Mezzo:
-                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.value === action.value && c.idOperatore === utenteLoggato.id)[0];
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && action.value.includes(c.value) && c.idOperatore === utenteLoggato.id);
                 break;
             case TipoConcorrenzaEnum.Squadra:
-                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.value === action.value && c.idOperatore === utenteLoggato.id)[0];
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && action.value.includes(c.value) && c.idOperatore === utenteLoggato.id);
                 break;
         }
+        const concorrenzaToDeleteIds = concorrenzaToDelete.map((c: ConcorrenzaInterface) => {
+            return { id: c.id } as DeleteConcorrenzaDtoInterface;
+        }) as DeleteConcorrenzaDtoInterface[];
         if (concorrenzaToDelete) {
-            this.concorrenzaService.delete(concorrenzaToDelete.id).subscribe(() => {
+            this.concorrenzaService.delete(concorrenzaToDeleteIds).subscribe(() => {
             });
         }
     }

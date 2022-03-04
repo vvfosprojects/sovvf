@@ -148,11 +148,9 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
         this.preAccoppiati?.forEach((p: BoxPartenzaPreAccoppiati) => {
             if (this.idPreAccoppiatiSelezionati.includes(p.id)) {
                 console.log('remove mezzo', p.codiceMezzo);
-                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, p.codiceMezzo));
-                p.squadre.forEach((sC: SquadraComposizione) => {
-                    console.log('remove squadra', sC.codice);
-                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, sC.codice));
-                });
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.codiceMezzo]));
+                const codiciSquadre = p.squadre.map((sC: SquadraComposizione) => sC.codice);
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
             }
         });
         this.store.dispatch([
