@@ -76,17 +76,17 @@ export class ConcorrenzaState {
         const state = getState();
         const type = action.type;
         const concorrenza = state.concorrenza;
-        const utenteLoggato = this.store.selectSnapshot(AuthState.currentUser);
+        const currentUser = this.store.selectSnapshot(AuthState.currentUser);
         let concorrenzaToDelete: ConcorrenzaInterface[];
         switch (type) {
             case TipoConcorrenzaEnum.Richiesta:
-                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.idOperatore === utenteLoggato.id);
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.idOperatore === currentUser.id);
                 break;
             case TipoConcorrenzaEnum.Mezzo:
-                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && action.value.includes(c.value) && c.idOperatore === utenteLoggato.id);
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && action.value.includes(c.value) && c.idOperatore === currentUser.id);
                 break;
             case TipoConcorrenzaEnum.Squadra:
-                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && action.value.includes(c.value) && c.idOperatore === utenteLoggato.id);
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && action.value.includes(c.value) && c.idOperatore === currentUser.id);
                 break;
         }
         const concorrenzaToDeleteIds = concorrenzaToDelete.map((c: ConcorrenzaInterface) => {
