@@ -1,4 +1,4 @@
-import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { ConcorrenzaService } from '../../../../core/service/concorrenza-service/concorrenza.service';
 import { AddConcorrenza, DeleteAllConcorrenza, DeleteConcorrenza, GetConcorrenza, SetConcorrenza } from '../../actions/concorrenza/concorrenza.actions';
@@ -7,6 +7,8 @@ import { GetAllResponseInterface } from '../../../interface/response/concorrenza
 import { AuthState } from '../../../../features/auth/store/auth.state';
 import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
 import { DeleteConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/delete-concorrenza-dto.interface';
+import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { CONCORRENZA_CONFIG } from '../../../../core/settings/concorrenza';
 
 export interface ConcorrenzaStateModel {
     concorrenza: ConcorrenzaInterface[];
@@ -48,8 +50,24 @@ export class ConcorrenzaState {
     }
 
     @Action(AddConcorrenza)
-    addConcorrenza({ patchState }: StateContext<ConcorrenzaStateModel>, action: AddConcorrenza): void {
-        this.concorrenzaService.add(action.data).subscribe(() => {
+    addConcorrenza({ patchState, dispatch }: StateContext<ConcorrenzaStateModel>, action: AddConcorrenza): void {
+        const data = action.data;
+        this.concorrenzaService.add(data).subscribe(() => {
+            const dataToDelete = data.map((d: AddConcorrenzaDtoInterface) => d.value);
+            switch (data[0].type) {
+                case TipoConcorrenzaEnum.Mezzo:
+                    setTimeout(() => {
+                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, dataToDelete));
+                    }, CONCORRENZA_CONFIG.scadenzaMezzoMS);
+                    break;
+                case TipoConcorrenzaEnum.Squadra:
+                    setTimeout(() => {
+                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, dataToDelete));
+                    }, CONCORRENZA_CONFIG.scadenzaSquadraMS);
+                    break;
+                default:
+                    break;
+            }
         });
     }
 
