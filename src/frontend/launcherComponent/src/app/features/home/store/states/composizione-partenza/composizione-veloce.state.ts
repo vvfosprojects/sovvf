@@ -166,12 +166,10 @@ export class ComposizioneVeloceState {
     unselectPreAccoppiatoComposizione({ setState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: UnselectPreAccoppiatoComposizione): void {
         const preAccoppiato = action.preAcc;
         if (preAccoppiato) {
-            preAccoppiato.squadre.forEach((sC: SquadraComposizione) => {
-                console.log('remove squadra preaccoppiato', sC.codice);
-                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, sC.codice));
-            });
+            const codiciSquadre = preAccoppiato.squadre.map((sC: SquadraComposizione) => sC.codice);
+            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
             console.log('remove mezzo preaccoppiato', preAccoppiato.codiceMezzo);
-            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, preAccoppiato.codiceMezzo));
+            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [preAccoppiato.codiceMezzo]));
 
             setState(
                 patch({
