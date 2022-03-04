@@ -154,9 +154,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
                     .Take(query.Pagination.PageSize).ToList();
 
-                var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezziPagination).Result;
-
-                return lstMezziNuova;
+                //var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezziPagination).Result;
+                return lstMezzi;
+                //return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
                 bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
