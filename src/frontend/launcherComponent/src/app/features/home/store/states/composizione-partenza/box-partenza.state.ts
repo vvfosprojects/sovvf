@@ -265,6 +265,8 @@ export class BoxPartenzaState {
     @Action(AddSquadreBoxPartenza)
     addSquadraBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: AddSquadreBoxPartenza): void {
         const state = getState();
+        const boxPartenzaList = state.boxPartenzaList;
+        const codiciSquadreBoxPartenzaList = boxPartenzaList?.map((b: BoxPartenza) => b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice)[0]);
         if (action.preAccoppiato) {
             setState(
                 produce(state, draft => {
@@ -273,12 +275,13 @@ export class BoxPartenzaState {
                             box.squadreComposizione = [];
                             const dataList = [] as AddConcorrenzaDtoInterface[];
                             action.squadre.forEach((squadra: SquadraComposizione) => {
-                                console.log('select squadra', squadra.codice);
-                                const data = {
-                                    type: TipoConcorrenzaEnum.Squadra,
-                                    value: squadra.codice
-                                } as AddConcorrenzaDtoInterface;
-                                dataList.push(data);
+                                if (!codiciSquadreBoxPartenzaList.includes(squadra.codice)) {
+                                    const data = {
+                                        type: TipoConcorrenzaEnum.Squadra,
+                                        value: squadra.codice
+                                    } as AddConcorrenzaDtoInterface;
+                                    dataList.push(data);
+                                }
                                 box.squadreComposizione.push(squadra);
                             });
                             dispatch(new AddConcorrenza(dataList));
@@ -293,12 +296,13 @@ export class BoxPartenzaState {
                         if (box.id === state.idBoxPartenzaSelezionato) {
                             const dataList = [] as AddConcorrenzaDtoInterface[];
                             action.squadre.forEach((squadra: SquadraComposizione) => {
-                                console.log('select squadra', squadra.codice);
-                                const data = {
-                                    type: TipoConcorrenzaEnum.Squadra,
-                                    value: squadra.codice
-                                } as AddConcorrenzaDtoInterface;
-                                dataList.push(data);
+                                if (!codiciSquadreBoxPartenzaList.includes(squadra.codice)) {
+                                    const data = {
+                                        type: TipoConcorrenzaEnum.Squadra,
+                                        value: squadra.codice
+                                    } as AddConcorrenzaDtoInterface;
+                                    dataList.push(data);
+                                }
                                 box.squadreComposizione.push(squadra);
                             });
                             dispatch(new AddConcorrenza(dataList));
