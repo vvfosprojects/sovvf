@@ -17,7 +17,7 @@ import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 })
 export class MezzoComponent {
 
-    @Input() idRichiesta: string;
+    @Input() codiceRichiesta: string;
     @Input() mezzo: Mezzo;
     @Input() codicePartenza: string;
     @Input() listaEventi: any;

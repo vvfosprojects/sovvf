@@ -40,6 +40,10 @@ import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { makeCopy } from '../../../shared/helper/function-generiche';
 import { AddConcorrenzaDtoInterface } from '../../../shared/interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { ConcorrenzaState } from '../../../shared/store/states/concorrenza/concorrenza.state';
+import { ConcorrenzaInterface } from '../../../shared/interface/concorrenza.interface';
+import { AuthState } from '../../auth/store/auth.state';
+import { TurnOffComposizione } from '../store/actions/view/view.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -153,11 +157,18 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
                 if (r) {
                     this.richiesta = r;
-                    const data = {
-                        type: TipoConcorrenzaEnum.Richiesta,
-                        value: this.richiesta.id
-                    } as AddConcorrenzaDtoInterface;
-                    this.store.dispatch(new AddConcorrenza([data]));
+                    const currentUser = this.store.selectSnapshot(AuthState.currentUser);
+                    const concorrenza = this.store.selectSnapshot(ConcorrenzaState.concorrenza);
+                    const richiestaConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === this.richiesta.codice)[0];
+                    if (!richiestaConcorrenza) {
+                        const data = {
+                            type: TipoConcorrenzaEnum.Richiesta,
+                            value: this.richiesta.codice
+                        } as AddConcorrenzaDtoInterface;
+                        this.store.dispatch(new AddConcorrenza([data]));
+                    } else if (richiestaConcorrenza.idOperatore !== currentUser.id) {
+                        this.store.dispatch(new TurnOffComposizione());
+                    }
                 }
             })
         );

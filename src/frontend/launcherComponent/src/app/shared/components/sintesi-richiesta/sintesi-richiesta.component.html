@@ -435,7 +435,7 @@
                                  class="col-8 px-0 border border-lista-partenze">
                                 <div class="scroll-y max-height-richiesta">
                                     <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
-                                    <app-lista-partenze [idRichiesta]="richiesta.id"
+                                    <app-lista-partenze [codiceRichiesta]="richiesta.codice"
                                                         [partenze]="richiesta?.partenze"
                                                         [listaEventi]="richiesta?.eventi"
                                                         [statoRichiesta]="richiesta?.stato"

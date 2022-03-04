@@ -23,7 +23,7 @@ export class AddConcorrenza {
 export class DeleteConcorrenza {
     static readonly type = '[Concorrenza] Delete Concorrenza';
 
-    constructor(public type: TipoConcorrenzaEnum, public value?: string) {
+    constructor(public type: TipoConcorrenzaEnum, public value?: string[]) {
     }
 }
 
