@@ -84,8 +84,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                         {
                             Parallel.ForEach(query.CodiceSede, codice =>
                             {
-                                //var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
-
                                 lstSquadrePreaccoppiate.Where(s => !s.spotType.Equals("MODULE") && query.Filtri.CodiceDistaccamento.Any(x => x.Equals(s.Distaccamento))).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                                     lstSquadreMezzo.TryAdd(m, lstSquadre
                                         .Where(s => s.Codice.Equals(squadra.Codice))
@@ -97,8 +95,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                         {
                             Parallel.ForEach(query.CodiceSede, codice =>
                             {
-                                //var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
-
                                 lstSquadrePreaccoppiate.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                                     lstSquadreMezzo.TryAdd(m, lstSquadre
                                         .Where(s => s.Codice.Equals(squadra.Codice))
@@ -122,7 +118,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                             Appartenenza = MezzoSquadra.CodiceDistaccamento,
                             Coordinate = GetCoordinateMezzo(MezzoSquadra.CodiceMezzo, DescSede),
                             CodiceMezzo = MezzoSquadra.CodiceMezzo,
-                            Distaccamento = DescSede.DescDistaccamento/*.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "")*/.ToUpper(),
+                            Distaccamento = DescSede.DescDistaccamento.ToUpper(),
                             DescrizioneMezzo = MezzoSquadra.Descrizione,
                             GenereMezzo = MezzoSquadra.Genere,
                             StatoMezzo = lstStatoMezzi.Result.Find(m => m.CodiceMezzo.Equals(MezzoSquadra.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede,
@@ -179,7 +175,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             return componenti;
         }
 
-        private API.Models.Classi.Condivise.Coordinate GetCoordinateMezzo(string codiceMezzo, Distaccamento distaccamento)
+        private Coordinate GetCoordinateMezzo(string codiceMezzo, Distaccamento distaccamento)
         {
             var posizioneMezzo = pFlotta.Find(m => m.CodiceMezzo.Equals(codiceMezzo));
 

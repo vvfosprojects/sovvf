@@ -147,9 +147,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     lstMezzi.Add(mc);
                 });
 
-                //var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.Where(m => m.Mezzo.Coordinate != null && m.Mezzo.Coordinate.Latitudine != 0).ToList()).Result;
-                return lstMezzi;
-                //return lstMezziNuova;
+                var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.Where(m => m.Mezzo.Coordinate != null && m.Mezzo.Coordinate.Latitudine != 0).ToList()).Result;
+                //return lstMezzi;
+                return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
                 bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
