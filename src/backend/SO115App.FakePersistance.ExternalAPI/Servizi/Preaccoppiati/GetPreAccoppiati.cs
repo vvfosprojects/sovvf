@@ -72,7 +72,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 else
                     lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Attuale.Squadre).ToList();
 
-                if (lstSquadre.Count() > 0)
+                if (lstSquadre.Count > 0)
                 {
                     var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && s.CodiciMezziPreaccoppiati.Count() > 0).ToList();
 
@@ -129,13 +129,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     }).ToList());
                 }
                 else
-                {
-                    var listaVuota = new List<PreAccoppiato>();
-                    return listaVuota;
-                }
+                    return new List<PreAccoppiato>(); 
             }
             else
-                return null;
+                return new List<PreAccoppiato>();
         }
 
         private API.Models.Classi.Condivise.Squadra.StatoSquadra MappaStatoSquadra(Task<List<StatoOperativoSquadra>> lstStatoSquadre, string codiceSquadra)
