@@ -583,6 +583,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     background-color: rgba(53, 53, 53, 0.7) $SO-i;
   }
 
+  .bg-locked-concorrenza {
+    background-color: rgba(53, 53, 53, 0.9) $SO-i;
+  }
+
   .bg-tasto-nuova-chiamata {
     background-color: $SO-dark-darker $SO-i;
   }
@@ -1184,6 +1188,10 @@ tag-input {
 
 .bg-partial-loader {
   background-color: rgba(224, 223, 223, 0.7) $SO-i;
+}
+
+.bg-locked-concorrenza {
+  background-color: rgba(224, 223, 223, 0.9) $SO-i;
 }
 
 .no-resize {
