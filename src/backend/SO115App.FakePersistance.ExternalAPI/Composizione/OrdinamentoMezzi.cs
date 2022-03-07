@@ -30,40 +30,60 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private IEnumerable<ComposizioneMezzi> GetIndiceOrdinamentoFunc(RichiestaAssistenza Richiesta, List<ComposizioneMezzi> composizioni)
         {
-            var lstMezziEsri = composizioni.Select(c => new ESRI_Mezzo()
-            {
-                codice = c.Mezzo.Codice,
-                coordinate = string.Join(", ", c.Mezzo?.CoordinateStrg ?? new string[] { "0", "0" }),
-                track = !c.Mezzo.Genere.Equals("AV"),
-            }).ToList();
+            //var lstMezziEsri = composizioni.Select(c => new ESRI_Mezzo()
+            //{
+            //    codice = c.Mezzo.Codice,
+            //    coordinate = string.Join(", ", c.Mezzo?.CoordinateStrg ?? new string[] { "0", "0" }),
+            //    track = !c.Mezzo.Genere.Equals("AV"),
+            //}).ToList();
 
-            var distanzaTempo = _getDistanzaTempoMezzi.Get(new ESRI_DistanzaTempoMezzi()
-            {
-                coordinateIntervento = string.Join(", ", Richiesta.Localita.CoordinateString ?? new string[] { "0", "0" }),
-                mezzi = lstMezziEsri
-            });
+            //var distanzaTempo = _getDistanzaTempoMezzi.Get(new ESRI_DistanzaTempoMezzi()
+            //{
+            //    coordinateIntervento = string.Join(", ", Richiesta.Localita.CoordinateString ?? new string[] { "0", "0" }),
+            //    mezzi = lstMezziEsri
+            //});
 
-            foreach (var composizione in composizioni)
+            var listaComposizioni = new List<ComposizioneMezzi>();
+            Parallel.ForEach(composizioni, composizione =>
             {
                 decimal result = 0.0m;
 
                 try
                 {
-
-                    var tempodist = distanzaTempo.Result.Find(m => m.codice.Equals(composizione.Mezzo.Codice));
+                    //var tempodist = distanzaTempo.Result.Find(m => m.codice.Equals(composizione.Mezzo.Codice));
 
                     var ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie.Select(c => c.Codice).ToList(), composizione.Mezzo.Genere);
 
-                    result = 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreAdeguatezzaMezzo.Result;
-
-                    composizione.Km = tempodist.distanza.ToString();
-                    composizione.TempoPercorrenza = tempodist.tempo.ToString();
+                    //result = 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreAdeguatezzaMezzo.Result;
+                    result = 100 + ValoreAdeguatezzaMezzo.Result;
+                    composizione.Km = "0"; //tempodist.distanza.ToString();
+                    composizione.TempoPercorrenza = "0"; //tempodist.tempo.ToString();
                     composizione.IndiceOrdinamento = result;
                 }
                 catch (Exception) { }
 
-                yield return composizione;
-            }
+                listaComposizioni.Add(composizione);
+            });
+
+            return listaComposizioni;
+
+            //foreach (var composizione in composizioni)
+            //{
+            //    decimal result = 0.0m;
+
+            // try { //var tempodist = distanzaTempo.Result.Find(m =>
+            // m.codice.Equals(composizione.Mezzo.Codice)); var ValoreAdeguatezzaMezzo =
+            // GeneraValoreAdeguatezzaMezzo(Richiesta.Tipologie.Select(c => c.Codice).ToList(), composizione.Mezzo.Genere);
+
+            // //result = 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".",
+            // ",")) / 5400) + ValoreAdeguatezzaMezzo.Result; result = 100 +
+            // ValoreAdeguatezzaMezzo.Result; composizione.Km = "0";
+            // //tempodist.distanza.ToString(); composizione.TempoPercorrenza = "0";
+            // //tempodist.tempo.ToString(); composizione.IndiceOrdinamento = result; } catch
+            // (Exception) { }
+
+            //    yield return composizione;
+            //}
         }
 
         private async Task<decimal> GeneraValoreAdeguatezzaMezzo(List<string> codiciTipologie, string genere)
