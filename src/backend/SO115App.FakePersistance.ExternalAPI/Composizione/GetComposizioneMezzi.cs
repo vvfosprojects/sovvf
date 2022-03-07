@@ -31,9 +31,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IOrdinamentoMezzi _ordinamento;
 
         private readonly IGetSedi _getSedi;
-        
-        public GetComposizioneMezzi(IGetSedi getSedi, 
-            IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, 
+
+        public GetComposizioneMezzi(IGetSedi getSedi,
+            IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre,
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
             IOrdinamentoMezzi ordinamento)
         {
@@ -150,13 +150,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     lstMezzi.Add(mc);
                 });
 
-                var lstMezziPagination = lstMezzi
-                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
-                    .Take(query.Pagination.PageSize).ToList();
+                var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList()).Result;
+                //var lstMezziPagination = lstMezziNuova
+                //    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                //    .Take(query.Pagination.PageSize).ToList();
 
-                //var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezziPagination).Result;
-                return lstMezzi;
-                //return lstMezziNuova;
+                //return lstMezzi;
+                return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
                 bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
@@ -176,7 +176,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })).ContinueWith(lstMezzi =>
             {
                 return lstMezzi.Result //ORDINAMENTO
-                .OrderBy(mezzo => mezzo.IndiceOrdinamento)
+                .OrderByDescending(mezzo => mezzo.IndiceOrdinamento)
                 .OrderBy(mezzo => (!query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => (!query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
@@ -184,9 +184,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
-                .ThenByDescending(mezzo => query.Richiesta.Competenze[0]?.Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) ?? false)
-                .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 1 ? query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
-                .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 2 ? query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
+                //.ThenByDescending(mezzo => query.Richiesta.Competenze[0]?.Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) ?? false)
+                //.ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 1 ? query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
+                //.ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 2 ? query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
                 .ThenBy(mezzo => mezzo.Mezzo.Distaccamento?.Codice)
                 .ToList();
             });

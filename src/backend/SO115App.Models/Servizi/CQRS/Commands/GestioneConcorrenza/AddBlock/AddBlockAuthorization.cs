@@ -35,6 +35,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
 
             foreach (var c in command.concorrenza)
             {
+                c.NominativoOperatore = command.utente.Nome + " " + command.utente.Cognome;
+
                 if (_getBlockByValue.Get(c.Value) != null)
                 {
                     if (c.Type.Equals(TipoOperazione.Richiesta))

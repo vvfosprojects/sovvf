@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
     selector: 'app-locked-concorrenza',
@@ -7,6 +7,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LockedConcorrenzaComponent {
+
+    @Input() nominativoOperatore: string;
 
     constructor() {
     }
