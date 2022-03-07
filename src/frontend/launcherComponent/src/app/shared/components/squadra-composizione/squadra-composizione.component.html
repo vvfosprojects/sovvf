@@ -5,7 +5,9 @@
     (mouseleave)="onHoverOut()"
     (click)="onClick()">
     <ng-container *ngIf="(tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: [squadraComposizione.codice])">
-        <app-locked-concorrenza></app-locked-concorrenza>
+        <app-locked-concorrenza
+                [nominativoOperatore]="tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: [squadraComposizione.codice]">
+        </app-locked-concorrenza>
     </ng-container>
     <div class="row px-3">
         <div class="clearfix"
