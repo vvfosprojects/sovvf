@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DettaglioPartenza, Partenza } from '../../model/partenza.model';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
@@ -16,8 +16,7 @@ import { LockedConcorrenzaService } from '../../../core/service/concorrenza-serv
 @Component({
     selector: 'app-partenza',
     templateUrl: './partenza.component.html',
-    styleUrls: ['./partenza.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./partenza.component.css']
 })
 
 export class PartenzaComponent implements OnInit {
