@@ -46,13 +46,18 @@
                     </div>
                 </button>
                 <ng-template [ngIf]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
-                    <button class="btn btn-sm btn-info d-inline-block"
-                            ngbTooltip="Gestisci Partenza"
-                            placement="top"
-                            [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
-                            (click)="onModificaPartenza(); $event.stopPropagation()">
-                        <i class="fas fa-cog"></i>
-                    </button>
+                    <div class="d-inline-block"
+                         [ngbTooltip]="tooltipLockedConcorrenza"
+                         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta])">
+                        <button class="btn btn-sm btn-info d-inline-block"
+                                ngbTooltip="Gestisci Partenza"
+                                placement="top"
+                                [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
+                                [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
+                                (click)="onModificaPartenza(); $event.stopPropagation()">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
                 </ng-template>
                 <div *ngIf="!partenza.squadre || !partenza.squadre?.length"
                      class="d-inline-block p-2">
@@ -62,9 +67,15 @@
         </div>
     </div>
     <div *ngIf="annullaStatoMezzo" class="float-right mr-2 my-1">
-        <button class="btn btn-danger btn-sm-mod border-danger" (click)="onAnnullaStato(partenza.mezzo.codice)"
-                ngbTooltip="Annulla ultimo cambio stato">
+        <button class="btn btn-danger btn-sm-mod border-danger"
+                ngbTooltip="Annulla ultimo cambio stato"
+                (click)="onAnnullaStato(partenza.mezzo.codice)">
             <i class="fas fa-history px-1"></i>
         </button>
     </div>
 </div>
+
+<ng-template #tooltipLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta] }}
+</ng-template>

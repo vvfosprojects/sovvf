@@ -30,6 +30,7 @@ import { ClearMezzoInServizioSelezionato, SetMezzoInServizioSelezionato } from '
 import { Mezzo } from '../../model/mezzo.model';
 import { MezziInServizioState } from '../../../features/home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { PosDettaglioModalComponent } from '../../modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -85,6 +86,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     // Enum
     StatoRichiesta = StatoRichiesta;
     StatoFonogramma = StatoFonogramma;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     constructor(private modalService: NgbModal,
                 private popoverConfig: NgbPopoverConfig,
