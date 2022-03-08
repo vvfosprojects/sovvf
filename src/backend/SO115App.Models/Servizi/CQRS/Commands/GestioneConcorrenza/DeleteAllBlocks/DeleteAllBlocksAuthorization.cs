@@ -28,24 +28,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlo
         {
             command.utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
-            if (_currentUser.Identity.IsAuthenticated)
-            {
-                if (command.utente == null)
-                    yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                else
-                {
-                    bool abilitato = false;
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.CodiceSede, Costanti.GestoreRichieste))
-                        abilitato = true;
-
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
-                        abilitato = true;
-
-                    if (!abilitato)
-                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                }
-            }
-            else
+            if (!_currentUser.Identity.IsAuthenticated)
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
         }
     }
