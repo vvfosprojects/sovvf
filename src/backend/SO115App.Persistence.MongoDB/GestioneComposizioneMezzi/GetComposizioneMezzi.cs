@@ -24,7 +24,7 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
             {
                 var filter = codiciSede.Select(c => c.Split('.')[0]).Distinct();
 
-                var result = _dbContext.ComposizioneMezziCollection.Find(Builders<ComposizioneMezzi>.Filter.In(m => m.Mezzo.Appartenenza, filter)).ToList();
+                var result = _dbContext.ComposizioneMezziCollection.Find(Builders<ComposizioneMezzi>.Filter.In(m => m.Mezzo.Appartenenza, codiciSede)).ToList();
 
                 return result;
             }
