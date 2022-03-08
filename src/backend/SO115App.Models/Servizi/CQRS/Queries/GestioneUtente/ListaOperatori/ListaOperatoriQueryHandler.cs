@@ -112,6 +112,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 {
                     var lst = lstSediAll.Result
                         .Where(p => p.Codice.Contains($"{filtroSede.Split('.')[0]}.") && !listaSediPresenti.Any(sede => sede.CodSede.Equals(p.Codice)))
+                        .Where(p => p.Codice.Contains('.'))
                         .Select(p => new Role("", p.Codice) { DescSede = lstSediAll.Result.Find(s => s.Codice.Equals(p.Codice)).Descrizione });
 
                     listaSediPresenti.AddRange(lst);
@@ -135,7 +136,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             {
                 DataArray = utentiPaginati,
                 Pagination = query.Pagination,
-                ListaSediPresenti = listaSediPresenti.Where(s => s.CodSede.Contains('.')).ToList()
+                ListaSediPresenti = listaSediPresenti
             };
         }
     }
