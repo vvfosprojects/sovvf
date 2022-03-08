@@ -23,6 +23,7 @@ using DomainModel.CQRS.Commands.AddInterventoFromSurvey123;
 using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -68,6 +69,8 @@ namespace SO115App.API.Controllers
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] Intervento chiamata)
         {
+            Log.Information($"--------------------------- INIZIO SCRITTURA INTERVENTO --------------------------- {DateTime.Now}");
+
             var codiceSede = Request.Headers["codicesede"];
             var idUtente = Request.Headers["IdUtente"];
 
@@ -82,6 +85,8 @@ namespace SO115App.API.Controllers
             try
             {
                 _Addhandler.Handle(command);
+
+                Log.Information($"--------------------------- FINE SCRITTURA INTERVENTO --------------------------- {DateTime.Now}");
                 return Ok(_getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice));
             }
             catch (Exception ex)
@@ -90,6 +95,10 @@ namespace SO115App.API.Controllers
 
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+
+
+                Log.Error($"--------------------------- ERRORE SCRITTURA INTERVENTO --------------------------- {DateTime.Now}");
+                Log.Error($"{ex.Message}");
                 return BadRequest(new { message = ex.Message, stacktrace = ex.StackTrace });
             }
         }

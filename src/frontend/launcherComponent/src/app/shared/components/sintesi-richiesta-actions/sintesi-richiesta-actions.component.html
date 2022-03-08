@@ -1,17 +1,26 @@
-<div class="btn-group btn-group-sm w-100 mr-3" (click)="$event.stopPropagation()" style="width: 85px">
-    <button type="button" class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} px-2 py-0 btn-no-hover"
+<div class="btn-group btn-group-sm w-100 mr-3"
+     style="width: 85px"
+     (click)="$event.stopPropagation()">
+    <button type="button"
+            class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} px-2 py-0 btn-no-hover"
             (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta))"
             ngbTooltip="{{calcolaActionSuggeritaRichiesta(richiesta)}}">
         {{calcolaActionSuggeritaRichiesta(richiesta)}}
     </button>
-    <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+    <div class="btn-group"
+         ngbDropdown
+         role="group"
+         aria-label="Button group with nested dropdown">
         <button class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} text-light p-1 dropdown-toggle-split btn-no-hover"
                 ngbTooltip="Altro"
                 ngbDropdownToggle>
         </button>
         <div class="dropdown-menu" ngbDropdownMenu>
-            <button *ngFor="let stato of statoRichiestaString" ngbDropdownItem
-                    (click)="onClick(stato)">{{stato}}</button>
+            <button *ngFor="let stato of statoRichiestaString"
+                    ngbDropdownItem
+                    (click)="onClick(stato)">
+                {{stato}}
+            </button>
             <ng-template [ngIf]="statoRichiestaString && statoRichiestaString.length <= 0">
                 <div class="px-2">
                     Nessuna azione secondaria disponibile

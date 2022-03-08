@@ -24,9 +24,7 @@
              class="px-3">
             <app-composizione-veloce
                     [visualizzaPercorsiRichiesta]="visualizzaPercorsiRichiesta$ | async"
-                    [loadingListe]="loadingListe$ | async"
-                    [loadingSquadre]="loadingSquadre$ | async"
-                    [loadingMezzi]="loadingMezzi$ | async"
+                    [loadingPreaccoppiati]="loadingPreaccoppiati$ | async"
                     [filtri]="filtri$ | async"
                     [richiesta]="richiesta"
                     [nightMode]="nightMode"
@@ -70,7 +68,6 @@
                     [filtriSelezionati]="filtriSelezionati$ | async"
                     [boxPartenzaList]="boxPartenzaList$ | async"
                     [idBoxPartenzaSelezionato]="idBoxPartenzaSelezionato$ | async"
-                    [loadingListe]="loadingListe$ | async"
                     [loadingSquadre]="loadingSquadre$ | async"
                     [loadingMezzi]="loadingMezzi$ | async"
                     [currentPageMezzi]="currentPageMezzi$ | async"

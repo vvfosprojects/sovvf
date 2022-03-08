@@ -9,6 +9,8 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlocks;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -55,16 +57,19 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromBody] Concorrenza concorrenza)
+        public async Task<IActionResult> Add([FromBody] List<Concorrenza> ListaConcorrenze)
         {
             try
             {
-                concorrenza.IdOperatore = Request.Headers["idUtente"];
-                concorrenza.CodComando = Request.Headers["codiceSede"];
-
+                foreach (var c in ListaConcorrenze)
+                {
+                    c.IdOperatore = Request.Headers["idUtente"];
+                    c.CodComando = Request.Headers["codiceSede"];
+                }
                 var command = new AddBlockCommand()
                 {
-                    concorrenza = concorrenza
+                    CodComando = Request.Headers["codiceSede"],
+                    concorrenza = ListaConcorrenze
                 };
 
                 _addhandler.Handle(command);
@@ -79,13 +84,13 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody] Concorrenza concorrenza)
+        public async Task<IActionResult> Delete([FromBody] List<Concorrenza> ListaConcorrenze)
         {
             try
             {
                 var command = new DeleteBlockCommand()
                 {
-                    IdConcorrenza = concorrenza.Id,
+                    ListaIdConcorrenza = ListaConcorrenze.Select(c => c.Id).ToList(),
                     CodiceSede = Request.Headers["codiceSede"]
                 };
 

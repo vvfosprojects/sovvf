@@ -340,8 +340,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         return defineChiamataIntervento(codice, codiceRichiesta);
     }
 
-    isLockedConcorrenza(): boolean {
-        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, this.richiesta.id);
+    isLockedConcorrenza(): string {
+        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice]);
     }
-
 }

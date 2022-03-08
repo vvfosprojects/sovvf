@@ -6,6 +6,7 @@ import { AddConcorrenza, DeleteConcorrenza } from '../../../../../shared/store/a
 import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
 import { ConcorrenzaState } from '../../../../../shared/store/states/concorrenza/concorrenza.state';
 import { ConcorrenzaInterface } from '../../../../../shared/interface/concorrenza.interface';
+import { AddConcorrenzaDtoInterface } from '../../../../../shared/interface/dto/concorrenza/add-concorrenza-dto.interface';
 
 export interface RichiestaGestioneStateModel {
     richiestaGestione: SintesiRichiesta;
@@ -39,15 +40,19 @@ export class RichiestaGestioneState {
     setRichiestaGestione({ getState, patchState, dispatch }: StateContext<RichiestaGestioneStateModel>, action: SetRichiestaGestione): void {
         const state = getState();
         const concorrenza = this.store.selectSnapshot(ConcorrenzaState.concorrenza);
-        const isInConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === action.richiesta.id)?.length > 0;
-        if (state.richiestaGestione && state.richiestaGestione.id === action.richiesta.id && !action.toggle) {
+        const isInConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === action.richiesta.codice)?.length > 0;
+        if (state.richiestaGestione && state.richiestaGestione.codice === action.richiesta.codice && !action.toggle) {
             dispatch([
                 new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta),
                 new ClearRichiestaGestione()
             ]);
         } else {
             if (!isInConcorrenza) {
-                dispatch(new AddConcorrenza({ type: TipoConcorrenzaEnum.Richiesta, value: action.richiesta.id }));
+                const data = {
+                    type: TipoConcorrenzaEnum.Richiesta,
+                    value: action.richiesta.codice
+                } as AddConcorrenzaDtoInterface;
+                dispatch(new AddConcorrenza([data]));
             }
             patchState({
                 richiestaGestione: action.richiesta

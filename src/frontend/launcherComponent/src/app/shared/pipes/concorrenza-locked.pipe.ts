@@ -11,7 +11,7 @@ export class ConcorrenzaLockedPipe implements PipeTransform {
     constructor(private lockedConcorrenzaService: LockedConcorrenzaService) {
     }
 
-    transform(type: TipoConcorrenzaEnum, value: string): any {
+    transform(type: TipoConcorrenzaEnum, value: string[]): any {
         return this.lockedConcorrenzaService.getLockedConcorrenza(type, value);
     }
 

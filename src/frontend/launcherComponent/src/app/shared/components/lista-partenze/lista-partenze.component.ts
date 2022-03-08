@@ -8,6 +8,7 @@ import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/act
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
 import { Mezzo } from '../../model/mezzo.model';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-lista-partenze',
@@ -16,7 +17,7 @@ import { Mezzo } from '../../model/mezzo.model';
 })
 export class ListaPartenzeComponent {
 
-    @Input() idRichiesta: string;
+    @Input() codiceRichiesta: string;
     @Input() idDaSganciare: string;
     @Input() partenze: Partenza[];
     @Input() listaEventi: EventoMezzo[];
@@ -32,6 +33,8 @@ export class ListaPartenzeComponent {
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
     @Output() sostituzioneFineTurno: EventEmitter<any> = new EventEmitter<any>();
+
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     constructor(private store: Store) {
     }

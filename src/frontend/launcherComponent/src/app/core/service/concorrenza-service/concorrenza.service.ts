@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { AddConcorrenzaDtoInterface } from '../../../shared/interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { ConcorrenzaInterface } from '../../../shared/interface/concorrenza.interface';
 import { GetAllResponseInterface } from '../../../shared/interface/response/concorrenza/get-all-response.interface';
+import { DeleteConcorrenzaDtoInterface } from '../../../shared/interface/dto/concorrenza/delete-concorrenza-dto.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_CONCORRENZA = BASE_URL + environment.apiUrl.concorrenza;
@@ -21,12 +22,12 @@ export class ConcorrenzaService {
         return this.http.get<GetAllResponseInterface>(API_CONCORRENZA + '/GetAll');
     }
 
-    add(data: AddConcorrenzaDtoInterface): Observable<ConcorrenzaInterface> {
+    add(data: AddConcorrenzaDtoInterface[]): Observable<ConcorrenzaInterface> {
         return this.http.post<ConcorrenzaInterface>(API_CONCORRENZA + '/Add', data);
     }
 
-    delete(idConcorrenza: string): Observable<any> {
-        return this.http.post<any>(API_CONCORRENZA + '/Delete', { id: idConcorrenza });
+    delete(data: DeleteConcorrenzaDtoInterface[]): Observable<any> {
+        return this.http.post<any>(API_CONCORRENZA + '/Delete', data);
     }
 
     deleteAll(): Observable<any> {

@@ -17,6 +17,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -31,8 +32,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private readonly IGetSedi _getSedi;
 
-        public GetComposizioneMezzi(IGetSedi getSedi, 
-            IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre, 
+        public GetComposizioneMezzi(IGetSedi getSedi,
+            IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre,
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
             IOrdinamentoMezzi ordinamento)
         {
@@ -140,14 +141,20 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
                     else
                     {
-                        mc.Mezzo.Coordinate = mc.Mezzo.Distaccamento.Coordinate;
-                        mc.Mezzo.CoordinateStrg = mc.Mezzo.Distaccamento.CoordinateString;
+                        var sede = lstSedi.Result.FirstOrDefault(s => s.Codice.Equals(mc.Mezzo.Distaccamento.Codice));
+
+                        mc.Mezzo.Coordinate = sede?.Coordinate;
+                        mc.Mezzo.CoordinateStrg = sede?.CoordinateString;
                     }
 
                     lstMezzi.Add(mc);
                 });
 
-                var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.Where(m => m.Mezzo.Coordinate != null && m.Mezzo.Coordinate.Latitudine != 0).ToList()).Result;
+                var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList()).Result;
+                //var lstMezziPagination = lstMezziNuova
+                //    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                //    .Take(query.Pagination.PageSize).ToList();
+
                 //return lstMezzi;
                 return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
@@ -169,7 +176,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })).ContinueWith(lstMezzi =>
             {
                 return lstMezzi.Result //ORDINAMENTO
-                .OrderBy(mezzo => mezzo.IndiceOrdinamento)
+                .OrderByDescending(mezzo => mezzo.IndiceOrdinamento)
                 .OrderBy(mezzo => (!query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => (!query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
@@ -177,9 +184,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
-                .ThenByDescending(mezzo => query.Richiesta.Competenze[0]?.Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) ?? false)
-                .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 1 ? query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
-                .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 2 ? query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
+                //.ThenByDescending(mezzo => query.Richiesta.Competenze[0]?.Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) ?? false)
+                //.ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 1 ? query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
+                //.ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 2 ? query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
                 .ThenBy(mezzo => mezzo.Mezzo.Distaccamento?.Codice)
                 .ToList();
             });

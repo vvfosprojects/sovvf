@@ -122,36 +122,39 @@ export class BoxPartenzaState {
     @Action(RemoveBoxPartenza)
     removeBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza): void {
         const state = getState();
-        console.log('remove mezzo', action.boxPartenza.mezzoComposizione.mezzo.codice);
-        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, action.boxPartenza.mezzoComposizione.mezzo.codice));
-        if (action.boxPartenza.squadreComposizione?.length > 0) {
-            action.boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
+        const boxPartenza = action.boxPartenza;
+        if (boxPartenza.mezzoComposizione) {
+            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [boxPartenza.mezzoComposizione.mezzo.codice]));
+        }
+        if (boxPartenza.squadreComposizione?.length > 0) {
+            const codiciSquadre = [] as string[];
+            boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
                 const squadraCountInBoxes = state.boxPartenzaList.filter((b: BoxPartenza) => b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice).includes(squadra.codice))?.length;
                 if (squadraCountInBoxes <= 1) {
-                    console.log('remove squadra', squadra.codice);
-                    dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, squadra.codice));
+                    codiciSquadre.push(squadra.codice);
                 }
             });
+            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
         }
         // controllo se il boxPartenza che sto eliminando è quello selezionato
-        if (action.boxPartenza.id === state.idBoxPartenzaSelezionato) {
+        if (boxPartenza.id === state.idBoxPartenzaSelezionato) {
             // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
-            if (action.boxPartenza.mezzoComposizione) {
+            if (boxPartenza.mezzoComposizione) {
                 dispatch(new UnselectMezzoComposizione(true));
             }
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
-            if (action.boxPartenza.squadreComposizione && action.boxPartenza.squadreComposizione.length > 0) {
-                action.boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
+            if (boxPartenza.squadreComposizione && boxPartenza.squadreComposizione.length > 0) {
+                boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
                     dispatch(new UnselectSquadraComposizione(squadra, false, true));
                 });
             }
         }
         // Seleziono il box precedente
-        if (state.boxPartenzaList.length > 1 && state.idBoxPartenzaSelezionato === action.boxPartenza.id) {
+        if (state.boxPartenzaList.length > 1 && state.idBoxPartenzaSelezionato === boxPartenza.id) {
             let prevIndex = null;
             let prevIdBox = null;
             state.boxPartenzaList.forEach((box: BoxPartenza, index) => {
-                if (box.id === action.boxPartenza.id) {
+                if (box.id === boxPartenza.id) {
                     prevIndex = index - 1;
                     if (state.boxPartenzaList[prevIndex] && prevIndex > -1) {
                         prevIdBox = state.boxPartenzaList[prevIndex].id;
@@ -167,7 +170,7 @@ export class BoxPartenzaState {
         // rimuovo il box dalla lista
         setState(
             patch({
-                boxPartenzaList: removeItem((item: BoxPartenza) => item.id === action.boxPartenza.id)
+                boxPartenzaList: removeItem((item: BoxPartenza) => item.id === boxPartenza.id)
             })
         );
     }
@@ -175,15 +178,16 @@ export class BoxPartenzaState {
     @Action(DeselectBoxPartenza)
     deselectBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza): void {
         const state = getState();
+        const boxPartenza = action.boxPartenza;
         // controllo se il boxPartenza che sto eliminando è quello selezionato
-        if (action.boxPartenza.id === state.idBoxPartenzaSelezionato) {
+        if (boxPartenza.id === state.idBoxPartenzaSelezionato) {
             // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
-            if (action.boxPartenza.mezzoComposizione) {
+            if (boxPartenza.mezzoComposizione) {
                 dispatch(new UnselectMezzoComposizione());
             }
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
-            if (action.boxPartenza.squadreComposizione && action.boxPartenza.squadreComposizione.length > 0) {
-                action.boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
+            if (boxPartenza.squadreComposizione && boxPartenza.squadreComposizione.length > 0) {
+                boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
                     dispatch(new UnselectSquadraComposizione(squadra));
                 });
             }
@@ -204,16 +208,16 @@ export class BoxPartenzaState {
                     // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
                     if (boxPartenza.mezzoComposizione) {
                         console.log('remove mezzo', boxPartenza.mezzoComposizione.mezzo.codice);
-                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, boxPartenza.mezzoComposizione.mezzo.codice));
+                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [boxPartenza.mezzoComposizione.mezzo.codice]));
                         dispatch(new UnselectMezzoComposizione());
                     }
                     // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
                     if (boxPartenza.squadreComposizione && boxPartenza.squadreComposizione.length > 0) {
                         boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                            console.log('remove squadra', squadra.codice);
-                            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, squadra.codice));
                             dispatch(new UnselectSquadraComposizione(squadra));
                         });
+                        const codiciSquadre = boxPartenza.squadreComposizione.map((sC: SquadraComposizione) => sC.codice);
+                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
                     }
                 }
             }
@@ -261,21 +265,26 @@ export class BoxPartenzaState {
     @Action(AddSquadreBoxPartenza)
     addSquadraBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: AddSquadreBoxPartenza): void {
         const state = getState();
+        const boxPartenzaList = state.boxPartenzaList;
+        const codiciSquadreBoxPartenzaList = boxPartenzaList?.map((b: BoxPartenza) => b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice)[0]);
         if (action.preAccoppiato) {
             setState(
                 produce(state, draft => {
                     draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                         if (box.id === state.idBoxPartenzaSelezionato) {
                             box.squadreComposizione = [];
+                            const dataList = [] as AddConcorrenzaDtoInterface[];
                             action.squadre.forEach((squadra: SquadraComposizione) => {
-                                console.log('select squadra', squadra.codice);
-                                const data = {
-                                    type: TipoConcorrenzaEnum.Squadra,
-                                    value: squadra.codice
-                                } as AddConcorrenzaDtoInterface;
-                                dispatch(new AddConcorrenza(data));
+                                if (!codiciSquadreBoxPartenzaList.includes(squadra.codice)) {
+                                    const data = {
+                                        type: TipoConcorrenzaEnum.Squadra,
+                                        value: squadra.codice
+                                    } as AddConcorrenzaDtoInterface;
+                                    dataList.push(data);
+                                }
                                 box.squadreComposizione.push(squadra);
                             });
+                            dispatch(new AddConcorrenza(dataList));
                         }
                     });
                 })
@@ -285,15 +294,18 @@ export class BoxPartenzaState {
                 produce(state, draft => {
                     draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                         if (box.id === state.idBoxPartenzaSelezionato) {
+                            const dataList = [] as AddConcorrenzaDtoInterface[];
                             action.squadre.forEach((squadra: SquadraComposizione) => {
-                                console.log('select squadra', squadra.codice);
-                                const data = {
-                                    type: TipoConcorrenzaEnum.Squadra,
-                                    value: squadra.codice
-                                } as AddConcorrenzaDtoInterface;
-                                dispatch(new AddConcorrenza(data));
+                                if (!codiciSquadreBoxPartenzaList.includes(squadra.codice)) {
+                                    const data = {
+                                        type: TipoConcorrenzaEnum.Squadra,
+                                        value: squadra.codice
+                                    } as AddConcorrenzaDtoInterface;
+                                    dataList.push(data);
+                                }
                                 box.squadreComposizione.push(squadra);
                             });
+                            dispatch(new AddConcorrenza(dataList));
                         }
                     });
                 })
@@ -309,13 +321,14 @@ export class BoxPartenzaState {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box.id === state.idBoxPartenzaSelezionato) {
                         let index = null;
+                        const codiciSquadre = [] as string[];
                         box.squadreComposizione.forEach((squadra: SquadraComposizione, i) => {
                             if (action.idSquadra === squadra.codice) {
-                                console.log('remove squadra', squadra.codice);
-                                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, squadra.codice));
+                                codiciSquadre.push(squadra.codice);
                                 index = i;
                             }
                         });
+                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
                         box.squadreComposizione.splice(index, 1);
                     }
                 });
@@ -347,10 +360,10 @@ export class BoxPartenzaState {
                             type: TipoConcorrenzaEnum.Mezzo,
                             value: action.mezzo.mezzo.codice
                         } as AddConcorrenzaDtoInterface;
-                        dispatch(new AddConcorrenza(data));
+                        dispatch(new AddConcorrenza([data]));
                         if (box.mezzoComposizione) {
                             console.log('remove mezzo', box.mezzoComposizione.mezzo.codice);
-                            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, box.mezzoComposizione.mezzo.codice));
+                            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [box.mezzoComposizione.mezzo.codice]));
                         }
                         box.mezzoComposizione = action.mezzo;
                     }
@@ -386,7 +399,7 @@ export class BoxPartenzaState {
                     if (box.id === state.idBoxPartenzaSelezionato) {
                         if (box.mezzoComposizione) {
                             console.log('remove mezzo', box.mezzoComposizione.mezzo.codice);
-                            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, box.mezzoComposizione.mezzo.codice));
+                            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [box.mezzoComposizione.mezzo.codice]));
                         }
                         box.mezzoComposizione = null;
                     }
@@ -396,7 +409,15 @@ export class BoxPartenzaState {
     }
 
     @Action(ClearBoxPartenze)
-    clearBoxPartenze({ patchState, dispatch }: StateContext<BoxPartenzaStateModel>): void {
+    clearBoxPartenze({ getState, patchState, dispatch }: StateContext<BoxPartenzaStateModel>): void {
+        const state = getState();
+        const boxPartenzaList = state.boxPartenzaList;
+        boxPartenzaList.forEach((b: BoxPartenza) => {
+            console.log('remove mezzo', b.mezzoComposizione.mezzo.codice);
+            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [b.mezzoComposizione.mezzo.codice]));
+            const codiciSquadre = b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice);
+            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+        });
         dispatch(new ClearDirection());
         patchState({
             boxPartenzaList: BoxPartenzaStateDefaults.boxPartenzaList
@@ -433,7 +454,7 @@ export class BoxPartenzaState {
             type: TipoConcorrenzaEnum.Mezzo,
             value: squadraComp.mezziInRientro[0].mezzo.codice
         } as AddConcorrenzaDtoInterface;
-        dispatch(new AddConcorrenza(data));
+        dispatch(new AddConcorrenza([data]));
 
         // creo i nuovi box partenza
         setState(
@@ -486,7 +507,7 @@ export class BoxPartenzaState {
                 type: TipoConcorrenzaEnum.Mezzo,
                 value: squadraComp.mezziPreaccoppiati[0].mezzo.codice
             } as AddConcorrenzaDtoInterface;
-            dispatch(new AddConcorrenza(data));
+            dispatch(new AddConcorrenza([data]));
 
             // creo i nuovi box partenza
             setState(

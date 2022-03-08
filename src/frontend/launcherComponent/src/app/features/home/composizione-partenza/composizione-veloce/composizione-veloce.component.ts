@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { BoxPartenzaPreAccoppiati } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
@@ -6,6 +6,7 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Store } from '@ngxs/store';
 import { ConfirmPartenze, SetVisualizzaPercosiRichiesta } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import {
+    ClearPreaccoppiati,
     ClearPreAccoppiatiSelezionatiComposizione,
     GetListaComposizioneVeloce,
     HoverInPreAccoppiatoComposizione,
@@ -33,12 +34,13 @@ import RouteTask from '@arcgis/core/tasks/RouteTask';
 import RouteParameters from '@arcgis/core/rest/support/RouteParameters';
 import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import { TravelModeService } from '../../../maps/map-service/travel-mode.service';
+import { DeleteConcorrenza } from '../../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-composizione-veloce',
     templateUrl: './composizione-veloce.component.html',
-    styleUrls: ['./composizione-veloce.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./composizione-veloce.component.css']
 })
 export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -47,10 +49,8 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() filtri: any;
 
-    // Loading Liste Mezzi e Squadre
-    @Input() loadingListe: boolean;
-    @Input() loadingSquadre: boolean;
-    @Input() loadingMezzi: boolean;
+    // Loading Lista Preaccoppiati
+    @Input() loadingPreaccoppiati: boolean;
 
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
@@ -78,8 +78,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     partenzeRichiesta: Partenza[];
 
     constructor(private store: Store,
-                private travelModeService: TravelModeService,
-                private cdRef: ChangeDetectorRef) {
+                private travelModeService: TravelModeService) {
     }
 
     ngOnInit(): void {
@@ -139,7 +138,6 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
                             const tempoPercorrenza = data.routeResults[0]?.route?.attributes?.Total_TravelTime ? data.routeResults[0].route.attributes.Total_TravelTime : data.routeResults[0]?.route?.attributes?.Total_TruckTravelTime;
                             p.tempoPercorrenza = tempoPercorrenza.toFixed(2);
                         }
-                        this.cdRef.detectChanges();
                     });
                 }
             });
@@ -147,8 +145,17 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.preAccoppiati?.forEach((p: BoxPartenzaPreAccoppiati) => {
+            if (this.idPreAccoppiatiSelezionati.includes(p.id)) {
+                console.log('remove mezzo', p.codiceMezzo);
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.codiceMezzo]));
+                const codiciSquadre = p.squadre.map((sC: SquadraComposizione) => sC.codice);
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+            }
+        });
         this.store.dispatch([
             new ClearPreAccoppiatiSelezionatiComposizione(),
+            new ClearPreaccoppiati(),
             new ResetPaginationPreaccoppiati()
         ]);
     }

@@ -39,6 +39,11 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
 import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { makeCopy } from '../../../shared/helper/function-generiche';
+import { AddConcorrenzaDtoInterface } from '../../../shared/interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { ConcorrenzaState } from '../../../shared/store/states/concorrenza/concorrenza.state';
+import { ConcorrenzaInterface } from '../../../shared/interface/concorrenza.interface';
+import { AuthState } from '../../auth/store/auth.state';
+import { TurnOffComposizione } from '../store/actions/view/view.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -58,11 +63,10 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(ComposizionePartenzaState.visualizzaPercorsiRichiesta) visualizzaPercorsiRichiesta$: Observable<boolean>;
 
     // Loading
-    @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
-    @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingSquadre) loadingSquadre$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingMezzi) loadingMezzi$: Observable<boolean>;
-    loadingListe: boolean;
+    @Select(ComposizionePartenzaState.loadingPreaccoppiati) loadingPreaccoppiati$: Observable<boolean>;
+    @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
 
     // Filterbar
     @Select(TipologicheMezziState.tipologiche) tipologicheMezzi$: Observable<ListaTipologicheMezzi>;
@@ -126,7 +130,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     constructor(private modalService: NgbModal,
                 private store: Store) {
         this.getRichiestaComposizione();
-        this.getLoadingListe();
         this.getBoxPartenzaList();
         this.getTipologicheMezzi();
     }
@@ -154,16 +157,19 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             this.richiestaComposizione$.subscribe((r: SintesiRichiesta) => {
                 if (r) {
                     this.richiesta = r;
-                    this.store.dispatch(new AddConcorrenza({ type: TipoConcorrenzaEnum.Richiesta, value: this.richiesta.id }));
+                    const currentUser = this.store.selectSnapshot(AuthState.currentUser);
+                    const concorrenza = this.store.selectSnapshot(ConcorrenzaState.concorrenza);
+                    const richiestaConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === this.richiesta.codice)[0];
+                    if (!richiestaConcorrenza) {
+                        const data = {
+                            type: TipoConcorrenzaEnum.Richiesta,
+                            value: this.richiesta.codice
+                        } as AddConcorrenzaDtoInterface;
+                        this.store.dispatch(new AddConcorrenza([data]));
+                    } else if (richiestaConcorrenza.idOperatore !== currentUser.id) {
+                        this.store.dispatch(new TurnOffComposizione());
+                    }
                 }
-            })
-        );
-    }
-
-    getLoadingListe(): void {
-        this.subscription.add(
-            this.loadingListe$.subscribe((loading: boolean) => {
-                this.loadingListe = loading;
             })
         );
     }

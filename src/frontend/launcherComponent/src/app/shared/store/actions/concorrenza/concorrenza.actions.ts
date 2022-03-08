@@ -16,14 +16,14 @@ export class SetConcorrenza {
 export class AddConcorrenza {
     static readonly type = '[Concorrenza] Add Concorrenza';
 
-    constructor(public data: AddConcorrenzaDtoInterface) {
+    constructor(public data: AddConcorrenzaDtoInterface[]) {
     }
 }
 
 export class DeleteConcorrenza {
     static readonly type = '[Concorrenza] Delete Concorrenza';
 
-    constructor(public type: TipoConcorrenzaEnum, public value?: string) {
+    constructor(public type: TipoConcorrenzaEnum, public value?: string[]) {
     }
 }
 

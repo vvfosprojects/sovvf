@@ -72,9 +72,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 else
                     lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Attuale.Squadre).ToList();
 
-                if (lstSquadre.Count() > 0)
+                if (lstSquadre.Count > 0)
                 {
-                    var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).ToList();
+                    var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && s.CodiciMezziPreaccoppiati.Count() > 0).ToList();
 
                     return await Task.Run(() => //OTTENGO I DATI
                     {
@@ -84,9 +84,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                         {
                             Parallel.ForEach(query.CodiceSede, codice =>
                             {
-                                var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
-
-                                lstSquadre.Where(s => !s.spotType.Equals("MODULE") && query.Filtri.CodiceDistaccamento.Any(x => x.Equals(s.Distaccamento))).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
+                                lstSquadrePreaccoppiate.Where(s => !s.spotType.Equals("MODULE") && query.Filtri.CodiceDistaccamento.Any(x => x.Equals(s.Distaccamento))).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                                     lstSquadreMezzo.TryAdd(m, lstSquadre
                                         .Where(s => s.Codice.Equals(squadra.Codice))
                                         .Select(s => new SO115App.API.Models.Classi.Composizione.Squadra(s.Codice, s.Descrizione, MappaStatoSquadra(lstStatoSquadre, s.Codice), MapMembriInComponenti(s.Membri.ToList())))
@@ -97,15 +95,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                         {
                             Parallel.ForEach(query.CodiceSede, codice =>
                             {
-                                var lstSquadre = _getSquadre.GetAllByCodiceDistaccamento(codice.Split('.')[0]).Result.Squadre.ToList();
-
-                                lstSquadre.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
+                                lstSquadrePreaccoppiate.Where(s => !s.spotType.Equals("MODULE")).ToList().ForEach(squadra => squadra.CodiciMezziPreaccoppiati?.ToList().ForEach(m =>
                                     lstSquadreMezzo.TryAdd(m, lstSquadre
                                         .Where(s => s.Codice.Equals(squadra.Codice))
                                         .Select(s => new SO115App.API.Models.Classi.Composizione.Squadra(s.Codice, s.Descrizione, MappaStatoSquadra(lstStatoSquadre, s.Codice), MapMembriInComponenti(s.Membri.ToList())))
                                         .ToArray())));
                             });
                         }
+
                         lstMezzi = _getMezzi.GetInfo(lstSquadreMezzo.Select(lst => lst.Key).ToList());
 
                         return lstSquadreMezzo;
@@ -121,7 +118,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                             Appartenenza = MezzoSquadra.CodiceDistaccamento,
                             Coordinate = GetCoordinateMezzo(MezzoSquadra.CodiceMezzo, DescSede),
                             CodiceMezzo = MezzoSquadra.CodiceMezzo,
-                            Distaccamento = DescSede.DescDistaccamento/*.Replace("Comando VV.F. di ", "Centrale ").Replace("Distaccamento Cittadino ", "")*/.ToUpper(),
+                            Distaccamento = DescSede.DescDistaccamento.ToUpper(),
                             DescrizioneMezzo = MezzoSquadra.Descrizione,
                             GenereMezzo = MezzoSquadra.Genere,
                             StatoMezzo = lstStatoMezzi.Result.Find(m => m.CodiceMezzo.Equals(MezzoSquadra.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede,
@@ -132,13 +129,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     }).ToList());
                 }
                 else
-                {
-                    var listaVuota = new List<PreAccoppiato>();
-                    return listaVuota;
-                }
+                    return new List<PreAccoppiato>(); 
             }
             else
-                return null;
+                return new List<PreAccoppiato>();
         }
 
         private API.Models.Classi.Condivise.Squadra.StatoSquadra MappaStatoSquadra(Task<List<StatoOperativoSquadra>> lstStatoSquadre, string codiceSquadra)
@@ -178,7 +172,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             return componenti;
         }
 
-        private API.Models.Classi.Condivise.Coordinate GetCoordinateMezzo(string codiceMezzo, Distaccamento distaccamento)
+        private Coordinate GetCoordinateMezzo(string codiceMezzo, Distaccamento distaccamento)
         {
             var posizioneMezzo = pFlotta.Find(m => m.CodiceMezzo.Equals(codiceMezzo));
 

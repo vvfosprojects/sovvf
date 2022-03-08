@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Classi.Concorrenza;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneConcorrenza;
 using SO115App.SignalR.Utility;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneConcorrenza
@@ -17,13 +19,13 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
             _getGerarchiaToSend = getGerarchiaToSend;
         }
 
-        public async Task SendNotification(Concorrenza command)
+        public async Task SendNotification(AddBlockCommand command)
         {
             var SediDaNotificare = _getGerarchiaToSend.Get(command.CodComando);
 
             foreach (var sede in SediDaNotificare)
             {
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyConcorrenza", command);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyConcorrenza", command.concorrenza);
             }
         }
     }
