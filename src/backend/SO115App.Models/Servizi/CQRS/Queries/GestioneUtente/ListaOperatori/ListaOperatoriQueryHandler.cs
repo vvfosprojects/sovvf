@@ -22,6 +22,7 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetUtentiByCodiciSedi _getUtenteByCodiciSedi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetSedi _getSedi;
 
         /// <summary>
         ///   costruttore della classe
@@ -49,11 +51,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
         /// <param name="getUtenteByCodiciSedi">
         ///   interfaccia per la lista degli utenti a partire da una lista di codici sede
         /// </param>
-        public ListaOperatoriQueryHandler(IGetUtenteById getUtenteById, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetUtentiByCodiciSedi getUtenteByCodiciSedi)
+        public ListaOperatoriQueryHandler(IGetSedi getSedi, IGetUtenteById getUtenteById, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetUtentiByCodiciSedi getUtenteByCodiciSedi)
         {
             _getUtenteById = getUtenteById;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getUtenteByCodiciSedi = getUtenteByCodiciSedi;
+            _getSedi = getSedi;
         }
 
         /// <summary>
@@ -64,10 +67,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
         /// <returns>ListaOperatoriResult</returns>
         public ListaOperatoriResult Handle(ListaOperatoriQuery query)
         {
-            //var codiciSede = query.CodiciSede.Split(',');
             var utente = _getUtenteById.GetUtenteByCodice(query.IdUtente);
             var listaCodiciSedeRuoloAdmin = new List<string>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var lstSediAll = _getSedi.GetAll();
             var listaPin = new List<PinNodo>();
 
             foreach (var ruolo in utente.Ruoli.FindAll(x => x.Descrizione.Equals("Amministratore")))
@@ -86,7 +89,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             var utentiByCodSede = _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search);
             if (query.Filters.CodSede != null)
             {
-                List<Utente> listaFiltrata = new List<Utente>();
+                var listaFiltrata = new List<Utente>();
                 foreach (string sede in query.Filters.CodSede)
                 {
                     listaFiltrata.AddRange(utentiByCodSede.FindAll(x => x.Ruoli.Any(y => y.CodSede.Equals(sede))).ToList());
@@ -99,25 +102,32 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             var utentiPaginati = utentiByCodSede.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
             query.Pagination.TotalItems = utentiByCodSede.Count;
 
-            List<Role> listaSediPresenti = new List<Role>();
+            var listaSediPresenti = new List<Role>();
 
-            query.Filters.Search = null;
-            foreach (var UtenteInLista in _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search))
+            var filtriSedi = query.Utente.Ruoli.Select(r => r.CodSede).Distinct().OrderByDescending(s => s == "CON");
+
+            foreach (var filtroSede in filtriSedi)
             {
-                foreach (var ruolo in UtenteInLista.Ruoli)
+                if (filtroSede.Contains(".1000")) //comando
                 {
-                    Role ruoloToAdd = new Role("", ruolo.CodSede)
-                    {
-                        DescSede = ruolo.DescSede
-                    };
+                    var lst = lstSediAll.Result
+                        .Where(p => p.Codice.Contains($"{filtroSede.Split('.')[0]}.") && !listaSediPresenti.Any(sede => sede.CodSede.Equals(p.Codice)))
+                        .Select(p => new Role("", p.Codice) { DescSede = lstSediAll.Result.Find(s => s.Codice.Equals(p.Codice)).Descrizione });
 
-                    if (listaSediPresenti.Count > 0)
-                    {
-                        if (listaSediPresenti.Find(x => x.CodSede.Equals(ruoloToAdd.CodSede)) == null)
-                            listaSediPresenti.Add(ruoloToAdd);
-                    }
-                    else
-                        listaSediPresenti.Add(ruoloToAdd);
+                    listaSediPresenti.AddRange(lst);
+                }
+                else if (filtroSede.Contains('.'))
+                {
+                    if(!listaSediPresenti.Any(sede => sede.CodSede.Equals(filtroSede)))
+                        listaSediPresenti.Add(new Role("", filtroSede) { DescSede = lstSediAll.Result.FirstOrDefault(s => s.Codice.Equals(filtroSede))?.Descrizione });
+                }
+                else if (filtroSede.Equals("CON"))
+                {
+                    var lst = lstSediAll.Result.Select(p => new Role("", p.Codice) { DescSede = p.Descrizione });
+
+                    listaSediPresenti = lst.ToList();
+
+                    break;
                 }
             }
 
@@ -125,7 +135,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             {
                 DataArray = utentiPaginati,
                 Pagination = query.Pagination,
-                ListaSediPresenti = listaSediPresenti.ToHashSet().ToList()
+                ListaSediPresenti = listaSediPresenti.Where(s => s.CodSede.Contains('.')).ToList()
             };
         }
     }

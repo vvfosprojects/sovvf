@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
 
@@ -37,6 +38,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
         ///   l'id utente che richiede la lista degli operatori di sala
         /// </summary>
         public string IdUtente { get; set; }
+        public Utente Utente { get; set; }
 
         /// <summary>
         ///   l'oggetto paginazione con i parametri utili per la paginazione
