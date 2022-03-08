@@ -62,9 +62,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 composizioneMezzi = _iGetComposizioneMezzi.Get(query);
 
-                if (composizioneMezzi != null && composizioneMezzi.Count > 0)
-                    _setMezzi.Set(composizioneMezzi);
-
                 if (composizioneMezzi == null || composizioneMezzi.Count == 0)
                     composizioneMezzi = _getMezzi.GetByCodiciSede(query.Filtro?.CodiciDistaccamenti);
             }
