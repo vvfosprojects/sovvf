@@ -86,7 +86,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 }
             }
 
+            var utentiFull = _getUtenteByCodiciSedi.Get(lstSediAll.Result.Select(s => s.Codice).Distinct().ToList());
             var utentiByCodSede = _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search);
+
             if (query.Filters.CodSede != null)
             {
                 var listaFiltrata = new List<Utente>();
@@ -104,9 +106,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
             var listaSediPresenti = new List<Role>();
 
-            var filtriSedi = query.Utente.Ruoli.Select(r => r.CodSede).Distinct().OrderByDescending(s => s == "CON");
+            var filtriSedi = query.Utente.Ruoli.Select(r => r.CodSede).Distinct().OrderByDescending(s => s == "00");
 
+            //eliminare vice capo (000)
             //considerare ricorsività
+            //aggiungere logica direzioni regionali
+            //correggere textsearch
             foreach (var filtroSede in filtriSedi)
             {
                 if (filtroSede.Contains(".1000")) // COMANDO
@@ -123,7 +128,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                     if(!listaSediPresenti.Any(sede => sede.CodSede.Equals(filtroSede)))
                         listaSediPresenti.Add(new Role("", filtroSede) { DescSede = lstSediAll.Result.FirstOrDefault(s => s.Codice.Equals(filtroSede))?.Descrizione });
                 }
-                else if (filtroSede.Equals("CON")) // CON
+                else if (filtroSede.Equals("00")) // CON
                 {
                     var lst = lstSediAll.Result.Select(p => new Role("", p.Codice) { DescSede = p.Descrizione });
 
@@ -143,7 +148,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 Pagination = query.Pagination,
                 ListaSediPresenti = listaSediPresenti
                     //filtro le sedi senza utenti (non vengono visualizzate)
-                    .Where(sede => utentiByCodSede.SelectMany(u => u.Ruoli.Select(r => r.CodSede)).Distinct().Contains(sede.CodSede))
+                    .Where(sede => utentiFull.SelectMany(u => u.Ruoli.Select(r => r.CodSede)).Distinct().Contains(sede.CodSede))
                     .ToList()
             };
         }
