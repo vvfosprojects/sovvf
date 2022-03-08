@@ -59,18 +59,13 @@ export class NavbarState {
 
     @Action(SetDataNavbar)
     setDataNavbar({ patchState, dispatch }: StateContext<NavbarStateModel>, action: SetDataNavbar): void {
-        // Imposto correttamente il valore di CON
-        const listaSediMapped = action.settings.listaSedi.children[0];
-        listaSediMapped.text = 'CON';
-        listaSediMapped.value = '00';
-
         patchState({
-            listaSedi: listaSediMapped,
+            listaSedi: action.settings.listaSedi,
             loaded: true
         });
         dispatch([
             new SetRuoliUtenteLoggato(action.settings.utente.ruoli),
-            new SetListaSediTreeview(listaSediMapped),
+            new SetListaSediTreeview(action.settings.listaSedi),
             new SetInitCentroMappa(action.settings.centroMappaMarker),
             new SetCurrentPswEsri(action.settings.pwESRI),
             new SetCurrentUserEsri(action.settings.userESRI)
