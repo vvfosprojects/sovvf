@@ -74,7 +74,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
                     var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Richiesta.Id));
 
-                    if (findBlock != null)
+                    if (findBlock != null && findBlock.Count > 0)
                     {
                         var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(user.Id));
                         if (verificaUtente.Count == 0)
