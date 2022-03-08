@@ -22,6 +22,7 @@ using CQRS.Queries;
 using DomainModel.CQRS.Commands.AddIntervento;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
@@ -48,16 +49,19 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
 
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IConfiguration _config;
 
         public NotificationInserimentoChiamata(//IHubContext<NotificationHub> notificationHubContext,
                                                IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
-                                               GetGerarchiaToSend getGerarchiaToSend)
+                                               GetGerarchiaToSend getGerarchiaToSend,
+                                               IConfiguration config)
         {
             //_notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _config = config;
         }
 
         public async Task SendNotification(AddInterventoCommand command)
@@ -65,7 +69,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             #region connessione al WSSignalR
 
             var hubConnection = new HubConnectionBuilder()
-                        .WithUrl("https://localhost:44381/SubHub")
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
                         .Build();
 
             #endregion connessione al WSSignalR

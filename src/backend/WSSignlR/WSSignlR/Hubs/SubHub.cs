@@ -45,29 +45,59 @@ namespace WSSignlR.Hubs
 
         #endregion Add/Remove Group
 
-        #region Inserimento/Modifica Intervento
+        #region Aggiornamento BOX
 
         public void NotifyGetBoxInterventi(BoxInterventi boxInterventi, string sede)
         {
             Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
         }
 
+        #endregion Aggiornamento BOX
+
+        #region Inserimento/Modifica Intervento
+
         public void SaveAndNotifySuccessChiamata(SintesiRichiesta sintesi, string sede)
         {
             Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
         }
+
+        public void ModifyAndNotifySuccess(SintesiRichiesta sintesi, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", sintesi);
+        }
+
+        #endregion Inserimento/Modifica Intervento
+
+        #region Marker
 
         public void NotifyGetRichiestaMarker(SintesiRichiestaMarker sintesi, string sede)
         {
             Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", sintesi);
         }
 
+        #endregion Marker
+
+        #region Coda Chiamate
+
         public void NotifyAddChiamateCodaChiamate(CounterNotifica counter, string sede)
         {
             Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counter);
         }
 
-        #endregion Inserimento/Modifica Intervento
+        #endregion Coda Chiamate
 
+        #region AFM
+
+        public void NotifySuccessAnnullamentoAFM(SintesiRichiesta sintesi, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifySuccessAnnullamentoAFM", sintesi);
+        }
+
+        public void NotifyErrorAFM(String note, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyErrorAFM", note);
+        }
+
+        #endregion AFM
     }
 }
