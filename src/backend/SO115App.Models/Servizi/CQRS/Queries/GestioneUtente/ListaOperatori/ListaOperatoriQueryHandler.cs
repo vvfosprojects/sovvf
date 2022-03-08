@@ -108,10 +108,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
             var filtriSedi = query.Utente.Ruoli.Select(r => r.CodSede).Distinct().OrderByDescending(s => s == "00");
 
-            //eliminare vice capo (000)
             //considerare ricorsività
             //aggiungere logica direzioni regionali
-            //correggere textsearch
+
+            //correggere textsearch (dipende)
             foreach (var filtroSede in filtriSedi)
             {
                 if (filtroSede.Contains(".1000")) // COMANDO
