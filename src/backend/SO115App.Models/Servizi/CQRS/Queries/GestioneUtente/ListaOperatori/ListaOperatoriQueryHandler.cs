@@ -109,9 +109,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             //ORDINO PER CON PERCHE' IL CON HA IL BREAK NEL CICLO, QUINDI VIENE EFFETTUATO UN SINGOLO CICLO E QUINDI UN SINGOLO INSERIMENTO (TUTTE LE SEDI)
             var filtriSedi = query.Utente.Ruoli.Select(r => r.CodSede).Distinct().OrderByDescending(s => s == "00");
 
-            //considerare ricorsività
-            //aggiungere logica direzioni regionali
-
             foreach (var filtroSede in filtriSedi)
             {
                 var ricorsivo = query.Utente.Ruoli.FirstOrDefault(s => s.CodSede.Equals(filtroSede) && s.Descrizione.Equals("Amministratore"))?.Ricorsivo;
@@ -151,13 +148,32 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
                     break;
                 }
-                else // DIREZIONI REGINALI
+                else // DIREZIONE REGIONALE
                 {
-                    //if(filtroSede)
+                    var lst = lstSediAll.Result
+                            .Where(s => !s.Codice.Contains('.') && !s.Codice.Contains("00"))
+                            .Select(s => new Role("", s.Codice) { DescSede = s.Descrizione })
+                            .ToList();
+
+                    listaSediPresenti.AddRange(lst);
+
+                    if (ricorsivo.Value) //Aggiungo figli
+                    {
+                        foreach (var sede in lst)
+                        {
+                            var figliRegionale = sediAlberate.Result.Figli.First(a => a.Codice.Equals(sede.CodSede)).Figli.Select(s => s.Codice).ToList();
+
+                            var lst2 = lstSediAll.Result.Where(s => figliRegionale.Contains(s.Codice)).Select(s => new Role("", s.Codice) { DescSede = s.Descrizione }).ToList();
+
+                            listaSediPresenti.AddRange(lst2);
+                        }
+                    }
                 }
             }
 
-            var sediUtenti = utentiFull.SelectMany(u => u.Ruoli.Where(r => r.Descrizione.Equals("Amministratore")).Select(r => r.CodSede)).Distinct();
+            var sediUtenti = utentiFull
+                .SelectMany(u => u.Ruoli.Where(r => r.Descrizione.Equals("Amministratore")).Select(r => r.CodSede))
+                .Distinct().ToList();
 
             return new ListaOperatoriResult
             {
