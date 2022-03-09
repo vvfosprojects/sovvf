@@ -33,6 +33,7 @@ import { LoadingState } from '../../../shared/store/states/loading/loading.state
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
+import { DeleteAllConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -113,6 +114,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
         this.store.dispatch([
+            new DeleteAllConcorrenza(),
             new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
             new ClearRichieste(),
             new ClearRichiestaSelezionata(),
