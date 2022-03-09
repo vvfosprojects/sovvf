@@ -107,7 +107,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             var listaSediPresenti = new List<Role>();
 
             //ORDINO PER CON PERCHE' IL CON HA IL BREAK NEL CICLO, QUINDI VIENE EFFETTUATO UN SINGOLO CICLO E QUINDI UN SINGOLO INSERIMENTO (TUTTE LE SEDI)
-            var filtriSedi = query.Utente.Ruoli.Select(r => r.CodSede).Distinct().OrderByDescending(s => s == "00");
+            var filtriSedi = query.Utente.Ruoli.Select(r => r.CodSede).Distinct().OrderByDescending(s => s == "00").ThenBy(s => s);
 
             foreach (var filtroSede in filtriSedi)
             {
@@ -151,7 +151,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 else // DIREZIONE REGIONALE
                 {
                     var lst = lstSediAll.Result
-                            .Where(s => !s.Codice.Contains('.') && !s.Codice.Contains("00"))
+                            .Where(s =>s.Codice.Equals(filtroSede) && !s.Codice.Contains('.') && !s.Codice.Contains("00"))
                             .Select(s => new Role("", s.Codice) { DescSede = s.Descrizione })
                             .ToList();
 
@@ -181,7 +181,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 Pagination = query.Pagination,
                 ListaSediPresenti = lstSediAll.Result
                     //filtro le sedi senza utenti (non vengono visualizzate)
-                    .Where(s => sediUtenti.Contains(s.Codice))
+                    .Where(s => sediUtenti.Contains(s.Codice) && listaSediPresenti.Select(p => p.CodSede).Contains(s.Codice))
                     .Select(s => new Role("", s.Codice) { DescSede = s.Descrizione })
                     .ToList()
             };
