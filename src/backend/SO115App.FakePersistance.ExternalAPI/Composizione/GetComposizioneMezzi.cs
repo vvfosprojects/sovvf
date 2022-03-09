@@ -30,14 +30,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetStatoMezzi _getMezziPrenotati;
         private readonly IOrdinamentoMezzi _ordinamento;
 
-        private readonly ISetComposizioneMezzi _setComposizioneMezzi;
-
         private readonly IGetSedi _getSedi;
 
         public GetComposizioneMezzi(IGetSedi getSedi,
             IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre,
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
-            IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi)
+            IOrdinamentoMezzi ordinamento)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
@@ -45,7 +43,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
             _ordinamento = ordinamento;
-            _setComposizioneMezzi = setComposizioneMezzi;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -154,11 +151,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 });
 
                 var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList()).Result;
+                //var lstMezziPagination = lstMezziNuova
+                //    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                //    .Take(query.Pagination.PageSize).ToList();
 
-
-                if (lstMezziNuova != null && lstMezziNuova.Count > 0)
-                    _setComposizioneMezzi.Set(lstMezziNuova);
-
+                //return lstMezzi;
                 return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
