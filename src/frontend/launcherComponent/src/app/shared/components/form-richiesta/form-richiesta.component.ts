@@ -802,7 +802,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             latitudine: this.f.latitudine?.value,
             longitudine: this.f.longitudine?.value
         };
-        const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.descDistaccamento.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
+        const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
         if (competenzaCentrale) {
             const codCompetenze = [competenzaCentrale];
             this.f.codCompetenzaCentrale.patchValue(competenzaCentrale);
