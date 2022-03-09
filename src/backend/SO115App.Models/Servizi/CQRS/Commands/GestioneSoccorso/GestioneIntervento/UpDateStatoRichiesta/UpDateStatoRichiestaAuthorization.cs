@@ -70,7 +70,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 
                     var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(richiesta.Codice));
 
-                    if (findBlock != null && findBlock.Count > 0)
+                    if (findBlock != null)
                         if (findBlock != null)
                         {
                             var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.IdOperatore));

@@ -75,7 +75,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
                     var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Chiamata.Id));
 
-                    if (findBlock != null && findBlock.Count > 0)
+                    if (findBlock != null)
                     {
                         var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.CodUtente));
                         if (verificaUtente.Count == 0)
