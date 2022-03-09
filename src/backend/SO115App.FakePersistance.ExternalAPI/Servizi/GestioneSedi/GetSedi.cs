@@ -146,15 +146,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Indirizzo = null
             }));
 
-            result.AddRange(lstSedi.Figli.First().Figli.Select(f => new Sede()
-            {
-                Codice = f.Codice,
-                Descrizione = f.Nome,
-                Coordinate = f.Coordinate,
-                Indirizzo = null
-            }));
-
-            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
+            result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
             {
                 Codice = ff.Codice,
                 Descrizione = ff.Nome,
@@ -162,13 +154,37 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Indirizzo = null
             })));
 
-            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
+            result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
             {
-                Codice = fff.Codice,
-                Descrizione = fff.Nome,
-                Coordinate = fff.Coordinate,
+                Codice = ff.Codice,
+                Descrizione = ff.Nome,
+                Coordinate = ff.Coordinate,
                 Indirizzo = null
             }))));
+
+            //result.AddRange(lstSedi.Figli.First().Figli.Select(f => new Sede()
+            //{
+            //    Codice = f.Codice,
+            //    Descrizione = f.Nome,
+            //    Coordinate = f.Coordinate,
+            //    Indirizzo = null
+            //}));
+
+            //result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
+            //{
+            //    Codice = ff.Codice,
+            //    Descrizione = ff.Nome,
+            //    Coordinate = ff.Coordinate,
+            //    Indirizzo = null
+            //})));
+
+            //result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
+            //{
+            //    Codice = fff.Codice,
+            //    Descrizione = fff.Nome,
+            //    Coordinate = fff.Coordinate,
+            //    Indirizzo = null
+            //}))));
 
             return result.Distinct().ToList();
         }
@@ -350,7 +366,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                     listaSediMarker.Add(sedeMarker);
                 }
-
             });
 
             return listaSediMarker.ToList();
@@ -360,7 +375,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             if (sede.Codice.Contains(".1000"))
                 return "Comando";
-            else 
+            else
             {
                 if (!sede.Codice.Contains(".1000"))
                 {

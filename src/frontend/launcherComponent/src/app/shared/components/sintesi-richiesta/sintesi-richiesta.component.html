@@ -445,7 +445,8 @@
                                 </div>
                                 <!-- II colonna Lista Partenze -->
                                 <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0"
-                                     class="col-8 px-0 border border-lista-partenze">
+                                     class="col-8 px-0 border border-lista-partenze"
+                                     style="height: fit-content">
                                     <div class="scroll-y max-height-richiesta">
                                         <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
                                         <app-lista-partenze [codiceRichiesta]="richiesta.codice"
