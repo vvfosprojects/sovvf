@@ -191,19 +191,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     var con = GetInfoSede("00").Result;
                     con.coordinate = "42.28313392189123,11.682171591796926";
 
-                    var conFiglio = GetInfoSede("001").Result;
-
                     //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
                     var result = new UnitaOperativa(con.Id, con.Descrizione, con.Coordinate);
-
-                    result.AddFiglio(new UnitaOperativa(conFiglio.Id, conFiglio.Descrizione, conFiglio.Coordinate));
 
                     //REGIONI
                     foreach (var regionale in lstRegionali)
                     {
                         var info = GetInfoSede(regionale.id).Result;
 
-                        result.Figli.First().AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString()))));
+                        result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString()))));
                     };
 
                     //PROVINCE
@@ -254,7 +250,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                                     lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
-                                    result.Figli.First().Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
+                                    result.Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
                                 }
                             }
                             catch { }

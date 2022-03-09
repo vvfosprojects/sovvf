@@ -109,18 +109,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
             else
             {
-                switch (command.StatoMezzo)
-                {
-                    case Costanti.MezzoInViaggio:
-                        if (ultimoEvento is ArrivoSulPosto || ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
-                            throw new System.Exception("Sequenza stati non congurente.");
-                        break;
+                //switch (command.StatoMezzo)
+                //{
+                //    case Costanti.MezzoInViaggio:
+                //        if (ultimoEvento is ArrivoSulPosto || ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
+                //            throw new System.Exception("Sequenza stati non congurente.");
+                //        break;
 
-                    case Costanti.MezzoSulPosto:
-                        if (ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
-                            throw new System.Exception("Sequenza stati non congurente.");
-                        break;
-                }
+                //    case Costanti.MezzoSulPosto:
+                //        if (ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
+                //            throw new System.Exception("Sequenza stati non congurente.");
+                //        break;
+                //}
 
                 string statoMezzoReale = "";
 
