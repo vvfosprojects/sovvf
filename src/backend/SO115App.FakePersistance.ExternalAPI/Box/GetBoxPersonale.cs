@@ -99,22 +99,25 @@ namespace SO115App.ExternalAPI.Fake.Box
                         Nominativo = $"{m.Nome} {m.Cognome}",
                         Ruolo = m.Ruolo
                     }))?.ToList()
-                },
-                PersonaleTotale = new ConteggioPersonale
-                {
-                    Current = workshift.Select(w => w?.Attuale?.Squadre?.Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
-                    Next = workshift.Select(w => w?.Successivo?.Squadre?.Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
-                    Previous = workshift.Select(w => w?.Precedente?.Squadre?.Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
-                },
-                SquadreServizio = new ConteggioPersonale
-                {
-                    Current = workshift.SelectMany(w => w?.Attuale?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
-                    Next = workshift.SelectMany(w => w?.Successivo?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
-                    Previous = workshift.SelectMany(w => w?.Precedente?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count()
-                },
-                SquadreAssegnate = statoSquadre.Count,
-                workShift = workshift
+                }
             };
+
+            result.PersonaleTotale = new ConteggioPersonale
+            {
+                Current = workshift.Select(w => w?.Attuale?.Squadre?.Where(s => s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
+                Next = workshift.Select(w => w?.Successivo?.Squadre?.Where(s => s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
+                Previous = workshift.Select(w => w?.Precedente?.Squadre?.Where(s => s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
+            };
+
+            result.SquadreServizio = new ConteggioPersonale
+            {
+                Current = workshift.SelectMany(w => w?.Attuale?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
+                Next = workshift.SelectMany(w => w?.Successivo?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
+                Previous = workshift.SelectMany(w => w?.Precedente?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count()
+            };
+
+            result.SquadreAssegnate = statoSquadre.Count;
+            result.workShift = workshift;
 
             return result;
         }
