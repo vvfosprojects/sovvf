@@ -1,25 +1,26 @@
-<div class="clearfix">
-    <div class="float-left">
-        <div class="clearfix">
-            <div class="float-left mr-4">
-                <div class="clearfix">
-                    <div class="float-left mr-2">
+<div class="d-flex align-items-center justify-content-between">
+    <div class="">
+        <div class="d-flex align-items-center justify-content-start">
+            <div class="mr-4">
+                <div class="d-flex">
+                    <div class="mr-2">
                         <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
                                             [richiestaModifica]="richiestaModifica$ | async"
                                             [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
                                             (startChiamata)="toggleChiamata()">
                         </app-tasto-chiamata>
                     </div>
-                    <div *ngIf="viewState.mappa.active || doubleMonitor" class="float-left mr-3">
-                        <app-tasto-chiamata-mappa
-                                *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
-                                [active]="tastoChiamataMappaActive"
-                                [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
-                                (toggleChiamataFromMappa)="onToggleChiamataFromMappa()">
-                        </app-tasto-chiamata-mappa>
-                    </div>
-                    <div *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
-                         class="float-left">
+                    <ng-container *ngIf="viewState.mappa.active || doubleMonitor">
+                        <div class="mr-3">
+                            <app-tasto-chiamata-mappa
+                                    *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
+                                    [active]="tastoChiamataMappaActive"
+                                    [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
+                                    (toggleChiamataFromMappa)="onToggleChiamataFromMappa()">
+                            </app-tasto-chiamata-mappa>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)">
                         <div class="d-inline mr-4 ml-3">
                             <app-tasto-schede-contatto
                                     [active]="schedeContattoStatus$ | async"
@@ -38,10 +39,10 @@
                                 [disabled]="permessiFeature.ListaTrasferimentiChiamate | checkPermission">
                             <i class="fas fa-exchange-alt"></i>
                         </button>
-                    </div>
+                    </ng-container>
                 </div>
             </div>
-            <div class="float-left mr-3">
+            <div class="mr-3">
                 <app-ricerca
                         *ngIf="((chiamataStatus$ | async) === false) && ((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((mapsStatus$ | async) === false)"
                         [ricerca]="ricerca$ | async"
@@ -50,7 +51,7 @@
                         (search)="onSearch($event)">
                 </app-ricerca>
             </div>
-            <div class="float-left">
+            <div class="">
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
                                       [filtri]="filtriRichieste$ | async"
                                       [statiRichiesta]="filtriStatiRichieste$ | async"
@@ -82,17 +83,13 @@
             </div>
         </div>
     </div>
-    <div class="float-right">
-        <div class="clearfix">
-            <div *ngIf="((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((schedeContattoStatus$ | async) === false) && !doubleMonitor"
-                 class="float-left">
-                <app-view-mode [colorButtonView]="colorButton.buttonView"
-                               [nightMode]="nightMode"
-                               [viewState]="viewState"
-                               [mapStatus]="(mapsStatus$ | async)"
-                               (buttonView)="switchView($event)">
-                </app-view-mode>
-            </div>
-        </div>
-    </div>
+    <ng-container
+            *ngIf="((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((schedeContattoStatus$ | async) === false) && !doubleMonitor">
+        <app-view-mode [colorButtonView]="colorButton.buttonView"
+                       [nightMode]="nightMode"
+                       [viewState]="viewState"
+                       [mapStatus]="(mapsStatus$ | async)"
+                       (buttonView)="switchView($event)">
+        </app-view-mode>
+    </ng-container>
 </div>

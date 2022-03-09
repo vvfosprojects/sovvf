@@ -61,7 +61,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             }
             else
             {
-                command.CodCompetenze = command.Chiamata.Competenze.Select(c => c.Codice).ToArray();
+                if (command.Chiamata.Competenze.Count > 0)
+                    command.CodCompetenze = command.Chiamata.Competenze.Select(c => c.Codice).ToArray();
+                //else if (command.Chiamata.CodCompetenze.Count > 0)
             }
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
