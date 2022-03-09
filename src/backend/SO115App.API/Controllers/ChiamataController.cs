@@ -29,6 +29,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -69,8 +70,12 @@ namespace SO115App.API.Controllers
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] Intervento chiamata)
         {
-            Log.Information($"--------------------------- INIZIO SCRITTURA INTERVENTO --------------------------- {DateTime.Now}");
+            string istanteRichiesta = DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
+            Stopwatch stopWatch = new Stopwatch();
+
+            Log.Information($"--------------------------- INIZIO SCRITTURA INTERVENTO {istanteRichiesta} --------------------------- {DateTime.Now}");
+            stopWatch.Start();
             var codiceSede = Request.Headers["codicesede"];
             var idUtente = Request.Headers["IdUtente"];
 
@@ -86,7 +91,8 @@ namespace SO115App.API.Controllers
             {
                 _Addhandler.Handle(command);
 
-                Log.Information($"--------------------------- FINE SCRITTURA INTERVENTO --------------------------- {DateTime.Now}");
+                stopWatch.Stop();
+                Log.Information($"--------------------------- FINE SCRITTURA INTERVENTO {istanteRichiesta} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
                 return Ok(_getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice));
             }
             catch (Exception ex)
@@ -95,7 +101,6 @@ namespace SO115App.API.Controllers
 
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
-
 
                 Log.Error($"--------------------------- ERRORE SCRITTURA INTERVENTO --------------------------- {DateTime.Now}");
                 Log.Error($"{ex.Message}");
