@@ -14,23 +14,21 @@
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </ng-template>
         <ng-template [ngIf]="mezziInServizio">
-            <div class="px-3">
-                <div *ngFor="let m of mezziInServizio"
-                     [class.cursor-pointer]="m.mezzo.mezzo.coordinateStrg?.length > 1"
-                     [class.cursor-not-allowed]="m.mezzo.mezzo.coordinateStrg?.length <= 1">
-                    <app-mezzo-in-servizio [mezzoInServizio]="m"
-                                           [idMezzoInServizioHover]="idMezzoInServizioHover"
-                                           [nightMode]="nightMode"
-                                           [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
-                                           [loading]="(loadingActionMezzo$ | async)"
-                                           (hoverIn)="hoverIn($event)"
-                                           (hoverOut)="hoverOut()"
-                                           (selezionato)="selezionato($event)"
-                                           (dettaglioRichiesta)="onDettaglioRichiesta($event)"
-                                           (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
-                                           (actionMezzo)="onActionMezzo($event.a, $event.b)">
-                    </app-mezzo-in-servizio>
-                </div>
+            <div *ngFor="let m of mezziInServizio"
+                 [class.cursor-pointer]="m.mezzo.mezzo.coordinateStrg?.length > 1"
+                 [class.cursor-not-allowed]="m.mezzo.mezzo.coordinateStrg?.length <= 1">
+                <app-mezzo-in-servizio [mezzoInServizio]="m"
+                                       [idMezzoInServizioHover]="idMezzoInServizioHover"
+                                       [nightMode]="nightMode"
+                                       [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
+                                       [loading]="(loadingActionMezzo$ | async)"
+                                       (hoverIn)="hoverIn($event)"
+                                       (hoverOut)="hoverOut()"
+                                       (selezionato)="selezionato($event)"
+                                       (dettaglioRichiesta)="onDettaglioRichiesta($event)"
+                                       (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
+                                       (actionMezzo)="onActionMezzo($event.a, $event.b)">
+                </app-mezzo-in-servizio>
             </div>
         </ng-template>
     </div>
