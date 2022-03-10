@@ -76,7 +76,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     case Costanti.MezzoInViaggio:
 
-                        var IstanteSuccessivo= richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
+                        var IstanteSuccessivo = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
                         if (IstanteSuccessivo < istante)
                             throw new System.Exception("L'orario inserito è errato.");
 
@@ -91,16 +91,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     case Costanti.MezzoSulPosto:
 
-
                         var IstanteInRientro = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante;
                         var IstanteInViaggio = richiesta.ListaEventi.ToList().Find(e => e is ComposizionePartenze partenze && partenze.CodicePartenza == command.CodicePartenza).Istante;
 
-                        if(IstanteInRientro < istante)
+                        if (IstanteInRientro < istante)
                             throw new System.Exception("L'orario inserito è errato.");
 
-                        if(IstanteInViaggio > istante)
+                        if (IstanteInViaggio > istante)
                             throw new System.Exception("L'orario inserito è errato.");
-
 
                         new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
                         {
@@ -113,10 +111,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     case Costanti.MezzoInRientro:
 
-
                         var IstanteSulPosto = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
 
-                        if(IstanteSulPosto > istante)
+                        if (IstanteSulPosto > istante)
                             throw new System.Exception("L'orario inserito è errato.");
 
                         new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
@@ -133,19 +130,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
             else
             {
-                //switch (command.StatoMezzo)
-                //{
-                //    case Costanti.MezzoInViaggio:
-                //        if (ultimoEvento is ArrivoSulPosto || ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
-                //            throw new System.Exception("Sequenza stati non congurente.");
-                //        break;
-
-                //    case Costanti.MezzoSulPosto:
-                //        if (ultimoEvento is PartenzaInRientro || ultimoEvento is PartenzaRientrata)
-                //            throw new System.Exception("Sequenza stati non congurente.");
-                //        break;
-                //}
-
                 string statoMezzoReale = "";
 
                 if (statoAttuale.Equals("In Viaggio"))
@@ -168,9 +152,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         statoMezzoReale = statoAttuale;
 
                         var VecchioIstante = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
-                        if(VecchioIstante < istante)
+                        if (VecchioIstante < istante)
                             throw new System.Exception("L'orario inserito è errato.");
-
                     }
 
                     if (command.StatoMezzo.Equals("In Rientro") || command.StatoMezzo.Equals("Rientrato"))
@@ -192,7 +175,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         var IstanteSuccessivo = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante;
                         if (IstanteSuccessivo < istante)
                             throw new System.Exception("L'orario inserito è errato.");
-
                     }
 
                     if (command.StatoMezzo.Equals("Sul Posto"))
@@ -203,14 +185,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         if (IstanteSuccessivo < istante)
                             throw new System.Exception("L'orario inserito è errato.");
 
-                        if(IstantePrecedente > istante)
+                        if (IstantePrecedente > istante)
                             throw new System.Exception("L'orario inserito è errato.");
 
-
-                        new ArrivoSulPosto(richiesta,command.IdMezzo,istante,command.IdUtente,partenza.CodicePartenza);
-
-
-
+                        new ArrivoSulPosto(richiesta, command.IdMezzo, istante, command.IdUtente, partenza.CodicePartenza);
                     }
 
                     if (command.StatoMezzo.Equals("In Rientro"))
@@ -219,12 +197,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         var IstantePrecedente = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
                         if (IstantePrecedente > istante)
                             throw new System.Exception("L'orario inserito è errato.");
-
                     }
 
                     if (command.StatoMezzo.Equals("Rientrato"))
                     {
-
                         var IstantePrecedente = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante;
                         if (IstantePrecedente > istante)
                             throw new System.Exception("L'orario inserito è errato.");
