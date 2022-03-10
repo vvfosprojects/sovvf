@@ -85,14 +85,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             try
             {
-                var resultApi = _clientMezzi.GetAsync(url, token);
+                var resultApi = await _clientMezzi.GetAsync(url, token);
 
-                foreach (var personale in resultApi.Result)
+                if (!(resultApi?.Any()) ?? true)
+                    return new List<Mezzo>();
+
+                foreach (var personale in resultApi)
                     lstMezziDto.Enqueue(personale);
             }
             catch (Exception e)
             {
-                throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
+                return new List<Mezzo>();
             }
 
             #endregion LEGGO DA API ESTERNA
