@@ -98,7 +98,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             }
             catch (Exception e)
             {
-                return new List<Mezzo>();
+                var lstMezzi = _getComposizioneMezziDB.GetByCodiciMezzo();
+
+                var result = lstMezzi.Select(s => s.Mezzo).ToList();
+
+                return result;
             }
 
             #endregion LEGGO DA API ESTERNA
