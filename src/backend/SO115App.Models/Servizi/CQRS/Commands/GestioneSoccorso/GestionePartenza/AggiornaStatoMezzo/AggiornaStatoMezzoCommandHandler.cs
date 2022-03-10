@@ -75,6 +75,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 switch (command.StatoMezzo)
                 {
                     case Costanti.MezzoInViaggio:
+
+                        var IstanteSuccessivo= richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
+                        if (IstanteSuccessivo < istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
                         new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
                         {
                             VecchioIstante = richiesta.ListaEventi.ToList().Find(e => e is ComposizionePartenze partenze && partenze.CodicePartenza == command.CodicePartenza).Istante,
@@ -85,6 +90,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         break;
 
                     case Costanti.MezzoSulPosto:
+
+
+                        var IstanteInRientro = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante;
+                        var IstanteInViaggio = richiesta.ListaEventi.ToList().Find(e => e is ComposizionePartenze partenze && partenze.CodicePartenza == command.CodicePartenza).Istante;
+
+                        if(IstanteInRientro < istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
+                        if(IstanteInViaggio > istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
+
                         new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
                         {
                             VecchioIstante = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante,
@@ -95,6 +112,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         break;
 
                     case Costanti.MezzoInRientro:
+
+
+                        var IstanteSulPosto = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
+
+                        if(IstanteSulPosto > istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
                         new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
                         {
                             VecchioIstante = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante,
@@ -127,33 +151,97 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 if (statoAttuale.Equals("In Viaggio"))
                 {
                     if (!command.StatoMezzo.Equals("In Viaggio"))
+                    {
                         statoMezzoReale = command.StatoMezzo;
+                        richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                        {
+                            CodMezzo = command.IdMezzo,
+                            Istante = istante,
+                            Stato = statoMezzoReale
+                        }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
+                    }
                 }
                 else if (statoAttuale.Equals("Sul Posto"))
                 {
                     if (command.StatoMezzo.Equals("In Viaggio") || command.StatoMezzo.Equals("Sul Posto"))
+                    {
                         statoMezzoReale = statoAttuale;
 
+                        var VecchioIstante = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
+                        if(VecchioIstante < istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
+                    }
+
                     if (command.StatoMezzo.Equals("In Rientro") || command.StatoMezzo.Equals("Rientrato"))
+                    {
                         statoMezzoReale = command.StatoMezzo;
+                        richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                        {
+                            CodMezzo = command.IdMezzo,
+                            Istante = istante,
+                            Stato = statoMezzoReale
+                        }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
+                    }
                 }
                 else if (statoAttuale.Equals("In Rientro"))
                 {
-                    if (command.StatoMezzo.Equals("In Viaggio") || command.StatoMezzo.Equals("Sul Posto") || command.StatoMezzo.Equals("In Rientro"))
+                    if (command.StatoMezzo.Equals("In Viaggio"))
+                    {
                         statoMezzoReale = statoAttuale;
+                        var IstanteSuccessivo = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante;
+                        if (IstanteSuccessivo < istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
+                    }
+
+                    if (command.StatoMezzo.Equals("Sul Posto"))
+                    {
+                        statoMezzoReale = statoAttuale;
+                        var IstanteSuccessivo = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante;
+                        var IstantePrecedente = richiesta.ListaEventi.ToList().Find(e => e is ComposizionePartenze partenze && partenze.CodicePartenza == command.CodicePartenza).Istante;
+                        if (IstanteSuccessivo < istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
+                        if(IstantePrecedente > istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
+
+                        new ArrivoSulPosto(richiesta,command.IdMezzo,istante,command.IdUtente,partenza.CodicePartenza);
+
+
+
+                    }
+
+                    if (command.StatoMezzo.Equals("In Rientro"))
+                    {
+                        statoMezzoReale = statoAttuale;
+                        var IstantePrecedente = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
+                        if (IstantePrecedente > istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
+                    }
 
                     if (command.StatoMezzo.Equals("Rientrato"))
+                    {
+
+                        var IstantePrecedente = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante;
+                        if (IstantePrecedente > istante)
+                            throw new System.Exception("L'orario inserito è errato.");
+
                         statoMezzoReale = command.StatoMezzo;
+                        richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                        {
+                            CodMezzo = command.IdMezzo,
+                            Istante = istante,
+                            Stato = statoMezzoReale
+                        }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
+                    }
                 }
                 else if (statoAttuale.Equals("Rientrato"))
-                    statoMezzoReale = statoAttuale;
-
-                richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
                 {
-                    CodMezzo = command.IdMezzo,
-                    Istante = istante,
-                    Stato = command.StatoMezzo
-                }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
+                    statoMezzoReale = statoAttuale;
+                }
 
                 if (command.AzioneIntervento != null && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenza.Partenza.Codice).Count() == 0)
                 {
