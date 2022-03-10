@@ -55,6 +55,7 @@ import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } 
 import { GetZonaEmergenzaById, GetZoneEmergenza } from '../../features/zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenza.model';
 import { GetConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
+import { UpdateRichiestaSganciamento } from '../../features/home/store/actions/composizione-partenza/richiesta-sganciamento.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -130,8 +131,11 @@ export class SignalRService {
         this.hubNotification.on('ModifyAndNotifySuccess', (data: InterventoInterface) => {
             console.log('ModifyAndNotifySuccess:', data);
             const updateRichiesta = data.chiamata ? data.chiamata : data.richiesta;
-            this.store.dispatch(new UpdateRichiesta(updateRichiesta));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
+            this.store.dispatch([
+                new UpdateRichiesta(updateRichiesta),
+                new UpdateRichiestaSganciamento(),
+                new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3)
+            ]);
         });
 
         /**

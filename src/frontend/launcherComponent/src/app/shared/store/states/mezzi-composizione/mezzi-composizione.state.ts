@@ -7,7 +7,6 @@ import {
     ClearSelectedMezziComposizione,
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
-    LockMezzoComposizione,
     ReducerSelectMezzoComposizione,
     ReducerSelectMezzoComposizioneInRientro,
     ReducerSelectMezzoComposizionePreAccoppiati,
@@ -16,12 +15,11 @@ import {
     SelectMezzoComposizioneFromMappa,
     SetListaMezziComposizione,
     SganciamentoMezzoComposizione,
-    UnlockMezzoComposizione,
     UnselectMezzoComposizione,
     UpdateMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
-import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { patch, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { AddBoxPartenza, AddMezzoBoxPartenzaSelezionato, UpdateMezzoBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
@@ -42,6 +40,7 @@ import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostit
 import { ModificaPartenzaModalState } from '../modifica-partenza-modal/modifica-partenza-modal.state';
 import { ClearSelectedSquadreComposizione, SelectSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { SganciamentoMezzoModalComponent } from '../../../modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
+import { SetRichiestaSganciamento } from '../../../../features/home/store/actions/composizione-partenza/richiesta-sganciamento.actions';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -64,7 +63,7 @@ export const MezziComposizioneStateDefaults: MezziComposizioneStateStateModel = 
     idMezziPrenotati: [],
     idMezziInPrenotazione: [],
     idMezziBloccati: [],
-    mezzoSelezionato: null,
+    mezzoSelezionato: null
 };
 
 @Injectable()
@@ -86,16 +85,11 @@ export class MezziComposizioneState {
 
     @Selector()
     static mezzoSelezionato(state: MezziComposizioneStateStateModel): MezzoComposizione {
-        let mezzoSelez = null as MezzoComposizione;
-        // state.allMezziComposizione.forEach((m: MezzoComposizione) => {
-        //     if (m.id === state.idMezzoSelezionato) {
-        //         mezzoSelez = m;
-        //     }
-        // });
+        let mezzoSelezionato = null as MezzoComposizione;
         if (state.idMezzoSelezionato && (state.idMezzoSelezionato === state.mezzoSelezionato.id)) {
-            mezzoSelez = state.mezzoSelezionato;
+            mezzoSelezionato = state.mezzoSelezionato;
         }
-        return mezzoSelez;
+        return mezzoSelezionato;
     }
 
     @Selector()
@@ -377,39 +371,18 @@ export class MezziComposizioneState {
         });
     }
 
-    // todo: controllare utilizzo
-    @Action(LockMezzoComposizione)
-    lockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: LockMezzoComposizione): void {
-        setState(
-            patch({
-                idMezzoSelezionato: null,
-                idMezziBloccati: insertItem(action.idMezzoComp)
-            })
-        );
-    }
-
-    // todo: controllare utilizzo
-    @Action(UnlockMezzoComposizione)
-    unlockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: UnlockMezzoComposizione): void {
-        setState(
-            patch({
-                idMezzoSelezionato: null,
-                idMezziBloccati: removeItem(id => id === action.idMezzoComp)
-            })
-        );
-    }
-
     @Action(ClearMezzoComposizione)
     clearMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>): void {
         patchState(MezziComposizioneStateDefaults);
     }
 
     @Action(SganciamentoMezzoComposizione)
-    sganciamentoMezzoComposizione({}: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione): void {
+    sganciamentoMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione): void {
         let partenzaDaSganciare = {} as Partenza;
-        this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
-            partenzaDaSganciare = richiestaDa.partenze && richiestaDa.partenze.length > 0 ? richiestaDa.partenze.filter(x => x.partenza.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
-            if (richiestaDa && partenzaDaSganciare) {
+        this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiesta: SintesiRichiesta) => {
+            dispatch(new SetRichiestaSganciamento(richiesta));
+            partenzaDaSganciare = richiesta.partenze?.length ? richiesta.partenze.filter(x => x.partenza.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
+            if (richiesta && partenzaDaSganciare) {
                 const partenza = partenzaDaSganciare.partenza;
                 const obj = {
                     mezzo: {
@@ -447,14 +420,7 @@ export class MezziComposizioneState {
                     backdropClass: 'light-blue-backdrop',
                     centered: true
                 });
-                modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
-                modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
-                modalSganciamento.componentInstance.richiestaDa = richiestaDa;
                 modalSganciamento.componentInstance.idDaSganciare = action.sganciamentoObj.descrizione;
-                modalSganciamento.componentInstance.bottoni = [
-                    { type: 'ko', descrizione: 'annulla', colore: 'danger' },
-                    { type: 'ok', descrizione: 'conferma sganciamento', colore: 'success' },
-                ];
 
                 let idRichiesta = null;
                 const richiestaComposizione = this.store.selectSnapshot(x => x.composizionePartenza.richiesta);
