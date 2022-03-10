@@ -19,8 +19,10 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
@@ -44,6 +46,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
 
             var ListapreAccoppiati = _GetPreAccoppiati.GetAsync(query).Result;
+
+            if (ListapreAccoppiati.Any(p => p.CodiceMezzo == null))
+                return new PreAccoppiatiResult() { DataArray = new List<PreAccoppiato>()};
 
             if (query.Filtri.TipoMezzo != null)
             {

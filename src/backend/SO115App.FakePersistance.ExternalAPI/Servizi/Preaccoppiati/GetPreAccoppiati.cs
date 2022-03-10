@@ -111,6 +111,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     {
                         var MezzoSquadra = lstMezzi.Result.Find(mezzo => mezzo.CodiceMezzo.Equals(squadreMezzo.Key));
 
+                        if (MezzoSquadra == null)
+                            return new PreAccoppiato();
+
                         var DescSede = _getDistaccamentoByCodiceSedeUC.Get(MezzoSquadra.CodiceDistaccamento).Result;
 
                         return new PreAccoppiato()
