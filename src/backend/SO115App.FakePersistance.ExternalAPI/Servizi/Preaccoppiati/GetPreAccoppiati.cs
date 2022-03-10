@@ -157,9 +157,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 return API.Models.Classi.Condivise.Squadra.StatoSquadra.InSede;
         }
 
-        private List<API.Models.Classi.Condivise.Componente> MapMembriInComponenti(List<Models.Classi.ServiziEsterni.OPService.Membro> membri)
+        private List<Componente> MapMembriInComponenti(List<Models.Classi.ServiziEsterni.OPService.Membro> membri)
         {
-            List<Componente> componenti = new List<Componente>();
+            List<Componente> componenti = new();
 
             foreach (var membro in membri)
             {
@@ -180,13 +180,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             var posizioneMezzo = pFlotta.Find(m => m.CodiceMezzo.Equals(codiceMezzo));
 
             if (posizioneMezzo != null)
-                return new API.Models.Classi.Condivise.Coordinate()
+                return new Coordinate()
                 {
                     Latitudine = posizioneMezzo.Localizzazione.Lat,
                     Longitudine = posizioneMezzo.Localizzazione.Lon
                 };
             else
-                return new API.Models.Classi.Condivise.Coordinate()
+                return new Coordinate()
                 {
                     Latitudine = distaccamento.Coordinate.Latitudine,
                     Longitudine = distaccamento.Coordinate.Longitudine
