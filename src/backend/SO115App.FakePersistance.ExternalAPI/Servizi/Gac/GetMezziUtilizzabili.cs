@@ -30,13 +30,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly IGetStringCoordinateByCodSede _getStringCoordinateByCodSede;
         private readonly IConfiguration _configuration;
 
+        private readonly IGetComposizioneMezziDB _getComposizioneMezziDB;
+
         private readonly IGetToken _getToken;
         private readonly IHttpRequestManager<IEnumerable<MezzoDTO>> _clientMezzi;
 
         public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken, 
             IConfiguration configuration, IGetStatoMezzi GetStatoMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, 
             IGetPosizioneFlotta getPosizioneFlotta, IGetStringCoordinateByCodSede getStringCoordinateByCodSede,
-            IGetDistanzaTempoMezzi getDistanzaTempo, IGetTipologieByCodice getTipologieByCodice)
+            IGetDistanzaTempoMezzi getDistanzaTempo, IGetTipologieByCodice getTipologieByCodice, IGetComposizioneMezziDB getComposizioneMezziDB)
         {
             _getStatoMezzi = GetStatoMezzi;
             _clientMezzi = clientMezzi;
@@ -45,6 +47,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getPosizioneFlotta = getPosizioneFlotta;
             _getStringCoordinateByCodSede = getStringCoordinateByCodSede;
+            _getComposizioneMezziDB = getComposizioneMezziDB;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
@@ -144,10 +147,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         {
             var token = _getToken.GeneraToken();
 
-            if (codiciMezzi == null || codiciMezzi?.Count == 0)
-                return new List<MezzoDTO>();
-
-            var lstMezziDto = new ConcurrentQueue<MezzoDTO>();
+            var lstMezziDto = new List<MezzoDTO>();
 
             try
             {
@@ -156,13 +156,25 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
                 var resultApi = await _clientMezzi.GetAsync(url, token);
 
-                resultApi?.ToList().ForEach(personale => lstMezziDto.Enqueue(personale));
+                resultApi?.ToList().ForEach(personale => lstMezziDto.Add(personale));
 
-                return lstMezziDto.ToList();
+                return lstMezziDto;
             }
             catch (Exception)
             {
-                return new List<MezzoDTO>();
+                var lstMezzi = _getComposizioneMezziDB.GetByCodiciMezzo(codiciMezzi.ToArray());
+
+                var result = lstMezzi.Select(s => new MezzoDTO()
+                {
+                    Appartenenza = s.Mezzo.Distaccamento.Codice,
+                    CodiceDistaccamento = s.Mezzo.Appartenenza,
+                    CodiceMezzo = s.Mezzo.Codice,
+                    Descrizione = s.Mezzo.Descrizione,
+                    DescrizioneAppartenenza = s.Mezzo.Distaccamento.Descrizione,
+                    Genere = s.Mezzo.Genere
+                }).ToList();
+
+                return result;
             }
         }
 

@@ -32,7 +32,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
 
-        private List<MessaggioPosizione> pFlotta = new List<MessaggioPosizione>();
+        private readonly List<MessaggioPosizione> pFlotta = new();
 
         public GetPreAccoppiati(IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSedeUC, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezzi,
                                 IGetStatoMezzi getStatoMezzi, IGetStatoSquadra getStatoSquadre, IGetTurno getTurno,
@@ -138,7 +138,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 return new List<PreAccoppiato>();
         }
 
-        private API.Models.Classi.Condivise.Squadra.StatoSquadra MappaStatoSquadra(Task<List<StatoOperativoSquadra>> lstStatoSquadre, string codiceSquadra)
+        private static API.Models.Classi.Condivise.Squadra.StatoSquadra MappaStatoSquadra(Task<List<StatoOperativoSquadra>> lstStatoSquadre, string codiceSquadra)
         {
             var squadra = lstStatoSquadre.Result.Find(s => s.IdSquadra.Equals(codiceSquadra));
 
@@ -157,7 +157,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 return API.Models.Classi.Condivise.Squadra.StatoSquadra.InSede;
         }
 
-        private List<Componente> MapMembriInComponenti(List<Models.Classi.ServiziEsterni.OPService.Membro> membri)
+        private static List<Componente> MapMembriInComponenti(List<Models.Classi.ServiziEsterni.OPService.Membro> membri)
         {
             List<Componente> componenti = new();
 
