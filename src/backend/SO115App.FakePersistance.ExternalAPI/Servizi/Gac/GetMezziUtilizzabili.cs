@@ -139,23 +139,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public async Task<List<MezzoDTO>> GetInfo(List<string> codiciMezzi)
         {
-            if (codiciMezzi == null || codiciMezzi?.Count == 0)
-                return null;
-
             var token = _getToken.GeneraToken();
+
+            if (codiciMezzi == null || codiciMezzi?.Count == 0)
+                return new List<MezzoDTO>();
 
             var lstMezziDto = new ConcurrentQueue<MezzoDTO>();
 
-            //_clientMezzi.SetCache("Mezzi_" + codiciMezzi);
+            try
+            {
+                string queryString = string.Join("&codiciMezzo=", codiciMezzi.ToArray());
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetCodiceMezzo}?codiciMezzo={queryString}");
 
-            string queryString = string.Join("&codiciMezzo=", codiciMezzi.ToArray());
-            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetCodiceMezzo}?codiciMezzo={queryString}");
+                var resultApi = await _clientMezzi.GetAsync(url, token);
 
-            var resultApi = _clientMezzi.GetAsync(url, token);
+                resultApi?.ToList().ForEach(personale => lstMezziDto.Enqueue(personale));
 
-            resultApi.Result?.ToList().ForEach(personale => lstMezziDto.Enqueue(personale));
-
-            return lstMezziDto.ToList();
+                return lstMezziDto.ToList();
+            }
+            catch (Exception)
+            {
+                return new List<MezzoDTO>();
+            }
         }
 
         public async Task<List<Mezzo>> GetBySedi(string[] sedi)
