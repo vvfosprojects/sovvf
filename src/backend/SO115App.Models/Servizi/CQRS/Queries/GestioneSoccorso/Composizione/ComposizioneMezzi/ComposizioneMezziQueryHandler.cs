@@ -62,13 +62,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
             catch (Exception e)
             {
-                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
-                    composizioneMezzi = _getMezzi.GetByCodiciSede(query.Filtro?.CodiciDistaccamenti);
+                e = e.GetBaseException();
 
-                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
-                {
-                    return null;
-                }
+                throw new Exception($"{e.Message}.\n\n{e.StackTrace}");
             }
 
             Log.Debug("Fine elaborazione Lista Mezzi per Composizione Handler");
