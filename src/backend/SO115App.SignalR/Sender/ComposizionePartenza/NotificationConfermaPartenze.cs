@@ -86,6 +86,8 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             SediDaNotificare.AddRange(conferma.ConfermaPartenze.Partenze.Select(c => c.Mezzo.Distaccamento.Codice));
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
 
+            SediDaNotificare = SediDaNotificare.FindAll(s => s != null).ToList();
+
             var listaMezziInServizio = Task.Factory.StartNew(() => _getListaMezzi.Get(SediDaNotificare.ToArray()));
             var sintesi = Task.Factory.StartNew(() => _mapperSintesi.Map(conferma.Richiesta)).ContinueWith(sintesi =>
             {
@@ -98,83 +100,86 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                var CodSede = new string[] { sede };
-
-                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
-
-                Task.Factory.StartNew(() =>
+                if (sede != null)
                 {
-                    var boxRichiesteQuery = new BoxRichiesteQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                });
+                    var CodSede = new string[] { sede };
 
-                Task.Factory.StartNew(() =>
-                {
-                    var boxMezziQuery = new BoxMezziQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-                });
+                    _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
 
-                Task.Factory.StartNew(() =>
-                {
-                    var boxPersonaleQuery = new BoxPersonaleQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-                });
-
-                //Task.Factory.StartNew(() =>
-                //{
-                //    var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                //    {
-                //        CodiciSedi = new string[] { sede }
-                //    };
-                //    var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-                //    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.Result.CodiceRichiesta));
-                //});
-
-                Task.Factory.StartNew(() =>
-                {
-                    foreach (var partenze in conferma.ConfermaPartenze.Partenze)
-                    {
-                        var result = listaMezziInServizio.Result;
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
-                    }
-                });
-
-                conferma.ConfermaPartenze.Chiamata = sintesi.Result;
-                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
-
-                if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
-                {
                     Task.Factory.StartNew(() =>
                     {
-                        var sintesiSganciata = _mapperSintesi.Map(conferma.RichiestaDaSganciare);
-                        sintesiSganciata.Competenze = conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
-                        conferma.ConfermaPartenze.Chiamata = sintesiSganciata;
-                        _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+                        var boxRichiesteQuery = new BoxRichiesteQuery()
+                        {
+                            CodiciSede = new string[] { sede }
+                        };
+                        var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                     });
-                }
 
-                foreach (var partenza in conferma.ConfermaPartenze.Partenze)
-                {
-                    var counterCodaChiamate = new CounterNotifica()
+                    Task.Factory.StartNew(() =>
                     {
-                        codDistaccamento = partenza.Mezzo.Distaccamento.Codice,
-                        count = partenza.Squadre.Count
-                    };
+                        var boxMezziQuery = new BoxMezziQuery()
+                        {
+                            CodiciSede = new string[] { sede }
+                        };
+                        var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+                    });
 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
+                    Task.Factory.StartNew(() =>
+                    {
+                        var boxPersonaleQuery = new BoxPersonaleQuery()
+                        {
+                            CodiciSede = new string[] { sede }
+                        };
+                        var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+                    });
+
+                    //Task.Factory.StartNew(() =>
+                    //{
+                    //    var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+                    //    {
+                    //        CodiciSedi = new string[] { sede }
+                    //    };
+                    //    var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+                    //    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.Result.CodiceRichiesta));
+                    //});
+
+                    Task.Factory.StartNew(() =>
+                    {
+                        foreach (var partenze in conferma.ConfermaPartenze.Partenze)
+                        {
+                            var result = listaMezziInServizio.Result;
+                            _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
+                        }
+                    });
+
+                    conferma.ConfermaPartenze.Chiamata = sintesi.Result;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+
+                    if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
+                    {
+                        Task.Factory.StartNew(() =>
+                        {
+                            var sintesiSganciata = _mapperSintesi.Map(conferma.RichiestaDaSganciare);
+                            sintesiSganciata.Competenze = conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
+                            conferma.ConfermaPartenze.Chiamata = sintesiSganciata;
+                            _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+                        });
+                    }
+
+                    foreach (var partenza in conferma.ConfermaPartenze.Partenze)
+                    {
+                        var counterCodaChiamate = new CounterNotifica()
+                        {
+                            codDistaccamento = partenza.Mezzo.Distaccamento.Codice,
+                            count = partenza.Squadre.Count
+                        };
+
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
+                    }
                 }
             });
         }
