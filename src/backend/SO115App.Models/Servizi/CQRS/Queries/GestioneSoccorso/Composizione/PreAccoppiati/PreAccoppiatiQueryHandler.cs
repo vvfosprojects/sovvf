@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
