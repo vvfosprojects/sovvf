@@ -31,13 +31,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IOrdinamentoMezzi _ordinamento;
 
         private readonly ISetComposizioneMezzi _setComposizioneMezzi;
+        private readonly IGetComposizioneMezziDB _getComposizioneMezzi;
 
         private readonly IGetSedi _getSedi;
 
         public GetComposizioneMezzi(IGetSedi getSedi,
             IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre,
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
-            IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi)
+            IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi,
+            IGetComposizioneMezziDB getComposizioneMezzi)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
@@ -46,6 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getStatoSquadre = getStatoSquadre;
             _ordinamento = ordinamento;
             _setComposizioneMezzi = setComposizioneMezzi;
+            _getComposizioneMezzi = getComposizioneMezzi;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -70,6 +73,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
+                if (mezzi.Result == null || mezzi.Result.Count == 0)
+                    return _getComposizioneMezzi.GetByCodiciSede(query.CodiciSedi.Distinct().ToArray());
+
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
                 Parallel.ForEach(mezzi.Result, m =>

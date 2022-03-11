@@ -33,17 +33,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizioneMezziQueryHandler : IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult>
     {
-        private readonly ISetComposizioneMezzi _setMezzi;
         private readonly IGetComposizioneMezziDB _getMezzi;
 
         private readonly IGetComposizioneMezzi _iGetComposizioneMezzi;
 
         private const string msgErroreCaricamento = "Errore caricamento elenco mezzi";
 
-        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi, ISetComposizioneMezzi setMezzi, IGetComposizioneMezziDB getMezzi)
+        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi, IGetComposizioneMezziDB getMezzi)
         {
             _iGetComposizioneMezzi = iGetComposizioneMezzi;
-            _setMezzi = setMezzi;
             _getMezzi = getMezzi;
         }
 
@@ -61,9 +59,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             try
             {
                 composizioneMezzi = _iGetComposizioneMezzi.Get(query);
-
-                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
-                    composizioneMezzi = _getMezzi.GetByCodiciSede(query.Filtro?.CodiciDistaccamenti);
             }
             catch (Exception e)
             {

@@ -203,7 +203,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             }
             catch (Exception e)
             {
-                throw new Exception($"Elenco dei mezzi non disponibile: {e.GetBaseException()}");
+                return null;
             }
 
             var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
