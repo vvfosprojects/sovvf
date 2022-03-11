@@ -1,18 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
-using SO115App.ExternalAPI.Fake.Composizione;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Concurrent;
@@ -31,14 +28,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly IConfiguration _configuration;
 
         private readonly IGetComposizioneMezziDB _getComposizioneMezziDB;
+        private readonly ISetComposizioneMezzi _setComposizioneMezziDB;
 
         private readonly IGetToken _getToken;
         private readonly IHttpRequestManager<IEnumerable<MezzoDTO>> _clientMezzi;
 
-        public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken, 
-            IConfiguration configuration, IGetStatoMezzi GetStatoMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, 
+        public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken,
+            IConfiguration configuration, IGetStatoMezzi GetStatoMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetPosizioneFlotta getPosizioneFlotta, IGetStringCoordinateByCodSede getStringCoordinateByCodSede,
-            IGetDistanzaTempoMezzi getDistanzaTempo, IGetTipologieByCodice getTipologieByCodice, IGetComposizioneMezziDB getComposizioneMezziDB)
+            IGetComposizioneMezziDB getComposizioneMezziDB, ISetComposizioneMezzi setComposizioneMezziDB)
         {
             _getStatoMezzi = GetStatoMezzi;
             _clientMezzi = clientMezzi;
@@ -48,6 +46,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _getPosizioneFlotta = getPosizioneFlotta;
             _getStringCoordinateByCodSede = getStringCoordinateByCodSede;
             _getComposizioneMezziDB = getComposizioneMezziDB;
+            _setComposizioneMezziDB = setComposizioneMezziDB;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
@@ -98,16 +97,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             }
             catch (Exception e)
             {
-                var lstMezzi = _getComposizioneMezziDB.GetByCodiciMezzo();
+                var lstMezzi = _getComposizioneMezziDB.GetByCodiciSede(sedi.ToArray());
 
                 var result = lstMezzi.Select(s => s.Mezzo).ToList();
 
                 return result;
             }
 
-            #endregion LEGGO DA API ESTERNA
+            #endregion LEGGO DA API ESTERNA/DB
 
             var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
+
+            var lstStati = _getStatoMezzi.Get(sedi.ToArray());
 
             //MAPPING
             var ListaMezzi = lstMezziDto.Select(m =>
@@ -143,6 +144,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 else return null;
 
             }).ToList();
+
+            if (ListaMezzi != null && !(ListaMezzi.Count > 0)) _setComposizioneMezziDB.Set(ListaMezzi.Select(m => new ComposizioneMezzi() 
+            { 
+                Mezzo = m,
+                Id = m.Codice,
+                //IndirizzoIntervento = lstStati.FirstOrDefault(s => s.CodiceMezzo.Equals(m.Codice))?.CodiceRichiesta
+            }).ToList());
 
             return ListaMezzi;
         }
@@ -259,7 +267,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     }
                 }
 
-                if(!lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
+                if (!lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
                 {
                     lstCodSedi.Add(mezzoDto.CodiceDistaccamento);
 
