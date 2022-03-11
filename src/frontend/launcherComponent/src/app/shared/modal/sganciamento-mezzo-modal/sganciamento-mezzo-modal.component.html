@@ -10,8 +10,8 @@
     </button>
 </div>
 <div class="modal-body"
-     [class.px-0]="richiestaSganciamento">
-    <ng-container *ngIf="richiestaSganciamento">
+     [class.px-0]="richiestaSganciamento && !mezzoNotFound">
+    <ng-container *ngIf="richiestaSganciamento && !mezzoNotFound">
         <app-sintesi-richiesta [richiesta]="richiestaSganciamento"
                                [fissata]="false"
                                [fissabile]="false"
@@ -27,6 +27,11 @@
                                (actionMezzo)="onActionMezzo($event)">
         </app-sintesi-richiesta>
     </ng-container>
+    <ng-container *ngIf="richiestaSganciamento && mezzoNotFound">
+        <div class="alert alert-danger m-0">
+            {{ 'Il mezzo da sganciare non è più presente nell\'intervento ' + richiestaSganciamento.codiceRichiesta | uppercase }}
+        </div>
+    </ng-container>
     <ng-container *ngIf="!richiestaSganciamento">
         <div class="alert alert-danger font-weight-bold m-0">
             {{ 'Richiesta non disponibile' | uppercase }}
@@ -38,7 +43,7 @@
          [ngbTooltip]="tooltipLockedConcorrenza"
          [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiestaSganciamento.codice])">
         <button class="btn btn-lg btn-danger btn-no-hover font-weight-bold"
-                [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiestaSganciamento.codice]"
+                [disabled]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiestaSganciamento.codice]) || mezzoNotFound"
                 (click)="modal.close('ok')">
             {{ 'conferma sganciamento' | uppercase }}
         </button>
