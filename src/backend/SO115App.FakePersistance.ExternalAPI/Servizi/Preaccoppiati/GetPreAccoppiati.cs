@@ -55,7 +55,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             var lstStatoMezzi = Task.Run(() => _getStatoMezzi.Get(query.CodiceSede));
             var lstStatoSquadre = Task.Run(() => _getStatoSquadre.Get(_getTurno.Get().Codice, query.CodiceSede.ToList()));
 
-            var lstSquadreWS = query.CodiceSede.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
+            var lstProvinceSedi = query.CodiceSede.Select(sede => sede.Split('.')[0]).Distinct();
+            var lstSquadreWS = lstProvinceSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede).Result).ToList();
 
             var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.Squadra>();
             if (lstSquadreWS[0] != null)
@@ -132,7 +133,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     }).ToList());
                 }
                 else
-                    return new List<PreAccoppiato>(); 
+                    return new List<PreAccoppiato>();
             }
             else
                 return new List<PreAccoppiato>();

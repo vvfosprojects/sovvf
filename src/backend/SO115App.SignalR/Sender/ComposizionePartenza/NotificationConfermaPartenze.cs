@@ -132,20 +132,23 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
                 });
 
-                Task.Factory.StartNew(() =>
-                {
-                    var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                    {
-                        CodiciSedi = new string[] { sede }
-                    };
-                    var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.Result.CodiceRichiesta));
-                });
+                //Task.Factory.StartNew(() =>
+                //{
+                //    var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+                //    {
+                //        CodiciSedi = new string[] { sede }
+                //    };
+                //    var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+                //    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.Result.CodiceRichiesta));
+                //});
 
                 Task.Factory.StartNew(() =>
                 {
                     foreach (var partenze in conferma.ConfermaPartenze.Partenze)
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
+                    {
+                        var result = listaMezziInServizio.Result;
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
+                    }
                 });
 
                 conferma.ConfermaPartenze.Chiamata = sintesi.Result;
