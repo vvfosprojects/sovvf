@@ -137,7 +137,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                         modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
                         modalConferma.componentInstance.chiusuraIntervento = true;
                         modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Non più necessario', 'Falso Allarme', 'Concluso'];
-                        modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi diventeranno "In Rientro"';
                     }
                     break;
 
