@@ -172,15 +172,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     mezzo.Mezzo.Descrizione.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
                     mezzo.Mezzo.Genere.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
-                bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
-                    query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento?.Codice) ?? true :
-                    query.Filtro.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Distaccamento?.Codice) ?? true;
+                bool competenze = query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento?.Codice) ?? true;
+
+                bool distaccamentoSquadra = query.Filtro.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Distaccamento?.Codice) ?? true;
 
                 bool genere = (query.Filtro.Autista == true || query.Filtro.Autista == null) ? query.Filtro?.Tipo?.Contains(mezzo.Mezzo.Genere) ?? true : mezzo.Mezzo.Genere.ToLower().Contains("av");
 
                 bool stato = query.Filtro?.Stato?.Contains(mezzo.Mezzo.Stato) ?? true;
 
-                return ricerca && distaccamento && genere && stato;
+                return ricerca && competenze && genere && stato && distaccamentoSquadra;
             })).ContinueWith(lstMezzi =>
             {
                 return lstMezzi.Result //ORDINAMENTO
