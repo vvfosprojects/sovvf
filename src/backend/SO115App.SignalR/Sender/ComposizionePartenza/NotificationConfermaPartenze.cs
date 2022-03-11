@@ -86,8 +86,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             SediDaNotificare.AddRange(conferma.ConfermaPartenze.Partenze.Select(c => c.Mezzo.Distaccamento.Codice));
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
 
-            SediDaNotificare = SediDaNotificare.FindAll(s => s != null).ToList();
-
             var listaMezziInServizio = Task.Factory.StartNew(() => _getListaMezzi.Get(SediDaNotificare.ToArray()));
             var sintesi = Task.Factory.StartNew(() => _mapperSintesi.Map(conferma.Richiesta)).ContinueWith(sintesi =>
             {
