@@ -161,7 +161,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList()).Result;
 
-                if (lstMezziNuova != null && lstMezziNuova.Count > 0)
+                if (lstMezziNuova != null || lstMezziNuova.Count > 0 || mezzi.Result != null || mezzi.Result.Count > 0)
                     _setComposizioneMezzi.Set(lstMezziNuova);
 
                 return lstMezziNuova;
