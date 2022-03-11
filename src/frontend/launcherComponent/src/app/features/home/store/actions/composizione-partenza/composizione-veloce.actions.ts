@@ -1,11 +1,10 @@
 import { BoxPartenzaPreAccoppiati } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { BoxPartenzaHover } from '../../../composizione-partenza/interface/composizione/box-partenza-hover-interface';
-import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 
 export class GetListaComposizioneVeloce {
     static readonly type = '[ComposizioneVeloce] Get PreAccoppiati';
 
-    constructor(public options?: { filtri?: FiltriComposizione, page?: number }) {
+    constructor(public options?: { page?: number }) {
     }
 }
 
