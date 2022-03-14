@@ -114,7 +114,7 @@ export function iconaStatiClass(stato: string): string {
 }
 
 export function boxStatiClass(stato: string): string {
-    let returnClass = '';
+    let returnClass: string;
     switch (stato) {
         case StatoMezzo.InSede:
             returnClass = 'badge-success';
@@ -134,7 +134,6 @@ export function boxStatiClass(stato: string): string {
         case StatoMezzo.SulPosto:
             returnClass = 'badge-danger';
             break;
-
         default:
             returnClass = 'badge-dark';
             break;
@@ -143,7 +142,7 @@ export function boxStatiClass(stato: string): string {
 }
 
 export function boxStatiSquadraClass(stato: number): string {
-    let returnClass = '';
+    let returnClass: string;
     switch (stato) {
         case StatoSquadra.InSede:
             returnClass = 'box-stato bg-success';
@@ -165,7 +164,7 @@ export function boxStatiSquadraClass(stato: number): string {
 }
 
 export function nomeStatiSquadra(stato: number): string {
-    let returnClass = '';
+    let returnClass: string;
     switch (stato) {
         case 0:
             returnClass = 'In Sede';
@@ -186,13 +185,8 @@ export function nomeStatiSquadra(stato: number): string {
     return returnClass;
 }
 
-
-export function codDistaccamentoIsEqual(codDistaccamentoSquadra: string, codDistaccamentoMezzo: string): boolean {
-    return codDistaccamentoSquadra === codDistaccamentoMezzo;
-}
-
 export function calcolaTimeout(addBoxPartenza: boolean): number {
-    let timeout = 0;
+    let timeout: number;
     if (!addBoxPartenza) {
         timeout = 0;
     } else {
