@@ -156,35 +156,35 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     }
                 });
 
-                if (intervento.Chiamata != null)
-                {
-                    Task.Factory.StartNew(() =>
-                    {
-                        var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                        {
-                            CodiciSedi = new string[] { sede }
-                        };
-                        var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
-                    });
+                //if (intervento.Chiamata != null)
+                //{
+                //    Task.Factory.StartNew(() =>
+                //    {
+                //        var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+                //        {
+                //            CodiciSedi = new string[] { sede }
+                //        };
+                //        var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+                //        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
+                //    });
 
-                    Task.Factory.StartNew(() =>
-                    {
-                        var queryListaMezzi = new MezziMarkerQuery()
-                        {
-                            Filtro = new AreaMappa()
-                            {
-                                CodiceSede = new List<string>() { sede },
-                                FiltroMezzi = new Models.Classi.Filtri.FiltroMezzi()
-                                {
-                                    FiltraPerAreaMappa = false
-                                }
-                            }
-                        };
-                        var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == intervento.Chiamata.Codice));
-                    });
-                }
+                //    Task.Factory.StartNew(() =>
+                //    {
+                //        var queryListaMezzi = new MezziMarkerQuery()
+                //        {
+                //            Filtro = new AreaMappa()
+                //            {
+                //                CodiceSede = new List<string>() { sede },
+                //                FiltroMezzi = new Models.Classi.Filtri.FiltroMezzi()
+                //                {
+                //                    FiltraPerAreaMappa = false
+                //                }
+                //            }
+                //        };
+                //        var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
+                //        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == intervento.Chiamata.Codice));
+                //    });
+                //}
             });
         }
     }

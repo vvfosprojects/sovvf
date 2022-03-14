@@ -95,9 +95,9 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     CodiciSedi = new string[] { sede }
                 };
 
-                var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+                //var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
+                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
                 _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
 
                 var boxRichiesteQuery = new BoxRichiesteQuery()
@@ -127,7 +127,9 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     IdOperatore = command.IdOperatore
                 };
                 var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+                var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
 
                 var areaMappa = new AreaMappa()
                 {
@@ -141,35 +143,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 {
                     Filtro = areaMappa,
                 };
-                var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == command.Chiamata.Codice));
+                //var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
+                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == command.Chiamata.Codice));
 
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
-
-                //Task.Factory.StartNew(() =>
-                //{
-                //    return command.Chiamata;
-                //}).ContinueWith(chiamata => );
-
-                //Task.Factory.StartNew(() =>
-                //{
-                //});
-
-                //Task.Factory.StartNew(() =>
-                //{
-                //});
-
-                //Task.Factory.StartNew(() =>
-                //{
-                //});
-
-                //Task.Factory.StartNew(() =>
-                //{
-                //});
-
-                //Task.Factory.StartNew(() =>
-                //{
-                //});
             });
         }
     }
