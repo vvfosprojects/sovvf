@@ -4,6 +4,7 @@ using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.CodaChiamate;
+using SO115App.Models.Classi.ListaMezziInServizio;
 using System;
 
 namespace WSSignlR.Hubs
@@ -66,7 +67,21 @@ namespace WSSignlR.Hubs
             Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", sintesi);
         }
 
+        public void ChangeStateSuccess(bool esito, string sede)
+        {
+            Clients.Group(sede).SendAsync("ChangeStateSuccess", esito);
+        }
+
         #endregion Inserimento/Modifica Intervento
+
+        #region Partenza
+
+        public void NotifyUpdateMezzoInServizio(MezzoInServizio mezzo, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
+        }
+
+        #endregion Partenza
 
         #region Marker
 
@@ -82,6 +97,16 @@ namespace WSSignlR.Hubs
         public void NotifyAddChiamateCodaChiamate(CounterNotifica counter, string sede)
         {
             Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counter);
+        }
+
+        public void NotifyAddSquadreOccupateCodaChiamate(CounterNotifica counter, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counter);
+        }
+
+        public void NotifyRemoveSquadreLibereCodaChiamate(CounterNotifica counter, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counter);
         }
 
         #endregion Coda Chiamate
