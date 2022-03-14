@@ -72,7 +72,7 @@ namespace SO115App.SignalR.Utility
                 }
             }
 
-            return ListaCodiciSediInteressate.Distinct().ToList();
+            return ListaCodiciSediInteressate.FindAll(s => s != null).Distinct().ToList();
         }
     }
 }
