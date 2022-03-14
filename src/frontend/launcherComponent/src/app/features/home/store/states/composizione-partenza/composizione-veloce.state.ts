@@ -16,7 +16,7 @@ import { BoxPartenza, BoxPartenzaPreAccoppiati } from '../../../composizione-par
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
-import { checkSquadraOccupata, mezzoComposizioneBusy } from '../../../../../shared/helper/function-composizione';
+import { checkPreaccoppiatoOccupato } from '../../../../../shared/helper/function-composizione';
 import { Injectable } from '@angular/core';
 import { PaginationComposizionePartenzaState } from '../../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
@@ -102,7 +102,7 @@ export class ComposizioneVeloceState {
         this.compPartenzaService.getListaComposizioneVeloce(obj).subscribe((response: ListaComposizioneVeloce) => {
             const preaccoppiatiOccupati = [];
             response.dataArray.forEach((preaccoppiato: BoxPartenzaPreAccoppiati) => {
-                if (mezzoComposizioneBusy(preaccoppiato.statoMezzo) || checkSquadraOccupata(preaccoppiato.squadre)) {
+                if (checkPreaccoppiatoOccupato(preaccoppiato.statoMezzo, preaccoppiato.squadre)) {
                     preaccoppiatiOccupati.push(preaccoppiato.id);
                 }
             });
