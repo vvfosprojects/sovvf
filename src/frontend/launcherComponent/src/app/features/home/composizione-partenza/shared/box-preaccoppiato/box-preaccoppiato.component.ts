@@ -110,7 +110,7 @@ export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
             returnClass = this.itemSelezionato ? 'bg-light card-shadow-success' : 'card-shadow';
 
             if (this.itemOccupato) {
-                returnClass += ' diagonal-stripes bg-lightdanger';
+                returnClass += ' diagonal-stripes bg-lightdanger cursor-not-allowed';
                 this.itemBloccato = true;
             } else if (!this.itemSelezionato) {
                 returnClass += this.itemHover ? ' border-warning' : '';

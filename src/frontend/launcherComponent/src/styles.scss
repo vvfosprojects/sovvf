@@ -282,7 +282,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
       color: $SO-black $SO-i;
     }
   }
-
   //
 
   // style Esri
@@ -295,7 +294,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     background-color: $SO-dark-light $SO-i;
     color: $SO-white $SO-i;
   }
-
   //
 
   // Feature Emergenza
@@ -312,7 +310,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   .ng-wizard-theme-default > ul.step-anchor > li.done > a {
     color: $SO-secondary $SO-i;
   }
-
   //
 
   a {
@@ -585,6 +582,10 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   .bg-locked-concorrenza {
     background-color: rgba(53, 53, 53, 0.9) $SO-i;
+  }
+
+  .bg-lightdanger {
+    background-color: rgba(231, 113, 110, 0.2) $SO-i;
   }
 
   .bg-tasto-nuova-chiamata {
