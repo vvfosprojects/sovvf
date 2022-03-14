@@ -25,7 +25,7 @@
                 <ng-container *ngIf="loadingPreaccoppiati">
                     <app-partial-loader></app-partial-loader>
                 </ng-container>
-                <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2">
+                <div *ngIf="preAccoppiati?.length" class="row p-2">
                     <div *ngFor="let preAcc of preAccoppiati" class="col-6">
                         <app-box-preaccoppiato [partenzaPreAccopiati]="preAcc"
                                                [richiesta]="richiesta"

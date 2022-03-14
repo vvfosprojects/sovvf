@@ -19,13 +19,7 @@ import { RichiestaFissataComponent } from './richiesta-fissata/richiesta-fissata
 /**
  * Ngxs
  */
-import { NgxsModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { RichiesteState } from '../store/states/richieste/richieste.state';
-import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
-import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
-import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
-import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 
 @NgModule({
     imports: [
@@ -38,13 +32,6 @@ import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gest
         NgSelectModule,
         SharedModule.forRoot(),
         TagInputModule,
-        NgxsModule.forFeature([
-            RichiesteState,
-            RichiestaFissataState,
-            RichiestaHoverState,
-            RichiestaSelezionataState,
-            RichiestaGestioneState
-        ]),
         NgxsFormPluginModule,
         SharedModule
     ],

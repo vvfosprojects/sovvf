@@ -38,6 +38,12 @@ import { BoxMezziService } from '../../core/service/box-service/box-mezzi.servic
 import { BoxRichiesteService } from '../../core/service/box-service/box-richieste.service';
 import { ConcorrenzaService } from '../../core/service/concorrenza-service/concorrenza.service';
 import { LockedConcorrenzaService } from '../../core/service/concorrenza-service/locked-concorrenza.service';
+import { RichiestaSganciamentoState } from './store/states/composizione-partenza/richiesta-sganciamento.state';
+import { RichiesteState } from './store/states/richieste/richieste.state';
+import { RichiestaFissataState } from './store/states/richieste/richiesta-fissata.state';
+import { RichiestaHoverState } from './store/states/richieste/richiesta-hover.state';
+import { RichiestaSelezionataState } from './store/states/richieste/richiesta-selezionata.state';
+import { RichiestaGestioneState } from './store/states/richieste/richiesta-gestione.state';
 
 @NgModule({
     declarations: [
@@ -75,8 +81,14 @@ import { LockedConcorrenzaService } from '../../core/service/concorrenza-service
                 SostituzionePartenzaModalState,
                 MezziComposizioneState,
                 SquadreComposizioneState,
+                RichiestaSganciamentoState,
                 FiltriComposizioneState,
-                FiltroZoneEmergenzaState
+                FiltroZoneEmergenzaState,
+                RichiesteState,
+                RichiestaFissataState,
+                RichiestaHoverState,
+                RichiestaSelezionataState,
+                RichiestaGestioneState
             ]
         ),
         BarChartModule,
