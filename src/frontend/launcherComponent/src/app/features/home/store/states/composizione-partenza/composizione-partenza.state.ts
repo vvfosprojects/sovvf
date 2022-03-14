@@ -35,6 +35,10 @@ import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
 import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
+import { DeleteConcorrenza } from '../../../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
+import { Partenza } from '../../../../../shared/model/partenza.model';
+import { Squadra } from '../../../../../shared/model/squadra.model';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
@@ -200,6 +204,13 @@ export class ComposizionePartenzaState {
         const state = getState();
         dispatch(new StartInvioPartenzaLoading());
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
+            console.log('partenze', action.partenze);
+            action.partenze.partenze.forEach((p: Partenza) => {
+                console.log('remove mezzo', p.mezzo.codice);
+                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.mezzo.codice]));
+                const codiciSquadre = p.squadre.map((s: Squadra) => s.codice);
+                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+            });
             if (state.composizioneMode === Composizione.Avanzata) {
                 dispatch([
                     new ClearBoxPartenze(),

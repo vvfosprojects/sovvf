@@ -17,7 +17,6 @@
                           [idDaSganciare]="idDaSganciare"
                           [index]="'' + index"
                           [annullaStatoMezzo]="annullaStatoMezzi?.includes(p?.partenza?.mezzo?.codice)"
-                          [dateDiffMezzi]="diffDateInfoMezzo"
                           (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre)"
                           (actionMezzo)="onActionMezzo($event)"
                           (eliminaPartenza)="eliminaPartenza.emit($event)"
