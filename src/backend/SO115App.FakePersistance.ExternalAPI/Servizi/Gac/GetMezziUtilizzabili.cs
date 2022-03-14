@@ -211,7 +211,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             }
             catch (Exception e)
             {
-                return null;
+                return _getComposizioneMezziDB.GetByCodiciSede()
+                    .Where(s => codici.Contains(s.Mezzo.Appartenenza.Split('.')[0]))
+                    .Select(m => m.Mezzo)
+                    .ToList();
             }
 
             var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();

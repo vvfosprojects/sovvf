@@ -73,8 +73,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
-                if (mezzi.Result == null || mezzi.Result.Count == 0)
-                    return _getComposizioneMezzi.GetByCodiciSede(query.CodiciSedi.Distinct().ToArray());
+                //if (mezzi.Result == null || mezzi.Result.Count == 0)
+                //    mezzi = Task.Run(() => _getComposizioneMezzi.GetByCodiciSede(query.CodiciSedi.Distinct().ToArray()).Select(m => m.Mezzo).ToList());
 
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
