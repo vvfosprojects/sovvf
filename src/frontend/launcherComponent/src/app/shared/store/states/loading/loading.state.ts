@@ -9,11 +9,6 @@ interface InfoMezzo {
     istante: Date;
 }
 
-interface DiffInfoMezzo {
-    codMezzo: string;
-    diff: number;
-}
-
 export interface LoadingStateModel {
     loading: boolean;
     annullaStatoMezzi: InfoMezzo[];
@@ -41,21 +36,6 @@ export class LoadingState {
         const listaMezzi = [];
         state.annullaStatoMezzi.forEach(x => listaMezzi.push(x.codMezzo));
         return listaMezzi;
-    }
-
-    @Selector()
-    static diffDateInfoMezzo(state: LoadingStateModel): DiffInfoMezzo[] {
-        // TODO: Implementazione progressbar
-        const diffDate = [];
-        // state.annullaStatoMezzi.forEach((annullaStatoMezzi: InfoMezzo) => {
-        //     const now = new Date();
-        //     const secondsDiff = Math.round((now.getTime() - annullaStatoMezzi.istante.getTime()) / 1000);
-        //     diffDate.push({
-        //         codMezzo: annullaStatoMezzi.codMezzo,
-        //         secondsDiff: secondsDiff ? secondsDiff : 60
-        //     });
-        // });
-        return diffDate;
     }
 
     constructor(private ngxLoader: NgxUiLoaderService) {
@@ -99,12 +79,12 @@ export class LoadingState {
     }
 
     @Action(StartBigLoading)
-    startBigLoading({ patchState }: StateContext<LoadingStateModel>): void {
+    startBigLoading(): void {
         this.ngxLoader.start();
     }
 
     @Action(StopBigLoading)
-    stopBigLoading({ patchState }: StateContext<LoadingStateModel>): void {
+    stopBigLoading(): void {
         this.ngxLoader.stop();
     }
 }
