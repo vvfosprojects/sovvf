@@ -172,7 +172,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
                 return lstMezziDto;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 var lstMezzi = _getComposizioneMezziDB.GetByCodiciMezzo(codiciMezzi.ToArray());
 
