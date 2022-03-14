@@ -90,12 +90,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                     {
                         foreach (var mezzoPreaccoppiato in squadraPreaccoppiata.CodiciMezziPreaccoppiati)
                         {
-                            var mezzo = lstMezziPreaccoppiati.Find(m => m.Codice.Equals(mezzoPreaccoppiato));
+                            var mezzo = lstMezziPreaccoppiati.FirstOrDefault(m => m.Codice.Equals(mezzoPreaccoppiato));
+
+                            if (mezzo == null)
+                                continue;
 
                             var preaccoppiato = new PreAccoppiato()
                             {
                                 CodiceMezzo = mezzoPreaccoppiato,
-                                Appartenenza = squadraPreaccoppiata.Distaccamento,
+                                Appartenenza = mezzo?.Distaccamento?.Codice,
                                 Squadre = lstSquadrePreaccoppiate.Where(s => s.CodiciMezziPreaccoppiati?.Contains(mezzoPreaccoppiato) ?? false).Select(s => new API.Models.Classi.Composizione.Squadra()
                                 {
                                     Codice = s.Codice,
@@ -123,7 +126,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 })
                 .ContinueWith(preaccoppiati => preaccoppiati.Result.Where(p => // FILTRAGGIO
                 {
-                    var distaccamento = query.Filtri?.CodiceDistaccamento?.Contains(p.Distaccamento) ?? true;
+                    var distaccamento = query.Filtri?.CodiceDistaccamento?.Contains(p.Appartenenza) ?? true;
 
                     var statoMezzo = query.Filtri?.StatoMezzo?.Contains(p.StatoMezzo) ?? true;
 
