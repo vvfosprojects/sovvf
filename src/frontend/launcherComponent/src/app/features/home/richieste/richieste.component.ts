@@ -74,7 +74,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
 
     @Select(LoadingState.annullaStatoMezzi) annullaStatoMezzi$: Observable<string[]>;
-    @Select(LoadingState.diffDateInfoMezzo) diffDateInfoMezzo$: Observable<any>;
 
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];
