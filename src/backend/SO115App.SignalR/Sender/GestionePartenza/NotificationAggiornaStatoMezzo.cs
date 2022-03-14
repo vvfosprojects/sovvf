@@ -93,19 +93,16 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
             intervento.Chiamata = _mapperRichiesta.Map(intervento.Richiesta);
 
-            Task.Factory.StartNew(() =>
+            var listaMezziInServizioQuery = new ListaMezziInServizioQuery
             {
-                var listaMezziInServizioQuery = new ListaMezziInServizioQuery
-                {
-                    CodiciSede = intervento.CodiciSede,
-                    IdOperatore = intervento.IdUtente
-                };
-                var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
-                var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo));
+                CodiciSede = intervento.CodiciSede,
+                IdOperatore = intervento.IdUtente
+            };
+            var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+            var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo));
 
-                foreach (var sede in listaMezziInServizioQuery.CodiciSede)
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
-            });
+            foreach (var sede in listaMezziInServizioQuery.CodiciSede)
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
 
             Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
