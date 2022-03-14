@@ -19,9 +19,9 @@
 //-----------------------------------------------------------------------
 
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
-using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.SignalR.Utility;
 using System.Threading.Tasks;
 
@@ -29,24 +29,35 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 {
     public class NotificationAddChiamataInCorso : INotificationAddChiamataInCorso
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IConfiguration _config;
 
-        public NotificationAddChiamataInCorso(IHubContext<NotificationHub> NotificationHubContext,
-            GetGerarchiaToSend getGerarchiaToSend)
+        public NotificationAddChiamataInCorso(GetGerarchiaToSend getGerarchiaToSend, IConfiguration config)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
-            _notificationHubContext = NotificationHubContext;
+            _config = config;
         }
 
         public async Task SendNotification(ChiamataInCorsoMarkerCommand chiamata)
         {
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
             var Competenze = chiamata.Competenze;
 
             var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
 
             foreach (var sede in SediDaNotificare)
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerAdd", chiamata);
+            {
+                await hubConnection.StartAsync();
+                await hubConnection.InvokeAsync("NotifyChiamataInCorsoMarkerAdd", chiamata, sede);
+                await hubConnection.StopAsync();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
+using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
@@ -88,6 +89,26 @@ namespace WSSignlR.Hubs
         public void NotifyGetRichiestaMarker(SintesiRichiestaMarker sintesi, string sede)
         {
             Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", sintesi);
+        }
+
+        public void NotifyChiamataInCorsoMarkerAdd(ChiamataInCorsoMarkerCommand sintesi, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerAdd", sintesi);
+        }
+
+        public void NotifyChiamataInCorsoMarkerDelete(string idChiamataInCorso, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerDelete", idChiamataInCorso);
+        }
+
+        public void NotifyDoppioneChiamataInCorso(string Note, string HubId)
+        {
+            Clients.Client(HubId).SendAsync("NotifyDoppioneChiamataInCorso", Note);
+        }
+
+        public void NotifyChiamataInCorsoMarkerUpdate(UpDateChiamataInCorsoMarkerCommand chiamata, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerUpdate", chiamata);
         }
 
         #endregion Marker

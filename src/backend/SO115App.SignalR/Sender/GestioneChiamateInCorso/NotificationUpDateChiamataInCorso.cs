@@ -20,6 +20,8 @@
 
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.SignalR.Utility;
@@ -29,24 +31,35 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 {
     public class NotificationUpDateChiamataInCorso : INotificationUpDateChiamataInCorso
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IConfiguration _config;
 
-        public NotificationUpDateChiamataInCorso(IHubContext<NotificationHub> NotificationHubContext,
-            GetGerarchiaToSend getGerarchiaToSend)
+        public NotificationUpDateChiamataInCorso(GetGerarchiaToSend getGerarchiaToSend, IConfiguration config)
         {
-            _notificationHubContext = NotificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _config = config;
         }
 
         public async Task SendNotification(UpDateChiamataInCorsoMarkerCommand chiamata)
         {
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
             var Competenze = chiamata.Competenze;
 
             var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
 
             foreach (var sede in SediDaNotificare)
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerUpdate", chiamata);
+            {
+                await hubConnection.StartAsync();
+                await hubConnection.InvokeAsync("NotifyChiamataInCorsoMarkerUpdate", chiamata, sede);
+                await hubConnection.StopAsync();
+            }
         }
     }
 }

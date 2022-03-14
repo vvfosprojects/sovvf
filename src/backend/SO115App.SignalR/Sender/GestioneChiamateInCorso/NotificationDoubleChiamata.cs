@@ -20,6 +20,8 @@
 
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using System.Threading.Tasks;
@@ -28,16 +30,26 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 {
     public class NotificationDoubleChiamata : INotificationDoubleChiamataInCorso
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly IConfiguration _config;
 
-        public NotificationDoubleChiamata(IHubContext<NotificationHub> NotificationHubContext)
+        public NotificationDoubleChiamata(IConfiguration config)
         {
-            _notificationHubContext = NotificationHubContext;
+            _config = config;
         }
 
         public async Task SendNotification(ChiamataInCorsoMarkerCommand chiamata)
         {
-            await _notificationHubContext.Clients.Client(chiamata.HubConId).SendAsync("NotifyDoppioneChiamataInCorso", Costanti.RichiestaEsistente);
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
+            await hubConnection.StartAsync();
+            await hubConnection.InvokeAsync("NotifyDoppioneChiamataInCorso", Costanti.RichiestaEsistente, chiamata.HubConId);
+            await hubConnection.StopAsync();
         }
     }
 }

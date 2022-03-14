@@ -19,7 +19,8 @@
 //-----------------------------------------------------------------------
 
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
-using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.SignalR.Utility;
@@ -29,28 +30,39 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 {
     public class NotificationDeleteChiamataInCorso : INotificationDeleteChiamataInCorso
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
+        private readonly IConfiguration _config;
 
-        public NotificationDeleteChiamataInCorso(IHubContext<NotificationHub> NotificationHubContext,
-            GetGerarchiaToSend getGerarchiaToSend,
-            IGetCompetenzeByCoordinateIntervento getCompetenze)
+        public NotificationDeleteChiamataInCorso(GetGerarchiaToSend getGerarchiaToSend,
+            IGetCompetenzeByCoordinateIntervento getCompetenze, IConfiguration config)
         {
-            _notificationHubContext = NotificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
             _getCompetenze = getCompetenze;
+            _config = config;
         }
 
         public async Task SendNotification(CancellazioneChiamataInCorsoMarkerCommand chiamata)
         {
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
             var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.ChiamataInCorso.Localita.Coordinate);
 
             var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
             //SediDaNotificare.Add(chiamata.ChiamataInCorso.CodiceSedeOperatore);
 
             foreach (var sede in SediDaNotificare)
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerDelete", chiamata.ChiamataInCorso.Id);
+            {
+                await hubConnection.StartAsync();
+                await hubConnection.InvokeAsync("NotifyChiamataInCorsoMarkerDelete", chiamata.ChiamataInCorso.Id, sede);
+                await hubConnection.StopAsync();
+            }
         }
     }
 }
