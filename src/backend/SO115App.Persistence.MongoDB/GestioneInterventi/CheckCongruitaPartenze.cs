@@ -21,10 +21,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
 
             var lstMovimentiPartenza = lstRichiesteMezzo
                 .SelectMany(r => r.ListaEventi.OfType<AbstractPartenza>()
-                .Where(p =>
-                {
-                    return p.CodiceMezzo.Equals(cambioStatoMezzo.CodMezzo) && !(p is RichiestaSoccorsoAereo);
-                })
+                .Where(p => p.CodiceMezzo.Equals(cambioStatoMezzo.CodMezzo) && !(p is RichiestaSoccorsoAereo))
                 .GroupBy(p => p.CodicePartenza))
                 .Where(p => p.Key == codicePartenza)
                 .ToList();

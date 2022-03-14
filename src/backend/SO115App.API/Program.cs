@@ -17,10 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using System.IO;
+using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace SO115App.API
 {
@@ -28,17 +27,26 @@ namespace SO115App.API
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    config.SetBasePath(Directory.GetCurrentDirectory());
-                    config.AddJsonFile(
-                        "appsettings.json", optional: true, reloadOnChange: true);
-                })
-                .UseStartup<Startup>();
+        //public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        //    WebHost.CreateDefaultBuilder(args)
+        //        .ConfigureAppConfiguration((hostingContext, config) =>
+        //        {
+        //            config.SetBasePath(Directory.GetCurrentDirectory());
+        //            config.AddJsonFile(
+        //                "appsettings.json", optional: true, reloadOnChange: true);
+        //        })
+        //        .UseStartup<Startup>();
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+                    Host.CreateDefaultBuilder(args)
+                       .ConfigureWebHostDefaults(webBuilder =>
+                       {
+                           webBuilder.UseStartup<Startup>();
+                           webBuilder.UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration
+                          .ReadFrom.Configuration(hostingContext.Configuration));
+                       });
     }
 }

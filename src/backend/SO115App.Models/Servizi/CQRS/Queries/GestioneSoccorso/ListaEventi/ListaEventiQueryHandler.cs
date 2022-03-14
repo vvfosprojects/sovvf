@@ -113,6 +113,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         {
             switch (evento)
             {
+                case AggiornamentoOrarioStato _:
+                    return ((AggiornamentoOrarioStato)evento).Note;
+
                 case AnnullamentoStatoPartenza _:
                     return ((AnnullamentoStatoPartenza)evento).Note;
 
@@ -166,6 +169,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         private string MapTarghe(Evento evento)
         {
             var targa = "";
+
+            if (evento is AggiornamentoOrarioStato)
+                targa = ((AggiornamentoOrarioStato)evento).CodiceMezzo;
 
             if (evento is RevocaPerSostituzioneMezzo)
             {

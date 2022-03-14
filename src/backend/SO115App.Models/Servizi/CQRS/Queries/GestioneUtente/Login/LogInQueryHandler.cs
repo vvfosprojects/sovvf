@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -35,11 +36,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
     {
         private readonly IConfiguration _config;
         private readonly IVerificaLogIn _verificaLogIn;
+        private readonly IGetSedi _getSedi;
 
-        public LogInQueryHandler(IConfiguration config, IVerificaLogIn verificaLogIn)
+        public LogInQueryHandler(IConfiguration config, IVerificaLogIn verificaLogIn, IGetSedi getSedi)
         {
             _config = config;
             _verificaLogIn = verificaLogIn;
+            _getSedi = getSedi;
         }
 
         /// <summary>
@@ -51,6 +54,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
         {
             // preparazione del DTO
             var utente = _verificaLogIn.Verifica(query.Username, query.Password);
+
+            var infoSede = _getSedi.GetInfoSede(utente.Sede.Codice);
+
+            if (infoSede != null)
+                utente.Sede.CoordinateString = infoSede.Result.coordinate.Split(',');
 
             var claim = new[]
                 {

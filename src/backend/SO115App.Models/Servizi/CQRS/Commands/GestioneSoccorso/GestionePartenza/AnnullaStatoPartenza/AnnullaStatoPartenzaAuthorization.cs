@@ -21,8 +21,10 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -35,15 +37,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly IGetRichiesta _getRichiestaById;
+        private readonly IGetAllBlocks _getAllBlocks;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
 
         public AnnullaStatoPartenzaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetRichiesta getRichiestaById)
+            IGetRichiesta getRichiestaById,
+            IGetAllBlocks getAllBlocks,
+            IGetSottoSediByCodSede getSottoSediByCodSede)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
             _getRichiestaById = getRichiestaById;
+            _getAllBlocks = getAllBlocks;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AnnullaStatoPartenzaCommand command)
@@ -57,11 +65,20 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente.Split('.')[0] + ".1000" });
+                    var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
+
+                    var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Richiesta.Id));
+
+                    if (findBlock != null && findBlock.Count > 0)
+                    {
+                        var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.Operatore.Id));
+                        if (verificaUtente.Count == 0)
+                            yield return new AuthorizationResult(Costanti.InterventoBloccato);
+                    }
+
                     if (command.Richiesta.Chiusa)
                         yield return new AuthorizationResult(Costanti.MezzoErroreCambioStatoRichiestaChiusa);
-
-                    //if (command.Richiesta.Partenze.Where(p => p.Partenza.Mezzo.Codice.Contains(command.TargaMezzo)).First().Partenza.Mezzo.Stato != Costanti.MezzoInUscita)
-                    //    yield return new AuthorizationResult("Non puoi annullare una partenza in tale stato.");
 
                     bool abilitato = false;
                     foreach (var competenza in command.Richiesta.CodUOCompetenza)

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
@@ -6,16 +6,16 @@ import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
 import { EnteInterface } from '../../../../shared/interface/ente.interface';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
-    styleUrls: ['./lista-richieste.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./lista-richieste.component.scss']
 })
 export class ListaRichiesteComponent implements OnChanges {
 
-    @Input() ricerca: any;
+    @Input() ricerca: string;
     @Input() richieste: SintesiRichiesta[] = [];
     @Input() richiestaHover: SintesiRichiesta;
     @Input() idRichiestaSelezionata: string;
@@ -29,9 +29,9 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
     @Input() loadingActionRichiesta: string[] = [];
-    @Input() loadingActionMezzo: any = [];
+    @Input() loadingActionMezzo: string[] = [];
     @Input() loadingProgressBarMezzo: string[] = [];
-    @Input() diffDateInfoMezzo: any = [];
+    @Input() diffDateInfoMezzo: string[] = [];
     @Input() loadingEliminaPartenza: boolean;
 
     // Paginazione
@@ -61,14 +61,15 @@ export class ListaRichiesteComponent implements OnChanges {
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
 
-    // Permessi
-    permessiFeature = PermissionFeatures;
-
     methods = new HelperSintesiRichiesta();
     scrolling = false;
     statoRichiesta = StatoRichiesta;
 
-    actionRichiestaArray: any[] = [];
+    actionRichiestaArray: any = [];
+
+    // ENUM
+    permessiFeature = PermissionFeatures;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     constructor() {
     }
@@ -93,15 +94,6 @@ export class ListaRichiesteComponent implements OnChanges {
     /* Gestisce il singolo click sulla richiesta */
     onDeselezionaRichiesta(value: boolean): void {
         this.deselezione.emit(value);
-    }
-
-    /* Gestisce il double click sulla richiesta */
-    richiestaDoubleClick(richiesta: SintesiRichiesta): void {
-        if (richiesta?.id !== this.idRichiestaSelezionata) {
-            this.selezione.emit({ idRichiesta: richiesta.id, coordinate: richiesta.localita.coordinate });
-        } else {
-            this.deselezione.emit(true);
-        }
     }
 
     /* Fissa in alto la richiesta */

@@ -24,6 +24,7 @@ using Newtonsoft.Json;
 using Serilog;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
@@ -41,12 +42,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
         private readonly HttpClient _client;
         private readonly IConfiguration _config;
         private readonly IGetUtenteByCF _getUtenteByCF;
+        private readonly IGetSedi _getSedi;
 
-        public CasLoginQueryHandler(HttpClient client, IConfiguration config, IGetUtenteByCF getUtenteByCF)
+        public CasLoginQueryHandler(HttpClient client, IConfiguration config, IGetUtenteByCF getUtenteByCF, IGetSedi getSedi)
         {
             _client = client;
             _config = config;
             _getUtenteByCF = getUtenteByCF;
+            _getSedi = getSedi;
         }
 
         /// <summary>
@@ -56,18 +59,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
         /// <returns>Elenco dei mezzi disponibili</returns>
         public CasLoginResult Handle(CasLoginQuery query)
         {
-            var Cas = CheckCasTicket(query).Result;
+            var Cas = new CasResponse();
 
-            if (Cas.serviceResponse.AuthenticationFailure != null)
+            if (!query.Service.Contains("localhost"))
             {
-                Log.Information($"Autenticazione Fallita = {Cas.serviceResponse.AuthenticationFailure.Description}");
-                return new CasLoginResult()
-                {
-                    User = null,
-                    ErrorMessage = Cas.serviceResponse.AuthenticationFailure.Description
-                };
-            }
+                Cas = CheckCasTicket(query).Result;
 
+                if (Cas.serviceResponse.AuthenticationFailure != null)
+                {
+                    Log.Information($"Autenticazione Fallita = {Cas.serviceResponse.AuthenticationFailure.Description}");
+                    return new CasLoginResult()
+                    {
+                        User = null,
+                        ErrorMessage = Cas.serviceResponse.AuthenticationFailure.Description
+                    };
+                }
+            }
+            else
+            {
+                Cas.serviceResponse = new CasResponceService();
+                Cas.serviceResponse.AuthenticationSuccess = new CasAuthSuccess();
+                Cas.serviceResponse.AuthenticationSuccess.Attributes = new CasAttributes();
+                Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName = new string[1] { query.Ticket.Split('-')[1] };
+            }
             if (Cas.serviceResponse.AuthenticationSuccess != null)
             {
                 Log.Information($"sAMAccountName = {Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName}");
@@ -85,6 +99,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                         User = null,
                         ErrorMessage = "Utente non abilitato. Contattare l'assistenza per l'abilitazione"
                     };
+
+                var infoSede = _getSedi.GetInfoSede(utente.Sede.Codice);
+
+                if (infoSede != null)
+                    utente.Sede.CoordinateString = infoSede.Result.coordinate.Split(',');
 
                 Log.Information($"Utente loggato = {utente.Username}");
                 var claim = new[]

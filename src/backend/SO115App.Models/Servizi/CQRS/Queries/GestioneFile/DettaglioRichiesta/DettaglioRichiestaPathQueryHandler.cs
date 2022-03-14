@@ -54,7 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                 Prov = richiesta.Localita.Provincia,
                 DataOraChiamata = richiesta.ListaEventi.OfType<Telefonata>().First().Istante,
                 NumeroChiamata = richiesta.Codice,
-                Tipologia = string.Concat(_getTipologie.Get(richiesta.Tipologie).Select(t => $"{t.Descrizione}, ")).TrimEnd(',', ' '),
+                Tipologia = string.Concat(_getTipologie.Get(richiesta.Tipologie.Select(c => c.Codice).ToList()).Select(t => $"{t.Descrizione}, ")).TrimEnd(',', ' '),
                 Richiedente = richiesta.Richiedente.Nominativo,
                 RichiedenteTelefono = richiesta.Richiedente.Telefono,
                 Dettaglio = richiesta.DettaglioTipologia?.Descrizione,

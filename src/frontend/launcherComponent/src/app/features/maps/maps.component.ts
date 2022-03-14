@@ -1,16 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CentroMappa } from './maps-model/centro-mappa.model';
-import { SedeMarker } from './maps-model/sede-marker.model';
 import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { ComposizioneMarker } from './maps-model/composizione-marker.model';
 import { Observable, Subscription } from 'rxjs';
 import { ViewInterfaceMaps } from '../../shared/interface/view.interface';
 import { Select, Store } from '@ngxs/store';
-import { SediMarkersState } from './store/states/sedi-markers.state';
 import { CentroMappaState } from './store/states/centro-mappa.state';
 import { ChiamateMarkersState } from './store/states/chiamate-markers.state';
 import { ComposizionePartenzaState } from '../home/store/states/composizione-partenza/composizione-partenza.state';
-import { AreaMappaState } from './store/states/area-mappa.state';
 import { AreaMappa } from './maps-model/area-mappa-model';
 import { MapsDirectionState } from './store/states/maps-direction.state';
 import { DirectionInterface } from './maps-interface/direction.interface';
@@ -18,7 +15,6 @@ import { FiltriRichiesteState } from '../home/store/states/filterbar/filtri-rich
 import { VoceFiltro } from '../home/filterbar/filtri-richieste/voce-filtro.model';
 import { ViewComponentState } from '../home/store/states/view/view.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
-import { SetAreaMappa } from './store/actions/area-mappa.actions';
 import { RouterState } from '@ngxs/router-plugin';
 import { RichiestaSelezionataState } from '../home/store/states/richieste/richiesta-selezionata.state';
 import { RichiestaModificaState } from '../home/store/states/form-richiesta/richiesta-modifica.state';
@@ -26,8 +22,8 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { RichiestaGestioneState } from '../home/store/states/richieste/richiesta-gestione.state';
 import { MezziInServizioState } from '../home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { SchedeContattoState } from '../home/store/states/schede-contatto/schede-contatto.state';
-import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import { DirectionTravelDataInterface } from './maps-interface/direction-travel-data.interface';
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 @Component({
     selector: 'app-maps',
@@ -46,8 +42,6 @@ export class MapsComponent implements OnInit, OnDestroy {
     centroMappa: CentroMappa;
     @Select(ChiamateMarkersState.chiamateMarkers) chiamataMarkers$: Observable<ChiamataMarker[]>;
     @Select(ComposizionePartenzaState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;
-    @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
-    @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<boolean>;
     @Select(MapsDirectionState.direction) direction$: Observable<DirectionInterface>;
     @Select(MapsDirectionState.travelDataNuovaPartenza) travelDataNuovaPartenza$: Observable<DirectionTravelDataInterface>;
 
@@ -106,10 +100,7 @@ export class MapsComponent implements OnInit, OnDestroy {
             this.mapsFullyLoaded = true;
             if (this.mapsFullyLoaded) {
                 setTimeout(() => {
-                    this.store.dispatch([
-                        new SetMapLoaded(true, { spatialReference }),
-                        new SetAreaMappa(areaMappa)
-                    ]);
+                    this.store.dispatch(new SetMapLoaded(true, { spatialReference }));
                 }, 2000);
             }
         }

@@ -9,40 +9,54 @@
 </div>
 
 <div class="modal-body px-1">
-    <div *ngIf="squadre?.length" class="clearfix font-xxlarge mb-4 px-2">
-        <div class="float-right card bg-dark-light w-25">
-            <div class="border-bottom px-3 pt-1 pb-2">
-                <span class="font-weight-bold">{{ squadre?.length }}</span> squadre
+    <div class="d-flex justify-content-end mb-4 px-2">
+        <div class="card bg-dark-light w-25">
+            <div class="card-header">
+                <span class="font-weight-bold">{{ squadre?.length }}</span> {{ (!squadre.length || squadre?.length > 1 ? 'squadre' : 'squadra') | uppercase }}
             </div>
-            <div class="scroll-y"
+            <div class="card-body p-2 scroll-y"
                  style="max-height: 200px">
-                <div *ngFor="let s of squadre"
-                     class="clearfix px-4">
-                    <div class="float-left">
-                        {{ s.nome }} ({{ s?.turno }})
+                <ng-container *ngIf="squadre?.length">
+                    <div *ngFor="let s of squadre"
+                         class="d-flex justify-content-between align-items-center font-xxlarge px-3">
+                        <div class="">
+                            {{ s.nome }} ({{ s?.turno }})
+                        </div>
+                        <div class="">
+                            <app-icona-stato [stato]="_nomeStatiSquadra(s.stato)"></app-icona-stato>
+                        </div>
                     </div>
-                    <div class="float-right">
-                        <app-icona-stato [stato]="_nomeStatiSquadra(s.stato)"></app-icona-stato>
+                </ng-container>
+                <ng-container *ngIf="!squadre?.length">
+                    <div class="alert alert-danger mb-0">
+                        Nessuna squadra su {{ descDistaccamento }}
                     </div>
-                </div>
+                </ng-container>
             </div>
         </div>
     </div>
-    <div *ngIf="richieste?.length" class="px-2">
+    <div class="px-2">
         <div class="card bg-dark-light">
-            <div class="border-bottom font-xxlarge px-3 pt-1 pb-2">
-                <span class="font-weight-bold">{{ richieste?.length }}</span> {{ richieste?.length > 1 ? 'Interventi' : 'Intervento' }}
+            <div class="card-header">
+                <span class="font-weight-bold">{{ richieste?.length }}</span> {{ (!richieste.length || richieste?.length > 1 ? 'Interventi' : 'Intervento') | uppercase }}
             </div>
-            <div class="scroll-y"
-                 style="max-height: 350px">
-                <div *ngFor="let r of richieste"
-                     class="border-bottom">
-                    <app-sintesi-richiesta [richiesta]="r"
-                                           [modificabile]="false"
-                                           [gestibile]="false"
-                                           (nuovaPartenza)="onNuovaPartenza($event)">
-                    </app-sintesi-richiesta>
-                </div>
+            <div class="card-body p-2 scroll-y" style="max-height: 350px">
+                <ng-container *ngIf="richieste?.length">
+                    <div *ngFor="let r of richieste"
+                         class="border-bottom">
+                        <app-sintesi-richiesta [richiesta]="r"
+                                               [modificabile]="false"
+                                               [gestibile]="false"
+                                               [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate) || (tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [r.codice]) || r.stato === statoRichiesta.Chiusa"
+                                               (nuovaPartenza)="onNuovaPartenza($event)">
+                        </app-sintesi-richiesta>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!richieste?.length">
+                    <div class="alert alert-danger mb-0">
+                        Nessuna Chiamata su {{ descDistaccamento }}
+                    </div>
+                </ng-container>
             </div>
         </div>
     </div>

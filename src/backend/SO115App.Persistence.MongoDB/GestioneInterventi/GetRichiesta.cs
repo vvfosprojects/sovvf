@@ -20,14 +20,12 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Persistence.MongoDB;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Utility;
@@ -48,17 +46,20 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IGetRubrica _getRubrica;
         private readonly IGetTurno _getTurno;
+        private readonly IGetSedi _getSedi;
 
         public GetRichiesta(DbContext dbContext,
             IMapperRichiestaSuSintesi mapperSintesi,
             IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC,
-            IGetRubrica getRubrica, IGetTurno getTurno)
+            IGetRubrica getRubrica, IGetTurno getTurno,
+            IGetSedi getSedi)
         {
             _dbContext = dbContext;
             _mapperSintesi = mapperSintesi;
             _getDistaccamentoUC = getDistaccamentoUC;
             _getRubrica = getRubrica;
             _getTurno = getTurno;
+            _getSedi = getSedi;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -118,22 +119,22 @@ namespace SO115App.Persistence.MongoDB
             }
             else
             {
-
-                var filtroFullText = Builders<RichiestaAssistenza>.Filter.AnyEq("descrizione", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.indirizzo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.citta", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.provincia", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("codRichiesta", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("codice", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("tags", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("codSoCompetente", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("richiedente.telefono", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("richiedente.nominativo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("noteNue", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePubbliche", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePrivate", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.codiceMezzo", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
-                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.nome", new BsonRegularExpression($".*{filtro.SearchKey}.*"));
+                var filtroFullText = Builders<RichiestaAssistenza>.Filter.AnyEq("descrizione", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.indirizzo", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.citta", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("localita.provincia", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("codRichiesta", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("codice", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("tags", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("codSoCompetente", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("richiedente.telefono", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("richiedente.nominativo", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("noteNue", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePubbliche", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePrivate", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.codiceMezzo", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.nome", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("tipologie.descrizione", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
 
                 var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
 
@@ -242,7 +243,7 @@ namespace SO115App.Persistence.MongoDB
             }
 
             if (filtro.FiltriTipologie != null)
-                result.AddRange(lstRichieste.Where(o => filtro.FiltriTipologie.Any(s => o.Tipologie.Contains(s))));
+                result.AddRange(lstRichieste.Where(o => filtro.FiltriTipologie.Any(s => o.Tipologie.Select(c => c.Codice).Contains(s))));
 
             if (filtro.IndirizzoIntervento != null)
             {
@@ -256,13 +257,31 @@ namespace SO115App.Persistence.MongoDB
             }
 
             //MAPPING
+            if (!filtro.SoloboxRichieste)
+            {
+                filtro.RichiesteTotali = result.Count();
+
+                if (filtro.Page > 0 && filtro.PageSize > 0)
+                {
+                    result = result.Distinct()
+                    .OrderByDescending(c => c.StatoRichiesta.Equals(Costanti.Chiamata) && c.Partenze.Count == 0)
+                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.Chiamata) && c.Partenze.Count > 0)
+                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaAssegnata))
+                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaPresidiata))
+                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaChiusa))
+                    .ThenByDescending(x => x.PrioritaRichiesta)
+                    .ThenByDescending(x => x.IstanteRicezioneRichiesta)
+                    .Skip((filtro.Page - 1) * filtro.PageSize).Take(filtro.PageSize).ToList();
+                }
+            }
+
             var listaSistesiRichieste = result.Where(richiesta => richiesta.CodUOCompetenza != null).Select(richiesta =>
             {
                 var rubrica = new List<EnteDTO>();
                 var sintesi = new SintesiRichiesta();
                 sintesi = _mapperSintesi.Map(richiesta);
-                sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
+                sintesi.Competenze = richiesta.Competenze;
+                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? richiesta.CodSOAllertate.ToArray().MapCompetenze(_getSedi) : null;
                 return sintesi;
             });
 
@@ -279,27 +298,6 @@ namespace SO115App.Persistence.MongoDB
                     .ToList();
         }
 
-        private List<Sede> MapCompetenze(string[] codUOCompetenza)
-        {
-            var listaSedi = new List<Sede>();
-            int i = 1;
-            foreach (var codCompetenza in codUOCompetenza)
-            {
-                if (i <= 3)
-                {
-                    var Distaccamento = _getDistaccamentoUC.Get(codCompetenza).Result;
-                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate);
-
-                    if (sede != null)
-                        listaSedi.Add(sede);
-                }
-
-                i++;
-            }
-
-            return listaSedi;
-        }
-
         public SintesiRichiesta GetSintesi(string codiceRichiesta)
         {
             var richiesta = GetByCodice(codiceRichiesta);
@@ -313,8 +311,8 @@ namespace SO115App.Persistence.MongoDB
             {
                 sintesi = _mapperSintesi.Map(richiesta);
                 //sintesi.CodEntiIntervenuti = rubrica.Count > 0 ? rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false) : null;
-                sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
+                sintesi.Competenze = richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
+                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? richiesta.CodSOAllertate.ToArray().MapCompetenze(_getSedi) : null;
             }
 
             return sintesi;
@@ -344,7 +342,7 @@ namespace SO115App.Persistence.MongoDB
             result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
 
             //squadre
-            if(filtri.Squadre?.Count() > 0)
+            if (filtri.Squadre?.Count() > 0)
                 result = result.Where(r => r.lstSquadre.Any(sq => filtri.Squadre.Contains(sq))).ToList();
 
             return result.ToList();

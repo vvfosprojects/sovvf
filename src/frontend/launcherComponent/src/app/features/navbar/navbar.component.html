@@ -1,4 +1,4 @@
-<ng-template [ngIf]="listeSediNavbarLoaded$ | async">
+<ng-template [ngIf]="(listeSediNavbarLoaded$ | async)">
     <nav class="navbar navbar-expand-lg bg-navbar text-light">
         <div class="clearfix w-100">
             <div class="row">
@@ -8,7 +8,8 @@
                     <div class="clearfix">
                         <!-- Bottoni Sinistra -->
                         <div class="float-left mr-5">
-                            <button class="btn btn-light mr-2" (click)="onToggleSidebar()">
+                            <button class="btn btn-light mr-2"
+                                    (click)="onToggleSidebar()">
                                 <i class="fas fa-bars"></i>
                             </button>
                             <button class="btn btn-light mr-2"

@@ -16,6 +16,7 @@ import {
     SetCurrentUserEsri,
     SetLogged,
     SetLoggedCas,
+    SetSedeCurrentUser,
     UpdateCurrentUser,
     UpdateRuoliPersonali
 } from './auth.actions';
@@ -34,6 +35,7 @@ import { ClearRichieste } from '../../home/store/actions/richieste/richieste.act
 import { _isAdministrator } from '../../../shared/helper/function-generiche';
 import { GestioneUtentiStateModel } from '../../gestione-utenti/store/states/gestione-utenti/gestione-utenti.state';
 import { GestioneUtentiService } from '../../../core/service/gestione-utenti-service/gestione-utenti.service';
+import { ConcorrenzaService } from '../../../core/service/concorrenza-service/concorrenza.service';
 
 export interface AuthStateModel {
     currentJwt: string;
@@ -63,7 +65,8 @@ export const AuthStateDefaults: AuthStateModel = {
 export class AuthState {
 
     constructor(private authService: AuthService,
-                private gestioneUtentiService: GestioneUtentiService) {
+                private gestioneUtentiService: GestioneUtentiService,
+                private concorrenzaService: ConcorrenzaService) {
     }
 
     @Selector()
@@ -75,6 +78,7 @@ export class AuthState {
     static currentPswEsri(state: AuthStateModel): string {
         return state.currentPswEsri;
     }
+
     @Selector()
     static currentUserEsri(state: AuthStateModel): string {
         return state.currentUserEsri;
@@ -159,11 +163,23 @@ export class AuthState {
         if (cS) {
             cS = JSON.parse(cS);
         }
-        let codice = [currentUser.sede.codice];
+        let codice = [];
         if (cS) {
             codice = cS;
+            dispatch([
+                new SetVistaSedi(codice),
+                new Navigate(['' + RoutesPath.Home])
+            ]);
         }
-        dispatch(new SetVistaSedi(codice));
+    }
+
+    @Action(SetSedeCurrentUser)
+    setSedeCurrentUser({ dispatch }: StateContext<AuthStateModel>, { codiceSede }: SetSedeCurrentUser): void {
+        const codice = [codiceSede];
+        dispatch([
+            new SetVistaSedi(codice),
+            new Navigate(['' + RoutesPath.Home])
+        ]);
     }
 
     @Action(UpdateCurrentUser)
@@ -220,14 +236,7 @@ export class AuthState {
 
     @Action(RecoveryUrl)
     recoveryUrl({ dispatch }: StateContext<AuthStateModel>): void {
-        const currentUrl = JSON.parse(localStorage.getItem(LSNAME.redirectUrl));
-        console.log('RecoveryUrl', currentUrl);
-        if (currentUrl) {
-            localStorage.removeItem(LSNAME.redirectUrl);
-            dispatch(new Navigate([currentUrl]));
-        } else {
-            dispatch(new Navigate(['/' + RoutesPath.Home]));
-        }
+        dispatch(new Navigate(['/' + RoutesPath.SelezioneSede]));
     }
 
     @Action(CasLogin)
@@ -288,7 +297,9 @@ export class AuthState {
                 dispatch(new ClearDataUser());
             } else {
                 this.authService.clearUserData().subscribe(() => {
-                    dispatch(new ClearDataUser());
+                    this.concorrenzaService.deleteAll().subscribe(() => {
+                        dispatch(new ClearDataUser());
+                    });
                 });
             }
         }

@@ -1,4 +1,4 @@
-﻿using CQRS.Queries;
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSedi;
@@ -18,7 +18,10 @@ namespace SO115App.API.Controllers
         {
             _getSediHandler = getSediHandler;
         }
-
+    
+        /// <summary>
+        ///   Metodo che restituisce tutte le sedi VVF
+        /// </summary>
         [HttpGet("GetAllSedi")]
         public async Task<IActionResult> GetAllSedi()
         {

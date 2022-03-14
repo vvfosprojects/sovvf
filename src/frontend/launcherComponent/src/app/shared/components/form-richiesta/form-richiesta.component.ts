@@ -12,16 +12,18 @@ import { ClearClipboard } from '../../../features/home/store/actions/form-richie
 import {
     ClearCompetenze,
     ClearCountInterventiProssimita,
+    ClearIdChiamataMarker,
     ClearInterventiProssimita,
+    ClearMarkerChiamata,
     ReducerSchedaTelefonata,
     SetCompetenze,
     SetCompetenzeSuccess,
+    SetFormSubmitted,
     SetRedirectComposizionePartenza,
     StartChiamata,
-    StopLoadingDettagliTipologia
+    UpdateScorciatoiaTelefono
 } from '../../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
-import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
 import { Priorita, SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Observable, Subscription } from 'rxjs';
 import { DelChiamataMarker } from '../../../features/maps/store/actions/chiamate-markers.actions';
@@ -51,7 +53,6 @@ import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
 import { ClearSchedaContattoTelefonata, OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { PosInterface } from '../../interface/pos.interface';
-import { makeIdChiamata } from '../../helper/function-richieste';
 import { TipoTerreno } from '../../model/tipo-terreno';
 import { TipoTerrenoEnum } from '../../enum/tipo-terreno.enum';
 import { TriageChiamataModalState } from '../../store/states/triage-chiamata-modal/triage-chiamata-modal.state';
@@ -62,8 +63,13 @@ import { TipologicaComposizionePartenza } from '../../../features/home/composizi
 import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import { EsriService } from '../../../features/maps/map-service/esri.service';
 import Point from '@arcgis/core/geometry/Point';
-import * as Locator from '@arcgis/core/rest/locator';
+import { SetCentroMappa } from '../../../features/maps/store/actions/centro-mappa.actions';
+import { CentroMappa } from '../../../features/maps/maps-model/centro-mappa.model';
+import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -72,6 +78,11 @@ import * as Locator from '@arcgis/core/rest/locator';
     encapsulation: ViewEncapsulation.None
 })
 export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
+
+    @Select(SchedaTelefonataState.idChiamata) idChiamata$: Observable<string>;
+    idChiamata: string;
+    @Select(SchedaTelefonataState.scorciatoieTelefono) scorciatoieTelefono$: Observable<any>;
+    scorciatoieTelefono: any;
 
     @Select(TriageChiamataModalState.triage) triage$: Observable<TreeviewItem>;
     triage: TreeviewItem;
@@ -89,6 +100,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Select(TipologicheMezziState.tipologiche) tipologiche$: Observable<ListaTipologicheMezzi>;
     distaccamenti: TipologicaComposizionePartenza[];
     distaccamentiFiltered: TipologicaComposizionePartenza[];
+
+    @Input() submitted: boolean;
 
     @Input() tipologie: Tipologia[];
     @Input() operatore: Utente;
@@ -127,27 +140,21 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Output() closeChiamataFromMappa: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     chiamataMarker: ChiamataMarker;
-    idChiamata: string;
     AzioneChiamataEnum = AzioneChiamataEnum;
     StatoRichiesta = StatoRichiesta;
     pos: PosInterface[];
 
-    scorciatoieTelefono = {
-        112: false,
-        113: false,
-        118: false,
-        'VV.UU.': false,
-    };
-
     richiestaForm: FormGroup;
-    submitted = false;
 
     private subscription = new Subscription();
 
     constructor(private formBuilder: FormBuilder,
                 private store: Store,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private esriService: EsriService) {
         this.store.dispatch(new StartChiamata());
+        this.getIdChiamata();
+        this.getScorciatoieTelefono();
         this.initForm();
         this.getLoadingDettagliTipologia();
         this.getDettagliTipologia();
@@ -166,36 +173,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    checkNominativoSchedaContatto(): void {
-        if (this.f.codSchedaContatto.value && this.f.nominativo.value === '' && this.schedaContatto) {
-            this.f.nominativo.patchValue(this.schedaContatto.richiedente?.nominativo);
-        }
-    }
-
-    checkNumeroSchedaContatto(): void {
-        if (this.f.codSchedaContatto.value && this.f.telefono.value === '' && this.schedaContatto) {
-            this.f.telefono.patchValue(this.schedaContatto.richiedente?.telefono);
-        }
-    }
-
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {
-            if (changes.operatore?.currentValue) {
-                const operatore = changes.operatore.currentValue;
-                this.f.operatore.patchValue(operatore);
-                this.idChiamata = makeIdChiamata(operatore);
-            }
             if (changes.schedaContatto?.currentValue) {
                 const schedaContatto = changes.schedaContatto.currentValue;
-                if (schedaContatto && schedaContatto.codiceScheda) {
-                    this.setSchedaContatto(schedaContatto);
-                }
-                // Controllo scorciatoia numero da Scheda Contatto
-                const telefono = schedaContatto.richiedente.telefono;
-                const checkTelefono = JSON.stringify(Object.keys(this.scorciatoieTelefono));
-                if (checkTelefono.includes(telefono)) {
-                    this.onCheckScorciatoiaNumero(telefono);
-                }
+                this.onChangeSchedaContatto(schedaContatto);
             }
             if (changes.resetChiamata?.currentValue) {
                 const reset = changes.resetChiamata.currentValue;
@@ -206,6 +188,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             if (changes.richiestaModifica?.currentValue) {
                 const richiestaModifica = changes.richiestaModifica.currentValue;
                 if (richiestaModifica) {
+                    const data = {
+                        type: TipoConcorrenzaEnum.Richiesta,
+                        value: richiestaModifica.codice
+                    } as AddConcorrenzaDtoInterface;
+                    this.store.dispatch(new AddConcorrenza([data]));
                     this.modifica = true;
                     this.patchForm();
                 }
@@ -224,29 +211,94 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     this.selectCompetenzaAuto();
                 }
             }
+            if (changes.loadingCompetenze?.currentValue !== null) {
+                if (this.f) {
+                    switch (changes.loadingCompetenze?.currentValue) {
+                        case true:
+                            this.f.latitudine.disable();
+                            this.f.longitudine.disable();
+                            break;
+                        case false:
+                            this.f.latitudine.enable();
+                            this.f.longitudine.enable();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.clearFormDisconnection();
+
+        if (this.modifica) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta));
+        }
+    }
+
+    getIdChiamata(): void {
+        this.subscription.add(
+            this.idChiamata$.subscribe((idChiamata: string) => {
+                this.idChiamata = idChiamata;
+            })
+        );
+    }
+
+    getScorciatoieTelefono(): void {
+        this.subscription.add(
+            this.scorciatoieTelefono$.subscribe((scorciatoieTelefono: any) => {
+                this.scorciatoieTelefono = scorciatoieTelefono;
+                if (scorciatoieTelefono) {
+                    if (this.f && !Object.keys(this.scorciatoieTelefono).filter((k: string) => this.scorciatoieTelefono[k] === true)?.length) {
+                        this.f.nominativo.enable();
+                        this.f.telefono.enable();
+                    }
+                }
+            })
+        );
+    }
+
+    checkNominativoSchedaContatto(): void {
+        if (this.f.codSchedaContatto.value && this.f.nominativo.value === '' && this.schedaContatto) {
+            this.f.nominativo.patchValue(this.schedaContatto.richiedente?.nominativo);
+        }
+    }
+
+    checkNumeroSchedaContatto(): void {
+        if (this.f.codSchedaContatto.value && this.f.telefono.value === '' && this.schedaContatto) {
+            this.f.telefono.patchValue(this.schedaContatto.richiedente?.telefono);
+        }
+    }
+
+    onChangeSchedaContatto(schedaContatto: SchedaContatto): void {
+        if (schedaContatto?.codiceScheda) {
+            this.setSchedaContatto(schedaContatto);
+        }
+        // Controllo scorciatoia numero da Scheda Contatto
+        const telefono = schedaContatto.richiedente.telefono;
+        const checkTelefono = JSON.stringify(Object.keys(this.scorciatoieTelefono));
+        if (checkTelefono.includes(telefono)) {
+            this.onCheckScorciatoiaNumero(telefono);
+        }
     }
 
     clearFormDisconnection(): void {
-        this.submitted = false;
         this.pos = null;
         this.store.dispatch([
+            new ClearSchedaContattoTelefonata(),
+            new SetFormSubmitted(false),
             new ClearClipboard(),
-            new DelChiamataMarker(this.idChiamata),
+            new ClearMarkerChiamata(),
             new ClearCompetenze(),
             new ClearCountInterventiProssimita(),
-            new ClearInterventiProssimita(),
+            new ClearInterventiProssimita()
         ]);
 
         if (this.richiestaModifica) {
             this.store.dispatch(new ChiudiRichiestaModifica());
-        } else {
-            this.store.dispatch(new ClearSchedaContattoTelefonata());
         }
 
         clearSummaryData(this.store);
@@ -263,7 +315,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             operatore: [null],
             codTipologia: [null, [Validators.required]],
             dettaglioTipologia: [null],
-            istanteRicezioneRichiesta: [new Date(new Date().getTime() + OFFSET_SYNC_TIME[0])],
+            istanteRicezioneRichiesta: [null],
             nominativo: [null, [Validators.required]],
             telefono: [null, [Validators.required]], // Inserire se necessario => Validators.pattern('^(\\+?)[0-9]+$')
             indirizzo: [null, [Validators.required]],
@@ -286,8 +338,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             codEntiIntervenuti: [null],
             etichette: [null],
             noteIndirizzo: [null],
-            rilevanzaGrave: [false],
-            rilevanzaStArCu: [false],
+            rilevanzaGrave: [null],
+            rilevanzaStArCu: [null],
             notePrivate: [null],
             notePubbliche: [null],
             boschi: [null],
@@ -295,10 +347,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             sterpaglie: [null],
             descrizione: [null],
             zoneEmergenza: [null],
-            prioritaRichiesta: [3, [Validators.required]],
-            stato: [StatoRichiesta.Chiamata],
-            urgenza: [false],
-            esercitazione: [false],
+            prioritaRichiesta: [null, [Validators.required]],
+            stato: [null],
+            urgenza: [null],
+            esercitazione: [null],
             noteNue: [null]
         });
     }
@@ -347,16 +399,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
-        this.store.dispatch(new StopLoadingDettagliTipologia());
 
-        const lat = roundToDecimal(this.f.latitudine.value, 6);
-        const lng = roundToDecimal(this.f.longitudine.value, 6);
-        if (lat && lng) {
-            this.onChangeCoordinate();
-            this.f.indirizzo.setValidators([]);
-        }
-
-        this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono);
+        this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono, true);
         this.pos = this.richiestaModifica?.dettaglioTipologia?.pos;
 
         function getHaBoschi(richiestaModifica: SintesiRichiesta): number {
@@ -373,7 +417,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     get f(): any {
-        return this.richiestaForm.controls;
+        return this.richiestaForm?.controls;
     }
 
     onChangeTipologia(codTipologia: string): void {
@@ -624,22 +668,31 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     modificaIndirizzo(indirizzo: string): void {
         this.f.indirizzo.patchValue(indirizzo);
-        const lat = roundToDecimal(this.f.latitudine.value, 6);
-        const lng = roundToDecimal(this.f.longitudine.value, 6);
-        if (!indirizzo && (lat && lng)) {
-            this.f.indirizzo.setValidators([]);
-
-            // TODO: risolvere glitch
-            this.f.indirizzo.patchValue(' ');
-            setTimeout(() => {
-                this.f.indirizzo.patchValue('');
-            }, 1);
-        } else if (!lat || !lng) {
-            this.f.indirizzo.setValidators([Validators.required]);
+        if (!indirizzo) {
+            this.store.dispatch([
+                new ClearCompetenze(),
+                new ClearCountInterventiProssimita(),
+                new ClearInterventiProssimita(),
+                new ClearMarkerChiamata(),
+                new ClearIdChiamataMarker()
+            ]);
+            this.f.codPrimaCompetenza.patchValue(null);
+            this.f.codSecondaCompetenza.patchValue(null);
+            this.f.codTerzaCompetenza.patchValue(null);
+            this.f.latitudine.patchValue(null);
+            this.f.longitudine.patchValue(null);
+            this.f.provincia.patchValue(null);
+            this.f.cap.patchValue(null);
+            this.f.regione.patchValue(null);
+            this.f.civico.patchValue(null);
+            this.f.indirizzo.markAsPristine();
+            this.f.latitudine.markAsPristine();
+            this.f.longitudine.markAsPristine();
+            this.f.provincia.markAsPristine();
+            this.f.cap.markAsPristine();
+            this.f.regione.markAsPristine();
+            this.f.civico.markAsPristine();
         }
-        this.f.codPrimaCompetenza.patchValue(null);
-        this.f.codSecondaCompetenza.patchValue(null);
-        this.f.codTerzaCompetenza.patchValue(null);
     }
 
     onMsgIndirizzo(): string {
@@ -665,33 +718,51 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
         if (lat && lng) {
             const coordinate = new Coordinate(lat, lng);
-            if (!this.richiestaModifica) {
-                this.chiamataMarker = new ChiamataMarker(
-                    this.idChiamata,
-                    `${this.operatore.nome} ${this.operatore.cognome}`,
-                    `${this.operatore.sede.codice}`,
-                    new Localita(coordinate ? coordinate : null, indirizzo),
-                    null
-                );
-                this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
-            }
-
-            if (!indirizzoInserito) {
-                this.f.indirizzo.setValidators([]);
-
-                // TODO: risolvere glitch
-                this.f.indirizzo.patchValue(' ');
-                setTimeout(() => {
-                    this.f.indirizzo.patchValue('');
-                }, 1);
-            }
+            const locationPOI = new Point({
+                latitude: coordinate.latitudine,
+                longitude: coordinate.longitudine
+            });
+            const params = {
+                location: locationPOI
+            };
+            this.esriService.getLocationToAddress(params).then((response: any) => {
+                if (!this.modifica) {
+                    this.chiamataMarker = new ChiamataMarker(
+                        this.idChiamata,
+                        `${this.operatore.nome} ${this.operatore.cognome}`,
+                        `${this.operatore.sede.codice}`,
+                        new Localita(coordinate ? coordinate : null, indirizzo),
+                        null
+                    );
+                    this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
+                } else {
+                    const newCentroMappa = {
+                        coordinateCentro: coordinate
+                    } as CentroMappa;
+                    this.store.dispatch([
+                        new SetCentroMappa(newCentroMappa),
+                        new SetCompetenze(coordinate, indirizzo)
+                    ]);
+                }
+                this.f.indirizzo.patchValue(response.address);
+                this.f.provincia.patchValue(response.attributes.Subregion);
+                this.f.cap.patchValue(response.attributes.Postal);
+                this.f.regione.patchValue(response.attributes.Region);
+                this.f.civico.patchValue(response.attributes.AddNum);
+                this.f.indirizzo.markAsDirty();
+                this.f.latitudine.markAsDirty();
+                this.f.longitudine.markAsDirty();
+                this.f.provincia.markAsDirty();
+                this.f.cap.markAsDirty();
+                this.f.regione.markAsDirty();
+                this.f.civico.markAsDirty();
+            });
         } else {
             this.store.dispatch([
                 new ClearCompetenze(),
                 new ClearCountInterventiProssimita(),
                 new ClearInterventiProssimita()
             ]);
-            this.f.indirizzo.setValidators([Validators.required]);
             this.f.codPrimaCompetenza.patchValue(null);
             this.f.codSecondaCompetenza.patchValue(null);
             this.f.codTerzaCompetenza.patchValue(null);
@@ -731,7 +802,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             latitudine: this.f.latitudine?.value,
             longitudine: this.f.longitudine?.value
         };
-        const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.descDistaccamento.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
+        const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
         if (competenzaCentrale) {
             const codCompetenze = [competenzaCentrale];
             this.f.codCompetenzaCentrale.patchValue(competenzaCentrale);
@@ -872,8 +943,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const params = {
             location: locationPOI
         };
-        // @ts-ignore
-        Locator.locationToAddress('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer', params).then((response: supportAddressCandidate) => {
+        this.esriService.getLocationToAddress(params).then((response: any) => {
             f.provincia.patchValue(response.attributes.Subregion);
             f.cap.patchValue(response.attributes.Postal);
             f.regione.patchValue(response.attributes.Region);
@@ -920,13 +990,17 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     onCheckScorciatoiaNumero(scorciatoia: string): void {
         const f = this.f;
         if (this.scorciatoieTelefono[scorciatoia]) {
-            this.scorciatoieTelefono[scorciatoia] = false;
+            this.patchScorciatoiaNumero(scorciatoia, false);
             f.codSchedaContatto.value ? f.telefono.patchValue(this.schedaContatto?.richiedente?.telefono) : f.telefono.patchValue('');
             f.codSchedaContatto.value ? f.nominativo.patchValue(this.schedaContatto?.richiedente?.nominativo) : f.nominativo.patchValue('');
             f.nominativo.enable();
             f.telefono.enable();
         } else {
-            Object.keys(this.scorciatoieTelefono).forEach(x => this.scorciatoieTelefono[x] = x === scorciatoia);
+            Object.keys(this.scorciatoieTelefono).forEach(x => {
+                if (x === scorciatoia) {
+                    this.patchScorciatoiaNumero(scorciatoia, true);
+                }
+            });
             let nominativo = this.richiestaModifica?.richiedente?.nominativo ? this.richiestaModifica?.richiedente?.nominativo : null;
             switch (scorciatoia) {
                 case '112':
@@ -938,7 +1012,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 case '118':
                     nominativo = 'Servizio Sanitario di Urgenza ed Emergenza';
                     break;
-                case 'VV.UU.':
+                case 'VVUU':
                     nominativo = 'Polizia Municipale';
                     break;
             }
@@ -951,8 +1025,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    patchScorciatoiaNumero(scorciatoia: string): void {
-        this.scorciatoieTelefono[scorciatoia] = true;
+    patchScorciatoiaNumero(scorciatoia: string, newValue: boolean): void {
+        this.store.dispatch(new UpdateScorciatoiaTelefono(scorciatoia, newValue));
     }
 
     getCheckboxUrgenzaState(): CheckboxInterface {
@@ -1016,9 +1090,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.submitted = false;
                         this.richiestaForm.reset();
                         this.store.dispatch([
+                            new SetFormSubmitted(false),
                             new ClearClipboard(),
                             new DelChiamataMarker(this.idChiamata)
                         ]);
@@ -1057,7 +1131,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onSubmit(azione?: AzioneChiamataEnum, options?: { urgente?: boolean }): void {
-        this.submitted = true;
+        this.store.dispatch(new SetFormSubmitted(true));
         if (this.checkSubmit()) {
             if (!this.modifica) {
                 const urgente = options?.urgente;
@@ -1080,7 +1154,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     reducerSchedaTelefonata(tipo: string, azione?: AzioneChiamataEnum, options?: { urgente?: boolean }): void {
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo,
-            markerChiamata: this.chiamataMarker
+            markerChiamata: this.chiamataMarker,
+            formValue: this.richiestaForm.value
         };
 
         if (azione) {

@@ -282,7 +282,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
       color: $SO-black $SO-i;
     }
   }
-
   //
 
   // style Esri
@@ -295,7 +294,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     background-color: $SO-dark-light $SO-i;
     color: $SO-white $SO-i;
   }
-
   //
 
   // Feature Emergenza
@@ -312,7 +310,6 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   .ng-wizard-theme-default > ul.step-anchor > li.done > a {
     color: $SO-secondary $SO-i;
   }
-
   //
 
   a {
@@ -581,6 +578,14 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
 
   .bg-partial-loader {
     background-color: rgba(53, 53, 53, 0.7) $SO-i;
+  }
+
+  .bg-locked-concorrenza {
+    background-color: rgba(53, 53, 53, 0.9) $SO-i;
+  }
+
+  .bg-lightdanger {
+    background-color: rgba(231, 113, 110, 0.2) $SO-i;
   }
 
   .bg-tasto-nuova-chiamata {
@@ -1186,6 +1191,10 @@ tag-input {
   background-color: rgba(224, 223, 223, 0.7) $SO-i;
 }
 
+.bg-locked-concorrenza {
+  background-color: rgba(224, 223, 223, 0.9) $SO-i;
+}
+
 .no-resize {
   resize: none;
 }
@@ -1520,7 +1529,6 @@ tag-input {
   border: $SO-card-border $SO-muted $SO-i;
   background-color: $SO-white $SO-i;
   border-radius: $SO-border-radius;
-  cursor: pointer;
 }
 
 .box-azione:hover {

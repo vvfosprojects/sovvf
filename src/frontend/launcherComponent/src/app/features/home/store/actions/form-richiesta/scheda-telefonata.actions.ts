@@ -3,6 +3,7 @@ import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.mode
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.model';
 
 export class ReducerSchedaTelefonata {
     static readonly type = '[SchedaTelefonata] Reduce completato';
@@ -62,14 +63,32 @@ export class ClearMarkerChiamata {
     static readonly type = '[SchedaTelefonata] Clear chiamata Marker';
 }
 
-export class ClearChiamata {
-    static readonly type = '[SchedaTelefonata] Clear chiamata';
+export class ClearIdChiamataMarker {
+    static readonly type = '[SchedaTelefonata] Clear id chiamata Marker';
+}
+
+export class UpdateScorciatoiaTelefono {
+    static readonly type = '[SchedaTelefonata] Update Scorciatoia Telefono';
+
+    constructor(public scorciatoiaKey: string, public newValue: boolean) {
+    }
+}
+
+export class ResetScorciatoieTelefono {
+    static readonly type = '[SchedaTelefonata] Reset Scorciatoie Telefono';
+}
+
+export class SetFormSubmitted {
+    static readonly type = '[SchedaTelefonata] Set Form Submitted';
+
+    constructor(public value: boolean) {
+    }
 }
 
 export class InsertChiamata {
     static readonly type = '[SchedaTelefonata] Insert chiamata';
 
-    constructor(public azioneChiamata: AzioneChiamataEnum, public options?: { urgente?: boolean, fromMappa?: boolean }) {
+    constructor(public azioneChiamata: AzioneChiamataEnum, public componentFormValue: RichiestaForm, public options?: { urgente?: boolean, fromMappa?: boolean }) {
     }
 }
 
@@ -101,7 +120,10 @@ export class CestinaChiamata {
 
 export class ResetChiamata {
     static readonly type = '[SchedaTelefonata] Reset chiamata';
+}
 
+export class ResetChiamataForm {
+    static readonly type = '[SchedaTelefonata] Reset chiamata form';
 }
 
 export class StartChiamata {

@@ -66,6 +66,9 @@ namespace SO115App.API.Controllers
             _delhandlerByIdUtente = DelhandlerByIdUtente;
         }
 
+        /// <summary>
+        ///   Restituisce la lista di tutte le chiamate in corso di un comando
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -82,6 +85,9 @@ namespace SO115App.API.Controllers
             };
         }
 
+        /// <summary>
+        ///   Aggiunge una nuova chiamata in corso
+        /// </summary>
         [HttpPost("Add")]
         [EnableCors()]
         public async Task<IActionResult> Add([FromBody] ChiamateInCorso chiamata)
@@ -110,6 +116,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Cancella una chiamata in corso
+        /// </summary>
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete([FromBody] ChiamateInCorso chiamata)
         {
@@ -131,6 +140,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Cancella tutte le chamate in corso rimaste appese, di un utente
+        /// </summary>
         [HttpGet("DeleteAll")]
         public async Task<IActionResult> DeleteAll()
         {
@@ -154,6 +166,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Aggiorna una chiamata in corso
+        /// </summary>
         [HttpPost("UpDate")]
         public async Task<IActionResult> UpDate([FromBody] ChiamateInCorso chiamata)
         {

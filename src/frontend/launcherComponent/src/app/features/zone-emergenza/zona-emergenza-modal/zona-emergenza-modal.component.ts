@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TipologiaEmergenza, ZonaEmergenza } from '../model/zona-emergenza.model';
 import { roundToDecimal } from '../../../shared/helper/function-generiche';
-import Locator from '@arcgis/core/tasks/Locator';
+import { EsriService } from '../../maps/map-service/esri.service';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 
 @Component({
@@ -26,7 +26,8 @@ export class ZonaEmergenzaModalComponent implements OnInit {
     zonaEmergenzaEdit: ZonaEmergenza;
 
     constructor(public modal: NgbActiveModal,
-                private formBuilder: FormBuilder) {
+                private formBuilder: FormBuilder,
+                private esriService: EsriService) {
         this.initForm();
     }
 
@@ -36,11 +37,6 @@ export class ZonaEmergenzaModalComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.apertoFromMappa) {
-            // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
-            const locatorTask = new Locator({
-                url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
-            });
-
             // Params per il servizio "locationToAddress"
             const location = this.mapPoint;
             const params = {
@@ -48,8 +44,7 @@ export class ZonaEmergenzaModalComponent implements OnInit {
             };
 
             // Trovo l'indirizzo tramite le coordinate
-            locatorTask.locationToAddress(params).then((response) => {
-                console.log('locationToAddress response', response);
+            this.esriService.getLocationToAddress(params).then((response) => {
                 this.indirizzo = response.attributes.Match_addr;
                 this.patchIndirizzo();
             });

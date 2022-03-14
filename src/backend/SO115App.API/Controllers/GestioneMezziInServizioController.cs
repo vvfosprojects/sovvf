@@ -1,6 +1,7 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
@@ -24,6 +25,9 @@ namespace SO115App.API.Controllers
             _filtriHandler = filtriHandler;
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei mezzi in servizio
+        /// </summary>
         [HttpPost("GetListaMezzi")]
         public async Task<IActionResult> GetListaMezzi([FromBody] ListaMezziInServizioQuery query)
         {
@@ -36,15 +40,20 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
-                else if (ex.Message.Contains("404"))
-                    return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
-                else
-                    return BadRequest(new { ex.Message });
+                ex = ex.GetBaseException();
+                Log.Error(ex.Message);
+                //if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                //    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                //else if (ex.Message.Contains("404"))
+                //    return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
+                //else
+                    return BadRequest(ex);
             }
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei generi mezzo
+        /// </summary>
         [HttpGet("GetGeneriMezzo")]
         public async Task<IActionResult> GetGeneriMezzo()
         {

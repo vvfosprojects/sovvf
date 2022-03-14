@@ -28,6 +28,9 @@ namespace SO115App.API.Controllers
             _getColonneMobiliHandler = getColonneMobiliHandler;
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei moduli di colonna mobile di una specifica sede
+        /// </summary>
         [HttpPost("GetListaModuliByCodSede")]
         public async Task<IActionResult> GetListaModuliByCodSede(GetModuliByCodComandoQuery query)
         {

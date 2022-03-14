@@ -15,7 +15,9 @@ export class Partenza {
         public tipoEvento: string,
         public codicePartenza: string,
         public fuoriSede: boolean,
-        public coordinate: Coordinate
+        public coordinate: Coordinate,
+        public mezzo: Mezzo,
+        public squadre: Squadra[]
     ) {
     }
 }
@@ -29,7 +31,7 @@ export class DettaglioPartenza {
         public sganciata: boolean,
         public partenzaAnnullata: boolean,
         public terminata: boolean,
-        public codice: string,
+        public codicePartenza: string,
         public coordinate: { latitudine: string, longitudine: string }
     ) {
     }

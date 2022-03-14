@@ -23,11 +23,13 @@ using DomainModel.CQRS.Commands.AddInterventoFromSurvey123;
 using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -62,9 +64,18 @@ namespace SO115App.API.Controllers
             _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
         }
 
+        /// <summary>
+        ///   Aggiunta intervento
+        /// </summary>
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] Intervento chiamata)
         {
+            string istanteRichiesta = DateTime.Now.ToString("yyyyMMddHHmmssffff");
+
+            Stopwatch stopWatch = new Stopwatch();
+
+            Log.Information($"--------------------------- INIZIO SCRITTURA INTERVENTO {istanteRichiesta} --------------------------- {DateTime.Now}");
+            stopWatch.Start();
             var codiceSede = Request.Headers["codicesede"];
             var idUtente = Request.Headers["IdUtente"];
 
@@ -79,20 +90,31 @@ namespace SO115App.API.Controllers
             try
             {
                 _Addhandler.Handle(command);
+
+                stopWatch.Stop();
+                Log.Information($"--------------------------- FINE SCRITTURA INTERVENTO {istanteRichiesta} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
                 return Ok(_getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice));
             }
             catch (Exception ex)
             {
+                ex = ex.GetBaseException();
+
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
-                return BadRequest(new { message = ex.Message });
+
+                Log.Error($"--------------------------- ERRORE SCRITTURA INTERVENTO --------------------------- {DateTime.Now}");
+                Log.Error($"{ex.Message}");
+                return BadRequest(new { message = ex.Message, stacktrace = ex.StackTrace });
             }
         }
 
+        /// <summary>
+        ///   Aggiunta interventi direttamente da Survey123
+        /// </summary>
         [HttpPost("AddFromSurvey123")]
         public async Task<IActionResult> AddFromSurvey123([FromBody] ChiamataFromSurvey123 chiamata)
         {
-            var codiceSede = Request.Headers["codicesede"];
+            var codiceSede = chiamata.Localita.Provincia + ".1000";
             var idUtente = Request.Headers["IdUtente"];
 
             var command = new AddInterventoFromSurvey123Command()
@@ -115,6 +137,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Modifica Intervento
+        /// </summary>
         [HttpPost("UpdateIntervento")]
         public async Task<IActionResult> UpdateIntervento([FromBody] SintesiRichiesta chiamata)
         {

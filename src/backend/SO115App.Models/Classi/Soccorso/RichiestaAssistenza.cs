@@ -65,7 +65,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         public RichiestaAssistenza()
         {
             this._eventi = new List<Evento>();
-            this.Tipologie = new List<string>();
+            this.Tipologie = new List<Tipologia>();
             this.Tags = new HashSet<string>();
             this.UtInLavorazione = new List<string>();
             this.UtPresaInCarico = new List<string>();
@@ -443,7 +443,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Per es. è la lista { valanga, soccorso a persona, ricerca disperso, messa in sicurezza
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
-        public virtual List<string> Tipologie { get; set; }
+        public virtual List<Tipologia> Tipologie { get; set; }
 
         public TipologiaDettaglio DettaglioTipologia { get; set; }
 
@@ -646,12 +646,11 @@ namespace SO115App.API.Models.Classi.Soccorso
                     {
                         var partenzeAperte = partenze.ToList().FindAll(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
 
-                        if ((partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Viaggio")).Count > 0 ||
-                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("In Rientro")).Count > 0) &&
-                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count == 0
-                            )
+                        if ((partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio)).Count > 0 ||
+                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro)).Count > 0) &&
+                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count == 0)
                             return new Assegnata();
-                        else if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals("Sul Posto")).Count > 0)
+                        else if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count > 0)
                             return new Presidiata();
                         else
                             return new Sospesa();
@@ -718,7 +717,9 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 foreach (var evento in listaComposizioni)
                 {
-                    var UltimoEventoPartenza = listaPartenze.FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).FirstOrDefault().TipoEvento;
+                    var UltimoEventoPartenza = listaPartenze
+                        .FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice) && m.TipoEvento != "AnnullamentoStatoPartenza")
+                        .OrderBy(e => e.Istante).Last().TipoEvento;
 
                     if (UltimoEventoPartenza.Equals("ComposizionePartenza") || UltimoEventoPartenza.Equals("UscitaPartenza"))
                     {

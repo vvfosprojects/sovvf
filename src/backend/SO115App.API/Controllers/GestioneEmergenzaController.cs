@@ -64,6 +64,9 @@ namespace SO115App.API.Controllers
             _creazioneCraHandler = creazioneCraHandler;
         }
 
+        /// <summary>
+        ///   Aggiunge una nuova emergenza
+        /// </summary>
         [HttpPost("InsertEmergenza")]
         public async Task<IActionResult> InsertEmergenza([FromBody] Emergenza emergenza)
         {
@@ -89,6 +92,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Aggiorna un'emergenza
+        /// </summary>
         [HttpPost("UpDateEmergenza")]
         public async Task<IActionResult> UpDateEmergenza([FromBody] EmergenzaDTO emergenza)
         {
@@ -113,6 +119,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Crea un nuovo CRA e la sua almeratura (DOA e PCA)
+        /// </summary>
         [HttpPost("CreazioneCra")]
         public async Task<IActionResult> CreazioneCra([FromBody] CreazioneCraDTO dto)
         {
@@ -139,6 +148,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Annulla un'emergenza precedentemente creata
+        /// </summary>
         [HttpPost("AnnullaEmergenza")]
         public async Task<IActionResult> AnnullaEmergenza([FromBody] AnnullaEmergenzaCommand command)
         {
@@ -158,6 +170,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Invia un'allerta emergenza alla dirigenza di riferimento e al con
+        /// </summary>
         [HttpPost("AllertaEmergenza")]
         public async Task<IActionResult> AllertaEmergenza([FromBody] AllertaCommand command)
         {
@@ -176,6 +191,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Registra una richiesta, da parte del comando, di intervento delle colonne mobili, sull'emergenza
+        /// </summary>
         [HttpPost("AddRichiestaEmergenza")]
         public async Task<IActionResult> AddRichiestaEmergenza([FromBody] RichiestaCommand command)
         {
@@ -194,6 +212,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Registra una richiesta di creazione CRA
+        /// </summary>
         [HttpPost("AddRichiestaCreazioneCraEmergenza")]
         public async Task<IActionResult> AddRichiestaCreazioneCraEmergenza([FromBody] RichiestaCreazioneCRACommand command)
         {
@@ -212,6 +233,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Gestisce una precedente richiesta di intervento sull'emergenza
+        /// </summary>
         [HttpPost("GestisciRichiestaEmergenza")]
         public async Task<IActionResult> GestisciRichiestaEmergenza([FromBody] RichiestaGestitaCommand command)
         {
@@ -230,6 +254,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce l'elenco delle tipologie di emergenza
+        /// </summary>
         [HttpGet("GetTipologieEmergenza")]
         public async Task<IActionResult> GetTipologieEmergenza()
         {
@@ -251,6 +278,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce il dettaglio un'emergenza
+        /// </summary>
         [HttpGet("GetEmergenzaById")]
         public async Task<IActionResult> GetEmergenzaById(string Id)
         {
@@ -273,6 +303,9 @@ namespace SO115App.API.Controllers
             }
         }
 
+        /// <summary>
+        ///   Restituisce l'elenco delle emergenze di una sede
+        /// </summary>
         [HttpPost("GetListaEmergenzeByCodSede")]
         public async Task<IActionResult> GetListaEmergenzeByCodSede(GetListaEmergenzeByCodComandoQuery query)
         {

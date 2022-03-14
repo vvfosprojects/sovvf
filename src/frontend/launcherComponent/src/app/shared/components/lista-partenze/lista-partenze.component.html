@@ -1,13 +1,15 @@
 <div *ngIf="checkNumeroPartenzeAttive(partenze) <= 0">
     <div class="mt-1">Non sono presenti partenze.</div>
 </div>
-<ul *ngIf="checkNumeroPartenzeAttive(partenze) > 0" class="list-unstyled mb-0">
+<ng-container *ngIf="checkNumeroPartenzeAttive(partenze) > 0">
     <div *ngFor="let p of partenze; let index = index">
-        <li *ngIf="!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata"
-            class="border-bottom">
+        <div *ngIf="!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata"
+             [class.border-bottom]="(index + 1) !== partenze.length">
             <app-partial-loader
                     *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
-            <app-partenza [partenza]="p.partenza"
+            <app-partenza [codiceRichiesta]="codiceRichiesta"
+                          [partenza]="p.partenza"
+                          [codicePartenza]="p.codicePartenza"
                           [infoPartenza]="p"
                           [listaEventi]="listaEventi"
                           [inGestione]="inGestione"
@@ -22,13 +24,24 @@
                           (modificaPartenza)="modificaPartenza.emit($event)"
                           (selezioneMezzo)="selezioneMezzo.emit($event)">
             </app-partenza>
-        </li>
+        </div>
     </div>
     <ng-template [ngIf]="inGestione && sostituzioneFineTurnoActive">
-        <button class="btn btn-sm btn-info" ngbTooltip="Sostituzione Fine Turno"
-                style="position:absolute; top:-14px; left:-14px"
-                (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
-            <i class="fas fa-sync-alt"></i>
-        </button>
+        <div class="d-inline-block"
+             [ngbTooltip]="tooltipLockedConcorrenza"
+             [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta])">
+            <button class="btn btn-sm btn-info" ngbTooltip="Sostituzione Fine Turno"
+                    style="position:absolute; top:-14px; left:-14px"
+                    [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
+                    [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
+                    (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
     </ng-template>
-</ul>
+</ng-container>
+
+<ng-template #tooltipLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta] }}
+</ng-template>

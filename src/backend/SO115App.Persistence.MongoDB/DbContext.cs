@@ -34,6 +34,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Documentale;
 using SO115App.Models.Classi.Emergenza;
@@ -51,7 +52,7 @@ using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Evento = SO115App.Models.Classi.NUE.Evento;
+using Evento = SO115App.Models.Classi.NUE.EventoNue;
 
 [assembly: InternalsVisibleTo("SO115App.CompositionRoot")]
 
@@ -119,6 +120,7 @@ namespace Persistence.MongoDB
 
             BsonClassMap.RegisterClassMap<RichiestaSoccorsoAereo>();
             BsonClassMap.RegisterClassMap<AnnullamentoRichiestaSoccorsoAereo>();
+            BsonClassMap.RegisterClassMap<AggiornamentoOrarioStato>();
 
             BsonClassMap.RegisterClassMap<PartenzaRientrata>();
             BsonClassMap.RegisterClassMap<PartenzaInRientro>();
@@ -161,6 +163,10 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InserimentoModuliColonnaMobileEmergenzaConsolidamento>();
 
             BsonClassMap.RegisterClassMap<LogBook>();
+            BsonClassMap.RegisterClassMap<Tipologia>();
+
+            //Concorrenza
+            ConcorrenzaMap.Map();
 
             //PER CACHE
             UnitaOperativaMap.Map();
@@ -178,6 +184,14 @@ namespace Persistence.MongoDB
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
+        }
+
+        public IMongoCollection<Concorrenza> ConcorrenzaCollection
+        {
+            get
+            {
+                return database.GetCollection<Concorrenza>("concorrenza");
+            }
         }
 
         public IMongoCollection<ComposizioneMezzi> ComposizioneMezziCollection

@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using Serilog;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
@@ -51,9 +52,19 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public IEnumerable<AuthorizationResult> Authorize(AddInterventoCommand command)
         {
-            if (command.CodCompetenze == null)
-                command.CodCompetenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet().ToArray();
+            Log.Information("Inserimento Intervento - Inizio Controlli di Autorizzazione");
 
+            if (command.Chiamata.Competenze == null)
+            {
+                //command.CodCompetenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet().ToArray();
+                yield return new AuthorizationResult(Costanti.CompetenzeNonPresenti);
+            }
+            else
+            {
+                if (command.Chiamata.Competenze.Count > 0)
+                    command.CodCompetenze = command.Chiamata.Competenze.Select(c => c.Codice).ToArray();
+                //else if (command.Chiamata.CodCompetenze.Count > 0)
+            }
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -81,6 +92,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+
+            Log.Information("Inserimento Intervento - Fine Controlli di Autorizzazione");
         }
     }
 }

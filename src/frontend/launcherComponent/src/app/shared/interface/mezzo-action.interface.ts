@@ -7,4 +7,5 @@ export interface MezzoActionInterface {
     codRichiesta?: string;
     listaMezzi?: boolean;
     azioneIntervento?: string;
+    codicePartenza?: string;
 }

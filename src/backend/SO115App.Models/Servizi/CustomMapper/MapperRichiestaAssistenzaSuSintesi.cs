@@ -47,7 +47,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                   .ForMember(x => x.CodiceRichiesta, y => y.MapFrom(z => z.CodRichiesta))
                   .ForMember(x => x.ZoneEmergenza, y => y.MapFrom(z => z.CodZoneEmergenza))
                   .ForMember(x => x.Eventi, y => y.MapFrom(z => z.ListaEventi.ToEventiSintesi(_getStatoMezzi)))
-                  .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie)))
+                  .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie.Select(c => c.Codice).ToList())))
                   .ForMember(x => x.Operatore, y => y.MapFrom(_ => MapUtenteSuOperatore(_getUtenteById.GetUtenteByCodice(richiesta.CodOperatore))))
                   .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L").ToHashSet()))
                   .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P").ToHashSet()))

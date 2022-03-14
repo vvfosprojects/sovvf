@@ -1,5 +1,5 @@
 export const environment = {
-    production: true,
+    production: false,
     productionTest: true,
     productionDemo: false,
     consoleLog: false,
@@ -62,7 +62,8 @@ export const environment = {
         pos: '/api/GestionePos',
         areaDocumentale: '/api/GestioneDocumentale',
         zoneEmergenza: '/api/GestioneEmergenza',
-        moduliColonnaMobile: '/api/GestioneModuliColonnaMobile'
+        moduliColonnaMobile: '/api/GestioneModuliColonnaMobile',
+        concorrenza: '/api/GestioneConcorrenza'
     },
     casUrl: {
         linkLogin: 'https://sso.vigilfuoco.it/cas-test/login?service=',

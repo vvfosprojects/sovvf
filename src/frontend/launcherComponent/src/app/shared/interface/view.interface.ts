@@ -12,6 +12,7 @@ export interface ViewLayouts {
     codaChiamate: ViewLayout;
     mappa: ViewLayout;
     chiamata: ViewLayout;
+    chiamataFromMappa: ViewLayout;
     composizione: ViewLayout;
     filterbar: ViewLayout;
     modifica: ViewLayout;

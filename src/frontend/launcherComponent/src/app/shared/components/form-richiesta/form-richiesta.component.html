@@ -103,8 +103,8 @@
                                 <ng-container *ngIf="!apertoFromMappa">
                                     <app-ricerca-indirizzo
                                             [indirizzo]="f?.indirizzo?.value"
-                                            [requiredFieldClass]="f?.indirizzo?._rawValidators[0]?.name === 'required'"
                                             [invalid]="!!(submitted && (f.indirizzo.errors || !(f.latitudine.value && f.longitudine.value)))"
+                                            [disabled]="loadingCompetenze"
                                             (changeIndirizzo)="modificaIndirizzo($event)"
                                             (selectCandidate)="reducerIndirizzo($event)">
                                     </app-ricerca-indirizzo>
@@ -370,7 +370,7 @@
                                         <input id="112"
                                                type="checkbox"
                                                name="112"
-                                               [checked]="scorciatoieTelefono[112]"
+                                               [checked]="scorciatoieTelefono['112']"
                                                (click)="onCheckScorciatoiaNumero('112')"
                                                [disabled]="loadingSchedaRichiesta">
                                         <label for="112"
@@ -381,7 +381,7 @@
                                         <input id="113"
                                                type="checkbox"
                                                name="113"
-                                               [checked]="scorciatoieTelefono[113]"
+                                               [checked]="scorciatoieTelefono['113']"
                                                (click)="onCheckScorciatoiaNumero('113')"
                                                [disabled]="loadingSchedaRichiesta">
                                         <label for="113"
@@ -392,18 +392,20 @@
                                         <input id="118"
                                                type="checkbox"
                                                name="118"
-                                               [checked]="scorciatoieTelefono[118]"
-                                               (click)="onCheckScorciatoiaNumero('118')"
-                                               [disabled]="loadingSchedaRichiesta">
+                                               [checked]="scorciatoieTelefono['118']"
+                                               [disabled]="loadingSchedaRichiesta"
+                                               (click)="onCheckScorciatoiaNumero('118')">
                                         <label for="118"
                                                class="ml-1 mb-0"
                                                style="cursor: pointer">118</label>
                                     </div>
                                     <div class="d-inline-block">
-                                        <input (click)="onCheckScorciatoiaNumero('VV.UU.')" type="checkbox" id="VV.UU."
+                                        <input type="checkbox"
+                                               id="VV.UU."
                                                name="VV.UU."
-                                               [checked]="scorciatoieTelefono['VV.UU.']"
-                                               [disabled]="loadingSchedaRichiesta">
+                                               [checked]="scorciatoieTelefono['VVUU']"
+                                               [disabled]="loadingSchedaRichiesta"
+                                               (click)="onCheckScorciatoiaNumero('VVUU')">
                                         <label class="ml-1 mb-0" for="VV.UU." style="cursor: pointer">VV.UU.</label>
                                     </div>
                                 </div>

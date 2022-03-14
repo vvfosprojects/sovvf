@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="PreAccoppiatiController.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -50,10 +50,8 @@ namespace SO115App.API.Controllers
         }
 
         /// <summary>
-        ///   Metodo di accesso alle richieste di assistenza
+        ///   Metodo che restituisce la lista dei PreAccoppiati
         /// </summary>
-        /// <param name="filtro">Il filtro per le richieste</param>
-        /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpPost("")]
         public async Task<IActionResult> Post(FiltriPreaccoppiati filtri)
         {

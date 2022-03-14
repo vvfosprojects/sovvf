@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../../../store/states/app/app.state';
-import { AuthState } from '../../../../features/auth/store/auth.state';
+import { SediTreeviewState } from '../../../store/states/sedi-treeview/sedi-treeview.state';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
@@ -21,6 +21,7 @@ export class RicercaIndirizzoComponent implements OnInit {
     @Input() requiredField = true;
     @Input() requiredFieldClass = true;
     @Input() invalid: boolean;
+    @Input() disabled: boolean;
     @Input() spatialReference: SpatialReference;
 
     @Output() changeIndirizzo: EventEmitter<string> = new EventEmitter<string>();
@@ -30,18 +31,11 @@ export class RicercaIndirizzoComponent implements OnInit {
     indirizzoBackup: string;
     loadingAddressCandidates: boolean;
 
-    hideAddressCandidates: boolean;
     addressCandidates: AddressCandidate[];
     indexSelectedAddressCandidate = 0;
 
-    @HostListener('document:click', ['$event'])
-    clickOutside(event): void {
-        this.hideAddressCandidates = !this.eRef.nativeElement.contains(event.target);
-    }
-
     constructor(private store: Store,
-                private changeDetectorRef: ChangeDetectorRef,
-                private eRef: ElementRef) {
+                private changeDetectorRef: ChangeDetectorRef) {
         document.addEventListener('keydown', (e: KeyboardEvent) => {
             switch (e.key) {
                 case 'ArrowDown':
@@ -89,53 +83,74 @@ export class RicercaIndirizzoComponent implements OnInit {
             const indirizzo = this.indirizzo;
             const urlServiceGeocode = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer';
 
-            const sedeUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser)?.sede;
             let location: Point;
             let paramsSuggestLocation: locatorSuggestLocationsParams;
 
-            if (sedeUtenteLoggato) {
-                const latitude = sedeUtenteLoggato.coordinate.latitudine;
-                const longitude = sedeUtenteLoggato.coordinate.longitudine;
-                location = new Point({
-                    latitude,
-                    longitude
+            const sediNavbarTesto = this.store.selectSnapshot(SediTreeviewState.sediNavbarTesto);
+            const sedeNavbarTestoArray = sediNavbarTesto.split(' ');
+            const city = sedeNavbarTestoArray[sedeNavbarTestoArray.length - 1];
+
+            const parmasFindAddress = {
+                address: {
+                    address: city !== 'CON' ? city : 'ITALIA'
+                }, // questo preso dalla checkbox selezionata in alto
+                maxLocations: 1
+            };
+
+
+            if (parmasFindAddress) {
+                searchPointByCity(urlServiceGeocode, parmasFindAddress).then((point: Point) => {
+                    location = point;
+                    paramsSuggestLocation = {
+                        location,
+                        text: indirizzo,
+                        countryCode: 'IT',
+                        categories: ['address', 'Historical Monument', 'Art Gallery', 'Art Museum', 'Museum', 'Ruin', 'Intersection']
+                        // https://developers.arcgis.com/rest/geocode/api-reference/geocoding-category-filtering.htm
+                    } as locatorSuggestLocationsParams;
+                    // paramsSuggestLocation.searchTemplate = "{County}, {State}";
+                    Locator.suggestLocations(urlServiceGeocode, paramsSuggestLocation).then(async (suggestionResults: SuggestionResult[]) => {
+                        this.addressCandidates = [];
+                        const addressToLocationsPromises = [];
+
+                        for (const suggestionResult of suggestionResults) {
+                            const paramsAddressToLocations = {
+                                url: urlServiceGeocode,
+                                magicKey: suggestionResult.magicKey,
+                                address: indirizzo
+                            } as locatorAddressToLocationsParams;
+                            addressToLocationsPromises.push(
+                                Locator.addressToLocations(urlServiceGeocode, paramsAddressToLocations).then(async (addressCandidates: AddressCandidate[]) => {
+                                    return addressCandidates;
+                                })
+                            );
+                        }
+
+                        Promise.all(addressToLocationsPromises).then((promisesResult: any[]) => {
+                            for (const promiseResult of promisesResult) {
+                                this.addressCandidates.push(promiseResult[0]);
+                                this.changeDetectorRef.detectChanges();
+                            }
+                            this.loadingAddressCandidates = false;
+                            return true;
+                        });
+                    });
                 });
             }
-            paramsSuggestLocation = {
-                location,
-                text: indirizzo,
-                countryCode: 'IT',
-                categories: ['address', 'Historical Monument', 'Art Gallery', 'Art Museum', 'Museum', 'Ruin', 'Intersection']
-                // https://developers.arcgis.com/rest/geocode/api-reference/geocoding-category-filtering.htm
-            } as locatorSuggestLocationsParams;
-            // paramsSuggestLocation.searchTemplate = "{County}, {State}";
+        }
 
-            Locator.suggestLocations(urlServiceGeocode, paramsSuggestLocation).then(async (suggestionResults: SuggestionResult[]) => {
-                this.addressCandidates = [];
-                const addressToLocationsPromises = [];
-
-                for (const suggestionResult of suggestionResults) {
-                    const paramsAddressToLocations = {
-                        url: urlServiceGeocode,
-                        magicKey: suggestionResult.magicKey,
-                        address: indirizzo
-                    } as locatorAddressToLocationsParams;
-                    addressToLocationsPromises.push(
-                        Locator.addressToLocations(urlServiceGeocode, paramsAddressToLocations).then(async (addressCandidates: AddressCandidate[]) => {
-                            return addressCandidates;
-                        })
-                    );
+        async function searchPointByCity(urlServiceGeocode, parmasFindAddress): Promise<Point> {
+            let point: Point;
+            await Locator.addressToLocations(urlServiceGeocode, parmasFindAddress).then((results) => {
+                if (results?.length) {
+                    const candidate = results[0];
+                    point = new Point({
+                        latitude: candidate.location.y,
+                        longitude: candidate.location.x
+                    });
                 }
-
-                Promise.all(addressToLocationsPromises).then((promisesResult: any[]) => {
-                    for (const promiseResult of promisesResult) {
-                        this.addressCandidates.push(promiseResult[0]);
-                        this.changeDetectorRef.detectChanges();
-                    }
-                    this.loadingAddressCandidates = false;
-                    return true;
-                });
             });
+            return point;
         }
     }
 
@@ -168,6 +183,6 @@ export class RicercaIndirizzoComponent implements OnInit {
     }
 
     getSelectIndirizzoOpen(): boolean {
-        return !!(this.addressCandidates?.length) && !this.hideAddressCandidates;
+        return !!(this.addressCandidates?.length);
     }
 }

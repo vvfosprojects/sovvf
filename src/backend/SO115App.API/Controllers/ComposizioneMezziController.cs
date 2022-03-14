@@ -39,6 +39,9 @@ namespace SO115App.API.Controllers
             _handler = handler;
         }
 
+        /// <summary>
+        ///   Restituisce la lista dei mezzi utilizzabili in un determinato comando
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> Post(ComposizioneMezziQuery query)
         {

@@ -2,283 +2,285 @@
     <small class="d-inline-block mt-3">{{ 'Dettaglio tipologia' | uppercase }}</small>
     <h3 class="mb-3">{{ dettaglioTipologia?.descrizione | uppercase }}</h3>
 </ng-template>
-<ngb-accordion [closeOthers]="true" activeIds="riepilogoTriage" (panelChange)="onShowInfoAggiuntive($event)">
-    <!-- POS -->
-    <ng-template [ngIf]="pos?.length">
-        <ngb-panel id="pos" [disabled]="!pos?.length">
-            <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex">
+<div [class.mt-3]="!dettaglioTipologia">
+    <ngb-accordion [closeOthers]="true" activeIds="riepilogoTriage" (panelChange)="onShowInfoAggiuntive($event)">
+        <!-- POS -->
+        <ng-template [ngIf]="pos?.length">
+            <ngb-panel id="pos" [disabled]="!pos?.length">
+                <ng-template ngbPanelTitle>
+                    <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.pos" class="float-right cursor-pointer mr-2">
                         <i class="fas fa-chevron-down"></i>
                     </span>
-                    <span *ngIf="!infoAggiuntive.pos" class="float-right cursor-pointer mr-2">
+                        <span *ngIf="!infoAggiuntive.pos" class="float-right cursor-pointer mr-2">
                         <i class="fas fa-chevron-up"></i>
                     </span>
-                    P.O.S. ({{ pos?.length }})
-                </div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                <div *ngFor="let p of pos; let i = index"
-                     class="clearfix"
-                     [class.mb-2]="(i + 1) < pos.length">
-                    <div class="float-left pt-2">
-                        <h4 class="mb-0" (click)="onViewPos(p)">{{ p.descrizionePos }}</h4>
+                        P.O.S. ({{ pos?.length }})
                     </div>
-                    <div class="float-right">
-                        <button class="btn btn-primary mr-2"
-                                [ngbTooltip]="'Visulizza ' + p.descrizionePos"
-                                (click)="onViewPos(p)">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-info"
-                                [ngbTooltip]="'Scarica ' + p.descrizionePos"
-                                (click)="onDownloadPos(p)">
-                            <i class="fas fa-download"></i>
-                        </button>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div *ngFor="let p of pos; let i = index"
+                         class="clearfix"
+                         [class.mb-2]="(i + 1) < pos.length">
+                        <div class="float-left pt-2">
+                            <h4 class="mb-0" (click)="onViewPos(p)">{{ p.descrizionePos }}</h4>
+                        </div>
+                        <div class="float-right">
+                            <button class="btn btn-primary mr-2"
+                                    [ngbTooltip]="'Visulizza ' + p.descrizionePos"
+                                    (click)="onViewPos(p)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-info"
+                                    [ngbTooltip]="'Scarica ' + p.descrizionePos"
+                                    (click)="onDownloadPos(p)">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </ng-template>
-        </ngb-panel>
-    </ng-template>
-    <!-- RIEPILOGO TRIAGE -->
-    <ng-template [ngIf]="triageSummary?.length">
-        <ngb-panel id="riepilogoTriage" [disabled]="!triageSummary">
-            <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex">
+                </ng-template>
+            </ngb-panel>
+        </ng-template>
+        <!-- RIEPILOGO TRIAGE -->
+        <ng-template [ngIf]="triageSummary?.length">
+            <ngb-panel id="riepilogoTriage" [disabled]="!triageSummary">
+                <ng-template ngbPanelTitle>
+                    <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.riepilogoTriage" class="float-right cursor-pointer mr-2"><i
                             class="fas fa-chevron-down"></i></span>
-                    <span *ngIf="!infoAggiuntive.riepilogoTriage" class="float-right cursor-pointer mr-2"><i
-                            class="fas fa-chevron-up"></i></span>
-                    <span>RIEPILOGO TRIAGE</span>
-                </div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                <!-- RISPOSTE -->
-                <h5 class="text-danger">
-                    <i class="fas fa-question-circle mr-2"></i>
-                    <b>RISPOSTE <span class="text-danger">({{ triageSummary?.length }})</span></b>
-                </h5>
-                <ul class="list-group px-3">
-                    <li *ngFor="let s of triageSummary, let i = index" class="font-weight-bold">
-                        <div>
-                            {{ s.domanda }}
-                        </div>
-                        <div class="font-weight-bolder">
-                            {{ s.risposta }}
-                        </div>
-                    </li>
-                </ul>
-                <!-- ISTRUZIONI PRE-ARRIVO -->
-                <ng-template [ngIf]="false">
-                    <div class="mt-3">
-                        <h5 class="text-danger">
-                            <i class="fas fa-file-pdf-o mr-2"></i>
-                            <b>Istruzioni Pre-Arrivo</b>
-                        </h5>
-                        <div class="px-3">
-                            <ul class="list-group">
-                                <li>Istruzione 1</li>
-                                <li>Istruzione 2</li>
-                            </ul>
-                        </div>
+                        <span *ngIf="!infoAggiuntive.riepilogoTriage" class="float-right cursor-pointer mr-2"><i
+                                class="fas fa-chevron-up"></i></span>
+                        <span>RIEPILOGO TRIAGE</span>
                     </div>
                 </ng-template>
-                <!-- GENERI MEZZO -->
-                <ng-template [ngIf]="contatoreGeneriMezzo || generiMezzo?.length">
-                    <div class="mt-3">
-                        <h5 class="text-danger">
-                            <i class="fas fa-truck mr-2"></i>
-                            <b>MEZZI CONSIGLIATI <span class="text-danger">({{ contatoreGeneriMezzo }})</span></b>
-                        </h5>
-                        <div class="px-3">
-                            <ul class="list-group">
-                                <li *ngFor="let genereMezzo of generiMezzo; let i = index">
-                                    {{ genereMezzo }}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </ng-template>
-                <!-- SUGGERIMENTI OPERATORE -->
-                <ng-template [ngIf]="noteOperatore?.length">
-                    <div class="mt-3">
-                        <h5 class="text-danger">
-                            <i class="fas fa-file mr-2"></i>
-                            <b>Suggerimenti Operatore <span class="text-danger">({{ noteOperatore.length }})</span></b>
-                        </h5>
-                        <div>
-                            <div *ngFor="let nota of noteOperatore; let i = index">
-                                {{ i + 1 }}. {{ nota }}
+                <ng-template ngbPanelContent>
+                    <!-- RISPOSTE -->
+                    <h5 class="text-danger">
+                        <i class="fas fa-question-circle mr-2"></i>
+                        <b>RISPOSTE <span class="text-danger">({{ triageSummary?.length }})</span></b>
+                    </h5>
+                    <ul class="list-group px-3">
+                        <li *ngFor="let s of triageSummary, let i = index" class="font-weight-bold">
+                            <div>
+                                {{ s.domanda }}
+                            </div>
+                            <div class="font-weight-bolder">
+                                {{ s.risposta }}
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- ISTRUZIONI PRE-ARRIVO -->
+                    <ng-template [ngIf]="false">
+                        <div class="mt-3">
+                            <h5 class="text-danger">
+                                <i class="fas fa-file-pdf-o mr-2"></i>
+                                <b>Istruzioni Pre-Arrivo</b>
+                            </h5>
+                            <div class="px-3">
+                                <ul class="list-group">
+                                    <li>Istruzione 1</li>
+                                    <li>Istruzione 2</li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
+                    </ng-template>
+                    <!-- GENERI MEZZO -->
+                    <ng-template [ngIf]="contatoreGeneriMezzo || generiMezzo?.length">
+                        <div class="mt-3">
+                            <h5 class="text-danger">
+                                <i class="fas fa-truck mr-2"></i>
+                                <b>MEZZI CONSIGLIATI <span class="text-danger">({{ contatoreGeneriMezzo }})</span></b>
+                            </h5>
+                            <div class="px-3">
+                                <ul class="list-group">
+                                    <li *ngFor="let genereMezzo of generiMezzo; let i = index">
+                                        {{ genereMezzo }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <!-- SUGGERIMENTI OPERATORE -->
+                    <ng-template [ngIf]="noteOperatore?.length">
+                        <div class="mt-3">
+                            <h5 class="text-danger">
+                                <i class="fas fa-file mr-2"></i>
+                                <b>Suggerimenti Operatore <span class="text-danger">({{ noteOperatore.length }})</span></b>
+                            </h5>
+                            <div>
+                                <div *ngFor="let nota of noteOperatore; let i = index">
+                                    {{ i + 1 }}. {{ nota }}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
                 </ng-template>
-            </ng-template>
-        </ngb-panel>
-    </ng-template>
-    <!-- NOTE NUE -->
-    <ng-template [ngIf]="schedaContatto || dettaglioSchedaContatto">
-        <ngb-panel id="noteNue" [disabled]="!schedaContatto && !dettaglioSchedaContatto">
-            <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex">
+            </ngb-panel>
+        </ng-template>
+        <!-- NOTE NUE -->
+        <ng-template [ngIf]="schedaContatto || dettaglioSchedaContatto">
+            <ngb-panel id="noteNue" [disabled]="!schedaContatto && !dettaglioSchedaContatto">
+                <ng-template ngbPanelTitle>
+                    <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.noteNue" class="float-right cursor-pointer mr-2"><i
                             class="fas fa-chevron-down"></i></span>
-                    <span *ngIf="!infoAggiuntive.noteNue" class="float-right cursor-pointer mr-2"><i
-                            class="fas fa-chevron-up"></i></span>
-                    <span> NOTE NUE</span>
-                </div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                <div>
-                    {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : (dettaglioSchedaContatto ? dettaglioSchedaContatto : 'Nessuna Nota Disponibile')}}
-                </div>
-            </ng-template>
-        </ngb-panel>
-    </ng-template>
-    <!-- INTERVENTI IN PROSSIMITA' -->
-    <ng-template [ngIf]="countInterventiProssimita || interventiProssimita?.length">
-        <ngb-panel id="interventiInProssimita" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
-            <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex">
+                        <span *ngIf="!infoAggiuntive.noteNue" class="float-right cursor-pointer mr-2"><i
+                                class="fas fa-chevron-up"></i></span>
+                        <span> NOTE NUE</span>
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div>
+                        {{ schedaContatto?.dettaglio ? schedaContatto?.dettaglio : (dettaglioSchedaContatto ? dettaglioSchedaContatto : 'Nessuna Nota Disponibile')}}
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ng-template>
+        <!-- INTERVENTI IN PROSSIMITA' -->
+        <ng-template [ngIf]="countInterventiProssimita || interventiProssimita?.length">
+            <ngb-panel id="interventiInProssimita" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
+                <ng-template ngbPanelTitle>
+                    <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.interventiInProssimita" class="float-right cursor-pointer mr-2"><i
                             class="fas fa-chevron-down"></i></span>
-                    <span *ngIf="!infoAggiuntive.interventiInProssimita" class="float-right cursor-pointer mr-2"><i
-                            class="fas fa-chevron-up"></i></span>
-                    <span>INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }}
-                        )</span>
-                </div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                <div class="px-3">
-                    <ul class="list-group">
-                        <li *ngFor="let interventoProssimita of interventiProssimita" class="list-group-item mb-2"
-                            style="display: list-item">
-                            <div>
-                                <b class="mr-2"
-                                   style="vertical-align: text-top;">{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta :
-                                    interventoProssimita?.codice }}</b>
-                                -
-                                <i class="far fa-clock mr-2 ml-2"
-                                   ngbTooltip="Ricezione richiesta"
-                                   placement="bottom-left" container="body"></i>
-                                <a ngbTooltip="{{ (interventoProssimita.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
+                        <span *ngIf="!infoAggiuntive.interventiInProssimita" class="float-right cursor-pointer mr-2"><i
+                                class="fas fa-chevron-up"></i></span>
+                        <span>INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }}
+                            )</span>
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="px-3">
+                        <ul class="list-group">
+                            <li *ngFor="let interventoProssimita of interventiProssimita" class="list-group-item mb-2"
+                                style="display: list-item">
+                                <div>
+                                    <b class="mr-2"
+                                       style="vertical-align: text-top;">{{ interventoProssimita?.codiceRichiesta ? interventoProssimita?.codiceRichiesta :
+                                        interventoProssimita?.codice }}</b>
+                                    -
+                                    <i class="far fa-clock mr-2 ml-2"
+                                       ngbTooltip="Ricezione richiesta"
+                                       placement="bottom-left" container="body"></i>
+                                    <a ngbTooltip="{{ (interventoProssimita.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
                                     <span timeago
                                           [date]="methods._dateNumber(interventoProssimita.istanteRicezioneRichiesta)"
                                           [live]="live">
                                     </span>
-                                </a>
-                            </div>
-                            <div>
-                                <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoProssimita?.tipologie"
-                                                                 [triage]="true"
-                                                                 [descrizioneRichiesta]="interventoProssimita?.descrizione">
-                                </app-tipologia-sintesi-richiesta>
-                            </div>
-                            <div>
-                                {{ interventoProssimita?.dettaglioTipologia ? 'Dettaglio tipologia: ' + interventoProssimita?.dettaglioTipologia?.descrizione : null}}
-                            </div>
-                            <div>
-                                <i class="fas fa-user mr-1"></i>
-                                {{ interventoProssimita?.richiedente?.nominativo }}
-                                -
-                                <i class="fas fa-map-marker-alt ml-1"></i>
-                                {{ interventoProssimita?.localita?.indirizzo }}
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </ng-template>
-        </ngb-panel>
-    </ng-template>
-    <!-- INTERVENTI STESSA VIA -->
-    <ng-template [ngIf]="countInterventiStessaVia || interventiStessaVia?.length">
-        <ngb-panel id="interventiStessaVia" [disabled]="!countInterventiStessaVia || !interventiStessaVia?.length">
-            <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex">
+                                    </a>
+                                </div>
+                                <div>
+                                    <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoProssimita?.tipologie"
+                                                                     [triage]="true"
+                                                                     [descrizioneRichiesta]="interventoProssimita?.descrizione">
+                                    </app-tipologia-sintesi-richiesta>
+                                </div>
+                                <div>
+                                    {{ interventoProssimita?.dettaglioTipologia ? 'Dettaglio tipologia: ' + interventoProssimita?.dettaglioTipologia?.descrizione : null}}
+                                </div>
+                                <div>
+                                    <i class="fas fa-user mr-1"></i>
+                                    {{ interventoProssimita?.richiedente?.nominativo }}
+                                    -
+                                    <i class="fas fa-map-marker-alt ml-1"></i>
+                                    {{ interventoProssimita?.localita?.indirizzo }}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ng-template>
+        <!-- INTERVENTI STESSA VIA -->
+        <ng-template [ngIf]="countInterventiStessaVia || interventiStessaVia?.length">
+            <ngb-panel id="interventiStessaVia" [disabled]="!countInterventiStessaVia || !interventiStessaVia?.length">
+                <ng-template ngbPanelTitle>
+                    <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.interventiStessaVia" class="float-right cursor-pointer mr-2"><i
                             class="fas fa-chevron-down"></i></span>
-                    <span *ngIf="!infoAggiuntive.interventiStessaVia" class="float-right cursor-pointer mr-2"><i
-                            class="fas fa-chevron-up"></i></span>
-                    <span>INTERVENTI STESSA VIA ({{ countInterventiStessaVia ? countInterventiStessaVia : 0 }})</span>
-                </div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                <div class="px-3">
-                    <ul class="list-group">
-                        <li *ngFor="let interventoStessaVia of interventiStessaVia" class="list-group-item mb-2"
-                            style="display: list-item">
-                            <div>
-                                <b class="mr-2"
-                                   style="vertical-align: text-top;">{{ interventoStessaVia?.codiceRichiesta ? interventoStessaVia?.codiceRichiesta :
-                                    interventoStessaVia?.codice }}</b>
-                                -
-                                <i class="far fa-clock mr-2 ml-2"
-                                   ngbTooltip="Ricezione richiesta"
-                                   placement="bottom-left" container="body"></i>
-                                <a ngbTooltip="{{ (interventoStessaVia.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
+                        <span *ngIf="!infoAggiuntive.interventiStessaVia" class="float-right cursor-pointer mr-2"><i
+                                class="fas fa-chevron-up"></i></span>
+                        <span>INTERVENTI STESSA VIA ({{ countInterventiStessaVia ? countInterventiStessaVia : 0 }})</span>
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="px-3">
+                        <ul class="list-group">
+                            <li *ngFor="let interventoStessaVia of interventiStessaVia" class="list-group-item mb-2"
+                                style="display: list-item">
+                                <div>
+                                    <b class="mr-2"
+                                       style="vertical-align: text-top;">{{ interventoStessaVia?.codiceRichiesta ? interventoStessaVia?.codiceRichiesta :
+                                        interventoStessaVia?.codice }}</b>
+                                    -
+                                    <i class="far fa-clock mr-2 ml-2"
+                                       ngbTooltip="Ricezione richiesta"
+                                       placement="bottom-left" container="body"></i>
+                                    <a ngbTooltip="{{ (interventoStessaVia.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
                                     <span timeago
                                           [date]="methods._dateNumber(interventoStessaVia.istanteRicezioneRichiesta)"
                                           [live]="live">
                                     </span>
-                                </a>
-                            </div>
-                            <div>
-                                <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoStessaVia?.tipologie"
-                                                                 [triage]="true"
-                                                                 [descrizioneRichiesta]="interventoStessaVia?.descrizione">
-                                </app-tipologia-sintesi-richiesta>
-                            </div>
-                            <div>
-                                {{ interventoStessaVia?.dettaglioTipologia ? 'Dettaglio tipologia: ' + interventoStessaVia?.dettaglioTipologia?.descrizione : null}}
-                            </div>
-                            <div>
-                                <i class="fas fa-user mr-1"></i>
-                                {{ interventoStessaVia?.richiedente?.nominativo }}
-                                -
-                                <i class="fas fa-map-marker-alt ml-1"></i>
-                                {{ interventoStessaVia?.localita?.indirizzo }}
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </ng-template>
-        </ngb-panel>
-    </ng-template>
-    <!-- INTERVENTI CHIUSI CON STESSO INDIRIZZO -->
-    <ng-template [ngIf]="countInterventiChiusiStessoIndirizzo || interventiChiusiStessoIndirizzo?.length">
-        <ngb-panel id="interventiChiusiStessoIndirizzo"
-                   [disabled]="!countInterventiChiusiStessoIndirizzo || !interventiChiusiStessoIndirizzo?.length">
-            <ng-template ngbPanelTitle>
-                <div class="font-weight-bold text-white d-inline-flex">
+                                    </a>
+                                </div>
+                                <div>
+                                    <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoStessaVia?.tipologie"
+                                                                     [triage]="true"
+                                                                     [descrizioneRichiesta]="interventoStessaVia?.descrizione">
+                                    </app-tipologia-sintesi-richiesta>
+                                </div>
+                                <div>
+                                    {{ interventoStessaVia?.dettaglioTipologia ? 'Dettaglio tipologia: ' + interventoStessaVia?.dettaglioTipologia?.descrizione : null}}
+                                </div>
+                                <div>
+                                    <i class="fas fa-user mr-1"></i>
+                                    {{ interventoStessaVia?.richiedente?.nominativo }}
+                                    -
+                                    <i class="fas fa-map-marker-alt ml-1"></i>
+                                    {{ interventoStessaVia?.localita?.indirizzo }}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ng-template>
+        <!-- INTERVENTI CHIUSI CON STESSO INDIRIZZO -->
+        <ng-template [ngIf]="countInterventiChiusiStessoIndirizzo || interventiChiusiStessoIndirizzo?.length">
+            <ngb-panel id="interventiChiusiStessoIndirizzo"
+                       [disabled]="!countInterventiChiusiStessoIndirizzo || !interventiChiusiStessoIndirizzo?.length">
+                <ng-template ngbPanelTitle>
+                    <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.interventiChiusiStessoIndirizzo"
                           class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
-                    <span *ngIf="!infoAggiuntive.interventiChiusiStessoIndirizzo"
-                          class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
-                    <span>INTERVENTI CHIUSI CON STESSO INDIRIZZO
+                        <span *ngIf="!infoAggiuntive.interventiChiusiStessoIndirizzo"
+                              class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
+                        <span>INTERVENTI CHIUSI CON STESSO INDIRIZZO
                     ({{ countInterventiChiusiStessoIndirizzo ? countInterventiChiusiStessoIndirizzo : 0 }})</span>
-                </div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                <div class="px-3">
-                    <ul class="list-group">
-                        <li *ngFor="let interventoChiusoStessoIndirizzo of interventiChiusiStessoIndirizzo"
-                            class="mb-2">
-                            <div>
-                                <b>{{ interventoChiusoStessoIndirizzo?.codiceRichiesta ? interventoChiusoStessoIndirizzo?.codiceRichiesta :
-                                    interventoChiusoStessoIndirizzo?.codice }}</b>
-                            </div>
-                            <div>
-                                <i class="fas fa-map-marker-alt mr-1"></i>
-                                {{ interventoChiusoStessoIndirizzo?.localita?.indirizzo }}
-                            </div>
-                            <div>
-                                <i class="fas fa-user mr-1"></i>
-                                {{ interventoChiusoStessoIndirizzo?.richiedente?.nominativo }}
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </ng-template>
-        </ngb-panel>
-    </ng-template>
-</ngb-accordion>
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="px-3">
+                        <ul class="list-group">
+                            <li *ngFor="let interventoChiusoStessoIndirizzo of interventiChiusiStessoIndirizzo"
+                                class="mb-2">
+                                <div>
+                                    <b>{{ interventoChiusoStessoIndirizzo?.codiceRichiesta ? interventoChiusoStessoIndirizzo?.codiceRichiesta :
+                                        interventoChiusoStessoIndirizzo?.codice }}</b>
+                                </div>
+                                <div>
+                                    <i class="fas fa-map-marker-alt mr-1"></i>
+                                    {{ interventoChiusoStessoIndirizzo?.localita?.indirizzo }}
+                                </div>
+                                <div>
+                                    <i class="fas fa-user mr-1"></i>
+                                    {{ interventoChiusoStessoIndirizzo?.richiedente?.nominativo }}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ng-template>
+    </ngb-accordion>
+</div>

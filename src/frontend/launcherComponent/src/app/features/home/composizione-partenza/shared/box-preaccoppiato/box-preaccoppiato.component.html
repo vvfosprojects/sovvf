@@ -1,56 +1,84 @@
-<div class="card cursor-pointer p-2 mb-2 font-comp-xl bg-dark-light" (click)="onClick()" (mouseleave)="onHoverOut()"
+<div class="card cursor-pointer p-2 mb-2 font-comp-xl bg-dark-light"
+     [ngClass]="ngClass()"
+     (mouseleave)="onHoverOut()"
      (mouseenter)="onHoverIn()"
-     [ngClass]="ngClass()">
-    <i *ngIf="elimina" id="elimina" ngbTooltip="Elimina" class="fa fa-fw fa-window-close"
-       (click)="onElimina($event)"></i>
+     (click)="onClick()">
+    <ng-container
+            *ngIf="(tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [partenzaPreAccopiati.codiceMezzo]) || (tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: codiciSquadre)">
+        <app-locked-concorrenza
+                [nominativoOperatore]="tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [partenzaPreAccopiati.codiceMezzo] ? (tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [partenzaPreAccopiati.codiceMezzo]) : (tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: codiciSquadre)">
+        </app-locked-concorrenza>
+    </ng-container>
+    <ng-container *ngIf="elimina">
+        <i id="elimina"
+           ngbTooltip="Elimina"
+           class="fa fa-fw fa-window-close"
+           (click)="onElimina($event)"></i>
+    </ng-container>
     <div class="row">
-        <div *ngIf="!partenzaPreAccopiati.codiceMezzo" class="col text-danger">
-            <i class="fas fa-truck mr-1"></i>
-            <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
-        </div>
-        <div *ngIf="partenzaPreAccopiati.codiceMezzo"
-             class="col">
-            <div class="nowrap">
-                <i class="fas fa-truck mr-1"
-                   [ngClass]="_iconaStatiClass(partenzaPreAccopiati.statoMezzo)"
-                   ngbTooltip="Mezzo {{ partenzaPreAccopiati.statoMezzo }}"
-                   placement="top-left"></i>
-                <span class="font-weight-bold mr-1" [ngbTooltip]="partenzaPreAccopiati.descrizioneMezzo"
-                      [disableTooltip]="partenzaPreAccopiati.descrizioneMezzo.length <= 7">{{partenzaPreAccopiati.descrizioneMezzo | slice: 0:7}}</span>
-                <span class="font-weight-normal">{{partenzaPreAccopiati.genereMezzo}}</span>
+        <ng-container *ngIf="!partenzaPreAccopiati.codiceMezzo">
+            <div class="col text-danger">
+                <i class="fas fa-truck mr-1"></i>
+                <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
             </div>
-        </div>
-        <div *ngIf="!partenzaPreAccopiati.squadre?.length" class="col text-danger">
-            <i class="fas fa-users mr-1"></i>
-            <span ngbTooltip="Nessuna squadra selezionata"><b>-</b></span>
-        </div>
-        <div *ngIf="partenzaPreAccopiati.squadre?.length === 1" class="col">
-            <div class="nowrap">
-                <i  [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenzaPreAccopiati.squadre[0].stato))"
-                    ngbTooltip="Squadra {{ _nomeStatiSquadra(partenzaPreAccopiati.squadre[0].stato) }}"
-                    class="fas fa-users mr-1 font-weight-bold"></i>
-                <span [ngbTooltip]="partenzaPreAccopiati.squadre[0].nome && partenzaPreAccopiati.squadre[0].nome.length >= 10 ?  partenzaPreAccopiati.squadre[0].nome : null">
-                    {{ partenzaPreAccopiati.squadre[0].nome | truncate: 10 }}</span>
-                <button *ngIf="partenzaPreAccopiati.codiceMezzo && compPartenzaMode === 1 && partenzaPreAccopiati.statoMezzo !== StatoMezzo.InRientro && !disableDividi"
-                        class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
-                        [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
-                        (click)="squadraShortcutEvent()" ngbTooltip="Dividi squadra">
-                    <span class="mr-1" style="font-weight: 500">Dividi</span>
-                    <i class="far fa-file-alt font-weight-bold"></i>
-                </button>
-            </div>
-        </div>
-        <div *ngIf="partenzaPreAccopiati.squadre?.length > 1" class="col">
-            <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
-                <i class="fas fa-users guida mr-1"></i>
-                <small>{{ partenzaPreAccopiati.squadre?.length }} squadre</small>
-            </span>
-            <ng-template #piusquadre>
-                <div *ngFor="let sC of partenzaPreAccopiati.squadre" class="text-center nowrap">
-                    <span class="d-inline-block mb-1">{{ sC.nome }}</span>
+        </ng-container>
+        <ng-container *ngIf="partenzaPreAccopiati.codiceMezzo">
+            <div class="col">
+                <div class="nowrap">
+                    <i class="fas fa-truck mr-1"
+                       [ngClass]="_iconaStatiClass(partenzaPreAccopiati.statoMezzo)"
+                       ngbTooltip="Mezzo {{ partenzaPreAccopiati.statoMezzo }}"
+                       placement="top-left"></i>
+                    <span class="font-weight-bold mr-1" [ngbTooltip]="partenzaPreAccopiati.descrizioneMezzo"
+                          [disableTooltip]="partenzaPreAccopiati.descrizioneMezzo.length <= 7">{{partenzaPreAccopiati.descrizioneMezzo | slice: 0:7}}</span>
+                    <span class="font-weight-normal">{{partenzaPreAccopiati.genereMezzo}}</span>
                 </div>
-            </ng-template>
-        </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="!partenzaPreAccopiati.squadre?.length">
+            <div class="col text-danger">
+                <i class="fas fa-users mr-1"></i>
+                <span ngbTooltip="Nessuna squadra selezionata"><b>-</b></span>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="partenzaPreAccopiati.squadre?.length === 1">
+            <div class="col">
+                <div class="nowrap">
+                    <i [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenzaPreAccopiati.squadre[0].stato))"
+                       ngbTooltip="Squadra {{ _nomeStatiSquadra(partenzaPreAccopiati.squadre[0].stato) }}"
+                       class="fas fa-users mr-1 font-weight-bold"></i>
+                    <div class="d-inline-block"
+                         [ngbTooltip]="partenzaPreAccopiati.squadre[0].nome && partenzaPreAccopiati.squadre[0].nome.length >= 10 ? partenzaPreAccopiati.squadre[0].nome : null">
+                        {{ partenzaPreAccopiati.squadre[0].nome | truncate: 10 }}
+                    </div>
+                    <ng-container
+                            *ngIf="partenzaPreAccopiati.codiceMezzo && compPartenzaMode === 1 && partenzaPreAccopiati.statoMezzo !== StatoMezzo.InRientro && !disableDividi">
+                        <button class="btn btn-sm btn-primary btn-no-hover ml-1 px-1 py-0"
+                                [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
+                                (click)="squadraShortcutEvent()" ngbTooltip="Dividi squadra">
+                            <div class="d-inline-block mr-1" style="font-weight: 500">Dividi</div>
+                            <i class="far fa-file-alt font-weight-bold"></i>
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="partenzaPreAccopiati.squadre?.length > 1">
+            <div class="col">
+                <div class="d-inline-block"
+                     [ngbPopover]="piusquadre"
+                     popoverTitle="Squadre"
+                     triggers="mouseenter:mouseleave">
+                    <i class="fas fa-users guida mr-1"></i>
+                    <small>{{ partenzaPreAccopiati.squadre?.length }} squadre</small>
+                </div>
+                <ng-template #piusquadre>
+                    <div *ngFor="let sC of partenzaPreAccopiati.squadre" class="text-center nowrap">
+                        <span class="d-inline-block mb-1">{{ sC.nome }}</span>
+                    </div>
+                </ng-template>
+            </div>
+        </ng-container>
     </div>
     <div class="row">
         <!-- Km da percorrere -->

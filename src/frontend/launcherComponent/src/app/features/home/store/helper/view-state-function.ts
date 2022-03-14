@@ -194,6 +194,7 @@ export function gridSolve(feature: AppFeatures): Grids {
  */
 export function activeModifica(stateDefault: any): ViewComponentStateModel {
     stateDefault.view.richieste.active = false;
+    stateDefault.view.chiamata.active = false;
     stateDefault.view.modifica.active = true;
     stateDefault.view.mappa.options = [AppFeatures.Modifica];
     return stateDefault;

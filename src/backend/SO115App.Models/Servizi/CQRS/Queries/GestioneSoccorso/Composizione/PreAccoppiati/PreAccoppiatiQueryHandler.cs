@@ -19,8 +19,11 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
@@ -31,7 +34,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class PreAccoppiatiQueryHandler : IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult>
     {
         private readonly IGetPreAccoppiati _GetPreAccoppiati;
-        public PreAccoppiatiQueryHandler(IGetPreAccoppiati iGetPreAccoppiati) => _GetPreAccoppiati = iGetPreAccoppiati;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+
+        public PreAccoppiatiQueryHandler(IGetPreAccoppiati iGetPreAccoppiati, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        {
+            _GetPreAccoppiati = iGetPreAccoppiati;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+        }
 
         /// <summary>
         ///   Query che estrae i valori dei Box presenti in Home Page
@@ -42,7 +51,32 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
 
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var pinNodi = new List<PinNodo>();
+
+            foreach (var sede in query.CodiceSede)
+            {
+                pinNodi.Add(new PinNodo(sede, true));
+            }
+            var listaSedi = listaSediAlberate.Result.GetSottoAlbero(pinNodi);
+            foreach (var figlio in listaSedi)
+            {
+                pinNodi.Add(new PinNodo(figlio.Codice, true));
+            }
+
+            query.CodiceSede = pinNodi.Select(x => x.Codice).ToArray();
+
             var ListapreAccoppiati = _GetPreAccoppiati.GetAsync(query).Result;
+
+            if (query.Filtri.TipoMezzo != null)
+            {
+                ListapreAccoppiati = ListapreAccoppiati.FindAll(m => m.GenereMezzo.Equals(query.Filtri.TipoMezzo));
+            }
+
+            if (query.Filtri.StatoMezzo != null)
+            {
+                ListapreAccoppiati = ListapreAccoppiati.FindAll(m => query.Filtri.StatoMezzo.Any(s => s.Equals(m.StatoMezzo)));
+            }
 
             Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");
 

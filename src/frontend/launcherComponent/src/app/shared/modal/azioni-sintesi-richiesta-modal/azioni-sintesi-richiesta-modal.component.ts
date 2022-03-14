@@ -26,6 +26,8 @@ import { StampaRichiestaService } from '../../../core/service/stampa-richieste/s
 import { HttpEventType } from '@angular/common/http';
 import { ListaMezziSganciamentoModalComponent } from '../lista-mezzi-sganciamento-modal/lista-mezzi-sganciamento-modal.component';
 import { VisualizzaDocumentoModalComponent } from '../visualizza-documento-modal/visualizza-documento-modal.component';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -40,16 +42,19 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
 
-    subscription: Subscription = new Subscription();
-
     richiesta: SintesiRichiesta;
+
     statoRichiestaString: Array<StatoRichiestaActions>;
 
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
+    private subscription: Subscription = new Subscription();
 
     constructor(private modal: NgbActiveModal,
                 private store: Store,
                 private modalService: NgbModal,
-                private stampaRichiestaService: StampaRichiestaService) {
+                private stampaRichiestaService: StampaRichiestaService,
+                private lockedConcorrenzaService: LockedConcorrenzaService) {
         this.getUtente();
     }
 
@@ -71,147 +76,154 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onSganciamentoMezzo(richiesta: SintesiRichiesta): void {
-        let sganciamentoMezziModal;
-        sganciamentoMezziModal = this.modalService.open(ListaMezziSganciamentoModalComponent, {
-            windowClass: 'xxlModal modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
-        sganciamentoMezziModal.componentInstance.richiesta = richiesta;
-        sganciamentoMezziModal.result.then(
-            (result: string) => {
-                if (result === 'ok') {
-                    this.chiudiModalAzioniSintesi('ok');
+        if (!this.isLockedConcorrenza()) {
+            let sganciamentoMezziModal;
+            sganciamentoMezziModal = this.modalService.open(ListaMezziSganciamentoModalComponent, {
+                windowClass: 'xxlModal modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+            sganciamentoMezziModal.componentInstance.richiesta = richiesta;
+            sganciamentoMezziModal.result.then(
+                (result: string) => {
+                    if (result === 'ok') {
+                        this.chiudiModalAzioniSintesi('ok');
+                    }
+                }, (err: any) => {
+                    console.error('Modal chiusa senza bottoni. Err ->', err);
                 }
-            }, (err: any) => {
-                console.error('Modal chiusa senza bottoni. Err ->', err);
-            }
-        );
+            );
+        }
     }
 
     onClick(stato: StatoRichiestaActions): void {
-        const codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
-        let modalConferma;
-        const modalOptions = {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            size: 'lg',
-            centered: true
-        };
+        if (!this.isLockedConcorrenza()) {
+            const codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+            let modalConferma;
+            const modalOptions = {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                size: 'lg',
+                centered: true
+            };
 
-        switch (stato) {
-            case StatoRichiestaActions.Chiusa:
-                if (this.richiesta.stato === StatoRichiesta.Chiamata) {
-                    modalOptions.size = 'xl';
-                } else {
+            switch (stato) {
+                case StatoRichiestaActions.Chiusa:
+                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+                        modalOptions.size = 'xl';
+                    } else {
+                        modalOptions.size = 'lg';
+                    }
+                    break;
+                case StatoRichiestaActions.Sospesa:
                     modalOptions.size = 'lg';
+                    break;
+                case StatoRichiestaActions.Riaperta:
+                    modalOptions.size = 'lg';
+                    break;
+            }
+
+            modalConferma = this.modalService.open(ActionRichiestaModalComponent, modalOptions);
+            modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+
+            switch (stato) {
+                case StatoRichiestaActions.Chiusa:
+                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+                        modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
+                        const enti = this.store.selectSnapshot(EntiState.enti) as EnteInterface[];
+                        modalConferma.componentInstance.chiusuraChiamata = true;
+                        modalConferma.componentInstance.enti = enti;
+                    } else {
+                        modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
+                        modalConferma.componentInstance.chiusuraIntervento = true;
+                        modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Non più necessario', 'Falso Allarme', 'Concluso'];
+                    }
+                    break;
+
+                case StatoRichiestaActions.Riaperta:
+                    modalConferma.componentInstance.titolo = 'Riapertura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
+                    modalConferma.componentInstance.riapertura = true;
+                    modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta + '?';
+                    break;
+
+                default:
+                    break;
+            }
+
+            const richiestaAction = {
+                idRichiesta: null,
+                stato,
+                motivazione: null,
+                entiIntervenuti: null
+            } as RichiestaActionInterface;
+
+            modalConferma.result.then(
+                (val) => {
+                    switch (val.esito) {
+                        case 'ok':
+                            richiestaAction.idRichiesta = this.richiesta.id;
+                            richiestaAction.motivazione = val?.motivazione;
+                            richiestaAction.entiIntervenuti = val?.entiIntervenuti;
+                            this.store.dispatch(new ActionRichiesta(richiestaAction));
+                            this.modal.close({ status: 'ko' });
+                            break;
+                        case 'ko':
+                            break;
+                    }
                 }
-                break;
-            case StatoRichiestaActions.Sospesa:
-                modalOptions.size = 'lg';
-                break;
-            case StatoRichiestaActions.Riaperta:
-                modalOptions.size = 'lg';
-                break;
+            );
         }
+    }
 
-        modalConferma = this.modalService.open(ActionRichiestaModalComponent, modalOptions);
-        modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-
-        switch (stato) {
-            case StatoRichiestaActions.Chiusa:
-                if (this.richiesta.stato === StatoRichiesta.Chiamata) {
-                    modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
-                    const enti = this.store.selectSnapshot(EntiState.enti) as EnteInterface[];
-                    modalConferma.componentInstance.chiusuraChiamata = true;
-                    modalConferma.componentInstance.enti = enti;
-                } else {
-                    modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
-                    modalConferma.componentInstance.chiusuraIntervento = true;
-                    modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Non più necessario', 'Falso Allarme', 'Concluso'];
-                    modalConferma.componentInstance.messaggioAttenzione = 'Tutti i mezzi diventeranno "In Rientro"';
-                }
-                break;
-
-            case StatoRichiestaActions.Riaperta:
-                modalConferma.componentInstance.titolo = 'Riapertura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
-                modalConferma.componentInstance.riapertura = true;
-                modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta + '?';
-                break;
-
-            default:
-                break;
-        }
-
-        const richiestaAction = {
-            idRichiesta: null,
-            stato,
-            motivazione: null,
-            entiIntervenuti: null
-        } as RichiestaActionInterface;
-
-        modalConferma.result.then(
-            (val) => {
-                switch (val.esito) {
-                    case 'ok':
-                        richiestaAction.idRichiesta = this.richiesta.id;
-                        richiestaAction.motivazione = val?.motivazione;
-                        richiestaAction.entiIntervenuti = val?.entiIntervenuti;
-                        this.store.dispatch(new ActionRichiesta(richiestaAction));
+    onAddTrasferimentoChiamata(codiceRichiesta: string): void {
+        if (!this.isLockedConcorrenza()) {
+            let addTrasferimentoChiamataModal;
+            addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg'
+            });
+            addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
+            addTrasferimentoChiamataModal.result.then(
+                (result: { success: boolean }) => {
+                    if (result.success) {
+                        this.addTrasferimentoChiamata();
                         this.modal.close({ status: 'ko' });
+                    } else if (!result.success) {
+                        this.store.dispatch(new ClearFormTrasferimentoChiamata());
+                        console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
+                    }
+                },
+                (err) => {
+                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
+                    console.error('Modal chiusa senza bottoni. Err ->', err);
+                }
+            );
+        }
+    }
+
+    onAllertaSede(): void {
+        if (!this.isLockedConcorrenza()) {
+            let modalAllertaSede;
+            modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg',
+                keyboard: false,
+            });
+            modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
+            modalAllertaSede.result.then((res: { status: string, result: any }) => {
+                switch (res.status) {
+                    case 'ok' :
+                        this.store.dispatch(new AllertaSede(res.result));
                         break;
                     case 'ko':
                         break;
                 }
-            }
-        );
-    }
-
-    onAddTrasferimentoChiamata(codiceRichiesta: string): void {
-        let addTrasferimentoChiamataModal;
-        addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg'
-        });
-        addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
-        addTrasferimentoChiamataModal.result.then(
-            (result: { success: boolean }) => {
-                if (result.success) {
-                    this.addTrasferimentoChiamata();
-                    this.modal.close({ status: 'ko' });
-                } else if (!result.success) {
-                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
-                    console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
-                }
-            },
-            (err) => {
-                this.store.dispatch(new ClearFormTrasferimentoChiamata());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
-            }
-        );
-    }
-
-    onAllertaSede(): void {
-        let modalAllertaSede;
-        modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg',
-            keyboard: false,
-        });
-        modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
-        modalAllertaSede.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    this.store.dispatch(new AllertaSede(res.result));
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
+            });
+        }
     }
 
     onVisualizzaPDF(): void {
@@ -239,52 +251,58 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onModificaEntiIntervenuti(): void {
-        let modalModificaEntiIntervenuti;
-        modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
-        // modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
-        modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta?.codEntiIntervenuti?.length ? this.richiesta.codEntiIntervenuti : null;
-        modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    const idRichiesta = this.richiesta.id;
-                    const codEntiIntervenuti = res.result.listaEnti;
-                    this.store.dispatch(new PatchEntiIntervenutiRichiesta(idRichiesta, codEntiIntervenuti));
-                    this.chiudiModalAzioniSintesi('ok');
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
+        if (!this.isLockedConcorrenza()) {
+            let modalModificaEntiIntervenuti;
+            modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+            // modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
+            modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta?.codEntiIntervenuti?.length ? this.richiesta.codEntiIntervenuti : null;
+            modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
+                switch (res.status) {
+                    case 'ok' :
+                        const idRichiesta = this.richiesta.id;
+                        const codEntiIntervenuti = res.result.listaEnti;
+                        this.store.dispatch(new PatchEntiIntervenutiRichiesta(idRichiesta, codEntiIntervenuti));
+                        this.chiudiModalAzioniSintesi('ok');
+                        break;
+                    case 'ko':
+                        break;
+                }
+            });
+        }
     }
 
     onModificaStatoFonogramma(): void {
-        let modalModificaStatoFonogramma;
-        modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
-        modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
-        modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
-        modalModificaStatoFonogramma.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
-        modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
-        modalModificaStatoFonogramma.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    this.store.dispatch(new ModificaStatoFonogramma(res.result));
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
+        if (!this.isLockedConcorrenza()) {
+            let modalModificaStatoFonogramma;
+            modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+            modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+            modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
+            modalModificaStatoFonogramma.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
+            modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
+            modalModificaStatoFonogramma.result.then((res: { status: string, result: any }) => {
+                switch (res.status) {
+                    case 'ok' :
+                        this.store.dispatch(new ModificaStatoFonogramma(res.result));
+                        break;
+                    case 'ko':
+                        break;
+                }
+            });
+        }
     }
 
     addTrasferimentoChiamata(): void {
-        this.store.dispatch(new RequestAddTrasferimentoChiamata());
+        if (!this.isLockedConcorrenza()) {
+            this.store.dispatch(new RequestAddTrasferimentoChiamata());
+        }
     }
 
     visualizzaEventiRichiesta(codice: string): void {
@@ -321,4 +339,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         return defineChiamataIntervento(codice, codiceRichiesta);
     }
 
+    isLockedConcorrenza(): string {
+        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice]);
+    }
 }

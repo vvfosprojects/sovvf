@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { BoxPartenzaPreAccoppiati } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
@@ -6,6 +6,7 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Store } from '@ngxs/store';
 import { ConfirmPartenze, SetVisualizzaPercosiRichiesta } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import {
+    ClearPreaccoppiati,
     ClearPreAccoppiatiSelezionatiComposizione,
     GetListaComposizioneVeloce,
     HoverInPreAccoppiatoComposizione,
@@ -27,12 +28,19 @@ import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-so
 import { getSoccorsoAereoTriage } from '../../../../shared/helper/function-triage';
 import { Partenza } from '../../../../shared/model/partenza.model';
 import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
+import Point from '@arcgis/core/geometry/Point';
+import Graphic from '@arcgis/core/Graphic';
+import RouteTask from '@arcgis/core/tasks/RouteTask';
+import RouteParameters from '@arcgis/core/rest/support/RouteParameters';
+import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
+import { TravelModeService } from '../../../maps/map-service/travel-mode.service';
+import { DeleteConcorrenza } from '../../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-composizione-veloce',
     templateUrl: './composizione-veloce.component.html',
-    styleUrls: ['./composizione-veloce.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./composizione-veloce.component.css']
 })
 export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -41,10 +49,8 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() filtri: any;
 
-    // Loading Liste Mezzi e Squadre
-    @Input() loadingListe: boolean;
-    @Input() loadingSquadre: boolean;
-    @Input() loadingMezzi: boolean;
+    // Loading Lista Preaccoppiati
+    @Input() loadingPreaccoppiati: boolean;
 
     @Input() richiesta: SintesiRichiesta;
     @Input() loadingInvioPartenza: boolean;
@@ -71,7 +77,8 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     partenzeRichiesta: Partenza[];
 
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private travelModeService: TravelModeService) {
     }
 
     ngOnInit(): void {
@@ -83,11 +90,72 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
             const richiesta = changes?.richiesta?.currentValue;
             this.partenzeRichiesta = richiesta.partenze;
         }
+
+        if (changes?.preAccoppiati?.currentValue) {
+            this.preAccoppiati = makeCopy(changes.preAccoppiati.currentValue);
+            this.preAccoppiati?.forEach((p: BoxPartenzaPreAccoppiati) => {
+                if (!p.km || !p.tempoPercorrenza) {
+                    const pointPartenza = new Point({
+                        longitude: +p.coordinate.longitudine,
+                        latitude: +p.coordinate.latitudine,
+                        spatialReference: {
+                            wkid: 3857
+                        }
+                    });
+
+                    const pointDestinazione = new Point({
+                        longitude: this.richiesta.localita.coordinate.longitudine,
+                        latitude: this.richiesta.localita.coordinate.latitudine,
+                        spatialReference: {
+                            wkid: 3857
+                        }
+                    });
+
+                    const pointPartenzaGraphic = new Graphic({
+                        geometry: pointPartenza
+                    });
+
+                    const pointDestinazioneGraphic = new Graphic({
+                        geometry: pointDestinazione
+                    });
+                    const routeTask: RouteTask = new RouteTask({
+                        url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World',
+                    });
+
+                    const routeParams = new RouteParameters({
+                        stops: new FeatureSet({
+                            features: [pointPartenzaGraphic, pointDestinazioneGraphic]
+                        }),
+                        travelMode: this.travelModeService.getTravelModeByGenereMezzo(p.genereMezzo)
+                    });
+
+                    routeTask.solve(routeParams).then((data: any) => {
+                        if (!p.km || p.km === '0') {
+                            const km = data.routeResults[0]?.route?.attributes?.Total_Kilometers;
+                            p.km = km.toFixed(2);
+                        }
+                        if (!p.tempoPercorrenza) {
+                            const tempoPercorrenza = data.routeResults[0]?.route?.attributes?.Total_TravelTime ? data.routeResults[0].route.attributes.Total_TravelTime : data.routeResults[0]?.route?.attributes?.Total_TruckTravelTime;
+                            p.tempoPercorrenza = tempoPercorrenza.toFixed(2);
+                        }
+                    });
+                }
+            });
+        }
     }
 
     ngOnDestroy(): void {
+        this.preAccoppiati?.forEach((p: BoxPartenzaPreAccoppiati) => {
+            if (this.idPreAccoppiatiSelezionati.includes(p.id)) {
+                console.log('remove mezzo', p.codiceMezzo);
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.codiceMezzo]));
+                const codiciSquadre = p.squadre.map((sC: SquadraComposizione) => sC.codice);
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+            }
+        });
         this.store.dispatch([
             new ClearPreAccoppiatiSelezionatiComposizione(),
+            new ClearPreaccoppiati(),
             new ResetPaginationPreaccoppiati()
         ]);
     }
@@ -97,16 +165,12 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onToggleVisualizzaPercorsi(value: boolean): void {
-        // TODO: logica viualizzazione percorsi con bottone
         this.store.dispatch(new SetVisualizzaPercosiRichiesta(value));
     }
 
     selezionaPreaccoppiato(preAcc: BoxPartenzaPreAccoppiati): void {
-        // TODO: Verificare condizione
-        // if (!preAcc.coordinateFake) {
-        //     this.mezzoCoordinate(preAcc.coordinate);
-        // }
-        if (preAcc && preAcc.statoMezzo === 'In Sede') {
+        this.mezzoCoordinate(preAcc.coordinate);
+        if (preAcc?.statoMezzo === StatoMezzo.InSede || preAcc?.statoMezzo === StatoMezzo.InRientro) {
             this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
         }
     }
@@ -157,6 +221,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
                     distaccamento: {
                         descrizione: null,
                     },
+                    appartenenza: null
                 },
                 squadre: null
             };
@@ -167,6 +232,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
                 rObj.mezzo.stato = obj.statoMezzo;
                 rObj.mezzo.genere = obj.genereMezzo;
                 rObj.mezzo.distaccamento.descrizione = obj.distaccamento;
+                rObj.mezzo.appartenenza = obj.appartenenza;
             } else {
                 rObj.mezzo = null;
             }

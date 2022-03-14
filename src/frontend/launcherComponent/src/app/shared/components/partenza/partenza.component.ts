@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DettaglioPartenza, Partenza } from '../../model/partenza.model';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
@@ -10,18 +10,21 @@ import { Store } from '@ngxs/store';
 import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
 import { Mezzo } from '../../model/mezzo.model';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-partenza',
     templateUrl: './partenza.component.html',
-    styleUrls: ['./partenza.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./partenza.component.css']
 })
 
 export class PartenzaComponent implements OnInit {
 
+    @Input() codiceRichiesta: string;
     @Input() idDaSganciare: string;
     @Input() partenza: DettaglioPartenza;
+    @Input() codicePartenza: string;
     @Input() infoPartenza: Partenza;
     @Input() listaEventi: EventoMezzo[];
     @Input() inGestione: boolean;
@@ -37,11 +40,14 @@ export class PartenzaComponent implements OnInit {
     @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
 
     statoRichiestaEnum = StatoRichiesta;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
     listaEventiMezzo: EventoMezzo[] = [];
 
-    constructor(config: NgbDropdownConfig,
+    constructor(private config: NgbDropdownConfig,
                 private store: Store,
-                private richiesteService: SintesiRichiesteService) {
+                private richiesteService: SintesiRichiesteService,
+                private lockedConcorrenzaService: LockedConcorrenzaService) {
         config.placement = 'bottom-left';
     }
 
@@ -78,6 +84,12 @@ export class PartenzaComponent implements OnInit {
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
         this.actionMezzo.emit(mezzoAction);
+    }
+
+    onModificaPartenza(): void {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codiceRichiesta])) {
+            this.modificaPartenza.emit(this.index);
+        }
     }
 
     _iconaStatiClass(statoMezzo: any): string {

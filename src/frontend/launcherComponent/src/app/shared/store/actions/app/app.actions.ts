@@ -1,4 +1,4 @@
-import SpatialReference from "@arcgis/core/geometry/SpatialReference";
+import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 
 export class ReloadApp {
     static readonly type = '[App] Reload';

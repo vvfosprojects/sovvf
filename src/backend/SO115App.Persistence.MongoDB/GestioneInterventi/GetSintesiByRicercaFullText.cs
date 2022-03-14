@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SO115App.Persistence.MongoDB.GestioneInterventi
 {
@@ -23,16 +25,19 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
+        private readonly IGetSedi _getSedi;
 
         public GetSintesiByRicercaFullText(DbContext dbContext,
                                            IGetSottoSediByCodSede getSottoSediByCodSede,
                                            IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC,
-                                           IMapperRichiestaSuSintesi mapperSintesi)
+                                           IMapperRichiestaSuSintesi mapperSintesi,
+                                           IGetSedi getSedi)
         {
             _dbContext = dbContext;
             _getSottoSediByCodSede = getSottoSediByCodSede;
             _getDistaccamentoUC = getDistaccamentoUC;
             _mapperSintesi = mapperSintesi;
+            _getSedi = getSedi;
         }
 
         public List<SintesiRichiesta> GetListaSintesi(string[] CodSede, string TextToSearch)
@@ -43,17 +48,17 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                 .In(richiesta => richiesta.CodSOCompetente, listaCodiciSediInteressate);
 
             var filtroFullText = Builders<RichiestaAssistenza>.Filter.Text(TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("codice", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("codRichiesta", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("codSOCompetente", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("descrizione", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("indirizzo", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("nominativo", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("telefono", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("notePubbliche", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("notePrivate", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("noteNue", TextToSearch);
-            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex("tags", TextToSearch);
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(c => c.Codice.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(c => c.CodRichiesta.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(c => c.CodSOCompetente.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(d => d.Descrizione.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(i => i.Localita.Indirizzo.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(n => n.Richiedente.Nominativo.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(t => t.Richiedente.Telefono.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(n => n.NotePubbliche.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(n => n.NotePrivate.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(n => n.NoteNue.ToLower(), TextToSearch.ToLower());
+            filtroFullText |= Builders<RichiestaAssistenza>.Filter.Regex(t => t.Tags, TextToSearch.ToLower());
 
             var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
 
@@ -68,8 +73,8 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                  var rubrica = new List<EnteDTO>();
                  var sintesi = new SintesiRichiesta();
                  sintesi = _mapperSintesi.Map(richiesta);
-                 sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                 sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
+                 sintesi.Competenze = richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
+                 sintesi.SediAllertate = richiesta.CodSOAllertate != null ? richiesta.CodSOAllertate.ToArray().MapCompetenze(_getSedi) : null;
                  return sintesi;
              });
 
@@ -83,27 +88,6 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenByDescending(x => x.IstanteRicezioneRichiesta)
                     .ToList();
-        }
-
-        private List<Sede> MapCompetenze(string[] codUOCompetenza)
-        {
-            var listaSedi = new List<Sede>();
-            int i = 1;
-            foreach (var codCompetenza in codUOCompetenza)
-            {
-                if (i <= 3)
-                {
-                    var Distaccamento = _getDistaccamentoUC.Get(codCompetenza).Result;
-                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate);
-
-                    if (sede != null)
-                        listaSedi.Add(sede);
-                }
-
-                i++;
-            }
-
-            return listaSedi;
         }
     }
 }

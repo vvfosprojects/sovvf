@@ -30,6 +30,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Serilog;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
@@ -40,6 +41,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.SignalR;
 using StackExchange.Redis;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Principal;
@@ -103,6 +105,8 @@ namespace SO115App.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("SO115", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SO115", Version = "v1.0" });
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "SO115App.API.xml");
+                c.IncludeXmlComments(filePath);
             });
 
             ///<summary>
@@ -137,6 +141,9 @@ namespace SO115App.API
                 {
                     options.EnableDetailedErrors = true;
                     options.ClientTimeoutInterval = TimeSpan.FromMinutes(480);
+                    options.KeepAliveInterval = TimeSpan.FromMinutes(15);
+                    options.HandshakeTimeout = TimeSpan.FromMinutes(480);
+                    options.MaximumReceiveMessageSize = 300000;
                 });
             IntegrateSimpleInjector(services);
         }
@@ -155,6 +162,8 @@ namespace SO115App.API
             services.AddSimpleInjector(container, option => option.AddAspNetCore().AddControllerActivation());
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
+
+            Log.Information("Avvio");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

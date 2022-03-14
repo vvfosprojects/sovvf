@@ -1,4 +1,4 @@
-import { PosInterface } from "../../../interface/pos.interface";
+import { PosInterface } from '../../../interface/pos.interface';
 
 export class GetDettagliTipologieByCodTipologia {
     static readonly type = '[TriageChiamataModal] Get Dettagli Tipologie by CodTipologia';

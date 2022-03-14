@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ColoriStatoMezzo } from '../../helper/_colori';
 import { Mezzo } from '../../model/mezzo.model';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -7,16 +7,18 @@ import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { statoMezzoColor } from '../../helper/function-mezzo';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-mezzo',
     templateUrl: './mezzo.component.html',
-    styleUrls: ['./mezzo.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./mezzo.component.scss']
 })
 export class MezzoComponent {
 
+    @Input() codiceRichiesta: string;
     @Input() mezzo: Mezzo;
+    @Input() codicePartenza: string;
     @Input() listaEventi: any;
     @Input() mostraRichiestaAssociata: boolean;
     @Input() actionsAttive: boolean;
@@ -24,7 +26,10 @@ export class MezzoComponent {
     @Input() listaEventiMezzo: EventoMezzo[];
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
+
     stato = new ColoriStatoMezzo();
+
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     constructor(popoverConfig: NgbPopoverConfig,
                 tooltipConfig: NgbTooltipConfig) {
@@ -48,7 +53,7 @@ export class MezzoComponent {
             data.setSeconds(orario.secondi);
             data.setMilliseconds(0);
             data = new Date(data.getTime());
-            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento: action.azioneIntervento };
+            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento: action.azioneIntervento, codicePartenza: this.codicePartenza };
         } else {
             actionMezzo = { mezzo: this.mezzo, action: null };
         }

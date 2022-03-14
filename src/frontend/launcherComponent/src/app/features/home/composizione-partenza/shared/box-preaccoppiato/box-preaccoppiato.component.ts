@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { BoxPartenza, BoxPartenzaPreAccoppiati } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
@@ -11,13 +11,15 @@ import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Observable, Subscription } from 'rxjs';
 import { BoxPartenzaState } from '../../../store/states/composizione-partenza/box-partenza.state';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
+import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-box-preaccoppiato',
     templateUrl: './box-preaccoppiato.component.html',
     styleUrls: ['./box-preaccoppiato.component.css']
 })
-export class BoxPreaccoppiatoComponent implements OnDestroy {
+export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
 
     // BoxPartenza Composizione
     @Select(BoxPartenzaState.boxPartenzaList) boxPartenzaList$: Observable<BoxPartenza[]>;
@@ -48,12 +50,30 @@ export class BoxPreaccoppiatoComponent implements OnDestroy {
 
     itemBloccato: boolean;
     StatoMezzo = StatoMezzo;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
+    codiciSquadre: string[];
 
     private subscription = new Subscription();
 
-
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private lockedConcorrenzaService: LockedConcorrenzaService) {
         // Prendo i box partenza
+        this.getBoxPartenzaList();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.partenzaPreAccopiati?.currentValue) {
+            const partenzaPreAccopiati = changes?.partenzaPreAccopiati?.currentValue;
+            this.codiciSquadre = partenzaPreAccopiati.squadre.map((sC: SquadraComposizione) => sC.codice);
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    getBoxPartenzaList(): void {
         this.subscription.add(
             this.boxPartenzaList$.subscribe((boxPartenza: BoxPartenza[]) => {
                 this.boxPartenzaList = boxPartenza;
@@ -61,21 +81,19 @@ export class BoxPreaccoppiatoComponent implements OnDestroy {
         );
     }
 
-    ngOnDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
     onClick(): void {
-        if (!this.itemOccupato) {
-            if (!this.itemSelezionato) {
-                this.selezionato.emit(this.partenzaPreAccopiati);
-            } else {
-                this.deselezionato.emit(this.partenzaPreAccopiati);
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Mezzo, [this.partenzaPreAccopiati.codiceMezzo]) && !this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, this.codiciSquadre)) {
+            if (!this.itemOccupato) {
+                if (!this.itemSelezionato) {
+                    this.selezionato.emit(this.partenzaPreAccopiati);
+                } else {
+                    this.deselezionato.emit(this.partenzaPreAccopiati);
+                }
+            } else if (mezzoComposizioneBusy(this.partenzaPreAccopiati.statoMezzo)) {
+                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenzaPreAccopiati.statoMezzo + ' ed è impegnato in un\'altra richiesta', null, null, true));
+            } else if (this._checkSquadraOccupata(this.partenzaPreAccopiati.squadre)) {
+                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Una o più squadre del Preaccopiato risultano impegnate in un\'altra richiesta', null, null, true));
             }
-        } else if (mezzoComposizioneBusy(this.partenzaPreAccopiati.statoMezzo)) {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenzaPreAccopiati.statoMezzo + ' ed è impegnato in un\'altra richiesta', null, null, true));
-        } else if (this._checkSquadraOccupata(this.partenzaPreAccopiati.squadre)) {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Una o più squadre del Preaccopiato risultano impegnate in un\'altra richiesta', null, null, true));
         }
     }
 
@@ -92,7 +110,7 @@ export class BoxPreaccoppiatoComponent implements OnDestroy {
             returnClass = this.itemSelezionato ? 'bg-light card-shadow-success' : 'card-shadow';
 
             if (this.itemOccupato) {
-                returnClass += ' diagonal-stripes bg-lightdanger';
+                returnClass += ' diagonal-stripes bg-lightdanger cursor-not-allowed';
                 this.itemBloccato = true;
             } else if (!this.itemSelezionato) {
                 returnClass += this.itemHover ? ' border-warning' : '';

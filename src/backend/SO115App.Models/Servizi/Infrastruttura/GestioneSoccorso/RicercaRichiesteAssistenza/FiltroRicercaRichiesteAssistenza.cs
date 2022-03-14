@@ -103,6 +103,8 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         public List<string> ZoneEmergenza { get; set; }
 
         public bool SoloboxRichieste { get; set; } = false;
+
+        public int RichiesteTotali { get; set; }
     }
 
     public class PeriodoChiuse

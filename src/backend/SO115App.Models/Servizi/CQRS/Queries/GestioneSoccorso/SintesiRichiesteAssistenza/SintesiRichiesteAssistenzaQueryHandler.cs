@@ -120,22 +120,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
-            var listaSintesiPaginata = new List<SintesiRichiesta>();
-            if (query.Filtro.Page > 0 && query.Filtro.PageSize > 0)
-            {
-                listaSintesiPaginata = listaSintesi.Skip((query.Filtro.Page - 1) * query.Filtro.PageSize).Take(query.Filtro.PageSize).ToList();
-            }
+            //var listaSintesiPaginata = new List<SintesiRichiesta>();
+            //if (query.Filtro.Page > 0 && query.Filtro.PageSize > 0)
+            //{
+            //    listaSintesiPaginata = listaSintesi.Skip((query.Filtro.Page - 1) * query.Filtro.PageSize).Take(query.Filtro.PageSize).ToList();
+            //}
 
             Log.Debug("Fine elaborazione Lista Sintesi Richieste Assistenza Handler");
 
             return new SintesiRichiesteAssistenzaResult()
             {
-                SintesiRichiesta = (query.Filtro.Page > 0 && query.Filtro.PageSize > 0) ? listaSintesiPaginata : listaSintesi,
+                SintesiRichiesta = listaSintesi,
                 Pagination = new Paginazione
                 {
                     Page = query.Filtro.Page,
                     PageSize = query.Filtro.PageSize,
-                    TotalItems = listaSintesi.Count
+                    TotalItems = query.Filtro.RichiesteTotali
                 }
             };
         }

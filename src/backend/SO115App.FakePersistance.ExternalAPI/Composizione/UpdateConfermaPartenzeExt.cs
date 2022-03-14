@@ -74,7 +74,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 foreach (var squadra in partenza.Squadre)
                 {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
+                    if (partenza.Mezzo.Distaccamento.Codice != null)
+                        _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
+                    else if (partenza.Mezzo.Appartenenza != null)
+                        _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, partenza.Turno);
 
                     //Chiamata OPService per aggiornare lo stato delle Squadre "ALLOCATE" oppure "DEALLOCATE"
                     if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
@@ -142,7 +145,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         var dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(p => p.CodicePartenza.Equals(partenza.Codice)).Istante;
 
-                        var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.First() }).First();
+                        var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.Select(c => c.Codice).First() }).First();
 
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
@@ -173,8 +176,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                         });
                     }
-
-                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento?.Codice ?? "", partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
+                if (partenza.Mezzo.Distaccamento?.Codice != null)
+                    _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento?.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
+                else if (partenza.Mezzo.Appartenenza != null)
+                    _setStatoOperativoMezzo.Set(partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
             }
 
             _updateRichiesta.UpDate(command.Richiesta);

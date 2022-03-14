@@ -14,7 +14,8 @@ import {
     ToggleSchedeContatto,
     ClearViewState,
     ToggleCodaChiamate,
-    ToggleRichieste
+    ToggleRichieste,
+    SetChiamataFromMappaStatus
 } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
@@ -57,6 +58,9 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
             split: false
         },
         chiamata: {
+            active: false
+        },
+        chiamataFromMappa: {
             active: false
         },
         composizione: {
@@ -127,6 +131,11 @@ export class ViewComponentState {
     @Selector()
     static chiamataStatus(state: ViewComponentStateModel): boolean {
         return state.view.chiamata.active;
+    }
+
+    @Selector()
+    static chiamataFromMappaStatus(state: ViewComponentStateModel): boolean {
+        return state.view.chiamataFromMappa.active;
     }
 
     @Selector()
@@ -231,6 +240,20 @@ export class ViewComponentState {
         }
     }
 
+    @Action(SetChiamataFromMappaStatus)
+    setChiamataFromMappaStatus({ getState, patchState, }: StateContext<ViewComponentStateModel>, action: SetChiamataFromMappaStatus): void {
+        const state = getState();
+        patchState({
+            ...state,
+            view: {
+                ...state.view,
+                chiamataFromMappa: {
+                    active: action.value
+                }
+            }
+        });
+    }
+
     @Action(ToggleModifica)
     toggleModifica({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleModifica): void {
         const state = getState();
@@ -248,8 +271,7 @@ export class ViewComponentState {
                 view: newState.view,
                 column: newState.column
             });
-        }
-        else if (action.homeViewRequest) {
+        } else if (action.homeViewRequest) {
             dispatch(new GetInitCentroMappa());
             const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
             const newState = turnOffModifica(currentState, lastState);
@@ -262,7 +284,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleRichieste)
-    toggleRichieste({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleRichieste): void {
+    toggleRichieste({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         dispatch(new SaveView(makeCopy(state)));

@@ -4,6 +4,9 @@ import { Squadra } from '../../../../shared/model/squadra.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HelperSintesiRichiesta } from '../../richieste/helper/_helper-sintesi-richiesta';
 import { nomeStatiSquadra } from '../../../../shared/helper/function-composizione';
+import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
+import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
+import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-dettaglio-distaccamento-modal',
@@ -18,6 +21,11 @@ export class DettaglioDistaccamentoModalComponent {
     squadre: Squadra[];
 
     methods = new HelperSintesiRichiesta();
+
+    // ENUM
+    permessiFeature = PermissionFeatures;
+    statoRichiesta = StatoRichiesta;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     constructor(private modal: NgbActiveModal) {
     }

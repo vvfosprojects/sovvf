@@ -17,6 +17,7 @@ import { ReplacePipe } from './replace.pipe';
 import { CompetenzaFormatPipe } from './competenza-format.pipe';
 import { TipoNotificaPipe } from './tipo-notifica.pipe';
 import { ReversePipe } from './reverse.pipe';
+import { ConcorrenzaLockedPipe } from './concorrenza-locked.pipe';
 
 const COMPONENTS = [
     TruncatePipe,
@@ -36,7 +37,8 @@ const COMPONENTS = [
     ReplacePipe,
     CompetenzaFormatPipe,
     TipoNotificaPipe,
-    ReversePipe
+    ReversePipe,
+    ConcorrenzaLockedPipe
 ];
 
 @NgModule({

@@ -17,7 +17,8 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const logged = this.store.selectSnapshot(AuthState.logged);
-        if (logged) {
+        const cacheSedi = JSON.parse(sessionStorage.getItem(LSNAME.cacheSedi));
+        if (logged && cacheSedi) {
             const ruoliUtenteLoggato = JSON.parse(sessionStorage.getItem(LSNAME.role));
 
             /**
@@ -42,7 +43,7 @@ export class AuthGuard implements CanActivate {
         }
         console.log('Not logged user', state.url);
         localStorage.setItem(LSNAME.redirectUrl, JSON.stringify(state.url));
-        this.store.dispatch(new Navigate(['/' + RoutesPath.Login]));
+        this.store.dispatch(new Navigate(['/' + RoutesPath.SelezioneSede]));
         return false;
     }
 }

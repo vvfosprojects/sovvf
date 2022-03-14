@@ -88,6 +88,8 @@ import { GestisciSchedaContattoModalComponent } from './modal/gestisci-scheda-co
 import { PosDettaglioModalComponent } from './modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
 import { VisualizzaDocumentoModalComponent } from './modal/visualizza-documento-modal/visualizza-documento-modal.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { UrgenzaSegnalataModalComponent } from './modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
+import { LockedConcorrenzaComponent } from './components/locked-concorrenza/locked-concorrenza.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -167,7 +169,9 @@ const COMPONENTS = [
     RisultatiAlertComponent,
     GestisciSchedaContattoModalComponent,
     PosDettaglioModalComponent,
-    VisualizzaDocumentoModalComponent
+    VisualizzaDocumentoModalComponent,
+    UrgenzaSegnalataModalComponent,
+    LockedConcorrenzaComponent
 ];
 const MODULES = [
     PipeModule

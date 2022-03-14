@@ -1,9 +1,11 @@
 <div class="modal-header">
     <div class="modal-title font-weight-bold">
         <h5 class="font-weight-lighter">{{ tipologiaSelezionata?.codiceDescrizione | uppercase }}</h5>
-        <h3>TRIAGE <span class="font-weight-bold">{{ dettaglioTipologiaSelezionato?.descrizione | uppercase }}</span></h3>
+        <h3>TRIAGE <span class="font-weight-bold">{{ dettaglioTipologiaSelezionato?.descrizione | uppercase }}</span>
+        </h3>
     </div>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            [disabled]="(!chiamataStatus && !modificaRichiestaStatus && !chiamataFromMappaStatus) || loadingSchedaRichiesta"
             (click)="dismissModal('dismiss')">
         <i class="fas fa-times text-danger"></i>
     </button>
@@ -63,7 +65,9 @@
                 </app-checkbox>
             </span>
     </ng-container>
-    <button type="button" class="btn btn-lg btn-success btn-no-hover" (click)="closeModal('success')">
+    <button type="button" class="btn btn-lg btn-success btn-no-hover"
+            [disabled]="(!chiamataStatus && !modificaRichiestaStatus && !chiamataFromMappaStatus) || loadingSchedaRichiesta"
+            (click)="closeModal('success')">
         <i class="fas fa-check mr-1"></i>
         {{ 'Chiudi e Salva Triage' | uppercase }}
     </button>

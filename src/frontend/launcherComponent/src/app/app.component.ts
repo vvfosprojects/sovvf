@@ -6,7 +6,6 @@ import { Observable, Subscription } from 'rxjs';
 import { AppState } from './shared/store/states/app/app.state';
 import { OFFSET_SYNC_TIME } from './core/settings/referral-time';
 import { Ruolo, Utente } from './shared/model/utente.model';
-import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
 import { PermissionFeatures } from './shared/enum/permission-features.enum';
 import { PermessiService } from './core/service/permessi-service/permessi.service';
@@ -31,6 +30,7 @@ import { NotificaInterface } from './shared/interface/notifica.interface';
 import { RouterState } from '@ngxs/router-plugin';
 import { ChangeView } from './features/home/store/actions/view/view.actions';
 import { AppFeatures } from './shared/enum/app-features.enum';
+import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 
 @Component({
@@ -135,8 +135,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.add(
             this.url$.subscribe((url: string) => {
                 this.url = url;
-                if ((url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1)) {
-                    this.store.dispatch(new GetDataNavbar());
+                if ((url && url !== '/login' && url !== '/auth/caslogout' && url !== '/selezione-sede' && url.indexOf('/auth?ticket=') === -1)) {
+                    if (this.user) {
+                        this.store.dispatch(new GetDataNavbar());
+                    }
                 }
                 this.store.dispatch(new ToggleSidebarOpened(false));
             })
@@ -222,25 +224,26 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
         this.subscription.add(this.user$.subscribe((user: Utente) => {
             this.user = user;
-            if (user && user.sede) {
-                if (this.listeSediLoaded) {
-                    this.store.dispatch(
-                        new PatchListaSediNavbar([user.sede.codice])
-                    );
-                }
-            } else {
+            if (!user) {
                 this.store.dispatch(new ClearListaSediNavbar());
             }
         }));
-        this.subscription.add(this.listeSediLoaded$.subscribe((r: boolean) => {
-            this.listeSediLoaded = r;
-            const cS = sessionStorage.getItem(LSNAME.cacheSedi);
-            const cSArray = JSON.parse(cS) as string[];
-            if (r && this.user) {
-                cS ? this.store.dispatch(new PatchListaSediNavbar(cSArray)) : this.store.dispatch(new PatchListaSediNavbar([this.user.sede.codice]));
+        this.subscription.add(
+            this.listeSediLoaded$.subscribe((r: boolean) => {
+                this.listeSediLoaded = r;
+                const cS = sessionStorage.getItem(LSNAME.cacheSedi);
+                const cSArray = JSON.parse(cS) as string[];
+                if (this.listeSediLoaded && this.user && cS) {
+                    this.store.dispatch(new PatchListaSediNavbar(cSArray));
+                }
+            })
+        );
+        this.subscription.add(this.vistaSedi$.subscribe(r => {
+            if (r) {
+                console.log('r', r);
+                this.store.dispatch(new PatchListaSediNavbar([...r]));
             }
         }));
-        this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([...r]))));
     }
 
     private getHeight(): void {

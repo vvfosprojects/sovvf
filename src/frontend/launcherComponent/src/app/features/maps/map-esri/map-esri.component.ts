@@ -12,7 +12,6 @@ import { MapService } from '../map-service/map-service.service';
 import { AreaMappa } from '../maps-model/area-mappa-model';
 import { DirectionInterface } from '../maps-interface/direction.interface';
 import { ChiamataMarker } from '../maps-model/chiamata-marker.model';
-import { SedeMarker } from '../maps-model/sede-marker.model';
 import { VoceFiltro } from '../../home/filterbar/filtri-richieste/voce-filtro.model';
 import { TravelModeService } from '../map-service/travel-mode.service';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
@@ -38,6 +37,8 @@ import { ESRI_LAYERS_CONFIG } from '../../../core/settings/esri-layers-config';
 import { DirectionTravelDataInterface } from '../maps-interface/direction-travel-data.interface';
 import { SetVisualizzaPercosiRichiesta } from '../../home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { environment } from '../../../../environments/environment';
+import { SetChiamataFromMappaStatus } from '../../home/store/actions/view/view.actions';
+import { EsriService } from '../map-service/esri.service';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
 import LayerList from '@arcgis/core/widgets/LayerList';
@@ -54,12 +55,10 @@ import MapImageLayer from '@arcgis/core/layers/MapImageLayer';
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import Graphic from '@arcgis/core/Graphic';
 import Point from '@arcgis/core/geometry/Point';
-import Locator from '@arcgis/core/tasks/Locator';
 import RouteParameters from '@arcgis/core/rest/support/RouteParameters';
 import FeatureSet from '@arcgis/core/rest/support/FeatureSet';
 import RouteTask from '@arcgis/core/tasks/RouteTask';
 import RouteResult from '@arcgis/core/tasks/support/RouteResult';
-import UniqueValueRenderer from '@arcgis/core/renderers/UniqueValueRenderer';
 import PictureMarkerSymbol from '@arcgis/core/symbols/PictureMarkerSymbol';
 import SimpleRenderer from '@arcgis/core/renderers/SimpleRenderer';
 import supportFeatureSet from '@arcgis/core/rest/support/FeatureSet';
@@ -81,7 +80,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() richiestaGestione: SintesiRichiesta;
     @Input() richiestaComposizione: SintesiRichiesta;
     @Input() chiamateMarkers: ChiamataMarker[];
-    @Input() sediMarkers: SedeMarker[];
     @Input() direction: DirectionInterface;
     @Input() tastoChiamataMappaActive: boolean;
     @Input() tastoZonaEmergenzaMappaActive: boolean;
@@ -91,7 +89,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() mezziInServizioStatus: boolean;
     @Input() idMezzoInServizioSelezionato: string;
     @Input() idSchedaContattoSelezionata: string;
-    @Input() areaMappaLoading: boolean;
     @Input() richiesteStatus: boolean;
     @Input() travelDataNuovaPartenza: DirectionTravelDataInterface;
     @Input() visualizzaPercorsiRichiesta: boolean;
@@ -111,8 +108,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     chiamateInCorsoFeatureLayer: FeatureLayer;
     chiamateMarkersGraphics = [];
-    sediOperativeFeatureLayer: FeatureLayer;
-    sediOperativeMarkersGraphics = [];
 
     operatore: Utente;
     RoutesPath = RoutesPath;
@@ -123,7 +118,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 private store: Store,
                 private configModal: NgbModalConfig,
                 private renderer: Renderer2,
-                private travelModeService: TravelModeService) {
+                private travelModeService: TravelModeService,
+                private esriService: EsriService) {
         this.configModal.backdrop = 'static';
         this.configModal.keyboard = false;
         this.mapService.getRefresh().subscribe(() => {
@@ -154,18 +150,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
                 // Lista layer (client) da aggiungere alla mappa
                 const layersToInitialize = [
-                    this.initializeChiamateInCorsoLayer(),
-                    this.initializeSediOperativeLayer()
+                    this.initializeChiamateInCorsoLayer()
                 ];
                 Promise.all(layersToInitialize).then(() => {
-                    // Feature Layers da nascondere
-                    const layersToHide = [
-                        'Sedi Operative'
-                    ];
-                    for (const layerToHide of layersToHide) {
-                        this.toggleLayer(layerToHide, false).then();
-                    }
-
                     // Se ci sono aggiungo i markers chiamata
                     if (this.chiamateMarkers?.length) {
                         this.addChiamateMarkersToLayer(this.chiamateMarkers, true).then();
@@ -274,12 +261,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             if (!markersChiamate.filter((mC: ChiamataMarker) => mC.mySelf)?.length) {
                 this.clearSearchForARIRAndIdranti();
             }
-        }
-
-        // Aggiungo i Sedi Markers con "ApplyEdits"
-        if (changes?.sediMarkers?.currentValue && this.sediOperativeFeatureLayer) {
-            const markersSedi = changes?.sediMarkers?.currentValue;
-            this.addSediMarkersToLayer(markersSedi, true).then();
         }
 
         // Controllo il valore di "tastoChiamataMappaActive"
@@ -430,6 +411,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
                     break;
             }
+            this.store.dispatch(new GetInitCentroMappa());
         }
 
         // Controllo se la feature "Schede Contatto" viene attivata
@@ -550,7 +532,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         EsriConfig.portalUrl = 'https://gis.dipvvf.it/portal/sharing/rest/portals/self?f=json&culture=it';
-        EsriConfig.apiKey = 'AAPK36ded91859154c2cad9002a686434a34Jt_FmrqMObHesjY_bYHlJu-HZZrTDGJzsQMKnxd8f4TmYY_Vi-f8-4y-7G6WbcVf';
+        EsriConfig.apiKey = 'AAPK389aad189c624df8adee37628bd70259Y01pwMqlEEDV1AA7myI8bMWBp3f_L1-hmx4lhPCOcVaaMTkHurnU2vc1QqGWxgm-';
 
         let portalItemId = '55fdd15730524dedbff72e285cba3795';
         if (environment.productionTest) {
@@ -630,80 +612,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         this.map.add(this.chiamateInCorsoFeatureLayer);
     }
 
-    // Inizializza il layer "Sedi Operative"
-    async initializeSediOperativeLayer(): Promise<any> {
-        // creazione renderer SediOperative
-        const rendererSediOperative = new UniqueValueRenderer({
-            field: 'tipo',
-            uniqueValueInfos: [
-                {
-                    value: 'Comando',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/sedi/ns/sede5.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                },
-                {
-                    value: 'Distaccamento',
-                    symbol: new PictureMarkerSymbol({
-                        url: '/assets/img/icone-markers/sedi/ns/sede5.png',
-                        width: '50px',
-                        height: '50px'
-                    })
-                }
-            ],
-        });
-
-        // creazione feature layer
-        this.sediOperativeFeatureLayer = new FeatureLayer({
-            title: 'Sedi Operative',
-            outFields: ['*'],
-            source: [],
-            objectIdField: 'ID',
-            popupEnabled: true,
-            labelsVisible: true,
-            // featureReduction: clusterConfigSediOperative,
-            renderer: rendererSediOperative,
-            fields: [
-                {
-                    name: 'ID',
-                    alias: 'id',
-                    type: 'oid',
-                },
-                {
-                    name: 'codice',
-                    alias: 'codice',
-                    type: 'string',
-                },
-                {
-                    name: 'tipo',
-                    alias: 'tipo',
-                    type: 'string',
-                },
-                {
-                    name: 'descrizione',
-                    alias: 'descrizione',
-                    type: 'string',
-                }
-            ],
-            spatialReference: {
-                wkid: 3857
-            },
-            popupTemplate: {
-                title: 'ID: {id}',
-                content:
-                    '<ul><li>Tipo: {tipo} </li>' +
-                    '<ul><li>Codice: {codice} </li>' +
-                    '<ul><li>Descrizione: {descrizione} </li>'
-            },
-            geometryType: 'point'
-        });
-
-        // aggiungo il feature layer alla mappa
-        this.map.add(this.sediOperativeFeatureLayer);
-    }
-
     // Aggiunge i marker delle chiamate in corso al layer "Chiamate in Corso"
     async addChiamateMarkersToLayer(chiamateMarkers: ChiamataMarker[], applyEdits?: boolean): Promise<any> {
         if (this.chiamateMarkersGraphics?.length) {
@@ -756,92 +664,41 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // Aggiunge i marker delle sedi al layer "Sedi Operative"
-    async addSediMarkersToLayer(sediMarkers: SedeMarker[], applyEdits?: boolean): Promise<any> {
-        if (this.sediOperativeMarkersGraphics?.length) {
-            const query = { where: '1=1' };
-            this.sediOperativeFeatureLayer.queryFeatures(query).then((results) => {
-                const deleteFeatures = results.features;
-                deleteFeatureSediOperativeLayer(this.sediOperativeFeatureLayer, deleteFeatures).then(() => {
-                    addMarkers(this.sediOperativeFeatureLayer).then((sediOperativeMarkersGraphics: any[]) => {
-                        this.sediOperativeMarkersGraphics = sediOperativeMarkersGraphics;
-                        this.sediOperativeFeatureLayer.refresh();
-                    });
-                });
-            });
-        } else {
-            addMarkers(this.sediOperativeFeatureLayer).then((sediOperativeMarkersGraphics: any[]) => {
-                this.sediOperativeMarkersGraphics = sediOperativeMarkersGraphics;
-            });
-        }
-
-        async function deleteFeatureSediOperativeLayer(sediOperativeFeatureLayer: FeatureLayer, deleteFeatures: any): Promise<any> {
-            await sediOperativeFeatureLayer.applyEdits({ deleteFeatures });
-            sediOperativeFeatureLayer.refresh();
-        }
-
-        async function addMarkers(sediOperativeFeatureLayer: FeatureLayer): Promise<any[]> {
-            const sediOperativeMarkersGraphicsToAdd = [];
-            for (const markerDaStampare of sediMarkers) {
-                const long = markerDaStampare.coordinate.longitudine;
-                const lat = markerDaStampare.coordinate.latitudine;
-                const p: any = [long, lat];
-                const mp = new Point(p);
-                const graphic = new Graphic({
-                    geometry: mp,
-                    attributes: {
-                        ID: markerDaStampare.codice,
-                        codice: markerDaStampare.codice,
-                        tipo: markerDaStampare.tipo,
-                        descrizione: markerDaStampare.descrizione
-                    }
-                });
-                sediOperativeMarkersGraphicsToAdd.push(graphic);
-            }
-
-            if (!applyEdits) {
-                sediOperativeFeatureLayer.source.addMany(sediOperativeMarkersGraphicsToAdd);
-            } else if (applyEdits) {
-                sediOperativeFeatureLayer.applyEdits({ addFeatures: sediOperativeMarkersGraphicsToAdd }).then(() => {
-                    sediOperativeFeatureLayer.refresh();
-                });
-            }
-
-            return sediOperativeMarkersGraphicsToAdd;
-        }
-    }
-
     // Aggiunge i widget sulla mappa
     async initializeWidget(): Promise<any> {
         const layerList = new LayerList({
-            view: this.view,
+            view: this.view
         });
 
         const llExpand = new Expand({
+            id: 'layerList',
             view: this.view,
-            content: layerList,
+            content: layerList
         });
 
         const legend = new Legend({
-            view: this.view,
+            view: this.view
         });
 
         const leExpand = new Expand({
+            id: 'legend',
             view: this.view,
-            content: legend,
+            content: legend
         });
 
         const basemapGallery = new BasemapGallery({
-            view: this.view,
+            view: this.view
         });
 
         const bgExpand = new Expand({
+            id: 'basemapList',
             view: this.view,
-            content: basemapGallery,
+            content: basemapGallery
         });
 
         const search = new Search({
-            view: this.view,
+            id: 'search',
+            view: this.view
         });
 
         // TODO: implementare in un secondo momento
@@ -894,16 +751,22 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         //     this.setDrawContextMenuVisible(false);
         // });
 
-        // Altre possibili posizioni standard o manuale
-        // "bottom-leading"|"bottom-left"|"bottom-right"|"bottom-trailing"|"top-leading"|"top-left"|"top-right"|"top-trailing"|"manual"
+        if (!this.view.ui._components?.filter((c) => c.id === 'layerList')?.length) {
+            this.view.ui.add(llExpand, 'top-right');
+        }
+        if (!this.view.ui._components?.filter((c) => c.id === 'legend')?.length) {
+            this.view.ui.add(leExpand, 'top-right');
+        }
+        if (!this.view.ui._components?.filter((c) => c.id === 'basemapList')?.length) {
+            this.view.ui.add(bgExpand, 'top-right');
+        }
 
-        this.view.ui.add(llExpand, 'top-right');
-        this.view.ui.add(leExpand, 'top-right');
-        this.view.ui.add(bgExpand, 'top-right');
-        this.view.ui.add(search, {
-            position: 'top-left',
-            index: 0 // indico la posizione nella UI
-        });
+        if (!this.view.ui._components?.filter((c) => c.id === 'search')?.length) {
+            this.view.ui.add(search, {
+                position: 'top-left',
+                index: 0 // indico la posizione nella UI
+            });
+        }
 
         // TODO: implementare in un secondo momento
         // this.view.ui.add(sketch, 'bottom-right');
@@ -1026,11 +889,6 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         if (check && !check.checked) {
             return;
         }
-
-        // Imposto l'url al servizio che mi restituisce l'indirizzo tramite lat e lon
-        const locatorTask = new Locator({
-            url: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer',
-        });
         this.view.popup.autoOpenEnabled = false;
 
         // Params per il servizio "locationToAddress"
@@ -1040,9 +898,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         };
 
         // Trovo l'indirizzo tramite le coordinate
-        locatorTask.locationToAddress(params).then((response) => {
-            console.log('locationToAddress response', response);
-
+        this.esriService.getLocationToAddress(params).then((response) => {
             this.changeCenter([lon, lat]).then(() => {
                 const zoom = 19;
                 this.changeZoom(zoom).then(() => {
@@ -1061,8 +917,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             modalNuovaChiamata.componentInstance.regione = response.attributes.Region;
             modalNuovaChiamata.componentInstance.civico = response.attributes.AddNum;
 
+            this.store.dispatch(new SetChiamataFromMappaStatus(true));
             modalNuovaChiamata.result.then(() => {
-                this.store.dispatch(new SetChiamataFromMappaActiveValue(false));
+                this.store.dispatch([
+                    new SetChiamataFromMappaStatus(false),
+                    new SetChiamataFromMappaActiveValue(false)
+                ]);
             });
         });
     }
@@ -1135,7 +995,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"
     setContextMenuVisible(value: boolean): void {
-        if (value && !this.areaMappaLoading) {
+        if (value) {
             const lat = this.eventClick.mapPoint.latitude;
             const lon = this.eventClick.mapPoint.longitude;
             this.changeCenter([lon, lat]).then(() => {
@@ -1211,7 +1071,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         });
 
         const routeTask: RouteTask = new RouteTask({
-            url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World',
+            url: 'https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World'
         });
 
         const routeParams = new RouteParameters({
