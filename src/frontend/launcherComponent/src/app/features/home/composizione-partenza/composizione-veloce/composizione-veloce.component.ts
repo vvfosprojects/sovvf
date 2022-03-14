@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { BoxPartenzaPreAccoppiati } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
@@ -170,7 +170,7 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     selezionaPreaccoppiato(preAcc: BoxPartenzaPreAccoppiati): void {
         this.mezzoCoordinate(preAcc.coordinate);
-        if (preAcc && preAcc.statoMezzo === 'In Sede') {
+        if (preAcc?.statoMezzo === StatoMezzo.InSede || preAcc?.statoMezzo === StatoMezzo.InRientro) {
             this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
         }
     }
