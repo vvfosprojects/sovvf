@@ -14,7 +14,7 @@ import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { SetListaPreaccoppiati } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { GetListaComposizioneVeloce } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, StopLoadingMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { GetContatoriSchedeContatto, GetListaSchedeContatto, SetContatoriSchedeContatto, SetListaSchedeContatto, UpdateSchedaContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
@@ -40,7 +40,6 @@ import { AddNotifica } from '../../shared/store/actions/notifiche/notifiche.acti
 import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
-import { BoxPartenzaPreAccoppiati } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { AddDettaglioTipologia, DeleteDettaglioTipologia, UpdateDettaglioTipologia } from '../../shared/store/actions/dettagli-tipologie/dettagli-tipologie.actions';
 import {
     AddChiamateDistaccamentoCodaChiamate,
@@ -55,6 +54,7 @@ import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } 
 import { GetZonaEmergenzaById, GetZoneEmergenza } from '../../features/zone-emergenza/store/actions/zone-emergenza/zone-emergenza.actions';
 import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenza.model';
 import { GetConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
+import { UpdateRichiestaSganciamento } from '../../features/home/store/actions/composizione-partenza/richiesta-sganciamento.actions';
 
 //const HUB_URL = environment.baseUrl + environment.signalRHub;
 const HUB_URL = "https://localhost:44381/SubHub";
@@ -132,8 +132,11 @@ export class SignalRService {
         this.hubNotification.on('ModifyAndNotifySuccess', (data: InterventoInterface) => {
             console.log('ModifyAndNotifySuccess:', data);
             const updateRichiesta = data.chiamata ? data.chiamata : data.richiesta;
-            this.store.dispatch(new UpdateRichiesta(updateRichiesta));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
+            this.store.dispatch([
+                new UpdateRichiesta(updateRichiesta),
+                new UpdateRichiestaSganciamento(),
+                new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3)
+            ]);
         });
 
         /**
@@ -166,7 +169,7 @@ export class SignalRService {
          * Cambiamento Stato Squadra/Mezzi Richiesta
          */
         this.hubNotification.on('ChangeStateSuccess', (data: boolean) => {
-            console.log('ChangeStateSuccess:', data);
+            console.log('ChangeStateSuccess', data);
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Stato Squadra/Mezzi Richiesta', null, 3));
         });
 
@@ -185,7 +188,10 @@ export class SignalRService {
             if (mezziInServizioActive) {
                 this.store.dispatch(new UpdateMezzoInServizio(data));
             } else if (composizionePartenzaActive) {
-                this.store.dispatch(new UpdateMezzoComposizione(data.mezzo.mezzo));
+                this.store.dispatch([
+                    new UpdateMezzoComposizione(data.mezzo.mezzo),
+                    new GetListaComposizioneVeloce()
+                ]);
             }
             this.store.dispatch(new StopLoadingMezziInServizio());
         });
@@ -285,14 +291,6 @@ export class SignalRService {
         this.hubNotification.on('NotifyDeleteAllertaAltreSedi', () => {
             console.log('NotifyDeleteAllertaAltreSedi');
             this.store.dispatch(new GetListaRichieste());
-        });
-
-        /**
-         * Composizione Partenza
-         */
-        this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenzaPreAccoppiati[]) => {
-            this.store.dispatch(new SetListaPreaccoppiati(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
 
         /**

@@ -31,7 +31,6 @@ export class PartenzaComponent implements OnInit {
     @Input() statoRichiesta: StatoRichiesta;
     @Input() index: string;
     @Input() annullaStatoMezzo: boolean;
-    @Input() dateDiffMezzi: any;
 
     @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();

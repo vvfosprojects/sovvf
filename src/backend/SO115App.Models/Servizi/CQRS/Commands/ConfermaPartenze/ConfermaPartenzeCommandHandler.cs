@@ -215,7 +215,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             foreach (var partenza in command.ConfermaPartenze.Partenze.Where(p => p.Codice == "0" || p.Codice == null))
             {
                 codpart++;
-                partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codpart;
+
+                if (partenza.Mezzo.Distaccamento.Codice != null)
+                    partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
+                else if (partenza.Mezzo.Appartenenza != null)
+                    partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codpart;
+
                 partenza.Turno = _getTurno.Get().Codice;
 
                 command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;

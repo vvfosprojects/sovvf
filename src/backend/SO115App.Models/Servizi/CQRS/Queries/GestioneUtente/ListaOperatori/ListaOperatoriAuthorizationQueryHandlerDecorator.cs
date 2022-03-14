@@ -45,6 +45,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
+            query.Utente = user;
+
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
