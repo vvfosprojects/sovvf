@@ -31,15 +31,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IOrdinamentoMezzi _ordinamento;
 
         private readonly ISetComposizioneMezzi _setComposizioneMezzi;
-        private readonly IGetComposizioneMezziDB _getComposizioneMezzi;
 
         private readonly IGetSedi _getSedi;
 
         public GetComposizioneMezzi(IGetSedi getSedi,
             IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre,
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
-            IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi,
-            IGetComposizioneMezziDB getComposizioneMezzi)
+            IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
@@ -48,7 +46,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getStatoSquadre = getStatoSquadre;
             _ordinamento = ordinamento;
             _setComposizioneMezzi = setComposizioneMezzi;
-            _getComposizioneMezzi = getComposizioneMezzi;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -73,9 +70,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
             .ContinueWith(mezzi => //MAPPING
             {
-                //if (mezzi.Result == null || mezzi.Result.Count == 0)
-                //    mezzi = Task.Run(() => _getComposizioneMezzi.GetByCodiciSede(query.CodiciSedi.Distinct().ToArray()).Select(m => m.Mezzo).ToList());
-
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
                 Parallel.ForEach(mezzi.Result, m =>
@@ -167,6 +161,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
+                if (string.IsNullOrEmpty(mezzo.Mezzo.Distaccamento?.Descrizione))
+                    return false;
+
                 bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
                     mezzo.Mezzo.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
                     mezzo.Mezzo.Descrizione.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
