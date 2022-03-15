@@ -5,6 +5,7 @@ using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.CodaChiamate;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ListaMezziInServizio;
 using System;
 
@@ -145,5 +146,24 @@ namespace WSSignlR.Hubs
         }
 
         #endregion AFM
+
+        #region Tipologie
+
+        public void NotifyAddDettaglioTipologia(Paginazione paginazione, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyAddDettaglioTipologia", paginazione);
+        }
+
+        public void NotifyDeleteDettaglioTipologia(Paginazione paginazione, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyDeleteDettaglioTipologia", paginazione);
+        }
+
+        public void NotifyModifyDettaglioTipologia(Paginazione paginazione, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyModifyDettaglioTipologia", paginazione);
+        }
+
+        #endregion Tipologie
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDettaglioTipologie.ModificaDettaglioTipologia;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneDettaglioTipologia;
@@ -13,19 +15,29 @@ namespace SO115App.SignalR.Sender.GestioneDettaglioTipologia
     {
         private GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetListaDettaglioTipologia _getDettaglioTipologia;
+        private readonly IConfiguration _config;
         private IHubContext<NotificationHub> _notificationHubContext;
 
         public NotificationModifyDettaglioTipologia(IHubContext<NotificationHub> NotificationHubContext,
             GetGerarchiaToSend getGerarchiaToSend,
-            IGetListaDettaglioTipologia getDettaglioTipologia)
+            IGetListaDettaglioTipologia getDettaglioTipologia, IConfiguration config)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getDettaglioTipologia = getDettaglioTipologia;
+            _config = config;
             _notificationHubContext = NotificationHubContext;
         }
 
         public async Task SendNotification(ModifyDettaglioTipologiaCommand dettaglioTipologia)
         {
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
             var SediDaNotificare = _getGerarchiaToSend.Get(dettaglioTipologia.CodiceSede[0]);
 
             DettaglioTipologiaQuery query = new DettaglioTipologiaQuery()
@@ -38,13 +50,13 @@ namespace SO115App.SignalR.Sender.GestioneDettaglioTipologia
 
             foreach (var sede in SediDaNotificare)
             {
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyModifyDettaglioTipologia", new
+                await hubConnection.StartAsync();
+                await hubConnection.InvokeAsync("NotifyModifyDettaglioTipologia", new
                 {
-                    Pagination = new Paginazione() { TotalItems = listaDettagliTipologia.Count },
-                    Data = dettaglioTipologia
-                });
-
-                //await _notificationHubContext.Clients.Group(sede).SendAsync("ElencoDettaglioTipologia", listaDettagliTipologia);
+                    Data = dettaglioTipologia,
+                    Pagination = new Paginazione() { TotalItems = listaDettagliTipologia.Count }
+                }, sede);
+                await hubConnection.StopAsync();
             }
         }
     }
