@@ -165,5 +165,14 @@ namespace WSSignlR.Hubs
         }
 
         #endregion Tipologie
+
+        #region Documentale
+
+        public void NotifyAddDoc(string messaggio, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyAddDoc", messaggio);
+        }
+
+        #endregion Documentale
     }
 }
