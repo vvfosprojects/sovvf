@@ -203,10 +203,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 foreach (var info in listaInfoDaSperide)
                 {
                     await hubConnection.StartAsync();
-                    await hubConnection.InvokeAsync("ModifyAndNotifySuccess", info.conferma);
+                    await hubConnection.InvokeAsync("ModifyAndNotifySuccess", info.conferma, info.codSede);
 
                     if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
-                        await hubConnection.InvokeAsync("ModifyAndNotifySuccess", info.confermaSganciamento);
+                        await hubConnection.InvokeAsync("ModifyAndNotifySuccess", info.confermaSganciamento, info.codSede);
 
                     await hubConnection.InvokeAsync("ChangeStateSuccess", true, info.codSede);
                     await hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.codSede);

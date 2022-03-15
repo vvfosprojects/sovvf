@@ -21,6 +21,8 @@
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.RimozionePresaInCarico;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
@@ -37,35 +39,40 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
 {
     public class NotificationDeletePresaInCarico : INotifyDeletePresaInCaricoRichiesta
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IConfiguration _config;
 
-        public NotificationDeletePresaInCarico(IHubContext<NotificationHub> notificationHubContext,
-                                          IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
-                                          IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
-                                          IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
-                                          GetGerarchiaToSend getGerarchiaToSend)
+        public NotificationDeletePresaInCarico(IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
+                                          GetGerarchiaToSend getGerarchiaToSend, IConfiguration config)
         {
-            _notificationHubContext = notificationHubContext;
-            _boxRichiesteHandler = boxRichiesteHandler;
-            _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _config = config;
         }
 
         public async Task SendNotification(RimozionePresaInCaricoCommand intervento)
         {
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
             var SediDaNotificare = new List<string>();
             if (intervento.Chiamata.CodSOAllertate != null)
                 SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente, intervento.Chiamata.CodSOAllertate.ToArray());
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente);
 
-            foreach (var sede in SediDaNotificare)
+            var infoDaNotificare = new List<InfoDeletePresaInCarico>();
+
+            Parallel.ForEach(SediDaNotificare, sede =>
             {
+                var info = new InfoDeletePresaInCarico();
+
                 var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
                 {
                     Filtro = new FiltroRicercaRichiesteAssistenza
@@ -77,23 +84,24 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 var listaSintesi = (List<SintesiRichiesta>)this._sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
                 intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
 
-                //var boxRichiestequery = new BoxRichiesteQuery()
-                //{
-                //    CodiciSede = new string[] { sede }
-                //};
-                //var boxInterventi = (BoxInterventi)this._boxRichiesteHandler.Handle(boxRichiestequery).BoxRichieste;
-                //await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                info.codiceSede = sede;
+                info.internvento = intervento;
 
-                var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                {
-                    CodiciSedi = new string[] { sede }
-                };
+                infoDaNotificare.Add(info);
+            });
 
-                var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-
-                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
+            foreach (var info in infoDaNotificare)
+            {
+                await hubConnection.StartAsync();
+                await hubConnection.InvokeAsync("ModifyAndNotifySuccessRimozionePresaInCarico", info.internvento, info.codiceSede);
+                await hubConnection.StopAsync();
             }
         }
+    }
+
+    internal class InfoDeletePresaInCarico
+    {
+        public string codiceSede { get; set; }
+        public RimozionePresaInCaricoCommand internvento { get; set; }
     }
 }

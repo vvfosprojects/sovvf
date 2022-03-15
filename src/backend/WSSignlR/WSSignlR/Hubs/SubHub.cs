@@ -1,5 +1,9 @@
-﻿using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
+﻿using DomainModel.CQRS.Commands.AllertaAltreSedi;
+using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
 using DomainModel.CQRS.Commands.GestioneFonogramma;
+using DomainModel.CQRS.Commands.PresaInCarico;
+using DomainModel.CQRS.Commands.RimozionePresaInCarico;
+using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Boxes;
@@ -216,5 +220,39 @@ namespace WSSignlR.Hubs
         }
 
         #endregion Fonogramma
+
+        #region Intervento
+
+        public void ModifyAndNotifySuccessAllerta(AllertaAltreSediCommand info, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", info);
+        }
+
+        public void NotifyAllertaAltreSedi(SintesiRichiesta info, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyAllertaAltreSedi", info);
+        }
+
+        public void NotifyDeleteAllertaAltreSedi(string info, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyDeleteAllertaAltreSedi", info);
+        }
+
+        public void ModifyAndNotifySuccessRimozionePresaInCarico(RimozionePresaInCaricoCommand info, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", info);
+        }
+
+        public void ModifyAndNotifySuccessPresaInCarico(PresaInCaricoCommand info, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", info);
+        }
+
+        public void ModifyAndNotifyUpdateStatoRichiesta(UpDateStatoRichiestaCommand info, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", info);
+        }
+
+        #endregion Intervento
     }
 }
