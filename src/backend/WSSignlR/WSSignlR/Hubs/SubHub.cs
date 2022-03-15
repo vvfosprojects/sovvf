@@ -8,6 +8,7 @@ using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Classi.RubricaDTO;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.GestioneEntiIntervenuti;
 using System;
 using System.Collections.Generic;
 
@@ -197,6 +198,11 @@ namespace WSSignlR.Hubs
         public void NotifyChangeEnti(List<EnteDTO> info, string sede)
         {
             Clients.Group(sede).SendAsync("NotifyChangeEnti", info);
+        }
+
+        public void ModifyAndNotifySuccessEntiIntervenuti(EntiIntervenutiCommand info, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", info);
         }
 
         #endregion Enti
