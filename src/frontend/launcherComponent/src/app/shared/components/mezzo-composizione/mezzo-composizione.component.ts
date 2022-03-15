@@ -46,15 +46,13 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     @Output() hoverIn = new EventEmitter<MezzoComposizione>();
     @Output() hoverOut = new EventEmitter<MezzoComposizione>();
     @Output() sbloccato = new EventEmitter<MezzoComposizione>();
-    @Output() startTimeout = new EventEmitter<MezzoComposizione>();
-    @Output() stopTimeout = new EventEmitter<MezzoComposizione>();
     @Output() mezzoCoordinate = new EventEmitter<MezzoDirection>();
     @Output() mezzoCoordinateClear = new EventEmitter<MezzoDirection>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
-    sganciamentoDisabilitato = false;
-    itemPrenotatoInBox = false;
-    disableBtnFeature = false;
+    sganciamentoDisabilitato: boolean;
+    itemPrenotatoInBox: boolean;
+    disableBtnFeature: boolean;
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
