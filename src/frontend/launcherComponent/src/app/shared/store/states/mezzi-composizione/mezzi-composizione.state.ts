@@ -16,8 +16,7 @@ import {
     SetListaMezziComposizione,
     SganciamentoMezzoComposizione,
     UnselectMezzoComposizione,
-    UpdateMezzoComposizione,
-    UpdateMezzoComposizioneScadenzaByCodiceMezzo
+    UpdateMezzoComposizione
 } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
 import { patch, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
@@ -41,6 +40,7 @@ import { ModificaPartenzaModalState } from '../modifica-partenza-modal/modifica-
 import { ClearSelectedSquadreComposizione, SelectSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { SganciamentoMezzoModalComponent } from '../../../modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { SetRichiestaSganciamento } from '../../../../features/home/store/actions/composizione-partenza/richiesta-sganciamento.actions';
+import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -161,6 +161,9 @@ export class MezziComposizioneState {
         const mezzoComposizioneCopy = mezzoComposizione ? makeCopy(mezzoComposizione) as MezzoComposizione : null;
         if (mezzoComposizione && mezzoComposizioneCopy) {
             mezzoComposizioneCopy.mezzo = action.mezzo;
+            if (action.mezzo.stato !== StatoMezzo.InRientro) {
+                mezzoComposizioneCopy.listaSquadre = null;
+            }
             setState(
                 patch({
                     allMezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.mezzo.codice, mezzoComposizioneCopy),
@@ -168,20 +171,6 @@ export class MezziComposizioneState {
                 })
             );
             dispatch(new UpdateMezzoBoxPartenza(mezzoComposizioneCopy));
-        }
-    }
-
-    @Action(UpdateMezzoComposizioneScadenzaByCodiceMezzo)
-    updateMezzoComposizioneScadenzaByCodiceMezzo({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizioneScadenzaByCodiceMezzo): void {
-        const state = getState();
-        const mezzoComposizione = state.mezziComposizione.filter(mezzoComp => mezzoComp.mezzo.codice === action.codiceMezzo)[0];
-        if (mezzoComposizione) {
-            setState(
-                patch({
-                    mezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.codiceMezzo, mezzoComposizione)
-                })
-            );
-            dispatch(new UpdateMezzoBoxPartenza(mezzoComposizione));
         }
     }
 

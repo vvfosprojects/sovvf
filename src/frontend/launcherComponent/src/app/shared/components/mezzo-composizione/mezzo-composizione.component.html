@@ -8,24 +8,28 @@
                 [nominativoOperatore]="tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [mezzoComp.mezzo.codice]">
         </app-locked-concorrenza>
     </ng-container>
-    <div class="row px-3">
-        <app-icona-stato [stato]="mezzoComp.mezzo.stato"></app-icona-stato>
-        <div class="col pl-2">
-            <div class="d-inline-block font-weight-bold mr-1"
-                 [ngbTooltip]="mezzoComp.mezzo.descrizione"
-                 [disableTooltip]="mezzoComp.mezzo.descrizione.length <= 7">
-                {{ mezzoComp.mezzo.descrizione | slice: 0:7 }}
+    <div class="d-flex align-items-center justify-content-between px-2">
+        <div class="d-flex align-items-center justify-content-start">
+            <!-- Stato -->
+            <div class="mr-2">
+                <app-icona-stato [stato]="mezzoComp.mezzo.stato"></app-icona-stato>
             </div>
-            <div class="d-inline-block mr-2">
+            <!-- Descrizione -->
+            <div class="font-weight-bold mr-1"
+                 [ngbTooltip]="mezzoComp.mezzo.descrizione"
+                 [disableTooltip]="mezzoComp.mezzo.descrizione.length <= 8">
+                {{ mezzoComp.mezzo.descrizione | slice: 0:8 }}
+            </div>
+            <!-- Genere -->
+            <div class="mr-2">
                 {{ mezzoComp.mezzo.genere }}
             </div>
             <!-- Squadre Preaccoppiate -->
-            <ng-template [ngIf]="mezzoComp.mezzo?.preAccoppiato && !mezzoComp.listaSquadre?.length">
-                <div class="d-inline-block nowrap">
+            <ng-container *ngIf="mezzoComp.mezzo?.preAccoppiato && !mezzoComp.listaSquadre?.length">
+                <div>
                     <ng-container>
                         <button class="btn btn-danger pl-0 py-0 pr-2 big_numbers font-double-monitor btn-no-hover"
                                 [ngbPopover]="popSquadre"
-                                [popoverTitle]="'Squadre di ' + mezzoComp.mezzo?.descrizione"
                                 container="body"
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
@@ -39,18 +43,24 @@
                             <i class="fas fa-users fa-fw ml-1"></i>
                         </button>
                         <ng-template #popSquadre>
-                            <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate" class="h6 text-center">
-                                <div class="d-inline-block font-weight-bold">{{ s?.codice}}</div>
-                                <div *ngIf="s.turno" class="d-inline-block"> ({{ s?.turno }})</div>
-                                <div class="d-inline"> - {{ _nomeStatiSquadra(s?.stato) }}</div>
+                            <div [class.text-light]="nightMode">
+                                <h5 class="font-weight-bolder mb-0 mt-1">
+                                    Squadre di {{ mezzoComp.mezzo?.descrizione }}
+                                </h5>
+                                <hr class="my-2">
+                                <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate" class="h6 text-center">
+                                    <div class="d-inline-block font-weight-bold">{{ s?.codice}}</div>
+                                    <div *ngIf="s.turno" class="d-inline-block"> ({{ s?.turno }})</div>
+                                    <div class="d-inline"> - {{ _nomeStatiSquadra(s?.stato) }}</div>
+                                </div>
                             </div>
                         </ng-template>
                     </ng-container>
                 </div>
-            </ng-template>
+            </ng-container>
             <!-- Km / Tempo Percorrenza -->
-            <ng-template [ngIf]="!mezzoComp.mezzo?.coordinateFake">
-                <div class="d-inline-block ml-2">
+            <ng-container *ngIf="!mezzoComp.mezzo?.coordinateFake">
+                <div class="ml-2">
                     <span *ngIf="mezzoComp.km">
                         <i class="fas fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
                         <div class="d-inline-block mr-2">{{ mezzoComp.km }} km</div>
@@ -61,11 +71,10 @@
                     </span>
 
                 </div>
-            </ng-template>
+            </ng-container>
             <!-- Indirizzo Intervento -->
-            <ng-template [ngIf]="mezzoComp.indirizzoIntervento">
-                <div class="d-inline-block"
-                     [class.ml-2]="!mezzoComp.mezzo.preAccoppiato"
+            <ng-container *ngIf="mezzoComp.indirizzoIntervento">
+                <div [class.ml-2]="!mezzoComp.mezzo.preAccoppiato"
                      [class.ml-4]="mezzoComp.mezzo.preAccoppiato">
                     <i class="fas fa-map-marker-alt text-success mr-2"></i>
                     <div class="d-inline-block font-weight-bold"
@@ -73,53 +82,43 @@
                         {{ mezzoComp.indirizzoIntervento | truncate:10 }}
                     </div>
                 </div>
-            </ng-template>
+            </ng-container>
             <!-- Squadre su Mezzo per Intervento -->
-            <ng-template
-                    [ngIf]="mezzoComp.listaSquadre?.length">
-                <div class="d-inline-block nowrap">
-                    <ng-container>
-                        <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
-                                [ngbPopover]="popSquadreIntervento"
-                                [popoverTitle]="'Squadre su ' + mezzoComp.mezzo?.descrizione + ' per Intervento'"
-                                container="body"
-                                triggers="mouseenter:mouseleave"
-                                tabindex="0"
-                                style="cursor:pointer; vertical-align: baseline"
-                                (click)="onClick(true); $event.stopPropagation()"
-                                [disabled]="disableBtnFeature || loadingSquadre">
-                            <i class="fas fa-users fa-fw"></i>
-                            <i class="fas fa-arrow-right guida fa-fw mx-1"></i>
-                            <i class="fas fa-truck fa-fw"></i>
-                        </button>
-                        <ng-template #popSquadreIntervento>
+            <ng-container *ngIf="mezzoComp.listaSquadre?.length">
+                <div>
+                    <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
+                            [ngbPopover]="popSquadreIntervento"
+                            container="body"
+                            triggers="mouseenter:mouseleave"
+                            tabindex="0"
+                            style="cursor:pointer; vertical-align: baseline"
+                            [disabled]="disableBtnFeature || loadingSquadre || (mezzoComp | mezzoInRientroDisabled)"
+                            (click)="onClick(true); $event.stopPropagation()">
+                        <i class="fas fa-users fa-fw"></i>
+                        <i class="fas fa-arrow-right guida fa-fw mx-1"></i>
+                        <i class="fas fa-truck fa-fw"></i>
+                    </button>
+                    <ng-template #popSquadreIntervento>
+                        <div [class.text-light]="nightMode">
+                            <h6 class="font-weight-bolder mb-0 mt-1">
+                                Squadre su {{ mezzoComp.mezzo?.descrizione }} per Intervento
+                            </h6>
+                            <hr class="my-2">
                             <div *ngFor="let s of mezzoComp.listaSquadre" class="h6 text-center">
-                                <div class="d-inline font-weight-bold">{{ s?.codice }}</div>
+                                <div class="d-inline font-weight-bold">{{ s?.codice }} </div>
                                 <div *ngIf="s?.turno" class="d-inline">({{ s?.turno }})</div>
                                 <div class="d-inline"> - {{_nomeStatiSquadra(s?.stato) }}</div>
                             </div>
-                        </ng-template>
-                    </ng-container>
+                        </div>
+                    </ng-template>
                 </div>
-            </ng-template>
+            </ng-container>
         </div>
-        <ng-template [ngIf]="viewState.composizione.active">
-            <div *ngIf="viewState.composizione.active" class="clearfix pr-2 text-right">
-                <div class="d-inline-block py-0"
-                     [ngClass]="badgeDistaccamentoClass()"
-                     [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">
-                    {{ mezzoComp.mezzo.distaccamento.descrizione | competenzaFormat }}
-                </div>
-            </div>
-        </ng-template>
-        <ng-template [ngIf]="!viewState.composizione.active">
-            <div class="col-1 pl-0 text-right">
-                <div class="d-inline-block"
-                     [ngClass]="badgeDistaccamentoClass()"
-                     [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione">
-                    {{ mezzoComp.mezzo.distaccamento.descrizione | slice:0:3 }}
-                </div>
-            </div>
-        </ng-template>
+        <!-- Distaccamento -->
+        <div [ngClass]="badgeDistaccamentoClass()"
+             [ngbTooltip]="mezzoComp.mezzo.distaccamento.descrizione"
+             style="padding-bottom: 0; padding-top: 0">
+            {{ mezzoComp.mezzo.distaccamento.descrizione | competenzaFormat }}
+        </div>
     </div>
 </li>

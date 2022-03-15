@@ -307,7 +307,7 @@ export class SchedaTelefonataState {
     @Action(ClearIdChiamataMarker)
     clearIdChiamataMarker({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
-           idChiamataMarker: SchedaTelefonataStateDefaults.idChiamataMarker
+            idChiamataMarker: SchedaTelefonataStateDefaults.idChiamataMarker
         });
     }
 
