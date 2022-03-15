@@ -11,15 +11,12 @@ namespace SO115App.SignalR.Sender.GestioneFonogramma
 {
     public class NotificationAddEntiIntervenuti : INotifyAddEntiIntervenuti
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IConfiguration _config;
 
-        public NotificationAddEntiIntervenuti(IHubContext<NotificationHub> notificationHubContext,
-                                              GetGerarchiaToSend getGerarchiaToSend,
+        public NotificationAddEntiIntervenuti(GetGerarchiaToSend getGerarchiaToSend,
                                               IConfiguration config)
         {
-            _notificationHubContext = notificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
             _config = config;
         }

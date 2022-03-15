@@ -1,4 +1,5 @@
 ﻿using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
+using DomainModel.CQRS.Commands.GestioneFonogramma;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Boxes;
@@ -206,5 +207,14 @@ namespace WSSignlR.Hubs
         }
 
         #endregion Enti
+
+        #region Fonogramma
+
+        public void ModifyAndNotifySuccessFonogramma(FonogrammaCommand info, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", info);
+        }
+
+        #endregion Fonogramma
     }
 }
