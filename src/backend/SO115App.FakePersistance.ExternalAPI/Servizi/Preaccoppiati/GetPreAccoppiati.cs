@@ -130,7 +130,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
                     var statoMezzo = query.Filtri?.StatoMezzo?.Contains(p.StatoMezzo) ?? true;
 
-                    var genereMezzo = query.Filtri?.TipoMezzo?.Contains(p.GenereMezzo) ?? true;
+                    var genereMezzo = query.Filtri?.TipoMezzo?.Contains(p.GenereMezzo) ?? true; // rivedere
 
                     return distaccamento && statoMezzo && genereMezzo;
                 }).ToList());

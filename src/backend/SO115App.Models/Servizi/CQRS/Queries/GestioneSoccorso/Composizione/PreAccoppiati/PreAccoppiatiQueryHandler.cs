@@ -69,18 +69,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var ListapreAccoppiati = _GetPreAccoppiati.GetAsync(query).Result;
 
-            if (ListapreAccoppiati.Any(p => p.CodiceMezzo == null))
-                return new PreAccoppiatiResult() { DataArray = new List<PreAccoppiato>()};
+            //if (ListapreAccoppiati.Any(p => p.CodiceMezzo == null))
+            //    return new PreAccoppiatiResult() { DataArray = new List<PreAccoppiato>()};
 
-            if (query.Filtri.TipoMezzo != null)
-            {
-                ListapreAccoppiati = ListapreAccoppiati.FindAll(m => m.GenereMezzo.Equals(query.Filtri.TipoMezzo));
-            }
+            //if (query.Filtri.TipoMezzo != null)
+            //{
+            //    ListapreAccoppiati = ListapreAccoppiati.FindAll(m => m.GenereMezzo.Equals(query.Filtri.TipoMezzo));
+            //}
 
-            if (query.Filtri.StatoMezzo != null)
-            {
-                ListapreAccoppiati = ListapreAccoppiati.FindAll(m => query.Filtri.StatoMezzo.Any(s => s.Equals(m.StatoMezzo)));
-            }
+            //if (query.Filtri.StatoMezzo != null)
+            //{
+            //    ListapreAccoppiati = ListapreAccoppiati.FindAll(m => query.Filtri.StatoMezzo.Any(s => s.Equals(m.StatoMezzo)));
+            //}
 
             Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");
 

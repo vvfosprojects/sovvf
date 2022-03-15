@@ -49,6 +49,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _setComposizioneMezziDB = setComposizioneMezziDB;
         }
 
+        /// <summary>
+        /// ELIMINARE QUESTA CHIAMATA E UTILIZZARE LE ALTRE DUE
+        /// </summary>
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
         {
             var pinNodi = sedi.Select(s => new PinNodo(s, true));
