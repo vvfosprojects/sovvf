@@ -316,11 +316,10 @@
                         </div>
                     </div>
 
-                    <!-- box note localita e zone emergenza -->
+                    <!-- II livello di dettaglio -->
                     <ng-container *ngIf="inGestione">
                         <div class="col-12 default-cursor"
                              [class.d-none]="partenza">
-                            <!-- II livello di dettaglio -->
                             <div class="row mt-2">
                                 <!-- I colonna -->
                                 <div class="col-2">
@@ -549,6 +548,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- box note localita e zone emergenza -->
                             <ng-container
                                     *ngIf="richiesta?.localita?.note || richiesta?.notePrivate || richiesta?.notePubbliche || richiesta?.zoneEmergenza?.length || richiesta?.tags?.length">
                                 <div class="row">

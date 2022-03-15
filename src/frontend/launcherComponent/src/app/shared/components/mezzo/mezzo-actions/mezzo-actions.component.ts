@@ -89,7 +89,9 @@ export class MezzoActionsComponent implements OnInit {
             modal.componentInstance.codicePartenza = this.codicePartenza;
             modal.componentInstance.statoMezzo = this.mezzo.stato;
             modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
-            modal.componentInstance.titleStato = !ora ? '' : ': ' + action;
+            modal.componentInstance.action = action;
+            modal.componentInstance.modificaOrario = !!ora;
+            modal.componentInstance.titleStato = ': ' + action;
             modal.componentInstance.dataInViaggio = dataInViaggio;
             modal.componentInstance.listaEventi = this.listaEventi;
             modal.result.then((res: { status: string, result: any }) => {

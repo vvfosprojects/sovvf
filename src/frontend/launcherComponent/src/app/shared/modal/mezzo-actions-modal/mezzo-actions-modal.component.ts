@@ -27,6 +27,8 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     navigation: 'select';
     outsideDays: 'visible';
 
+    action: string;
+    modificaOrario: boolean;
     codicePartenza: string;
     title: string;
     titleStato: string;
