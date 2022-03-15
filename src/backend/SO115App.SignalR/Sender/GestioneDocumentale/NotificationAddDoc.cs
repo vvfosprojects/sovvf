@@ -10,15 +10,11 @@ namespace SO115App.SignalR.Sender.GestioneDocumentale
 {
     public class NotificationAddDoc : INotificationAddDoc
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IConfiguration _config;
 
-        public NotificationAddDoc(IHubContext<NotificationHub> notificationHubContext,
-                                               GetGerarchiaToSend getGerarchiaToSend,
-                                               IConfiguration config)
+        public NotificationAddDoc(GetGerarchiaToSend getGerarchiaToSend, IConfiguration config)
         {
-            _notificationHubContext = notificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
             _config = config;
         }

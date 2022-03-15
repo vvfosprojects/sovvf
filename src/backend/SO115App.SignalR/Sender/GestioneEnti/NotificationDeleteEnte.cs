@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.DeleteEnte;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
@@ -11,19 +13,28 @@ namespace SO115App.SignalR.Sender.GestioneEnti
 {
     public class NotificationDeleteEnte : INotificationDeleteEnte
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetRubrica _getRubrica;
+        private readonly IConfiguration _config;
 
-        public NotificationDeleteEnte(IHubContext<NotificationHub> notificationHubContext, GetGerarchiaToSend getGerarchiaToSend, IGetRubrica getRubrica)
+        public NotificationDeleteEnte(GetGerarchiaToSend getGerarchiaToSend,
+                                      IGetRubrica getRubrica, IConfiguration config)
         {
-            _notificationHubContext = notificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
             _getRubrica = getRubrica;
+            _config = config;
         }
 
         public async Task SendNotification(DeleteEnteCommand command)
         {
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
             var SediDaNotificare = new List<string>();
 
             if (command.Ricorsivo)
@@ -31,19 +42,19 @@ namespace SO115App.SignalR.Sender.GestioneEnti
             else
                 SediDaNotificare.Add(command.CodiceSede[0]);
 
-
             var count = _getRubrica.CountBylstCodiciSede(SediDaNotificare.ToArray());
             var lstEnti = _getRubrica.Get(command.CodiceSede, null);
 
             foreach (var sede in SediDaNotificare)
             {
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteEnte", new
+                await hubConnection.StartAsync();
+                await hubConnection.InvokeAsync("NotifyDeleteEnte", new
                 {
                     Data = command.Id,
                     Pagination = new Paginazione() { TotalItems = count }
-                });
-
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChangeEnti", lstEnti);
+                }, sede);
+                await hubConnection.InvokeAsync("NotifyChangeEnti", lstEnti, sede);
+                await hubConnection.StopAsync();
             }
         }
     }

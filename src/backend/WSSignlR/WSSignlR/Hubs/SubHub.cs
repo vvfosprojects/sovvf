@@ -7,7 +7,9 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ListaMezziInServizio;
+using SO115App.Models.Classi.RubricaDTO;
 using System;
+using System.Collections.Generic;
 
 namespace WSSignlR.Hubs
 {
@@ -174,5 +176,29 @@ namespace WSSignlR.Hubs
         }
 
         #endregion Documentale
+
+        #region Enti
+
+        public void NotifyAddEnte(Paginazione info, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyAddEnte", info);
+        }
+
+        public void NotifyDeleteEnte(Paginazione info, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyDeleteEnte", info);
+        }
+
+        public void NotifyUpdateEnte(Paginazione info, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyUpdateEnte", info);
+        }
+
+        public void NotifyChangeEnti(List<EnteDTO> info, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyChangeEnti", info);
+        }
+
+        #endregion Enti
     }
 }
