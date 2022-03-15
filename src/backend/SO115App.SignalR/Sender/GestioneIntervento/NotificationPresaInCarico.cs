@@ -89,8 +89,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 info.internvento = intervento;
 
                 infoDaNotificare.Add(info);
-
-                //await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
             });
 
             foreach (var info in infoDaNotificare)

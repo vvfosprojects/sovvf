@@ -1,5 +1,8 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
+using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
@@ -17,24 +20,23 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 {
     public class NotificationModificaPartenza : INotifyModificaPartenza
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
+        private readonly IConfiguration _config;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
 
-        public NotificationModificaPartenza(IHubContext<NotificationHub> notificationHubContext,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+        public NotificationModificaPartenza(IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
-            IMapperRichiestaSuSintesi mapperSintesi)
+            IMapperRichiestaSuSintesi mapperSintesi, IConfiguration config)
         {
             _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
             _mapperSintesi = mapperSintesi;
-            _notificationHubContext = notificationHubContext;
+            _config = config;
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -42,6 +44,14 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
         public async Task SendNotification(ModificaPartenzaCommand command)
         {
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
             var SediDaNotificare = new List<string>();
             if (command.Richiesta.CodSOAllertate != null)
                 SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente, command.Richiesta.CodSOAllertate.ToArray());
@@ -58,21 +68,32 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 richiesta = command.Richiesta
             };
 
+            var infoDaInviare = new List<InfoDaInviareModificaPartenza>();
+
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery() { CodiciSede = new string[] { sede } }).BoxRichieste;
-                var boxMezzi = _boxMezziHandler.Handle(new BoxMezziQuery() { CodiciSede = new string[] { sede } }).BoxMezzi;
-                var boxPersonale = _boxPersonaleHandler.Handle(new BoxPersonaleQuery() { CodiciSede = new string[] { sede } }).BoxPersonale;
+                var info = new InfoDaInviareModificaPartenza();
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+                info.codiceSede = sede;
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", confermaPartenza);
+                info.boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery() { CodiciSede = new string[] { sede } }).BoxRichieste;
+                info.boxMezzi = _boxMezziHandler.Handle(new BoxMezziQuery() { CodiciSede = new string[] { sede } }).BoxMezzi;
+                info.boxPersonale = _boxPersonaleHandler.Handle(new BoxPersonaleQuery() { CodiciSede = new string[] { sede } }).BoxPersonale;
+
+                infoDaInviare.Add(info);
+            });
+
+            foreach (var info in infoDaInviare)
+            {
+                await hubConnection.StartAsync();
+                await hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.codiceSede);
+                await hubConnection.InvokeAsync("NotifyGetBoxMezzi", info.boxMezzi, info.codiceSede);
+                await hubConnection.InvokeAsync("NotifyGetBoxPersonale", info.boxPersonale, info.codiceSede);
+                await hubConnection.InvokeAsync("ModifyAndNotifySuccessPartenza", confermaPartenza, info.codiceSede);
 
                 foreach (var partenza in command.Richiesta.lstPartenze)
                 {
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", new MezzoInServizio()
+                    await hubConnection.InvokeAsync("NotifyUpdateMezzoInServizio", new MezzoInServizio()
                     {
                         Mezzo = new MezzoMarker()
                         {
@@ -84,9 +105,19 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                             }
                         },
                         Squadre = partenza.Squadre
-                    });
+                    }, info.codiceSede);
                 }
-            });
+
+                await hubConnection.StopAsync();
+            }
         }
+    }
+
+    internal class InfoDaInviareModificaPartenza
+    {
+        public string codiceSede { get; set; }
+        public BoxInterventi boxInterventi { get; set; }
+        public BoxMezzi boxMezzi { get; set; }
+        public BoxPersonale boxPersonale { get; set; }
     }
 }

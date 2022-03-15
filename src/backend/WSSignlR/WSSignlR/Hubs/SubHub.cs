@@ -7,6 +7,7 @@ using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.CodaChiamate;
@@ -14,6 +15,8 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.GestioneEntiIntervenuti;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza;
 using System;
 using System.Collections.Generic;
 
@@ -84,15 +87,6 @@ namespace WSSignlR.Hubs
 
         #endregion Inserimento/Modifica Intervento
 
-        #region Partenza
-
-        public void NotifyUpdateMezzoInServizio(MezzoInServizio mezzo, string sede)
-        {
-            Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
-        }
-
-        #endregion Partenza
-
         #region Marker
 
         public void NotifyGetRichiestaMarker(SintesiRichiestaMarker sintesi, string sede)
@@ -134,7 +128,17 @@ namespace WSSignlR.Hubs
             Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counter);
         }
 
+        public void NotifyAddSquadreLibereCodaChiamate(CounterNotifica counter, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyAddSquadreLibereCodaChiamate", counter);
+        }
+
         public void NotifyRemoveSquadreLibereCodaChiamate(CounterNotifica counter, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counter);
+        }
+
+        public void NotifyRemoveSquadreOccupateCodaChiamate(CounterNotifica counter, string sede)
         {
             Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counter);
         }
@@ -254,5 +258,34 @@ namespace WSSignlR.Hubs
         }
 
         #endregion Intervento
+
+        #region Partenza
+
+        public void NotifyUpdateMezzoInServizio(MezzoInServizio mezzo, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
+        }
+
+        public void ModifyAndNotifySuccessAggiornaStatoMezzo(AggiornaStatoMezzoCommand info, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", info);
+        }
+
+        public void ModifyAndNotifySuccessAnnullaPartenza(AnnullaStatoPartenzaCommand info, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", info);
+        }
+
+        public void NotifyGetListaMezziInServizio(List<MezzoInServizio> info, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", info);
+        }
+
+        public void ModifyAndNotifySuccessPartenza(ConfermaPartenze info, string sede)
+        {
+            Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", info);
+        }
+
+        #endregion Partenza
     }
 }
