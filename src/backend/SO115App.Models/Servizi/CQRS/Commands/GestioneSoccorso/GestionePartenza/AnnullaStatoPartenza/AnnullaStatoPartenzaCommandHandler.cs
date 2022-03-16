@@ -87,8 +87,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
                     .Where(e => !(e is AnnullamentoStatoPartenza))
-                    .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza))
-                    .Where(e => e.DataOraInserimento < command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => !(e is AnnullamentoStatoPartenza && e.CodicePartenza.Equals(partenza.CodicePartenza))).Last().DataOraInserimento)
+                    .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza)).Where(e => e.DataOraInserimento < command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => !(e is AnnullamentoStatoPartenza && e.CodicePartenza.Equals(partenza.CodicePartenza))).Last().DataOraInserimento)
                     .Last();
 
                 switch (eventoPrecedente.TipoEvento)
