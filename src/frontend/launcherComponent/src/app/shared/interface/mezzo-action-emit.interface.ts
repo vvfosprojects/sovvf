@@ -13,5 +13,6 @@ export interface MezzoActionEmit {
       anno: number
     };
     codicePartenza: string;
+    modificaOrario: boolean;
     azioneIntervento?: string;
 }

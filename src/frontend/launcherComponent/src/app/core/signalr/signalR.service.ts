@@ -55,6 +55,7 @@ import { GetZonaEmergenzaById, GetZoneEmergenza } from '../../features/zone-emer
 import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenza.model';
 import { GetConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
 import { UpdateRichiestaSganciamento } from '../../features/home/store/actions/composizione-partenza/richiesta-sganciamento.actions';
+import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -188,7 +189,8 @@ export class SignalRService {
             } else if (composizionePartenzaActive) {
                 this.store.dispatch([
                     new UpdateMezzoComposizione(data.mezzo.mezzo),
-                    new GetListaComposizioneVeloce()
+                    new GetListaComposizioneVeloce(),
+                    new GetListeComposizioneAvanzata()
                 ]);
             }
             this.store.dispatch(new StopLoadingMezziInServizio());

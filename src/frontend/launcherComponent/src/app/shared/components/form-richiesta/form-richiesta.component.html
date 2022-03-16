@@ -631,7 +631,7 @@
                         </button>
                         <button class="btn btn-primary btn-no-hover btn-xlarge btn-modifica"
                                 style="min-width: 100px; width: 400px"
-                                [disabled]="loadingCompetenze || !richiestaModifica?.competenze?.length || disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="loadingCompetenze || !richiestaModifica?.competenze?.length || richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
