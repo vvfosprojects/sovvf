@@ -56,7 +56,11 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
 
             var infoESRI = _mappingESRIMessage.Map(sintesi);
 
-            _notifyUpDateRichiesta.UpDate(infoESRI);
+            try
+            {
+                _notifyUpDateRichiesta.UpDate(infoESRI);
+            }
+            catch (Exception) { }
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
