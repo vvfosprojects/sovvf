@@ -57,6 +57,7 @@ import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi } from '../../../../../shared/store/actions/loading/loading.actions';
 import { SetRedirectComposizionePartenza } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { FiltroZoneEmergenzaState } from '../filterbar/filtro-zone-emergenza.state';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -344,7 +345,15 @@ export class RichiesteState {
 
                 dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
             },
-            () => dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice))
+            (error: HttpErrorResponse) => {
+                if (error?.error?.message === 'Errore servizio ESRI') {
+                    this.store.dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                    setTimeout(() => {
+                        this.store.dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                    }, 60000);
+                }
+                dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
+            }
         );
     }
 
