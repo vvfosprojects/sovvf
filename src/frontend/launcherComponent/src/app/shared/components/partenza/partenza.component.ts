@@ -12,6 +12,7 @@ import { SintesiRichiesteService } from '../../../core/service/lista-richieste-s
 import { Mezzo } from '../../model/mezzo.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { StartLoadingActionMezzo, StopLoadingActionMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
 
 @Component({
     selector: 'app-partenza',
@@ -31,7 +32,6 @@ export class PartenzaComponent implements OnInit {
     @Input() statoRichiesta: StatoRichiesta;
     @Input() index: string;
     @Input() annullaStatoMezzo: boolean;
-    @Input() dateDiffMezzi: any;
 
     @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
@@ -55,15 +55,22 @@ export class PartenzaComponent implements OnInit {
         this.checkListaEventiMezzo();
     }
 
-    onAnnullaStato(idMezzo: string): void {
+    onAnnullaStato(codiceMezzo: string): void {
         const obj = {
             codiceRichiesta: this.infoPartenza ? this.infoPartenza.codiceRichiesta : null,
             codicePartenza: this.infoPartenza ? this.infoPartenza.codicePartenza : null,
             targaMezzo: this.infoPartenza.codiceMezzo ? this.infoPartenza.codiceMezzo : null,
         };
+        this.store.dispatch(new StartLoadingActionMezzo(codiceMezzo));
         this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
-            this.store.dispatch(new RemoveAnnullaStatoMezzi(idMezzo));
-        }, () => console.log('Richiesta di annullamento cambio stato fallita'));
+            this.store.dispatch([
+                new RemoveAnnullaStatoMezzi(codiceMezzo),
+                new StopLoadingActionMezzo(codiceMezzo)
+            ]);
+        }, () => {
+            console.error('Richiesta di annullamento cambio stato fallita');
+            this.store.dispatch(new StopLoadingActionMezzo(codiceMezzo));
+        });
     }
 
     checkListaEventiMezzo(): void {

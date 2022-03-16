@@ -34,11 +34,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public ListaMezziInServizioQueryHandler(IGetMezziInServizio getListaMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetStatoMezzi getStatoMezzi)
+        private readonly ISetComposizioneMezzi _setComposizioneMezzi;
+
+        public ListaMezziInServizioQueryHandler(ISetComposizioneMezzi setComposizioneMezzi, IGetMezziInServizio getListaMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetStatoMezzi getStatoMezzi)
         {
             _getListaMezzi = getListaMezzi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getStatoMezzi = getStatoMezzi;
+            _setComposizioneMezzi = setComposizioneMezzi;
         }
 
         /// <summary>

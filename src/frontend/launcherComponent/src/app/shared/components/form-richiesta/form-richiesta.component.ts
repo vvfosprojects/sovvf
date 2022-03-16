@@ -70,6 +70,7 @@ import { CentroMappa } from '../../../features/maps/maps-model/centro-mappa.mode
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -398,7 +399,17 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             noteNue: this.richiestaModifica.noteNue
         });
 
-        this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
+        console.log('this.richiestaModifica.stato', this.richiestaModifica.stato);
+
+        this.store.dispatch([
+            new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice),
+            new UpdateFormValue({
+                value: {
+                    stato: this.richiestaModifica.stato
+                },
+                path: 'schedaTelefonata.richiestaForm'
+            })
+        ]);
 
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono, true);
         this.pos = this.richiestaModifica?.dettaglioTipologia?.pos;

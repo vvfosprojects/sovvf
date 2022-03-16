@@ -1,38 +1,60 @@
 <div class="modal-header">
-    <h4 class="modal-title font-weight-bold text-uppercase" id="modal-basic-title">
-        <i class="fas fa-fw fa-{{icona.descrizione}} guida"></i>
-        {{titolo}}
+    <h4 class="modal-title font-weight-bold text-uppercase">
+        <i class="fas fa-fw fa-truck guida mr-1"></i>
+        {{ 'Sganciamento Mezzo' | uppercase }}
     </h4>
-    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+    <button type="button" class="btn btn-light close"
+            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="modal.dismiss('cross')">
-        <span class="text-danger"><i class="fas fa-times"></i></span>
+        <i class="fas fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body"
+     [class.px-0]="richiestaSganciamento && !mezzoNotFound">
+    <ng-container *ngIf="richiestaSganciamento && !mezzoNotFound">
+        <app-sintesi-richiesta [richiesta]="richiestaSganciamento"
+                               [fissata]="false"
+                               [fissabile]="false"
+                               [inGestione]="true"
+                               [gestibile]="false"
+                               [modificabile]="false"
+                               [disabledGestisciRichiesta]="true"
+                               [boxAzioni]="false"
+                               [composizionePartenza]="false"
+                               [idDaSganciare]="idDaSganciare"
+                               [borderTop]="false"
+                               [loadingActionMezzo]="loadingActionMezzo$ | async"
+                               (actionMezzo)="onActionMezzo($event)">
+        </app-sintesi-richiesta>
+    </ng-container>
+    <ng-container *ngIf="richiestaSganciamento && mezzoNotFound">
+        <div class="alert alert-danger m-0">
+            {{ 'Il mezzo da sganciare non è più presente nell\'intervento ' + richiestaSganciamento.codiceRichiesta | uppercase }}
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!richiestaSganciamento">
+        <div class="alert alert-danger font-weight-bold m-0">
+            {{ 'Richiesta non disponibile' | uppercase }}
+        </div>
+    </ng-container>
+</div>
+<div class="modal-footer justify-content-between">
+    <div class="d-inline-block"
+         [ngbTooltip]="tooltipLockedConcorrenza"
+         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiestaSganciamento.codice])">
+        <button class="btn btn-lg btn-danger btn-no-hover font-weight-bold"
+                [disabled]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiestaSganciamento.codice]) || mezzoNotFound"
+                (click)="modal.close('ok')">
+            {{ 'conferma sganciamento' | uppercase }}
+        </button>
+    </div>
+    <button class="btn btn-lg btn-secondary btn-no-hover font-weight-bold"
+            (click)="modal.close('ko')">
+        {{ 'annulla' | uppercase }}
     </button>
 </div>
 
-<div *ngIf="richiestaDa" class="modal-body">
-    <app-sintesi-richiesta [richiesta]="richiestaDa"
-                           [fissata]="false"
-                           [fissabile]="false"
-                           [inGestione]="true"
-                           [gestibile]="false"
-                           [modificabile]="false"
-                           [disabledGestisciRichiesta]="true"
-                           [boxAzioni]="false"
-                           [composizionePartenza]="false"
-                           [idDaSganciare]="idDaSganciare"
-                           [borderTop]="false">
-    </app-sintesi-richiesta>
-</div>
-
-<div class="modal-footer" style="place-content: space-between">
-    <button style="min-width:200px; font-weight: 600;" type="button"
-            class="btn btn-lg btn-danger btn-no-hover text-uppercase font-xxlarge"
-            (click)="modal.close(bottoni[1].type)">
-        {{ bottoni[1].descrizione }}
-    </button>
-    <button style="min-width:126px; font-weight: 600;" type="button"
-            class="btn btn-lg btn-secondary btn-no-hover text-uppercase font-xxlarge"
-            (click)="modal.close(bottoni[0].type)">
-        {{ bottoni[0].descrizione }}
-    </button>
-</div>
+<ng-template #tooltipLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiestaSganciamento.codice] }}
+</ng-template>

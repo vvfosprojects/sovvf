@@ -66,7 +66,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
     @Select(RichiesteState.needRefresh) needRefresh$: Observable<boolean>;
     @Select(RichiesteState.loadingActionRichiesta) loadingActionRichiesta$: Observable<string[]>;
-    @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<any>;
+    @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string[]>;
     @Select(RichiesteState.loadingEliminaPartenza) loadingEliminaPartenza$: Observable<boolean>;
 
     @Select(PaginationState.page) page$: Observable<number>;
@@ -74,7 +74,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
 
     @Select(LoadingState.annullaStatoMezzi) annullaStatoMezzi$: Observable<string[]>;
-    @Select(LoadingState.diffDateInfoMezzo) diffDateInfoMezzo$: Observable<any>;
 
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];

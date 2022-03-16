@@ -28,20 +28,24 @@
                 </div>
             </div>
             <ng-template #componenti>
-                <h5 class="font-weight-bolder">{{ squadraComposizione.codice }} ({{ squadraComposizione?.turno }})</h5>
-                <div *ngFor="let c of squadraComposizione?.membri">
-                    <div class="badge badge-secondary mr-1">
-                        {{ c.descrizioneQualifica | truncate: 18 }}
+                <div [class.text-light]="nightMode">
+                    <h5 class="font-weight-bolder">
+                        {{ squadraComposizione.codice }} ({{ squadraComposizione?.turno }})
+                    </h5>
+                    <div *ngFor="let c of squadraComposizione?.membri">
+                        <div class="badge badge-secondary mr-1">
+                            {{ c.descrizioneQualifica | truncate: 18 }}
+                        </div>
+                        <div class="d-inline-block">
+                            {{ c.nominativo | replace: '.': ' ' | truncate: 20 }}
+                        </div>
                     </div>
-                    <div class="d-inline-block">
-                        {{ c.nominativo | replace: '.': ' ' | truncate: 20 }}
-                    </div>
+                    <h6 *ngIf="!autistaInSquadra"
+                        class="text-danger font-weight-bolder mt-3">
+                        <i class="fas fa-user-slash mr-1"></i>
+                        Autista non presente
+                    </h6>
                 </div>
-                <h6 *ngIf="!autistaInSquadra"
-                    class="text-danger font-weight-bolder mt-3">
-                    <i class="fas fa-user-slash mr-1"></i>
-                    Autista non presente
-                </h6>
             </ng-template>
             <div *ngIf="squadraComposizione?.spotType === 'MODULE'"
                  class="badge mr-1 py-1 badge-mod-warning" ngbTooltip="Colonna mobile">
@@ -61,7 +65,7 @@
                     <ng-container>
                         <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
                                 [ngbPopover]="popMezzi"
-                                [popoverTitle]="'Mezzo di ' + squadraComposizione?.codice"
+                                popoverClass="p-0 bg-light"
                                 placement="top"
                                 container="body"
                                 triggers="mouseenter:mouseleave"
@@ -76,15 +80,21 @@
                             <i class="fas fa-truck fa-fw ml-1"></i>
                         </button>
                         <ng-template #popMezzi>
-                            <div class="h6 text-center">
-                                <div class="d-inline-block font-weight-bold mr-1">
-                                    {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.descrizione }}
-                                </div>
-                                <div class="d-inline-block">
-                                    {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.genere }}
-                                </div>
-                                <div class="d-inline">
-                                    - {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.stato }}
+                            <div [class.text-light]="nightMode">
+                                <h5 class="font-weight-bolder mb-0 mt-1">
+                                    Mezzo di {{ squadraComposizione.codice }}
+                                </h5>
+                                <hr class="my-2">
+                                <div class="h6 mb-0 text-center">
+                                    <div class="d-inline-block font-weight-bold mr-1">
+                                        {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.descrizione }}
+                                    </div>
+                                    <div class="d-inline-block">
+                                        {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.genere }}
+                                    </div>
+                                    <div class="d-inline">
+                                        - {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.stato }}
+                                    </div>
                                 </div>
                             </div>
                         </ng-template>
