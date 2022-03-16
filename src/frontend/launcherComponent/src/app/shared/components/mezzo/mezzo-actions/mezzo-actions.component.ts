@@ -107,7 +107,8 @@ export class MezzoActionsComponent implements OnInit {
                                 oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
                                 dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
                                 azioneIntervento,
-                                codicePartenza: this.codicePartenza
+                                codicePartenza: this.codicePartenza,
+                                modificaOrario: res.result.modificaOrario
                             });
                         } else {
                             this.actionMezzo.emit();

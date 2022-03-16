@@ -2,6 +2,7 @@ import { Mezzo } from '../model/mezzo.model';
 
 export interface MezzoActionInterface {
     mezzo: Mezzo;
+    modificaOrario: boolean;
     action?: string;
     data?: Date;
     codRichiesta?: string;

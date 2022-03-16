@@ -263,7 +263,7 @@ export class RichiesteState {
             const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
 
             if (mezziInServizioActive) {
-                this.store.dispatch(new SetRichiestaById(action.richiesta.codice));
+                dispatch(new SetRichiestaById(action.richiesta.codice));
             }
 
             const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
@@ -338,18 +338,20 @@ export class RichiesteState {
             obj.azioneIntervento = action.mezzoAction.azioneIntervento;
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
-                this.store.dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                setTimeout(() => {
-                    this.store.dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                }, 60000);
+                if (!action.mezzoAction.modificaOrario) {
+                    dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                    setTimeout(() => {
+                        dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                    }, 60000);
+                }
 
                 dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
             },
             (error: HttpErrorResponse) => {
                 if (error?.error?.message === 'Errore servizio ESRI') {
-                    this.store.dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                    dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
                     setTimeout(() => {
-                        this.store.dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                        dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
                     }, 60000);
                 }
                 dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
