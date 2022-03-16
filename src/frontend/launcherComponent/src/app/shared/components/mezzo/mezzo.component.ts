@@ -53,9 +53,9 @@ export class MezzoComponent {
             data.setSeconds(orario.secondi);
             data.setMilliseconds(0);
             data = new Date(data.getTime());
-            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento: action.azioneIntervento, codicePartenza: this.codicePartenza };
+            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento: action.azioneIntervento, codicePartenza: this.codicePartenza, modificaOrario: action.modificaOrario };
         } else {
-            actionMezzo = { mezzo: this.mezzo, action: null };
+            actionMezzo = { mezzo: this.mezzo, action: null, modificaOrario: action.modificaOrario };
         }
         this.actionMezzo.emit(actionMezzo);
     }
