@@ -76,7 +76,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var ultimoMovimento = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().ToList().Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
             var partenza = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().ToList().Find(p => p.CodicePartenza.Equals(command.CodicePartenza));
 
-            if (date >= ultimoMovimento.Istante.AddMinutes(1))
+            if (date >= ultimoMovimento.DataOraInserimento.AddMinutes(1))
                 throw new Exception($"Annullamento non più disponibile per il mezzo {partenza.CodiceMezzo}.");
 
             string statoMezzoAttuale = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
