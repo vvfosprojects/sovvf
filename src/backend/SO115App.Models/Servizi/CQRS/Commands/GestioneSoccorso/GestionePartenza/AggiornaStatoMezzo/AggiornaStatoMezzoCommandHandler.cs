@@ -77,7 +77,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     case Costanti.MezzoInViaggio:
 
-                        var IstanteSuccessivo = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
+                        var IstanteSuccessivo = richiesta.ListaEventi.ToList().FirstOrDefault(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza)?.Istante;
 
                         if (IstanteSuccessivo < istante)
                             throw new System.Exception(orarioErrato);
