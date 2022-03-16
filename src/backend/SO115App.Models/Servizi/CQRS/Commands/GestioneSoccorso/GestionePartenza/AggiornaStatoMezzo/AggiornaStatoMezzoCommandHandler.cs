@@ -62,6 +62,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Handle(AggiornaStatoMezzoCommand command)
         {
+            const string orarioErrato = "L'orario inserito è errato.";
             var richiesta = command.Richiesta;
             var istante = command.DataOraAggiornamento;
 
@@ -77,8 +78,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     case Costanti.MezzoInViaggio:
 
                         var IstanteSuccessivo = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
+
                         if (IstanteSuccessivo < istante)
-                            throw new System.Exception("L'orario inserito è errato.");
+                            throw new System.Exception(orarioErrato);
 
                         new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
                         {
@@ -86,19 +88,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
                             SedeOperatore = command.CodiciSede.First()
                         };
+
                         richiesta.ListaEventi.ToList().Find(e => e is ComposizionePartenze partenze && partenze.CodicePartenza == command.CodicePartenza).Istante = command.DataOraAggiornamento;
+
                         break;
 
                     case Costanti.MezzoSulPosto:
 
-                        var IstanteInRientro = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante;
+                        var IstanteInRientro = richiesta.ListaEventi.ToList().FirstOrDefault(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza)?.Istante;
                         var IstanteInViaggio = richiesta.ListaEventi.ToList().Find(e => e is ComposizionePartenze partenze && partenze.CodicePartenza == command.CodicePartenza).Istante;
 
                         if (IstanteInRientro < istante)
-                            throw new System.Exception("L'orario inserito è errato.");
+                            throw new System.Exception(orarioErrato);
 
                         if (IstanteInViaggio > istante)
-                            throw new System.Exception("L'orario inserito è errato.");
+                            throw new System.Exception(orarioErrato);
 
                         new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
                         {
@@ -106,7 +110,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
                             SedeOperatore = command.CodiciSede.First()
                         };
+
                         richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante = command.DataOraAggiornamento;
+
                         break;
 
                     case Costanti.MezzoInRientro:
@@ -114,7 +120,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         var IstanteSulPosto = richiesta.ListaEventi.ToList().Find(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza).Istante;
 
                         if (IstanteSulPosto > istante)
-                            throw new System.Exception("L'orario inserito è errato.");
+                            throw new System.Exception(orarioErrato);
 
                         new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
                         {
@@ -122,7 +128,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             Note = $"É stato cambiato l'orario dello stato {ultimoEvento.TipoEvento}, dall'orario {ultimoEvento.Istante} all'orario {istante}.",
                             SedeOperatore = command.CodiciSede.First()
                         };
+
                         richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante = command.DataOraAggiornamento;
+
                         break;
                 }
 
@@ -265,7 +273,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
         }
 
-        private bool StatoEsistente(RichiestaAssistenza richiesta, string statoMezzo, string codicePartenza)
+        private static bool StatoEsistente(RichiestaAssistenza richiesta, string statoMezzo, string codicePartenza)
         {
             switch (statoMezzo)
             {
