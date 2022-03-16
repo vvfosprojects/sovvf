@@ -87,8 +87,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
                     .Where(e => !(e is AnnullamentoStatoPartenza))
-                    .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza))
-                    .Where(e => e.DataOraInserimento < command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => !(e is AnnullamentoStatoPartenza && e.CodicePartenza.Equals(partenza.CodicePartenza))).Last().DataOraInserimento)
+                    .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza)).Where(e => e.DataOraInserimento < command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => !(e is AnnullamentoStatoPartenza && e.CodicePartenza.Equals(partenza.CodicePartenza))).Last().DataOraInserimento)
                     .Last();
 
                 switch (eventoPrecedente.TipoEvento)
@@ -127,7 +126,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 //SEGNALO LA MODIFICA A GAC
                 var movimento = new ModificaMovimentoGAC()
                 {
-                    targa = command.TargaMezzo,
+                    targa = command.TargaMezzo.Split('.')[1],
                     autistaRientro = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
                     autistaUscita = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
                     dataIntervento = command.Richiesta.dataOraInserimento,
