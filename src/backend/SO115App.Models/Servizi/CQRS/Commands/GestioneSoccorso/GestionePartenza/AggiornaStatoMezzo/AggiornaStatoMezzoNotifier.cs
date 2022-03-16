@@ -49,11 +49,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
             var infoESRI = _mappingESRIMessage.Map(sintesi);
 
-            try
-            {
-                _notifyUpDateRichiesta.UpDate(infoESRI);
-            }
-            catch (System.Exception) { }
+            _notifyUpDateRichiesta.UpDate(infoESRI);
         }
     }
 }
