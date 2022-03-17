@@ -35,8 +35,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
         /// <returns></returns>
         public async Task<WorkShift> GetAllByCodiceDistaccamento(string Codice)
         {
-            var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value + "asdasd");
-            var url = new Uri(baseurl, "api/v1/so-workshif/" + "?id_sede=" + Codice);
+            var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);
+            var url = new Uri(baseurl, "api/v1/so-workshift/" + "?id_sede=" + Codice);
 
             try
             {
@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
 
                 var result = await _service.GetAsync(url);
 
-                if(result == null)
+                if(result == null || result.Squadre.Length <= 0)
                 {
                     result = GetFromDB(Codice);
                 }

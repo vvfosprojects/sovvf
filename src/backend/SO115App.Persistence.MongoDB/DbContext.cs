@@ -178,7 +178,8 @@ namespace Persistence.MongoDB
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
-            BsonClassMap.RegisterClassMap<ComposizioneSquadra>(cm =>
+
+            BsonClassMap.RegisterClassMap<WorkShift>(cm =>
             {
                 cm.AutoMap();
                 cm.MapIdMember(c => c.Id)
