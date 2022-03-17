@@ -405,7 +405,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice),
             new UpdateFormValue({
                 value: {
-                    stato: this.richiestaModifica.stato
+                    stato: this.richiestaModifica.stato,
+                    codPrimaCompetenza: this.richiestaModifica.competenze?.length > 0 ? this.richiestaModifica.competenze[0]?.codice : null,
+                    codSecondaCompetenza: this.richiestaModifica.competenze?.length > 1 ? this.richiestaModifica.competenze[1]?.codice : null,
+                    codTerzaCompetenza: this.richiestaModifica.competenze?.length > 2 ? this.richiestaModifica.competenze[2]?.codice : null
                 },
                 path: 'schedaTelefonata.richiestaForm'
             })
