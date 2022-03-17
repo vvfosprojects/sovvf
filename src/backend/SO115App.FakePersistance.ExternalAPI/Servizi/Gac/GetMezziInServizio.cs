@@ -58,6 +58,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         public List<MezzoInServizio> Get(string[] CodiciSede)
         {
             var mezzi = _getMezziUtilizzabili.Get(CodiciSede.ToList()).Result;
+
+            if ((!mezzi?.Any()) ?? true)
+                return new List<MezzoInServizio>();
+
             var statoMezzi = _getStatoMezzi.Get(CodiciSede);
 
             var listaMezzoInServizio = new List<MezzoInServizio>();

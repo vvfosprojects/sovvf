@@ -30,12 +30,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetStatoMezzi _getMezziPrenotati;
         private readonly IOrdinamentoMezzi _ordinamento;
 
+        private readonly ISetComposizioneMezzi _setComposizioneMezzi;
+
         private readonly IGetSedi _getSedi;
 
         public GetComposizioneMezzi(IGetSedi getSedi,
             IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre,
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
-            IOrdinamentoMezzi ordinamento)
+            IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
@@ -43,6 +45,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
             _ordinamento = ordinamento;
+            _setComposizioneMezzi = setComposizioneMezzi;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -151,28 +154,30 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 });
 
                 var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList()).Result;
-                //var lstMezziPagination = lstMezziNuova
-                //    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
-                //    .Take(query.Pagination.PageSize).ToList();
 
-                //return lstMezzi;
+                if (lstMezziNuova != null || lstMezziNuova.Count > 0 || mezzi.Result != null || mezzi.Result.Count > 0)
+                    _setComposizioneMezzi.Set(lstMezziNuova);
+
                 return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
+                if (string.IsNullOrEmpty(mezzo.Mezzo.Distaccamento?.Descrizione))
+                    return false;
+
                 bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
                     mezzo.Mezzo.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
                     mezzo.Mezzo.Descrizione.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
                     mezzo.Mezzo.Genere.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
-                bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
-                    query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento?.Codice) ?? true :
-                    query.Filtro.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Distaccamento?.Codice) ?? true;
+                bool competenze = query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento?.Codice) ?? true;
+
+                bool distaccamentoSquadra = query.Filtro.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Distaccamento?.Codice) ?? true;
 
                 bool genere = (query.Filtro.Autista == true || query.Filtro.Autista == null) ? query.Filtro?.Tipo?.Contains(mezzo.Mezzo.Genere) ?? true : mezzo.Mezzo.Genere.ToLower().Contains("av");
 
                 bool stato = query.Filtro?.Stato?.Contains(mezzo.Mezzo.Stato) ?? true;
 
-                return ricerca && distaccamento && genere && stato;
+                return ricerca && competenze && genere && stato && distaccamentoSquadra;
             })).ContinueWith(lstMezzi =>
             {
                 return lstMezzi.Result //ORDINAMENTO

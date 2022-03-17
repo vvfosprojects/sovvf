@@ -18,24 +18,43 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlocks
 {
     public class DeleteAllBlocksCommandHandler : ICommandHandler<DeleteAllBlocksCommand>
     {
         private readonly IDeleteAllBlocks _deleteBlock;
+        private readonly IGetAllBlocks _getAllBlocks;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
 
-        public DeleteAllBlocksCommandHandler(IDeleteAllBlocks deleteBlock)
+        public DeleteAllBlocksCommandHandler(IDeleteAllBlocks deleteBlock,
+                                             IGetAllBlocks getAllBlocks,
+                                             IGetSintesiRichiestaAssistenzaByCodice getSintesiById)
         {
             _deleteBlock = deleteBlock;
+            _getAllBlocks = getAllBlocks;
+            _getSintesiById = getSintesiById;
         }
 
         public void Handle(DeleteAllBlocksCommand command)
         {
             try
             {
+                var sediDaAllertare = new List<string>();
+                var listaBlocchiSede = _getAllBlocks.GetAll(new string[] { command.CodiceSede });
+                var blocchiInteressati = listaBlocchiSede.FindAll(c => c.Type.Equals(TipoOperazione.Richiesta) && command.IdOperatore.Equals(c.IdOperatore));
+
+                if (blocchiInteressati.Count > 0)
+                {
+                    command.listaSediDaAllertare = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => c.Type.Equals(TipoOperazione.Richiesta))[0].Value).CodSOAllertate.ToList();
+                }
+
                 _deleteBlock.DeleteAll(command.IdOperatore);
             }
             catch (Exception ex)

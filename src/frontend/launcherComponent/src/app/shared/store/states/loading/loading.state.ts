@@ -42,7 +42,7 @@ export class LoadingState {
     }
 
     @Action(AddAnnullaStatoMezzi)
-    addAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: any): void {
+    addAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: AddAnnullaStatoMezzi): void {
         const data = new Date();
         const obj = {
             codMezzo: action.codMezzo,
@@ -56,7 +56,7 @@ export class LoadingState {
     }
 
     @Action(RemoveAnnullaStatoMezzi)
-    removeAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: any): void {
+    removeAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: RemoveAnnullaStatoMezzi): void {
         setState(
             patch({
                 annullaStatoMezzi: removeItem<any>(mezzo => mezzo.codMezzo === action.codMezzo)
