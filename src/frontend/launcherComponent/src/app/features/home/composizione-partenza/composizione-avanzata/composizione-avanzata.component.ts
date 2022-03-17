@@ -238,6 +238,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         } else {
             return false;
         }
+
     }
 
     checkSquadraHover(idSquadra: string): boolean {
