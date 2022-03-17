@@ -17,20 +17,11 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
             return result;
         }
 
-        //public WorkShift GetByCodiceSede(string codiceSede)
-        //{
-        //    if (string.IsNullOrEmpty(codiceSede))
-        //    {
-        //        var result = _dbContext.SquadreCollection.Find(Builders<WorkShift>.Filter.Empty).FirstOrDefault();
+        public WorkShift GetByCodiceDistaccamento(string codice)
+        {
+            var result = _dbContext.SquadreCollection.Find(s => s.Distaccamento.Contains(codice)).FirstOrDefault();
 
-        //        return result;
-        //    }
-        //    else
-        //    {
-        //        var result = _dbContext.SquadreCollection.Find(Builders<WorkShift>.Filter.Eq(s => s., codiceSede)).ToList();
-
-        //        return result;
-        //    }
-        //}
+            return result;
+        }
     }
 }

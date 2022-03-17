@@ -50,6 +50,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                 }
                 else
                 {
+                    result.Distaccamento = Codice;
+
                     _set.Set(result);
                 }
 
@@ -63,7 +65,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
 
         private WorkShift GetFromDB(string codiceDistaccamento)
         {
-            var work = _get.Get();
+            var work = _get.GetByCodiceDistaccamento(codiceDistaccamento);
 
             work.Attuale.Squadre = work.Attuale.Squadre.Where(s => s.Distaccamento.Contains(codiceDistaccamento)).ToArray();
             work.Precedente.Squadre = work.Precedente.Squadre.Where(s => s.Distaccamento.Contains(codiceDistaccamento)).ToArray();
