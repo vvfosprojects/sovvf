@@ -62,15 +62,15 @@ import { ListaTipologicheMezzi } from '../../../features/home/composizione-parte
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
-import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import { EsriService } from '../../../features/maps/map-service/esri.service';
-import Point from '@arcgis/core/geometry/Point';
 import { SetCentroMappa } from '../../../features/maps/store/actions/centro-mappa.actions';
 import { CentroMappa } from '../../../features/maps/maps-model/centro-mappa.model';
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import Point from '@arcgis/core/geometry/Point';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -779,34 +779,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.codTerzaCompetenza.patchValue(null);
         }
     }
-
-    // TODO: controllare utilizzo effettivo
-    /* onShowInterventiProssimita(): void {
-        let modalInterventiProssimita;
-        modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'xl',
-        });
-        modalInterventiProssimita.componentInstance.listaEnti = this.enti;
-        modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiProssimita;
-        modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiProssimita;
-        modalInterventiProssimita.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        console.log('Test Ok');
-                        break;
-                    case 'ko':
-                        console.log('Azione annullata');
-                        break;
-                }
-                console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
-    } */
 
     selectCompetenzaAuto(): void {
         const coordinate = {

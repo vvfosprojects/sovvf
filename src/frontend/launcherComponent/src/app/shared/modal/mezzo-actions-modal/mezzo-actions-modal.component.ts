@@ -36,7 +36,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     dataInViaggio: any;
 
     listaEventi: any;
-    ultimoMezzo = false;
+    ultimoMezzo: boolean;
 
     checkbox: { sospesa: boolean, chiusa: boolean, aperta: boolean } = {
         sospesa: true,
@@ -57,7 +57,6 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getClock();
-        this.checkUltimoMezzo();
     }
 
     ngOnDestroy(): void {
@@ -198,20 +197,6 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
             text += ` ${this.todayDate?.day}/${this.todayDate?.month}/${this.todayDate?.year} alle ${this.time.hour <= 9 ? '0' + this.time.hour : this.time.hour}:${this.time.minute <= 9 ? '0' + this.time.minute : this.time.minute}`;
         }
         return text;
-    }
-
-    checkUltimoMezzo(): void {
-        const mezziEventi = [];
-        this.listaEventi.forEach(x => mezziEventi.push(x.codiceMezzo));
-        // Trovo storico mezzi di quella partenza
-        const singleValue = Array.from(new Set(mezziEventi));
-        // Rimuovo mezzi già rientrati
-        const mezziRientrati = [];
-        singleValue.forEach(x => this.listaEventi.filter(y => y.codiceMezzo === x).reduce((a, e) => !a ? e : (new Date(a.ora) > new Date(e.ora) ? a : e)).stato === 'Rientrato' ? mezziRientrati.push(x) : null);
-        // Attivo la checkbox per ultimo mezzo
-        if (singleValue.length - mezziRientrati.length === 1) {
-            this.ultimoMezzo = true;
-        }
     }
 
     onSubmit(): void {
