@@ -1,6 +1,8 @@
 ﻿using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
@@ -9,6 +11,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -30,10 +33,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private readonly IGetSedi _getSedi;
 
+        private readonly Turno TurnoAttuale;
+        private readonly Turno TurnoPrecedente;
+        private readonly Turno TurnoSuccessivo;
+
         public GetComposizioneMezzi(IGetSedi getSedi,
             IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre,
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
-            IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi)
+            IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi,
+            IGetTurno getTurno)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
@@ -42,6 +50,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getStatoSquadre = getStatoSquadre;
             _ordinamento = ordinamento;
             _setComposizioneMezzi = setComposizioneMezzi;
+
+            TurnoAttuale = getTurno.Get();
+            TurnoPrecedente = getTurno.Get(TurnoAttuale.DataOraInizio.AddMinutes(-1));
+            TurnoSuccessivo = getTurno.Get(TurnoAttuale.DataOraFine.AddMinutes(1));
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -55,10 +67,30 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var lstSquadreWS = query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
 
             var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.Squadra>();
-            if (lstSquadreWS[0] != null)
-                lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Squadre).ToList();
 
-            var lstStatiSquadre = _getStatoSquadre.Get("", query.CodiciSedi.ToList());
+            #region Gestione turno preaccoppiati
+
+            var codiceTurno = "";
+
+            switch (query.Filtro.Turno) //FILTRO PER TURNO
+            {
+                case TurnoRelativo.Precedente: codiceTurno = TurnoPrecedente.Codice; break;
+                case TurnoRelativo.Successivo: codiceTurno = TurnoPrecedente.Codice; break;
+                case TurnoRelativo.Attuale: codiceTurno = TurnoAttuale.Codice; break;
+                case null: goto case TurnoRelativo.Attuale;
+            }
+
+            if (lstSquadreWS[0] != null) switch (query.Filtro.Turno)
+            {
+                case TurnoRelativo.Successivo: lstSquadre = lstSquadreWS.Where(s => s != null).SelectMany(shift => shift?.Successivo?.Squadre).ToList(); break;
+                case TurnoRelativo.Precedente: lstSquadre = lstSquadreWS.Where(s => s != null).SelectMany(shift => shift?.Precedente?.Squadre).ToList(); break;
+                case TurnoRelativo.Attuale: lstSquadre = lstSquadreWS.Where(s => s != null).SelectMany(shift => shift?.Attuale?.Squadre).ToList(); break;
+                case null: goto case TurnoRelativo.Attuale;
+            }
+
+            #endregion
+
+            var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno, query.CodiciSedi.ToList());
             var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && !s.spotType.ToUpper().Equals("MODULE")).ToList();
 
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
