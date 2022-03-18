@@ -31,6 +31,7 @@ import { SetRedirectComposizionePartenza, StartLoadingSchedaRichiesta, StopLoadi
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
+import { Sede } from '../../../../../shared/model/sede.model';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
@@ -147,6 +148,8 @@ export class RichiestaModificaState {
                             codCompetenze.push(f.codTerzaCompetenza);
                         }
                     }
+                } else {
+                    codCompetenze = competenze.map((c: Sede) => c.codice);
                 }
 
                 const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);

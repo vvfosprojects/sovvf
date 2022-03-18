@@ -58,9 +58,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         public async Task SendNotification(UpDateInterventoCommand intervento)
         {
             var SintesiRichiesta = _getSintesiById.GetSintesi(intervento.Chiamata.Codice);
-            intervento.Chiamata = SintesiRichiesta;
+            intervento.sintesiRichiesta = SintesiRichiesta;
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
+            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.sintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
 
             foreach (var sede in SediDaNotificare)
             {

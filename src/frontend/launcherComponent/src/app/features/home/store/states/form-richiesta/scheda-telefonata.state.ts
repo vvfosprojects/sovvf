@@ -28,7 +28,8 @@ import {
     StartLoadingSchedaRichiesta,
     StopLoadingCompetenze,
     StopLoadingDettagliTipologia,
-    StopLoadingSchedaRichiesta, UpdateScorciatoiaTelefono
+    StopLoadingSchedaRichiesta,
+    UpdateScorciatoiaTelefono
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
 import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
@@ -70,6 +71,10 @@ import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
 import { UrgenzaSegnalataModalComponent } from '../../../../../shared/modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
+import { TipologicaComposizionePartenza } from '../../../composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
+import { TipologicheMezziState } from '../composizione-partenza/tipologiche-mezzi.state';
+import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.model';
+import { ChiamateMarkersState } from '../../../../maps/store/states/chiamate-markers.state';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -312,7 +317,9 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetCompetenze)
-    setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
+    setCompetenze({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
+        const state = getState();
+        const formValue = state.richiestaForm.model;
         dispatch(new StartLoadingCompetenze());
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
             if (res?.dataArray) {
@@ -327,6 +334,12 @@ export class SchedaTelefonataState {
                     competenze
                 });
             } else {
+                const distaccamenti = this.store.selectSnapshot(TipologicheMezziState.tipologiche)?.distaccamenti;
+                const indirizzo = formValue.indirizzo;
+                const latitudine = action.coordinate.latitudine;
+                const longitudine = action.coordinate.longitudine;
+                const markerChiamata = action.markerChiamata;
+                selectCompetenzaAuto(distaccamenti, indirizzo, latitudine, longitudine, markerChiamata);
                 dispatch([
                     new ClearCompetenze(),
                     new StopLoadingCompetenze()
@@ -336,11 +349,35 @@ export class SchedaTelefonataState {
                 });
             }
         }, () => {
+            const distaccamenti = this.store.selectSnapshot(TipologicheMezziState.tipologiche)?.distaccamenti;
+            const indirizzo = formValue.indirizzo;
+            const latitudine = action.coordinate.latitudine;
+            const longitudine = action.coordinate.longitudine;
+            const markerChiamata = action.markerChiamata;
+            selectCompetenzaAuto(distaccamenti, indirizzo, latitudine, longitudine, markerChiamata);
             dispatch(new StopLoadingCompetenze());
             patchState({
                 competenze: []
             });
         });
+
+        function selectCompetenzaAuto(distaccamenti: TipologicaComposizionePartenza[], indirizzo: string, latitudine: number, longitudine: number, chiamataMarker: ChiamataMarker): void {
+            const coordinate = {
+                latitudine,
+                longitudine
+            };
+            const competenzaCentrale = distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
+            if (competenzaCentrale) {
+                const codCompetenze = [competenzaCentrale];
+                dispatch(new UpdateFormValue({
+                    value: {
+                        codCompetenzaCentrale: competenzaCentrale
+                    },
+                    path: 'schedaTelefonata.richiestaForm'
+                }));
+                dispatch(new SetCompetenzeSuccess(coordinate, indirizzo, codCompetenze, chiamataMarker));
+            }
+        }
     }
 
     @Action(SetCompetenzeSuccess)
@@ -459,10 +496,19 @@ export class SchedaTelefonataState {
             const competenze = state.competenze;
             let codCompetenze: string[];
             if (competenze?.length <= 0) {
-                if (f.codPrimaCompetenza || f.codSecondaCompetenza || f.codTerzaCompetenza) {
-                    codCompetenze = [f.codPrimaCompetenza, f.codSecondaCompetenza, f.codTerzaCompetenza];
-                } else {
+                codCompetenze = [];
+                if (!f.codPrimaCompetenza && !f.codSecondaCompetenza && !f.codTerzaCompetenza) {
                     codCompetenze = [f.codCompetenzaCentrale];
+                } else {
+                    if (f.codPrimaCompetenza) {
+                        codCompetenze.push(f.codPrimaCompetenza);
+                    }
+                    if (f.codSecondaCompetenza) {
+                        codCompetenze.push(f.codSecondaCompetenza);
+                    }
+                    if (f.codTerzaCompetenza) {
+                        codCompetenze.push(f.codTerzaCompetenza);
+                    }
                 }
             }
 

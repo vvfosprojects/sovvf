@@ -141,7 +141,7 @@ namespace SO115App.API.Controllers
         ///   Modifica Intervento
         /// </summary>
         [HttpPost("UpdateIntervento")]
-        public async Task<IActionResult> UpdateIntervento([FromBody] SintesiRichiesta chiamata)
+        public async Task<IActionResult> UpdateIntervento([FromBody] Intervento chiamata)
         {
             var codiceSede = Request.Headers["codicesede"];
             var idUtente = Request.Headers["IdUtente"];

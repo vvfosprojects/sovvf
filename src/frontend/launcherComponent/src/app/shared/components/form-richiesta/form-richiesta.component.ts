@@ -207,11 +207,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             if (changes.schedaContattoDettaglio?.currentValue) {
                 this.f.noteNue.patchValue(this.schedaContattoDettaglio);
             }
-            if (changes.competenze?.currentValue) {
-                if (this.f.indirizzo && this.f.latitudine && this.f.longitudine && !this.modifica) {
-                    this.selectCompetenzaAuto();
-                }
-            }
+            // if (changes.competenze?.currentValue) {
+            //     if (this.f.indirizzo && this.f.latitudine && this.f.longitudine && !this.modifica) {
+            //         this.selectCompetenzaAuto();
+            //     }
+            // }
             if (changes.loadingCompetenze?.currentValue !== null) {
                 if (this.f) {
                     switch (changes.loadingCompetenze?.currentValue) {
@@ -783,18 +783,18 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    selectCompetenzaAuto(): void {
-        const coordinate = {
-            latitudine: this.f.latitudine?.value,
-            longitudine: this.f.longitudine?.value
-        };
-        const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
-        if (competenzaCentrale) {
-            const codCompetenze = [competenzaCentrale];
-            this.f.codCompetenzaCentrale.patchValue(competenzaCentrale);
-            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
-        }
-    }
+    // selectCompetenzaAuto(): void {
+    //     const coordinate = {
+    //         latitudine: this.f.latitudine?.value,
+    //         longitudine: this.f.longitudine?.value
+    //     };
+    //     const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
+    //     if (competenzaCentrale) {
+    //         const codCompetenze = [competenzaCentrale];
+    //         this.f.codCompetenzaCentrale.patchValue(competenzaCentrale);
+    //         this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
+    //     }
+    // }
 
     onSelectCompetenza(nCompetenza: number, codCompetenza: string): void {
         switch (nCompetenza) {
