@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -12,6 +13,12 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
             Successivo = new SquadraWorkShift();
             Attuale = new SquadraWorkShift();
         }
+
+        [BsonElement("Id")]
+        public string Id { get; set; }
+
+        [BsonElement("distaccamento")]
+        public string Distaccamento { get; set; }
 
         [JsonPropertyName("previous")]
         public SquadraWorkShift Precedente { get; set; }
