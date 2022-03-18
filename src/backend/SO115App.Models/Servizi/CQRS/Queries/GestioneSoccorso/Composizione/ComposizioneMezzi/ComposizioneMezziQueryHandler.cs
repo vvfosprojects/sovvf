@@ -24,7 +24,6 @@ using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
@@ -33,16 +32,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizioneMezziQueryHandler : IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult>
     {
-        private readonly IGetComposizioneMezziDB _getMezzi;
-
         private readonly IGetComposizioneMezzi _iGetComposizioneMezzi;
 
         private const string msgErroreCaricamento = "Errore caricamento elenco mezzi";
 
-        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi, IGetComposizioneMezziDB getMezzi)
+        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi)
         {
             _iGetComposizioneMezzi = iGetComposizioneMezzi;
-            _getMezzi = getMezzi;
         }
 
         /// <summary>
@@ -64,7 +60,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 e = e.GetBaseException();
 
-                throw new Exception($"{e.Message}.\n\n{e.StackTrace}");
+                throw new Exception($"{msgErroreCaricamento}: {e.Message}.\n\n{e.StackTrace}");
             }
 
             Log.Debug("Fine elaborazione Lista Mezzi per Composizione Handler");
