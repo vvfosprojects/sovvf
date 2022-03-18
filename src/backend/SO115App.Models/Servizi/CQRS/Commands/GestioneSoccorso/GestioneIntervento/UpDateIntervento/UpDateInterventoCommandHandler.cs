@@ -114,7 +114,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             richiesta.Tipologie = listaCodiciTipologie;
             richiesta.DettaglioTipologia = command.Chiamata.DettaglioTipologia;
-            richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza;
+            richiesta.CodZoneEmergenza = new string[] { command.Chiamata.ZoneEmergenza };
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
             richiesta.Descrizione = command.Chiamata.Descrizione;
@@ -140,8 +140,8 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             var prioritaRichiesta = command.Chiamata.PrioritaRichiesta;
 
-            if (richiesta.PrioritaRichiesta != prioritaRichiesta)
-                new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
+            //if (richiesta.PrioritaRichiesta != prioritaRichiesta)
+            //    new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
 
             new RichiestaModificata(richiesta, DateTime.UtcNow, command.CodUtente);
 
