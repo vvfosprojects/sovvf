@@ -112,6 +112,9 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
                     utentiPresaInCarico.Add(utente.Nominativo);
 
+            richiesta.CodUOCompetenza = command.Chiamata.CodCompetenze.ToArray();
+            richiesta.Competenze = command.Chiamata.Competenze;
+            richiesta.CodSOCompetente = command.Chiamata.CodCompetenze.ToList()[0];
             richiesta.Tipologie = listaCodiciTipologie;
             richiesta.DettaglioTipologia = command.Chiamata.DettaglioTipologia;
             richiesta.CodZoneEmergenza = new string[] { command.Chiamata.ZoneEmergenza };
