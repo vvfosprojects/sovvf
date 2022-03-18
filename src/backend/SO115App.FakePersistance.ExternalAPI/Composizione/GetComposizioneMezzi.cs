@@ -59,7 +59,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Squadre).ToList();
 
             var lstStatiSquadre = _getStatoSquadre.Get("", query.CodiciSedi.ToList());
-            var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null).ToList();
+            var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && !s.spotType.ToUpper().Equals("MODULE")).ToList();
 
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
