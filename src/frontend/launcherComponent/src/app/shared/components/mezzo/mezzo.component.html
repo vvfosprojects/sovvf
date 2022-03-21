@@ -21,12 +21,12 @@
         <!-- Mezzo Actions -->
         <ng-container *ngIf="actionsAttive && !mezzoInServizioPage">
             <div class="position-relative">
-                <ng-container *ngIf="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]">
+                <ng-container *ngIf="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
                     <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]">
+                            [nominativoOperatore]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
                     </app-locked-concorrenza>
                 </ng-container>
-                <app-mezzo-actions [codiceRichiesta]="codiceRichiesta"
+                <app-mezzo-actions [richiesta]="richiesta"
                                    [mezzo]="mezzo"
                                    [codicePartenza]="codicePartenza"
                                    [listaEventi]="listaEventi"

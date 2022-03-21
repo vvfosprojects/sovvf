@@ -461,10 +461,7 @@
                                          style="height: fit-content">
                                         <div class="scroll-y max-height-richiesta">
                                             <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
-                                            <app-lista-partenze [codiceRichiesta]="richiesta.codice"
-                                                                [partenze]="richiesta?.partenze"
-                                                                [listaEventi]="richiesta?.eventi"
-                                                                [statoRichiesta]="richiesta?.stato"
+                                            <app-lista-partenze [richiesta]="richiesta"
                                                                 [inGestione]="inGestione"
                                                                 [idDaSganciare]="idDaSganciare"
                                                                 [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenze)"

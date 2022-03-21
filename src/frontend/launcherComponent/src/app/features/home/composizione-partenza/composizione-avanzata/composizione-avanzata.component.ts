@@ -229,12 +229,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     checkDoubleDividi(box: BoxPartenza): boolean {
-        if (box.squadreComposizione && box.squadreComposizione.length === 1) {
-            const id = box.squadreComposizione[0].codice;
-            let inputVec = [];
-            inputVec = this.boxPartenzaList.slice().reverse();
-            const vec: BoxPartenza[] = inputVec.filter(x => x.squadreComposizione && x.squadreComposizione.length === 1 && x.squadreComposizione[0].id === id);
-            return vec && vec.length > 1 && vec.reverse().findIndex(x => x === box) === 0;
+        if (box.squadreComposizione?.length === 1) {
+            const codiceSquadra = box.squadreComposizione[0].codice;
+            const boxPartenze = this.boxPartenzaList.slice().reverse() as BoxPartenza[];
+            const boxPartenzeSquadra: BoxPartenza[] = boxPartenze.filter((boxPartenza: BoxPartenza) => boxPartenza.squadreComposizione?.length === 1 && boxPartenza.squadreComposizione[0].codice === codiceSquadra);
+            return boxPartenzeSquadra?.length > 1 && boxPartenzeSquadra.reverse().findIndex((boxPartenza: BoxPartenza) => boxPartenza === box) === 0;
         } else {
             return false;
         }

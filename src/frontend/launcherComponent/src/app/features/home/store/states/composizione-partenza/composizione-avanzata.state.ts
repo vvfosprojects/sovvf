@@ -97,6 +97,7 @@ export class ComposizioneAvanzataState {
                 pageSize: paginationMezzi.pageSize
             },
             filtro: {
+                turno: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno,
                 codDistaccamentoSelezionato,
                 codiciDistaccamenti: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
                 stato: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null,

@@ -1,19 +1,17 @@
-<div *ngIf="checkNumeroPartenzeAttive(partenze) <= 0">
+<div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) <= 0">
     <div class="mt-1">Non sono presenti partenze.</div>
 </div>
-<ng-container *ngIf="checkNumeroPartenzeAttive(partenze) > 0">
-    <div *ngFor="let p of partenze; let index = index">
+<ng-container *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0">
+    <div *ngFor="let p of richiesta.partenze; let index = index">
         <div *ngIf="!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata"
-             [class.border-bottom]="(index + 1) !== partenze.length">
+             [class.border-bottom]="(index + 1) !== richiesta.partenze.length">
             <app-partial-loader
                     *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
-            <app-partenza [codiceRichiesta]="codiceRichiesta"
+            <app-partenza [richiesta]="richiesta"
                           [partenza]="p.partenza"
                           [codicePartenza]="p.codicePartenza"
                           [infoPartenza]="p"
-                          [listaEventi]="listaEventi"
                           [inGestione]="inGestione"
-                          [statoRichiesta]="statoRichiesta"
                           [idDaSganciare]="idDaSganciare"
                           [index]="'' + index"
                           [annullaStatoMezzo]="annullaStatoMezzi?.includes(p?.partenza?.mezzo?.codice)"
@@ -28,11 +26,11 @@
     <ng-template [ngIf]="inGestione && sostituzioneFineTurnoActive">
         <div class="d-inline-block"
              [ngbTooltip]="tooltipLockedConcorrenza"
-             [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta])">
+             [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])">
             <button class="btn btn-sm btn-info" ngbTooltip="Sostituzione Fine Turno"
                     style="position:absolute; top:-14px; left:-14px"
-                    [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
-                    [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
+                    [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
+                    [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
                     (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
                 <i class="fas fa-sync-alt"></i>
             </button>
@@ -42,5 +40,5 @@
 
 <ng-template #tooltipLockedConcorrenza>
     <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta] }}
+    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice] }}
 </ng-template>

@@ -48,7 +48,6 @@ import { TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { TimeagoVVFFormatter } from './helper/timago-custom-formatter';
 import { SintesiRichiestaComponent } from './components/sintesi-richiesta/sintesi-richiesta.component';
 import { SostituzionePartenzeFineTunoModalComponent } from './modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
-import { InterventiProssimitaModalComponent } from './modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 import { ListaSchedeContattoModalComponent } from './modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
 import { DettaglioSchedaContattoModalComponent } from './modal/dettaglio-scheda-contatto-modal/dettaglio-scheda-contatto-modal.component';
 import { ListaSchedeContattoComponent } from './components/lista-schede-contatto/lista-schede-contatto.component';
@@ -142,7 +141,6 @@ const COMPONENTS = [
     SchedaContattoComponent,
     SchedaContattoCollegataComponent,
     SostituzionePartenzeFineTunoModalComponent,
-    InterventiProssimitaModalComponent,
     TriageChiamataModalComponent,
     StepDettaglioTipologiaComponent,
     StepDomandeComponent,

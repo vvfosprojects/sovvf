@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Store, Select } from '@ngxs/store';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, Observable } from 'rxjs';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
@@ -16,6 +16,8 @@ import { ModificaPartenzaService } from '../../../core/service/modifica-partenza
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
+import { NgbTime } from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
+import { ClockService } from '../../../features/navbar/clock/clock-service/clock.service';
 
 @Component({
     selector: 'app-modifica-partenza-modal',
@@ -26,6 +28,12 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     @Select(ModificaPartenzaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
+
+    loading: boolean;
+
+    dateSync: Date;
+    todayDate: any;
+    dateNow: any;
 
     singolaPartenza: Partenza;
     richiesta: SintesiRichiesta;
@@ -57,13 +65,15 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 private modal: NgbActiveModal,
                 private fb: FormBuilder,
                 private modalService: NgbModal,
-                private modificaPartenzaService: ModificaPartenzaService) {
+                private modificaPartenzaService: ModificaPartenzaService,
+                private clockService: ClockService) {
         this.initForm();
         this.getFormValid();
         this.formatTime();
     }
 
     ngOnInit(): void {
+        this.getClock();
         this.modificaPartenzaForm.reset();
         this.f.codRichiesta.patchValue(this.codRichiesta);
         this.f.mezzo.patchValue(this.singolaPartenza.partenza.mezzo);
@@ -123,6 +133,44 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     getTitle(): string {
         return 'Modifica Partenza - Intervento ' + this.codRichiesta;
+    }
+
+    getClock(): void {
+        this.subscription.add(
+            this.clockService.getClock().subscribe((dateSync: Date) => {
+                if (dateSync) {
+                    this.dateSync = dateSync;
+                    if (!this.todayDate) {
+                        this.todayDate = { year: this.dateSync.getFullYear(), month: (+this.dateSync.getMonth() + 1), day: this.dateSync.getDate() } as NgbDate;
+                    }
+                    if (!this.dateNow) {
+                        this.dateNow = { year: this.dateSync.getFullYear(), month: (+this.dateSync.getMonth() + 1), day: this.dateSync.getDate() } as NgbDate;
+                    }
+                    if (this.time === { hour: 13, minute: 30, second: 0 }) {
+                        this.time = { hour: this.dateSync.getHours(), minute: this.dateSync.getMinutes(), second: this.dateSync.getSeconds() } as NgbTime;
+                    }
+                }
+            })
+        );
+    }
+
+    checkInvalidTimeSequenza(sequenza: SequenzaValoriSelezionati): boolean {
+        let isInvalid = true;
+        if (this.dateSync) {
+            // ORARIO
+            const timeSequenza = sequenza.time;
+            const timeSelected = new Date();
+            timeSelected.setHours(timeSequenza.hour);
+            timeSelected.setMinutes(timeSequenza.minute);
+            timeSelected.setSeconds(0);
+            const todayTime = this.dateSync;
+            isInvalid = timeSelected > todayTime;
+        }
+        return isInvalid;
+    }
+
+    checkInvalidTimeSequenze(): boolean {
+        return this.sequenze.map((s: SequenzaValoriSelezionati) => this.checkInvalidTimeSequenza(s)).filter((value: boolean) => value === true)?.length > 0;
     }
 
     formatTime(): void {
@@ -243,6 +291,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     onConferma(): void {
         this.submitted = true;
+        this.loading = true;
 
         if (!this.modificaPartenzaForm.valid) {
             return;
@@ -297,7 +346,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         } as ModificaPartenzaDto;
         this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
             this.modal.close({ status: 'ok' });
-        }, () => this.submitted = false);
+            this.loading = false;
+        }, () => {
+            this.submitted = false;
+            this.loading = false;
+        });
     }
 
     onDismiss(): void {

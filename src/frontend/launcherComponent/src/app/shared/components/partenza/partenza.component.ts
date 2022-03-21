@@ -13,6 +13,7 @@ import { Mezzo } from '../../model/mezzo.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 import { StartLoadingActionMezzo, StopLoadingActionMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-partenza',
@@ -22,14 +23,12 @@ import { StartLoadingActionMezzo, StopLoadingActionMezzo } from '../../../featur
 
 export class PartenzaComponent implements OnInit {
 
-    @Input() codiceRichiesta: string;
+    @Input() richiesta: SintesiRichiesta;
     @Input() idDaSganciare: string;
     @Input() partenza: DettaglioPartenza;
     @Input() codicePartenza: string;
     @Input() infoPartenza: Partenza;
-    @Input() listaEventi: EventoMezzo[];
     @Input() inGestione: boolean;
-    @Input() statoRichiesta: StatoRichiesta;
     @Input() index: string;
     @Input() annullaStatoMezzo: boolean;
 
@@ -74,7 +73,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     checkListaEventiMezzo(): void {
-        this.listaEventiMezzo = this.listaEventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
+        this.listaEventiMezzo = this.richiesta.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
         const statiMezzo = [];
         if (this.listaEventiMezzo?.length) {
             this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));
@@ -94,7 +93,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     onModificaPartenza(): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codiceRichiesta])) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice])) {
             this.modificaPartenza.emit(this.index);
         }
     }
