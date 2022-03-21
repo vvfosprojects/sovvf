@@ -7,6 +7,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Qualifiche;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,16 +43,20 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             var lstDettaglio = new ConcurrentQueue<DettaglioDipententeResult>();
             var lstQualifiche = new ConcurrentQueue<DettaglioQualificaResult>();
 
+            var listaIdDipendenti = new List<string>();
+
             Parallel.ForEach(query.IdSede, sede =>
             {
                 var lstIdDipendenti = _getAssociazioniByCodSede.GetCodUnitaOrganizzativaByCodSede(sede)
-                    .ContinueWith(CodUnita => _getIdDipendentiByCodUnitaOrg.Get(CodUnita.Result)).Result;
-                
-                Parallel.ForEach(lstIdDipendenti.Result, idDipendente =>
-                {
-                    lstDettaglio.Enqueue(_getDettaglioDipendenteById.GetTelefonoDipendenteByIdDipendente(idDipendente).Result);
-                    lstQualifiche.Enqueue(_getDettaglioQualifica.GetByIdDipendenteByDate(idDipendente, DateTime.Now.ToString("yyyyMMdd")).Result);
-                });
+                    .ContinueWith(CodUnita => _getIdDipendentiByCodUnitaOrg.Get(CodUnita.Result));
+
+                var listaIdDipendenti = lstIdDipendenti.Result;
+            });
+
+            Parallel.ForEach(listaIdDipendenti, idDipendente =>
+            {
+                lstDettaglio.Enqueue(_getDettaglioDipendenteById.GetTelefonoDipendenteByIdDipendente(idDipendente).Result);
+                lstQualifiche.Enqueue(_getDettaglioQualifica.GetByIdDipendenteByDate(idDipendente, DateTime.Now.ToString("yyyyMMdd")).Result);
             });
 
             var lstCodiciFiscali = lstDettaglio.Where(d => d?.dati?.codFiscale != null).Select(d => d.dati.codFiscale.ToUpper()).ToArray();
@@ -96,7 +101,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                         (p.Telefono2?.Contains(query.Filters.Search) ?? false) ||
                         (p.Telefono3?.Contains(query.Filters.Search) ?? false) ||
                         (p.Turno?.ToLower().Contains(query.Filters.Search.ToLower()) ?? false);
-
                     else return true;
                 })
                 .Where(p => query.Filters?.Stato?.Equals(p.Stato) ?? true)
