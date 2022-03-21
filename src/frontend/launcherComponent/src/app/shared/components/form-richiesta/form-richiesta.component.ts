@@ -62,15 +62,15 @@ import { ListaTipologicheMezzi } from '../../../features/home/composizione-parte
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
-import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import { EsriService } from '../../../features/maps/map-service/esri.service';
-import Point from '@arcgis/core/geometry/Point';
 import { SetCentroMappa } from '../../../features/maps/store/actions/centro-mappa.actions';
 import { CentroMappa } from '../../../features/maps/maps-model/centro-mappa.model';
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import Point from '@arcgis/core/geometry/Point';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -207,11 +207,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             if (changes.schedaContattoDettaglio?.currentValue) {
                 this.f.noteNue.patchValue(this.schedaContattoDettaglio);
             }
-            if (changes.competenze?.currentValue) {
-                if (this.f.indirizzo && this.f.latitudine && this.f.longitudine && !this.modifica) {
-                    this.selectCompetenzaAuto();
-                }
-            }
+            // if (changes.competenze?.currentValue) {
+            //     if (this.f.indirizzo && this.f.latitudine && this.f.longitudine && !this.modifica) {
+            //         this.selectCompetenzaAuto();
+            //     }
+            // }
             if (changes.loadingCompetenze?.currentValue !== null) {
                 if (this.f) {
                     switch (changes.loadingCompetenze?.currentValue) {
@@ -405,7 +405,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice),
             new UpdateFormValue({
                 value: {
-                    stato: this.richiestaModifica.stato
+                    stato: this.richiestaModifica.stato,
+                    codPrimaCompetenza: this.richiestaModifica.competenze?.length > 0 ? this.richiestaModifica.competenze[0]?.codice : null,
+                    codSecondaCompetenza: this.richiestaModifica.competenze?.length > 1 ? this.richiestaModifica.competenze[1]?.codice : null,
+                    codTerzaCompetenza: this.richiestaModifica.competenze?.length > 2 ? this.richiestaModifica.competenze[2]?.codice : null
                 },
                 path: 'schedaTelefonata.richiestaForm'
             })
@@ -780,46 +783,18 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // TODO: controllare utilizzo effettivo
-    /* onShowInterventiProssimita(): void {
-        let modalInterventiProssimita;
-        modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'xl',
-        });
-        modalInterventiProssimita.componentInstance.listaEnti = this.enti;
-        modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiProssimita;
-        modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiProssimita;
-        modalInterventiProssimita.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        console.log('Test Ok');
-                        break;
-                    case 'ko':
-                        console.log('Azione annullata');
-                        break;
-                }
-                console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
-    } */
-
-    selectCompetenzaAuto(): void {
-        const coordinate = {
-            latitudine: this.f.latitudine?.value,
-            longitudine: this.f.longitudine?.value
-        };
-        const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
-        if (competenzaCentrale) {
-            const codCompetenze = [competenzaCentrale];
-            this.f.codCompetenzaCentrale.patchValue(competenzaCentrale);
-            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
-        }
-    }
+    // selectCompetenzaAuto(): void {
+    //     const coordinate = {
+    //         latitudine: this.f.latitudine?.value,
+    //         longitudine: this.f.longitudine?.value
+    //     };
+    //     const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
+    //     if (competenzaCentrale) {
+    //         const codCompetenze = [competenzaCentrale];
+    //         this.f.codCompetenzaCentrale.patchValue(competenzaCentrale);
+    //         this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
+    //     }
+    // }
 
     onSelectCompetenza(nCompetenza: number, codCompetenza: string): void {
         switch (nCompetenza) {

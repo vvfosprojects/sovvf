@@ -17,14 +17,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
 namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
     public class UpDateInterventoCommand
     {
-        public SintesiRichiesta Chiamata { get; set; }
+        public Intervento Chiamata { get; set; }
         public string CodiceSede { get; set; }
         public string CodUtente { get; set; }
+        public SintesiRichiesta sintesiRichiesta { get; set; }
     }
 }

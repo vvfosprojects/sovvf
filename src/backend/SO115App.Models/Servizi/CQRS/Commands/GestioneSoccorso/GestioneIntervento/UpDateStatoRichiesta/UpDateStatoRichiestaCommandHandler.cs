@@ -54,7 +54,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                 {
                     if (!composizione.Sganciata && !composizione.PartenzaAnnullata)
                     {
-                        if (!composizione.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                        if (!composizione.Mezzo.Stato.Equals(Costanti.MezzoRientrato) && !composizione.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                         {
                             if (!composizione.Mezzo.Stato.Equals(Costanti.MezzoInSede) || !composizione.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                                 composizione.Mezzo.Stato = Costanti.MezzoRientrato;
