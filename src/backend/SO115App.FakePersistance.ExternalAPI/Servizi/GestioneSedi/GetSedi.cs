@@ -127,9 +127,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                     return new DistaccamentoUC()
                     {
+                        Id = distaccamento.Codice,
                         CodDistaccamento = distaccamento.Codice,
                         Descrizione = distaccamento.Descrizione,
-                        coordinate = distaccamento.CoordinateString!=null ? string.Join(", ", distaccamento.CoordinateString) : "0,0",
+                        coordinate = distaccamento.CoordinateString != null ? string.Join(", ", distaccamento.CoordinateString) : "0,0",
                         Indirizzo = distaccamento.Indirizzo != null ? distaccamento.Indirizzo : ""
                     };
                 }
@@ -139,7 +140,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 }
             }
         }
-
 
         public async Task<List<Sede>> GetAllOffLine()
         {
@@ -169,11 +169,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Coordinate = ff.Coordinate,
                 Indirizzo = null
             }))));
-            
+
             return result.Distinct().ToList();
         }
-
-
 
         public async Task<List<Sede>> GetAll()
         {
