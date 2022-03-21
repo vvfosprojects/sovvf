@@ -9,91 +9,101 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let voce of vociRubrica">
-        <td class="align-middle">
-            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
-                    placement="bottom" (click)="onDeleteVoceRubrica(voce?.id, voce?.descrizione)">
-                <i class="fas fa-trash"></i>
-            </button>
-            <button class="btn btn-sm btn-warning font-weight-bold float-left mt-1 mr-2" ngbTooltip="Modifica Voce"
-                    placement="bottom" style="color: white;" (click)="onEditVoceRubrica(voce)">
-                <i class="far fa-edit"></i>
-            </button>
-        </td>
-        <td style="width:25%" class="align-middle">
-            <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                <span>{{voce?.descrizione}}</span>
-            </div>
-        </td>
-        <td style="width:20%" class="align-middle" [ngClass]="{'p-0': voce?.telefoni && voce?.telefoni?.length > 0}">
-            <div class="row">
-                <div class="col-11">
-                    <app-numeri-ente *ngIf="voce?.telefoni && voce?.telefoni?.length > 0"
-                                     [telefoni]="voce?.telefoni"></app-numeri-ente>
-                    <small *ngIf="!voce?.telefoni || voce?.telefoni?.length <= 0" class="ml-1 text-muted">
+    <ng-container *ngIf="vociRubrica?.length">
+        <tr *ngFor="let voce of vociRubrica">
+            <!-- Bottoni Azione -->
+            <td>
+                <button class="btn btn-sm btn-danger font-weight-bold mr-2"
+                        ngbTooltip="Rimuovi Voce"
+                        placement="bottom"
+                        (click)="onDeleteVoceRubrica(voce?.id, voce?.descrizione)">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="btn btn-sm btn-warning font-weight-bold text-white"
+                        ngbTooltip="Modifica Voce"
+                        placement="bottom"
+                        (click)="onEditVoceRubrica(voce)">
+                    <i class="far fa-edit"></i>
+                </button>
+            </td>
+            <!-- Descrizione -->
+            <td class="align-middle"
+                style="width:25%">
+                <h5 class="font-weight-bold mb-0"
+                    [ngbTooltip]="voce?.descrizione?.length > 30 ? voce.descrizione.toLocaleUpperCase() : null">
+                    {{ (voce?.descrizione | uppercase) | truncate: 30 }}
+                </h5>
+            </td>
+            <!-- Numeri -->
+            <td class="align-middle"
+                [class.p-0]="voce?.telefoni?.length"
+                style="width:20%">
+                <ng-container *ngIf="voce?.telefoni?.length">
+                    <app-numeri-ente [telefoni]="voce?.telefoni">
+                    </app-numeri-ente>
+                </ng-container>
+                <ng-container *ngIf="!voce?.telefoni?.length">
+                    <small class="ml-1 text-muted">
                         Non presente/i
                     </small>
+                </ng-container>
+            </td>
+            <!-- Indirizzo -->
+            <td class="align-middle"
+                style="width:13%">
+                <div class="d-inline-block"
+                     [ngbTooltip]="voce?.indirizzo?.length > 20 ? voce.indirizzo : null">
+                    {{ voce?.indirizzo | truncate: 20 }}
                 </div>
-            </div>
-        </td>
-        <td style="width:20%" class="align-middle">
-            <div class="row">
-                <div class="col-11">
-                    <ul class=" mb-0"
-                        style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
-                        <li>
-                            <span class="ml-1" [ngbTooltip]="voce?.indirizzo?.length > 14 ? voce?.indirizzo : null">
-                                {{voce?.indirizzo | truncate: 14}}</span>
-                            <span *ngIf="voce?.indirizzo && voce?.cap" class="ml-1"> - </span>
-                            <span class="ml-1">{{voce?.cap}}</span>
-                            <small *ngIf="!voce?.indirizzo && !voce?.cap" class="ml-1 text-muted">
-                                Non presente
-                            </small>
-                        </li>
-                    </ul>
+                <ng-container *ngIf="voce?.indirizzo && voce?.cap">
+                    <span class="ml-1"> - </span>
+                    <span class="ml-1">{{ voce.cap }}</span>
+                </ng-container>
+                <ng-container *ngIf="!voce?.indirizzo && !voce?.cap">
+                    <small class="text-muted">
+                        Non presente
+                    </small>
+                </ng-container>
+            </td>
+            <!-- Email -->
+            <td class="align-middle"
+                style="width:22%">
+                <div class="d-flex align-items-center justify-content-between">
+                    <ng-container *ngIf="voce?.email">
+                        <div class="d-inline-block ml-1"
+                             [ngbTooltip]="voce?.email?.length > 20 ? voce.email : null">
+                            {{ voce.email | truncate: 20 }}
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!voce?.email">
+                        <small class="ml-1 text-muted">
+                            Non presente
+                        </small>
+                    </ng-container>
+                    <i class="mx-3 fas"
+                       [class.fa-level-down-alt]="voce.ricorsivo"
+                       [ngbTooltip]="'In profondità'"
+                       placement="top"></i>
                 </div>
-            </div>
-        </td>
-        <td style="width:15%" class="align-middle">
-            <div class="row">
-                <div class="col-11">
-                    <ul class=" mb-0"
-                        style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0;">
-                        <li>
-                            <span *ngIf="voce?.email" class="ml-1">{{voce?.email}}</span>
-                            <small *ngIf="!voce?.email" class="ml-1 text-muted">
-                                Non presente
-                            </small>
-                            <i [ngbTooltip]="'In profondità'" placement="top" class="mx-3 far fa-clone"
-                               [ngClass]="{'fa-clone': voce.ricorsivo, 'fa-square': !voce.ricorsivo}"
-                            ></i>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </td>
-    </tr>
-    <tr *ngIf="vociRubrica?.length <= 0">
-        <td></td>
-        <td>
-            <ng-template [ngIf]="!loading">Nessuna Voce trovata</ng-template>
-            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
+            </td>
+        </tr>
+    </ng-container>
     </tbody>
 </table>
-<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between pt-2 px-2">
-    <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'voci'"
-                                    (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
-    <ngb-pagination
-            [(page)]="page"
-            [pageSize]="pageSize"
-            [collectionSize]="totalItems"
-            [maxSize]="5"
-            [disabled]="loading"
-            (pageChange)="pageChange.emit($event)">
-    </ngb-pagination>
-</div>
+<ng-container *ngIf="vociRubrica?.length">
+    <div class="d-flex justify-content-between pt-2 px-2">
+        <app-select-elementi-per-pagina [pageSize]="pageSize"
+                                        [pageSizes]="pageSizes"
+                                        [placeholderElementi]="'voci'"
+                                        (pageSizeChange)="pageSizeChange.emit($event)">
+        </app-select-elementi-per-pagina>
+        <ngb-pagination
+                [(page)]="page"
+                [pageSize]="pageSize"
+                [collectionSize]="totalItems"
+                [maxSize]="5"
+                [disabled]="loading"
+                (pageChange)="pageChange.emit($event)">
+        </ngb-pagination>
+    </div>
+</ng-container>
