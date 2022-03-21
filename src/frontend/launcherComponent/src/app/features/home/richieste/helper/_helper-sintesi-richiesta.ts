@@ -21,29 +21,17 @@ export class HelperSintesiRichiesta {
      * restituisce le squadre realmente impegnate in una partenza
      * @param: richiesta
      */
-    getSquadre(richiesta: SintesiRichiesta): string[] {
-
-        // const nomiSquadre: string[] = [];
+    getSquadre(richiesta: SintesiRichiesta): Squadra[] {
         const squadre = [];
-
         if (richiesta.partenze) {
             richiesta.partenze.forEach((p: Partenza) => {
                 if (p.partenza && p.partenza.squadre && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
                     p.partenza.squadre.forEach((squadra: Squadra) => {
-                        squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
+                        squadre.push(squadra);
                     });
                 }
             });
-        } else {
-            return [];
         }
-
-        function getUnique(arr, comp): any[] {
-            return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
-        }
-
-        // nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
-
         return squadre;
     }
 
@@ -101,7 +89,7 @@ export class HelperSintesiRichiesta {
     }
 
     /* Restituisce il numero dei mezzi in rientro */
-    numeroMezziInRietro(richiesta: SintesiRichiesta): number {
+    numeroMezziInRientro(richiesta: SintesiRichiesta): number {
         let numeroMezzi = 0;
         if (richiesta.partenze) {
             richiesta.partenze.forEach((p: Partenza) => {
@@ -158,7 +146,7 @@ export class HelperSintesiRichiesta {
     }
 
     toggleGestioneClass(gestione: boolean): string {
-        let returnClass = '';
+        let returnClass: string;
         if (!gestione) {
             returnClass = 'fa-long-arrow-alt-down text-secondary';
         } else {
@@ -263,8 +251,7 @@ export class HelperSintesiRichiesta {
 
     _terreniMinori(tipoTerreno: TipoTerreno[]): TipoTerreno[] {
         if (tipoTerreno && tipoTerreno.length > 1) {
-            const tipoTerrenoShow = tipoTerreno.filter(terreno => terreno.ha > 0);
-            return tipoTerrenoShow;
+            return tipoTerreno.filter(terreno => terreno.ha > 0);
         } else {
             return null;
         }
