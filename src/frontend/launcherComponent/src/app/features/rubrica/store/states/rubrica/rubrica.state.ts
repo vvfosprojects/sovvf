@@ -66,7 +66,7 @@ export class RubricaState {
                 new SetRubrica(response.dataArray),
                 new StopLoadingRubrica()
             ]);
-        });
+        }, () => dispatch(new StopLoadingRubrica()));
     }
 
     @Action(SetRubrica)
