@@ -657,7 +657,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                     }
                     else
                     {
-                        if (_eventi.OrderByDescending(p => p.Istante).First() is ChiusuraRichiesta)
+                        if (_eventi.FindAll(e => e is ChiusuraRichiesta && e is not RiaperturaRichiesta).Count > 0)
                             return new Chiusa();
                         else
                             return new Sospesa();
@@ -665,7 +665,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 }
                 else
                 {
-                    if (_eventi.OrderByDescending(p => p.Istante).First() is ChiusuraRichiesta)
+                    if (_eventi.FindAll(e => e is ChiusuraRichiesta && e is not RiaperturaRichiesta).Count > 0)
                         return new Chiusa();
                     else
                         return new InAttesa();

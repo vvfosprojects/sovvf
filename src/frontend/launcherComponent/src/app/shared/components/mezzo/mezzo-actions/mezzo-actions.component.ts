@@ -9,6 +9,8 @@ import { calcolaActionSuggeritaMezzo, statoMezzoActionColor, statoMezzoActionsEn
 import { EventoMezzo } from '../../../interface/evento-mezzo.interface';
 import { LockedConcorrenzaService } from '../../../../core/service/concorrenza-service/locked-concorrenza.service';
 import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
+import { SintesiRichiesta } from '../../../model/sintesi-richiesta.model';
+import { Partenza } from '../../../model/partenza.model';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -18,7 +20,7 @@ import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
 })
 export class MezzoActionsComponent implements OnInit {
 
-    @Input() codiceRichiesta: string;
+    @Input() richiesta: SintesiRichiesta;
     @Input() mezzo: Mezzo;
     @Input() codicePartenza: string;
     @Input() doubleMonitor: Mezzo;
@@ -57,7 +59,7 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string, ora?: string, event?: MouseEvent): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codiceRichiesta])) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice])) {
             if (event) {
                 event.stopPropagation();
             }
@@ -89,12 +91,15 @@ export class MezzoActionsComponent implements OnInit {
             modal.componentInstance.codicePartenza = this.codicePartenza;
             modal.componentInstance.statoMezzo = this.mezzo.stato;
             modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
-            modal.componentInstance.titleStato = !ora ? '' : ': ' + action;
+            modal.componentInstance.action = action;
+            modal.componentInstance.modificaOrario = !!ora;
+            modal.componentInstance.titleStato = ': ' + action;
             modal.componentInstance.dataInViaggio = dataInViaggio;
             modal.componentInstance.listaEventi = this.listaEventi;
+            modal.componentInstance.ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
             modal.result.then((res: { status: string, result: any }) => {
                 switch (res.status) {
-                    case 'ok' :
+                    case 'ok':
                         if (action) {
                             this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
                             const orario = res.result.oraEvento;
@@ -105,7 +110,8 @@ export class MezzoActionsComponent implements OnInit {
                                 oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
                                 dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
                                 azioneIntervento,
-                                codicePartenza: this.codicePartenza
+                                codicePartenza: this.codicePartenza,
+                                modificaOrario: res.result.modificaOrario
                             });
                         } else {
                             this.actionMezzo.emit();

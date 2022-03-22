@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.RicercaFullText;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
@@ -83,6 +84,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce gli Interventi nelle vicinanze
         /// </summary>
         [HttpPost("GetInterventiVicinanze")]
+        [ProducesResponseType(typeof(GetInterventiVicinanzeResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetInterventiVicinanze([FromBody] ControlloIndirizzoRichiesta controllo)
         {
             try
@@ -113,6 +116,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce il contatore degli Interventi nelle vicinanze
         /// </summary>
         [HttpPost("GetCountInterventiVicinanze")]
+        [ProducesResponseType(typeof(GetCountInterventiVicinanzeResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetCountInterventiVicinanze([FromBody] ControlloIndirizzoRichiesta controllo)
         {
             try
@@ -143,6 +148,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce una specifica Richiesta di Assistenza
         /// </summary>
         [HttpGet("GetRichiesta")]
+        [ProducesResponseType(typeof(SintesiRichiesta), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetRichiesta(string idRichiesta)
         {
             var sintesiQuery = new GetSintesiRichiestaAssistenzaQuery
@@ -167,6 +174,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista delle Richieste di Assistenza
         /// </summary>
         [HttpGet("GetRichiesteByFullText")]
+        [ProducesResponseType(typeof(RicercaFullTextResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetRichiesteByFullText(string TextToSearch)
         {
             var sintesiQuery = new RicercaFullTextQuery
@@ -193,6 +202,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista delle Richieste di Assistenza
         /// </summary>
         [HttpPost("GetRichieste")]
+        [ProducesResponseType(typeof(GetSintesiRichiestaAssistenzaResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
             filtro.idOperatore = Request.Headers["idUtente"];
@@ -219,6 +230,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista dei codici delle Richieste di Assistenza
         /// </summary>
         [HttpGet("GetCodiciRichieste")]
+        [ProducesResponseType(typeof(GetCodiciRichiesteAssistenzaResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetCodiciRichieste(string idRichiesta)
         {
             var sintesiRichiesteAssistenzaQuery = new GetCodiciRichiesteAssistenzaQuery
@@ -244,6 +257,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di aggiornare lo stato di una Richieste di Assistenza
         /// </summary>
         [HttpPost("AggiornaStato")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AggiornaStato([FromBody] UpDateStatoRichiestaCommand richiesta)
         {
             var codiceSede = Request.Headers["codicesede"];
@@ -279,6 +294,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di allertare una o più sedi
         /// </summary>
         [HttpPost("AllertaAltreSedi")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AllertaSedi([FromBody] AllertaAltreSediCommand parametri)
         {
             var idOperatore = Request.Headers["IdUtente"];
@@ -302,6 +319,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di inserire un nuovo elemento nel LogBook
         /// </summary>
         [HttpPost("AddLogBook")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AddLogBook([FromBody] LogBookCommand parametri)
         {
             var idOperatore = Request.Headers["IdUtente"];

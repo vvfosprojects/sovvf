@@ -27,6 +27,8 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     navigation: 'select';
     outsideDays: 'visible';
 
+    action: string;
+    modificaOrario: boolean;
     codicePartenza: string;
     title: string;
     titleStato: string;
@@ -34,7 +36,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     dataInViaggio: any;
 
     listaEventi: any;
-    ultimoMezzo = false;
+    ultimoMezzo: boolean;
 
     checkbox: { sospesa: boolean, chiusa: boolean, aperta: boolean } = {
         sospesa: true,
@@ -55,7 +57,6 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getClock();
-        this.checkUltimoMezzo();
     }
 
     ngOnDestroy(): void {
@@ -198,20 +199,6 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
         return text;
     }
 
-    checkUltimoMezzo(): void {
-        const mezziEventi = [];
-        this.listaEventi.forEach(x => mezziEventi.push(x.codiceMezzo));
-        // Trovo storico mezzi di quella partenza
-        const singleValue = Array.from(new Set(mezziEventi));
-        // Rimuovo mezzi già rientrati
-        const mezziRientrati = [];
-        singleValue.forEach(x => this.listaEventi.filter(y => y.codiceMezzo === x).reduce((a, e) => !a ? e : (new Date(a.ora) > new Date(e.ora) ? a : e)).stato === 'Rientrato' ? mezziRientrati.push(x) : null);
-        // Attivo la checkbox per ultimo mezzo
-        if (singleValue.length - mezziRientrati.length === 1) {
-            this.ultimoMezzo = true;
-        }
-    }
-
     onSubmit(): void {
         this.submitted = true;
 
@@ -229,7 +216,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
             return { oraEvento, dataEvento, azioneIntervento: this.azioneIntervento, codicePartenza: this.codicePartenza };
         } else {
             this.time.second = this.f?.nowDate.value.getSeconds();
-            return { oraEvento: this.time, dataEvento: this.todayDate, azioneIntervento: this.azioneIntervento, codicePartenza: this.codicePartenza };
+            return { oraEvento: this.time, dataEvento: this.todayDate, azioneIntervento: this.azioneIntervento, codicePartenza: this.codicePartenza, modificaOrario: !!this.modificaOrario };
         }
     }
 }

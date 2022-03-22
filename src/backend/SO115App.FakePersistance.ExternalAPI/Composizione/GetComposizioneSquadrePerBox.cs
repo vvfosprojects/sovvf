@@ -33,7 +33,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Squadra = SO115App.Models.Classi.ServiziEsterni.OPService.Squadra;
+using SquadraOpService = SO115App.Models.Classi.ServiziEsterni.OPService.SquadraOpService;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -67,7 +67,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstSquadreComposizione = Task.Run(() => //GET
             {
-                var lstSquadre = new ConcurrentBag<Squadra>();
+                var lstSquadre = new ConcurrentBag<SquadraOpService>();
 
                 Parallel.ForEach(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(sede => sede.Codice).Distinct(), codice =>
                 {

@@ -22,6 +22,7 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -264,11 +265,11 @@ namespace SO115App.Persistence.MongoDB
                 if (filtro.Page > 0 && filtro.PageSize > 0)
                 {
                     result = result.Distinct()
-                    .OrderByDescending(c => c.StatoRichiesta.Equals(Costanti.Chiamata) && c.Partenze.Count == 0)
-                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.Chiamata) && c.Partenze.Count > 0)
-                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaAssegnata))
-                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaPresidiata))
-                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaChiusa))
+                    .OrderByDescending(c => c.StatoRichiesta is InAttesa && c.Partenze.Count == 0)
+                    .ThenByDescending(c => c.StatoRichiesta is InAttesa && c.Partenze.Count > 0)
+                    .ThenByDescending(c => c.StatoRichiesta is Assegnata)
+                    .ThenByDescending(c => c.StatoRichiesta is Presidiata)
+                    .ThenByDescending(c => c.StatoRichiesta is Chiusa)
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenByDescending(x => x.IstanteRicezioneRichiesta)
                     .Skip((filtro.Page - 1) * filtro.PageSize).Take(filtro.PageSize).ToList();

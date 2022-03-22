@@ -28,7 +28,9 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Restituisce il PDF del dettaglio di uno specifico intervento
         /// </summary>
-        [HttpGet]
+        [HttpGet("DettaglioRichiesta")]
+        [ProducesResponseType(typeof(byte[]), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> DettaglioRichiesta(string codice, string contentType = "application/pdf")
         {
             try
@@ -58,7 +60,9 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Restituisce l'elenco di tutti gli interventi che rispondono ai filtri impostati
         /// </summary>
-        [HttpPost]
+        [HttpPost("RiepilogoInterventi")]
+        [ProducesResponseType(typeof(byte?[]), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> RiepilogoInterventi([FromBody] FiltriRiepilogoInterventi filtri, [FromQuery] string contentType = "application/pdf")
         {
             try

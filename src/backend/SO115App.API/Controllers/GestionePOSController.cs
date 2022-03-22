@@ -46,6 +46,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di inserire una POS
         /// </summary>
         [HttpPost("Add")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add([FromForm] DtoPos pos)
         {
             //var codiceSede = Request.Headers["codicesede"];
@@ -73,6 +75,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista delle POS
         /// </summary>
         [HttpPost("")]
+        [ProducesResponseType(typeof(GetElencoPOSResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get([FromBody] GetElencoPOSQuery getListaPosQuery)
         {
             try
@@ -91,6 +95,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce una specifica POS
         /// </summary>
         [HttpGet("GetPosById")]
+        [ProducesResponseType(typeof(MemoryStream), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetPosById(string Id, string CodSede)
         {
             //var codiceSede = Request.Headers["codicesede"];
@@ -117,6 +123,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di eliminare una POS
         /// </summary>
         [HttpGet("Delete")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete(string Id, string CodSede)
         {
             //var codiceSede = Request.Headers["codicesede"];
@@ -143,6 +151,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di modificare una POS
         /// </summary>
         [HttpPost("Edit")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Edit([FromForm] DtoPos pos)
         {
             //var codiceSede = Request.Headers["codicesede"];

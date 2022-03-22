@@ -1,59 +1,55 @@
-<div class="clearfix px-2 py-1"
+<div class="d-flex justify-content-between align-items-center font-weight-bold px-2 py-1"
      [class.alert-info]="idDaSganciare === partenza.mezzo.descrizione"
      [class.px-1]="idDaSganciare === partenza.mezzo.descrizione">
-    <div class="float-left font-xxlarge cursor-pointer"
-         style="display: inline-flex; align-items: center;"
+    <div class="d-flex justify-content-start align-items-center font-xxlarge"
          (click)="selezioneMezzo.emit(partenza.mezzo)">
-        <app-mezzo [codiceRichiesta]="codiceRichiesta"
+        <app-mezzo [richiesta]="richiesta"
                    [codicePartenza]="codicePartenza"
                    [mezzo]="partenza.mezzo"
                    [listaEventiMezzo]="listaEventiMezzo"
-                   [listaEventi]="listaEventi"
-                   [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
+                   [listaEventi]="richiesta?.eventi"
+                   [actionsAttive]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)">
         </app-mezzo>
-        <div *ngIf="!partenza.mezzo" class="d-inline-block p-2">
-            Nessun mezzo
-        </div>
     </div>
-    <div class="float-right my-1">
-        <div class="clearfix">
-            <div *ngIf="partenza.squadre?.length"
-                 class="text-right font-weight-bold font-xxlarge"
-                 style="display: inline-flex; align-items: center;">
+    <div class="d-flex justify-content-end align-items-center font-xxlarge">
+        <ng-container *ngIf="annullaStatoMezzo">
+            <button class="btn btn-danger btn-sm-mod border-danger mr-3"
+                    ngbTooltip="Annulla ultimo cambio stato"
+                    (click)="onAnnullaStato(partenza.mezzo.codice)">
+                <i class="fas fa-history px-1"></i>
+            </button>
+        </ng-container>
+        <ng-container *ngIf="partenza.squadre?.length">
+            <div class="d-flex align-items-center">
                 <i [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadre[0].stato))"
                    ngbTooltip="{{ _nomeStatiSquadra(partenza.squadre[0].stato) }}"
-                   class="fas fa-users mt-1 mr-2"></i>
-                <div class="d-inline-block"
-                     [ngbTooltip]="partenza.squadre[0].nome">
+                   class="fas fa-users mr-2"></i>
+                <div [ngbTooltip]="partenza.squadre[0].nome">
                     {{ partenza.squadre[0].codice | truncate: 6 }}
-                </div>
-                <div *ngIf="partenza.squadre[0].turno"
-                     class="d-inline-block ml-1">
-                    ({{ partenza.squadre[0].turno }})
+                    <ng-container *ngIf="partenza.squadre[0].turno">
+                        ({{ partenza.squadre[0].turno }})
+                    </ng-container>
                 </div>
                 <button class="btn btn-sm btn-light p-1 mx-2"
                         ngbTooltip="Elenco squadre"
                         placement="top"
                         (click)="onListaSquadrePartenza(); $event.stopPropagation()">
-                    <div *ngIf="partenza.squadre?.length === 1"
-                         class="d-inline-block">
+                    <div *ngIf="partenza.squadre?.length === 1">
                         <i class="fas fa-search"></i>
                     </div>
-                    <div *ngIf="partenza.squadre?.length > 1"
-                         class="d-inline-block">
+                    <div *ngIf="partenza.squadre?.length > 1">
                         +{{ partenza.squadre.length - 1 }}
                     </div>
                 </button>
-                <ng-template [ngIf]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
-                    <div class="d-inline-block"
-                         [ngbTooltip]="tooltipLockedConcorrenza"
-                         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta])">
+                <ng-template [ngIf]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa">
+                    <div [ngbTooltip]="tooltipLockedConcorrenza"
+                         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])">
                         <button class="btn btn-sm btn-info d-inline-block"
                                 ngbTooltip="Gestisci Partenza"
                                 placement="top"
-                                [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
-                                [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
+                                [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
+                                [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
                                 (click)="onModificaPartenza(); $event.stopPropagation()">
                             <i class="fas fa-cog"></i>
                         </button>
@@ -64,18 +60,11 @@
                     Nessun squadra
                 </div>
             </div>
-        </div>
-    </div>
-    <div *ngIf="annullaStatoMezzo" class="float-right mr-2 my-1">
-        <button class="btn btn-danger btn-sm-mod border-danger"
-                ngbTooltip="Annulla ultimo cambio stato"
-                (click)="onAnnullaStato(partenza.mezzo.codice)">
-            <i class="fas fa-history px-1"></i>
-        </button>
+        </ng-container>
     </div>
 </div>
 
 <ng-template #tooltipLockedConcorrenza>
     <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta] }}
+    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice] }}
 </ng-template>

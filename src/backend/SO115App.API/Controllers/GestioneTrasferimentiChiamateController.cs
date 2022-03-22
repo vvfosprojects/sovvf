@@ -9,6 +9,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimen
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate.CodiciChiamate;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -37,6 +38,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di Trasferire una Chiamata
         /// </summary>
         [HttpPost("Add")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add(TrasferimentoChiamata trasferimento)
         {
             var command = new AddTrasferimentoCommand()
@@ -66,6 +69,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista dei Trasferimenti
         /// </summary>
         [HttpPost("")]
+        [ProducesResponseType(typeof(TrasferimentiChiamateResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get(TrasferimentiChiamateQuery query)
         {
             query.IdOperatore = Request.Headers["IdUtente"];
@@ -88,6 +93,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista dei codici delle Chiamate
         /// </summary>
         [HttpGet("GetCodiciChiamate")]
+        [ProducesResponseType(typeof(List<string>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetCodiciChiamate()
         {
             var query = new CodiciChiamateQuery()
@@ -113,6 +120,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di rimuovere un Trasferimento
         /// </summary>
         [HttpGet("Delete")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         private async Task<IActionResult> Delete(string Id)
         {
             try

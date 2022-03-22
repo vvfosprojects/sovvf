@@ -42,7 +42,9 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Restituisce la lista dei mezzi utilizzabili in un determinato comando
         /// </summary>
-        [HttpPost]
+        [ProducesResponseType(typeof(ComposizioneMezziResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [HttpPost("")]
         public async Task<IActionResult> Post(ComposizioneMezziQuery query)
         {
             query.CodiciSedi = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);

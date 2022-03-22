@@ -125,7 +125,6 @@
                                         <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
                                                 [ngbPopover]="popSquadre"
                                                 container="body"
-                                                popoverTitle="Squadre"
                                                 triggers="click"
                                                 tabindex="0"
                                                 placement="bottom-right"
@@ -135,11 +134,22 @@
                                             <span>{{ squadre?.length }}</span>
                                         </button>
                                         <ng-template #popSquadre>
-                                            <div class="h6" *ngFor="let s of squadre">
-                                                <span>{{ s['nome'] }}</span>
-                                                <span> ({{ s['turno'] }})</span>
+                                            <div [class.text-light]="nightMode">
+                                                <h5 class="font-weight-bolder">
+                                                    Squadre
+                                                </h5>
+                                                <div *ngFor="let s of squadre; let i = index">
+                                                    <h6 [class.mb-0]="(i + 1) === squadre.length">
+                                                        <app-icona-stato [stato]="_nomeStatiSquadra(s.stato)">
+                                                        </app-icona-stato>
+                                                        {{ s.nome }}
+                                                        ({{ s.turno }})
+                                                    </h6>
+                                                </div>
+                                                <ng-container *ngIf="!squadre?.length">
+                                                    <h6 class="mb-0">Nessuna Squadra</h6>
+                                                </ng-container>
                                             </div>
-                                            <h6 class="mb-0" *ngIf="squadre?.length === 0">Nessuna Squadra</h6>
                                         </ng-template>
                                     </ng-container>
                                 </span>
@@ -148,34 +158,39 @@
                                 <span class="nowrap">
                                     <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
                                             [ngbPopover]="popMezzi"
-                                            popoverTitle="Mezzi"
                                             triggers="click"
                                             tabindex="0"
                                             placement="bottom-right"
                                             (click)="$event.stopPropagation()">
                                         <i class="guida fas fa-truck fa-fw ml-2 mr-1" ngbTooltip="Numero Mezzi"></i>
                                         <span>{{ methods.numeroMezzi(richiesta) }}</span>
-                                        <span *ngIf="methods.numeroMezziInRietro(richiesta) > 0">:{{ methods.numeroMezziInRietro(richiesta) }}
+                                        <span *ngIf="methods.numeroMezziInRientro(richiesta) > 0">:{{ methods.numeroMezziInRientro(richiesta) }}
                                             r</span>
                                     </button>
 
                                     <ng-template #popMezzi>
-                                        <div class="nowrap" *ngFor="let m of methods.mezziRichiesta(richiesta)">
-                                            <span>
-                                                <span class="badge badge-secondary">{{ m?.stato }}</span>
-                                                <span class="font-weight-bold mx-1">{{ m?.descrizione }}</span>
-                                                <small>{{ m?.genere }}</small>
-                                            </span>
+                                        <div [class.text-light]="nightMode">
+                                            <h5 class="font-weight-bolder">
+                                                Mezzi
+                                            </h5>
+                                            <div *ngFor="let m of methods.mezziRichiesta(richiesta); let i = index">
+                                                <h6 [class.mb-0]="(i + 1) === methods.mezziRichiesta(richiesta)?.length">
+                                                    <app-icona-stato [stato]="m.stato"></app-icona-stato>
+                                                    {{ m?.descrizione }}
+                                                    {{ m?.genere }}
+                                                </h6>
+                                            </div>
+                                            <ng-container
+                                                    *ngIf="methods.numeroMezzi(richiesta) === 0 && methods.numeroMezziInRientro(richiesta) === 0">
+                                                <h6 class="mb-0">Nessun Mezzo</h6>
+                                            </ng-container>
                                         </div>
-                                        <h6 class="mb-0"
-                                            *ngIf="methods.numeroMezzi(richiesta) === 0 && methods.numeroMezziInRietro(richiesta) === 0 ">
-                                            Nessun Mezzo
-                                        </h6>
                                     </ng-template>
                                 </span>
 
                                 <button *ngIf="!fissata && fissabile"
-                                        class="btn btn-light border py-0 px-0" style="width: 45px"
+                                        class="btn btn-light border py-0 px-0"
+                                        style="width: 45px"
                                         ngbTooltip="Fissa in alto"
                                         [disabled]="disableFissaInAlto"
                                         (click)="fissaClick(richiesta); $event.stopPropagation()">
@@ -183,7 +198,8 @@
                                 </button>
 
                                 <button *ngIf="fissata && fissabile"
-                                        class="btn btn-primary py-0 px-0" style="width: 45px"
+                                        class="btn btn-primary py-0 px-0"
+                                        style="width: 45px"
                                         ngbTooltip="Inserisci nella lista"
                                         (click)="fissaClick(richiesta); $event.stopPropagation()">
                                     <i class="fas fa-fw fa-thumbtack fa-rotate-45"></i>
@@ -196,7 +212,6 @@
                     <!-- SECONDA RIGA -->
                     <div class="row">
                         <div class="clearfix ml-4" style="width: 2%">
-
                         </div>
                         <div class="clearfix" style="width: 12%; align-self: center">
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
@@ -317,168 +332,180 @@
                         </div>
                     </div>
 
-                    <!-- box note localita e zone emergenza -->
+                    <!-- II livello di dettaglio -->
                     <ng-container *ngIf="inGestione">
                         <div class="col-12 default-cursor"
                              [class.d-none]="partenza">
-                            <!-- II livello di dettaglio -->
                             <div class="row mt-2">
                                 <!-- I colonna -->
                                 <div class="col-2">
                                     <div class="clearfix">
                                         <!-- Operatore chiamata -->
-                                        <div *ngIf="richiesta?.operatore as op">
+                                        <ng-container *ngIf="richiesta?.operatore as op">
                                             <h4 class="mb-0"
                                                 [ngbTooltip]="operatoreRegistrazioneChiamata">
                                                 <i class="guida fas fa-user fa-fw"></i>
                                                 <i class="guida fas fa-phone-alt fa-fw mr-1"></i>
-                                                {{ op?.nome + ' ' + op?.cognome | truncate: 14 }}
+                                                {{ op?.nome + ' ' + op?.cognome | truncate: 13 }}
                                                 <ng-template #operatoreRegistrazioneChiamata>
                                                     <div>
                                                         {{ op?.nome + ' ' + op?.cognome }} ha registrato la chiamata
                                                     </div>
                                                 </ng-template>
                                             </h4>
-                                        </div>
+                                        </ng-container>
 
                                         <!-- Presa in carico -->
-                                        <div *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico)">
-                                            <h4 *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
-                                                class="d-inline-block m-0 mr-1"
-                                                [ngbTooltip]="utentePresaInCarico">
-                                                <i class="guida far fa-calendar-check fa-fw mr-1"></i>
-                                                {{ utentiPresaInCaricoValue?.nominativo | truncate: 15 }}
-                                                <ng-template #utentePresaInCarico>
-                                                    <div>
-                                                        {{ utentiPresaInCaricoValue?.nominativo }} ha preso in carico
-                                                        {{ getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyDate }}
-                                                        {{ getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyHour: true }}
-                                                    </div>
-                                                </ng-template>
-                                            </h4>
-                                            <div *ngIf="richiesta?.listaUtentiPresaInCarico && richiesta?.listaUtentiPresaInCarico?.length > 1"
-                                                 ngbDropdown class="d-inline-block" placement="bottom">
-                                                <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
-                                                        (click)="$event.stopPropagation()">
-                                                    +{{ richiesta?.listaUtentiPresaInCarico?.length - 1 }}
-                                                </button>
-                                                <div ngbDropdownMenu class="p-2 text-center">
-                                                    <div *ngIf="methods._altriUtenti(richiesta?.listaUtentiPresaInCarico) as utentiTooltip">
-                                                        <div *ngFor="let utente of utentiTooltip">
-                                                            {{utente?.nominativo}}
-                                                            - {{utente?.dataInizioAttivita | friendlyDate}}
-                                                            {{utente?.dataInizioAttivita | friendlyHour: true}}
+                                        <ng-container *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico)">
+                                            <ng-container
+                                                    *ngIf="methods._primoUtente(richiesta?.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico">
+                                                <h4 class="d-inline-block m-0 mr-1"
+                                                    [ngbTooltip]="utentePresaInCarico">
+                                                    <i class="guida far fa-calendar-check fa-fw mr-1"></i>
+                                                    {{ utentiPresaInCaricoValue?.nominativo | truncate: 13 }}
+                                                    <ng-template #utentePresaInCarico>
+                                                        <div>
+                                                            {{ utentiPresaInCaricoValue?.nominativo }} ha preso in
+                                                            carico
+                                                            {{ getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyDate }}
+                                                            {{ getPresaInCaricoTooltip(utentiPresaInCaricoValue)?.dataInizioAttivita | friendlyHour: true }}
+                                                        </div>
+                                                    </ng-template>
+                                                </h4>
+                                            </ng-container>
+                                            <ng-container
+                                                    *ngIf="richiesta?.listaUtentiPresaInCarico && richiesta?.listaUtentiPresaInCarico?.length > 1">
+                                                <div ngbDropdown class="d-inline-block" placement="bottom">
+                                                    <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
+                                                            (click)="$event.stopPropagation()">
+                                                        +{{ richiesta?.listaUtentiPresaInCarico?.length - 1 }}
+                                                    </button>
+                                                    <div ngbDropdownMenu class="p-2 text-center">
+                                                        <div *ngIf="methods._altriUtenti(richiesta?.listaUtentiPresaInCarico) as utentiTooltip">
+                                                            <div *ngFor="let utente of utentiTooltip">
+                                                                {{utente?.nominativo}}
+                                                                - {{utente?.dataInizioAttivita | friendlyDate}}
+                                                                {{utente?.dataInizioAttivita | friendlyHour: true}}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </ng-container>
                                             <ng-template #nonPresaInCarico>
                                                 <h4>Nhon Presa in Carico</h4>
                                             </ng-template>
-                                        </div>
+                                        </ng-container>
 
                                         <!-- Scheda NUE -->
-                                        <div *ngIf="richiesta?.codiceSchedaNue">
-                                            <h4 *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue"
-                                                class="d-inline-block">
-                                                <i class="guida far fa-id-card fa-fw mr-1"
-                                                   ngbTooltip="Codice scheda NUE"
-                                                   placement="right">
-                                                </i>
-                                                S. NUE
-                                                <span class="d-inline-block font-weight-bold mr-1 cursor-pointer"
-                                                      (click)="onDettaglioSchedaContatto(richiesta?.codiceSchedaNue)">
-                                                {{ richiesta?.codiceSchedaNue }}
-                                            </span>
+                                        <ng-container *ngIf="richiesta?.codiceSchedaNue">
+                                            <ng-container *ngIf="richiesta?.codiceSchedaNue; else nessunCodiceNue">
+                                                <h4 class="d-inline-block">
+                                                    <i class="guida far fa-id-card fa-fw mr-1"
+                                                       ngbTooltip="Codice scheda NUE"
+                                                       placement="right">
+                                                    </i>
+                                                    S. NUE
+                                                    <div class="d-inline-block font-weight-bold mr-1 cursor-pointer"
+                                                         (click)="onDettaglioSchedaContatto(richiesta?.codiceSchedaNue)">
+                                                        {{ richiesta?.codiceSchedaNue }}
+                                                    </div>
 
-                                                <!-- Note Nue -->
-                                                <i *ngIf="richiesta?.noteNue" class="fa-fw fas fa-sticky-note guida"
-                                                   [ngbTooltip]="richiesta.noteNue"
-                                                   placement="right">
-                                                </i>
-                                            </h4>
+                                                    <!-- Note Nue -->
+                                                    <i *ngIf="richiesta?.noteNue" class="fa-fw fas fa-sticky-note guida"
+                                                       [ngbTooltip]="richiesta.noteNue"
+                                                       placement="right">
+                                                    </i>
+                                                </h4>
+                                            </ng-container>
                                             <ng-template #nessunCodiceNue>
                                                 <h4>Nessuna scheda NUE</h4>
                                             </ng-template>
-                                        </div>
+                                        </ng-container>
 
                                         <!-- Sedi allertate -->
-                                        <div *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate)">
-                                            <div *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate) as sediAllertate; else nonAllertata"
-                                                 class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
-                                                 [disableTooltip]="sediAllertate?.length <= 13" placement="bottom">
-                                                <i class="guida fas fa-exclamation-triangle fa-fw mr-1"
-                                                   style="font-size: 110%"
-                                                   ngbTooltip="Sedi Allertate"
-                                                   placement="right"></i>
-                                                {{ sediAllertate | truncate: 13 }}
-                                            </div>
-                                            <div *ngIf="richiesta?.codSOAllertate && richiesta?.codSOAllertate?.length > 1"
-                                                 ngbDropdown class="d-inline-block" placement="bottom">
-                                                <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
-                                                        (click)="$event.stopPropagation()">
-                                                    +{{ richiesta?.codSOAllertate?.length - 1 }}
-                                                </button>
-                                                <div ngbDropdownMenu class="p-2 text-center">
-                                                    <div *ngIf="methods._altreSediAllertate(richiesta?.sediAllertate) as codSOAllertate">
-                                                        <div *ngFor="let sede of codSOAllertate">
-                                                            {{ sede }}
-                                                        </div>
+                                        <ng-container *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate)">
+                                            <ng-container
+                                                    *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate) as sediAllertate; else nonAllertata">
+                                                <div class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
+                                                     [disableTooltip]="sediAllertate?.length <= 13" placement="bottom">
+                                                    <i class="guida fas fa-exclamation-triangle fa-fw mr-1"
+                                                       style="font-size: 110%"
+                                                       ngbTooltip="Sedi Allertate"
+                                                       placement="right"></i>
+                                                    {{ sediAllertate | truncate: 13 }}
+                                                </div>
+                                            </ng-container>
+                                            <ng-container
+                                                    *ngIf="richiesta?.codSOAllertate && richiesta?.codSOAllertate?.length > 1">
+                                                <div ngbDropdown class="d-inline-block" placement="bottom">
+                                                    <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
+                                                            (click)="$event.stopPropagation()">
+                                                        +{{ richiesta?.codSOAllertate?.length - 1 }}
+                                                    </button>
+                                                    <div ngbDropdownMenu class="p-2 text-center">
+                                                        <ng-container
+                                                                *ngIf="methods._altreSediAllertate(richiesta?.sediAllertate) as codSOAllertate">
+                                                            <div *ngFor="let sede of codSOAllertate">
+                                                                {{ sede }}
+                                                            </div>
+                                                        </ng-container>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </ng-container>
                                             <ng-template #nonAllertata class="badge badge-secondary text-white">
                                                 <!-- Nessuna Sede Allertata -->
                                             </ng-template>
-                                        </div>
+                                        </ng-container>
                                     </div>
                                 </div>
                                 <!-- II colonna Triage -->
-                                <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) <= 0"
-                                     class="col-8">
-                                    <div *ngIf="richiesta?.triageSummary?.length"
-                                         style="max-height: 170px;overflow-y: auto;">
-                                        <app-triage-summary-sintesi-richiesta [triageSummary]="richiesta?.triageSummary"
-                                                                              [pos]="richiesta?.dettaglioTipologia?.pos">
-                                        </app-triage-summary-sintesi-richiesta>
+                                <ng-container *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) <= 0">
+                                    <div class="col-8">
+                                        <ng-container *ngIf="richiesta?.triageSummary?.length">
+                                            <div style="max-height: 170px;overflow-y: auto;">
+                                                <app-triage-summary-sintesi-richiesta
+                                                        [triageSummary]="richiesta?.triageSummary"
+                                                        [pos]="richiesta?.dettaglioTipologia?.pos">
+                                                </app-triage-summary-sintesi-richiesta>
+                                            </div>
+                                        </ng-container>
                                     </div>
-                                </div>
+                                </ng-container>
                                 <!-- II colonna Lista Partenze -->
-                                <div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0"
-                                     class="col-8 px-0 border border-lista-partenze">
-                                    <div class="scroll-y max-height-richiesta">
-                                        <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
-                                        <app-lista-partenze [codiceRichiesta]="richiesta.codice"
-                                                            [partenze]="richiesta?.partenze"
-                                                            [listaEventi]="richiesta?.eventi"
-                                                            [statoRichiesta]="richiesta?.stato"
-                                                            [inGestione]="inGestione"
-                                                            [idDaSganciare]="idDaSganciare"
-                                                            [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenze)"
-                                                            [loadingActionMezzo]="loadingActionMezzo"
-                                                            [diffDateInfoMezzo]="diffDateInfoMezzo"
-                                                            [annullaStatoMezzi]="annullaStatoMezzi"
-                                                            (actionMezzo)="onActionMezzo($event)"
-                                                            (eliminaPartenza)="onEliminaPartenza($event)"
-                                                            (modificaPartenza)="onModificaPartenza($event)"
-                                                            (sostituzioneFineTurno)="onSostituzioneFineTurno(richiesta.partenze)"
-                                                            (selezioneMezzo)="onSelezioneMezzoPartenza($event)">
-                                        </app-lista-partenze>
+                                <ng-container *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0">
+                                    <div class="col-8 px-0 border border-lista-partenze"
+                                         style="height: fit-content">
+                                        <div class="scroll-y max-height-richiesta">
+                                            <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
+                                            <app-lista-partenze [richiesta]="richiesta"
+                                                                [inGestione]="inGestione"
+                                                                [idDaSganciare]="idDaSganciare"
+                                                                [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenze)"
+                                                                [loadingActionMezzo]="loadingActionMezzo"
+                                                                [annullaStatoMezzi]="annullaStatoMezzi"
+                                                                (actionMezzo)="onActionMezzo($event)"
+                                                                (eliminaPartenza)="onEliminaPartenza($event)"
+                                                                (modificaPartenza)="onModificaPartenza($event)"
+                                                                (sostituzioneFineTurno)="onSostituzioneFineTurno(richiesta.partenze)"
+                                                                (selezioneMezzo)="onSelezioneMezzoPartenza($event)">
+                                            </app-lista-partenze>
+                                        </div>
                                     </div>
-                                </div>
+                                </ng-container>
                                 <!-- III colonna -->
                                 <div class="col-2">
                                     <div class="clearfix">
                                         <!-- turno intervento -->
                                         <div class="text-right">
-                                            <h4 *ngIf="richiesta?.trnInsChiamata; else nessunTurno"
-                                                class="mb-0">
-                                                {{ richiesta?.trnInsChiamata }}
-                                                <i class="fa-fw far fa-calendar-check guida ml-1"
-                                                   ngbTooltip="Turno Inserimento"
-                                                   placement="left">
-                                                </i>
-                                            </h4>
+                                            <ng-container *ngIf="richiesta?.trnInsChiamata; else nessunTurno">
+                                                <h4 class="mb-0">
+                                                    {{ richiesta?.trnInsChiamata }}
+                                                    <i class="fa-fw far fa-calendar-check guida ml-1"
+                                                       ngbTooltip="Turno Inserimento"
+                                                       placement="left">
+                                                    </i>
+                                                </h4>
+                                            </ng-container>
                                             <ng-template #nessunTurno>
                                                 <h4>
                                                     <span class="d-inline-block mr-1">-</span>
@@ -534,64 +561,75 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div *ngIf="richiesta?.localita?.note || richiesta?.notePrivate || richiesta?.notePubbliche || richiesta?.zoneEmergenza?.length || richiesta?.tags?.length">
-                                <div class="card note-localita bg_diagonal_grey mt-1">
-                                    <div class="card-header py-1 px-2">
-                                        <div class="card-title mb-0">Note</div>
-                                    </div>
-                                    <div class="card-body py-2">
-                                        <ng-container *ngIf="richiesta?.localita?.note">
-                                            <h6 class="mb-1">
-                                            <span class="cursor-pointer"
-                                                  ngbTooltip="Note Indirizzo"
-                                                  placement="top">
-                                                <i class="fas fa-map-marker mr-1"></i>
-                                                <i class="fas fa-sticky-note mr-1"></i>
-                                            </span>
-                                                {{ richiesta.localita.note }}
-                                            </h6>
-                                        </ng-container>
-                                        <ng-container *ngIf="richiesta?.notePrivate">
-                                            <h6 class="mb-1">
-                                            <span class="cursor-pointer"
-                                                  ngbTooltip="Note Private"
-                                                  placement="top">
-                                                <i class="fas fa-user-lock mr-1"></i>
-                                                <i class="fas fa-sticky-note mr-1"></i>
-                                            </span>
-                                                {{ richiesta.notePrivate }}
-                                            </h6>
-                                        </ng-container>
-                                        <ng-container *ngIf="richiesta?.notePubbliche">
-                                            <h6 class="mb-1">
-                                            <span class="cursor-pointer"
-                                                  ngbTooltip="Note Pubbliche"
-                                                  placement="top">
-                                                <i class="fas fa-sticky-note mr-1"></i>
-                                            </span>
-                                                {{ richiesta.notePubbliche }}
-                                            </h6>
-                                        </ng-container>
-                                        <ng-container *ngIf="richiesta?.zoneEmergenza?.length">
-                                            <div *ngFor="let ze of richiesta.zoneEmergenza"
-                                                 class="badge badge-danger m-1">
-                                                {{ ze }}
-                                            </div>
-                                        </ng-container>
-                                        <ng-container *ngIf="richiesta?.tags?.length">
-                                            <div>
-                                                <i class="guida fas fa-tags fa-fw text-left mr-1" title="Etichette"></i>
-                                                <div *ngFor="let tag of richiesta?.tags"
-                                                     class="badge badge-secondary text-right py-2 m-1">
-                                                    <i class="fas fa-hashtag fa-fw text-left"></i>
-                                                    {{ tag }}
+                            <!-- box note localita e zone emergenza -->
+                            <ng-container
+                                    *ngIf="richiesta?.localita?.note || richiesta?.notePrivate || richiesta?.notePubbliche || richiesta?.zoneEmergenza?.length || richiesta?.tags?.length">
+                                <div class="row">
+                                    <div class="col-12 mt-2">
+                                        <div class="card">
+                                            <div class="card-body py-2">
+                                                <div class="row">
+                                                    <ng-container *ngIf="richiesta?.localita?.note">
+                                                        <div class="col">
+                                                            <div class="d-inline-block cursor-pointer"
+                                                                 ngbTooltip="Note Indirizzo"
+                                                                 placement="top">
+                                                                <i class="fas fa-sticky-note guida mr-1"></i>
+                                                                <i class="fas fa-map-marker-alt guida mr-1"></i>
+                                                            </div>
+                                                            <b>Note località - </b>{{ richiesta.localita.note }}
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="richiesta?.notePrivate">
+                                                        <div class="col">
+                                                            <div class="d-inline-block cursor-pointer"
+                                                                 ngbTooltip="Note Private"
+                                                                 placement="top">
+                                                                <i class="fas fa-sticky-note guida mr-1"></i>
+                                                                <i class="fas fa-user-lock guida mr-1"></i>
+                                                            </div>
+                                                            <b>Note private - </b>{{ richiesta.notePrivate }}
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="richiesta?.notePubbliche">
+                                                        <div class="col">
+                                                            <div class="d-inline-block cursor-pointer"
+                                                                 ngbTooltip="Note Pubbliche"
+                                                                 placement="top">
+                                                                <i class="fas fa-sticky-note guida mr-1"></i>
+                                                            </div>
+                                                            <b>Note pubbliche - </b>{{ richiesta.notePubbliche }}
+                                                        </div>
+                                                    </ng-container>
                                                 </div>
+                                                <ng-container *ngIf="richiesta?.zoneEmergenza?.length">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div *ngFor="let ze of richiesta.zoneEmergenza"
+                                                                 class="badge badge-danger m-1">
+                                                                {{ ze }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                                <ng-container *ngIf="richiesta?.tags?.length">
+                                                    <div class="row">
+                                                        <div class="mt-1 col-12">
+                                                            <i class="guida fas fa-tags mr-1"
+                                                               title="Etichette"></i>
+                                                            <div *ngFor="let tag of richiesta?.tags"
+                                                                 class="badge badge-secondary">
+                                                                <i class="fas fa-hashtag fa-fw"></i>
+                                                                {{ tag | uppercase }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
                                             </div>
-                                        </ng-container>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </div>
                     </ng-container>
                 </div>

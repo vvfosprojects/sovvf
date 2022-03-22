@@ -71,8 +71,8 @@ export class TrasferimentoChiamataModalState {
         this.trasferimentoChiamataService.getRichiesteTrasferibili().subscribe((codiciRichieste: string[]) => {
             const currentUser = this.store.selectSnapshot(AuthState.currentUser);
             const concorrenza = this.store.selectSnapshot(ConcorrenzaState.concorrenza);
-            const richiesteConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.idOperatore !== currentUser.id);
-            const codiciRichiesteConcorrenza = richiesteConcorrenza.map((c: ConcorrenzaInterface) => c.value);
+            const richiesteConcorrenza = concorrenza?.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.idOperatore !== currentUser.id);
+            const codiciRichiesteConcorrenza = richiesteConcorrenza?.map((c: ConcorrenzaInterface) => c.value);
             let codiciRichiesteTrasferibili = [] as string[];
             if (richiesteConcorrenza?.length) {
                 codiciRichieste.forEach((codiceRichiesta: string) => {

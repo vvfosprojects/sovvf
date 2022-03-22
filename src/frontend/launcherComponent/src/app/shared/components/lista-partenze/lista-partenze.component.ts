@@ -2,13 +2,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { Partenza } from '../../model/partenza.model';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
-import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 import { Store } from '@ngxs/store';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
-import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
 import { Mezzo } from '../../model/mezzo.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-lista-partenze',
@@ -17,15 +16,11 @@ import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 })
 export class ListaPartenzeComponent {
 
-    @Input() codiceRichiesta: string;
+    @Input() richiesta: SintesiRichiesta;
     @Input() idDaSganciare: string;
-    @Input() partenze: Partenza[];
-    @Input() listaEventi: EventoMezzo[];
-    @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;
     @Input() sostituzioneFineTurnoActive: boolean;
     @Input() loadingActionMezzo: string[];
-    @Input() diffDateInfoMezzo: any;
     @Input() annullaStatoMezzi: string[];
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();

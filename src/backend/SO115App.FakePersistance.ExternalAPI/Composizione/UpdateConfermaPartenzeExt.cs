@@ -72,54 +72,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                foreach (var squadra in partenza.Squadre)
-                {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
-
-                    //Chiamata OPService per aggiornare lo stato delle Squadre "ALLOCATE" oppure "DEALLOCATE"
-                    if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
-                    {
-                        if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
-                        {
-                            var IndexUtente = command.Richiesta.UtPresaInCarico.Count - 1;
-
-                            _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
-                            {
-                                actionType = "ALLOCATE",
-                                createdAt = DateTime.Now,
-                                id = squadra.IdOPService,
-                                id_chiamata = command.ConfermaPartenze.IdRichiesta,
-                                id_mezzi = new string[1] { partenza.Mezzo.Codice },
-                                id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
-                                id_utente = command.Richiesta.UtPresaInCarico[IndexUtente],
-                                spotId = squadra.spotId,
-                                spotType = squadra.spotType,
-                                version = squadra.version,
-                                workshiftId = squadra.workshiftId
-                            });
-                        }
-                        else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
-                        {
-                            var IndexUtente = command.Richiesta.UtPresaInCarico.Count - 1;
-
-                            _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
-                            {
-                                actionType = "DEALLOCATE",
-                                createdAt = DateTime.Now,
-                                id = squadra.IdOPService,
-                                id_chiamata = command.Richiesta.Id,
-                                id_mezzi = new string[1] { partenza.Mezzo.Codice },
-                                id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
-                                id_utente = command.Richiesta.UtPresaInCarico[IndexUtente],
-                                spotId = squadra.spotId,
-                                spotType = squadra.spotType,
-                                version = squadra.version,
-                                workshiftId = squadra.workshiftId
-                            });
-                        }
-                    }
-                }
-
                 var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
 
                 //GAC USCITA/ENTRATA
@@ -173,8 +125,62 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                         });
                     }
+                
+                if (partenza.Mezzo.Distaccamento?.Codice != null)
+                    _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento?.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
+                else if (partenza.Mezzo.Appartenenza != null)
+                    _setStatoOperativoMezzo.Set(partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
+                
+                foreach (var squadra in partenza.Squadre)
+                {
+                    //Chiamata OPService per aggiornare lo stato delle Squadre "ALLOCATE" oppure "DEALLOCATE"
+                    if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
+                    {
+                        if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                        {
+                            var IndexUtente = command.Richiesta.UtPresaInCarico.Count - 1;
 
-                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento?.Codice ?? "", partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
+                            _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
+                            {
+                                actionType = "ALLOCATE",
+                                createdAt = DateTime.Now,
+                                id = squadra.IdOPService,
+                                id_chiamata = command.ConfermaPartenze.IdRichiesta,
+                                id_mezzi = new string[1] { partenza.Mezzo.Codice },
+                                id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
+                                id_utente = command.Richiesta.UtPresaInCarico[IndexUtente],
+                                spotId = squadra.spotId,
+                                spotType = squadra.spotType,
+                                version = squadra.version,
+                                workshiftId = squadra.workshiftId
+                            });
+                        }
+                        else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                        {
+                            var IndexUtente = command.Richiesta.UtPresaInCarico.Count - 1;
+
+                            _setStatoSquadraOPService.SetStatoSquadraOPService(new Models.Classi.ServiziEsterni.OPService.actionDTO()
+                            {
+                                actionType = "DEALLOCATE",
+                                createdAt = DateTime.Now,
+                                id = squadra.IdOPService,
+                                id_chiamata = command.Richiesta.Id,
+                                id_mezzi = new string[1] { partenza.Mezzo.Codice },
+                                id_sede = command.ConfermaPartenze.CodiceSede.Split('.')[0],
+                                id_utente = command.Richiesta.UtPresaInCarico[IndexUtente],
+                                spotId = squadra.spotId,
+                                spotType = squadra.spotType,
+                                version = squadra.version,
+                                workshiftId = squadra.workshiftId
+                            });
+                        }
+                    }
+
+                    if (partenza.Mezzo.Distaccamento.Codice != null)
+                        _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
+                    else if (partenza.Mezzo.Appartenenza != null)
+                        _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
+                }
             }
 
             _updateRichiesta.UpDate(command.Richiesta);

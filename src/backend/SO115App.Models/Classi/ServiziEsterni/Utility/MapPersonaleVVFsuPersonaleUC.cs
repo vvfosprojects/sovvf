@@ -29,7 +29,12 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
                     id = personaUC.sede.id,
                     descrizione = personaUC.sede.descrizione
                 },
-                nome = $"{personaUC.cognome}.{personaUC.nome}"
+                nome = personaUC.nome,
+                tipoPersonale = personaUC.tipoPersonale,
+                turno = personaUC.turno,
+                specializzazioni = personaUC.specializzazioni,
+                qualifica = personaUC.qualifica,
+                cognome = personaUC.cognome
             }));
 
             return listaPersonaleVVF.ToList().OrderBy(n => n.nome).ToList();

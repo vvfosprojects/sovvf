@@ -1,8 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import {
-    GetRubricaPersonale,
-    SetRubricaPersonale, StartLoadingRubricaPersonale, StopLoadingRubricaPersonale,
-} from '../../actions/rubrica-personale/rubrica-personale.actions';
+import { GetRubricaPersonale, SetRubricaPersonale, StartLoadingRubricaPersonale, StopLoadingRubricaPersonale } from '../../actions/rubrica-personale/rubrica-personale.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { Injectable } from '@angular/core';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
@@ -64,7 +61,7 @@ export class RubricaPersonaleState {
                 new SetRubricaPersonale(response.dataArray),
                 new StopLoadingRubricaPersonale()
             ]);
-        });
+        }, () => dispatch(new StopLoadingRubricaPersonale()));
     }
 
     @Action(SetRubricaPersonale)

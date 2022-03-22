@@ -9,11 +9,6 @@ interface InfoMezzo {
     istante: Date;
 }
 
-interface DiffInfoMezzo {
-    codMezzo: string;
-    diff: number;
-}
-
 export interface LoadingStateModel {
     loading: boolean;
     annullaStatoMezzi: InfoMezzo[];
@@ -43,26 +38,11 @@ export class LoadingState {
         return listaMezzi;
     }
 
-    @Selector()
-    static diffDateInfoMezzo(state: LoadingStateModel): DiffInfoMezzo[] {
-        // TODO: Implementazione progressbar
-        const diffDate = [];
-        // state.annullaStatoMezzi.forEach((annullaStatoMezzi: InfoMezzo) => {
-        //     const now = new Date();
-        //     const secondsDiff = Math.round((now.getTime() - annullaStatoMezzi.istante.getTime()) / 1000);
-        //     diffDate.push({
-        //         codMezzo: annullaStatoMezzi.codMezzo,
-        //         secondsDiff: secondsDiff ? secondsDiff : 60
-        //     });
-        // });
-        return diffDate;
-    }
-
     constructor(private ngxLoader: NgxUiLoaderService) {
     }
 
     @Action(AddAnnullaStatoMezzi)
-    addAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: any): void {
+    addAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: AddAnnullaStatoMezzi): void {
         const data = new Date();
         const obj = {
             codMezzo: action.codMezzo,
@@ -76,7 +56,7 @@ export class LoadingState {
     }
 
     @Action(RemoveAnnullaStatoMezzi)
-    removeAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: any): void {
+    removeAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: RemoveAnnullaStatoMezzi): void {
         setState(
             patch({
                 annullaStatoMezzi: removeItem<any>(mezzo => mezzo.codMezzo === action.codMezzo)
@@ -99,12 +79,12 @@ export class LoadingState {
     }
 
     @Action(StartBigLoading)
-    startBigLoading({ patchState }: StateContext<LoadingStateModel>): void {
+    startBigLoading(): void {
         this.ngxLoader.start();
     }
 
     @Action(StopBigLoading)
-    stopBigLoading({ patchState }: StateContext<LoadingStateModel>): void {
+    stopBigLoading(): void {
         this.ngxLoader.stop();
     }
 }

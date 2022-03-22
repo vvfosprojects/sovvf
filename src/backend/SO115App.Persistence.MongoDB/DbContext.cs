@@ -43,6 +43,7 @@ using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.ELogBook;
 using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
@@ -177,7 +178,8 @@ namespace Persistence.MongoDB
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
-            BsonClassMap.RegisterClassMap<ComposizioneSquadra>(cm =>
+
+            BsonClassMap.RegisterClassMap<WorkShift>(cm =>
             {
                 cm.AutoMap();
                 cm.MapIdMember(c => c.Id)
@@ -202,11 +204,11 @@ namespace Persistence.MongoDB
             }
         }
 
-        public IMongoCollection<ComposizioneSquadra> ComposizioneSquadreCollection
+        public IMongoCollection<WorkShift> SquadreCollection
         {
             get
             {
-                return database.GetCollection<ComposizioneSquadra>("composizioneSquadre");
+                return database.GetCollection<WorkShift>("squadre");
             }
         }
 

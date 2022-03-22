@@ -1,16 +1,8 @@
-﻿using CQRS.Commands;
-using CQRS.Queries;
+﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.Models.Classi.Emergenza;
 using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.AnnullaEmergenza;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.InsertEmergenza;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneEmergenza.UpdateEmergenza;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetEmergenzaById;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetListaEmergenzeByCodComando;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetModuliByCodComando;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneEmergenza.GetTipologieEmergenza;
 using System;
 using System.Threading.Tasks;
 
@@ -32,6 +24,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce la lista dei moduli di colonna mobile di una specifica sede
         /// </summary>
         [HttpPost("GetListaModuliByCodSede")]
+        [ProducesResponseType(typeof(GetModuliByCodComandoResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetListaModuliByCodSede(GetModuliByCodComandoQuery query)
         {
             try

@@ -3,6 +3,7 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.DeleteEnte;
@@ -11,6 +12,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica.Categorie;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -46,6 +48,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce l'elenco degli elementi presenti in rubrica
         /// </summary>
         [HttpPost("")]
+        [ProducesResponseType(typeof(RubricaResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get([FromBody] RubricaQuery rubricaQuery)
         {
             try
@@ -68,6 +72,8 @@ namespace SO115App.API.Controllers
         ///   Aggiunge un nuovo elemento in rubrica
         /// </summary>
         [HttpPost("Add")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add(EnteIntervenuto ente)
         {
             try
@@ -96,6 +102,8 @@ namespace SO115App.API.Controllers
         ///   Aggiorna un elemento in rubrica
         /// </summary>
         [HttpPost("Update")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Update(EnteIntervenuto ente)
         {
             try
@@ -124,6 +132,8 @@ namespace SO115App.API.Controllers
         ///   Cancella un elemento in rubrica
         /// </summary>
         [HttpGet("Delete")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete(string Id)
         {
             try
@@ -152,6 +162,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce l'elenco delle categorie presenti in rubrica
         /// </summary>
         [HttpGet("GetCategorie")]
+        [ProducesResponseType(typeof(List<CategoriaEnte>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetCategorie()
         {
             try
@@ -177,6 +189,8 @@ namespace SO115App.API.Controllers
         ///   Aggiunge un ente intervenuto in un intervento
         /// </summary>
         [HttpPost("AddEnteIntervenuto")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AddEnteIntervenuto(EntiIntervenutiCommand enteIntervenuto)
         {
             try

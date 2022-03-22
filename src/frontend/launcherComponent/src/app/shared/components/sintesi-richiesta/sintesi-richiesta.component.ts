@@ -31,6 +31,7 @@ import { Mezzo } from '../../model/mezzo.model';
 import { MezziInServizioState } from '../../../features/home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { PosDettaglioModalComponent } from '../../modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { nomeStatiSquadra } from '../../helper/function-composizione';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -56,7 +57,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disableFissaInAlto: boolean;
     @Input() loadingEliminaPartenza: boolean;
     @Input() loadingActionMezzo: string[];
-    @Input() diffDateInfoMezzo: any;
     @Input() disabledModificaRichiesta: boolean;
     @Input() disabledGestisciRichiesta: boolean;
     @Input() disabledAzioniRichiesta: boolean;
@@ -199,13 +199,15 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     }
 
     _isSostituzioneFineTurnoActive(partenze: Partenza[]): boolean {
-        if (partenze?.length > 0) {
-            return partenze.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
-        }
+        return partenze?.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
     }
 
     checkNumeroPartenzeAttive(partenze: Partenza[]): number {
         return checkNumeroPartenzeAttive(partenze);
+    }
+
+    _nomeStatiSquadra(statoSquadra: number): string {
+        return nomeStatiSquadra(statoSquadra);
     }
 
     onDettaglioSchedaContatto(codiceScheda: string): void {

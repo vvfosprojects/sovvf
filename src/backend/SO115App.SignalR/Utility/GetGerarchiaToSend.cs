@@ -31,15 +31,14 @@ namespace SO115App.SignalR.Utility
 
 
 
-            foreach (var direzioneRegionale in listaSediAlberata.Result.Figli.First().Figli)
+            foreach (var direzioneRegionale in listaSediAlberata.Result.Figli)
             {
                 if (direzioneRegionale.Equals(unitaperativa))
                 {
                     ListaCodiciSediInteressate.Add(direzioneRegionale.Codice);
                     ListaCodiciSediInteressate.Add(unitaperativa.Codice);
                     foreach (var comune in direzioneRegionale.Figli)
-                        ListaCodiciSediInteressate.Add(comune.Codice);                       
-                    
+                        ListaCodiciSediInteressate.Add(comune.Codice);    
                 }
                 else
                 {
@@ -51,6 +50,7 @@ namespace SO115App.SignalR.Utility
                             ListaCodiciSediInteressate.Add(comune.Codice);
                             ListaCodiciSediInteressate.Add(unitaperativa.Codice);
                         }
+
                         foreach(var distaccamento in comune.Figli)
                         {
                             if (distaccamento.Equals(unitaperativa))
@@ -72,7 +72,7 @@ namespace SO115App.SignalR.Utility
                 }
             }
 
-            return ListaCodiciSediInteressate.Distinct().ToList();
+            return ListaCodiciSediInteressate.FindAll(s => s != null).Distinct().ToList();
         }
     }
 }
