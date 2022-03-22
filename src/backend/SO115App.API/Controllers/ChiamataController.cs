@@ -67,6 +67,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Aggiunta intervento
         /// </summary>
+        [ProducesResponseType(typeof(SintesiRichiesta), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] Intervento chiamata)
         {
@@ -111,6 +113,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Aggiunta interventi direttamente da Survey123
         /// </summary>
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         [HttpPost("AddFromSurvey123")]
         public async Task<IActionResult> AddFromSurvey123([FromBody] ChiamataFromSurvey123 chiamata)
         {
@@ -140,6 +144,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Modifica Intervento
         /// </summary>
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         [HttpPost("UpdateIntervento")]
         public async Task<IActionResult> UpdateIntervento([FromBody] Intervento chiamata)
         {

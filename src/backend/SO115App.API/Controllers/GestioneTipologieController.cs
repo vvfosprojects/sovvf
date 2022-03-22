@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -23,6 +25,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista delle Tipologie
         /// </summary>
         [HttpGet]
+        [ProducesResponseType(typeof(List<Tipologia>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get()
         {
             try

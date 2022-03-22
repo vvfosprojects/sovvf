@@ -61,6 +61,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Restituisce la lista delle squadre utilizzabili in un determinato comando
         /// </summary>
+        [ProducesResponseType(typeof(ComposizioneSquadreResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizioneSquadra filtri)
         {

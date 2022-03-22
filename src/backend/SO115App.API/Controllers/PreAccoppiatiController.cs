@@ -53,6 +53,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista dei PreAccoppiati
         /// </summary>
         [HttpPost("")]
+        [ProducesResponseType(typeof(PreAccoppiatiResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Post(FiltriPreaccoppiati filtri)
         {
             var query = new PreAccoppiatiQuery()
