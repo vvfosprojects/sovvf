@@ -13,7 +13,7 @@ import {
     RemoveSquadreLibereDistaccamentoCodaChiamate,
     RemoveSquadreOccupateDistaccamentoCodaChiamate,
     StartLoadingCodaChiamate,
-    StopLoadingCodaChiamate
+    StopLoadingCodaChiamate, StartLoadingItemCodaChiamate, StopLoadingItemCodaChiamate
 } from '../../actions/coda-chiamate/coda-chiamate.actions';
 import { ItemChart } from '../../../../../shared/interface/item-chart.interface';
 import { DataGraficoCodaChiamateDto } from '../../../../../shared/interface/dto/coda-chiamate/data-grafico-coda-chiamate-dto.interface';
@@ -30,11 +30,13 @@ import produce from 'immer';
 export interface CodaChiamateStateModel {
     data: ItemGraficoCodaChiamate[];
     loading: boolean;
+    loadingItemData: boolean;
 }
 
 export const CodaChiamateStateDefaults: CodaChiamateStateModel = {
     data: undefined,
-    loading: undefined
+    loading: undefined,
+    loadingItemData: undefined
 };
 
 @Injectable()
@@ -77,6 +79,11 @@ export class CodaChiamateState {
     @Selector()
     static loading(state: CodaChiamateStateModel): boolean {
         return state.loading;
+    }
+
+    @Selector()
+    static loadingItemData(state: CodaChiamateStateModel): boolean {
+        return state.loadingItemData;
     }
 
     constructor(private codaChiamateService: CodaChiamateService,
@@ -122,7 +129,9 @@ export class CodaChiamateState {
     @Action(OpenModalDettaglioDistaccamento)
     openModalDettaglioDistaccamento({ patchState, dispatch }: StateContext<CodaChiamateStateModel>, action: OpenModalDettaglioDistaccamento): void {
         const codSede = action.item.extra.code;
+        dispatch(new StartLoadingItemCodaChiamate());
         this.codaChiamateService.getDettaglioSede(codSede).subscribe((response: DettaglioSedeCodaChiamateDto) => {
+            dispatch(new StopLoadingItemCodaChiamate());
             if (response?.infoDistaccamento) {
                 const modalOptions = {
                     windowClass: 'modal-holder xxlModal',
@@ -153,7 +162,7 @@ export class CodaChiamateState {
                     });
                 });
             }
-        });
+        }, () => dispatch(new StopLoadingItemCodaChiamate()));
     }
 
     @Action(AddChiamateDistaccamentoCodaChiamate)
@@ -276,6 +285,22 @@ export class CodaChiamateState {
     stopLoadingCodaChiamate({ patchState }: StateContext<CodaChiamateStateModel>): void {
         patchState({
                 loading: false
+            }
+        );
+    }
+
+    @Action(StartLoadingItemCodaChiamate)
+    startLoadingItemCodaChiamate({ patchState }: StateContext<CodaChiamateStateModel>): void {
+        patchState({
+                loadingItemData: true
+            }
+        );
+    }
+
+    @Action(StopLoadingItemCodaChiamate)
+    stopLoadingItemCodaChiamate({ patchState }: StateContext<CodaChiamateStateModel>): void {
+        patchState({
+                loadingItemData: false
             }
         );
     }

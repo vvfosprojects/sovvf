@@ -65,3 +65,11 @@ export class StartLoadingCodaChiamate {
 export class StopLoadingCodaChiamate {
     static readonly type = '[CodaChiamate] Stop Loading Coda Chiamate';
 }
+
+export class StartLoadingItemCodaChiamate {
+    static readonly type = '[CodaChiamate] Start Loading Item Coda Chiamate';
+}
+
+export class StopLoadingItemCodaChiamate {
+    static readonly type = '[CodaChiamate] Stop Loading Item Coda Chiamate';
+}
