@@ -135,7 +135,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che gestisce una specifica Scheda Contatto
         /// </summary>
         [HttpPut("SetGestita")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> SetGestita([FromBody] SetSchedaGestitaCommand command)
         {
@@ -159,7 +159,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di raggruppare una lista di Schede Contatto
         /// </summary>
         [HttpPost("MergeSchede")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> MergeSchede([FromBody] string[] scheda)
         {
@@ -189,7 +189,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permettere di eliminare le schede raggruppate ad una specifica Scheda Contatto
         /// </summary>
         [HttpPost("UndoMergeSchede")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> UndoMerge([FromBody] SchedaContatto scheda)
         {

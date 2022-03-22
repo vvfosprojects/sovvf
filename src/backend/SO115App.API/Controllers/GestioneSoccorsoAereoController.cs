@@ -153,7 +153,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di inserire una Richiesta di Soccorso Aereo
         /// </summary>
         [HttpPost("Inserisci")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> InserisciRichiestaSoccorsoAereo([FromBody] NuovaRichiestaAFM richiesta)
         {
@@ -185,7 +185,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di annullare una specifica Richiesta di Soccorso Aereo
         /// </summary>
         [HttpPost("Annulla")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AnnullaRichiestaSoccorsoAereo([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
         {

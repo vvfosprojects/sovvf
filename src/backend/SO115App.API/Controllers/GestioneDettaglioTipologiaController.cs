@@ -93,7 +93,7 @@ namespace SO115App.API.Controllers
         ///   Aggiunge un dettaglio tipologia associato ad una tipologia
         /// </summary>
         [HttpPost("Add")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add(TipologiaDettaglio dettaglio)
         {
@@ -123,7 +123,7 @@ namespace SO115App.API.Controllers
         ///   Cancella un dettaglio tipologia associato ad una tipologia
         /// </summary>
         [HttpPost("Delete")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete([FromBody] TipologiaDettaglioDelete Dettaglio)
         {
@@ -153,7 +153,7 @@ namespace SO115App.API.Controllers
         ///   Modifica un dettaglio tipologia associato ad una tipologia
         /// </summary>
         [HttpPost("Modify")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Modify(TipologiaDettaglio dettaglio)
         {

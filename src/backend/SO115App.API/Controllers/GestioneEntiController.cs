@@ -72,7 +72,7 @@ namespace SO115App.API.Controllers
         ///   Aggiunge un nuovo elemento in rubrica
         /// </summary>
         [HttpPost("Add")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add(EnteIntervenuto ente)
         {
@@ -102,7 +102,7 @@ namespace SO115App.API.Controllers
         ///   Aggiorna un elemento in rubrica
         /// </summary>
         [HttpPost("Update")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Update(EnteIntervenuto ente)
         {
@@ -132,7 +132,7 @@ namespace SO115App.API.Controllers
         ///   Cancella un elemento in rubrica
         /// </summary>
         [HttpGet("Delete")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete(string Id)
         {
@@ -189,7 +189,7 @@ namespace SO115App.API.Controllers
         ///   Aggiunge un ente intervenuto in un intervento
         /// </summary>
         [HttpPost("AddEnteIntervenuto")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AddEnteIntervenuto(EntiIntervenutiCommand enteIntervenuto)
         {
