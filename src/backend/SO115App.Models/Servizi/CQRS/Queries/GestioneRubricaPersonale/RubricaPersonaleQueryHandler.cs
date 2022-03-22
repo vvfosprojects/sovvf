@@ -59,7 +59,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                     Turno = personale.turno,
                     Telefono1 = contatti.Count() > 0 ? contatti[0] : "",
                     Telefono2 = contatti.Count() > 1 ? contatti[1] : "",
-                    Telefono3 = contatti.Count() > 0 ? contatti[0] : "",
+                    Telefono3 = contatti.Count() > 2 ? contatti[2] : "",
                     Stato = null, //dettaglioDipendente?.oraIngresso == null ? StatoPersonaleRubrica.NonInServizio : StatoPersonaleRubrica.InServizio,
                     Tipo = personale.tipoPersonale.codice == "2" ? TipoPersonaleRubrica.SoloOperativi : TipoPersonaleRubrica.AltroPersonale ?? TipoPersonaleRubrica.AltroPersonale
                 };
