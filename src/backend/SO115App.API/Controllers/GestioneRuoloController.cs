@@ -44,7 +44,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di aggiungere un ruolo ad un Utente
         /// </summary>
         [HttpPost("AddRuolo")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public IActionResult AddRuolo(AddRuoliUtenteCommand command)
         {
@@ -70,7 +70,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di rimuovere un ruolo ad un Utente
         /// </summary>
         [HttpPost("DeleteRuolo")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public IActionResult DeleteRuolo(DeleteRuoliUtenteCommand command)
         {

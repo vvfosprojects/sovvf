@@ -34,7 +34,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di aggiungere un Triage
         /// </summary>
         [HttpPost("Add")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add([FromBody] AddTriageCommand triage)
         {
@@ -96,7 +96,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di aggiornare uno specifico Triage
         /// </summary>
         [HttpPost("UpDate")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> UpDate([FromBody] UpDateTriageCommand triage)
         {

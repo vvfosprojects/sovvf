@@ -98,7 +98,7 @@ namespace SO115App.API.Controllers
         ///   Aggiorna un'emergenza
         /// </summary>
         [HttpPost("UpDateEmergenza")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> UpDateEmergenza([FromBody] EmergenzaDTO emergenza)
         {
@@ -127,7 +127,7 @@ namespace SO115App.API.Controllers
         ///   Crea un nuovo CRA e la sua almeratura (DOA e PCA)
         /// </summary>
         [HttpPost("CreazioneCra")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> CreazioneCra([FromBody] CreazioneCraDTO dto)
         {
@@ -158,7 +158,7 @@ namespace SO115App.API.Controllers
         ///   Annulla un'emergenza precedentemente creata
         /// </summary>
         [HttpPost("AnnullaEmergenza")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AnnullaEmergenza([FromBody] AnnullaEmergenzaCommand command)
         {
@@ -182,7 +182,7 @@ namespace SO115App.API.Controllers
         ///   Invia un'allerta emergenza alla dirigenza di riferimento e al con
         /// </summary>
         [HttpPost("AllertaEmergenza")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AllertaEmergenza([FromBody] AllertaCommand command)
         {
@@ -205,7 +205,7 @@ namespace SO115App.API.Controllers
         ///   Registra una richiesta, da parte del comando, di intervento delle colonne mobili, sull'emergenza
         /// </summary>
         [HttpPost("AddRichiestaEmergenza")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AddRichiestaEmergenza([FromBody] RichiestaCommand command)
         {
@@ -227,7 +227,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Registra una richiesta di creazione CRA
         /// </summary>
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         [HttpPost("AddRichiestaCreazioneCraEmergenza")]
         public async Task<IActionResult> AddRichiestaCreazioneCraEmergenza([FromBody] RichiestaCreazioneCRACommand command)
@@ -251,7 +251,7 @@ namespace SO115App.API.Controllers
         ///   Gestisce una precedente richiesta di intervento sull'emergenza
         /// </summary>
         [HttpPost("GestisciRichiestaEmergenza")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GestisciRichiestaEmergenza([FromBody] RichiestaGestitaCommand command)
         {
