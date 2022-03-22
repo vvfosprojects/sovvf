@@ -50,7 +50,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         }
 
         /// <summary>
-        /// ELIMINARE QUESTA CHIAMATA E UTILIZZARE LE ALTRE DUE
+        ///   ELIMINARE QUESTA CHIAMATA E UTILIZZARE LE ALTRE DUE
         /// </summary>
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
         {
@@ -107,7 +107,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 return result;
             }
 
-            #endregion LEGGO DA API ESTERNA/DB
+            #endregion LEGGO DA API ESTERNA
 
             var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
 
@@ -145,11 +145,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     return mezzo;
                 }
                 else return null;
-
             }).ToList();
 
-            if (ListaMezzi != null && !(ListaMezzi.Count > 0)) _setComposizioneMezziDB.Set(ListaMezzi.Select(m => new ComposizioneMezzi() 
-            { 
+            if (ListaMezzi != null && !(ListaMezzi.Count > 0)) _setComposizioneMezziDB.Set(ListaMezzi.Select(m => new ComposizioneMezzi()
+            {
                 Mezzo = m,
                 Id = m.Codice,
                 //IndirizzoIntervento = lstStati.FirstOrDefault(s => s.CodiceMezzo.Equals(m.Codice))?.CodiceRichiesta
@@ -312,7 +311,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     Stato = Costanti.MezzoInSede,
                     Appartenenza = mezzoDto.CodiceDistaccamento,
                     Distaccamento = sede,
-                    Coordinate = new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0)
+                    Coordinate = new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0),
+                    Istituto = mezzoDto.Istituto
                 };
             }
             catch (Exception e)
