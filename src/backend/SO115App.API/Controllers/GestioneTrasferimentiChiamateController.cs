@@ -38,7 +38,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di Trasferire una Chiamata
         /// </summary>
         [HttpPost("Add")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add(TrasferimentoChiamata trasferimento)
         {
@@ -120,7 +120,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di rimuovere un Trasferimento
         /// </summary>
         [HttpGet("Delete")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         private async Task<IActionResult> Delete(string Id)
         {

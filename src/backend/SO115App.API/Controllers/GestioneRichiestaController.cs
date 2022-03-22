@@ -257,7 +257,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di aggiornare lo stato di una Richieste di Assistenza
         /// </summary>
         [HttpPost("AggiornaStato")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AggiornaStato([FromBody] UpDateStatoRichiestaCommand richiesta)
         {
@@ -294,7 +294,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di allertare una o più sedi
         /// </summary>
         [HttpPost("AllertaAltreSedi")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AllertaSedi([FromBody] AllertaAltreSediCommand parametri)
         {
@@ -319,7 +319,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di inserire un nuovo elemento nel LogBook
         /// </summary>
         [HttpPost("AddLogBook")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AddLogBook([FromBody] LogBookCommand parametri)
         {

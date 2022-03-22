@@ -46,7 +46,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di inserire una POS
         /// </summary>
         [HttpPost("Add")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add([FromForm] DtoPos pos)
         {
@@ -123,7 +123,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di eliminare una POS
         /// </summary>
         [HttpGet("Delete")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete(string Id, string CodSede)
         {
@@ -151,7 +151,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di modificare una POS
         /// </summary>
         [HttpPost("Edit")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Edit([FromForm] DtoPos pos)
         {

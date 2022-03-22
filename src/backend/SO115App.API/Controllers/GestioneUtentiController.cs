@@ -53,7 +53,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di aggiungere un nuovo utente
         /// </summary>
         [HttpPost("AddUtente")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public IActionResult AddUtente([FromBody] AddUtenteCommand command)
         {
@@ -80,7 +80,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di rimuovere utente
         /// </summary>
         [HttpPost("DeleteUtente")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public IActionResult DeleteUtente([FromBody] DeleteUtenteCommand command)
         {
