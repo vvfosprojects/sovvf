@@ -44,7 +44,7 @@ namespace SO115App.API.Controllers
         /// </summary>
         [ProducesResponseType(typeof(ComposizioneMezziResult), 200)]
         [ProducesResponseType(typeof(string), 400)]
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IActionResult> Post(ComposizioneMezziQuery query)
         {
             query.CodiciSedi = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);

@@ -71,7 +71,7 @@ namespace SO115App.API.Controllers
         /// </summary>
         [ProducesResponseType(typeof(List<ChiamateInCorso>), 200)]
         [ProducesResponseType(typeof(string), 400)]
-        [HttpGet]
+        [HttpGet("")]
         public async Task<IActionResult> Get()
         {
             var Listaquery = new ListaChiamateInCorsoMarkerQuery();
