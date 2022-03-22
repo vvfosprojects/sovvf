@@ -46,6 +46,8 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 .Distinct()
                 .ToDictionary(mezzo => mezzo.Key, mezzo => mezzo.Value);
 
+            result.Add("Istituto", lstMezzi.FindAll(x => x.Istituto == true).Count().ToString());
+
             return result;
         }
     }
