@@ -20,6 +20,7 @@
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.API.Models.Classi.NavBar;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar;
 using System;
 using System.Threading.Tasks;
@@ -47,6 +48,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i dati relativi alla Navbar
         /// </summary>
         [HttpGet]
+        [ProducesResponseType(typeof(Navbar), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get()
         {
             var query = new NavbarQuery()
