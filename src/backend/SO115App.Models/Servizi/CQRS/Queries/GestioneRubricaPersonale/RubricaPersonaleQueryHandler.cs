@@ -21,13 +21,15 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
         private readonly IGetDettaglioDipendenteById _getDettaglioDipendenteById;
         private readonly IGetPercorsoByIdQualifica _getPercorsoByIdQualifica;
         private readonly IGetDettaglioQualificaByIdDipendenteByDate _getDettaglioQualifica;
+        private readonly IGetPersonaleVVF _getPersonaleVVF;
 
         public RubricaPersonaleQueryHandler(IGetPersonaleByCF getPersonaleByCF,
             IGetSedeAssociazioniByCodSede getAssociazioniByCodSede,
             IGetIdDipendentiByCodUnitaOrg getIdDipendentiByCodUnitaOrg,
             IGetDettaglioDipendenteById getDettaglioDipendenteById,
             IGetPercorsoByIdQualifica getPercorsoByIdQualifica,
-            IGetDettaglioQualificaByIdDipendenteByDate getDettaglioQualifica)
+            IGetDettaglioQualificaByIdDipendenteByDate getDettaglioQualifica,
+            IGetPersonaleVVF getPersonaleVVF)
         {
             _getPersonaleByCF = getPersonaleByCF;
             _getAssociazioniByCodSede = getAssociazioniByCodSede;
@@ -35,41 +37,18 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             _getDettaglioDipendenteById = getDettaglioDipendenteById;
             _getPercorsoByIdQualifica = getPercorsoByIdQualifica;
             _getDettaglioQualifica = getDettaglioQualifica;
+            _getPersonaleVVF = getPersonaleVVF;
         }
 
         public RubricaPersonaleResult Handle(RubricaPersonaleQuery query)
         {
-            //OTTENGO I DATI DAI SERVIZI ESTERNI IN PARALLELO
-            var lstDettaglio = new ConcurrentQueue<DettaglioDipententeResult>();
-            var lstQualifiche = new ConcurrentQueue<DettaglioQualificaResult>();
-
-            var listaIdDipendenti = new List<string>();
-
-            Parallel.ForEach(query.IdSede, sede =>
-            {
-                var lstIdDipendenti = _getAssociazioniByCodSede.GetCodUnitaOrganizzativaByCodSede(sede)
-                    .ContinueWith(CodUnita => _getIdDipendentiByCodUnitaOrg.Get(CodUnita.Result));
-
-                var listaIdDipendenti = lstIdDipendenti.Result;
-            });
-
-            Parallel.ForEach(listaIdDipendenti, idDipendente =>
-            {
-                lstDettaglio.Enqueue(_getDettaglioDipendenteById.GetTelefonoDipendenteByIdDipendente(idDipendente).Result);
-                lstQualifiche.Enqueue(_getDettaglioQualifica.GetByIdDipendenteByDate(idDipendente, DateTime.Now.ToString("yyyyMMdd")).Result);
-            });
-
-            var lstCodiciFiscali = lstDettaglio.Where(d => d?.dati?.codFiscale != null).Select(d => d.dati.codFiscale.ToUpper()).ToArray();
-
-            var lstPersonale = _getPersonaleByCF.Get(lstCodiciFiscali, query.IdSede.Select(s => s.Substring(0, 2)).Distinct().ToArray()).Result;
+            var lstPersonale = _getPersonaleVVF.GetByCodiceSede(query.IdSede);
+            var lstAnagraficaPersonaleVVF = _getPersonaleVVF.GetAnagraficaPersonale(query.IdSede);
 
             var result = new ConcurrentQueue<PersonaleRubrica>();
-
             Parallel.ForEach(lstPersonale, personale =>
             {
-                var dettaglioDipendente = lstDettaglio.FirstOrDefault(d => d?.dati?.codFiscale.ToUpper().Equals(personale.codiceFiscale.ToUpper()) ?? false)?.dati;
-                var codQualifica = lstQualifiche.FirstOrDefault(q => q.dati.FirstOrDefault()?.idDipendente == dettaglioDipendente?.IdDipentente)?.dati?.FirstOrDefault()?.codQualifica;
-                var codComparto = codQualifica != null ? _getPercorsoByIdQualifica.Get(codQualifica).Result?.dati?.CodComparto : null;
+                var contatti = lstAnagraficaPersonaleVVF.Find(p => p.codiceFiscale.Equals(personale.codiceFiscale)).contatti;
 
                 var rubricaPersonale = new PersonaleRubrica()
                 {
@@ -77,12 +56,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                     Qualifica = personale.qualifica?.nome,
                     Sede = personale.sede?.descrizione,
                     Specializzazione = string.Concat(personale.specializzazioni?.Select(s => s?.descrizione + ", ")).TrimEnd(',', ' '),
-                    Turno = dettaglioDipendente?.codTurno ?? personale.turno,
-                    Telefono1 = dettaglioDipendente?.telCellulare,
-                    Telefono2 = dettaglioDipendente?.telefonoFisso,
-                    Telefono3 = dettaglioDipendente?.fax,
-                    Stato = dettaglioDipendente?.oraIngresso == null ? StatoPersonaleRubrica.NonInServizio : StatoPersonaleRubrica.InServizio,
-                    Tipo = codComparto == 2 ? TipoPersonaleRubrica.SoloOperativi : TipoPersonaleRubrica.AltroPersonale ?? TipoPersonaleRubrica.AltroPersonale
+                    Turno = personale.turno,
+                    Telefono1 = contatti.Count() > 0 ? contatti[0] : "",
+                    Telefono2 = contatti.Count() > 1 ? contatti[1] : "",
+                    Telefono3 = contatti.Count() > 0 ? contatti[0] : "",
+                    Stato = null, //dettaglioDipendente?.oraIngresso == null ? StatoPersonaleRubrica.NonInServizio : StatoPersonaleRubrica.InServizio,
+                    Tipo = personale.tipoPersonale.codice == "2" ? TipoPersonaleRubrica.SoloOperativi : TipoPersonaleRubrica.AltroPersonale ?? TipoPersonaleRubrica.AltroPersonale
                 };
 
                 result.Enqueue(rubricaPersonale);
@@ -110,15 +89,14 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             //PAGINAZIONE
             return new RubricaPersonaleResult()
             {
-                DataArray = filteredResult
-                    .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
+                DataArray = filteredResult.Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
                     .Take(query.Pagination.PageSize).ToList(),
 
                 Pagination = new Classi.Condivise.Paginazione()
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = filteredResult.Count()
+                    TotalItems = lstPersonale.Count()
                 }
             };
         }
