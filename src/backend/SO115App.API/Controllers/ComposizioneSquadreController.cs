@@ -63,7 +63,7 @@ namespace SO115App.API.Controllers
         /// </summary>
         [ProducesResponseType(typeof(ComposizioneSquadreResult), 200)]
         [ProducesResponseType(typeof(string), 400)]
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IActionResult> Post(FiltriComposizioneSquadra filtri)
         {
             var query = new ComposizioneSquadreQuery()

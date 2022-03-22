@@ -24,7 +24,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo che restituisce la lista delle Tipologie
         /// </summary>
-        [HttpGet]
+        [HttpGet("")]
         [ProducesResponseType(typeof(List<Tipologia>), 200)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get()

@@ -66,7 +66,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstSquadreWS = query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
 
-            var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.Squadra>();
+            var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.SquadraOpService>();
 
             #region Gestione turno preaccoppiati
 
