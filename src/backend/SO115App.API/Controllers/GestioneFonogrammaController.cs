@@ -40,6 +40,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce le informazioni relative al fonogramma di uno specifico intervento
         /// </summary>
         [HttpPost("InfoFonogramma")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult InfoFonogramma([FromBody] Fonogramma fonogramma)
         {
             try

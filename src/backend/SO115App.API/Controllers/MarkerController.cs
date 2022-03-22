@@ -58,6 +58,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutte le sedi in un quadrante
         /// </summary>
         [HttpPost("GetSedi")]
+        [ProducesResponseType(typeof(List<SedeMarker>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetSedi([FromBody] AreaMappa filtroCentroMappa)
         {
             try

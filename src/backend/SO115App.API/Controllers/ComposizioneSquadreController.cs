@@ -97,6 +97,8 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("{filtro}")]
+        [ProducesResponseType(typeof(ComposizioneSquadreResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public ComposizioneSquadreResult GetMarkerFromId(FiltriComposizioneSquadra filtri)
         {
             var query = new ComposizioneSquadreQuery()
