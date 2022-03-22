@@ -45,6 +45,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista delle categorie
         /// </summary>
         [HttpGet("GetCategorie")]
+        [ProducesResponseType(typeof(GetCategorieSoccorsoAereoResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetCategorieSoccorsoAereo()
         {
             try

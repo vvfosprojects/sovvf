@@ -65,6 +65,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce le Schede Contatto
         /// </summary>
         [HttpPost("GetSchede")]
+        [ProducesResponseType(typeof(GetSchedeFiltrateResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get([FromBody] GetSchedeFiltrateQuery query)
         {
             query.IdUtente = Request.Headers["IdUtente"].ToString();
@@ -86,6 +88,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i contatori relativi alle Schede Contatto
         /// </summary>
         [HttpGet("GetContatoriSchede")]
+        [ProducesResponseType(typeof(GetConteggioSchedeResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetContatoriSchede()
         {
             var query = new GetConteggioSchedeQuery()
@@ -109,6 +113,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce una specifica Scheda Contatto
         /// </summary>
         [HttpGet("GetByCodiceScheda")]
+        [ProducesResponseType(typeof(SchedaContatto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get(string codice)
         {
             var query = new GetSchedeContattoQuery() { CodiceSede = Request.Headers["codiceSede"].ToArray()[0] };
@@ -129,6 +135,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che gestisce una specifica Scheda Contatto
         /// </summary>
         [HttpPut("SetGestita")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> SetGestita([FromBody] SetSchedaGestitaCommand command)
         {
             command.CodiceSede = Request.Headers["codiceSede"];
@@ -151,6 +159,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di raggruppare una lista di Schede Contatto
         /// </summary>
         [HttpPost("MergeSchede")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> MergeSchede([FromBody] string[] scheda)
         {
             string idUtente = Request.Headers["IdUtente"];
@@ -179,6 +189,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permettere di eliminare le schede raggruppate ad una specifica Scheda Contatto
         /// </summary>
         [HttpPost("UndoMergeSchede")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> UndoMerge([FromBody] SchedaContatto scheda)
         {
             var idUtente = Request.Headers["IdUtente"];
