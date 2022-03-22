@@ -75,6 +75,8 @@ import { TipologicaComposizionePartenza } from '../../../composizione-partenza/i
 import { TipologicheMezziState } from '../composizione-partenza/tipologiche-mezzi.state';
 import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.model';
 import { ChiamateMarkersState } from '../../../../maps/store/states/chiamate-markers.state';
+import { ViewComponentState } from '../view/view.state';
+import { RouterState } from '@ngxs/router-plugin';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -662,14 +664,17 @@ export class SchedaTelefonataState {
         const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
         const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
         const idUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser).id;
-        if (!idRichiestaSelezionata && !idRichiestaGestione) {
-            const currentPage = this.store.selectSnapshot(PaginationState.page);
-            dispatch([
-                new GetListaRichieste({ page: currentPage }),
-                new SetNeedRefresh(false)
-            ]);
-        } else {
-            dispatch(new SetNeedRefresh(true));
+        const isHome = this.store.selectSnapshot(RouterState.url) ? this.store.selectSnapshot(RouterState.url) === '/home' : false;
+        if (isHome) {
+            if (!idRichiestaSelezionata && !idRichiestaGestione) {
+                const currentPage = this.store.selectSnapshot(PaginationState.page);
+                dispatch([
+                    new GetListaRichieste({ page: currentPage }),
+                    new SetNeedRefresh(false)
+                ]);
+            } else {
+                dispatch(new SetNeedRefresh(true));
+            }
         }
 
         if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
