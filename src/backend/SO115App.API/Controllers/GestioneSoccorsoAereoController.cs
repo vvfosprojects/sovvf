@@ -71,6 +71,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista delle tipologie
         /// </summary>
         [HttpGet("GetTipologie")]
+        [ProducesResponseType(typeof(GetTipologieSoccorsoAereoResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         private async Task<IActionResult> GetTipologieSoccorsoAereo()
         {
             try
@@ -95,6 +97,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce lo storico
         /// </summary>
         [HttpGet("GetStorico")]
+        [ProducesResponseType(typeof(GetStoricoAFMResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetStoricoRichiestaSoccorsoAereo(string requestKey)
         {
             try
@@ -121,6 +125,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce le info
         /// </summary>
         [HttpGet("GetInfo")]
+        [ProducesResponseType(typeof(GetInfoAFMResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetInfoRichiestaSoccorsoAereo(string requestKey)
         {
             try
@@ -147,6 +153,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di inserire una Richiesta di Soccorso Aereo
         /// </summary>
         [HttpPost("Inserisci")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> InserisciRichiestaSoccorsoAereo([FromBody] NuovaRichiestaAFM richiesta)
         {
             try
@@ -177,6 +185,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di annullare una specifica Richiesta di Soccorso Aereo
         /// </summary>
         [HttpPost("Annulla")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AnnullaRichiestaSoccorsoAereo([FromBody] AnnullaRichiestaSoccorsoAereoCommand command)
         {
             try

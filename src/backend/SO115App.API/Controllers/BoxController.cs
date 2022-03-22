@@ -30,6 +30,8 @@ namespace SO115App.API.Controllers
         ///   EndPoint per il caricamento del Box riassuntivo delle Richieste
         /// </summary>
         [HttpGet("GetBoxRichieste")]
+        [ProducesResponseType(typeof(BoxRichiesteResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetBoxRichieste()
         {
             var codiceSede = Request.Headers["codicesede"];
@@ -55,6 +57,8 @@ namespace SO115App.API.Controllers
         ///   EndPoint per il caricamento del Box riassuntivo dei Mezzi
         /// </summary>
         [HttpGet("GetBoxMezzi")]
+        [ProducesResponseType(typeof(BoxMezziResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetBoxMezzi()
         {
             var codiceSede = Request.Headers["codicesede"];
@@ -80,6 +84,8 @@ namespace SO115App.API.Controllers
         ///   EndPoint per il caricamento del Box riassuntivo del Personale
         /// </summary>
         [HttpGet("GetBoxPersonale")]
+        [ProducesResponseType(typeof(BoxPersonaleResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetBoxPersonale()
         {
             var codiceSede = Request.Headers["codicesede"];
