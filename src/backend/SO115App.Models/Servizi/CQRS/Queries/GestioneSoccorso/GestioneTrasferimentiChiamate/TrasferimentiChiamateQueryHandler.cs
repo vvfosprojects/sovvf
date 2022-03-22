@@ -4,6 +4,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
@@ -15,16 +16,19 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
     {
         private readonly IGetTrasferimenti _getTrasferimenti;
         private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetSedi _getSedi;
         private readonly IGetDistaccamentoByCodiceSede _getDistaccamentoByCodiceSede;
         private readonly GerarchiaReader _getGerarchia;
 
         public TrasferimentiChiamateQueryHandler(IGetTrasferimenti getTrasferimenti,
             IGetUtenteById getUtenteById,
+            IGetSedi getSedi,
             IGetDistaccamentoByCodiceSede getDistaccamentoByCodiceSede,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _getTrasferimenti = getTrasferimenti;
             _getUtenteById = getUtenteById;
+            _getSedi = getSedi;
             _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
             _getGerarchia = new GerarchiaReader(getAlberaturaUnitaOperative);
         }
@@ -37,14 +41,15 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
             foreach (var sede in query.CodiciSede)
                 lstPin.AddRange(_getGerarchia.GetGerarchiaFull(sede).ToList());
 
+            var lstSedi = _getSedi.GetAll().Result;
             //MAPPING
             var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin.Select(p => p.Codice).ToArray(), query.Filters.Search)
                 .Select(c => new TrasferimentoChiamataFull()
                 {
                     Id = c.Id,
                     CodChiamata = c.CodChiamata,
-                    SedeA = _getDistaccamentoByCodiceSede.GetSede(c.CodSedeA).Descrizione,
-                    SedeDa = _getDistaccamentoByCodiceSede.GetSede(c.CodSedeDa).Descrizione,
+                    SedeA = lstSedi.Find(s => s.Codice.Equals(c.CodSedeA)).Descrizione,
+                    SedeDa = lstSedi.Find(s => s.Codice.Equals(c.CodSedeDa)).Descrizione,
                     Data = c.Data,
                     Operatore = _getUtenteById.GetUtenteByCodice(c.IdOperatore)
                 }).ToList();
