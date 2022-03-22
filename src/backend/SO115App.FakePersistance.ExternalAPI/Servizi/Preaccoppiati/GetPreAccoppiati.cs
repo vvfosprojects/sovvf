@@ -57,7 +57,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             var lstProvinceSedi = query.CodiceSede.Select(sede => sede.Split('.')[0]).Distinct();
             var lstSquadreWS = lstProvinceSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede).Result).ToList();
 
-            var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.Squadra>();
+            var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.SquadraOpService>();
 
             var result = new List<PreAccoppiato>();
 

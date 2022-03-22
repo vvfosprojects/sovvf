@@ -144,7 +144,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Modifica Intervento
         /// </summary>
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         [HttpPost("UpdateIntervento")]
         public async Task<IActionResult> UpdateIntervento([FromBody] Intervento chiamata)

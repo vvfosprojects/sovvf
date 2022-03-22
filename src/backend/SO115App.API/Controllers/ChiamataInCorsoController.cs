@@ -71,7 +71,7 @@ namespace SO115App.API.Controllers
         /// </summary>
         [ProducesResponseType(typeof(List<ChiamateInCorso>), 200)]
         [ProducesResponseType(typeof(string), 400)]
-        [HttpGet]
+        [HttpGet("")]
         public async Task<IActionResult> Get()
         {
             var Listaquery = new ListaChiamateInCorsoMarkerQuery();
@@ -91,7 +91,6 @@ namespace SO115App.API.Controllers
         ///   Aggiunge una nuova chiamata in corso
         /// </summary>
         [HttpPost("Add")]
-        [ProducesResponseType(typeof(object), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [EnableCors()]
         public async Task<IActionResult> Add([FromBody] ChiamateInCorso chiamata)
@@ -124,7 +123,7 @@ namespace SO115App.API.Controllers
         ///   Cancella una chiamata in corso
         /// </summary>
         [HttpPost("Delete")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete([FromBody] ChiamateInCorso chiamata)
         {
@@ -149,7 +148,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Cancella tutte le chamate in corso rimaste appese, di un utente
         /// </summary>
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         [HttpGet("DeleteAll")]
         public async Task<IActionResult> DeleteAll()
@@ -178,7 +177,7 @@ namespace SO115App.API.Controllers
         ///   Aggiorna una chiamata in corso
         /// </summary>
         [HttpPost("UpDate")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> UpDate([FromBody] ChiamateInCorso chiamata)
         {

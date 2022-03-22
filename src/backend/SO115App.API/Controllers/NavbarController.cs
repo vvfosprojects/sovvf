@@ -47,7 +47,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo che restituisce i dati relativi alla Navbar
         /// </summary>
-        [HttpGet]
+        [HttpGet("")]
         [ProducesResponseType(typeof(Navbar), 200)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get()

@@ -47,7 +47,7 @@ namespace SO115App.API.Controllers
         ///   Aggiunge un nuovo documento nell'area documentale
         /// </summary>
         [HttpPost("Add")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add([FromForm] DtoDocumentale doc)
         {
@@ -119,7 +119,7 @@ namespace SO115App.API.Controllers
         ///   Cancella uno specifico documento
         /// </summary>
         [HttpGet("Delete")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete(string Id, string CodSede)
         {
@@ -146,7 +146,7 @@ namespace SO115App.API.Controllers
         ///   Modifica uno specifico documento
         /// </summary>
         [HttpPost("Edit")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Edit([FromForm] DtoDocumentale doc)
         {

@@ -59,9 +59,9 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Registra una partenza all'interno di una richiesta
         /// </summary>
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IActionResult> Post(ConfermaPartenze conferma)
         {
             conferma.CodiceSede = Request.Headers["codicesede"];

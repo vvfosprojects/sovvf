@@ -39,7 +39,7 @@ namespace SO115App.API.Controllers
         ///   Aggiorna lo stato di una partenza
         /// </summary>
         [HttpPost("AggiornaPartenza")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AggiornaPartenza([FromBody] AggiornaStatoMezzoCommand command)
         {
@@ -66,7 +66,7 @@ namespace SO115App.API.Controllers
         ///   Annulla uno stato precedentemente inserito, di una specifica partenza
         /// </summary>
         [HttpPost("AnnullaStatoPartenza")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AnnullaStatoPartenza([FromBody] AnnullaStatoPartenzaCommand command)
         {
@@ -94,7 +94,7 @@ namespace SO115App.API.Controllers
         ///   Modifica una partenza
         /// </summary>
         [HttpPost("ModificaPartenza")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> ModificaPartenza([FromBody] ModificaPartenza partenza)
         {
@@ -127,7 +127,7 @@ namespace SO115App.API.Controllers
         ///   Registra una sostituzione all'interno di una partenza
         /// </summary>
         [HttpPost("SostituzionePartenza")]
-        [ProducesResponseType(typeof(object), 200)]
+        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> SostituzionePartenza([FromBody] SostituzioneDTO partenzeDaSostituire)
         {

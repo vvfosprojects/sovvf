@@ -42,7 +42,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo di accesso a tutte le informazioni riguardanti il primo caricamento della Home Page
         /// </summary>
-        [HttpGet]
+        [HttpGet("")]
         [ProducesResponseType(typeof(Welcome), 200)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get()

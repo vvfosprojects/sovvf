@@ -14,6 +14,7 @@
                 <div class="col-10">
                     <app-grafico-distaccamenti [data]="dataGrafico$ | async"
                                                [view]="[1450, ((dataGrafico$ | async)?.length * 70)]"
+                                               [loadingItemData]="loadingItemData$ | async"
                                                [showXAxis]="false"
                                                [showYAxis]="true"
                                                [gradient]="true"
@@ -24,6 +25,8 @@
                                                [xAxisLabel]="''"
                                                [showYAxisLabel]="false"
                                                [yAxisLabel]="''"
+                                               [maxYAxisTickLength]="50"
+                                               [trimXAxisTicks]="true"
                                                [colorScheme]="{ domain: ['#AA4A4A', '#5AA454', '#AAAAAA'] }"
                                                [schemeType]="'ordinal'"
                                                [barPadding]="10"

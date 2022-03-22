@@ -30,7 +30,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
         public SquadraWorkShift Attuale { get; set; }
 
         [JsonIgnore()]
-        public Squadra[] Squadre => new List<Squadra[]> { Attuale?.Squadre ?? new Squadra[] { }, Precedente?.Squadre ?? new Squadra[] { }, Successivo?.Squadre ?? new Squadra[] { } }
+        public SquadraOpService[] Squadre => new List<SquadraOpService[]> { Attuale?.Squadre ?? new SquadraOpService[] { }, Precedente?.Squadre ?? new SquadraOpService[] { }, Successivo?.Squadre ?? new SquadraOpService[] { } }
             .SelectMany(l => l)
             .GroupBy(s => s?.Codice)
             .Select(s => s?.FirstOrDefault())
@@ -48,7 +48,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
     {
         public SquadraWorkShift()
         {
-            Squadre = new Squadra[] { };
+            Squadre = new SquadraOpService[] { };
             Funzionari = new Officer[] { };
         }
 
@@ -56,7 +56,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
         public string Id { get; set; }
 
         [JsonPropertyName("spots")]
-        public Squadra[] Squadre { get; set; }
+        public SquadraOpService[] Squadre { get; set; }
 
         [JsonPropertyName("officers")]
         public Officer[] Funzionari { get; set; }
