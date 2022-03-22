@@ -21,6 +21,8 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("Reset")]
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Reset()
         {
             ResetDBQuery query = new ResetDBQuery()
@@ -39,6 +41,8 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("managetipologie")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> managetip()
         {
 

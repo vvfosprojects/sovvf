@@ -68,6 +68,8 @@ namespace SO115App.API.Controllers
         ///   Aggiunge una nuova emergenza
         /// </summary>
         [HttpPost("InsertEmergenza")]
+        [ProducesResponseType(typeof(Emergenza), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> InsertEmergenza([FromBody] Emergenza emergenza)
         {
             emergenza.CodComandoRichiedente = Request.Headers["codicesede"].ToString().Split(',')[0];
@@ -96,6 +98,8 @@ namespace SO115App.API.Controllers
         ///   Aggiorna un'emergenza
         /// </summary>
         [HttpPost("UpDateEmergenza")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> UpDateEmergenza([FromBody] EmergenzaDTO emergenza)
         {
             var command = new UpdateEmergenzaCommand()
@@ -123,6 +127,8 @@ namespace SO115App.API.Controllers
         ///   Crea un nuovo CRA e la sua almeratura (DOA e PCA)
         /// </summary>
         [HttpPost("CreazioneCra")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> CreazioneCra([FromBody] CreazioneCraDTO dto)
         {
             var command = new CreazioneCraCommand()
@@ -152,6 +158,8 @@ namespace SO115App.API.Controllers
         ///   Annulla un'emergenza precedentemente creata
         /// </summary>
         [HttpPost("AnnullaEmergenza")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AnnullaEmergenza([FromBody] AnnullaEmergenzaCommand command)
         {
             command.CodOperatore = Request.Headers["IdUtente"].ToString();
@@ -174,6 +182,8 @@ namespace SO115App.API.Controllers
         ///   Invia un'allerta emergenza alla dirigenza di riferimento e al con
         /// </summary>
         [HttpPost("AllertaEmergenza")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AllertaEmergenza([FromBody] AllertaCommand command)
         {
             command.CodOperatore = Request.Headers["IdUtente"].ToString();
@@ -195,6 +205,8 @@ namespace SO115App.API.Controllers
         ///   Registra una richiesta, da parte del comando, di intervento delle colonne mobili, sull'emergenza
         /// </summary>
         [HttpPost("AddRichiestaEmergenza")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AddRichiestaEmergenza([FromBody] RichiestaCommand command)
         {
             command.CodOperatore = Request.Headers["IdUtente"].ToString();
@@ -215,6 +227,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Registra una richiesta di creazione CRA
         /// </summary>
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         [HttpPost("AddRichiestaCreazioneCraEmergenza")]
         public async Task<IActionResult> AddRichiestaCreazioneCraEmergenza([FromBody] RichiestaCreazioneCRACommand command)
         {
@@ -237,6 +251,8 @@ namespace SO115App.API.Controllers
         ///   Gestisce una precedente richiesta di intervento sull'emergenza
         /// </summary>
         [HttpPost("GestisciRichiestaEmergenza")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GestisciRichiestaEmergenza([FromBody] RichiestaGestitaCommand command)
         {
             command.CodOperatore = Request.Headers["IdUtente"].ToString();
@@ -258,6 +274,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce l'elenco delle tipologie di emergenza
         /// </summary>
         [HttpGet("GetTipologieEmergenza")]
+        [ProducesResponseType(typeof(GetTipologieEmergenzaResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetTipologieEmergenza()
         {
             try
@@ -282,6 +300,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce il dettaglio un'emergenza
         /// </summary>
         [HttpGet("GetEmergenzaById")]
+        [ProducesResponseType(typeof(GetEmergenzaByIdResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetEmergenzaById(string Id)
         {
             try
@@ -307,6 +327,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce l'elenco delle emergenze di una sede
         /// </summary>
         [HttpPost("GetListaEmergenzeByCodSede")]
+        [ProducesResponseType(typeof(GetListaEmergenzeByCodComandoResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetListaEmergenzeByCodSede(GetListaEmergenzeByCodComandoQuery query)
         {
             try

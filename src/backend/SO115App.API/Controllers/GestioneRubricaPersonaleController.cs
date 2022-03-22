@@ -23,6 +23,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la rubrica del Personale VVF
         /// </summary>
         [HttpPost("")]
+        [ProducesResponseType(typeof(RubricaPersonaleResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetAll(RubricaPersonaleQuery query)
         {
             try

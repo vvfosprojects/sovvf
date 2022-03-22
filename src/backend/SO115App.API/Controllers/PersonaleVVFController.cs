@@ -19,8 +19,10 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF;
+using System.Collections.Generic;
 
 namespace SO115App.API.Controllers
 {
@@ -40,6 +42,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista del personale VVF
         /// </summary>
         [HttpGet()]
+        [ProducesResponseType(typeof(List<PersonaleVVF>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult Get(string text)
         {
             var codiceSede = Request.Headers["codiceSede"];
