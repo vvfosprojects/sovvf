@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Squadra = SO115App.Models.Classi.ServiziEsterni.OPService.Squadra;
+using Squadra = SO115App.Models.Classi.ServiziEsterni.OPService.SquadraOpService;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.OPService
 {

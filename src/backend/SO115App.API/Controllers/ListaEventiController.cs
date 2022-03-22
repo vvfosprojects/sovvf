@@ -56,7 +56,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo che restituisce la lista degli eventi di un intervento
         /// </summary>
-        [HttpGet]
+        [HttpGet("")]
         [ProducesResponseType(typeof(List<MapperEventoSuEventoGui>), 200)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get(string Id)

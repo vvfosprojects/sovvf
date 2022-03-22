@@ -92,7 +92,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             {
                 if (!unita.Nome.Equals("Centro Operativo Nazionale"))
                 {
-                    var listaSquadre = new List<Squadra>();
+                    var listaSquadre = new List<SquadraOpService>();
 
                     if (listaAttuale != null)
                         listaSquadre = listaAttuale[0].Squadre.Where(s => s.Distaccamento.Equals(unita.Codice)).ToList();
