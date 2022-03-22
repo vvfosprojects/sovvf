@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -29,6 +31,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce la lista dei mezzi in servizio
         /// </summary>
         [HttpPost("GetListaMezzi")]
+        [ProducesResponseType(typeof(ListaMezziInServizioResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetListaMezzi([FromBody] ListaMezziInServizioQuery query)
         {
             query.IdOperatore = Request.Headers["IdUtente"].ToString();
@@ -55,6 +59,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce la lista dei generi mezzo
         /// </summary>
         [HttpGet("GetGeneriMezzo")]
+        [ProducesResponseType(typeof(List<GeneriMezzi>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetGeneriMezzo()
         {
             var filtri = _filtriHandler.Get();

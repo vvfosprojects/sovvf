@@ -53,6 +53,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di aggiungere un nuovo utente
         /// </summary>
         [HttpPost("AddUtente")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult AddUtente([FromBody] AddUtenteCommand command)
         {
             command.CodiceSede = Request.Headers["codiceSede"];
@@ -78,6 +80,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di rimuovere utente
         /// </summary>
         [HttpPost("DeleteUtente")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult DeleteUtente([FromBody] DeleteUtenteCommand command)
         {
             command.CodiceSede = Request.Headers["codiceSede"];
@@ -100,6 +104,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce uno specifico Utente
         /// </summary>
         [HttpGet("GetUtente")]
+        [ProducesResponseType(typeof(DettaglioUtenteResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult GetUtente(string id)
         {
             var query = new DettaglioUtenteQuery();
@@ -125,6 +131,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista degli Utenti
         /// </summary>
         [HttpPost("GetUtenti")]
+        [ProducesResponseType(typeof(ListaOperatoriResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult GetUtenti([FromBody] ListaOperatoriQuery query)
         {
             query.IdUtente = Request.Headers["IdUtente"];

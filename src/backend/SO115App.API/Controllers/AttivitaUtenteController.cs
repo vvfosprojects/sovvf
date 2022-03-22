@@ -31,6 +31,8 @@ namespace SO115App.API.Controllers
         ///   EndPoint per la registrazione dell'utente che ha preso in carico un'intervento.
         /// </summary>
         [HttpPost("AddPresaInCarico")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AddPresaInCarico([FromBody] SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
@@ -62,6 +64,8 @@ namespace SO115App.API.Controllers
         ///   EndPoint per la deregistrazione dell'utente che ha preso in carico un'intervento.
         /// </summary>
         [HttpPost("DeletePresaInCarico")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> DeletePresaInCarico([FromBody] SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
