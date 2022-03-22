@@ -160,6 +160,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public async Task<List<MezzoDTO>> GetInfo(List<string> codiciMezzi)
         {
+            if(codiciMezzi == null || codiciMezzi.Count == 0) 
+                return null;
+
             var token = _getToken.GeneraToken();
 
             var lstMezziDto = new List<MezzoDTO>();
@@ -177,7 +180,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             }
             catch (Exception e)
             {
-                var lstMezzi = _getComposizioneMezziDB.GetByCodiciMezzo(codiciMezzi.ToArray());
+                var lstMezzi = _getComposizioneMezziDB.GetByCodiciMezzo();
+
+                if (codiciMezzi != null && codiciMezzi.Count > 0)
+                    lstMezzi = lstMezzi.Where(m => codiciMezzi.Contains(m.Mezzo.Codice)).ToList();
 
                 var result = lstMezzi.Select(s => new MezzoDTO()
                 {
