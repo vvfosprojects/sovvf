@@ -7,7 +7,7 @@
                    [codicePartenza]="codicePartenza"
                    [mezzo]="partenza.mezzo"
                    [listaEventiMezzo]="listaEventiMezzo"
-                   [listaEventi]="richiesta.eventi"
+                   [listaEventi]="richiesta?.eventi"
                    [actionsAttive]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)">
         </app-mezzo>
