@@ -19,6 +19,7 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
     @Select(EventiRichiestaState.listaTargaMezzo) listaTargaMezzo$: Observable<FiltroTargaMezzo[]>;
     @Select(EventiRichiestaState.codiceRichiesta) codiceRichiesta$: Observable<string>;
     @Select(EventiRichiestaState.targheSelezionate) targheSelezionate$: Observable<string[]>;
+    targheSelezionate: string[];
     @Select(EventiRichiestaState.visualizzazioneIconeNomeClasseEvento) visualizzazioneIconeNomeClasseEvento$: Observable<boolean>;
     @Select(EventiRichiestaState.loadingEventiRichiesta) loading$: Observable<boolean>;
 
@@ -29,6 +30,7 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private modal: NgbActiveModal) {
         this.getVisualizzazioneTestualeEventi();
+        this.getTargheSelezionate();
     }
 
     ngOnInit(): void {
@@ -41,14 +43,6 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    onSelezioneTarga($event): void {
-        this.store.dispatch(new SetFiltroTargaMezzo($event));
-    }
-
-    toggleIconeNomeClasseEvento(): void {
-        this.store.dispatch(new ToggleIconeNomeClasseEvento());
-    }
-
     getVisualizzazioneTestualeEventi(): void {
         this.subscription.add(
             this.visualizzazioneTestualeEventi$.subscribe((value: boolean) => {
@@ -57,6 +51,22 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    getTargheSelezionate(): void {
+        this.subscription.add(
+            this.targheSelezionate$.subscribe((targheSelezionate: string[]) => {
+                this.targheSelezionate = targheSelezionate;
+            })
+        );
+    }
+
+    onSelezioneTarga($event): void {
+        this.store.dispatch(new SetFiltroTargaMezzo($event));
+    }
+
+    toggleIconeNomeClasseEvento(): void {
+        this.store.dispatch(new ToggleIconeNomeClasseEvento());
     }
 
     onAddEvento(): void {

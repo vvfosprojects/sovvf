@@ -1,4 +1,4 @@
-import { Priorita, SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { Partenza } from '../../../../shared/model/partenza.model';
 import { Squadra } from '../../../../shared/model/squadra.model';
@@ -35,7 +35,6 @@ export class HelperSintesiRichiesta {
         return squadre;
     }
 
-
     /* Restituisce il mezzo */
     mezziRichiesta(richiesta: SintesiRichiesta): Mezzo[] {
         const mezzi = [];
@@ -47,32 +46,6 @@ export class HelperSintesiRichiesta {
             });
         }
         return mezzi;
-    }
-
-    /* Restituisce i nomi dei mezzi  */
-    nomiMezzi(richiesta: SintesiRichiesta): string[] {
-        const nomiMezzi = [];
-        if (richiesta.partenze) {
-            richiesta.partenze.forEach((p: Partenza) => {
-                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
-                    nomiMezzi.push(p.partenza.mezzo.codice);
-                }
-            });
-        }
-        return nomiMezzi;
-    }
-
-    /* Restituisce la descrizione dei mezzi */
-    descscrizioneMezzi(richiesta: SintesiRichiesta): string[] {
-        const nomiMezzi = [];
-        if (richiesta.partenze) {
-            richiesta.partenze.forEach((p: Partenza) => {
-                if (p.partenza && p.partenza.mezzo && !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
-                    nomiMezzi.push(p.partenza.mezzo.descrizione);
-                }
-            });
-        }
-        return nomiMezzi;
     }
 
     /* Restituisce il numero dei mezzi */
@@ -183,22 +156,6 @@ export class HelperSintesiRichiesta {
         }
     }
 
-// 1px solid #dc3545
-    /* NgClass Card Fissata Status */
-    cardFissataClasses(r: SintesiRichiesta): any {
-        if (r) {
-            const classes = {
-                'card-shadow-warning': r.stato === StatoRichiesta.Assegnata || r.stato === StatoRichiesta.Sospesa,
-                'card-shadow-success': r.stato === StatoRichiesta.Presidiata,
-                'card-shadow-danger': r.stato === StatoRichiesta.Chiamata,
-                'card-shadow-secondary': r.stato === StatoRichiesta.Chiusa,
-                'bg-pattern-chiuso': r.stato === StatoRichiesta.Chiusa,
-            };
-            const cardBorder = this.cardBorder(r);
-            return { ...classes, ...cardBorder };
-        }
-    }
-
     cardBorder(r: SintesiRichiesta): any {
         if (r) {
             return {
@@ -211,26 +168,8 @@ export class HelperSintesiRichiesta {
         }
     }
 
-    vettorePallini(richiesta): Priorita[] {
-        return new Array(richiesta.priorita);
-    }
-
-    vettoreBuchini(richiesta): string[] {
-        const MAX_PRIORITA = 5;
-        return new Array(MAX_PRIORITA - richiesta.priorita);
-    }
-
-    dettagliMezzo(stato, tipostato, classe): string {
-        return this.stato.getColor(stato, tipostato, classe);
-    }
-
-
     _dateNumber(dateString: any): number {
         return new Date(dateString).getTime();
-    }
-
-    _dateTime(dateString: any): Date {
-        return new Date(dateString);
     }
 
     _terrenoMaggiore(tipoTerreno: TipoTerreno[]): TipoTerrenoMqHa {
@@ -288,20 +227,6 @@ export class HelperSintesiRichiesta {
         }
     }
 
-    _isPresaInCarico(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
-        if (attivita && stato === StatoRichiesta.Chiamata) {
-            for (const a in attivita) {
-                /**
-                 * eventuale logica di controllo
-                 */
-                if (a) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     _primoUtente(attivita: AttivitaUtente[]): AttivitaUtente {
         if (attivita) {
             return attivita[0];
@@ -326,13 +251,6 @@ export class HelperSintesiRichiesta {
     _altreSediAllertate(sediAllertate: Sede[]): string[] {
         if (sediAllertate) {
             return sediAllertate.slice(1).map((s: Sede) => s.descrizione);
-        }
-        return null;
-    }
-
-    _utenteTooltip(attivita: AttivitaUtente): string {
-        if (attivita) {
-            return `${attivita.nominativo} - ${attivita.dataInizioAttivita}`;
         }
         return null;
     }

@@ -42,6 +42,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Restituisce la lista dei mezzi utilizzabili in un determinato comando
         /// </summary>
+        [ProducesResponseType(typeof(ComposizioneMezziResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         [HttpPost]
         public async Task<IActionResult> Post(ComposizioneMezziQuery query)
         {

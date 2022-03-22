@@ -1,11 +1,7 @@
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSquadre.GetAllSquadre;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -21,11 +17,13 @@ namespace SO115App.API.Controllers
         {
             _getAllSquadreHandler = getAllSquadreHandler;
         }
-    
+
         /// <summary>
         ///   Metodo che restituisce la lista delle Squadre
         /// </summary>
         [HttpPost("GetAllSquadre")]
+        [ProducesResponseType(typeof(GetAllSquadreResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetAllSquadre([FromBody] GetAllSquadreQuery par)
         {
             if (par.CodiciSede != null)

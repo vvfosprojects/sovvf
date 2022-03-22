@@ -39,6 +39,8 @@ namespace SO115App.API.Controllers
         ///   Aggiorna lo stato di una partenza
         /// </summary>
         [HttpPost("AggiornaPartenza")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AggiornaPartenza([FromBody] AggiornaStatoMezzoCommand command)
         {
             command.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(',');
@@ -64,6 +66,8 @@ namespace SO115App.API.Controllers
         ///   Annulla uno stato precedentemente inserito, di una specifica partenza
         /// </summary>
         [HttpPost("AnnullaStatoPartenza")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AnnullaStatoPartenza([FromBody] AnnullaStatoPartenzaCommand command)
         {
             command.IdOperatore = Request.Headers["IdUtente"];
@@ -90,6 +94,8 @@ namespace SO115App.API.Controllers
         ///   Modifica una partenza
         /// </summary>
         [HttpPost("ModificaPartenza")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> ModificaPartenza([FromBody] ModificaPartenza partenza)
         {
             var command = new ModificaPartenzaCommand()
@@ -121,6 +127,8 @@ namespace SO115App.API.Controllers
         ///   Registra una sostituzione all'interno di una partenza
         /// </summary>
         [HttpPost("SostituzionePartenza")]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> SostituzionePartenza([FromBody] SostituzioneDTO partenzeDaSostituire)
         {
             partenzeDaSostituire.idOperatore = Request.Headers["IdUtente"];
