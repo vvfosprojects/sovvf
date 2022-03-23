@@ -137,7 +137,10 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
     }
 
     onPageSizeChange(pageSize: number): void {
-        this.store.dispatch(new SetPageSize(pageSize));
+        this.store.dispatch([
+            new SetPageSize(pageSize),
+            new GetListaTrasferimentiChiamate()
+        ]);
     }
 
     getRicerca(): void {
@@ -155,9 +158,6 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.pageSize$.subscribe((pageSize: number) => {
                 if (pageSize) {
-                    if (this.pageSize && pageSize !== this.pageSize) {
-                        this.store.dispatch(new GetListaTrasferimentiChiamate());
-                    }
                     this.pageSize = pageSize;
                 }
             })

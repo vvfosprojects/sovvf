@@ -67,10 +67,28 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
             var listaMezzi = _getListaMezzi.Get(query.CodiciSede) //FILTRI
                 .Where(c =>
                 {
-                    if (query.Filters != null && query.Filters.StatiMezzo != null && query.Filters.StatiMezzo.Count() > 0)
+                    if (query.Filters != null && query.Filters.StatiMezzo != null && query.Filters.StatiMezzo.Count() > 0
+                        && !query.Filters.StatiMezzo.Contains("Istituto"))
                         return query.Filters.StatiMezzo.Contains(c.Mezzo.Mezzo.Stato);
                     else
-                        return true;
+                    {
+                        if (query.Filters != null && query.Filters.StatiMezzo != null && query.Filters.StatiMezzo.Count() > 0
+                            && query.Filters.StatiMezzo.Contains("Istituto"))
+                        {
+                            if(query.Filters.StatiMezzo.Count() == 1)
+                                return c.Mezzo.Mezzo.Istituto;
+                            else
+                            {
+                                if (query.Filters.StatiMezzo.Contains(c.Mezzo.Mezzo.Stato) || c.Mezzo.Mezzo.Istituto)
+                                    return true;
+                                else
+                                    return false;                               
+                            }
+                        }
+                            
+                        else
+                            return true;
+                    }
                 }).Where(c =>
                 {
                     if (query.Filters != null && !string.IsNullOrEmpty(query.Filters.Search))

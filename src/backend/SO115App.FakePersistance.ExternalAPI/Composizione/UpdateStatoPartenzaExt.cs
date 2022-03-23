@@ -77,19 +77,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             if (CheckStatoMezzoCronologicamenteOk(command))
             {
-                _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
-
-                var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
-
-                foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
-                {
-                    foreach (var squadra in partenza.Partenza.Squadre)
-                    {
-                        _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, partenza.Partenza.Turno);
-                    }
-                }
-
                 var partenzaRientro = command.Richiesta.Partenze.Last(p => p.CodiceMezzo.Equals(command.IdMezzo));
+                var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
 
                 if (partenzaRientro.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                 {
@@ -105,6 +94,17 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         dataRientro = dataRientro,
                         autista = partenzaRientro.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
                     });
+                }
+
+                _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
+
+
+                foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
+                {
+                    foreach (var squadra in partenza.Partenza.Squadre)
+                    {
+                        _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, partenza.Partenza.Turno);
+                    }
                 }
             }
         }

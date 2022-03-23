@@ -31,6 +31,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 {
@@ -88,7 +89,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 
             var boxPersonale = _getBoxPersonale.Get(listaSedi.Select(s => s.Codice).ToArray());
             var listaAttuale = boxPersonale.workShift.Select(s => s.Attuale).ToList();
-            foreach (var unita in listaSedi)
+            Parallel.ForEach(listaSedi, unita =>
             {
                 if (!unita.Nome.Equals("Centro Operativo Nazionale"))
                 {
@@ -102,7 +103,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                     var infoDistaccamento = new Istogramma()
                     {
                         codDistaccamento = unita.Codice,
-                        descDistaccamento = /*unita.Codice.Contains("1000") ? "Comando VV.F. " + :*/ unita.Nome,
+                        descDistaccamento = unita.Nome,
                         numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
                         squadreLibere = listaSquadre != null ? listaSquadre.Count() - statoSquadre.Count : 0,
                         squadreOccupate = statoSquadre.Count
@@ -110,7 +111,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
 
                     info.ListaCodaChiamate.Add(infoDistaccamento);
                 }
-            }
+            });
 
             return new CodaChiamateResult()
             {
