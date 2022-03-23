@@ -4,6 +4,7 @@ using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Concurrent;
@@ -74,6 +75,45 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             var listaFiltrata = personaleUC.ToList()
                 .FindAll(x => lstSegmenti.Contains(x.cognome.ToLower()) && lstSegmenti.Contains(x.nome.ToLower()))
+                .Map()
+                .OrderBy(x => x.cognome)
+                .Distinct()
+                .ToList();
+
+            return listaFiltrata;
+        }
+
+        public List<PersonaleVVF> Get(PersonaleVVFQuery query, string codSede = null)
+        {
+            //Gestisco la searchkey
+            string parametriNominativo = "";
+            if (query.Nome != null)
+                parametriNominativo = $"Nome={query.Nome}&Cognome={query.Cognome}";
+
+            string paramCodiceFiscale = "";
+            if (query.CodiceFiscale!=null)
+                paramCodiceFiscale = $"&codiciFiscali={query.CodiceFiscale}";
+
+            var stringaGet = parametriNominativo + paramCodiceFiscale;
+
+            var personaleUC = new ConcurrentQueue<PersonaleUC>();
+
+            //Reperisco i dati
+            try
+            {
+                var uri = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?{stringaGet}");
+                var result = _client.GetAsync(uri).Result;
+
+                result.ForEach(p => personaleUC.Enqueue(p));
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Servizio Utente Comuni non disponibile.");
+            }
+
+            //Applico i filtri sui dati
+
+            var listaFiltrata = personaleUC.ToList()
                 .Map()
                 .OrderBy(x => x.cognome)
                 .Distinct()
