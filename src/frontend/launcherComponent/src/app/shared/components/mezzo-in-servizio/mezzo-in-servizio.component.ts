@@ -6,6 +6,7 @@ import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { statoMezzoBorderClass, statoMezzoColor } from '../../helper/function-mezzo';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
+import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -20,9 +21,7 @@ export class MezzoInServizioComponent implements OnChanges {
     @Input() richiesta: SintesiRichiesta;
     @Input() loading: string;
     @Input() nightMode: boolean;
-    @Input() colIndirizzoRichiesta = '3';
     @Input() truncateLenghtIndirizzoRichiesta = 30;
-    @Input() colInfoRichiesta = '3';
     @Input() hideCodRichiesta: boolean;
     @Input() hideTextButtonEventi: boolean;
     @Input() hideDistaccamento: boolean;
@@ -67,6 +66,10 @@ export class MezzoInServizioComponent implements OnChanges {
 
     statoMezzoColor(stato: StatoMezzo): string {
         return statoMezzoColor(stato);
+    }
+
+    getSedeString(sede: string): string {
+        return sedeString(sede);
     }
 
     onSelect(mezzo: MezzoInServizio): void {
