@@ -27,6 +27,7 @@ using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
@@ -66,7 +67,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var listaMezzoInServizio = new List<MezzoInServizio>();
 
-            foreach (var mezzo in mezzi)
+            Parallel.ForEach(mezzi, mezzo =>
             {
                 var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
                 mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
@@ -101,7 +102,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 }
 
                 listaMezzoInServizio.Add(mezzoInServizio);
-            };
+            });
 
             return listaMezzoInServizio
                 .OrderBy(c => c.Mezzo.Mezzo.Stato == Costanti.MezzoInSede).ToList();

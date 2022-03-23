@@ -406,8 +406,6 @@ export class SignalRService {
         this.hubNotification.on('NotifyAddTrasferimento', (response: ResponseAddTrasferimentoInterface) => {
             console.log('NotifyAddTrasferimento', response);
             this.store.dispatch(new AddTrasferimentoChiamata());
-            const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
         this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
             console.log('NotifyDeleteChiamata', idRichiesta);

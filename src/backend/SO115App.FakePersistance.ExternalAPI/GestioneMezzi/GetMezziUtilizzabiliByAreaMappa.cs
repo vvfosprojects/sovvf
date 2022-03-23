@@ -4,6 +4,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -104,7 +105,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 }
                 else
                 {
-                    mezzo.Stato = "In sede";
+                    mezzo.Stato = Costanti.MezzoInSede;
                 }
             }
 
