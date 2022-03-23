@@ -71,6 +71,7 @@ import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
+import { AppState } from '../../store/states/app/app.state';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -605,11 +606,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const indirizzo = candidateValue.candidate.address ? candidateValue.candidate.address : null;
         const lat = roundToDecimal(candidateValue.candidate.location.latitude, 6);
         const lng = roundToDecimal(candidateValue.candidate.location.longitude, 6);
+        const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
         const coordinate = new Coordinate(lat, lng);
         this.chiamataMarker = new ChiamataMarker(
             this.idChiamata,
             `${this.operatore.nome} ${this.operatore.cognome}`,
-            `${this.operatore.sede.codice}`,
+            `${sediSelezionate[0]}`,
             new Localita(coordinate ? coordinate : null, indirizzo),
             null
         );

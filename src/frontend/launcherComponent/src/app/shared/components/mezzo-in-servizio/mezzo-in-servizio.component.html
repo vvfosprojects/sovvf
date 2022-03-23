@@ -95,10 +95,8 @@
         <!-- Distaccamento -->
         <ng-container *ngIf="!hideDistaccamento">
             <div class="badge badge-secondary"
-                 [class.mr-2]="showSelectButton"
-                 [ngbTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione"
-                 [disableTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione.length <= 13">
-                {{ mezzoInServizio.mezzo.mezzo.distaccamento.descrizione | slice: 0:15 }}
+                 [class.mr-2]="showSelectButton">
+                {{ getSedeString(mezzoInServizio.mezzo.mezzo.distaccamento.descrizione) }}
             </div>
         </ng-container>
         <!-- Select Button -->

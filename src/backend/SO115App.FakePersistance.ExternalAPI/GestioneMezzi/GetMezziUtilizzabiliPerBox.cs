@@ -36,7 +36,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             //_clientMezzi.SetCache("Mezzi_" + CodiciSedi);
 
-            var lstSediQueryString = string.Join("&codiciSedi=", CodiciSedi.Select(sede => sede.Split('.')[0]).Distinct().ToArray());
+            var lstSediQueryString = string.Join("&codiciSedi=", CodiciSedi.Where(s => s.Contains('.')).Select(sede => sede.Split('.')[0]).Distinct().ToArray());
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
 
             var lstMezzi = _clientMezzi.GetAsync(url, token).Result;
