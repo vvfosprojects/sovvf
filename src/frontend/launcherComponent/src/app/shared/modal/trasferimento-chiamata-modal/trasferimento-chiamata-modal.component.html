@@ -30,28 +30,40 @@
                 <label for="sede">Dove vuoi trasferire la Chiamata?
                     <small class="text-danger">*</small>
                 </label>
-                    <ng-select class="align-self-center"
-                               id="sede"
-                               [items]="distaccamenti"
-                               bindLabel="descrizione"
-                               bindValue="id"
-                               [closeOnSelect]="true"
-                               [hideSelected]="false"
-                               [loading]="!distaccamenti"
-                               (change)="onPatchSedi($event)"
-                               placeholder="Seleziona Comando">
-                    </ng-select>
+                <ng-select class="align-self-center"
+                           id="sede"
+                           [items]="distaccamenti"
+                           bindLabel="descrizione"
+                           bindValue="id"
+                           [closeOnSelect]="true"
+                           [hideSelected]="false"
+                           [loading]="!distaccamenti"
+                           (change)="onPatchSedi($event)"
+                           placeholder="Seleziona Comando">
+                </ng-select>
             </div>
         </form>
         <h6 class="text-danger">* Campi Obbligatori</h6>
     </div>
 </div>
 <div class="modal-footer" style="place-content: space-between;">
-    <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
-            [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">
-        {{ 'Conferma Trasferimento' | uppercase }}
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover"
+            ngbTooltip="Riempi tutti i campi obbligatori"
+            [disableTooltip]="formValid"
+            [disabled]="!formValid || submitted"
+            (click)="onConferma()">
+        <ng-container *ngIf="!submitted">
+            {{ 'Conferma Trasferimento' | uppercase }}
+        </ng-container>
+        <ng-container *ngIf="submitted">
+            <i class="fas fa-spinner fa-spin mr-1"></i>
+            {{ 'Trasferimento in corso' | uppercase }}
+        </ng-container>
     </button>
-    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
-      {{ 'Annulla' | uppercase }}
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover"
+            [disabled]="submitted"
+            (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
     </button>
 </div>
