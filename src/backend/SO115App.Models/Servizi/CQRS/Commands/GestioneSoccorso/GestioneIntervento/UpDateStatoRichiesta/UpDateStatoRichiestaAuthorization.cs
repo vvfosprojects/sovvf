@@ -78,7 +78,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                                 yield return new AuthorizationResult(Costanti.InterventoBloccato);
                         }
 
-                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreRichieste))
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }
