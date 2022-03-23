@@ -85,13 +85,10 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
-                        foreach (var competenza in Competenze)
-                        {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
-                                abilitato = true;
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
-                        }
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
+                            abilitato = true;
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreRichieste))
+                            abilitato = true;
                     }
 
                     if (!abilitato)
