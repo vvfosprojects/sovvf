@@ -36,30 +36,24 @@ namespace SO115App.API.Controllers
         {
             _queryHandlerPersonale = queryHandlerPersonale;
         }
-    
-    
+
         /// <summary>
         ///   Metodo che restituisce la lista del personale VVF
         /// </summary>
-        [HttpGet()]
+        [HttpPost()]
         [ProducesResponseType(typeof(List<PersonaleVVF>), 200)]
         [ProducesResponseType(typeof(string), 400)]
-        public IActionResult Get(string text)
+        public IActionResult Get([FromBody] PersonaleVVFQuery query)
         {
-            var codiceSede = Request.Headers["codiceSede"];
-            var personaleQuery = new PersonaleVVFQuery
-            {
-                Text = text,
-                CodiceSede = codiceSede
-            };
+            query.CodiceSede = Request.Headers["codiceSede"];
 
             try
             {
-                return Ok(_queryHandlerPersonale.Handle(personaleQuery).ListaPersonale);
+                return Ok(_queryHandlerPersonale.Handle(query).ListaPersonale);
             }
             catch (System.Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains("404"))
                     return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });

@@ -26,27 +26,36 @@ namespace SO115App.API.Controllers
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetAllSquadre([FromBody] GetAllSquadreQuery par)
         {
-            if (par.CodiciSede != null)
+            try
             {
-                var query = new GetAllSquadreQuery()
+                if (par.CodiciSede != null)
                 {
-                    CodiciSede = par.CodiciSede
-                };
+                    var query = new GetAllSquadreQuery()
+                    {
+                        CodiciSede = par.CodiciSede
+                    };
 
-                var result = _getAllSquadreHandler.Handle(query);
+                    var result = _getAllSquadreHandler.Handle(query);
 
-                return Ok(result);
+                    return Ok(result);
+                }
+                else
+                {
+                    var query = new GetAllSquadreQuery()
+                    {
+                        CodiciSede = Request.Headers["codicesede"].ToString().Split(",")
+                    };
+
+                    var result = _getAllSquadreHandler.Handle(query);
+
+                    return Ok(result);
+                }
             }
-            else
+            catch (System.Exception ex)
             {
-                var query = new GetAllSquadreQuery()
-                {
-                    CodiciSede = Request.Headers["codicesede"].ToString().Split(",")
-                };
+                Serilog.Log.Error(ex.Message);
 
-                var result = _getAllSquadreHandler.Handle(query);
-
-                return Ok(result);
+                return BadRequest(ex.Message);
             }
         }
     }

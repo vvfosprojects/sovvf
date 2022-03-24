@@ -41,6 +41,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 e = e.GetBaseException();
 
                 return BadRequest(new { message = e.Message, stackTrace = e.StackTrace });

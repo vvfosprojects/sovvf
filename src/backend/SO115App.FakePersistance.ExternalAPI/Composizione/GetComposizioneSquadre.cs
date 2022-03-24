@@ -30,6 +30,7 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
@@ -88,7 +89,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 case TurnoRelativo.Successivo: codiceTurno = TurnoPrecedente.Codice; break;
 
-                case null: codiceTurno = TurnoAttuale.Codice; break;
+                case TurnoRelativo.Attuale: codiceTurno = TurnoAttuale.Codice; break;
+
+                case null: goto case TurnoRelativo.Attuale;
             }
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno, query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
@@ -120,7 +123,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     case TurnoRelativo.Successivo: Parallel.ForEach(workshift.Where(w => w != null).SelectMany(w => w.Successivo?.Squadre ?? default), squadra => lstSquadre.Add(squadra)); break;
 
-                    case null: Parallel.ForEach(workshift.Where(w => w != null).SelectMany(w => w?.Attuale?.Squadre ?? default), squadra => lstSquadre.Add(squadra)); break;
+                    case TurnoRelativo.Attuale: Parallel.ForEach(workshift.Where(w => w != null).SelectMany(w => w?.Attuale?.Squadre ?? default), squadra => lstSquadre.Add(squadra)); break;
+
+                    case null: goto case TurnoRelativo.Attuale;
                 }
 
                 var codMezziPreaccoppiati = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList();
@@ -208,7 +213,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     .ThenByDescending(squadra => query.Filtro.CodiciCompetenze?[0].Equals(squadra.Distaccamento?.Codice) ?? false)
                     .ThenByDescending(squadra => query.Filtro.CodiciCompetenze?.Length > 1 ? query.Filtro?.CodiciCompetenze[1].Equals(squadra.Distaccamento?.Codice) : false)
                     .ThenByDescending(squadra => query.Filtro.CodiciCompetenze?.Length > 2 ? query.Filtro?.CodiciCompetenze[2].Equals(squadra.Distaccamento?.Codice) : false);
-                    //.ThenBy(squadra => squadra.Nome);
             });
 
             var result = lstSquadreComposizione.Result.ToList();

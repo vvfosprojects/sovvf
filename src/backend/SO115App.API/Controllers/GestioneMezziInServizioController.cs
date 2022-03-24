@@ -46,7 +46,7 @@ namespace SO115App.API.Controllers
             {
                 ex = ex.GetBaseException();
                 Log.Error(ex.Message);
-                //if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                //Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                 //    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 //else if (ex.Message.Contains("404"))
                 //    return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
@@ -71,7 +71,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains("404"))
                     return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });

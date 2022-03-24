@@ -55,6 +55,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 var ex = e.GetBaseException();
 
                 return BadRequest(ex.Message + ex.StackTrace);
@@ -83,6 +85,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 var ex = e.GetBaseException();
 
                 return BadRequest(ex.Message + ex.StackTrace);
@@ -111,6 +115,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 var ex = e.GetBaseException();
 
                 return BadRequest(ex.Message + ex.StackTrace);
@@ -139,6 +145,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 var ex = e.GetBaseException();
 
                 return BadRequest(ex.Message + ex.StackTrace);
