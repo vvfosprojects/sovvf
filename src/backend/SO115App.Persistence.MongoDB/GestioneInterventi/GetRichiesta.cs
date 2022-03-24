@@ -270,8 +270,8 @@ namespace SO115App.Persistence.MongoDB
                     .ThenByDescending(c => c.StatoRichiesta is Assegnata)
                     .ThenByDescending(c => c.StatoRichiesta is Presidiata)
                     .ThenByDescending(c => c.StatoRichiesta is Chiusa)
-                    .ThenByDescending(x => x.PrioritaRichiesta)
-                    .ThenByDescending(x => x.IstanteRicezioneRichiesta)
+                    //.ThenByDescending(x => x.PrioritaRichiesta)
+                    .ThenBy(x => x.IstanteRicezioneRichiesta)
                     .Skip((filtro.Page - 1) * filtro.PageSize).Take(filtro.PageSize).ToList();
                 }
             }
@@ -294,8 +294,8 @@ namespace SO115App.Persistence.MongoDB
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaAssegnata))
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaPresidiata))
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaChiusa))
-                    .ThenByDescending(x => x.PrioritaRichiesta)
-                    .ThenByDescending(x => x.IstanteRicezioneRichiesta)
+                    //.ThenByDescending(x => x.PrioritaRichiesta)
+                    .ThenBy(x => x.IstanteRicezioneRichiesta)
                     .ToList();
         }
 

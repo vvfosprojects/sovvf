@@ -11,7 +11,7 @@ import { RicercaTrasferimentoChiamataState } from './store/states/ricerca-trasfe
 import { TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
 import { SetPageSize } from 'src/app/shared/store/actions/pagination/pagination.actions';
 import { GetListaTrasferimentiChiamate } from './store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
-import { RequestAddTrasferimentoChiamata, ClearFormTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
+import { ClearFormTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
@@ -113,23 +113,15 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
             size: 'lg'
         });
         addTrasferimentoChiamataModal.result.then(
-            (result: { success: boolean }) => {
-                if (result.success) {
-                    this.addTrasferimentoChiamata();
-                } else if (!result.success) {
-                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
-                    console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
-                }
+            (result: string) => {
+                this.store.dispatch(new ClearFormTrasferimentoChiamata());
+                console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
             },
             (err) => {
                 this.store.dispatch(new ClearFormTrasferimentoChiamata());
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
-    }
-
-    addTrasferimentoChiamata(): void {
-        this.store.dispatch(new RequestAddTrasferimentoChiamata());
     }
 
     onPageChange(page: number): void {

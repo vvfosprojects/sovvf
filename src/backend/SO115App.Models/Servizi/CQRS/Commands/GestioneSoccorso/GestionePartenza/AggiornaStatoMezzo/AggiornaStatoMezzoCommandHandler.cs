@@ -78,10 +78,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     case Costanti.MezzoInViaggio:
 
+                        var IstantePrecedente = richiesta.ListaEventi.ToList().FirstOrDefault(e => e is UscitaPartenza arrivo && arrivo.CodicePartenza == command.CodicePartenza)?.Istante;
                         var IstanteSuccessivo = richiesta.ListaEventi.ToList().FirstOrDefault(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza)?.Istante;
 
+                        if (IstantePrecedente > istante)
+                            throw new System.Exception("L'orario inserito non può essere superiore all'orario di uscita del mezzo.");
+
                         if (IstanteSuccessivo < istante)
-                            throw new System.Exception(orarioErrato);
+                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario di arrivo sul posto del mezzo.");
 
                         new AggiornamentoOrarioStato(richiesta, command.IdMezzo, istante, command.IdUtente, "AggiornamentoOrarioStato", partenza.CodicePartenza)
                         {
@@ -156,27 +160,25 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 if (richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza) != null)
                     IstanteInRientro = richiesta.ListaEventi.ToList().Find(e => e is PartenzaInRientro rientro && rientro.CodicePartenza == command.CodicePartenza).Istante;
 
-
                 if (statoAttuale.Equals("In Viaggio"))
                 {
                     if (command.StatoMezzo.Equals("Sul Posto"))
                     {
                         if (IstanteInViaggio > istante)
-                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario di uscita del mezzo.");
+                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario del mezzo in viaggio.");
                     }
 
                     if (command.StatoMezzo.Equals("In Rientro"))
                     {
                         if (IstanteInViaggio > istante)
-                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario di uscita del mezzo.");
+                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario del mezzo in viaggio.");
                     }
 
                     if (command.StatoMezzo.Equals("Rientrato"))
                     {
                         if (IstanteInViaggio > istante)
-                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario di uscita del mezzo.");
+                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario del mezzo in viaggioo.");
                     }
-
 
                     statoMezzoReale = command.StatoMezzo;
                     richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
@@ -185,14 +187,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         Istante = istante,
                         Stato = statoMezzoReale
                     }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
-                    
                 }
                 else if (statoAttuale.Equals("Sul Posto"))
-                {                    
+                {
                     if (command.StatoMezzo.Equals("In Rientro"))
                     {
-                        if(IstanteInViaggio > istante)
-                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario di uscita del mezzo.");
+                        if (IstanteInViaggio > istante)
+                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario del mezzo in viaggio.");
 
                         if (IstanteSulPosto > istante)
                             throw new System.Exception("L'orario inserito non può essere inferiore all'orario di arrivo sul posto del mezzo.");
@@ -204,13 +205,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             Istante = istante,
                             Stato = statoMezzoReale
                         }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
-
                     }
 
                     if (command.StatoMezzo.Equals("Rientrato"))
                     {
                         if (IstanteInViaggio > istante)
-                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario di uscita del mezzo.");
+                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario del mezzo in viaggio.");
 
                         if (IstanteSulPosto > istante)
                             throw new System.Exception("L'orario inserito non può essere inferiore all'orario di arrivo sul posto.");
@@ -223,8 +223,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             Stato = statoMezzoReale
                         }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
                     }
-
-
                 }
                 else if (statoAttuale.Equals("In Rientro"))
                 {
@@ -233,8 +231,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         if (IstanteInRientro < istante)
                             throw new System.Exception("L'orario inserito non può essere superiore all'orario in rientro del mezzo.");
 
-                        if(IstanteInViaggio > istante)
-                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario di uscita del mezzo.");
+                        if (IstanteInViaggio > istante)
+                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario del mezzo in viaggio.");
 
                         statoMezzoReale = statoAttuale;
 
@@ -242,16 +240,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     }
 
                     if (command.StatoMezzo.Equals("Rientrato"))
-                    {                        
+                    {
                         if (IstanteInViaggio > istante)
-                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario di uscita del mezzo.");
+                            throw new System.Exception("L'orario inserito non può essere inferiore all'orario del mezzo in viaggio.");
 
                         if (IstanteSulPosto > istante)
                             throw new System.Exception("L'orario inserito non può essere inferiore all'orario sul posto del mezzo.");
 
                         if (IstanteInRientro > istante)
                             throw new System.Exception("L'orario inserito non può essere inferiore all'orario in rientro del mezzo.");
-
 
                         statoMezzoReale = command.StatoMezzo;
                         richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()

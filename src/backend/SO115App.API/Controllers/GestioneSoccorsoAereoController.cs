@@ -63,6 +63,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 return BadRequest(e.GetBaseException().Message);
             }
         }
@@ -89,6 +91,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 return BadRequest(e.GetBaseException().Message);
             }
         }
@@ -117,6 +121,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 return BadRequest(e.GetBaseException().Message);
             }
         }
@@ -145,6 +151,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 return BadRequest(e.GetBaseException().Message);
             }
         }
@@ -177,6 +185,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 return BadRequest(e.GetBaseException().Message);
             }
         }
@@ -205,6 +215,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 return BadRequest(e.GetBaseException().Message);
             }
         }

@@ -7,8 +7,8 @@ import { Utente } from '../model/utente.model';
 import { makeID } from './function-generiche';
 
 
-export function makeIdChiamata(operatore: Utente): string {
-    return `${operatore.sede.codice}-${operatore.id}-${makeID(8)}`;
+export function makeIdChiamata(operatore: Utente, sedeSelezionata: string): string {
+    return `${sedeSelezionata}-${operatore.id}-${makeID(8)}`;
 }
 
 export function makeIDChiamata(): string {
@@ -92,7 +92,7 @@ export function defineChiamataIntervento(codice: string, codiceRichiesta: string
 
 export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]): boolean {
     let count = 0;
-    let visualizza = false;
+    let visualizza: boolean;
     if (tipologieRichiesta) {
         tipologieRichiesta.forEach((tipologia: Tipologia) => {
             if (tipologia.boschivo) {

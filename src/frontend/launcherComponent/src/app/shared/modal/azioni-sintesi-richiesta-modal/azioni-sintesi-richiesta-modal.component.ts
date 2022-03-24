@@ -9,7 +9,7 @@ import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
 import { ActionRichiestaModalComponent } from '../action-richiesta-modal/action-richiesta-modal.component';
 import { ActionRichiesta, AllertaSede, ModificaStatoFonogramma } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { TrasferimentoChiamataModalComponent } from '../trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
-import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from '../../store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
+import { ClearFormTrasferimentoChiamata } from '../../store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../allerta-sede-modal/allerta-sede-modal.component';
 import { ModificaEntiModalComponent } from '../modifica-enti-modal/modifica-enti-modal.component';
 import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/modifica-fonogramma-modal.component';
@@ -186,14 +186,9 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             });
             addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
             addTrasferimentoChiamataModal.result.then(
-                (result: { success: boolean }) => {
-                    if (result.success) {
-                        this.addTrasferimentoChiamata();
-                        this.modal.close({ status: 'ko' });
-                    } else if (!result.success) {
-                        this.store.dispatch(new ClearFormTrasferimentoChiamata());
-                        console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
-                    }
+                (result: string) => {
+                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
+                    console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
                 },
                 (err) => {
                     this.store.dispatch(new ClearFormTrasferimentoChiamata());
@@ -296,12 +291,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                         break;
                 }
             });
-        }
-    }
-
-    addTrasferimentoChiamata(): void {
-        if (!this.isLockedConcorrenza()) {
-            this.store.dispatch(new RequestAddTrasferimentoChiamata());
         }
     }
 

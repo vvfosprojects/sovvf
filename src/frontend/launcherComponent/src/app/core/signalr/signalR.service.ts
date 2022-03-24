@@ -20,7 +20,7 @@ import { GetContatoriSchedeContatto, GetListaSchedeContatto, SetContatoriSchedeC
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
-import { Navigate } from '@ngxs/router-plugin';
+import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
 import { BoxPersonale } from '../../features/home/boxes/boxes-model/box-personale.model';
@@ -409,7 +409,10 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
             console.log('NotifyDeleteChiamata', idRichiesta);
-            this.store.dispatch(new GetListaRichieste());
+            const isHome = this.store.selectSnapshot(RouterState.url) ? this.store.selectSnapshot(RouterState.url) === '/home' : false;
+            if (isHome) {
+                this.store.dispatch(new GetListaRichieste());
+            }
         });
 
         /**

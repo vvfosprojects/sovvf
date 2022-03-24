@@ -77,13 +77,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
-                        foreach (var competenza in command.CodCompetenze)
-                        {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
-                                abilitato = true;
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
-                        }
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
+                            abilitato = true;
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreRichieste))
+                            abilitato = true;
                     }
 
                     if (!abilitato)

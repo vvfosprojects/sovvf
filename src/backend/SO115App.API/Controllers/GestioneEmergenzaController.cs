@@ -88,7 +88,7 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 Log.Error("Errore InsertEmergenza: {0}", ex.Message);
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -117,7 +117,7 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 Log.Error("Errore UpDateEmergenza: {0}", ex.Message);
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -148,7 +148,7 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 Log.Error("Errore UpDateEmergenza: {0}", ex.Message);
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -172,7 +172,7 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 Log.Error("Errore AnnullaEmergenza: {0}", ex.Message);
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -195,7 +195,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -218,7 +218,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -241,7 +241,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -264,7 +264,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -290,7 +290,7 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 Log.Error("Errore GetTipologieEmergenza: {0}", ex.Message);
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -317,7 +317,7 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 Log.Error("Errore GetEmergenzaById: {0}", ex.Message);
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -341,7 +341,7 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 Log.Error("Errore GetListaEmergenzeByCodSede: {0}", ex.Message);
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
