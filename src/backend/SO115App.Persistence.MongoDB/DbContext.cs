@@ -51,6 +51,7 @@ using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Evento = SO115App.Models.Classi.NUE.EventoNue;
@@ -146,6 +147,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<Evento>();
             BsonClassMap.RegisterClassMap<InsertSchedaNueRequest>();
             BsonClassMap.RegisterClassMap<Esri_Params>();
+            BsonClassMap.RegisterClassMap<SquadraOpService>();
 
             EmergenzaMap.Map();
             TipologieEmergenzaMap.Map();
@@ -182,7 +184,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<WorkShift>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(c => c.Id)
+                cm.MapIdMember(c => c.IdMongo)
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
@@ -386,6 +388,16 @@ namespace Persistence.MongoDB
             {
                 return database.GetCollection<SchedaContattoWSNue>("schedeNue");
             }
+        }
+
+        public bool CheckComposizioneSquadreExists()
+        {
+            var col = database.GetCollection<WorkShift>("squadre");
+
+            if (col != null)
+                return true;
+            else
+                return false;
         }
 
         public bool DeleteDB(string nomeCollection)
