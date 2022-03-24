@@ -394,6 +394,29 @@ export class SchedaTelefonataState {
             new StopLoadingCompetenze()
         ]);
 
+        const codCompetenze = action.codCompetenze;
+        if (codCompetenze?.length === 1) {
+            dispatch(new UpdateFormValue({
+                value: {
+                    codCompetenzaCentrale: codCompetenze[0],
+                    codPrimaCompetenza: null,
+                    codSecondaCompetenza: null,
+                    codTerzaCompetenza: null
+                },
+                path: 'schedaTelefonata.richiestaForm'
+            }));
+        } else if (codCompetenze?.length === 3) {
+            dispatch(new UpdateFormValue({
+                value: {
+                    codCompetenzaCentrale: null,
+                    codPrimaCompetenza: codCompetenze[0],
+                    codSecondaCompetenza: codCompetenze[1],
+                    codTerzaCompetenza: codCompetenze[2]
+                },
+                path: 'schedaTelefonata.richiestaForm'
+            }));
+        }
+
         if (action.markerChiamata) {
             dispatch(new MarkerChiamata(action.markerChiamata, action.codCompetenze));
         }
