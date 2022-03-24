@@ -45,7 +45,7 @@ namespace SO115App.API.Controllers
             {
                 ex = ex.GetBaseException();
 
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else
                     return BadRequest(ex);

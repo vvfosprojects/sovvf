@@ -36,6 +36,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 return BadRequest(ex.Message);
             }
         }
@@ -54,6 +56,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 return BadRequest(ex.Message);
             }
         }

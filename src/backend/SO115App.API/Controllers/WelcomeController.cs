@@ -63,6 +63,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 ex = ex.GetBaseException();
 
                 if (ex.Message.Contains("404"))
