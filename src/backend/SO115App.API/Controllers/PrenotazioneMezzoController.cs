@@ -48,7 +48,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { ex.Message });
             }
@@ -78,7 +78,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { ex.Message });
             }

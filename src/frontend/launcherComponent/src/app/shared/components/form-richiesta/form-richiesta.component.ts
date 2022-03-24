@@ -48,9 +48,7 @@ import {
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ClearTriageSummary, SetSchedaContattoTriageSummary, SetTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
-import { getPrioritaTriage } from '../../helper/function-triage';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
-import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
 import { ClearSchedaContattoTelefonata, OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { PosInterface } from '../../interface/pos.interface';
 import { TipoTerreno } from '../../model/tipo-terreno';
@@ -69,9 +67,12 @@ import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorren
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { AppState } from '../../store/states/app/app.state';
+import { getPrioritaTriage } from '../../helper/function-triage';
+import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
+import { createChiamataMarker } from '../../helper/mappa/chiamata-marker';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
-import { AppState } from '../../store/states/app/app.state';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -277,7 +278,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     onChangeSchedaContatto(schedaContatto: SchedaContatto): void {
         if (schedaContatto?.codiceScheda) {
-            this.setSchedaContatto(schedaContatto);
+            if (!this.f?.codSchedaContatto?.value) {
+                this.setSchedaContatto(schedaContatto);
+            }
         }
         // Controllo scorciatoia numero da Scheda Contatto
         const telefono = schedaContatto.richiedente.telefono;
@@ -606,15 +609,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const indirizzo = candidateValue.candidate.address ? candidateValue.candidate.address : null;
         const lat = roundToDecimal(candidateValue.candidate.location.latitude, 6);
         const lng = roundToDecimal(candidateValue.candidate.location.longitude, 6);
-        const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
         const coordinate = new Coordinate(lat, lng);
-        this.chiamataMarker = new ChiamataMarker(
-            this.idChiamata,
-            `${this.operatore.nome} ${this.operatore.cognome}`,
-            `${sediSelezionate[0]}`,
-            new Localita(coordinate ? coordinate : null, indirizzo),
-            null
-        );
+        const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+        const sedeSelezionata = sediSelezionate[0];
+        this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, indirizzo));
 
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(lat);
@@ -631,14 +629,28 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.regione.markAsDirty();
         this.f.civico.markAsDirty();
 
+        this.store.dispatch(new UpdateFormValue({
+            path: 'schedaTelefonata.richiestaForm',
+            value: {
+                provincia: candidateValue.candidateAttributes.Subregion,
+                cap: candidateValue.candidateAttributes.Postal,
+                regione: candidateValue.candidateAttributes.Region,
+                civico: candidateValue.candidateAttributes.AddNum
+            }
+        }));
+
         this.reducerSchedaTelefonata('cerca');
     }
 
-    setIndirizzoFromMappa(lat: number, lon: number, address: string, provincia: string, cap: string, regione: string, civico: string): void {
+    setIndirizzoFromMappa(lat: number, lon: number, indirizzo: string, provincia: string, cap: string, regione: string, civico: string): void {
         const latitudine = roundToDecimal(lat, 6);
         const longitudine = roundToDecimal(lon, 6);
+        const coordinate = new Coordinate(lat, lon);
+        const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+        const sedeSelezionata = sediSelezionate[0];
+        this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, indirizzo));
 
-        this.f.indirizzo.patchValue(address);
+        this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(latitudine);
         this.f.longitudine.patchValue(longitudine);
         this.f.provincia.patchValue(provincia);
@@ -649,14 +661,15 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.longitudine.disable();
         this.f.indirizzo.disable();
 
-        const coordinate = new Coordinate(lat, lon);
-        this.chiamataMarker = new ChiamataMarker(
-            this.idChiamata,
-            `${this.operatore.nome} ${this.operatore.cognome}`,
-            `${this.operatore.sede.codice}`,
-            new Localita(coordinate ? coordinate : null, address),
-            null
-        );
+        this.store.dispatch(new UpdateFormValue({
+            path: 'schedaTelefonata.richiestaForm',
+            value: {
+                provincia,
+                cap,
+                regione,
+                civico
+            }
+        }));
 
         this.reducerSchedaTelefonata('cerca');
     }
@@ -675,6 +688,16 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.cap.patchValue(candidateValue.candidateAttributes.Postal);
         this.f.regione.patchValue(candidateValue.candidateAttributes.Region);
         this.f.civico.patchValue(candidateValue.candidateAttributes.AddNum);
+
+        this.store.dispatch(new UpdateFormValue({
+            path: 'schedaTelefonata.richiestaForm',
+            value: {
+                provincia: candidateValue.candidateAttributes.Subregion,
+                cap: candidateValue.candidateAttributes.Postal,
+                regione: candidateValue.candidateAttributes.Region,
+                civico: candidateValue.candidateAttributes.AddNum
+            }
+        }));
 
         this.store.dispatch([
             new ModificaIndirizzo(nuovoIndirizzo),
@@ -743,13 +766,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             };
             this.esriService.getLocationToAddress(params).then((response: any) => {
                 if (!this.modifica) {
-                    this.chiamataMarker = new ChiamataMarker(
-                        this.idChiamata,
-                        `${this.operatore.nome} ${this.operatore.cognome}`,
-                        `${this.operatore.sede.codice}`,
-                        new Localita(coordinate ? coordinate : null, indirizzo),
-                        null
-                    );
+                    const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+                    const sedeSelezionata = sediSelezionate[0];
+                    this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, indirizzo));
                     this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
                 } else {
                     const newCentroMappa = {
@@ -784,19 +803,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.codTerzaCompetenza.patchValue(null);
         }
     }
-
-    // selectCompetenzaAuto(): void {
-    //     const coordinate = {
-    //         latitudine: this.f.latitudine?.value,
-    //         longitudine: this.f.longitudine?.value
-    //     };
-    //     const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
-    //     if (competenzaCentrale) {
-    //         const codCompetenze = [competenzaCentrale];
-    //         this.f.codCompetenzaCentrale.patchValue(competenzaCentrale);
-    //         this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
-    //     }
-    // }
 
     onSelectCompetenza(nCompetenza: number, codCompetenza: string): void {
         switch (nCompetenza) {
@@ -936,20 +942,29 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             f.cap.patchValue(response.attributes.Postal);
             f.regione.patchValue(response.attributes.Region);
             f.civico.patchValue(response.attributes.AddNum);
+            this.store.dispatch(new UpdateFormValue({
+                path: 'schedaTelefonata.richiestaForm',
+                value: {
+                    provincia: response.attributes.Subregion,
+                    cap: response.attributes.Postal,
+                    regione: response.attributes.Region,
+                    civico: response.attributes.AddNum
+                }
+            }));
+
+            if (!this.richiestaModifica?.richiedente) {
+                f.nominativo.patchValue(scheda.richiedente?.nominativo);
+                f.telefono.patchValue(scheda.richiedente?.telefono);
+            }
+
+            if (!this.richiestaModifica) {
+                const coordinate = new Coordinate(latitude, longitude);
+                const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+                const sedeSelezionata = sediSelezionate[0];
+                this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo));
+                this.reducerSchedaTelefonata('cerca');
+            }
         });
-
-        if (!this.richiestaModifica?.richiedente) {
-            f.nominativo.patchValue(scheda.richiedente?.nominativo);
-            f.telefono.patchValue(scheda.richiedente?.telefono);
-        }
-
-        if (!this.richiestaModifica) {
-            const coordinate = new Coordinate(latitude, longitude);
-            this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
-                new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo), null
-            );
-            this.reducerSchedaTelefonata('cerca');
-        }
     }
 
     checkInputPattern(event: any, type: string): void {

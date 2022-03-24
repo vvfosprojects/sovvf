@@ -83,6 +83,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 if (ex.Message.Contains("no element"))
                     return StatusCode(404, new { message = "Le credenziali inserite non risultano corrette" });
                 return BadRequest(new { message = ex.Message });
@@ -117,6 +119,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 if (ex.Message.Contains("no element"))
                     return StatusCode(404, new { message = "Le credenziali inserite non risultano corrette" });
                 return BadRequest(new { message = ex.Message });
