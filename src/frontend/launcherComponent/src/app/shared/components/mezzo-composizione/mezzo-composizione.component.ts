@@ -55,6 +55,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     disableBtnFeature: boolean;
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+    statoMezzo = StatoMezzo;
 
     private subscription = new Subscription();
 
