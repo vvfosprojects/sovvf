@@ -31,6 +31,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -70,7 +71,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         {
             var codiceSede = command.ConfermaPartenze.CodiceSede.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
 
-            foreach (var partenza in command.ConfermaPartenze.Partenze)
+            Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
             {
                 var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
 
@@ -125,13 +126,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                         });
                     }
-                
+
                 if (partenza.Mezzo.Distaccamento?.Codice != null)
                     _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento?.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
                 else if (partenza.Mezzo.Appartenenza != null)
                     _setStatoOperativoMezzo.Set(partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
-                
-                foreach (var squadra in partenza.Squadre)
+
+                Parallel.ForEach(partenza.Squadre, squadra =>
                 {
                     //Chiamata OPService per aggiornare lo stato delle Squadre "ALLOCATE" oppure "DEALLOCATE"
                     if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
@@ -180,8 +181,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
                     else if (partenza.Mezzo.Appartenenza != null)
                         _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
-                }
-            }
+                });
+            });
 
             _updateRichiesta.UpDate(command.Richiesta);
 
