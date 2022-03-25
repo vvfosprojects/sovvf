@@ -147,9 +147,9 @@ namespace SO115App.ExternalAPI.Client
             {
                 var result = JsonSerializer.Deserialize<ResponseObject>(data, options);
 
-//#if (DEBUG)
+                //#if (DEBUG)
                 //Console.WriteLine($"({DateTime.Now}) HTTP_CLIENT - {response.StatusCode}: {response.RequestMessage.RequestUri.AbsoluteUri}");
-//#endif
+                //#endif
 
                 return result;
             }
@@ -177,7 +177,7 @@ namespace SO115App.ExternalAPI.Client
         private void Configure()
         {
             //TIMEOUT
-            timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(60);
+            timeoutPolicy = Policy.TimeoutAsync<HttpResponseMessage>(3);
 
             //ECCEZIONI E RESPONSE
             retryPolicy = Policy.HandleResult<HttpResponseMessage>(c =>
@@ -215,7 +215,7 @@ namespace SO115App.ExternalAPI.Client
                 }
 
                 return false;
-            }).RetryAsync(3);
+            }).RetryAsync(0);
 
             policies = Policy.WrapAsync(retryPolicy, timeoutPolicy);
         }

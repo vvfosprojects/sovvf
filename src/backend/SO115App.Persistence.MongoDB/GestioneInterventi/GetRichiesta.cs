@@ -248,12 +248,15 @@ namespace SO115App.Persistence.MongoDB
 
             if (filtro.IndirizzoIntervento != null)
             {
-                if (filtro.IndirizzoIntervento.Coordinate != null)
-                    result.AddRange(lstRichieste.Where(o => o.Localita.Coordinate.Latitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Latitudine) && o.Localita.Coordinate.Longitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Longitudine)));
-                else if (filtro.IndirizzoIntervento.Indirizzo != null)
+                //if (filtro.IndirizzoIntervento.Coordinate != null)
+                //    result.AddRange(lstRichieste.Where(o => o.Localita.Coordinate.Latitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Latitudine) && o.Localita.Coordinate.Longitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Longitudine)));
+                //else
+                if (filtro.IndirizzoIntervento.Indirizzo != null)
                 {
                     if (filtro.SoloChiuse)
-                        result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && o.Chiusa).ToList();
+                        result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && o.Localita.Citta.Equals(filtro.IndirizzoIntervento.Citta) && o.Chiusa).ToList();
+                    else
+                        result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && o.Localita.Citta.Equals(filtro.IndirizzoIntervento.Citta) && !o.Chiusa).ToList();
                 }
             }
 
@@ -314,8 +317,8 @@ namespace SO115App.Persistence.MongoDB
             {
                 sintesi = _mapperSintesi.Map(richiesta);
                 //sintesi.CodEntiIntervenuti = rubrica.Count > 0 ? rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false) : null;
-                sintesi.Competenze = richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
-                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? richiesta.CodSOAllertate.ToArray().MapCompetenze(_getSedi) : null;
+                sintesi.Competenze = richiesta.Competenze;
+                sintesi.SediAllertate = richiesta.CodSOAllertate?.ToArray().MapCompetenze(_getSedi);
             }
 
             return sintesi;
