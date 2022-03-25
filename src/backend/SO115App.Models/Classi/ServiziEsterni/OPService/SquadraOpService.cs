@@ -5,8 +5,8 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
 {
     public class SquadraOpService
     {
-        [JsonPropertyName("id")]
-        public string IdSquadra { get; set; }
+        //[JsonPropertyName("id")]
+        //public string IdSquadra { get; set; }
 
         [JsonPropertyName("code")]
         public string Codice { get; set; }

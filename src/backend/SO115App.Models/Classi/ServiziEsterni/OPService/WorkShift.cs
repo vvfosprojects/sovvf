@@ -14,8 +14,10 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
             Attuale = new SquadraWorkShift();
         }
 
-        [BsonElement("Id")]
-        public string Id { get; set; }
+        public string IdMongo { get; set; }
+
+        //[BsonElement("Id")]
+        //public string Id { get; set; }
 
         [BsonElement("distaccamento")]
         public string Distaccamento { get; set; }
@@ -52,8 +54,8 @@ namespace SO115App.Models.Classi.ServiziEsterni.OPService
             Funzionari = new Officer[] { };
         }
 
-        [JsonPropertyName("workshiftID")]
-        public string Id { get; set; }
+        //[JsonPropertyName("workshiftID")]
+        //public string Id { get; set; }
 
         [JsonPropertyName("spots")]
         public SquadraOpService[] Squadre { get; set; }
