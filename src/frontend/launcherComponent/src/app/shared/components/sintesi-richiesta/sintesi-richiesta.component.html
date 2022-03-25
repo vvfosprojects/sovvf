@@ -241,11 +241,12 @@
                                   </span>
                                 </ng-container>
                                 <ng-container *ngIf="richiesta?.localita?.indirizzo">
-                                    <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
-                                          class="font-xxlarge"
-                                          [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
-                                      {{ richiesta?.localita?.indirizzo | truncate:30 }}
-                                  </span>
+                                    <div class="d-inline-block font-xxlarge"
+                                         ngbTooltip="{{ richiesta.localita.indirizzo }}, {{ richiesta?.localita?.provincia }}"
+                                         [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 25">
+                                      {{ richiesta?.localita?.indirizzo | truncate:25 }},
+                                        {{ richiesta?.localita?.provincia }}
+                                  </div>
                                 </ng-container>
                             <span *ngIf="!partenza"
                                   class="list-inline list-unstyled m-0 ml-2 font-xxlarge"

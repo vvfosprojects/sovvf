@@ -60,9 +60,9 @@ export class RicercaUtenteVvfComponent implements OnInit, OnDestroy {
             codiceFiscale: new FormControl()
         });
         this.ricercaUtenteForm = this.fb.group({
-            nome: [null],
-            cognome: [null],
-            codiceFiscale: [null, [Validators.pattern('^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$')]]
+            nome: [null, [Validators.required]],
+            cognome: [null, [Validators.required]],
+            codiceFiscale: [null, [Validators.required, Validators.pattern('^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$')]]
         });
     }
 
@@ -72,17 +72,27 @@ export class RicercaUtenteVvfComponent implements OnInit, OnDestroy {
 
     onFormValueChange(): void {
         if (this.f.nome.value || this.f.cognome.value) {
+            this.f.codiceFiscale.clearValidators();
             this.f.codiceFiscale.disable();
         } else {
+            this.f.codiceFiscale.setValidators([Validators.required, Validators.pattern('^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$|([0-9]{11})$')]);
             this.f.codiceFiscale.enable();
         }
         if (this.f.codiceFiscale.value) {
+            this.f.nome.clearValidators();
+            this.f.cognome.clearValidators();
             this.f.nome.disable();
             this.f.cognome.disable();
         } else {
+            this.f.nome.setValidators([Validators.required]);
+            this.f.cognome.setValidators([Validators.required]);
             this.f.nome.enable();
             this.f.cognome.enable();
         }
+    }
+
+    onClearSubmitted(): void {
+        this.submitted = false;
     }
 
     onRicercaUtenteVVF(): void {
