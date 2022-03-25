@@ -96,9 +96,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno, query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
             var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
-            var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Result.Where(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).ToList()));
+            var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Result.Where(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).ToList()))?.Result;
 
-            Task<List<MezzoDTO>> lstMezziPreaccoppiati = null;
+            List<MezzoDTO> lstMezziPreaccoppiati = null;
 
             var lstSquadreComposizione = Task.Run(() => //GET
             {
@@ -129,7 +129,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 }
 
                 var codMezziPreaccoppiati = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList();
-                lstMezziPreaccoppiati = _getMezzi.GetInfo(codMezziPreaccoppiati);
+                lstMezziPreaccoppiati = _getMezzi.GetInfo(codMezziPreaccoppiati)?.Result;
 
                 return lstSquadre.ToList().FindAll(s => s.spotType.Equals("WORKSHIFT"));
             })
@@ -139,7 +139,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 Parallel.ForEach(squadre.Result, squadra =>
                 {
-                    var mezziInRientro = lstStatiSquadre?.Result != null ? lstMezziInRientro?.Result?.Where(m => lstStatiSquadre.Result.FirstOrDefault(s => s.CodMezzo.Equals(m.CodiceMezzo))?.IdSquadra.Equals(squadra.Codice) ?? false).Select(m => new ComposizioneMezzi()
+                    var mezziInRientro = lstStatiSquadre?.Result != null ? lstMezziInRientro?.Where(m => lstStatiSquadre.Result.FirstOrDefault(s => s.CodMezzo.Equals(m.CodiceMezzo))?.IdSquadra.Equals(squadra.Codice) ?? false).Select(m => new ComposizioneMezzi()
                     {
                         Id = m.CodiceMezzo,
                         Mezzo = new Mezzo()
@@ -152,7 +152,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         }
                     }).ToList() ?? null : null;
 
-                    var mezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Length > 0 ? lstMezziPreaccoppiati?.Result?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new ComposizioneMezzi()
+                    var mezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Length > 0 ? lstMezziPreaccoppiati?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new ComposizioneMezzi()
                     {
                         Mezzo = new Mezzo()
                         {
@@ -184,6 +184,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })
             .ContinueWith(lstSquadre => lstSquadre.Result.Where(squadra => //FILTRAGGIO
             {
+                bool squadraInRientroSuMezzo = query.Filtro?.CodMezzoSelezionato == null || 
+                    (lstStatiSquadre.Result?.FirstOrDefault(s => s.IdSquadra.Equals(squadra.Codice))?.CodMezzo.Equals(query.Filtro?.CodMezzoSelezionato) ?? false);
+
                 bool diEmergenza = squadra.DiEmergenza == query.Filtro?.DiEmergenza;
 
                 bool turno = FiltroTurno(query.Filtro.Turno, squadra.Turno);
@@ -196,9 +199,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     squadra.Nome.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
                     squadra.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
-                bool stato = query.Filtro.Stato != null ? squadra.Stato == query.Filtro?.Stato : true;
+                bool stato = query.Filtro.Stato == null || squadra.Stato == query.Filtro?.Stato;
 
-                return distaccamento && ricerca && diEmergenza && stato && turno;
+                return distaccamento && ricerca && diEmergenza && stato && turno && squadraInRientroSuMezzo;
             }))
             .ContinueWith(lstSquadre => //ORDINAMENTO
             {

@@ -44,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
             var richiesta = _getRichiestaById.GetByCodice(command.TrasferimentoChiamata.CodChiamata);
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(richiesta.Localita.Coordinate);
+            //var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(richiesta.Localita.Coordinate);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
@@ -52,7 +52,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { Competenze.ToArray()[0].Split('.')[0] + ".1000" });
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { richiesta.CodSOCompetente.Split('.')[0] + ".1000" });
                     var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
 
                     var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(richiesta.Id));
