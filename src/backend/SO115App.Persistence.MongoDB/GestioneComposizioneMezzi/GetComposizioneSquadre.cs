@@ -8,6 +8,7 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
     public class GetComposizioneSquadre : IGetComposizioneSquadreDB
     {
         private readonly DbContext _dbContext;
+
         public GetComposizioneSquadre(DbContext dbContext) => _dbContext = dbContext;
 
         public WorkShift Get()
@@ -19,9 +20,15 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
 
         public WorkShift GetByCodiceDistaccamento(string codice)
         {
-            var result = _dbContext.SquadreCollection.Find(s => s.Distaccamento.Contains(codice)).FirstOrDefault();
-
-            return result;
+            WorkShift ws = new WorkShift();
+            try
+            {
+                return _dbContext.SquadreCollection.Find(s => s.Distaccamento.Contains(codice)).FirstOrDefault();
+            }
+            catch
+            {
+                return ws;
+            }
         }
     }
 }

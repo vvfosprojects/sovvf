@@ -56,7 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             var ModuliDisponibili = lstSquadre
                 .Select(s => new ModuliColonnaMobile()
                 {
-                    Id = s?.IdSquadra,
+                    //Id = s?.IdSquadra,
                     CodComando = s?.Distaccamento,
                     Componenti = s?.Membri?.Select(m => new Models.Classi.Composizione.MembroComposizione()
                     {

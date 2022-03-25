@@ -77,6 +77,14 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             command.Chiamata.Localita.SplitIndirizzo();
 
+
+            //casistica che gestisce la registrazione di una chiamata non di competenza diretta. Es. registro a Milano una chiamata di Torino
+            var codSocompetente = "";
+            if (command.CodiceSede.Split('.')[0].Equals(command.CodCompetenze.ToList()[0].Split('.')[0]))
+                codSocompetente = command.CodCompetenze.ToList()[0];
+            else
+                codSocompetente = command.CodiceSede;
+
             var richiesta = new RichiestaAssistenza()
             {
                 Tipologie = command.Chiamata.Tipologie,
@@ -94,7 +102,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CodUOCompetenza = command.CodCompetenze.ToArray(),
                 Competenze = sedi,
                 CodOperatore = command.CodUtente,
-                CodSOCompetente = command.CodCompetenze.ToList()[0],
+                CodSOCompetente = codSocompetente,
                 CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c).ToList(),
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 TriageSummary = command.Chiamata.TriageSummary,
