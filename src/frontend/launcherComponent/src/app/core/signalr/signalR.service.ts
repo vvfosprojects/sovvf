@@ -144,8 +144,10 @@ export class SignalRService {
         // Todo: tipicizzare
         this.hubNotification.on('NotifySuccessAFM', (data: any) => {
             console.log('NotifySuccessAFM', data);
-            this.store.dispatch(new UpdateRichiesta(data.richiesta));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3));
+            this.store.dispatch([
+                new UpdateRichiesta(data.richiesta),
+                new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3)
+            ]);
         });
 
         this.hubNotification.on('NotifyErrorAFM', (data: string) => {
@@ -155,8 +157,10 @@ export class SignalRService {
 
         this.hubNotification.on('NotifySuccessAnnullamentoAFM', (data: any) => {
             console.log('NotifySuccessAnnullamentoAFM:', data);
-            this.store.dispatch(new UpdateRichiesta(data.richiesta));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3));
+            this.store.dispatch([
+                new UpdateRichiesta(data.richiesta),
+                new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3)
+            ]);
         });
 
         this.hubNotification.on('NotifyErrorAnnullamentoAFM', (data: string) => {
@@ -177,8 +181,10 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyGetListaMezziInServizio', (data: MezzoInServizio[]) => {
             console.log('NotifyGetListaMezziInServizio', data);
-            this.store.dispatch(new SetMezziInServizio(data));
-            this.store.dispatch(new StopLoadingMezziInServizio());
+            this.store.dispatch([
+                new SetMezziInServizio(data),
+                new StopLoadingMezziInServizio()
+            ]);
         });
         this.hubNotification.on('NotifyUpdateMezzoInServizio', (data: MezzoInServizio) => {
             console.log('NotifyUpdateMezzoInServizio', data);
@@ -201,18 +207,24 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyGetBoxPersonale', (data: BoxPersonale) => {
             console.log('NotifyGetBoxPersonale', data);
-            this.store.dispatch(new SetBoxPersonale(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Personale ricevute da signalR', null, 5));
+            this.store.dispatch([
+                new SetBoxPersonale(data),
+                new ShowToastr(ToastrType.Info, 'Box Personale ricevute da signalR', null, 5)
+            ]);
         });
         this.hubNotification.on('NotifyGetBoxMezzi', (data: BoxMezzi) => {
             console.log('NotifyGetBoxMezzi', data);
-            this.store.dispatch(new SetBoxMezzi(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Mezzi ricevute da signalR', null, 5));
+            this.store.dispatch([
+                new SetBoxMezzi(data),
+                new ShowToastr(ToastrType.Info, 'Box Mezzi ricevute da signalR', null, 5)
+            ]);
         });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: BoxInterventi) => {
             console.log('NotifyGetBoxInterventi', data);
-            this.store.dispatch(new SetBoxRichieste(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Richieste ricevute da signalR', null, 5));
+            this.store.dispatch([
+                new SetBoxRichieste(data),
+                new ShowToastr(ToastrType.Info, 'Box Richieste ricevute da signalR', null, 5)
+            ]);
         });
 
         /**
@@ -220,18 +232,24 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: { addChiamataInCorso: ChiamataMarker }) => {
             console.log('NotifyChiamataInCorsoMarkerAdd', data);
-            this.store.dispatch(new InsertChiamataMarker(data.addChiamataInCorso));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova chiamata in corso sulla mappa', null, 3));
+            this.store.dispatch([
+                new InsertChiamataMarker(data.addChiamataInCorso),
+                new ShowToastr(ToastrType.Info, 'Nuova chiamata in corso sulla mappa', null, 3)
+            ]);
         });
         this.hubNotification.on('NotifyChiamataInCorsoMarkerUpdate', (data: { chiamataInCorso: ChiamataMarker }) => {
             console.log('NotifyChiamataInCorsoMarkerUpdate', data);
-            this.store.dispatch(new UpdateItemChiamataMarker(data.chiamataInCorso));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa aggiornata', null, 3));
+            this.store.dispatch([
+                new UpdateItemChiamataMarker(data.chiamataInCorso),
+                new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa aggiornata', null, 3)
+            ]);
         });
         this.hubNotification.on('NotifyChiamataInCorsoMarkerDelete', (id: string) => {
             console.log('NotifyChiamataInCorsoMarkerDelete', id);
-            this.store.dispatch(new RemoveChiamataMarker(id));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa rimossa', null, 3));
+            this.store.dispatch([
+                new RemoveChiamataMarker(id),
+                new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa rimossa', null, 3)
+            ]);
         });
 
         /**
@@ -343,8 +361,10 @@ export class SignalRService {
             console.log('NotifyDeleteUtente', idUtente);
             const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
             if (idUtente && idUtente === utenteAttuale.id) {
-                this.store.dispatch(new ClearCurrentUser());
-                this.store.dispatch(new Navigate(['/login']));
+                this.store.dispatch([
+                    new ClearCurrentUser(),
+                    new Navigate(['/login'])
+                ]);
             }
             this.store.dispatch(new SuccessRemoveUtente(idUtente));
         });
@@ -383,21 +403,27 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyAddEnte', (response: ResponseAddEnteRubricaInterface) => {
             console.log('NotifyAddEnte', response);
-            this.store.dispatch(new AddVoceRubrica());
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            this.store.dispatch([
+                new AddVoceRubrica(),
+                new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems })
+            ]);
         });
         this.hubNotification.on('NotifyUpdateEnte', (response: ResponseUpdateEnteRubricaInterface) => {
             console.log('NotifyUpdateEnte', response);
-            this.store.dispatch(new UpdateVoceRubrica(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            this.store.dispatch([
+                new UpdateVoceRubrica(response.data),
+                new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems })
+            ]);
         });
         this.hubNotification.on('NotifyDeleteEnte', (response: ResponseDeleteEnteRubricaInterface) => {
             console.log('NotifyDeleteEnte', response);
-            this.store.dispatch(new DeleteVoceRubrica(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            this.store.dispatch([
+                new DeleteVoceRubrica(response.data),
+                new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems })
+            ]);
         });
 
         /**
@@ -420,21 +446,27 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyAddDettaglioTipologia', (response: any) => {
             console.log('NotifyAddDettaglioTipologia', response);
-            this.store.dispatch(new AddDettaglioTipologia());
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            this.store.dispatch([
+                new AddDettaglioTipologia(),
+                new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems })
+            ]);
         });
         this.hubNotification.on('NotifyModifyDettaglioTipologia', (response: any) => {
             console.log('NotifyModifyDettaglioTipologia', response);
-            this.store.dispatch(new UpdateDettaglioTipologia(response.data.dettaglioTipologia));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            this.store.dispatch([
+                new UpdateDettaglioTipologia(response.data.dettaglioTipologia),
+                new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems })
+            ]);
         });
         this.hubNotification.on('NotifyDeleteDettaglioTipologia', (response: any) => {
             console.log('NotifyDeleteDettaglioTipologia', response);
-            this.store.dispatch(new DeleteDettaglioTipologia(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            this.store.dispatch([
+                new DeleteDettaglioTipologia(response.data),
+                new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems })
+            ]);
         });
 
         /**
@@ -458,8 +490,10 @@ export class SignalRService {
 
     byPassSignalR(): void {
         this.connectionEstablished.next(true);
-        this.store.dispatch(new SignalRHubConnesso());
-        this.store.dispatch(new SetConnectionId('N{[=sE=2\\_A/y"J7v;ZMEDcGZ3a$K53dmn9UJ]mR{PXd8rx\\M\\tdeE>:2NPH<3!n:s^2;'));
+        this.store.dispatch([
+            new SignalRHubConnesso(),
+            new SetConnectionId('N{[=sE=2\\_A/y"J7v;ZMEDcGZ3a$K53dmn9UJ]mR{PXd8rx\\M\\tdeE>:2NPH<3!n:s^2;')
+        ]);
     }
 
     getContextId(): void {
