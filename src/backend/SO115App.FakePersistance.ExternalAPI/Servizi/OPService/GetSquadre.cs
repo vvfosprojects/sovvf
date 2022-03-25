@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
 
                 var result = await _service.GetAsync(url);
 
-                if(result == null || result.Squadre.Length <= 0)
+                if (result == null || result.Squadre.Length <= 0)
                 {
                     result = GetFromDB(Codice);
                 }
@@ -67,7 +67,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
         {
             var work = _get.GetByCodiceDistaccamento(codiceDistaccamento);
 
-            if(work == null)
+            if (work == null)
                 return null;
 
             work.Attuale.Squadre = work.Attuale.Squadre.Where(s => s.Distaccamento.Contains(codiceDistaccamento)).ToArray();
