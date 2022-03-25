@@ -274,7 +274,7 @@
                         </div>
                     </ng-template>
                     <!-- COMPETENZE ALTRO COMANDO -->
-                    <ng-container *ngIf="detectCompetenzeFuoriComando()">
+                    <ng-container *ngIf="!loadingCompetenze && detectCompetenzeFuoriComando()">
                         <h6 class="text-danger font-weight-bold mt-2 mb-0">Competenza di altro comando</h6>
                     </ng-container>
                 </div>
