@@ -1,0 +1,45 @@
+<form [formGroup]="ricercaUtenteForm"
+      (change)="onFormValueChange()"
+      (ngSubmit)="onRicercaUtenteVVF()">
+    <div class="form-group">
+        <label for="nome">Nome</label>
+        <input id="nome"
+               class="form-control"
+               formControlName="nome"/>
+    </div>
+    <div class="form-group">
+        <label for="cognome">Cognome</label>
+        <input id="cognome"
+               class="form-control"
+               formControlName="cognome"/>
+    </div>
+    <div class="form-group">
+        <label for="codiceFiscale">Codice Fiscale</label>
+        <input id="codiceFiscale"
+               class="form-control"
+               formControlName="codiceFiscale"/>
+        <div *ngIf="submitted && f.codiceFiscale.errors" class="text-danger mt-1">
+            <div *ngIf="f.codiceFiscale.errors.pattern">Codice Fiscale non corretto</div>
+        </div>
+    </div>
+    <hr>
+    <ng-container *ngIf="!loadingGestioneUtenti && submitted && !listaUtentiVVF?.length">
+        <div class="alert alert-danger">
+            Nessun risultato
+        </div>
+    </ng-container>
+    <div class="text-right">
+        <button type="submit"
+                class="btn btn-primary btn-no-hover"
+                [disabled]="loadingGestioneUtenti || (!f.codiceFiscale.value && ((!f.nome.value) || (!f.cognome.value)))">
+            <ng-container *ngIf="!loadingGestioneUtenti">
+                <i class="fas fa-search mr-1"></i>
+                {{ 'avvia ricerca' | uppercase }}
+            </ng-container>
+            <ng-container *ngIf="loadingGestioneUtenti">
+                <i class="fas fa-spin fa-spinner mr-1"></i>
+                {{ 'ricerca in corso' | uppercase }}
+            </ng-container>
+        </button>
+    </div>
+</form>

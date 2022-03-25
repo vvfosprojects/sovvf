@@ -1,87 +1,115 @@
 <div class="modal-header">
-    <h4 *ngIf="!codFiscaleUtenteVVF" class="modal-title"
-        style="font-weight: 700">{{ 'Aggiungi un nuovo utente' | uppercase }}</h4>
-    <h4 *ngIf="codFiscaleUtenteVVF" class="modal-title">AGGIUNGI RUOLO A <b>{{ nominativoUtenteVVF }}</b></h4>
+    <ng-container *ngIf="!codFiscaleUtenteVVF">
+        <h4 class="modal-title"
+            style="font-weight: 700">
+            {{ 'Aggiungi un nuovo utente' | uppercase }}
+        </h4>
+    </ng-container>
+    <ng-container *ngIf="codFiscaleUtenteVVF">
+        <h4 class="modal-title">
+            AGGIUNGI RUOLO A <b>{{ nominativoUtenteVVF }}</b>
+        </h4>
+    </ng-container>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
         <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body height">
-    <form [formGroup]="addUtenteRuoloForm" ngxsForm="gestioneUtenti.addUtenteRuoloForm">
-        <div *ngIf="!codFiscaleUtenteVVF" class="mb-3">
-            <label for="utente">Nominativo</label>
-            <ng-select id="utente"
-                       [items]="listaUtentiVVF$ | async"
-                       bindLabel="nome"
-                       bindValue="codiceFiscale"
-                       formControlName="utente"
-                       placeholder="Nessun Nominativo trovato"
-                       typeToSearchText="Inserisci almeno tre caratteri per iniziare la ricerca"
-                       loadingText="Ricerca nominativi in corso..."
-                       [hideSelected]="true"
-                       [typeahead]="typeahead"
-                       [notFoundText]="'Nessun risultato'"
-                       [loading]="loading$ | async"
-                       [class.is-invalid]="submitted && f.utente.errors">
-                <ng-template ng-option-tmp let-item="item">
-                    <div class="pb-1">
-                        <div class="font-weight-bold">
-                            {{ item.nome?.replace('.', ' ')}}
-                        </div>
-                        <div class="small">
-                            {{ item.codiceFiscale }}
-                        </div>
+    <!-- Ricerca utenti VVF -->
+    <ng-container *ngIf="!addRuoloUtente">
+        <app-ricerca-utente-vvf></app-ricerca-utente-vvf>
+    </ng-container>
+    <!-- Form add utente -->
+    <ng-container *ngIf="listaUtentiVVF?.length || addRuoloUtente">
+        <form [formGroup]="addUtenteRuoloForm" ngxsForm="gestioneUtenti.addUtenteRuoloForm">
+            <!-- Select utente -->
+            <ng-container *ngIf="!addRuoloUtente">
+                <div class="mb-3">
+                    <label for="utente">Nominativo</label>
+                    <ng-select id="utente"
+                               [items]="listaUtentiVVF$ | async"
+                               bindValue="codiceFiscale"
+                               formControlName="utente"
+                               placeholder="Seleziona un utente"
+                               [hideSelected]="true"
+                               [searchable]="false"
+                               [notFoundText]="'Nessun risultato'"
+                               [class.is-invalid]="submitted && f.utente.errors">
+                        <ng-template ng-option-tmp let-item="item">
+                            <div class="pb-1">
+                                <div class="font-weight-bold">
+                                    {{ item.nome }} {{ item.cognome }}
+                                </div>
+                                <div class="small">
+                                    {{ item.codiceFiscale }}
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{ item.nome }} {{ item.cognome }}
+                        </ng-template>
+                    </ng-select>
+                    <div *ngIf="submitted && f.utente.errors" class="text-danger mt-1">
+                        <div *ngIf="f.utente.errors.required">Campo Obbligatorio</div>
                     </div>
-                </ng-template>
-            </ng-select>
-            <div *ngIf="submitted && f.utente.errors" class="text-danger mt-1">
-                <div *ngIf="f.utente.errors.required">Campo Obbligatorio</div>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="sede">Sede</label>
-            <ng-select id="sede"
-                       [items]="distaccamenti"
-                       placeholder="Seleziona una Sede"
-                       bindValue="codice"
-                       bindLabel="descrizione"
-                       formControlName="sedi"
-                       [multiple]="true">
-            </ng-select>
-            <div *ngIf="submitted && f.sedi.errors" class="text-danger mt-1">
-                <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
-            </div>
-        </div>
-        <div class="mb-3">
-            <app-checkbox appClickStopPropagation
-                          [typeName]="'test'"
-                          [checkboxState]="checkboxState"
-                          (checkbox)="setRicorsivoValue($event)"></app-checkbox>
-        </div>
-        <div class="mb-3">
-            <label for="ruoli">Ruolo</label>
-            <ng-select id="ruoli"
-                       [items]="ruoli"
-                       formControlName="ruolo"
-                       placeholder="Seleziona un ruolo"
-                       [notFoundText]="'Nessun ruolo disponibile'"
-                       [class.is-invalid]="submitted && f.ruolo.errors">
-            </ng-select>
-            <div *ngIf="submitted && f.ruolo.errors" class="text-danger mt-1">
-                <div *ngIf="f.ruolo.errors.required">Campo Obbligatorio</div>
-            </div>
-        </div>
-    </form>
+                </div>
+            </ng-container>
+            <!-- Alert seleziona utente -->
+            <ng-container *ngIf="!f.utente?.value">
+                <div class="alert alert-warning mb-0">
+                    Seleziona un utente dalla lista
+                </div>
+            </ng-container>
+            <!-- Sede / Ruolo -->
+            <ng-container *ngIf="f.utente?.value">
+                <div class="mb-3">
+                    <label for="sede">Sede</label>
+                    <ng-select id="sede"
+                               [items]="distaccamenti"
+                               placeholder="Seleziona una Sede"
+                               bindValue="codice"
+                               bindLabel="descrizione"
+                               formControlName="sedi"
+                               [multiple]="true">
+                    </ng-select>
+                    <div *ngIf="submitted && f.sedi.errors" class="text-danger mt-1">
+                        <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <app-checkbox appClickStopPropagation
+                                  [typeName]="'test'"
+                                  [checkboxState]="checkboxState"
+                                  (checkbox)="setRicorsivoValue($event)"></app-checkbox>
+                </div>
+                <div class="mb-3">
+                    <label for="ruoli">Ruolo</label>
+                    <ng-select id="ruoli"
+                               [items]="ruoli"
+                               formControlName="ruolo"
+                               placeholder="Seleziona un ruolo"
+                               [notFoundText]="'Nessun ruolo disponibile'"
+                               [class.is-invalid]="submitted && f.ruolo.errors">
+                    </ng-select>
+                    <div *ngIf="submitted && f.ruolo.errors" class="text-danger mt-1">
+                        <div *ngIf="f.ruolo.errors.required">Campo Obbligatorio</div>
+                    </div>
+                </div>
+            </ng-container>
+        </form>
+    </ng-container>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-no-hover btn-lg btn-secondary"
-            (click)="closeModal('ko')">
-        Annulla
-    </button>
-    <button type="button" class="btn btn-no-hover btn-lg btn-danger"
-            [disabled]="!formValid"
-            (click)="onConferma()">
-        Conferma
-    </button>
-</div>
+<ng-container *ngIf="listaUtentiVVF?.length || addRuoloUtente">
+    <div class="modal-footer">
+        <button type="button" class="btn btn-no-hover btn-lg btn-secondary"
+                (click)="closeModal('ko')">
+            Annulla
+        </button>
+        <button type="button" class="btn btn-no-hover btn-lg btn-danger"
+                [disabled]="!formValid"
+                (click)="onConferma()">
+            Conferma
+        </button>
+    </div>
+</ng-container>
