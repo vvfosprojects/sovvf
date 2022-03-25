@@ -20,7 +20,7 @@ import { GetContatoriSchedeContatto, GetListaSchedeContatto, SetContatoriSchedeC
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
-import { Navigate } from '@ngxs/router-plugin';
+import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
 import { BoxPersonale } from '../../features/home/boxes/boxes-model/box-personale.model';
@@ -55,6 +55,7 @@ import { GetZonaEmergenzaById, GetZoneEmergenza } from '../../features/zone-emer
 import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenza.model';
 import { GetConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
 import { UpdateRichiestaSganciamento } from '../../features/home/store/actions/composizione-partenza/richiesta-sganciamento.actions';
+import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -188,7 +189,8 @@ export class SignalRService {
             } else if (composizionePartenzaActive) {
                 this.store.dispatch([
                     new UpdateMezzoComposizione(data.mezzo.mezzo),
-                    new GetListaComposizioneVeloce()
+                    new GetListaComposizioneVeloce(),
+                    new GetListeComposizioneAvanzata()
                 ]);
             }
             this.store.dispatch(new StopLoadingMezziInServizio());
@@ -404,12 +406,13 @@ export class SignalRService {
         this.hubNotification.on('NotifyAddTrasferimento', (response: ResponseAddTrasferimentoInterface) => {
             console.log('NotifyAddTrasferimento', response);
             this.store.dispatch(new AddTrasferimentoChiamata());
-            const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
         this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
             console.log('NotifyDeleteChiamata', idRichiesta);
-            this.store.dispatch(new GetListaRichieste());
+            const isHome = this.store.selectSnapshot(RouterState.url) ? this.store.selectSnapshot(RouterState.url) === '/home' : false;
+            if (isHome) {
+                this.store.dispatch(new GetListaRichieste());
+            }
         });
 
         /**

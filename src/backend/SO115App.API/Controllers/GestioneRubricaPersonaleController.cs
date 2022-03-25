@@ -23,6 +23,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la rubrica del Personale VVF
         /// </summary>
         [HttpPost("")]
+        [ProducesResponseType(typeof(RubricaPersonaleResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetAll(RubricaPersonaleQuery query)
         {
             try
@@ -36,6 +38,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 e = e.GetBaseException();
 
                 return BadRequest($"{e.Message}: {e.StackTrace}");

@@ -59,7 +59,9 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Registra una partenza all'interno di una richiesta
         /// </summary>
-        [HttpPost]
+        //
+        [ProducesResponseType(typeof(string), 400)]
+        [HttpPost("")]
         public async Task<IActionResult> Post(ConfermaPartenze conferma)
         {
             conferma.CodiceSede = Request.Headers["codicesede"];
@@ -80,7 +82,7 @@ namespace SO115App.API.Controllers
             {
                 ex = ex.GetBaseException();
 
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else
                     return BadRequest(new { message = ex.Message, stackTrace = ex.StackTrace });

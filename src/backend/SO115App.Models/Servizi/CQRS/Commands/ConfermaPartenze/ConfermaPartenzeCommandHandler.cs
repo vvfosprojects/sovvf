@@ -32,6 +32,7 @@ using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {
@@ -89,7 +90,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 command.RichiestaDaSganciare = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiestaDaSganciare);
 
-                foreach (var composizione in command.RichiestaDaSganciare.Eventi.OfType<ComposizionePartenze>().Select(p => p.Partenza))
+                Parallel.ForEach(command.RichiestaDaSganciare.Eventi.OfType<ComposizionePartenze>().Select(p => p.Partenza), composizione =>
                 {
                     //var CompPartenza = composizione.Partenza;
                     if (!composizione.PartenzaAnnullata && !composizione.Terminata
@@ -106,13 +107,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                         idComposizioneDaSganciare++;
                     }
-                }
+                });
 
-                foreach (var composizione in command.RichiestaDaSganciare.Partenze)
+                Parallel.ForEach(command.RichiestaDaSganciare.Partenze, composizione =>
                 {
                     if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
                         composizione.Partenza.Sganciata = true;
-                }
+                });
 
                 if (idComposizioneDaSganciare == 1)
                     command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
@@ -140,7 +141,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var PartenzaEsistente = false;
 
-            foreach (var partenza in command.ConfermaPartenze.Partenze)
+            //PARALLEL
+            Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
             {
                 //CHECK MEZZO OCCUPATO E PARTENZE ESISTENTI
                 var listaMezzi = _getStatoMezzi.Get(new string[] { command.ConfermaPartenze.CodiceSede }, partenza.Mezzo.Codice);
@@ -176,6 +178,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
 
                         partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+
+                        //LINQ
                         foreach (var squadra in partenza.Squadre)
                         {
                             squadra.Stato = Classi.Condivise.Squadra.StatoSquadra.InViaggio;
@@ -200,7 +204,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id, partenza.Mezzo.CoordinateStrg);
 
                 dataAdesso = dataAdesso.AddSeconds(1);
-            }
+            });
 
             //GESTIONE UTENTE PRESA IN CARICO
             var nominativo = command.Utente.Nome + "." + command.Utente.Cognome;

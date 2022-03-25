@@ -19,8 +19,10 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF;
+using System.Collections.Generic;
 
 namespace SO115App.API.Controllers
 {
@@ -34,28 +36,24 @@ namespace SO115App.API.Controllers
         {
             _queryHandlerPersonale = queryHandlerPersonale;
         }
-    
-    
+
         /// <summary>
         ///   Metodo che restituisce la lista del personale VVF
         /// </summary>
-        [HttpGet()]
-        public IActionResult Get(string text)
+        [HttpPost()]
+        [ProducesResponseType(typeof(List<PersonaleVVF>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        public IActionResult Get([FromBody] PersonaleVVFQuery query)
         {
-            var codiceSede = Request.Headers["codiceSede"];
-            var personaleQuery = new PersonaleVVFQuery
-            {
-                Text = text,
-                CodiceSede = codiceSede
-            };
+            query.CodiceSede = Request.Headers["codiceSede"];
 
             try
             {
-                return Ok(_queryHandlerPersonale.Handle(personaleQuery).ListaPersonale);
+                return Ok(_queryHandlerPersonale.Handle(query).ListaPersonale);
             }
             catch (System.Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains("404"))
                     return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });

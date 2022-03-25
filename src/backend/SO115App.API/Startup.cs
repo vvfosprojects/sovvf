@@ -104,6 +104,7 @@ namespace SO115App.API
             });
             services.AddSwaggerGen(c =>
             {
+                c.CustomSchemaIds(type => type.ToString());
                 c.SwaggerDoc("SO115", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SO115", Version = "v1.0" });
                 var filePath = Path.Combine(System.AppContext.BaseDirectory, "SO115App.API.xml");
                 c.IncludeXmlComments(filePath);
@@ -170,7 +171,7 @@ namespace SO115App.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSimpleInjector(container);
-            LogConfigurator.Configure(Configuration);
+            //LogConfigurator.Configure(Configuration);
 
             if (env.IsDevelopment())
             {

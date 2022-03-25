@@ -9,12 +9,14 @@
            class="fas fa-fw fa-window-close"
            (click)="onElimina($event)"></i>
     </ng-container>
-    <div class="d-flex align-items-center">
+    <div class="row">
         <!-- Mezzo Vuoto -->
         <ng-container *ngIf="!nuovaPartenza.mezzoComposizione">
-            <div class="text-danger">
-                <i class="fas fa-truck mr-1" ngbTooltip="Nessun mezzo selezionato"></i>
-                <div class="d-inline-block font-weight-bold">-</div>
+            <div class="col">
+                <div class="text-danger">
+                    <i class="fas fa-truck mr-1" ngbTooltip="Nessun mezzo selezionato"></i>
+                    <div class="d-inline-block font-weight-bold">-</div>
+                </div>
             </div>
         </ng-container>
         <!-- Mezzo -->
@@ -57,7 +59,7 @@
                     <ng-container
                             *ngIf="nuovaPartenza.mezzoComposizione && compPartenzaMode === 1 && nuovaPartenza.mezzoComposizione?.mezzo?.stato !== StatoMezzo.InRientro && !disableDividi">
                         <button class="btn btn-sm btn-primary btn-no-hover ml-2 px-1 py-0"
-                                [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"
+                                [class.d-none]="(disableNuovaPartenza$ | async) || boxPartenzaList.length >= 2"
                                 [disabled]="loadingSquadre || loadingMezzi"
                                 ngbTooltip="Dividi squadra"
                                 (click)="squadraShortcutEvent()">

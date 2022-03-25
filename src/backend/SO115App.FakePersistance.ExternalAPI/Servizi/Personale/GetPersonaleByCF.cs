@@ -70,24 +70,23 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new ConcurrentQueue<PersonaleVVF>();
 
-            Parallel.ForEach(CodFiscale, codFiscale =>
+
+            _clientPersonale.SetCache("Personale_" + String.Join(",",CodFiscale));
+
+            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={String.Join(",", CodFiscale)}");
+
+            try
             {
-                _clientPersonale.SetCache("Personale_" + codFiscale);
+                var resultApi = _clientPersonale.GetAsync(url);
 
-                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codFiscale}");
+                foreach (var personale in resultApi.Result)
+                    listaPersonale.Enqueue(personale);
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Elenco del personale non disponibile: {e.GetBaseException()}");
+            }
 
-                try
-                {
-                    var resultApi = _clientPersonale.GetAsync(url);
-
-                    foreach (var personale in resultApi.Result)
-                        listaPersonale.Enqueue(personale);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"Elenco del personale non disponibile: {e.GetBaseException()}");
-                }
-            });
 
             return listaPersonale;
         }

@@ -117,26 +117,34 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             DistaccamentoUC get(string codSede)
             {
-                var distaccamento = GetAll().Result.FirstOrDefault(s => s.Codice.Equals(codSede));
-
-                if (distaccamento == null)
-                    return null;
-
-                return new DistaccamentoUC()
+                //throw new NotImplementedException();
+                //return null;
+                try
                 {
-                    CodDistaccamento = distaccamento.Codice,
-                    Descrizione = distaccamento.Descrizione,
-                    coordinate = string.Join(", ", distaccamento.CoordinateString),
-                    Indirizzo = distaccamento.Indirizzo
-                };
+                    var distaccamento = GetAllOffLine().Result.FirstOrDefault(s => s.Codice.Equals(codSede));
+
+                    if (distaccamento == null) return null;
+
+                    return new DistaccamentoUC()
+                    {
+                        Id = distaccamento.Codice,
+                        CodDistaccamento = distaccamento.Codice,
+                        Descrizione = distaccamento.Descrizione,
+                        coordinate = distaccamento.CoordinateString != null ? string.Join(", ", distaccamento.CoordinateString) : "0,0",
+                        Indirizzo = distaccamento.Indirizzo != null ? distaccamento.Indirizzo : ""
+                    };
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
 
-        public async Task<List<Sede>> GetAll()
+        public async Task<List<Sede>> GetAllOffLine()
         {
             var result = new List<Sede>();
-
-            var lstSedi = ListaSediAlberata().Result;
+            var lstSedi = _getAllSediAlberate.GetSediAlberate();
 
             result.AddRange(lstSedi.Figli.Select(f => new Sede()
             {
@@ -161,6 +169,70 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Coordinate = ff.Coordinate,
                 Indirizzo = null
             }))));
+
+            return result.Distinct().ToList();
+        }
+
+        public async Task<List<Sede>> GetAll()
+        {
+            var result = new List<Sede>();
+
+            try
+            {
+                var lstSedi = ListaSediAlberata().Result;
+
+                result.AddRange(lstSedi.Figli.Select(f => new Sede()
+                {
+                    Codice = f.Codice,
+                    Descrizione = f.Nome,
+                    Coordinate = f.Coordinate,
+                    Indirizzo = null
+                }));
+
+                result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
+                {
+                    Codice = ff.Codice,
+                    Descrizione = ff.Nome,
+                    Coordinate = ff.Coordinate,
+                    Indirizzo = null
+                })));
+
+                result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
+                {
+                    Codice = ff.Codice,
+                    Descrizione = ff.Nome,
+                    Coordinate = ff.Coordinate,
+                    Indirizzo = null
+                }))));
+            }
+            catch (Exception)
+            {
+                var lstSedi = _getAllSediAlberate.GetSediAlberate();
+
+                result.AddRange(lstSedi.Figli.Select(f => new Sede()
+                {
+                    Codice = f.Codice,
+                    Descrizione = f.Nome,
+                    Coordinate = f.Coordinate,
+                    Indirizzo = null
+                }));
+
+                result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
+                {
+                    Codice = ff.Codice,
+                    Descrizione = ff.Nome,
+                    Coordinate = ff.Coordinate,
+                    Indirizzo = null
+                })));
+
+                result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
+                {
+                    Codice = ff.Codice,
+                    Descrizione = ff.Nome,
+                    Coordinate = ff.Coordinate,
+                    Indirizzo = null
+                }))));
+            }
 
             //result.AddRange(lstSedi.Figli.First().Figli.Select(f => new Sede()
             //{

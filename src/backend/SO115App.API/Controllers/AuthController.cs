@@ -51,6 +51,8 @@ namespace SO115App.API.Controllers
         ///   EndPoint per la login
         /// </summary>
         [HttpPost("Login")]
+        [ProducesResponseType(typeof(Utente), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Login([FromBody] AuthLogIn credenziali)
         {
             var query = new LogInQuery()
@@ -65,7 +67,7 @@ namespace SO115App.API.Controllers
 
                 if (CasAbilitato.Equals("true"))
                 {
-                    var utente = (Utente)this._handler.Handle(query).User;
+                    var utente = _handler.Handle(query).User;
 
                     if (utente == null)
                     {
@@ -81,6 +83,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 if (ex.Message.Contains("no element"))
                     return StatusCode(404, new { message = "Le credenziali inserite non risultano corrette" });
                 return BadRequest(new { message = ex.Message });
@@ -92,6 +96,8 @@ namespace SO115App.API.Controllers
         ///   Verifica Ticket CAS
         /// </summary>
         [HttpPost("TicketLogin")]
+        [ProducesResponseType(typeof(Utente), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> TicketLogin([FromBody] CasLogin credenziali)
         {
             var query = new CasLoginQuery()
@@ -102,7 +108,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                var utente = (Utente)this._cashandler.Handle(query).User;
+                var utente = _cashandler.Handle(query).User;
 
                 if (utente == null)
                 {
@@ -113,6 +119,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 if (ex.Message.Contains("no element"))
                     return StatusCode(404, new { message = "Le credenziali inserite non risultano corrette" });
                 return BadRequest(new { message = ex.Message });

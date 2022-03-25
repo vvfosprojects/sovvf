@@ -20,6 +20,7 @@
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.Models.Classi.Utility;
 using System;
@@ -42,7 +43,9 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Restituisce la lista dei mezzi utilizzabili in un determinato comando
         /// </summary>
-        [HttpPost]
+        [ProducesResponseType(typeof(ComposizioneMezziResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [HttpPost("")]
         public async Task<IActionResult> Post(ComposizioneMezziQuery query)
         {
             query.CodiciSedi = Request.Headers["CodiceSede"][0].Split(',', StringSplitOptions.RemoveEmptyEntries);
@@ -56,7 +59,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains("404"))
                     return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });

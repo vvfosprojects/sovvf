@@ -155,6 +155,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         aggiungiRuoloUtenteModal.componentInstance.codFiscaleUtenteVVF = codFiscaleUtenteVVF;
         aggiungiRuoloUtenteModal.componentInstance.nominativoUtenteVVF = nominativoUtenteVVF;
         aggiungiRuoloUtenteModal.componentInstance.ruoliAttuali = ruoliAttuali;
+        aggiungiRuoloUtenteModal.componentInstance.addRuoloUtente = true;
         aggiungiRuoloUtenteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {

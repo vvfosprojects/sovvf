@@ -9,8 +9,11 @@ import { GetRichiesteTrasferibili } from '../../store/actions/trasferimento-chia
 import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
 import { Sede } from '../../model/sede.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { AuthState } from '../../../features/auth/store/auth.state';
-import { Utente } from '../../model/utente.model';
+import { AppState } from '../../store/states/app/app.state';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { AddTrasferimentoChiamata } from '../../interface/trasferimento-chiamata.interface';
+import { TrasferimentoChiamataService } from '../../../core/service/trasferimento-chiamata/trasferimento-chiamata.service';
 
 @Component({
     selector: 'app-trasferimento-chiamata-modal',
@@ -25,8 +28,8 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     formValid: boolean;
     @Select(DistaccamentiState.sediTrasferimenti) distaccamenti$: Observable<Sede[]>;
     distaccamenti: Sede[];
-    @Select(AuthState.currentUser) user$: Observable<Utente>;
-    codiceSedeUser: any;
+    @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
+    vistaSedi: string[];
 
     codRichiesta: string;
 
@@ -37,11 +40,13 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
 
     constructor(private store: Store,
                 private modal: NgbActiveModal,
-                private fb: FormBuilder) {
+                private fb: FormBuilder,
+                private lockedConcorrenzaService: LockedConcorrenzaService,
+                private trasferimentoChiamataService: TrasferimentoChiamataService) {
         this.initForm();
         this.getFormValid();
         this.getSedi();
-        this.getCodiceSedeUser();
+        this.getVistaSedi();
     }
 
     ngOnInit(): void {
@@ -53,6 +58,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
                 }
             })
         );
+        this.f.codiceRichiesta.patchValue(this.codRichiesta);
         if (!this.codRichiesta) {
             this.getCodiciRichiesteTrasferibili();
         } else {
@@ -114,25 +120,44 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetRichiesteTrasferibili());
     }
 
-    getCodiceSedeUser(): void {
+    getVistaSedi(): void {
         this.subscription.add(
-            this.user$.subscribe((user: any) => {
-                this.codiceSedeUser = user.sede.codice;
-                const sedeUser = user.sede;
-                if (sedeUser) {
-                    this.f.sedeDa.patchValue(sedeUser);
+            this.vistaSedi$.subscribe((vistaSedi: string[]) => {
+                if (vistaSedi?.length) {
+                    this.vistaSedi = vistaSedi;
+                    const sedeDa = this.distaccamenti.filter((d: Sede) => d.codice === vistaSedi[0])[0];
+                    if (sedeDa) {
+                        this.f.sedeDa.patchValue(sedeDa);
+                    }
                 }
             })
         );
     }
 
-    onConferma(): void {
-        this.submitted = true;
+    addTrasferimentoChiamata(): void {
+        const codChiamata = this.f.codiceRichiesta.value;
+        const sedeDa = this.f.sedeDa.value;
+        const sedeA = this.f.sedeA.value;
+        const obj = {
+            codChiamata,
+            codSedeDa: sedeDa.codice,
+            codSedeA: sedeA.codice
+        } as AddTrasferimentoChiamata;
+        this.trasferimentoChiamataService.addTrasferimentoChiamata(obj).subscribe(() => {
+            this.closeModal('ok');
+        }, () => this.submitted = false);
+    }
 
-        if (!this.trasferimentoChiamataForm.valid) {
-            return;
+    onConferma(): void {
+        if (!this.isLockedConcorrenza()) {
+            this.submitted = true;
+
+            if (!this.trasferimentoChiamataForm.valid) {
+                return;
+            }
+
+            this.addTrasferimentoChiamata();
         }
-        this.modal.close({ success: true, result: this.trasferimentoChiamataForm.value });
     }
 
     onDismiss(): void {
@@ -141,5 +166,9 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
 
     closeModal(type: string): void {
         this.modal.close(type);
+    }
+
+    isLockedConcorrenza(): string {
+        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codRichiesta]);
     }
 }

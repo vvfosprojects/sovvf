@@ -25,6 +25,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di bloccare un mezzo selezionato da un altro utente
         /// </summary>
         [HttpPost("PrenotaMezzo")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> PrenotaMezzo([FromBody] StatoOperativoMezzo mezzoPrenotato)
         {
             mezzoPrenotato.CodiceSede = Request.Headers["codicesede"];
@@ -46,7 +48,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { ex.Message });
             }
@@ -56,6 +58,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di sbloccare un mezzo precedentemente selezionato da un altro utente
         /// </summary>
         [HttpPost("SbloccaMezzo")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> SbloccaMezzo([FromBody] StatoOperativoMezzo mezzoPrenotato)
         {
             mezzoPrenotato.CodiceSede = Request.Headers["codicesede"];
@@ -74,7 +78,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { ex.Message });
             }

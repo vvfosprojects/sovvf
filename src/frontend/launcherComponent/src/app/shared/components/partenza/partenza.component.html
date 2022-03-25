@@ -3,12 +3,12 @@
      [class.px-1]="idDaSganciare === partenza.mezzo.descrizione">
     <div class="d-flex justify-content-start align-items-center font-xxlarge"
          (click)="selezioneMezzo.emit(partenza.mezzo)">
-        <app-mezzo [codiceRichiesta]="codiceRichiesta"
+        <app-mezzo [richiesta]="richiesta"
                    [codicePartenza]="codicePartenza"
                    [mezzo]="partenza.mezzo"
                    [listaEventiMezzo]="listaEventiMezzo"
-                   [listaEventi]="listaEventi"
-                   [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
+                   [listaEventi]="richiesta?.eventi"
+                   [actionsAttive]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)">
         </app-mezzo>
     </div>
@@ -42,14 +42,14 @@
                         +{{ partenza.squadre.length - 1 }}
                     </div>
                 </button>
-                <ng-template [ngIf]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa">
+                <ng-template [ngIf]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa">
                     <div [ngbTooltip]="tooltipLockedConcorrenza"
-                         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta])">
+                         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])">
                         <button class="btn btn-sm btn-info d-inline-block"
                                 ngbTooltip="Gestisci Partenza"
                                 placement="top"
-                                [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
-                                [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta]"
+                                [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
+                                [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
                                 (click)="onModificaPartenza(); $event.stopPropagation()">
                             <i class="fas fa-cog"></i>
                         </button>
@@ -66,5 +66,5 @@
 
 <ng-template #tooltipLockedConcorrenza>
     <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [codiceRichiesta] }}
+    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice] }}
 </ng-template>

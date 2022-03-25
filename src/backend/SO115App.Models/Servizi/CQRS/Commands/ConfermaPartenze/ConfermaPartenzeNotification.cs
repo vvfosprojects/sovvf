@@ -25,6 +25,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using System;
+using System.Threading.Tasks;
 
 namespace DomainModel.CQRS.Commands.ConfermaPartenze
 {
@@ -52,22 +53,30 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
         public void Notify(ConfermaPartenzeCommand command)
         {
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
-            _sender.SendNotification(command);
-
-            var infoESRI = _mappingESRIMessage.Map(sintesi);
-
-            _notifyUpDateRichiesta.UpDate(infoESRI);
-
-            foreach (var partenza in command.ConfermaPartenze.Partenze)
+            Task.Factory.StartNew(() =>
             {
-                var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.Richiesta.Localita.Indirizzo}. Codice Intervento: {command.Richiesta.CodRichiesta}";
-                var infoMatrix = new MessageMatrix()
+                _sender.SendNotification(command);
+            });
+
+            Task.Factory.StartNew(() =>
+            {
+                var infoESRI = _mappingESRIMessage.Map(sintesi);
+                _notifyUpDateRichiesta.UpDate(infoESRI);
+            });
+
+            Task.Factory.StartNew(() =>
+            {
+                Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
                 {
-                    Messaggio = messaggio,
-                    CodSede = command.ConfermaPartenze.CodiceSede.Split('.')[0]
-                };
-                _callMatrix.SendMessage(infoMatrix);
-            }
+                    var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.Richiesta.Localita.Indirizzo}. Codice Intervento: {command.Richiesta.CodRichiesta}";
+                    var infoMatrix = new MessageMatrix()
+                    {
+                        Messaggio = messaggio,
+                        CodSede = command.ConfermaPartenze.CodiceSede.Split('.')[0]
+                    };
+                    _callMatrix.SendMessage(infoMatrix);
+                });
+            });
         }
     }
 }

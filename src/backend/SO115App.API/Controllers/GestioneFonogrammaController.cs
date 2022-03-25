@@ -40,6 +40,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce le informazioni relative al fonogramma di uno specifico intervento
         /// </summary>
         [HttpPost("InfoFonogramma")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult InfoFonogramma([FromBody] Fonogramma fonogramma)
         {
             try
@@ -56,7 +58,7 @@ namespace SO115App.API.Controllers
             }
             catch (System.Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 if (ex.Message.Contains(Costanti.RuoloUtentePresente))
                     return StatusCode(403, new { message = Costanti.RuoloUtentePresente });

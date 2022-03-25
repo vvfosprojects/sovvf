@@ -1,11 +1,7 @@
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSquadre.GetAllSquadre;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -21,34 +17,45 @@ namespace SO115App.API.Controllers
         {
             _getAllSquadreHandler = getAllSquadreHandler;
         }
-    
+
         /// <summary>
         ///   Metodo che restituisce la lista delle Squadre
         /// </summary>
         [HttpPost("GetAllSquadre")]
+        [ProducesResponseType(typeof(GetAllSquadreResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetAllSquadre([FromBody] GetAllSquadreQuery par)
         {
-            if (par.CodiciSede != null)
+            try
             {
-                var query = new GetAllSquadreQuery()
+                if (par.CodiciSede != null)
                 {
-                    CodiciSede = par.CodiciSede
-                };
+                    var query = new GetAllSquadreQuery()
+                    {
+                        CodiciSede = par.CodiciSede
+                    };
 
-                var result = _getAllSquadreHandler.Handle(query);
+                    var result = _getAllSquadreHandler.Handle(query);
 
-                return Ok(result);
+                    return Ok(result);
+                }
+                else
+                {
+                    var query = new GetAllSquadreQuery()
+                    {
+                        CodiciSede = Request.Headers["codicesede"].ToString().Split(",")
+                    };
+
+                    var result = _getAllSquadreHandler.Handle(query);
+
+                    return Ok(result);
+                }
             }
-            else
+            catch (System.Exception ex)
             {
-                var query = new GetAllSquadreQuery()
-                {
-                    CodiciSede = Request.Headers["codicesede"].ToString().Split(",")
-                };
+                Serilog.Log.Error(ex.Message);
 
-                var result = _getAllSquadreHandler.Handle(query);
-
-                return Ok(result);
+                return BadRequest(ex.Message);
             }
         }
     }

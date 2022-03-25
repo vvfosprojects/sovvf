@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetCentroMappa } from '../store/actions/centro-mappa.actions';
 import { AreaMappa } from '../maps-model/area-mappa-model';
-import { MAPSOPTIONS } from '../../../core/settings/maps-options';
+import { LSNAME } from '../../../core/settings/config';
 import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../shared/helper/mappa/function-mappa';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class MapService {
     }
 
     private getCentro(): Observable<CentroMappa> {
-        return this.centro$.asObservable().pipe(debounceTime(MAPSOPTIONS.panDelay));
+        return this.centro$.asObservable().pipe(debounceTime(LSNAME.mapPanDelay));
     }
 
     setArea(latLngBounds: { northEastLat: number, northEastLng: number, southWestLat: number, southWestLng: number }): void {

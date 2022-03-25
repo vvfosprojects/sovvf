@@ -23,7 +23,9 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CustomMapper;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -54,7 +56,9 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo che restituisce la lista degli eventi di un intervento
         /// </summary>
-        [HttpGet]
+        [HttpGet("")]
+        [ProducesResponseType(typeof(List<MapperEventoSuEventoGui>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get(string Id)
         {
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
@@ -73,21 +77,32 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
         }
     
         [HttpGet("{filtro}")]
+        [ProducesResponseType(typeof(ListaEventiResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public ListaEventiResult GetMarkerFromId(FiltroRicercaRichiesteAssistenza filtro)
         {
-            var query = new ListaEventiQuery()
+            try
             {
-                Filtro = filtro
-            };
+                var query = new ListaEventiQuery()
+                {
+                    Filtro = filtro
+                };
 
-            return this.handler.Handle(query);
+                return this.handler.Handle(query);
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Error(ex.Message);
+
+                return null;
+            }
         }
     }
 }

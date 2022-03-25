@@ -12,6 +12,8 @@ import { SintesiRichiesteService } from '../../../core/service/lista-richieste-s
 import { Mezzo } from '../../model/mezzo.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { StartLoadingActionMezzo, StopLoadingActionMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-partenza',
@@ -21,14 +23,12 @@ import { LockedConcorrenzaService } from '../../../core/service/concorrenza-serv
 
 export class PartenzaComponent implements OnInit {
 
-    @Input() codiceRichiesta: string;
+    @Input() richiesta: SintesiRichiesta;
     @Input() idDaSganciare: string;
     @Input() partenza: DettaglioPartenza;
     @Input() codicePartenza: string;
     @Input() infoPartenza: Partenza;
-    @Input() listaEventi: EventoMezzo[];
     @Input() inGestione: boolean;
-    @Input() statoRichiesta: StatoRichiesta;
     @Input() index: string;
     @Input() annullaStatoMezzo: boolean;
 
@@ -54,19 +54,26 @@ export class PartenzaComponent implements OnInit {
         this.checkListaEventiMezzo();
     }
 
-    onAnnullaStato(idMezzo: string): void {
+    onAnnullaStato(codiceMezzo: string): void {
         const obj = {
             codiceRichiesta: this.infoPartenza ? this.infoPartenza.codiceRichiesta : null,
             codicePartenza: this.infoPartenza ? this.infoPartenza.codicePartenza : null,
             targaMezzo: this.infoPartenza.codiceMezzo ? this.infoPartenza.codiceMezzo : null,
         };
+        this.store.dispatch(new StartLoadingActionMezzo(codiceMezzo));
         this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
-            this.store.dispatch(new RemoveAnnullaStatoMezzi(idMezzo));
-        }, () => console.log('Richiesta di annullamento cambio stato fallita'));
+            this.store.dispatch([
+                new RemoveAnnullaStatoMezzi(codiceMezzo),
+                new StopLoadingActionMezzo(codiceMezzo)
+            ]);
+        }, () => {
+            console.error('Richiesta di annullamento cambio stato fallita');
+            this.store.dispatch(new StopLoadingActionMezzo(codiceMezzo));
+        });
     }
 
     checkListaEventiMezzo(): void {
-        this.listaEventiMezzo = this.listaEventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
+        this.listaEventiMezzo = this.richiesta.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
         const statiMezzo = [];
         if (this.listaEventiMezzo?.length) {
             this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));
@@ -86,7 +93,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     onModificaPartenza(): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codiceRichiesta])) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice])) {
             this.modificaPartenza.emit(this.index);
         }
     }

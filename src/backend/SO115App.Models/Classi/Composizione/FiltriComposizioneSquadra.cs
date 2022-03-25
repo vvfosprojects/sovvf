@@ -13,6 +13,7 @@ namespace SO115App.Models.Classi.Composizione
         public TurnoRelativo? Turno { get; set; }
         public StatoSquadraComposizione? Stato { get; set; }
         public string CodDistaccamentoSelezionato { get; set; }
+        public string CodMezzoSelezionato { get; set; }
         public string CodSquadraSelezionata { get; set; }
     }
 }

@@ -108,12 +108,15 @@ export class GestioneUtentiState {
     @Action(GetUtentiVVF)
     getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF): void {
         dispatch(new StartLoadingGestioneUtenti());
-        this.gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
+        const nome = action.nome;
+        const cognome = action.cognome;
+        const codiceFiscale = action.codiceFiscale;
+        this.gestioneUtenti.getUtentiVVF(nome, cognome, codiceFiscale).subscribe((data: UtenteVvfInterface[]) => {
             dispatch([
                 new SetUtentiVVF(data),
                 new StopLoadingGestioneUtenti()
             ]);
-        });
+        }, () => dispatch(new StopLoadingGestioneUtenti()));
     }
 
     @Action(SetUtentiVVF)
@@ -153,7 +156,7 @@ export class GestioneUtentiState {
                         new StopLoadingGestioneUtenti()
                     ]);
                 },
-                error => {
+                () => {
                     const utente = this.store.selectSnapshot(AuthState.currentUser);
                     if (!_isAdministrator(utente, { sede: utente.sede })) {
                         dispatch(new Navigate(['/home']));
@@ -200,7 +203,7 @@ export class GestioneUtentiState {
     }
 
     @Action(SuccessAddUtenteGestione)
-    successAddUtenteGestione({ dispatch }: StateContext<GestioneUtentiStateModel>, action: SuccessAddUtenteGestione): void {
+    successAddUtenteGestione({ dispatch }: StateContext<GestioneUtentiStateModel>): void {
         const pagina = this.store.selectSnapshot(PaginationState.page);
         if (pagina === 1) {
             dispatch(new GetUtentiGestione());

@@ -21,6 +21,8 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("Reset")]
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Reset()
         {
             ResetDBQuery query = new ResetDBQuery()
@@ -34,11 +36,15 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("managetipologie")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> managetip()
         {
 
@@ -50,6 +56,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 return BadRequest(ex.Message);
             }
         }
