@@ -101,6 +101,8 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
                     if (listaUtentiVVF.length === 1) {
                         this.f.utente.patchValue(listaUtentiVVF[0].codiceFiscale);
                     }
+                } else {
+                    this.listaUtentiVVF = null;
                 }
             })
         );

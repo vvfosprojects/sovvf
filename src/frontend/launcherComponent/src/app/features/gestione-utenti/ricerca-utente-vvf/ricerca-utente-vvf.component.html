@@ -1,25 +1,31 @@
 <form [formGroup]="ricercaUtenteForm"
-      (change)="onFormValueChange()"
+      (keyup)="onFormValueChange()"
+      (change)="onClearSubmitted()"
       (ngSubmit)="onRicercaUtenteVVF()">
-    <div class="form-group">
-        <label for="nome">Nome</label>
-        <input id="nome"
-               class="form-control"
-               formControlName="nome"/>
+    <div class="px-2">
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input id="nome"
+                   class="form-control"
+                   formControlName="nome"/>
+        </div>
+        <div class="form-group">
+            <label for="cognome">Cognome</label>
+            <input id="cognome"
+                   class="form-control"
+                   formControlName="cognome"/>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="cognome">Cognome</label>
-        <input id="cognome"
-               class="form-control"
-               formControlName="cognome"/>
-    </div>
-    <div class="form-group">
-        <label for="codiceFiscale">Codice Fiscale</label>
-        <input id="codiceFiscale"
-               class="form-control"
-               formControlName="codiceFiscale"/>
-        <div *ngIf="submitted && f.codiceFiscale.errors" class="text-danger mt-1">
-            <div *ngIf="f.codiceFiscale.errors.pattern">Codice Fiscale non corretto</div>
+    <hr class="mb-2">
+    <div class="px-2">
+        <div class="form-group">
+            <label for="codiceFiscale">Codice Fiscale</label>
+            <input id="codiceFiscale"
+                   class="form-control"
+                   formControlName="codiceFiscale"/>
+            <div *ngIf="submitted && f.codiceFiscale.errors" class="text-danger mt-1">
+                <div *ngIf="f.codiceFiscale.errors.pattern">Codice Fiscale non corretto</div>
+            </div>
         </div>
     </div>
     <hr>
@@ -31,7 +37,7 @@
     <div class="text-right">
         <button type="submit"
                 class="btn btn-primary btn-no-hover"
-                [disabled]="loadingGestioneUtenti || (!f.codiceFiscale.value && ((!f.nome.value) || (!f.cognome.value)))">
+                [disabled]="loadingGestioneUtenti || ricercaUtenteForm.invalid">
             <ng-container *ngIf="!loadingGestioneUtenti">
                 <i class="fas fa-search mr-1"></i>
                 {{ 'avvia ricerca' | uppercase }}
