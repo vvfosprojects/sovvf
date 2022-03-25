@@ -54,7 +54,7 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
         {
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
             Task.Factory.StartNew(() =>
-            {              
+            {
                 _sender.SendNotification(command);
             });
 
@@ -64,15 +64,18 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
                 _notifyUpDateRichiesta.UpDate(infoESRI);
             });
 
-            Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
+            Task.Factory.StartNew(() =>
             {
-                var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.Richiesta.Localita.Indirizzo}. Codice Intervento: {command.Richiesta.CodRichiesta}";
-                var infoMatrix = new MessageMatrix()
+                Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
                 {
-                    Messaggio = messaggio,
-                    CodSede = command.ConfermaPartenze.CodiceSede.Split('.')[0]
-                };
-                _callMatrix.SendMessage(infoMatrix);
+                    var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.Richiesta.Localita.Indirizzo}. Codice Intervento: {command.Richiesta.CodRichiesta}";
+                    var infoMatrix = new MessageMatrix()
+                    {
+                        Messaggio = messaggio,
+                        CodSede = command.ConfermaPartenze.CodiceSede.Split('.')[0]
+                    };
+                    _callMatrix.SendMessage(infoMatrix);
+                });
             });
         }
     }

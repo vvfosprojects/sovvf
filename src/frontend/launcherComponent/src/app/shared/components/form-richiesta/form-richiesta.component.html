@@ -214,7 +214,8 @@
                         </div>
                     </ng-template>
                     <!-- INPUT COMPETENZE -->
-                    <ng-template [ngIf]="!loadingCompetenze && competenze?.length === 0 && !modifica">
+                    <ng-template
+                            [ngIf]="!loadingCompetenze && competenze?.length === 0 && !modifica && !detectCompetenzeFuoriComando()">
                         <div class="form-group d-none">
                             <label for="codCompetenzaCentrale">Competenza Centrale</label>
                             <input id="codCompetenzaCentrale"
@@ -272,6 +273,10 @@
                             </app-competenza>
                         </div>
                     </ng-template>
+                    <!-- COMPETENZE ALTRO COMANDO -->
+                    <ng-container *ngIf="!loadingCompetenze && detectCompetenzeFuoriComando()">
+                        <h6 class="text-danger font-weight-bold mt-2 mb-0">Competenza di altro comando</h6>
+                    </ng-container>
                 </div>
             </div>
             <!-- RICHIEDENTE -->
