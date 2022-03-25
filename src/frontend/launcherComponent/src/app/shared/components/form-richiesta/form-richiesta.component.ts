@@ -820,7 +820,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         if (sediSelezionate?.length) {
             comandoSelezionato = sediSelezionate[0].split('.')[0];
         }
-        return comandoCompetenza !== comandoSelezionato;
+        return (comandoCompetenza && comandoSelezionato) && comandoCompetenza !== comandoSelezionato;
     }
 
     onSelectCompetenza(nCompetenza: number, codCompetenza: string): void {
