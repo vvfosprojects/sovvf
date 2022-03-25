@@ -804,6 +804,25 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    detectCompetenzeFuoriComando(): boolean {
+        let comandoCompetenza: string;
+        const codPrimaCompetenza = this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codPrimaCompetenza;
+        if (codPrimaCompetenza) {
+            comandoCompetenza = codPrimaCompetenza.split('.')[0];
+        }
+        const codCompetenzaCentrale = this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codCompetenzaCentrale;
+        if (codCompetenzaCentrale) {
+            comandoCompetenza = codCompetenzaCentrale.split('.')[0];
+        }
+
+        const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+        let comandoSelezionato: string;
+        if (sediSelezionate?.length) {
+            comandoSelezionato = sediSelezionate[0].split('.')[0];
+        }
+        return (comandoCompetenza && comandoSelezionato) && comandoCompetenza !== comandoSelezionato;
+    }
+
     onSelectCompetenza(nCompetenza: number, codCompetenza: string): void {
         switch (nCompetenza) {
             case 1:
