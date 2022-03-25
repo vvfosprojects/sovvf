@@ -312,8 +312,8 @@ namespace SO115App.Persistence.MongoDB
             {
                 sintesi = _mapperSintesi.Map(richiesta);
                 //sintesi.CodEntiIntervenuti = rubrica.Count > 0 ? rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false) : null;
-                sintesi.Competenze = richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
-                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? richiesta.CodSOAllertate.ToArray().MapCompetenze(_getSedi) : null;
+                sintesi.Competenze = richiesta.Competenze;
+                sintesi.SediAllertate = richiesta.CodSOAllertate?.ToArray().MapCompetenze(_getSedi);
             }
 
             return sintesi;
