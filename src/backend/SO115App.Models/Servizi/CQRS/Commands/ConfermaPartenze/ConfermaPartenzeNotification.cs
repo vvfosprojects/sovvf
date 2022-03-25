@@ -53,10 +53,7 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
         public void Notify(ConfermaPartenzeCommand command)
         {
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
-            Task.Factory.StartNew(() =>
-            {
-                _sender.SendNotification(command);
-            });
+            _sender.SendNotification(command);
 
             Task.Factory.StartNew(() =>
             {
