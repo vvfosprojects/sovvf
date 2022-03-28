@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza
 {
     public interface IIsActionFree
     {
-        public bool Check(string action);
+        public bool Check(TipoOperazione action, string idUtente, string[] codSede, string codOggettoDaVerificare);
     }
 }

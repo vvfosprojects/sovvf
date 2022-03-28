@@ -15,7 +15,6 @@
         GestisciPartenza,
         Sganciamento,
         RegistrazioneSchedaContatto,
-        AggiungiTrasferimento,
         ModificaPos,
         EliminaPos,
         ModificaPianiDiscendenti,
@@ -24,6 +23,9 @@
         EliminaDettaglioTipologia,
         ModificaTriage,
         EliminaTriage,
-        AggiungiRuoloUtente
+        AggiungiRuoloUtente,
+        EliminaRuoloUtente,
+        ModificaRuoloUtente,
+        EliminaUtente
     }
 }

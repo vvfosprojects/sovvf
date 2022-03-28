@@ -1,6 +1,7 @@
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace DomainModel.CQRS.Commands.MezzoPrenotato
 {
@@ -22,6 +24,7 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetAllBlocks _getAllBlocks;
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IIsActionFree _isActionFree;
 
         public ConfermaPartenzeAuthorization(
             IPrincipal currentUser,
@@ -29,7 +32,8 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
             IGetAutorizzazioni getAutorizzazioni,
             IGetRichiesta getRichiestaById,
             IGetAllBlocks getAllBlocks,
-            IGetSottoSediByCodSede getSottoSediByCodSede)
+            IGetSottoSediByCodSede getSottoSediByCodSede,
+            IIsActionFree isActionFree)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
@@ -37,6 +41,7 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
             _getRichiestaById = getRichiestaById;
             _getAllBlocks = getAllBlocks;
             _getSottoSediByCodSede = getSottoSediByCodSede;
+            _isActionFree = isActionFree;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(ConfermaPartenzeCommand command)
@@ -53,47 +58,28 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    #region Concorrenza
+
                     //Controllo Concorrenza
-
                     var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente });
-                    var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
 
-                    var MezziBloccati = command.ConfermaPartenze.Partenze.FindAll(p => listaOperazioniBloccate.Any(b => b.Value.Equals(p.Mezzo.Codice) && !b.IdOperatore.Equals(command.Utente.Id))).ToList();
-                    var SquadreBloccate = command.ConfermaPartenze.Partenze.FindAll(p => p.Squadre.Any(s => listaOperazioniBloccate.Any(l => l.Value.Equals(s.Codice) && !l.IdOperatore.Equals(command.Utente.Id)))).ToList();
-
-                    if (MezziBloccati.Count > 0)
+                    var isFree = true;
+                    Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
                     {
-                        string mezziPrenotati = "";
+                        if (!_isActionFree.Check(TipoOperazione.InvioPartenza, command.Utente.Id, listaSediInteressate.ToArray(), partenza.Mezzo.Codice))
+                            isFree = false;
 
-                        if (MezziBloccati.Count > 1)
+                        Parallel.ForEach(partenza.Squadre, squadra =>
                         {
-                            foreach (var mezzo in MezziBloccati)
-                            {
-                                mezziPrenotati = mezziPrenotati + "," + mezzo.Codice;
-                            }
+                            if (!_isActionFree.Check(TipoOperazione.InvioPartenza, command.Utente.Id, listaSediInteressate.ToArray(), squadra.Codice))
+                                isFree = false;
+                        });
+                    });
 
-                            yield return new AuthorizationResult($"I mezzi {mezziPrenotati} risultano prenotati. Non è possibile confermare l'operazione.");
-                        }
-                        else
-                            yield return new AuthorizationResult($"Il mezzo {MezziBloccati[0].Mezzo.Codice} risulta prenotato. Non è possibile confermare l'operazione.");
-                    }
+                    if (!isFree)
+                        yield return new AuthorizationResult($"La partenza risulta avere il mezzo o le squadre già utilizzati da un altro operatore.");
 
-                    if (SquadreBloccate.Count > 0)
-                    {
-                        string SquadrePrenotate = "";
-
-                        if (SquadreBloccate.Count > 1)
-                        {
-                            foreach (var squadra in SquadreBloccate)
-                            {
-                                SquadrePrenotate = SquadrePrenotate + "," + squadra.Codice;
-                            }
-
-                            yield return new AuthorizationResult($"Le squadre {SquadrePrenotate} risultano prenotate. Non è possibile confermare l'operazione.");
-                        }
-                        else
-                            yield return new AuthorizationResult($"La squadra {SquadreBloccate[0].Codice} risulta prenotata. Non è possibile confermare l'operazione.");
-                    }
+                    #endregion Concorrenza
 
                     bool abilitato = false;
                     foreach (var competenza in command.Richiesta.CodUOCompetenza)

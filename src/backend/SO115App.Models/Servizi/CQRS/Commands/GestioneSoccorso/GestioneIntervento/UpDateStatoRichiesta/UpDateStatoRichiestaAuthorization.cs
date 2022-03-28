@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
@@ -27,6 +28,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
@@ -38,12 +40,14 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetAllBlocks _getAllBlocks;
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IIsActionFree _isActionFree;
 
         public UpDateStatoRichiestaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
             IGetRichiesta getRichiestaById,
             IGetAllBlocks getAllBlocks,
-            IGetSottoSediByCodSede getSottoSediByCodSede)
+            IGetSottoSediByCodSede getSottoSediByCodSede,
+            IIsActionFree isActionFree)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
@@ -51,11 +55,12 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             _getRichiestaById = getRichiestaById;
             _getAllBlocks = getAllBlocks;
             _getSottoSediByCodSede = getSottoSediByCodSede;
+            _isActionFree = isActionFree;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(UpDateStatoRichiestaCommand command)
         {
-            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
+            command.Richiesta = _getRichiestaById.GetById(command.IdRichiesta);
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -65,10 +70,26 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { richiesta.CodSOCompetente });
+                    #region Concorrenza
+
+                    //Controllo Concorrenza
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente });
+
+                    if (command.Stato.Equals(Costanti.RichiestaChiusa))
+                    {
+                        if (command.Richiesta.CodRichiesta != null)
+                            if (!_isActionFree.Check(TipoOperazione.ChiusuraIntervento, user.Id, listaSediInteressate.ToArray(), command.Richiesta.Codice))
+                                yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+                            else
+                            if (!_isActionFree.Check(TipoOperazione.ChiusuraChiamata, user.Id, listaSediInteressate.ToArray(), command.Richiesta.Codice))
+                                yield return new AuthorizationResult($"In questo momento la chiamata risulta occupata da un altro operatore. L'operazione non può essere eseguita");
+                    }
+
+                    #endregion Concorrenza
+
                     var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
 
-                    var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(richiesta.Codice));
+                    var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Richiesta.Codice));
 
                     if (findBlock != null && findBlock.Count > 0)
                         if (findBlock != null)
