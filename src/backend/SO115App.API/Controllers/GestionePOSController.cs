@@ -46,13 +46,12 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di inserire una POS
         /// </summary>
         [HttpPost("Add")]
-        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add([FromForm] DtoPos pos)
         {
             //var codiceSede = Request.Headers["codicesede"];
 
-            //pos.CodSede = codiceSede;
+            pos.CodSede = Request.Headers["codicesede"];
             var command = new AddPosCommand()
             {
                 Pos = pos
@@ -79,6 +78,7 @@ namespace SO115App.API.Controllers
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get([FromBody] GetElencoPOSQuery getListaPosQuery)
         {
+            getListaPosQuery.CodiceSede = Request.Headers["codicesede"];
             try
             {
                 return Ok(_getHandler.Handle(getListaPosQuery));
@@ -103,7 +103,7 @@ namespace SO115App.API.Controllers
 
             var getQuery = new GetPOSByIdQuery()
             {
-                CodiceSede = CodSede,
+                CodiceSede = Request.Headers["codicesede"],
                 IdPos = Id
             };
 
@@ -123,14 +123,13 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di eliminare una POS
         /// </summary>
         [HttpGet("Delete")]
-        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete(string Id, string CodSede)
         {
             //var codiceSede = Request.Headers["codicesede"];
             var command = new DeletePosCommand()
             {
-                codSede = CodSede,
+                codSede = Request.Headers["codicesede"],
                 Id = Id
             };
 
@@ -151,13 +150,12 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di modificare una POS
         /// </summary>
         [HttpPost("Edit")]
-        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Edit([FromForm] DtoPos pos)
         {
             //var codiceSede = Request.Headers["codicesede"];
 
-            //pos.CodSede = codiceSede;
+            pos.CodSede = Request.Headers["codicesede"];
             var command = new EditPosCommand()
             {
                 Pos = pos
