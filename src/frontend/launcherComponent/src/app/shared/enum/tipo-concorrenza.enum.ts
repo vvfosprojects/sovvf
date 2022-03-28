@@ -12,7 +12,6 @@ export enum TipoConcorrenzaEnum {
     GestisciPartenza,
     Sganciamento,
     RegistrazioneSchedaContatto,
-    AggiungiTrasferimento,
     ModificaPos,
     EliminaPos,
     ModificaPianiDiscendenti,

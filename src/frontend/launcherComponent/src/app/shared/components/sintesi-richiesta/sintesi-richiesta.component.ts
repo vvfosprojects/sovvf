@@ -32,6 +32,8 @@ import { MezziInServizioState } from '../../../features/home/store/states/mezzi-
 import { PosDettaglioModalComponent } from '../../modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { nomeStatiSquadra } from '../../helper/function-composizione';
+import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -268,6 +270,11 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         modalModificaPartenza.componentInstance.singolaPartenza = this.richiesta.partenze[index];
         modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.richiesta = this.richiesta;
+        const data = {
+            value: this.richiesta.partenze[index].codiceMezzo,
+            type: TipoConcorrenzaEnum.GestisciPartenza
+        } as AddConcorrenzaDtoInterface;
+        this.store.dispatch(new AddConcorrenza([data]));
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
@@ -275,7 +282,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
                 case 'ko':
                     break;
             }
-        });
+        }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.GestisciPartenza, [this.richiesta.partenze[index].codiceMezzoe])));
     }
 
     onDettaglioStatoFonogramma(): void {

@@ -11,6 +11,9 @@ import { LockedConcorrenzaService } from '../../../../core/service/concorrenza-s
 import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
 import { SintesiRichiesta } from '../../../model/sintesi-richiesta.model';
 import { Partenza } from '../../../model/partenza.model';
+import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../store/actions/concorrenza/concorrenza.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -46,7 +49,8 @@ export class MezzoActionsComponent implements OnInit {
     constructor(dropdownConfig: NgbDropdownConfig,
                 tooltipConfig: NgbTooltipConfig,
                 private modalService: NgbModal,
-                private lockedConcorrenzaService: LockedConcorrenzaService) {
+                private lockedConcorrenzaService: LockedConcorrenzaService,
+                private store: Store) {
         dropdownConfig.container = 'body';
         dropdownConfig.placement = 'top';
         tooltipConfig.container = 'body';
@@ -88,6 +92,11 @@ export class MezzoActionsComponent implements OnInit {
                 size: 'lg',
                 centered: true
             });
+            const data = {
+                value: this.mezzo.codice,
+                type: TipoConcorrenzaEnum.CambioStatoPartenza
+            } as AddConcorrenzaDtoInterface;
+            this.store.dispatch(new AddConcorrenza([data]));
             modal.componentInstance.codicePartenza = this.codicePartenza;
             modal.componentInstance.statoMezzo = this.mezzo.stato;
             modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
@@ -98,17 +107,18 @@ export class MezzoActionsComponent implements OnInit {
             modal.componentInstance.listaEventi = this.listaEventi;
             modal.componentInstance.ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
             modal.result.then((res: { status: string, result: any }) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
                 switch (res.status) {
                     case 'ok':
                         if (action) {
                             this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
                             const orario = res.result.oraEvento;
-                            const data = res.result.dataEvento;
+                            const dataEvento = res.result.dataEvento;
                             const azioneIntervento = res.result.azioneIntervento;
                             this.actionMezzo.emit({
                                 mezzoAction: this.statoMezzoActions,
                                 oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
-                                dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
+                                dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
                                 azioneIntervento,
                                 codicePartenza: this.codicePartenza,
                                 modificaOrario: res.result.modificaOrario
@@ -120,7 +130,7 @@ export class MezzoActionsComponent implements OnInit {
                     case 'ko':
                         break;
                 }
-            });
+            }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])));
         }
     }
 

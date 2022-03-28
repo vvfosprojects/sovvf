@@ -16,7 +16,7 @@ import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/m
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
 import { PatchEntiIntervenutiRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
-import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor, defineChiamataIntervento } from '../../helper/function-richieste';
+import { calcolaActionSuggeritaRichiesta, defineChiamataIntervento, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { EnteInterface } from '../../interface/ente.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
@@ -28,6 +28,8 @@ import { ListaMezziSganciamentoModalComponent } from '../lista-mezzi-sganciament
 import { VisualizzaDocumentoModalComponent } from '../visualizza-documento-modal/visualizza-documento-modal.component';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
+import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -111,8 +113,18 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 case StatoRichiestaActions.Chiusa:
                     if (this.richiesta.stato === StatoRichiesta.Chiamata) {
                         modalOptions.size = 'xl';
+                        const data = {
+                            value: this.richiesta.codice,
+                            type: TipoConcorrenzaEnum.ChiusuraChiamata
+                        } as AddConcorrenzaDtoInterface;
+                        this.store.dispatch(new AddConcorrenza([data]));
                     } else {
                         modalOptions.size = 'lg';
+                        const data = {
+                            value: this.richiesta.codice,
+                            type: TipoConcorrenzaEnum.ChiusuraIntervento
+                        } as AddConcorrenzaDtoInterface;
+                        this.store.dispatch(new AddConcorrenza([data]));
                     }
                     break;
                 case StatoRichiestaActions.Sospesa:
@@ -157,8 +169,13 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 entiIntervenuti: null
             } as RichiestaActionInterface;
 
-            modalConferma.result.then(
-                (val) => {
+            modalConferma.result.then((val) => {
+                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, [this.richiesta.codice]));
+                    } else {
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, [this.richiesta.codice]));
+                    }
+
                     switch (val.esito) {
                         case 'ok':
                             richiestaAction.idRichiesta = this.richiesta.id;
@@ -169,6 +186,12 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                             break;
                         case 'ko':
                             break;
+                    }
+                }, () => {
+                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, [this.richiesta.codice]));
+                    } else {
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, [this.richiesta.codice]));
                     }
                 }
             );
@@ -185,8 +208,12 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 size: 'lg'
             });
             addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
-            addTrasferimentoChiamataModal.result.then(
-                (result: string) => {
+            const data = {
+                value: this.richiesta.codice,
+                type: TipoConcorrenzaEnum.Trasferimento
+            } as AddConcorrenzaDtoInterface;
+            this.store.dispatch(new AddConcorrenza([data]));
+            addTrasferimentoChiamataModal.result.then((result: string) => {
                     this.store.dispatch(new ClearFormTrasferimentoChiamata());
                     console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
                 },
@@ -209,7 +236,13 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 keyboard: false,
             });
             modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
+            const data = {
+                value: this.richiesta.codice,
+                type: TipoConcorrenzaEnum.Allerta
+            } as AddConcorrenzaDtoInterface;
+            this.store.dispatch(new AddConcorrenza([data]));
             modalAllertaSede.result.then((res: { status: string, result: any }) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice]));
                 switch (res.status) {
                     case 'ok' :
                         this.store.dispatch(new AllertaSede(res.result));
@@ -217,7 +250,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                     case 'ko':
                         break;
                 }
-            });
+            }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice])));
         }
     }
 
