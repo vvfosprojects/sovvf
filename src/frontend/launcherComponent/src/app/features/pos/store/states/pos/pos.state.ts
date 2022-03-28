@@ -1,17 +1,11 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import {
-    GetPos,
-    SetPos,
-    StartLoadingPos,
-    StopLoadingPos
-} from '../../actions/pos/pos.actions';
+import { GetPos, SetPos, StartLoadingPos, StopLoadingPos } from '../../actions/pos/pos.actions';
 import { Injectable } from '@angular/core';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { PosService } from '../../../../../core/service/pos-service/pos.service';
 import { RicercaPosState } from '../ricerca-pos/ricerca-pos.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
-import { AuthState } from 'src/app/features/auth/store/auth.state';
 
 export interface PosStateModel {
     pos: any[];
@@ -48,7 +42,6 @@ export class PosState {
     @Action(GetPos)
     getPos({ dispatch }: StateContext<PosStateModel>, action: GetPos): void {
         dispatch(new StartLoadingPos());
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede.codice;
         const ricerca = this.store.selectSnapshot(RicercaPosState.ricerca);
         const filters = {
             search: ricerca
@@ -57,7 +50,7 @@ export class PosState {
             page: action.page ? action.page : 1,
             pageSize: this.store.selectSnapshot(PaginationState.pageSize)
         };
-        this.posService.getPos(codSede, filters, pagination).subscribe((response: ResponseInterface) => {
+        this.posService.getPos(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch([
                 new PatchPagination(response.pagination),
                 new SetPos(response.dataArray),

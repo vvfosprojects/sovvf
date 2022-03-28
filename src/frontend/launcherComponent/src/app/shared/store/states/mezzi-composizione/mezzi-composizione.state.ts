@@ -41,6 +41,9 @@ import { ClearSelectedSquadreComposizione, SelectSquadreComposizione } from '../
 import { SganciamentoMezzoModalComponent } from '../../../modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { SetRichiestaSganciamento } from '../../../../features/home/store/actions/composizione-partenza/richiesta-sganciamento.actions';
 import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
+import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
+import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { AddConcorrenza, DeleteConcorrenza } from '../../actions/concorrenza/concorrenza.actions';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -410,6 +413,11 @@ export class MezziComposizioneState {
                     centered: true
                 });
                 modalSganciamento.componentInstance.idDaSganciare = action.sganciamentoObj.descrizione;
+                const data = {
+                    value: action.sganciamentoObj.idMezzoDaSganciare,
+                    type: TipoConcorrenzaEnum.Sganciamento
+                } as AddConcorrenzaDtoInterface;
+                this.store.dispatch(new AddConcorrenza([data]));
 
                 let idRichiesta = null;
                 const richiestaComposizione = this.store.selectSnapshot(x => x.composizionePartenza.richiesta);
@@ -423,6 +431,7 @@ export class MezziComposizioneState {
                     idRichiesta = action.sganciamentoObj.idRichiesta;
                 }
                 modalSganciamento.result.then((val) => {
+                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [action.sganciamentoObj.idMezzoDaSganciare]));
                     switch (val) {
                         case 'ok':
                             const partenzaObj: ConfermaPartenze = {
@@ -437,7 +446,7 @@ export class MezziComposizioneState {
                         case 'ko':
                             return;
                     }
-                });
+                }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [action.sganciamentoObj.idMezzoDaSganciare])));
             }
         });
     }
