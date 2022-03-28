@@ -79,20 +79,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             #region SGANCIAMENTO
 
-            var idComposizioneDaSganciare = 0;
-            var StatoInViaggio = 0;
-            var StatoSulPosto = 0;
-
             if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
-            //&& command.RichiestaDaSganciare.lstPartenze
-            //    .Where(p => command.ConfermaPartenze.Partenze.Select(p => p.Mezzo.Codice).Contains(p.Mezzo.Codice))
-            //    .All(p => new string[] { Costanti.MezzoInViaggio, Costanti.MezzoSulPosto, Costanti.MezzoOccupato }.Contains(p.Mezzo.Stato)))
             {
+                var idComposizioneDaSganciare = 0;
+                var StatoInViaggio = 0;
+                var StatoSulPosto = 0;
+
                 command.RichiestaDaSganciare = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiestaDaSganciare);
 
                 Parallel.ForEach(command.RichiestaDaSganciare.Eventi.OfType<ComposizionePartenze>().Select(p => p.Partenza), composizione =>
                 {
-                    //var CompPartenza = composizione.Partenza;
                     if (!composizione.PartenzaAnnullata && !composizione.Terminata
                         && !composizione.Sganciata && !composizione.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                     {
@@ -138,6 +134,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
 
             #endregion SGANCIAMENTO
+
+            #region RIASSEGNAZIONE
+
+            else if (command.ConfermaPartenze.Partenze.Any(p => p.Mezzo.Stato.Equals(Costanti.MezzoInRientro)))
+            {
+                //creo evento
+
+                //terminare partenza lasciando mezzo in rientro
+
+                //avviso gac
+            }
+
+            #endregion
 
             var PartenzaEsistente = false;
 
