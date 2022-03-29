@@ -30,6 +30,8 @@ import { ItemTriageData } from '../../../shared/interface/item-triage-data.inter
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { ImpostazioniState } from '../../../shared/store/states/impostazioni/impostazioni.state';
 import { ImportTriageModalComponent } from './import-triage-modal/import-triage-modal.component';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
 
 @Component({
     selector: 'app-triage',
@@ -255,6 +257,18 @@ export class TriageComponent implements OnDestroy {
     toggleViewEditButtons(): void {
         this.viewEditButtons = !this.viewEditButtons;
         this.alertModificheDaSalvare = !!this.viewEditButtons;
+        switch (this.viewEditButtons) {
+            case true:
+                const data = {
+                    type: TipoConcorrenzaEnum.ModificaTriage,
+                    value: this.codTipologia + '-' + ('' + this.codDettaglioTipologia)
+                };
+                this.store.dispatch(new AddConcorrenza([data]));
+                break;
+            case false:
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaTriage, [this.codTipologia + '-' + ('' + this.codDettaglioTipologia)]));
+                break;
+        }
     }
 
     addItem(item?: TreeItem): void {
@@ -698,27 +712,30 @@ export class TriageComponent implements OnDestroy {
         removeTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         removeTriageModal.componentInstance.titolo = 'Eliminazione Triage di "' + this.dettaglioTipologia.descrizione + '"';
         removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati';
-
-        removeTriageModal.result.then(
-            (val: string) => {
-                switch (val) {
-                    case 'ok':
-                        if (this.viewEditButtons) {
-                            this.toggleViewEditButtons();
-                        }
-                        this.updateTriage(null);
-                        this.store.dispatch(new UpdateTriage());
-                        break;
-                    case 'ko':
-                        break;
-                    default:
-                        break;
-                }
-            },
-            (err) => {
-                console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+        const data = {
+            type: TipoConcorrenzaEnum.EliminaTriage,
+            value: this.codTipologia + '-' + ('' + this.codDettaglioTipologia)
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        removeTriageModal.result.then((val: string) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaTriage, [this.codTipologia + '-' + ('' + this.codDettaglioTipologia)]));
+            switch (val) {
+                case 'ok':
+                    if (this.viewEditButtons) {
+                        this.toggleViewEditButtons();
+                    }
+                    this.updateTriage(null);
+                    this.store.dispatch(new UpdateTriage());
+                    break;
+                case 'ko':
+                    break;
+                default:
+                    break;
             }
-        );
+        }, (err) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaTriage, [this.codTipologia + '-' + ('' + this.codDettaglioTipologia)]));
+            console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+        });
     }
 
     resetTriage(): void {

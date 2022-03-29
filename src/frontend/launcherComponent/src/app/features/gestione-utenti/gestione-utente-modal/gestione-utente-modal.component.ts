@@ -8,6 +8,8 @@ import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interfa
 import { Role, Ruolo } from '../../../shared/model/utente.model';
 import { DistaccamentiState } from '../../../shared/store/states/distaccamenti/distaccamenti.state';
 import { Sede } from '../../../shared/model/sede.model';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-gestione-utente-modal',
@@ -67,6 +69,13 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        if (this.addRuoloUtente) {
+            const data = {
+                type: TipoConcorrenzaEnum.AggiungiRuoloUtente,
+                value: this.codFiscaleUtenteVVF
+            };
+            this.store.dispatch(new AddConcorrenza([data]));
+        }
         if (this.codFiscaleUtenteVVF) {
             this.setRuoli({ removeVisualizzatore: true });
             this.f.utente.patchValue(this.codFiscaleUtenteVVF);
@@ -77,6 +86,9 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        if (this.addRuoloUtente) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.AggiungiRuoloUtente, [this.codFiscaleUtenteVVF]));
+        }
         this.subscription.unsubscribe();
     }
 
