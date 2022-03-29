@@ -192,7 +192,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 const richiestaModifica = changes.richiestaModifica.currentValue;
                 if (richiestaModifica) {
                     const data = {
-                        type: TipoConcorrenzaEnum.Richiesta,
+                        type: TipoConcorrenzaEnum.Modifica,
                         value: richiestaModifica.codice
                     } as AddConcorrenzaDtoInterface;
                     this.store.dispatch(new AddConcorrenza([data]));
@@ -238,7 +238,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.clearFormDisconnection();
 
         if (this.modifica) {
-            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta));
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Modifica, [this.richiestaModifica.codice]));
+        }
+
+        if (this.f.codSchedaContatto) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.RegistrazioneSchedaContatto, [this.f.codSchedaContatto]));
         }
     }
 
@@ -938,8 +942,13 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     setSchedaContatto(scheda: SchedaContatto): void {
-        const f = this.f;
+        const data = {
+            type: TipoConcorrenzaEnum.RegistrazioneSchedaContatto,
+            value: scheda.codiceScheda
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
 
+        const f = this.f;
         const latitude = +scheda.localita.coordinateString[0];
         const longitude = +scheda.localita.coordinateString[1];
         const locationPOI = new Point({
