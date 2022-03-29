@@ -64,20 +64,41 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                     var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente });
 
                     var isFree = true;
-                    Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
+
+                    if (command.RichiestaDaSganciare == null)
                     {
-                        if (!_isActionFree.Check(TipoOperazione.InvioPartenza, command.Utente.Id, listaSediInteressate.ToArray(), partenza.Mezzo.Codice))
-                            isFree = false;
-
-                        Parallel.ForEach(partenza.Squadre, squadra =>
+                        Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
                         {
-                            if (!_isActionFree.Check(TipoOperazione.InvioPartenza, command.Utente.Id, listaSediInteressate.ToArray(), squadra.Codice))
+                            if (!_isActionFree.Check(TipoOperazione.InvioPartenza, command.Utente.Id, listaSediInteressate.ToArray(), partenza.Mezzo.Codice))
                                 isFree = false;
-                        });
-                    });
 
-                    if (!isFree)
-                        yield return new AuthorizationResult($"La partenza risulta avere il mezzo o le squadre già utilizzati da un altro operatore.");
+                            Parallel.ForEach(partenza.Squadre, squadra =>
+                            {
+                                if (!_isActionFree.Check(TipoOperazione.InvioPartenza, command.Utente.Id, listaSediInteressate.ToArray(), squadra.Codice))
+                                    isFree = false;
+                            });
+                        });
+
+                        if (!isFree)
+                            yield return new AuthorizationResult($"La partenza risulta avere il mezzo o le squadre già utilizzati da un altro operatore.");
+                    }
+                    else
+                    {
+                        Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
+                        {
+                            if (!_isActionFree.Check(TipoOperazione.Sganciamento, command.Utente.Id, listaSediInteressate.ToArray(), partenza.Mezzo.Codice))
+                                isFree = false;
+
+                            Parallel.ForEach(partenza.Squadre, squadra =>
+                            {
+                                if (!_isActionFree.Check(TipoOperazione.InvioPartenza, command.Utente.Id, listaSediInteressate.ToArray(), squadra.Codice))
+                                    isFree = false;
+                            });
+                        });
+
+                        if (!isFree)
+                            yield return new AuthorizationResult($"La partenza risulta avere il mezzo o le squadre già utilizzati da un altro operatore.");
+                    }
 
                     #endregion Concorrenza
 
