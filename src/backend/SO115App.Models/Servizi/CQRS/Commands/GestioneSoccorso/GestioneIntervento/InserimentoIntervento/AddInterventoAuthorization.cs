@@ -21,10 +21,13 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using Serilog;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,16 +40,22 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IIsActionFree _isActionFree;
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
         public AddInterventoAuthorization(IPrincipal currentUser,
             IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetCompetenzeByCoordinateIntervento getCompetenze)
+            IGetCompetenzeByCoordinateIntervento getCompetenze,
+            IGetSottoSediByCodSede getSottoSediByCodSede,
+            IIsActionFree isActionFree)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
+            _isActionFree = isActionFree;
             _getCompetenze = getCompetenze;
         }
 
@@ -74,6 +83,20 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    #region Concorrenza
+
+                    //Controllo Concorrenza
+
+                    if (command.Chiamata.CodiceSchedaNue != null)
+                    {
+                        var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.CodiceSede });
+
+                        if (!_isActionFree.Check(TipoOperazione.RegistrazioneSchedaContatto, user.Id, listaSediInteressate.ToArray(), command.Chiamata.CodiceSchedaNue))
+                            yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+                    }
+
+                    #endregion Concorrenza
+
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
