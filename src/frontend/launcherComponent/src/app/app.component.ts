@@ -31,6 +31,7 @@ import { RouterState } from '@ngxs/router-plugin';
 import { ChangeView } from './features/home/store/actions/view/view.actions';
 import { AppFeatures } from './shared/enum/app-features.enum';
 import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actions/sedi-treeview/sedi-treeview.actions';
+import { DeleteAllConcorrenza } from './shared/store/actions/concorrenza/concorrenza.actions';
 
 
 @Component({
@@ -127,7 +128,9 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.cdRef.detectChanges();
     }
 
-    ngOnDestroy(): void {
+    @HostListener('window:beforeunload')
+    async ngOnDestroy(): Promise<any> {
+        this.store.dispatch(new DeleteAllConcorrenza());
         this.subscription.unsubscribe();
     }
 
