@@ -107,16 +107,13 @@ export class DettagliTipologieComponent implements OnDestroy {
             size: 'lg'
         });
         editVoceRubricaModal.componentInstance.editDettaglioTipologia = dettaglioTipologia;
-
-        // TODO: ricontrollare value concorrenza
         const data = {
             type: TipoConcorrenzaEnum.ModificaDettaglioTipologia,
-            value: dettaglioTipologia.codiceTipologia + '-' + dettaglioTipologia.codiceDettaglioTipologia
+            value: dettaglioTipologia.id
         };
         this.store.dispatch(new AddConcorrenza([data]));
         editVoceRubricaModal.result.then((result: { success: boolean }) => {
-            // TODO: ricontrollare value concorrenza
-            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.codiceTipologia + '-' + dettaglioTipologia.codiceDettaglioTipologia]));
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.id]));
             if (result.success) {
                 this.updateDettaglioTipologia();
             } else if (!result.success) {
@@ -126,8 +123,7 @@ export class DettagliTipologieComponent implements OnDestroy {
         }, (err) => {
             this.store.dispatch([
                 new ClearFormDettaglioTipologia(),
-                // TODO: ricontrollare value concorrenza
-                new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.codiceTipologia + '-' + dettaglioTipologia.codiceDettaglioTipologia])
+                new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.id])
             ]);
             console.error('Modal chiusa senza bottoni. Err ->', err);
         });
@@ -137,7 +133,7 @@ export class DettagliTipologieComponent implements OnDestroy {
         this.store.dispatch(new RequestUpdateDettaglioTipologia());
     }
 
-    onDeleteDettaglioTipologia(payload: { codDettaglioTipologia: number, descrizioneDettaglioTipologia: string }): void {
+    onDeleteDettaglioTipologia(dettaglioTipologia: DettaglioTipologia): void {
         let modalConfermaEliminazione: any;
         modalConfermaEliminazione = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
@@ -145,26 +141,22 @@ export class DettagliTipologieComponent implements OnDestroy {
             centered: true
         });
         modalConfermaEliminazione.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-        modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + payload.descrizioneDettaglioTipologia;
+        modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + dettaglioTipologia.descrizione;
         modalConfermaEliminazione.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il dettaglio?';
-
-        // TODO: ricontrollare value concorrenza
         const data = {
             type: TipoConcorrenzaEnum.ModificaDettaglioTipologia,
-            value: '' + payload.codDettaglioTipologia
+            value: dettaglioTipologia.id
         };
         this.store.dispatch(new AddConcorrenza([data]));
         modalConfermaEliminazione.result.then((val) => {
-            // TODO: ricontrollare value concorrenza
-            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, ['' + payload.codDettaglioTipologia]));
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, [dettaglioTipologia.id]));
             switch (val) {
                 case 'ok':
-                    this.deleteDettaglioTipologia(payload.codDettaglioTipologia);
+                    this.deleteDettaglioTipologia(dettaglioTipologia.codiceDettaglioTipologia);
                     break;
             }
         }, (err) => {
-            // TODO: ricontrollare value concorrenza
-            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, ['' + payload.codDettaglioTipologia]));
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, [dettaglioTipologia.id]));
             console.error('Modal chiusa senza bottoni. Err ->', err);
         });
     }
