@@ -214,11 +214,16 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             } as AddConcorrenzaDtoInterface;
             this.store.dispatch(new AddConcorrenza([data]));
             addTrasferimentoChiamataModal.result.then((result: string) => {
-                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
+                    this.store.dispatch([
+                        new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
+                        new ClearFormTrasferimentoChiamata()
+                    ]);
                     console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
-                },
-                (err) => {
-                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
+                }, (err) => {
+                    this.store.dispatch([
+                        new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
+                        new ClearFormTrasferimentoChiamata()
+                    ]);
                     console.error('Modal chiusa senza bottoni. Err ->', err);
                 }
             );

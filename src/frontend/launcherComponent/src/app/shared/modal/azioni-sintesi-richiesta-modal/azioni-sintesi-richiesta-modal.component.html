@@ -17,12 +17,12 @@
              class="col-4"
              (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">
             <div class="box-azione"
-                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
-                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
+                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice])"
+                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice])"
                  style="height: fit-content">
-                <ng-container *ngIf="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
+                <ng-container *ngIf="tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]">
                     <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
+                            [nominativoOperatore]="tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]">
                     </app-locked-concorrenza>
                 </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
