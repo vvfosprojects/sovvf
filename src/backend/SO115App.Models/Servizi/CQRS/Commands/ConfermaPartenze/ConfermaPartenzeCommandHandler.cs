@@ -167,7 +167,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     var partenzaDaRientrare = command.RichiestaDaSganciare.Partenze.First(p => p.Partenza.Mezzo.Codice == partenza.Mezzo.Codice).Partenza;
 
                     //GESTOIONE MEZZO IN RIENTRO
-                    if (partenzaDaRientrare.Mezzo.Stato == Costanti.MezzoInRientro && !riassegnazioni)
+                    if (partenzaDaRientrare.Mezzo.Stato == Costanti.MezzoInRientro)
                     {
                         command.RichiestaDaSganciare.CambiaStatoPartenza(partenzaDaRientrare, new CambioStatoMezzo()
                         {
