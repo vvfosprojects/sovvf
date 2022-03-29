@@ -48,13 +48,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetPosizioneByCodiceMezzo _getPosizione;
         private readonly IGetTurno _getTurno;
 
+        private readonly ISetUscitaMezzo _setUscitaMezzo;
+
         private readonly ISendSTATRIItem _sendNewItemSTATRI;
         private readonly ICheckCongruitaPartenze _checkCongruita;
 
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
             IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza,
-            ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita, IGetTurno getTurno, IGetPosizioneByCodiceMezzo getPosizione)
+            ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita, IGetTurno getTurno, IGetPosizioneByCodiceMezzo getPosizione,
+            ISetUscitaMezzo setUscitaMezzo)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
@@ -66,6 +69,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _checkCongruita = checkCongruita;
             _getTurno = getTurno;
             _getPosizione = getPosizione;
+            _setUscitaMezzo = setUscitaMezzo;
         }
 
         public void Handle(ConfermaPartenzeCommand command)
@@ -169,14 +173,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     //GESTOIONE MEZZO IN RIENTRO
                     if (partenzaDaRientrare.Mezzo.Stato == Costanti.MezzoInRientro)
                     {
-                        command.RichiestaDaSganciare.CambiaStatoPartenza(partenzaDaRientrare, new CambioStatoMezzo()
+                        if (!riassegnazioni)
                         {
-                            CodMezzo = partenzaDaRientrare.Mezzo.Codice,
-                            Istante = dataAdesso,
-                            Stato = Costanti.MezzoRientrato
-                        }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id);
+                            command.RichiestaDaSganciare.CambiaStatoPartenza(partenzaDaRientrare, new CambioStatoMezzo()
+                            {
+                                CodMezzo = partenzaDaRientrare.Mezzo.Codice,
+                                Istante = dataAdesso,
+                                Stato = Costanti.MezzoRientrato
+                            }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id);
 
-                        _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
+                            _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
+                        }
 
                         partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
 
@@ -244,20 +251,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 {
                     var partenzaDaTerminare = command.RichiestaDaSganciare.lstPartenze.First(p => p.Mezzo.Codice == partenza.Mezzo.Codice);
 
-                    string note = $"La partenza {partenza.Codice} con mezzo {partenza.Mezzo.Codice} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {codpart}";
+                    string note = $"La partenza {partenzaDaTerminare.Codice} con mezzo {partenza.Mezzo.Codice.Split('.').Last()} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {codpart}";
 
                     new MezzoRiassegnato(command.RichiestaDaSganciare, partenza.Mezzo.Codice.Split('.').Last(), dataAdesso, command.Utente.Id, "MezzoRiassegnato", partenza.Codice, note);
 
                     partenzaDaTerminare.Terminata = true;
 
-                    //avviso gac // verificare chiamata a gac
+                    //_setUscitaMezzo.Set(new SO115App.Models.Classi.ServiziEsterni.Gac.UscitaGAC
+                    //{
+                    //    ///
+                    //});
                 }
             }
 
             #endregion
 
             //SALVO SUL DB
-            var confermaPartenze = _updateConfermaPartenze.Update(command);
+
+            if(command.RichiestaDaSganciare != null)
+                _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
+
+            _updateConfermaPartenze.Update(command);
         }
     }
 }
