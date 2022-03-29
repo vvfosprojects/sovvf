@@ -19,7 +19,6 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
     @Select(DocumentoAreaDocumentaleState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
 
-    codSede: string;
     descCategoria: string;
 
     editDocumento: boolean;
@@ -50,19 +49,18 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
 
     initForm(): void {
         this.documentoAreaDocumentaleForm = new FormGroup({
-            codSede: new FormControl(),
             descrizioneDocumento: new FormControl(),
-            descrizioneCategoria: new FormControl()
+            descrizioneCategoria: new FormControl(),
+            file: new FormControl()
         });
         this.documentoAreaDocumentaleForm = this.fb.group({
-            codSede: [null, Validators.required],
             descrizioneDocumento: [null, Validators.required],
             descrizioneCategoria: [null, Validators.required],
+            file: [null, Validators.required],
         });
 
         this.store.dispatch(new UpdateFormValue({
             value: {
-                codSede: this.codSede,
                 descrizioneCategoria: this.descCategoria
             },
             path: 'documentoAreaDocumentaleModal.documentoAreaDocumentaleForm'
@@ -86,7 +84,8 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
         console.log('updateDocumentoAreaDocumentaleForm', editDocumento);
         this.documentoAreaDocumentaleForm.patchValue({
             descrizioneDocumento: editDocumento.descrizioneDocumento,
-            descrizioneCategoria: editDocumento.descrizioneCategoria
+            descrizioneCategoria: editDocumento.descrizioneCategoria,
+            file: editDocumento.FDFile
         });
 
         if (!this.formData) {
@@ -105,6 +104,7 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
 
     onFileSelected(event: any): void {
         const file = event.target.files[0];
+        this.f.file.patchValue(file);
         this.formData = new FormData();
         this.formData.append('FDFile', file);
     }
