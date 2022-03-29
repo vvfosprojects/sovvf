@@ -9,6 +9,7 @@ export interface DocumentoAreaDocumentaleModalStateModel {
         model?: {
             descrizioneDocumento: string;
             descrizioneCategoria: string;
+            file: any;
         };
         dirty: boolean;
         status: string;
@@ -20,7 +21,8 @@ export const DocumentoAreaDocumentaleModalStateDefaults: DocumentoAreaDocumental
     documentoAreaDocumentaleForm: {
         model: {
             descrizioneDocumento: undefined,
-            descrizioneCategoria: undefined
+            descrizioneCategoria: undefined,
+            file: undefined
         },
         dirty: false,
         status: '',
