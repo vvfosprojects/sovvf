@@ -22,6 +22,7 @@ using DomainModel.CQRS.Commands.ConfermaPartenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
@@ -77,9 +78,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             if (command.Richiesta.CodRichiesta == null)
                 command.Richiesta.CodRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(sedeRichiesta, dataAdesso.Year);
 
+            bool riassegnazioni = command.ConfermaPartenze.Partenze.Any(p => p.Squadre.All(s => s.Stato.Equals(MappaStatoSquadraDaStatoMezzo.MappaStato(Costanti.MezzoInRientro))));
+            bool sganciamento = command.ConfermaPartenze.IdRichiestaDaSganciare != null;
+
             #region SGANCIAMENTO
 
-            if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
+            if (sganciamento && !riassegnazioni)
             {
                 var idComposizioneDaSganciare = 0;
                 var StatoInViaggio = 0;
@@ -135,18 +139,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             #endregion SGANCIAMENTO
 
-            #region RIASSEGNAZIONE
-
-            else if (command.ConfermaPartenze.Partenze.Any(p => p.Mezzo.Stato.Equals(Costanti.MezzoInRientro)))
-            {
-                //creo evento
-
-                //terminare partenza lasciando mezzo in rientro
-
-                //avviso gac
-            }
-
-            #endregion
 
             var PartenzaEsistente = false;
 
@@ -239,6 +231,30 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
                 command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
             }
+
+            #region RIASSEGNAZIONE
+
+            if (riassegnazioni && !sganciamento)
+            {
+                var statiMezzi = _getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede);
+
+                var partenzeRiassegnate = command.ConfermaPartenze.Partenze.Where(partenza => statiMezzi.First(m => m.CodiceMezzo.Equals(partenza.Mezzo.Codice)).StatoOperativo.Equals(Costanti.MezzoInRientro));
+
+                foreach (var partenza in partenzeRiassegnate)
+                {
+                    var partenzaDaTerminare = command.RichiestaDaSganciare.lstPartenze.First(p => p.Mezzo.Codice == partenza.Mezzo.Codice);
+
+                    string note = $"La partenza {partenza.Codice} con mezzo {partenza.Mezzo.Codice} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {codpart}";
+
+                    new MezzoRiassegnato(command.RichiestaDaSganciare, partenza.Mezzo.Codice.Split('.').Last(), dataAdesso, command.Utente.Id, "MezzoRiassegnato", partenza.Codice, note);
+
+                    partenzaDaTerminare.Terminata = true;
+
+                    //avviso gac // verificare chiamata a gac
+                }
+            }
+
+            #endregion
 
             //SALVO SUL DB
             var confermaPartenze = _updateConfermaPartenze.Update(command);
