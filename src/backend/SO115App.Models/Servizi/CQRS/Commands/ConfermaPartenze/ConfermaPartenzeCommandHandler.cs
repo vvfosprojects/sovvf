@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
@@ -45,7 +46,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
-        private readonly IGetPosizioneByCodiceMezzo _getPosizione;
         private readonly IGetTurno _getTurno;
 
         private readonly ISetUscitaMezzo _setUscitaMezzo;
@@ -56,7 +56,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
             IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza,
-            ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita, IGetTurno getTurno, IGetPosizioneByCodiceMezzo getPosizione,
+            ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita, IGetTurno getTurno,
             ISetUscitaMezzo setUscitaMezzo)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
@@ -68,7 +68,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _sendNewItemSTATRI = sendNewItemSTATRI;
             _checkCongruita = checkCongruita;
             _getTurno = getTurno;
-            _getPosizione = getPosizione;
             _setUscitaMezzo = setUscitaMezzo;
         }
 
@@ -147,7 +146,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var PartenzaEsistente = false;
 
             //PARALLEL
-            Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
+            foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
                 //CHECK MEZZO OCCUPATO E PARTENZE ESISTENTI
                 var listaMezzi = _getStatoMezzi.Get(new string[] { command.ConfermaPartenze.CodiceSede }, partenza.Mezzo.Codice);
@@ -202,8 +201,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     Stato = Costanti.MezzoInUscita
                 }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id);
 
-                //var posizioneMezzo = _getPosizione.Get(partenza.Mezzo.Codice).Result?.ToCoordinate();
-
                 command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
                 {
                     CodMezzo = partenza.Mezzo.Codice,
@@ -212,7 +209,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id, partenza.Mezzo.CoordinateStrg);
 
                 dataAdesso = dataAdesso.AddSeconds(1);
-            });
+            }
 
             //GESTIONE UTENTE PRESA IN CARICO
             var nominativo = command.Utente.Nome + "." + command.Utente.Cognome;
@@ -241,6 +238,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             #region RIASSEGNAZIONE
 
+            var richiesteDaTerminare = new List<RichiestaAssistenza>();
+
             if (riassegnazioni && !sganciamento)
             {
                 var statiMezzi = _getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede);
@@ -249,7 +248,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 foreach (var partenza in partenzeRiassegnate)
                 {
-                    var partenzaDaTerminare = command.RichiestaDaSganciare.lstPartenze.First(p => p.Mezzo.Codice == partenza.Mezzo.Codice);
+                    var statoOperativoMezzo = statiMezzi.Find(s => s.CodiceMezzo == partenza.Mezzo.Codice);
+                    var richiestaDaTerminare = _getRichiestaById.GetByCodice(statoOperativoMezzo.CodiceRichiesta);
+                    richiesteDaTerminare.Add(richiestaDaTerminare);
+                    var partenzaDaTerminare = richiestaDaTerminare.lstPartenze.Find(p => p.Mezzo.Codice == partenza.Mezzo.Codice);
 
                     string note = $"La partenza {partenzaDaTerminare.Codice} con mezzo {partenza.Mezzo.Codice.Split('.').Last()} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {partenza.Codice}";
 
@@ -268,8 +270,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             //SALVO SUL DB
 
-            if(command.RichiestaDaSganciare != null)
-                _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
+            if(richiesteDaTerminare != null && richiesteDaTerminare.Count > 0) foreach (var richiesta in richiesteDaTerminare.Where(r => !r.CodRichiesta.Equals(command.Richiesta.CodRichiesta)))
+            {
+                _updateRichiestaAssistenza.UpDate(richiesta);
+            }
 
             _updateConfermaPartenze.Update(command);
         }
