@@ -19,9 +19,12 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Security.Principal;
 
@@ -32,13 +35,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDocumen
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IIsActionFree _isActionFree;
 
         public DeleteDocAuthorization(IPrincipal currentUser,
-            IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+            IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni,
+            IGetSottoSediByCodSede getSottoSediByCodSede,
+            IIsActionFree isActionFree)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
+            _isActionFree = isActionFree;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(DeleteDocCommand command)
@@ -52,6 +61,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDocumen
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    #region Concorrenza
+
+                    //Controllo Concorrenza
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.codSede });
+
+                    if (!_isActionFree.Check(TipoOperazione.EliminaPianiDiscendenti, user.Id, listaSediInteressate.ToArray(), command.Id))
+                        yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+
+                    #endregion Concorrenza
+
                     bool abilitato = false;
 
                     if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.codSede, Costanti.Amministratore))
