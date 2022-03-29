@@ -15,7 +15,6 @@ import { ResponseInterface } from '../../../../../shared/interface/response/resp
 import { RicercaAreaDocumentaleState } from '../ricerca-area-documentale/ricerca-area-documentale.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
-import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { DocumentoInterface } from 'src/app/shared/interface/documento.interface';
 import { FiltriAreaDocumentaleState } from '../../../../../shared/store/states/filtri-area-documentale/filtri-area-documentale.state';
 import { VoceFiltro } from '../../../../home/filterbar/filtri-richieste/voce-filtro.model';
@@ -71,7 +70,6 @@ export class AreaDocumentaleState {
     getDocumentiAreaDocumentale({ getState, dispatch }: StateContext<AreaDocumentaleStateModel>, action: GetDocumentiAreaDocumentale): void {
         dispatch(new StartLoadingDocumentiAreaDocumentale());
         const state = getState();
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede.codice;
         const ricerca = this.store.selectSnapshot(RicercaAreaDocumentaleState.ricerca);
         const descCategoria = state.descCategoria;
         const filters = {
@@ -83,7 +81,7 @@ export class AreaDocumentaleState {
             page: action.page ? action.page : 1,
             pageSize: this.store.selectSnapshot(PaginationState.pageSize)
         };
-        this.areaDocumentaleService.getDocumenti(codSede, filters, pagination).subscribe((response: ResponseInterface) => {
+        this.areaDocumentaleService.getDocumenti(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch([
                 new PatchPagination(response.pagination),
                 new SetDocumentiAreaDocumentale(response.dataArray),
