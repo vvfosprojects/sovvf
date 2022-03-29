@@ -21,7 +21,7 @@ export class TabellaDocumentiComponent {
     @Output() view: EventEmitter<DocumentoInterface> = new EventEmitter<DocumentoInterface>();
     @Output() download: EventEmitter<DocumentoInterface> = new EventEmitter<DocumentoInterface>();
     @Output() editDocumento: EventEmitter<DocumentoInterface> = new EventEmitter<DocumentoInterface>();
-    @Output() deleteDocumento: EventEmitter<{ idDocumento: string, descrizioneDocumento: string }> = new EventEmitter<{ idDocumento: string, descrizioneDocumento: string }>();
+    @Output() deleteDocumento: EventEmitter<{ idDocumento: string, descrizioneDocumento: string, descrizioneCategoria: string }> = new EventEmitter<{ idDocumento: string, descrizioneDocumento: string, descrizioneCategoria: string }>();
 
     constructor() {
     }
@@ -38,7 +38,7 @@ export class TabellaDocumentiComponent {
         this.editDocumento.emit(documento);
     }
 
-    onDeleteDocumento(idDocumento: string, descrizioneDocumento: string): void {
-        this.deleteDocumento.emit({ idDocumento, descrizioneDocumento });
+    onDeleteDocumento(idDocumento: string, descrizioneDocumento: string, descrizioneCategoria: string): void {
+        this.deleteDocumento.emit({ idDocumento, descrizioneDocumento, descrizioneCategoria });
     }
 }
