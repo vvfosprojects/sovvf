@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
+import { DettagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import {
     AddDettaglioTipologia,
     ClearRicercaDettagliTipologia,
@@ -44,7 +44,7 @@ export const DettagliTipologieStateDefaults: DettagliTipologieStateModel = {
 export class DettagliTipologieState {
 
     constructor(private store: Store,
-                private detttagliTipologieService: DetttagliTipologieService) {
+                private detttagliTipologieService: DettagliTipologieService) {
     }
 
     @Selector()
