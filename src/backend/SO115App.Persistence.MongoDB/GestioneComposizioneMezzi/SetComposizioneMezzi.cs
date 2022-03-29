@@ -3,6 +3,7 @@ using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
 {
@@ -14,13 +15,13 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
 
         public void Set(List<ComposizioneMezzi> mezzi)
         {
-            foreach (var mezzo in mezzi)
-            {
-                var filter = Builders<ComposizioneMezzi>.Filter.Eq(s => s.Id, mezzo.Id);
+            Parallel.ForEach(mezzi, mezzo =>
+           {
+               var filter = Builders<ComposizioneMezzi>.Filter.Eq(s => s.Id, mezzo.Id);
 
-                if (_dbContext.ComposizioneMezziCollection.CountDocuments(filter) <= 0)
-                    _dbContext.ComposizioneMezziCollection.InsertOne(mezzo);
-            }
+               if (_dbContext.ComposizioneMezziCollection.CountDocuments(filter) <= 0)
+                   _dbContext.ComposizioneMezziCollection.InsertOne(mezzo);
+           });
         }
     }
 }

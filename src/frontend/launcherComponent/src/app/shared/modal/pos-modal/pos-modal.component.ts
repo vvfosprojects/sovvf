@@ -57,12 +57,14 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.posForm = new FormGroup({
             descrizionePos: new FormControl(),
             tipologie: new FormControl(),
-            tipologieDettagli: new FormControl()
+            tipologieDettagli: new FormControl(),
+            file: new FormControl()
         });
         this.posForm = this.fb.group({
             descrizionePos: [null, Validators.required],
             tipologie: [null, Validators.required],
-            tipologieDettagli: [null, Validators.required]
+            tipologieDettagli: [null, Validators.required],
+            file: [null, Validators.required]
         });
 
         if (this.editPos) {
@@ -85,14 +87,16 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.posForm.patchValue({
             descrizionePos: editPos.descrizionePos,
             tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
-            tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie)
+            tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie),
+            file: editPos.FDFile
         });
 
         this.store.dispatch(new UpdateFormValue({
             value: {
                 descrizionePos: editPos.descrizionePos,
                 tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
-                tipoglieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie)
+                tipoglieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie),
+                file: editPos.FDFile
             },
             path: 'posModal.posForm'
         }));
@@ -146,6 +150,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     onFileSelected(event: any): void {
         const file = event.target.files[0];
+        this.f.file.patchValue(file);
         this.formData = new FormData();
         this.formData.append('FDFile', file);
     }
