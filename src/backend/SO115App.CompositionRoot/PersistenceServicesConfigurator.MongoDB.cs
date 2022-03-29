@@ -344,6 +344,8 @@ namespace SO115App.CompositionRoot
             container.Register<IGetAllBlocks, GatAllBlocks>();
             container.Register<IGetBlockByValue, GetBlockByValue>();
 
+            container.Register<IIsActionFree, IsActionFree>();
+
             #endregion Concorrenza
         }
     }
