@@ -12,7 +12,6 @@ import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/
 import { PosInterface } from '../../interface/pos.interface';
 import { HttpEventType } from '@angular/common/http';
 import { PosService } from '../../../core/service/pos-service/pos.service';
-import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -80,54 +79,44 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onDownloadPos(pos: PosInterface): void {
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
-                switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + pos.fileName + ')');
-                        break;
-                    case HttpEventType.Response:
-                        const downloadedFile = new Blob([data.body], { type: data.body.type });
-                        const a = document.createElement('a');
-                        a.setAttribute('style', 'display:none;');
-                        document.body.appendChild(a);
-                        a.download = pos.fileName;
-                        a.href = URL.createObjectURL(downloadedFile);
-                        a.target = '_blank';
-                        a.click();
-                        document.body.removeChild(a);
-                        break;
-                }
-            }, () => console.log('Errore Stampa POS'));
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    break;
+                case HttpEventType.Response:
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.download = pos.fileName;
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, () => console.log('Errore Stampa POS'));
     }
 
     onViewPos(pos: PosInterface): void {
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
-                switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + pos.fileName + ')');
-                        break;
-                    case HttpEventType.Response:
-                        const downloadedFile = new Blob([data.body], { type: data.body.type });
-                        const a = document.createElement('a');
-                        a.setAttribute('style', 'display:none;');
-                        document.body.appendChild(a);
-                        a.href = URL.createObjectURL(downloadedFile);
-                        a.target = '_blank';
-                        a.click();
-                        document.body.removeChild(a);
-                        break;
-                }
-            }, () => console.log('Errore visualizzazione POS'));
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    break;
+                case HttpEventType.Response:
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, () => console.log('Errore visualizzazione POS'));
     }
 
     onShowInfoAggiuntive(event: NgbPanelChangeEvent): void {
