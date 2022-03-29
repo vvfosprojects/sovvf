@@ -13,6 +13,8 @@ import { ClearFormDettaglioTipologia, RequestAddDettaglioTipologia, RequestDelet
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
 import { NgSelectConfig } from '@ng-select/ng-select';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-dettagli-tipologie',
@@ -105,20 +107,30 @@ export class DettagliTipologieComponent implements OnDestroy {
             size: 'lg'
         });
         editVoceRubricaModal.componentInstance.editDettaglioTipologia = dettaglioTipologia;
-        editVoceRubricaModal.result.then(
-            (result: { success: boolean }) => {
-                if (result.success) {
-                    this.updateDettaglioTipologia();
-                } else if (!result.success) {
-                    this.store.dispatch(new ClearFormDettaglioTipologia());
-                    console.log('Modal "editDettaglioTipologia" chiusa con val ->', result);
-                }
-            },
-            (err) => {
+
+        // TODO: ricontrollare value concorrenza
+        const data = {
+            type: TipoConcorrenzaEnum.ModificaDettaglioTipologia,
+            value: dettaglioTipologia.codiceTipologia + '-' + dettaglioTipologia.codiceDettaglioTipologia
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        editVoceRubricaModal.result.then((result: { success: boolean }) => {
+            // TODO: ricontrollare value concorrenza
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.codiceTipologia + '-' + dettaglioTipologia.codiceDettaglioTipologia]));
+            if (result.success) {
+                this.updateDettaglioTipologia();
+            } else if (!result.success) {
                 this.store.dispatch(new ClearFormDettaglioTipologia());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
+                console.log('Modal "editDettaglioTipologia" chiusa con val ->', result);
             }
-        );
+        }, (err) => {
+            this.store.dispatch([
+                new ClearFormDettaglioTipologia(),
+                // TODO: ricontrollare value concorrenza
+                new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.codiceTipologia + '-' + dettaglioTipologia.codiceDettaglioTipologia])
+            ]);
+            console.error('Modal chiusa senza bottoni. Err ->', err);
+        });
     }
 
     updateDettaglioTipologia(): void {
@@ -136,20 +148,25 @@ export class DettagliTipologieComponent implements OnDestroy {
         modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + payload.descrizioneDettaglioTipologia;
         modalConfermaEliminazione.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il dettaglio?';
 
-        modalConfermaEliminazione.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        this.deleteDettaglioTipologia(payload.codDettaglioTipologia);
-                        break;
-                    case 'ko':
-                        // console.log('Azione annullata');
-                        break;
-                }
-                // console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
+        // TODO: ricontrollare value concorrenza
+        const data = {
+            type: TipoConcorrenzaEnum.ModificaDettaglioTipologia,
+            value: '' + payload.codDettaglioTipologia
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        modalConfermaEliminazione.result.then((val) => {
+            // TODO: ricontrollare value concorrenza
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, ['' + payload.codDettaglioTipologia]));
+            switch (val) {
+                case 'ok':
+                    this.deleteDettaglioTipologia(payload.codDettaglioTipologia);
+                    break;
+            }
+        }, (err) => {
+            // TODO: ricontrollare value concorrenza
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, ['' + payload.codDettaglioTipologia]));
+            console.error('Modal chiusa senza bottoni. Err ->', err);
+        });
     }
 
     deleteDettaglioTipologia(codDettaglioTipologia: number): void {

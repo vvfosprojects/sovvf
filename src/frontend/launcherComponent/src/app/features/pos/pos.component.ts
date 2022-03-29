@@ -26,6 +26,8 @@ import { HttpEventType } from '@angular/common/http';
 import { PosService } from '../../core/service/pos-service/pos.service';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 import { VisualizzaDocumentoModalComponent } from '../../shared/modal/visualizza-documento-modal/visualizza-documento-modal.component';
+import { TipoConcorrenzaEnum } from '../../shared/enum/tipo-concorrenza.enum';
+import { AddConcorrenza, DeleteConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
 
 @Component({
     selector: 'app-pos',
@@ -193,8 +195,8 @@ export class PosComponent implements OnInit, OnDestroy {
 
     onEditPos(pos: PosInterface): void {
         let editPosModal: any;
-        this.posService.getPosById(pos.id).subscribe((data: any) => {
-            switch (data.type) {
+        this.posService.getPosById(pos.id).subscribe((response: any) => {
+            switch (response.type) {
                 case HttpEventType.DownloadProgress:
                     this.store.dispatch(new StartLoadingPos());
                     break;
@@ -210,21 +212,28 @@ export class PosComponent implements OnInit, OnDestroy {
                     editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
                     editPosModal.componentInstance.editPos = true;
                     editPosModal.componentInstance.pos = pos;
-                    editPosModal.componentInstance.posFdFile = data.body;
+                    editPosModal.componentInstance.posFdFile = response.body;
+                    const data = {
+                        type: TipoConcorrenzaEnum.ModificaPos,
+                        value: pos.codSede
+                    };
+                    this.store.dispatch(new AddConcorrenza([data]));
                     editPosModal.result.then(
                         (result: { success: boolean, formData: FormData }) => {
+                            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [pos.codSede]));
                             if (result.success) {
                                 this.editPos(pos.id, result?.formData);
                             } else if (!result.success) {
                                 this.store.dispatch(new ResetPosModal());
                                 console.log('Modal "editPos" chiusa con val ->', result);
                             }
-                        },
-                        (err: any) => {
-                            this.store.dispatch(new ResetPosModal());
+                        }, (err: any) => {
+                            this.store.dispatch([
+                                new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [pos.codSede]),
+                                new ResetPosModal()
+                            ]);
                             console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
-                        }
-                    );
+                        });
                     break;
             }
         }, () => console.log('Errore Stampa POS'));
@@ -241,23 +250,29 @@ export class PosComponent implements OnInit, OnDestroy {
         confirmDeletePosModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         confirmDeletePosModal.componentInstance.titolo = 'Eliminazione ' + event.descrizionePos;
         confirmDeletePosModal.componentInstance.messaggio = 'Sei sicuro di voler eliminare ' + event.descrizionePos + '?';
-        confirmDeletePosModal.result.then(
-            (result: string) => {
-                switch (result) {
-                    case 'ok':
-                        this.deletePos(event.idPos);
-                        break;
-                    case 'ko':
-                        this.store.dispatch(new ResetPosModal());
-                        console.log('Modal "deletePos" chiusa con val ->', result);
-                        break;
-                }
-            },
-            (err: any) => {
-                this.store.dispatch(new ResetPosModal());
-                console.error('Modal "deletePos" chiusa senza bottoni. Err ->', err);
+        const data = {
+            type: TipoConcorrenzaEnum.EliminaPos,
+            value: event.idPos
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        confirmDeletePosModal.result.then((result: string) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [event.idPos]));
+            switch (result) {
+                case 'ok':
+                    this.deletePos(event.idPos);
+                    break;
+                case 'ko':
+                    this.store.dispatch(new ResetPosModal());
+                    console.log('Modal "deletePos" chiusa con val ->', result);
+                    break;
             }
-        );
+        }, (err: any) => {
+            this.store.dispatch([
+                new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [event.idPos]),
+                new ResetPosModal()
+            ]);
+            console.error('Modal "deletePos" chiusa senza bottoni. Err ->', err);
+        });
     }
 
     addPos(formData: FormData): void {
