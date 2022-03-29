@@ -19,10 +19,13 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Security.Principal;
 
@@ -34,14 +37,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly ICheckEsistenzaRuolo _checkEsistenzaRuolo;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IIsActionFree _isActionFree;
 
-        public AddRuoliUtenteAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni,
-            ICheckEsistenzaRuolo checkEsistenzaRuolo)
+        public AddRuoliUtenteAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
+            IGetAutorizzazioni getAutorizzazioni,
+            ICheckEsistenzaRuolo checkEsistenzaRuolo,
+            IGetSottoSediByCodSede getSottoSediByCodSede,
+            IIsActionFree isActionFree)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
             _checkEsistenzaRuolo = checkEsistenzaRuolo;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
+            _isActionFree = isActionFree;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AddRuoliUtenteCommand command)
@@ -55,6 +65,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    #region Concorrenza
+
+                    //Controllo Concorrenza
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.CodiceSede });
+
+                    if (!_isActionFree.Check(TipoOperazione.AggiungiRuoloUtente, user.Id, listaSediInteressate.ToArray(), command.CodFiscale))
+                        yield return new AuthorizationResult($"In questo momento l'utente risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+
+                    #endregion Concorrenza
+
                     foreach (var ruolo in user.Ruoli)
                     {
                         foreach (var ruoloNew in command.Ruoli)
