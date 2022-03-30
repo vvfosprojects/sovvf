@@ -11,7 +11,7 @@ import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
 import {
     ClearCompetenze,
-    ClearCountInterventiProssimita,
+    ClearCountInterventiProssimita, ClearIdChiamata,
     ClearIdChiamataMarker,
     ClearInterventiProssimita,
     ClearMarkerChiamata,
@@ -299,7 +299,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new ClearMarkerChiamata(),
             new ClearCompetenze(),
             new ClearCountInterventiProssimita(),
-            new ClearInterventiProssimita()
+            new ClearInterventiProssimita(),
+            new ClearIdChiamata()
         ]);
 
         if (this.richiestaModifica) {
@@ -613,6 +614,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
         const sedeSelezionata = sediSelezionate[0];
         this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, indirizzo));
+
+        console.log('chiamataMarker', this.chiamataMarker);
 
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(lat);
