@@ -122,6 +122,10 @@ export class ResetChiamata {
     static readonly type = '[SchedaTelefonata] Reset chiamata';
 }
 
+export class ClearIdChiamata {
+    static readonly type = '[SchedaTelefonata] Clear id chiamata';
+}
+
 export class ResetChiamataForm {
     static readonly type = '[SchedaTelefonata] Reset chiamata form';
 }
