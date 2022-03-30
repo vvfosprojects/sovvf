@@ -255,7 +255,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                     string note = $"La partenza {partenzaDaTerminare.Codice} con mezzo {partenza.Mezzo.Codice.Split('.').Last()} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {partenza.Codice}";
 
-                    new MezzoRiassegnato(command.RichiestaDaSganciare, partenza.Mezzo.Codice.Split('.').Last(), dataAdesso, command.Utente.Id, "MezzoRiassegnato", partenza.Codice, note);
+                    new MezzoRiassegnato(richiestaDaTerminare, partenza.Mezzo.Codice.Split('.').Last(), dataAdesso, command.Utente.Id, "MezzoRiassegnato", partenza.Codice, note);
 
                     partenzaDaTerminare.Terminata = true;
 
