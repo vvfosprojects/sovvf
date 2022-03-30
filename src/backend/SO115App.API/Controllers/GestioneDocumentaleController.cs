@@ -47,10 +47,10 @@ namespace SO115App.API.Controllers
         ///   Aggiunge un nuovo documento nell'area documentale
         /// </summary>
         [HttpPost("Add")]
-        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add([FromForm] DtoDocumentale doc)
         {
+            doc.CodSede = Request.Headers["codicesede"];
             var command = new AddDocCommand()
             {
                 Documento = doc
@@ -77,6 +77,7 @@ namespace SO115App.API.Controllers
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get([FromBody] GetElencoDocQuery getListaDocQuery)
         {
+            getListaDocQuery.CodiceSede = Request.Headers["codicesede"];
             try
             {
                 return Ok(_getHandler.Handle(getListaDocQuery));
@@ -99,7 +100,7 @@ namespace SO115App.API.Controllers
         {
             var getQuery = new GetDocByIdQuery()
             {
-                CodiceSede = CodSede,
+                CodiceSede = Request.Headers["codicesede"],
                 IdDoc = Id
             };
 
@@ -119,13 +120,12 @@ namespace SO115App.API.Controllers
         ///   Cancella uno specifico documento
         /// </summary>
         [HttpGet("Delete")]
-        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete(string Id, string CodSede)
         {
             var command = new DeleteDocCommand()
             {
-                codSede = CodSede,
+                codSede = Request.Headers["codicesede"],
                 Id = Id
             };
 
@@ -146,10 +146,10 @@ namespace SO115App.API.Controllers
         ///   Modifica uno specifico documento
         /// </summary>
         [HttpPost("Edit")]
-        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Edit([FromForm] DtoDocumentale doc)
         {
+            doc.CodSede = Request.Headers["codicesede"];
             var command = new EditDocCommand()
             {
                 Documento = doc
