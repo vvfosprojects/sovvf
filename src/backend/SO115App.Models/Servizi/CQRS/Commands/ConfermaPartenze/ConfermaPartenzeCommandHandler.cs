@@ -244,7 +244,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 var statiMezzi = _getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede);
 
-                var partenzeRiassegnate = command.ConfermaPartenze.Partenze.Where(partenza => statiMezzi.First(m => m.CodiceMezzo.Equals(partenza.Mezzo.Codice)).StatoOperativo.Equals(Costanti.MezzoInRientro));
+                var partenzeRiassegnate = command.ConfermaPartenze.Partenze
+                    .Where(partenza => statiMezzi.FirstOrDefault(m => m.CodiceMezzo.Equals(partenza.Mezzo.Codice))?.StatoOperativo.Equals(Costanti.MezzoInRientro) ?? false)
+                    .ToList();
 
                 foreach (var partenza in partenzeRiassegnate)
                 {
