@@ -5,6 +5,7 @@ import {
     CestinaChiamata,
     ClearCompetenze,
     ClearCountInterventiProssimita,
+    ClearIdChiamata,
     ClearIdChiamataMarker,
     ClearIndirizzo,
     ClearInterventiProssimita,
@@ -632,6 +633,7 @@ export class SchedaTelefonataState {
             if (chiamataResult && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([
                     new CestinaChiamata({ bypassInitCentroMappa: true }),
+                    new ClearIdChiamata(),
                     new SetIdChiamataInviaPartenza(chiamataResult),
                     new ShowToastr(
                         ToastrType.Success,
@@ -644,14 +646,12 @@ export class SchedaTelefonataState {
                     new SetRichiestaComposizione(chiamataResult),
                     new ToggleComposizione(Composizione.Avanzata)
                 ]);
-
                 const generiMezzoTriage = getGeneriMezzoTriageSummary(chiamataResult?.triageSummary);
                 if (generiMezzoTriage?.length) {
                     this.store.dispatch(new SetFiltriGeneriMezzoTriage(generiMezzoTriage));
                 }
-
             } else if (chiamataResult && chiamata.chiamataUrgente) {
-                this.store.dispatch([
+                dispatch([
                     new CestinaChiamata(),
                     new SetRichiestaModifica(chiamataResult),
                     new ToggleModifica()
@@ -663,22 +663,26 @@ export class SchedaTelefonataState {
                     });
                 });
             } else if (chiamataResult && (action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
-                this.store.dispatch([
+                dispatch([
                     new CestinaChiamata(),
                     new ResetChiamataForm(),
+                    new ClearIdChiamata(),
                     new ClearSchedaContattoTelefonata(),
                     new StartChiamata()
                 ]);
             } else {
                 dispatch([
                     new ToggleChiamata(),
-                    new CestinaChiamata()
+                    new CestinaChiamata(),
+                    new ClearIdChiamata()
                 ]);
             }
             dispatch(new StopLoadingSchedaRichiesta());
         }, () => {
-            dispatch(new StopLoadingSchedaRichiesta());
-            dispatch(new SetRedirectComposizionePartenza(false));
+            dispatch([
+                new StopLoadingSchedaRichiesta(),
+                new SetRedirectComposizionePartenza(false)
+            ]);
             patchState({
                 nuovaRichiesta: null,
                 azioneChiamata: null
@@ -710,7 +714,16 @@ export class SchedaTelefonataState {
     }
 
     @Action(ResetChiamata)
-    resetChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+    resetChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        const state = getState();
+        patchState({
+            ...SchedaTelefonataStateDefaults,
+            idChiamata: state.idChiamata
+        });
+    }
+
+    @Action(ClearIdChiamata)
+    clearIdChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState(SchedaTelefonataStateDefaults);
     }
 
