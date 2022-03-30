@@ -59,7 +59,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
                     #region Concorrenza
 
                     //Controllo Concorrenza
-                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente });
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(command.CodiciSede);
 
                     if (command.Richiesta.CodRichiesta == null)
                         if (!_isActionFree.Check(TipoOperazione.Trasferimento, user.Id, listaSediInteressate.ToArray(), command.Richiesta.Codice))
