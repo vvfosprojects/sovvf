@@ -9,7 +9,11 @@ import {
     ClearIdChiamataMarker,
     ClearIndirizzo,
     ClearInterventiProssimita,
+    ClearIstanteRicezioneRichiesta,
     ClearMarkerChiamata,
+    ClearOperatoreChiamata,
+    ClearPrioritaRichiesta,
+    ClearStatoChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
     MarkerChiamata,
@@ -32,7 +36,7 @@ import {
     StopLoadingSchedaRichiesta,
     UpdateScorciatoiaTelefono
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
-import { CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
+import { ClearClipboard, CopyToClipboard } from '../../actions/form-richiesta/clipboard.actions';
 import { ToggleChiamata, ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
 import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../../../maps/store/actions/chiamate-markers.actions';
@@ -266,7 +270,13 @@ export class SchedaTelefonataState {
                 dispatch(new AnnullaChiamata());
                 break;
             case 'reset':
-                dispatch(new ResetChiamata());
+                dispatch([
+                    new SetFormSubmitted(false),
+                    new ClearClipboard(),
+                    new ClearSchedaContattoTelefonata(),
+                    new DelChiamataMarker(state.idChiamata),
+                    new ResetChiamata(),
+                ]);
                 break;
             case 'cerca':
                 const markerChiamata = action.schedaTelefonata.markerChiamata;
@@ -634,6 +644,10 @@ export class SchedaTelefonataState {
                 dispatch([
                     new CestinaChiamata({ bypassInitCentroMappa: true }),
                     new ClearIdChiamata(),
+                    new ClearOperatoreChiamata(),
+                    new ClearStatoChiamata(),
+                    new ClearPrioritaRichiesta(),
+                    new ClearIstanteRicezioneRichiesta(),
                     new SetIdChiamataInviaPartenza(chiamataResult),
                     new ShowToastr(
                         ToastrType.Success,
@@ -667,6 +681,10 @@ export class SchedaTelefonataState {
                     new CestinaChiamata(),
                     new ResetChiamataForm(),
                     new ClearIdChiamata(),
+                    new ClearOperatoreChiamata(),
+                    new ClearStatoChiamata(),
+                    new ClearPrioritaRichiesta(),
+                    new ClearIstanteRicezioneRichiesta(),
                     new ClearSchedaContattoTelefonata(),
                     new StartChiamata()
                 ]);
@@ -674,7 +692,11 @@ export class SchedaTelefonataState {
                 dispatch([
                     new ToggleChiamata(),
                     new CestinaChiamata(),
-                    new ClearIdChiamata()
+                    new ClearIdChiamata(),
+                    new ClearOperatoreChiamata(),
+                    new ClearStatoChiamata(),
+                    new ClearPrioritaRichiesta(),
+                    new ClearIstanteRicezioneRichiesta()
                 ]);
             }
             dispatch(new StopLoadingSchedaRichiesta());
@@ -713,18 +735,87 @@ export class SchedaTelefonataState {
         }
     }
 
-    @Action(ResetChiamata)
-    resetChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>): void {
+    @Action(ClearOperatoreChiamata)
+    clearOperatoreChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>): void {
         const state = getState();
         patchState({
-            ...SchedaTelefonataStateDefaults,
-            idChiamata: state.idChiamata
+            richiestaForm: {
+                ...state.richiestaForm,
+                model: {
+                    ...state.richiestaForm.model,
+                    operatore: null
+                }
+            }
         });
     }
 
     @Action(ClearIdChiamata)
     clearIdChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState(SchedaTelefonataStateDefaults);
+    }
+
+    @Action(ClearStatoChiamata)
+    clearStatoChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        const state = getState();
+        patchState({
+            richiestaForm: {
+                ...state.richiestaForm,
+                model: {
+                    ...state.richiestaForm.model,
+                    stato: null
+                }
+            }
+        });
+    }
+
+    @Action(ClearPrioritaRichiesta)
+    clearPrioritaRichiesta({ getState, patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        const state = getState();
+        patchState({
+            richiestaForm: {
+                ...state.richiestaForm,
+                model: {
+                    ...state.richiestaForm.model,
+                    prioritaRichiesta: null
+                }
+            }
+        });
+    }
+
+    @Action(ClearIstanteRicezioneRichiesta)
+    clearIstanteRicezioneRichiesta({ getState, patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        const state = getState();
+        patchState({
+            richiestaForm: {
+                ...state.richiestaForm,
+                model: {
+                    ...state.richiestaForm.model,
+                    istanteRicezioneRichiesta: null
+                }
+            }
+        });
+    }
+
+    @Action(ResetChiamata)
+    resetChiamata({ getState, patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        const state = getState();
+        patchState({
+            ...SchedaTelefonataStateDefaults,
+            richiestaForm: {
+                ...SchedaTelefonataStateDefaults.richiestaForm,
+                model: {
+                    ...SchedaTelefonataStateDefaults.richiestaForm?.model,
+                    operatore: state.richiestaForm?.model?.operatore,
+                    prioritaRichiesta: state.richiestaForm?.model?.prioritaRichiesta,
+                    stato: state.richiestaForm?.model?.stato,
+                    istanteRicezioneRichiesta: state.richiestaForm?.model?.istanteRicezioneRichiesta,
+                    esercitazione: false,
+                    rilevanzaGrave: false,
+                    rilevanzaStArCu: false
+                }
+            },
+            idChiamata: state.idChiamata
+        });
     }
 
     @Action(ResetChiamataForm)

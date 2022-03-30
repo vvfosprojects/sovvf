@@ -118,12 +118,28 @@ export class CestinaChiamata {
     }
 }
 
-export class ResetChiamata {
-    static readonly type = '[SchedaTelefonata] Reset chiamata';
+export class ClearOperatoreChiamata {
+    static readonly type = '[SchedaTelefonata] Clear operatore chiamata';
 }
 
 export class ClearIdChiamata {
     static readonly type = '[SchedaTelefonata] Clear id chiamata';
+}
+
+export class ClearStatoChiamata {
+    static readonly type = '[SchedaTelefonata] Clear stato chiamata';
+}
+
+export class ClearPrioritaRichiesta {
+    static readonly type = '[SchedaTelefonata] Clear priorità richiesta';
+}
+
+export class ClearIstanteRicezioneRichiesta {
+    static readonly type = '[SchedaTelefonata] Clear istante ricezione richiesta';
+}
+
+export class ResetChiamata {
+    static readonly type = '[SchedaTelefonata] Reset chiamata';
 }
 
 export class ResetChiamataForm {
