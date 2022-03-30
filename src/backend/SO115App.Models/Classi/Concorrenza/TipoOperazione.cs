@@ -26,6 +26,7 @@
         AggiungiRuoloUtente,
         EliminaRuoloUtente,
         ModificaRuoloUtente,
-        EliminaUtente
+        EliminaUtente,
+        All
     }
 }

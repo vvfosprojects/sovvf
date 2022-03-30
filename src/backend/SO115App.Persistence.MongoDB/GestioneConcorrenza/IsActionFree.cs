@@ -17,7 +17,9 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
 
         public bool Check(TipoOperazione action, string idUtente, string[] codSede, string codOggettoBloccato)
         {
-            var listaAzioniBloccateSede = _dbContext.ConcorrenzaCollection.Find(c => codSede.Any(s => s.Equals(c.CodComando))).ToList();
+            var filtroSediCompetenti = Builders<Concorrenza>.Filter.In(c => c.CodComando, codSede.Select(uo => uo));
+
+            var listaAzioniBloccateSede = _dbContext.ConcorrenzaCollection.Find(filtroSediCompetenti).ToList();
 
             bool ret = false;
             switch (action)
@@ -61,7 +63,15 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                     break;
 
                 case TipoOperazione.Allerta:
-                    var allerta = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato) && !r.IdOperatore.Equals(idUtente) && r.Type.Equals(TipoOperazione.Allerta));
+                    var allerta = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato) && !r.IdOperatore.Equals(idUtente) 
+                                &&   ( r.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                                    || r.Type.Equals(TipoOperazione.ChiusuraIntervento)
+                                    || r.Type.Equals(TipoOperazione.Trasferimento)
+                                    || r.Type.Equals(TipoOperazione.InvioPartenza)
+                                    || r.Type.Equals(TipoOperazione.Allerta)
+                                    || r.Type.Equals(TipoOperazione.CambioStatoPartenza)
+                                    || r.Type.Equals(TipoOperazione.GestisciPartenza)
+                                    || r.Type.Equals(TipoOperazione.Sganciamento)));
 
                     if (allerta == null)
                         ret = true;
