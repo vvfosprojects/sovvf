@@ -215,12 +215,12 @@ export class PosComponent implements OnInit, OnDestroy {
                     editPosModal.componentInstance.posFdFile = response.body;
                     const data = {
                         type: TipoConcorrenzaEnum.ModificaPos,
-                        value: pos.codSede
+                        value: pos.id
                     };
                     this.store.dispatch(new AddConcorrenza([data]));
                     editPosModal.result.then(
                         (result: { success: boolean, formData: FormData }) => {
-                            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [pos.codSede]));
+                            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [pos.id]));
                             if (result.success) {
                                 this.editPos(pos.id, result?.formData);
                             } else if (!result.success) {
@@ -229,7 +229,7 @@ export class PosComponent implements OnInit, OnDestroy {
                             }
                         }, (err: any) => {
                             this.store.dispatch([
-                                new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [pos.codSede]),
+                                new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [pos.id]),
                                 new ResetPosModal()
                             ]);
                             console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
@@ -256,7 +256,7 @@ export class PosComponent implements OnInit, OnDestroy {
         };
         this.store.dispatch(new AddConcorrenza([data]));
         confirmDeletePosModal.result.then((result: string) => {
-            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [event.idPos]));
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaPos, [event.idPos]));
             switch (result) {
                 case 'ok':
                     this.deletePos(event.idPos);
@@ -268,7 +268,7 @@ export class PosComponent implements OnInit, OnDestroy {
             }
         }, (err: any) => {
             this.store.dispatch([
-                new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [event.idPos]),
+                new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaPos, [event.idPos]),
                 new ResetPosModal()
             ]);
             console.error('Modal "deletePos" chiusa senza bottoni. Err ->', err);

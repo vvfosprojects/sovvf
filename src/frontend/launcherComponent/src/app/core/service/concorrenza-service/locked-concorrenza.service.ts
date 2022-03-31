@@ -113,13 +113,13 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.RegistrazioneSchedaContatto
                 ];
                 break;
-            case TipoConcorrenzaEnum.ModificaPos: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.ModificaPos:
                 blocks = [
                     TipoConcorrenzaEnum.ModificaPos,
                     TipoConcorrenzaEnum.EliminaPos
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaPos: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.EliminaPos:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaPos,
                     TipoConcorrenzaEnum.ModificaPos
@@ -184,6 +184,7 @@ export class LockedConcorrenzaService {
                 break;
         }
         concorrenzaFound = concorrenza?.filter((c: ConcorrenzaInterface) => blocks.includes(c.type) && value.includes(c.value) && c.idOperatore !== currentUser.id)[0];
+        // console.log('concorrenzaFound', concorrenzaFound);
         return concorrenzaFound ? concorrenzaFound.nominativoOperatore : null;
     }
 }

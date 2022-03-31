@@ -10,24 +10,41 @@
     <tbody>
     <tr *ngFor="let p of pos">
         <td style="width:12%" class="align-middle">
-            <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
-                    ngbTooltip="Rimuovi POS"
-                    placement="bottom"
-                    (click)="onDeletePos(p?.id, p?.descrizionePos)">
-                <i class="fas fa-trash"></i>
-            </button>
-            <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
-                    ngbTooltip="Modifica POS"
-                    placement="bottom"
-                    (click)="onEditPos(p)">
-                <i class="fas fa-edit"></i>
-            </button>
+            <div class="d-inline-block float-left mr-2"
+                 [ngbTooltip]="tooltipLockedConcorrenza"
+                 placement="left"
+                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id]) || !(tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])">
+                <button class="btn btn-sm btn-danger font-weight-bold"
+                        ngbTooltip="Rimuovi POS"
+                        placement="bottom"
+                        [disabled]="(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id]) || (tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])"
+                        (click)="onDeletePos(p?.id, p?.descrizionePos)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            <div class="d-inline-block float-left mr-2"
+                 [ngbTooltip]="tooltipLockedConcorrenza"
+                 placement="left"
+                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id]) || !(tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])">
+                <button class="btn btn-sm btn-info font-weight-bold"
+                        ngbTooltip="Modifica POS"
+                        placement="bottom"
+                        [disabled]="(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id]) || (tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])"
+                        (click)="onEditPos(p)">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
             <button class="btn btn-sm btn-success font-weight-bold float-left"
                     ngbTooltip="Scarica POS"
                     placement="bottom"
                     (click)="onDownloadPos(p)">
                 <i class="fas fa-download"></i>
             </button>
+
+            <ng-template #tooltipLockedConcorrenza>
+                <i class="fas fa-lock mr-1"></i>
+                {{ getTooltipConcorrenzaText(p.id) }}
+            </ng-template>
         </td>
         <td style="width:22%" class="align-middle">
             <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"

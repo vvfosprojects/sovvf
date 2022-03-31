@@ -36,8 +36,6 @@ import { CodaChiamateModule } from './coda-chiamate/coda-chiamate.module';
 import { BoxPersonaleService } from '../../core/service/box-service/box-personale.service';
 import { BoxMezziService } from '../../core/service/box-service/box-mezzi.service';
 import { BoxRichiesteService } from '../../core/service/box-service/box-richieste.service';
-import { ConcorrenzaService } from '../../core/service/concorrenza-service/concorrenza.service';
-import { LockedConcorrenzaService } from '../../core/service/concorrenza-service/locked-concorrenza.service';
 import { RichiestaSganciamentoState } from './store/states/composizione-partenza/richiesta-sganciamento.state';
 import { RichiesteState } from './store/states/richieste/richieste.state';
 import { RichiestaFissataState } from './store/states/richieste/richiesta-fissata.state';
@@ -99,9 +97,7 @@ import { RichiestaGestioneState } from './store/states/richieste/richiesta-gesti
         BoxPersonaleService,
         BoxMezziService,
         BoxRichiesteService,
-        NgbActiveModal,
-        ConcorrenzaService,
-        LockedConcorrenzaService
+        NgbActiveModal
     ]
 })
 export class HomeModule {
