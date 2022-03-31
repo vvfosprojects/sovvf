@@ -167,19 +167,35 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.EliminaDettaglioTipologia
                 ];
                 break;
-            case TipoConcorrenzaEnum.AggiungiRuoloUtente:
+            case TipoConcorrenzaEnum.AggiungiRuoloUtente: // TODO: implementare nel DOM
                 blocks = [
                     TipoConcorrenzaEnum.AggiungiRuoloUtente,
                     TipoConcorrenzaEnum.EliminaUtente
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaUtente:
+            case TipoConcorrenzaEnum.EliminaRuoloUtente: // TODO: implementare nel DOM
                 blocks = [
                     TipoConcorrenzaEnum.EliminaUtente,
                     TipoConcorrenzaEnum.AggiungiRuoloUtente
                 ];
                 break;
-            // Ancora non nel documenti (da analizzare)
+            case TipoConcorrenzaEnum.ModificaRuoloUtente: // TODO: implementare nel DOM
+                blocks = [
+                    TipoConcorrenzaEnum.ModificaRuoloUtente,
+                    TipoConcorrenzaEnum.EliminaUtente
+                ];
+                break;
+            case TipoConcorrenzaEnum.EliminaUtente: // TODO: implementare nel DOM
+                blocks = [
+                    TipoConcorrenzaEnum.EliminaUtente,
+                    TipoConcorrenzaEnum.AggiungiRuoloUtente,
+                    TipoConcorrenzaEnum.EliminaRuoloUtente,
+                    TipoConcorrenzaEnum.ModificaRuoloUtente
+                ];
+                break;
+            case TipoConcorrenzaEnum.Sostituzione: // TODO: implementare nel DOM
+                // TODO: completare blocks
+                break;
             case TipoConcorrenzaEnum.Fonogramma: // TODO: implementare nel DOM
                 // TODO: completare blocks
                 break;
@@ -188,7 +204,6 @@ export class LockedConcorrenzaService {
                 break;
         }
         concorrenzaFound = concorrenza?.filter((c: ConcorrenzaInterface) => blocks.includes(c.type) && value.includes(c.value) && c.idOperatore !== currentUser.id)[0];
-        // console.log('concorrenzaFound', concorrenzaFound);
         return concorrenzaFound ? concorrenzaFound.nominativoOperatore : null;
     }
 }
