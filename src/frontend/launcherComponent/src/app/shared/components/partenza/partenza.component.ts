@@ -93,7 +93,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     onModificaPartenza(): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice])) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.GestisciPartenza, [this.partenza.mezzo.codice])) {
             this.modificaPartenza.emit(this.index);
         }
     }

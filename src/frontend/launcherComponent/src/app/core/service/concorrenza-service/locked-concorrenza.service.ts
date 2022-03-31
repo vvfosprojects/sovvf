@@ -84,7 +84,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ChiusuraIntervento
                 ];
                 break;
-            case TipoConcorrenzaEnum.CambioStatoPartenza: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.CambioStatoPartenza:
                 blocks = [
                     TipoConcorrenzaEnum.CambioStatoPartenza,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
@@ -92,14 +92,15 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.GestisciPartenza
                 ];
                 break;
-            case TipoConcorrenzaEnum.GestisciPartenza: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.GestisciPartenza:
                 blocks = [
                     TipoConcorrenzaEnum.GestisciPartenza,
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento
                 ];
                 break;
-            case TipoConcorrenzaEnum.Sganciamento: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.Sganciamento:
                 blocks = [
                     TipoConcorrenzaEnum.Sganciamento,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
@@ -169,6 +170,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.AggiungiRuoloUtente
                 ];
                 break;
+            // Ancora non nel documenti (da analizzare)
             case TipoConcorrenzaEnum.Fonogramma: // TODO: implementare nel DOM
                 // TODO: completare blocks
                 break;
