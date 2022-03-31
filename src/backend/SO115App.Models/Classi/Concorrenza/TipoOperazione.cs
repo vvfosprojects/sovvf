@@ -27,6 +27,9 @@
         EliminaRuoloUtente,
         ModificaRuoloUtente,
         EliminaUtente,
+        Sostituzione,
+        Fonogramma,
+        EntiIntervenuti,
         All
     }
 }
