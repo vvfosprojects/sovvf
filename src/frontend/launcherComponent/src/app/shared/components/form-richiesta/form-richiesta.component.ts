@@ -13,8 +13,8 @@ import {
     ClearCompetenze,
     ClearCountInterventiProssimita, ClearIdChiamata,
     ClearIdChiamataMarker,
-    ClearInterventiProssimita,
-    ClearMarkerChiamata,
+    ClearInterventiProssimita, ClearIstanteRicezioneRichiesta,
+    ClearMarkerChiamata, ClearOperatoreChiamata, ClearPrioritaRichiesta, ClearStatoChiamata,
     ReducerSchedaTelefonata,
     SetCompetenze,
     SetCompetenzeSuccess,
@@ -304,7 +304,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new ClearCompetenze(),
             new ClearCountInterventiProssimita(),
             new ClearInterventiProssimita(),
-            new ClearIdChiamata()
+            new ClearIdChiamata(),
+            new ClearOperatoreChiamata(),
+            new ClearStatoChiamata(),
+            new ClearPrioritaRichiesta(),
+            new ClearIstanteRicezioneRichiesta()
         ]);
 
         if (this.richiestaModifica) {
@@ -476,10 +480,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 new SetDettaglioTipologiaTriageChiamata(dettaglio?.codiceDettaglioTipologia, this.pos)
             ]);
         }
-    }
-
-    clearTipologieSelezionate(): void {
-        this.f.codTipologia.patchValue(null);
     }
 
     checkTipologie(): boolean {
@@ -1128,9 +1128,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                         this.store.dispatch([
                             new SetFormSubmitted(false),
                             new ClearClipboard(),
+                            new ClearSchedaContattoTelefonata(),
                             new DelChiamataMarker(this.idChiamata)
                         ]);
-                        this.clearTipologieSelezionate();
                         this.reducerSchedaTelefonata('reset');
                         break;
                     case 'ko':

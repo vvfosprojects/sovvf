@@ -20,5 +20,8 @@ export enum TipoConcorrenzaEnum {
     EliminaDettaglioTipologia,
     ModificaTriage,
     EliminaTriage,
-    AggiungiRuoloUtente
+    AggiungiRuoloUtente,
+    Fonogramma,
+    EntiIntervenuti,
+    RiapriChiamataIntervento
 }

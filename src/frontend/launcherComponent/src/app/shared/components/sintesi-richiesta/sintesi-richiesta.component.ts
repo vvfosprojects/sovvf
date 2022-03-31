@@ -282,7 +282,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
                 case 'ko':
                     break;
             }
-        }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.GestisciPartenza, [this.richiesta.partenze[index].codiceMezzoe])));
+        }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.GestisciPartenza, [this.richiesta.partenze[index].codiceMezzo])));
     }
 
     onDettaglioStatoFonogramma(): void {

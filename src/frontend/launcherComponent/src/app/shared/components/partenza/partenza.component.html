@@ -44,12 +44,12 @@
                 </button>
                 <ng-template [ngIf]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa">
                     <div [ngbTooltip]="tooltipLockedConcorrenza"
-                         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])">
+                         [disableTooltip]="!(tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice])">
                         <button class="btn btn-sm btn-info d-inline-block"
                                 ngbTooltip="Gestisci Partenza"
                                 placement="top"
-                                [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
-                                [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
+                                [disabled]="tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice]"
+                                [class.cursor-not-allowed]="tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice]"
                                 (click)="onModificaPartenza(); $event.stopPropagation()">
                             <i class="fas fa-cog"></i>
                         </button>
@@ -66,5 +66,5 @@
 
 <ng-template #tooltipLockedConcorrenza>
     <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice] }}
+    {{ tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice] }}
 </ng-template>

@@ -33,7 +33,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Squadra
                 ];
                 break;
-            case TipoConcorrenzaEnum.ChiusuraChiamata: // TODO: rivedere implementazione nel DOM, deve "convivere" con "ChiusuraIntervento"
+            case TipoConcorrenzaEnum.ChiusuraChiamata:
                 blocks = [
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.Trasferimento,
@@ -42,7 +42,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.InvioPartenza
                 ];
                 break;
-            case TipoConcorrenzaEnum.ChiusuraIntervento: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.ChiusuraIntervento:
                 blocks = [
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.Trasferimento,
@@ -51,7 +51,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.InvioPartenza
                 ];
                 break;
-            case TipoConcorrenzaEnum.Modifica: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.Modifica:
                 blocks = [
                     TipoConcorrenzaEnum.Modifica,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
@@ -59,7 +59,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Trasferimento
                 ];
                 break;
-            case TipoConcorrenzaEnum.Trasferimento: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.Trasferimento:
                 blocks = [
                     TipoConcorrenzaEnum.Trasferimento,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
@@ -68,7 +68,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.InvioPartenza
                 ];
                 break;
-            case TipoConcorrenzaEnum.InvioPartenza: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.InvioPartenza:
                 blocks = [
                     TipoConcorrenzaEnum.InvioPartenza,
                     TipoConcorrenzaEnum.Trasferimento,
@@ -76,7 +76,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ChiusuraIntervento
                 ];
                 break;
-            case TipoConcorrenzaEnum.Allerta: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.Allerta:
                 blocks = [
                     TipoConcorrenzaEnum.Allerta,
                     TipoConcorrenzaEnum.Trasferimento,
@@ -84,7 +84,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ChiusuraIntervento
                 ];
                 break;
-            case TipoConcorrenzaEnum.CambioStatoPartenza: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.CambioStatoPartenza:
                 blocks = [
                     TipoConcorrenzaEnum.CambioStatoPartenza,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
@@ -92,14 +92,15 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.GestisciPartenza
                 ];
                 break;
-            case TipoConcorrenzaEnum.GestisciPartenza: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.GestisciPartenza:
                 blocks = [
                     TipoConcorrenzaEnum.GestisciPartenza,
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento
                 ];
                 break;
-            case TipoConcorrenzaEnum.Sganciamento: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.Sganciamento:
                 blocks = [
                     TipoConcorrenzaEnum.Sganciamento,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
@@ -168,6 +169,16 @@ export class LockedConcorrenzaService {
                 blocks = [
                     TipoConcorrenzaEnum.AggiungiRuoloUtente
                 ];
+                break;
+            // Ancora non nel documenti (da analizzare)
+            case TipoConcorrenzaEnum.Fonogramma: // TODO: implementare nel DOM
+                // TODO: completare blocks
+                break;
+            case TipoConcorrenzaEnum.EntiIntervenuti: // TODO: implementare nel DOM
+                // TODO: completare blocks
+                break;
+            case TipoConcorrenzaEnum.RiapriChiamataIntervento: // TODO: implementare nel DOM
+                // TODO: completare blocks
                 break;
         }
         concorrenzaFound = concorrenza?.filter((c: ConcorrenzaInterface) => blocks.includes(c.type) && value.includes(c.value) && c.idOperatore !== currentUser.id)[0];

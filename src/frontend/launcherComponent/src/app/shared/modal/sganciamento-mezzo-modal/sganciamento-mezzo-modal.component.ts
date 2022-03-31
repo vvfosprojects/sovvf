@@ -21,6 +21,7 @@ export class SganciamentoMezzoModalComponent implements OnInit, OnDestroy {
     @Select(RichiestaSganciamentoState.richiestaSganciamento) richiestaSganciamento$: Observable<SintesiRichiesta>;
     richiestaSganciamento: SintesiRichiesta;
     idDaSganciare: string;
+    codMezzoDaSganciare: string;
     mezzoNotFound: boolean;
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
