@@ -97,7 +97,7 @@
                 [editSchedaContatto]="statoModalita"
                 [schedeContattoSelezionate]="idSelezionatiMerge"
                 [classificazione]="classificazioneMerge"
-                [disableCreaRichiesta]="(permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede) || scheda.gestita"
+                [disableCreaRichiesta]="(permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede) || (tipoConcorrenzaEnum.RegistrazioneSchedaContatto | checkConcorrenzaLocked: [scheda.codiceScheda]) || scheda.gestita"
                 [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
                 [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
                 [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
