@@ -125,13 +125,13 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ModificaPos
                 ];
                 break;
-            case TipoConcorrenzaEnum.ModificaPianiDiscendenti: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.ModificaPianiDiscendenti:
                 blocks = [
                     TipoConcorrenzaEnum.ModificaPianiDiscendenti,
                     TipoConcorrenzaEnum.EliminaPianiDiscendenti
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaPianiDiscendenti: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.EliminaPianiDiscendenti:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaPianiDiscendenti,
                     TipoConcorrenzaEnum.ModificaPianiDiscendenti
