@@ -86,12 +86,18 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 centered: true
             });
             sganciamentoMezziModal.componentInstance.richiesta = richiesta;
-            sganciamentoMezziModal.result.then(
-                (result: string) => {
+            const data = {
+                value: this.richiesta.codice,
+                type: TipoConcorrenzaEnum.Sganciamento
+            } as AddConcorrenzaDtoInterface;
+            this.store.dispatch(new AddConcorrenza([data]));
+            sganciamentoMezziModal.result.then((result: string) => {
+                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
                     if (result === 'ok') {
                         this.chiudiModalAzioniSintesi('ok');
                     }
                 }, (err: any) => {
+                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
                     console.error('Modal chiusa senza bottoni. Err ->', err);
                 }
             );

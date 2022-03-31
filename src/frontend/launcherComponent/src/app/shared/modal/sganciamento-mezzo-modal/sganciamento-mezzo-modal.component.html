@@ -41,9 +41,9 @@
 <div class="modal-footer justify-content-between">
     <div class="d-inline-block"
          [ngbTooltip]="tooltipLockedConcorrenza"
-         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiestaSganciamento.codice])">
+         [disableTooltip]="!(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [codMezzoDaSganciare])">
         <button class="btn btn-lg btn-danger btn-no-hover font-weight-bold"
-                [disabled]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiestaSganciamento.codice]) || mezzoNotFound"
+                [disabled]="(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [codMezzoDaSganciare]) || mezzoNotFound"
                 (click)="modal.close('ok')">
             {{ 'conferma sganciamento' | uppercase }}
         </button>
@@ -56,5 +56,5 @@
 
 <ng-template #tooltipLockedConcorrenza>
     <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiestaSganciamento.codice] }}
+    {{ tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [codMezzoDaSganciare] }}
 </ng-template>

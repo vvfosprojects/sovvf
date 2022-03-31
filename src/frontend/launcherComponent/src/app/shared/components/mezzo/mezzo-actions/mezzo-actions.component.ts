@@ -99,6 +99,7 @@ export class MezzoActionsComponent implements OnInit {
             this.store.dispatch(new AddConcorrenza([data]));
             modal.componentInstance.codicePartenza = this.codicePartenza;
             modal.componentInstance.statoMezzo = this.mezzo.stato;
+            modal.componentInstance.codiceMezzo = this.mezzo.codice;
             modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
             modal.componentInstance.action = action;
             modal.componentInstance.modificaOrario = !!ora;

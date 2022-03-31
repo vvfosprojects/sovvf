@@ -142,13 +142,13 @@
         <!-- SGANCIAMENTO MEZZO -->
         <div class="col-4 mb-3">
             <div class="box-azione"
-                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
-                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
+                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice])"
+                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice])"
                  style="height: fit-content"
                  (click)="onSganciamentoMezzo(richiesta); $event.stopPropagation()">
-                <ng-container *ngIf="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
+                <ng-container *ngIf="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice]">
                     <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
+                            [nominativoOperatore]="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice]">
                     </app-locked-concorrenza>
                 </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">

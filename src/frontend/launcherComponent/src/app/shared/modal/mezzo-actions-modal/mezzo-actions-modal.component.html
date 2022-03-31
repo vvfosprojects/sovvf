@@ -121,12 +121,21 @@
     </ng-container>
 </ng-container>
 <div class="modal-footer" style="place-content: space-between;">
-    <button class="btn btn-lg btn-danger btn-no-hover font-xxlarge"
-            [disabled]="(!timeActionForm?.valid) || checkInvalidTime()"
-            (click)="onSubmit()">
-        {{ title | uppercase }}
-    </button>
+    <div class="d-inline-block"
+         [ngbTooltip]="tooltipLockedConcorrenza"
+         [disableTooltip]="!(tipoConcorrenzaEnum.CambioStatoPartenza | checkConcorrenzaLocked: [codiceMezzo])">
+        <button class="btn btn-lg btn-danger btn-no-hover font-xxlarge"
+                [disabled]="(!timeActionForm?.valid) || checkInvalidTime() || (tipoConcorrenzaEnum.CambioStatoPartenza | checkConcorrenzaLocked: [codiceMezzo])"
+                (click)="onSubmit()">
+            {{ title | uppercase }}
+        </button>
+    </div>
     <button class="btn btn-lg btn-secondary btn-no-hover font-xxlarge" (click)="onCancel()">
         {{ 'Annulla' | uppercase }}
     </button>
 </div>
+
+<ng-template #tooltipLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.CambioStatoPartenza | checkConcorrenzaLocked: [codiceMezzo] }}
+</ng-template>

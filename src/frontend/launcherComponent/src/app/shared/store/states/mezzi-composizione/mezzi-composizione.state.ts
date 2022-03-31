@@ -413,6 +413,7 @@ export class MezziComposizioneState {
                     centered: true
                 });
                 modalSganciamento.componentInstance.idDaSganciare = action.sganciamentoObj.descrizione;
+                modalSganciamento.componentInstance.codMezzoDaSganciare = action.sganciamentoObj.idMezzoDaSganciare;
                 const data = {
                     value: action.sganciamentoObj.idMezzoDaSganciare,
                     type: TipoConcorrenzaEnum.Sganciamento
