@@ -48,7 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             {
                 try
                 {
-                    _service.SetCache("Squadre_" + Codice);
+                    //_service.SetCache("Squadre_" + Codice);
 
                     result = await _service.GetAsync(url);
 
