@@ -42,7 +42,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         private readonly string SchedeContattoJson = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
         private readonly string Competenza = "Competenza";
         private readonly string Conoscenza = "Conoscenza";
-        private readonly string Differibile = "Differibile";
+        private readonly string Deferibile = "Deferibile";
         private readonly DbContext _context;
         private readonly IGetSchedeContatto_WSNUE _getSchedeContatto_WSNUE;
 
@@ -288,7 +288,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 
             var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza) && x.Collegata == false);
             var listaSchedeConoscenza = listaSchede.FindAll(x => x.Classificazione.Equals(Conoscenza));
-            var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Differibile));
+            var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Deferibile));
             return new InfoNue
             {
                 TotaleSchede = new ContatoreNue
