@@ -304,8 +304,8 @@
                                 </ng-container>
                                 <ng-container *ngIf="modificabile">
                                     <div class="d-inline-block"
-                                         [ngbTooltip]="tooltipLockedConcorrenza"
-                                         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [this.richiesta.codice])"
+                                         [ngbTooltip]="tooltipModificaLockedConcorrenza"
+                                         [disableTooltip]="!(tipoConcorrenzaEnum.Modifica | checkConcorrenzaLocked: [this.richiesta.codice])"
                                          placement="left">
                                         <button class="btn btn-light border py-0 px-0 mr-1"
                                                 ngbTooltip="Modifica"
@@ -317,8 +317,8 @@
                                     </div>
                                 </ng-container>
                                 <div class="d-inline-block"
-                                     [ngbTooltip]="tooltipLockedConcorrenza"
-                                     [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [this.richiesta.codice])"
+                                     [ngbTooltip]="tooltipInvioPartenzaLockedConcorrenza"
+                                     [disableTooltip]="!(tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [this.richiesta.codice])"
                                      placement="left">
                                     <button *ngIf="!partenza && composizionePartenza"
                                             class="btn btn-light border py-0 px-2"
@@ -639,7 +639,12 @@
     </div>
 </div>
 
-<ng-template #tooltipLockedConcorrenza>
+<ng-template #tooltipModificaLockedConcorrenza>
     <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice] }}
+    {{ tipoConcorrenzaEnum.Modifica | checkConcorrenzaLocked: [richiesta.codice] }}
+</ng-template>
+
+<ng-template #tooltipInvioPartenzaLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiesta.codice] }}
 </ng-template>
