@@ -13,7 +13,7 @@
                  [ngbTooltip]="tooltipLockedConcorrenza"
                  placement="left"
                  [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || !(tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])">
-                <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
+                <button class="btn btn-sm btn-danger font-weight-bold"
                         ngbTooltip="Rimuovi Documento"
                         placement="bottom"
                         [disabled]="(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || (tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
@@ -25,7 +25,7 @@
                  [ngbTooltip]="tooltipLockedConcorrenza"
                  placement="left"
                  [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || !(tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])">
-                <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
+                <button class="btn btn-sm btn-info font-weight-bold"
                         ngbTooltip="Modifica Documento"
                         placement="bottom"
                         [disabled]="(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || (tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
