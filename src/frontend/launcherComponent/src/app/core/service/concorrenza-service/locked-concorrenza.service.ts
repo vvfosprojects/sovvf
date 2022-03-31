@@ -19,16 +19,16 @@ export class LockedConcorrenzaService {
         let concorrenzaFound: ConcorrenzaInterface;
         let blocks: TipoConcorrenzaEnum[];
         switch (type) {
-            case TipoConcorrenzaEnum.Richiesta: // TODO: implementare nel DOM
-                // TODO: completare e rianalizzare, potrebbe essere inutile
+            // TODO: non implementato, potrebbe non servire
+            case TipoConcorrenzaEnum.Richiesta:
                 blocks = [];
                 break;
-            case TipoConcorrenzaEnum.Mezzo: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.Mezzo:
                 blocks = [
                     TipoConcorrenzaEnum.Mezzo
                 ];
                 break;
-            case TipoConcorrenzaEnum.Squadra: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.Squadra:
                 blocks = [
                     TipoConcorrenzaEnum.Squadra
                 ];
@@ -108,7 +108,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Trasferimento
                 ];
                 break;
-            case TipoConcorrenzaEnum.RegistrazioneSchedaContatto: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.RegistrazioneSchedaContatto:
                 blocks = [
                     TipoConcorrenzaEnum.RegistrazioneSchedaContatto
                 ];
@@ -155,14 +155,16 @@ export class LockedConcorrenzaService {
                 // TODO: completare e rianalizzare, coinvolge anche il dettaglio tipologia
                 blocks = [
                     TipoConcorrenzaEnum.ModificaTriage,
-                    TipoConcorrenzaEnum.EliminaTriage
+                    TipoConcorrenzaEnum.EliminaTriage,
+                    TipoConcorrenzaEnum.EliminaDettaglioTipologia
                 ];
                 break;
             case TipoConcorrenzaEnum.EliminaTriage: // TODO: implementare nel DOM
                 // TODO: completare e rianalizzare, coinvolge anche il dettaglio tipologia
                 blocks = [
                     TipoConcorrenzaEnum.EliminaTriage,
-                    TipoConcorrenzaEnum.ModificaTriage
+                    TipoConcorrenzaEnum.ModificaTriage,
+                    TipoConcorrenzaEnum.EliminaDettaglioTipologia
                 ];
                 break;
             case TipoConcorrenzaEnum.AggiungiRuoloUtente: // TODO: implementare nel DOM
