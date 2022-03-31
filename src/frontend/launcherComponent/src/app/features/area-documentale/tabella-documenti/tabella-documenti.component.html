@@ -9,24 +9,41 @@
     <tbody>
     <tr *ngFor="let d of documenti">
         <td style="width:12%" class="align-middle">
-            <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
-                    ngbTooltip="Rimuovi Documento"
-                    placement="bottom"
-                    (click)="onDeleteDocumento(d?.id, d?.descrizioneDocumento, d?.descrizioneCategoria)">
-                <i class="fas fa-trash"></i>
-            </button>
-            <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
-                    ngbTooltip="Modifica Documento"
-                    placement="bottom"
-                    (click)="onEditDocumento(d)">
-                <i class="fas fa-edit"></i>
-            </button>
+            <div class="d-inline-block float-left mr-2"
+                 [ngbTooltip]="tooltipLockedConcorrenza"
+                 placement="left"
+                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || !(tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])">
+                <button class="btn btn-sm btn-danger font-weight-bold float-left mr-2"
+                        ngbTooltip="Rimuovi Documento"
+                        placement="bottom"
+                        [disabled]="(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || (tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
+                        (click)="onDeleteDocumento(d?.id, d?.descrizioneDocumento, d?.descrizioneCategoria)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            <div class="d-inline-block float-left mr-2"
+                 [ngbTooltip]="tooltipLockedConcorrenza"
+                 placement="left"
+                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || !(tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])">
+                <button class="btn btn-sm btn-info font-weight-bold float-left mr-2"
+                        ngbTooltip="Modifica Documento"
+                        placement="bottom"
+                        [disabled]="(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || (tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
+                        (click)="onEditDocumento(d)">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
             <button class="btn btn-sm btn-success font-weight-bold float-left"
                     ngbTooltip="Scarica Documento"
                     placement="bottom"
                     (click)="onDownloadDocumento(d)">
                 <i class="fas fa-download"></i>
             </button>
+
+            <ng-template #tooltipLockedConcorrenza>
+                <i class="fas fa-lock mr-1"></i>
+                {{ getTooltipConcorrenzaText(d) }}
+            </ng-template>
         </td>
         <td style="width:22%" class="align-middle">
             <a class="font-weight-bold mt-1 pt-1 text-uppercase text-truncate"
