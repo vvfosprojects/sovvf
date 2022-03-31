@@ -14,16 +14,15 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 import { AreaDocumentaleState } from './store/states/area-documentale/area-documentale.state';
 import { DocumentoInterface } from 'src/app/shared/interface/documento.interface';
-import { AuthState } from '../auth/store/auth.state';
 import { DocumentoAreaDocumentaleModalComponent } from 'src/app/shared/modal/documento-area-documentale-modal/documento-area-documentale-modal.component';
 import { AddDocumentoAreaDocumentale, DeleteDocumentoAreaDocumentale, EditDocumentoAreaDocumentale, ResetDocumentoAreaDocumentaleModal } from 'src/app/shared/store/actions/documento-area-documentale-modal/documento-area-documentale-modal.actions';
-import { HttpEventType } from '@angular/common/http';
-import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
+import { VisualizzaDocumentoModalComponent } from '../../shared/modal/visualizza-documento-modal/visualizza-documento-modal.component';
 import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
+import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
+import { HttpEventType } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Navigate } from '@ngxs/router-plugin';
 import { LSNAME } from '../../core/settings/config';
-import { VisualizzaDocumentoModalComponent } from '../../shared/modal/visualizza-documento-modal/visualizza-documento-modal.component';
 
 @Component({
     selector: 'app-area-documentale',
@@ -133,126 +132,104 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
 
     onAddDocumento(): void {
         let addDocumentoAreaDocumentaleModal: any;
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            addDocumentoAreaDocumentaleModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-            addDocumentoAreaDocumentaleModal.componentInstance.codSede = codSede;
-            addDocumentoAreaDocumentaleModal.componentInstance.descCategoria = this.descCategoria;
-            addDocumentoAreaDocumentaleModal.componentInstance.editDocumento = false;
-            addDocumentoAreaDocumentaleModal.result.then(
-                (result: { success: boolean, formData: FormData }) => {
-                    if (result.success) {
-                        this.addDocumento(result.formData);
-                    } else if (!result.success) {
-                        this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
-                        console.log('Modal "addDocumento" chiusa con val ->', result);
-                    }
-                },
-                (err: any) => {
+        addDocumentoAreaDocumentaleModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        addDocumentoAreaDocumentaleModal.componentInstance.descCategoria = this.descCategoria;
+        addDocumentoAreaDocumentaleModal.componentInstance.editDocumento = false;
+        addDocumentoAreaDocumentaleModal.result.then(
+            (result: { success: boolean, formData: FormData }) => {
+                if (result.success) {
+                    this.addDocumento(result.formData);
+                } else if (!result.success) {
                     this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
-                    console.error('Modal "addDocumento" chiusa senza bottoni. Err ->', err);
+                    console.log('Modal "addDocumento" chiusa con val ->', result);
                 }
-            );
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+            },
+            (err: any) => {
+                this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
+                console.error('Modal "addDocumento" chiusa senza bottoni. Err ->', err);
+            }
+        );
     }
 
     onDownloadDocumento(documento: DocumentoInterface): void {
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
-                switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + documento.fileName + ')');
-                        break;
-                    case HttpEventType.Response:
-                        const downloadedFile = new Blob([data.body], { type: data.body.type });
-                        const a = document.createElement('a');
-                        a.setAttribute('style', 'display:none;');
-                        document.body.appendChild(a);
-                        a.download = documento.fileName;
-                        a.href = URL.createObjectURL(downloadedFile);
-                        a.target = '_blank';
-                        a.click();
-                        document.body.removeChild(a);
-                        break;
-                }
-            }, () => console.log('Errore Stampa Documento'));
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+        this.areaDocumentaleService.getDocumentoById(documento.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + documento.fileName + ')');
+                    break;
+                case HttpEventType.Response:
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.download = documento.fileName;
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, () => console.log('Errore Stampa Documento'));
     }
 
     onViewDocumento(documento: DocumentoInterface): void {
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
-                switch (data.type) {
-                    case HttpEventType.Response:
-                        const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
-                            windowClass: 'xxlModal modal-holder',
-                            backdropClass: 'light-blue-backdrop',
-                            centered: true
-                        });
-                        const downloadedFile = new Blob([data.body], { type: data.body.type });
-                        modalVisualizzaPdf.componentInstance.titolo = documento?.descrizioneDocumento?.toLocaleUpperCase();
-                        modalVisualizzaPdf.componentInstance.blob = downloadedFile;
-                        break;
-                }
-            }, () => console.log('Errore visualizzazione Documento'));
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+        this.areaDocumentaleService.getDocumentoById(documento.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.Response:
+                    const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
+                        windowClass: 'xxlModal modal-holder',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true
+                    });
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    modalVisualizzaPdf.componentInstance.titolo = documento?.descrizioneDocumento?.toLocaleUpperCase();
+                    modalVisualizzaPdf.componentInstance.blob = downloadedFile;
+                    break;
+            }
+        }, () => console.log('Errore visualizzazione Documento'));
     }
 
     onEditDocumento(documento: DocumentoInterface): void {
         let editDocumentoAreaDocumentaleModal: any;
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            this.areaDocumentaleService.getDocumentoById(documento.id, codSede).subscribe((data: any) => {
-                switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
-                        break;
-                    case HttpEventType.Response:
-                        this.store.dispatch(new StopLoadingDocumentiAreaDocumentale());
-                        editDocumentoAreaDocumentaleModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
-                            windowClass: 'modal-holder',
-                            backdropClass: 'light-blue-backdrop',
-                            centered: true,
-                            size: 'lg'
-                        });
-                        editDocumentoAreaDocumentaleModal.componentInstance.codSede = codSede;
-                        editDocumentoAreaDocumentaleModal.componentInstance.descCategoria = this.descCategoria;
-                        editDocumentoAreaDocumentaleModal.componentInstance.editDocumento = true;
-                        editDocumentoAreaDocumentaleModal.componentInstance.documento = documento;
-                        editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile = data.body;
-                        editDocumentoAreaDocumentaleModal.result.then(
-                            (result: { success: boolean, formData: FormData }) => {
-                                if (result.success) {
-                                    this.editDocumento(documento.id, result?.formData);
-                                } else if (!result.success) {
-                                    this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
-                                    console.log('Modal "editDocumento" chiusa con val ->', result);
-                                }
-                            },
-                            (err: any) => {
+        this.areaDocumentaleService.getDocumentoById(documento.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
+                    break;
+                case HttpEventType.Response:
+                    this.store.dispatch(new StopLoadingDocumentiAreaDocumentale());
+                    editDocumentoAreaDocumentaleModal = this.modalService.open(DocumentoAreaDocumentaleModalComponent, {
+                        windowClass: 'modal-holder',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true,
+                        size: 'lg'
+                    });
+                    editDocumentoAreaDocumentaleModal.componentInstance.descCategoria = this.descCategoria;
+                    editDocumentoAreaDocumentaleModal.componentInstance.editDocumento = true;
+                    editDocumentoAreaDocumentaleModal.componentInstance.documento = documento;
+                    editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile = data.body;
+                    editDocumentoAreaDocumentaleModal.result.then(
+                        (result: { success: boolean, formData: FormData }) => {
+                            if (result.success) {
+                                this.editDocumento(documento.id, result?.formData);
+                            } else if (!result.success) {
                                 this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
-                                console.error('Modal "editDocumento" chiusa senza bottoni. Err ->', err);
+                                console.log('Modal "editDocumento" chiusa con val ->', result);
                             }
-                        );
-                        break;
-                }
-            }, () => console.log('Errore Stampa Documento'));
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+                        },
+                        (err: any) => {
+                            this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
+                            console.error('Modal "editDocumento" chiusa senza bottoni. Err ->', err);
+                        }
+                    );
+                    break;
+            }
+        }, () => console.log('Errore Stampa Documento'));
     }
 
     onDeleteDocumento(event: { idDocumento: string, descrizioneDocumento: string }): void {

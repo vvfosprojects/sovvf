@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -13,18 +14,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
     {
         private readonly IGetComposizioneSquadreDB _get;
         private readonly ISetComposizioneSquadre _set;
-
+        private readonly IMemoryCache _memoryCache;
         private readonly IHttpRequestManager<WorkShift> _service;
         private readonly IConfiguration _config;
 
         public GetSquadre(IHttpRequestManager<WorkShift> service,
             IConfiguration config,
             IGetComposizioneSquadreDB get,
-            ISetComposizioneSquadre set)
+            ISetComposizioneSquadre set,
+            IMemoryCache memoryCache)
         {
             _service = service;
             _config = config;
             _set = set;
+            _memoryCache = memoryCache;
             _get = get;
         }
 
@@ -37,29 +40,43 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
         {
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);
             var url = new Uri(baseurl, "api/v1/so-workshift/" + "?id_sede=" + Codice);
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
 
-            try
+            WorkShift result = new WorkShift();
+
+            if (!_memoryCache.TryGetValue("listaSquadre-" + Codice, out result))
             {
-                _service.SetCache("Squadre_" + Codice);
+                try
+                {
+                    _service.SetCache("Squadre_" + Codice);
 
-                var result = await _service.GetAsync(url);
+                    result = await _service.GetAsync(url);
 
-                if (result == null || result.Squadre.Length <= 0)
+                    if (result == null || result.Squadre.Length <= 0)
+                    {
+                        result = GetFromDB(Codice);
+                    }
+                    else
+                    {
+                        result.Distaccamento = Codice;
+
+                        _set.Set(result);
+                    }
+
+                    _memoryCache.Set("listaSquadre-" + Codice, result, cacheEntryOptions);
+                    return result;
+                }
+                catch (Exception e)
                 {
                     result = GetFromDB(Codice);
-                }
-                else
-                {
-                    result.Distaccamento = Codice;
 
-                    _set.Set(result);
+                    _memoryCache.Set("listaSquadre-" + Codice, result, cacheEntryOptions);
+                    return result;
                 }
-
-                return result;
             }
-            catch (Exception e)
+            else
             {
-                return GetFromDB(Codice);
+                return result;
             }
         }
 
