@@ -148,7 +148,7 @@ export class DettagliTipologieComponent implements OnDestroy {
         modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + dettaglioTipologia.descrizione;
         modalConfermaEliminazione.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il dettaglio?';
         const data = {
-            type: TipoConcorrenzaEnum.ModificaDettaglioTipologia,
+            type: TipoConcorrenzaEnum.EliminaDettaglioTipologia,
             value: dettaglioTipologia.id
         };
         this.store.dispatch(new AddConcorrenza([data]));
