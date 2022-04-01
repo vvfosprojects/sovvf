@@ -20,6 +20,7 @@
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -108,7 +109,7 @@ namespace SO115App.ExternalAPI.Fake.Box
                     Next = workshift.SelectMany(w => w?.Successivo?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
                     Previous = workshift.SelectMany(w => w?.Precedente?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count()
                 },
-                SquadreAssegnate = statoSquadre.Count,
+                SquadreAssegnate = statoSquadre.Count - statoSquadre.Where(s => s.StatoSquadra.Equals(Costanti.MezzoInRientro)).Count(),
                 workShift = workshift
             };
 
