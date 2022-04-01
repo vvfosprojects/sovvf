@@ -3,7 +3,9 @@ using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento
@@ -14,27 +16,35 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetDistaccamentoByCodiceSede _getSede;
         private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetSedi _getSedi;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
         public AddTrasferimentoCommandHandler(IAddTrasferimento addTrasferimento,
             IGetRichiesta getRichiestaById,
             IGetDistaccamentoByCodiceSede getSede,
-            IGetUtenteById getUtenteById)
+            IGetUtenteById getUtenteById,
+            IGetSedi getSedi)
         {
             _addTrasferimento = addTrasferimento;
             _getRichiestaById = getRichiestaById;
             _getSede = getSede;
             _getUtenteById = getUtenteById;
+            _getSedi = getSedi;
         }
 
         public void Handle(AddTrasferimentoCommand command)
         {
-            //GESTIONE RICHIESTA E TRASFERIMENTO
-            var sedeA = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeA).Descrizione;
+            var listaSedi = _getSedi.GetAll().Result;
 
-            if (!sedeA.ToUpper().Contains("CENTRALE"))
+            //GESTIONE RICHIESTA E TRASFERIMENTO
+            var sedeA = listaSedi.Find(s => s.Codice.Equals(command.TrasferimentoChiamata.CodSedeA)).Descrizione; //_getSedi.GetInfoSede(command.TrasferimentoChiamata.CodSedeA).Result.Descrizione;
+            var sedeDa = listaSedi.Find(s => s.Codice.Equals(command.TrasferimentoChiamata.CodSedeDa)).Descrizione; //_getSedi.GetInfoSede(command.TrasferimentoChiamata.CodSedeDa).Result.Descrizione;
+
+            if (!sedeA.ToUpper().Contains("COMANDO"))
                 throw new Exception("Puoi trasferire la chiamata solo verso i comandi");
 
-            var sedeDa = _getSede.GetSede(command.TrasferimentoChiamata.CodSedeDa).Descrizione;
+            if (command.TrasferimentoChiamata.CodSedeA.Equals(command.TrasferimentoChiamata.CodSedeDa))
+                throw new Exception("Si sta provando a trasferire una chiamata allo stesso comando");
 
             var richiesta = _getRichiestaById.GetByCodice(command.TrasferimentoChiamata.CodChiamata);
 
