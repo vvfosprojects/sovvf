@@ -657,15 +657,21 @@ namespace SO115App.API.Models.Classi.Soccorso
                     }
                     else
                     {
-                        if (_eventi.FindAll(e => e is ChiusuraRichiesta && e is not RiaperturaRichiesta).Count > 0)
+                        var contChiusura = _eventi.FindAll(e => e is ChiusuraRichiesta).Count;
+                        var contRiapertura = _eventi.FindAll(e => e is RiaperturaRichiesta).Count;
+
+                        if (contChiusura > contRiapertura)
                             return new Chiusa();
                         else
-                            return new Sospesa();
+                            return new InAttesa();
                     }
                 }
                 else
                 {
-                    if (_eventi.FindAll(e => e is ChiusuraRichiesta && e is not RiaperturaRichiesta).Count > 0)
+                    var contChiusura = _eventi.FindAll(e => e is ChiusuraRichiesta).Count;
+                    var contRiapertura = _eventi.FindAll(e => e is RiaperturaRichiesta).Count;
+
+                    if (contChiusura > contRiapertura)
                         return new Chiusa();
                     else
                         return new InAttesa();
