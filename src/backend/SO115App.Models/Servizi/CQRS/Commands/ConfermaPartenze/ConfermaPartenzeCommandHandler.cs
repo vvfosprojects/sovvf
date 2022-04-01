@@ -247,7 +247,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 foreach (var partenza in command.ConfermaPartenze.Partenze)
                 {
                     var statoOperativoMezzo = mezziInRientro.Find(s => s.CodiceMezzo == partenza.Mezzo.Codice);
-                    var richiestaDaTerminare = _getRichiestaById.GetByCodice(statoOperativoMezzo.CodiceRichiesta);
+                    var richiestaDaTerminare = richiesteDaTerminare.Select(r => r.CodRichiesta).Contains(statoOperativoMezzo.CodiceRichiesta) 
+                        ? richiesteDaTerminare.Find(r => r.CodRichiesta.Equals(statoOperativoMezzo.CodiceRichiesta))
+                        : _getRichiestaById.GetByCodice(statoOperativoMezzo.CodiceRichiesta);
                     var partenzaDaTerminare = richiestaDaTerminare.lstPartenze.Find(p => p.Mezzo.Codice == partenza.Mezzo.Codice);
 
                     string note = $"La partenza {partenzaDaTerminare.Codice} con mezzo {partenza.Mezzo.Codice.Split('.').Last()} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {partenza.Codice}";
@@ -258,6 +260,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                     if (!richiesteDaTerminare.Select(r => r.Codice).Contains(richiestaDaTerminare.Codice))
                         richiesteDaTerminare.Add(richiestaDaTerminare);
+
+                    _updateRichiestaAssistenza.UpDate(richiestaDaTerminare);
 
                     //_setUscitaMezzo.Set(new SO115App.Models.Classi.ServiziEsterni.Gac.UscitaGAC
                     //{
@@ -270,10 +274,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             //SALVO SUL DB
 
-            if(richiesteDaTerminare != null && richiesteDaTerminare.Count > 0) foreach (var richiesta in richiesteDaTerminare.Where(r => !r.CodRichiesta.Equals(command.Richiesta.CodRichiesta)))
-            {
-                _updateRichiestaAssistenza.UpDate(richiesta);
-            }
+            //if(richiesteDaTerminare != null && richiesteDaTerminare.Count > 0) foreach (var richiesta in richiesteDaTerminare.Where(r => !r.CodRichiesta.Equals(command.Richiesta.CodRichiesta)))
+            //{
+            //}
 
             _updateConfermaPartenze.Update(command);
         }
