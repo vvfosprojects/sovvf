@@ -11,11 +11,11 @@
             <div class="d-inline-block float-left mr-2"
                  [ngbTooltip]="tooltipLockedConcorrenza"
                  placement="right"
-                 [disableTooltip]="!(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
+                 [disableTooltip]="!(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
                 <button class="btn btn-sm btn-danger font-weight-bold mt-1" ngbTooltip="Rimuovi utente"
                         placement="bottom"
                         [class.cursor-not-allowed]="utente.id === idUtenteLoggato"
-                        [disabled]="utente.id === idUtenteLoggato || (tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
+                        [disabled]="utente.id === idUtenteLoggato || (tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
                         (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
                     <i class="fas fa-trash"></i>
                 </button>
@@ -31,9 +31,9 @@
                          [ngbTooltip]="tooltipLockedConcorrenza"
                          placement="left"
                          container="body"
-                         [disableTooltip]="!(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
+                         [disableTooltip]="!(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
                         <button class="btn btn-primary btn-sm font-weight-bold"
-                                [disabled]="(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
+                                [disabled]="(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
                                 (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome, utente.ruoli)">
                             <i class="fas fa-plus"></i>
                         </button>
@@ -58,9 +58,9 @@
                                     <div class="d-inline-block float-right ml-3"
                                          [ngbTooltip]="tooltipLockedConcorrenza"
                                          placement="left"
-                                         [disableTooltip]="!(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
+                                         [disableTooltip]="!(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
                                         <button class="btn btn-danger btn-sm"
-                                                [disabled]="(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
+                                                [disabled]="(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
                                                 (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
                                             <i class="fas fa-sm fa-sm fa-trash"></i>
                                         </button>

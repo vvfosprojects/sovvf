@@ -44,10 +44,10 @@
                     <div class="d-inline-block mr-2"
                          [ngbTooltip]="tooltipLockedConcorrenza"
                          placement="left"
-                         [disableTooltip]="!(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id]) || !(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
+                         [disableTooltip]="!(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
                         <button class="btn btn-sm btn-info"
                                 ngbTooltip="Modifica Dettaglio Tipologia"
-                                [disabled]="(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id]) || (tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
+                                [disabled]="(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
                                 (click)="onEditDettaglioTipologia(dettaglioTipologia)">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -55,10 +55,10 @@
                     <div class="d-inline-block"
                          [ngbTooltip]="tooltipLockedConcorrenza"
                          placement="left"
-                         [disableTooltip]="!(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id]) || !(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
+                         [disableTooltip]="!(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
                         <button class="btn btn-sm btn-danger"
                                 ngbTooltip="Elimina Dettaglio Tipologia"
-                                [disabled]="(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id]) || (tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
+                                [disabled]="(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
                                 (click)="onDeleteDettaglioTipologia(dettaglioTipologia)">
                             <i class="fas fa-trash"></i>
                         </button>
