@@ -242,17 +242,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             if (riassegnazioni && !sganciamento)
             {
-                var statiMezzi = _getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede);
+                var mezziInRientro = _getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede).Where(m => m.StatoOperativo.Equals(Costanti.MezzoInRientro)).ToList();
 
-                var partenzeRiassegnate = command.ConfermaPartenze.Partenze
-                    .Where(partenza => statiMezzi.FirstOrDefault(m => m.CodiceMezzo.Equals(partenza.Mezzo.Codice))?.StatoOperativo.Equals(Costanti.MezzoInRientro) ?? false)
-                    .ToList();
-
-                foreach (var partenza in partenzeRiassegnate)
+                foreach (var partenza in command.ConfermaPartenze.Partenze)
                 {
-                    var statoOperativoMezzo = statiMezzi.Find(s => s.CodiceMezzo == partenza.Mezzo.Codice);
+                    var statoOperativoMezzo = mezziInRientro.Find(s => s.CodiceMezzo == partenza.Mezzo.Codice);
                     var richiestaDaTerminare = _getRichiestaById.GetByCodice(statoOperativoMezzo.CodiceRichiesta);
-                    richiesteDaTerminare.Add(richiestaDaTerminare);
                     var partenzaDaTerminare = richiestaDaTerminare.lstPartenze.Find(p => p.Mezzo.Codice == partenza.Mezzo.Codice);
 
                     string note = $"La partenza {partenzaDaTerminare.Codice} con mezzo {partenza.Mezzo.Codice.Split('.').Last()} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {partenza.Codice}";
@@ -260,6 +255,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     new MezzoRiassegnato(richiestaDaTerminare, partenza.Mezzo.Codice.Split('.').Last(), dataAdesso, command.Utente.Id, "MezzoRiassegnato", partenza.Codice, note);
 
                     partenzaDaTerminare.Terminata = true;
+
+                    if (!richiesteDaTerminare.Select(r => r.Codice).Contains(richiestaDaTerminare.Codice))
+                        richiesteDaTerminare.Add(richiestaDaTerminare);
 
                     //_setUscitaMezzo.Set(new SO115App.Models.Classi.ServiziEsterni.Gac.UscitaGAC
                     //{
