@@ -10,7 +10,7 @@
         <td style="width: 40%" class="pb-1">
             <div class="d-inline-block float-left mr-2"
                  [ngbTooltip]="tooltipLockedConcorrenza"
-                 placement="left"
+                 placement="right"
                  [disableTooltip]="!(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
                 <button class="btn btn-sm btn-danger font-weight-bold mt-1" ngbTooltip="Rimuovi utente"
                         placement="bottom"
@@ -30,6 +30,7 @@
                     <div class="d-inline-block"
                          [ngbTooltip]="tooltipLockedConcorrenza"
                          placement="left"
+                         container="body"
                          [disableTooltip]="!(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
                         <button class="btn btn-primary btn-sm font-weight-bold"
                                 [disabled]="(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"

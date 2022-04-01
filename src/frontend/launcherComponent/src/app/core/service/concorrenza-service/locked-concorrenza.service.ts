@@ -167,25 +167,25 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.EliminaDettaglioTipologia
                 ];
                 break;
-            case TipoConcorrenzaEnum.AggiungiRuoloUtente: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.AggiungiRuoloUtente:
                 blocks = [
                     TipoConcorrenzaEnum.AggiungiRuoloUtente,
                     TipoConcorrenzaEnum.EliminaUtente
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaRuoloUtente: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.EliminaRuoloUtente:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaUtente,
                     TipoConcorrenzaEnum.AggiungiRuoloUtente
                 ];
                 break;
-            case TipoConcorrenzaEnum.ModificaRuoloUtente: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.ModificaRuoloUtente:
                 blocks = [
                     TipoConcorrenzaEnum.ModificaRuoloUtente,
                     TipoConcorrenzaEnum.EliminaUtente
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaUtente: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.EliminaUtente:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaUtente,
                     TipoConcorrenzaEnum.AggiungiRuoloUtente,
