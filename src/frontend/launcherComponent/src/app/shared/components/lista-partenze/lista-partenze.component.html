@@ -24,21 +24,11 @@
         </div>
     </div>
     <ng-template [ngIf]="inGestione && sostituzioneFineTurnoActive">
-        <div class="d-inline-block"
-             [ngbTooltip]="tooltipLockedConcorrenza"
-             [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])">
-            <button class="btn btn-sm btn-info" ngbTooltip="Sostituzione Fine Turno"
-                    style="position:absolute; top:-14px; left:-14px"
-                    [disabled]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
-                    [class.cursor-not-allowed]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]"
-                    (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
-                <i class="fas fa-sync-alt"></i>
-            </button>
-        </div>
+        <button class="btn btn-sm btn-info"
+                ngbTooltip="Sostituzione Fine Turno"
+                style="position:absolute; top:-14px; left:-14px"
+                (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
+            <i class="fas fa-sync-alt"></i>
+        </button>
     </ng-template>
 </ng-container>
-
-<ng-template #tooltipLockedConcorrenza>
-    <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice] }}
-</ng-template>

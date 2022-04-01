@@ -44,7 +44,7 @@ export class LockedConcorrenzaService {
                 break;
             case TipoConcorrenzaEnum.ChiusuraIntervento:
                 blocks = [
-                    TipoConcorrenzaEnum.ChiusuraChiamata,
+                    TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.Trasferimento,
                     TipoConcorrenzaEnum.Sganciamento,
                     TipoConcorrenzaEnum.Modifica,

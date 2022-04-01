@@ -159,7 +159,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                     this.richiesta = r;
                     const currentUser = this.store.selectSnapshot(AuthState.currentUser);
                     const concorrenza = this.store.selectSnapshot(ConcorrenzaState.concorrenza);
-                    const richiestaConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === this.richiesta.codice)[0];
+                    const richiestaConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.InvioPartenza && c.value === this.richiesta.codice)[0];
                     if (!richiestaConcorrenza) {
                         const data = {
                             type: TipoConcorrenzaEnum.InvioPartenza,

@@ -63,76 +63,74 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string, ora?: string, event?: MouseEvent): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice])) {
-            if (event) {
-                event.stopPropagation();
-            }
-            let modal;
-            const dataInViaggio = {
-                anno: '',
-                mese: '',
-                giorno: '',
-                ora: '',
-                minuti: ''
-            };
-            if (ora) {
-                const indexOra = ora.indexOf('T') + 1;
-                const indexMin = ora.indexOf(':') + 1;
-                const indexFirstCut = ora.indexOf('-') + 1;
-                const indexSecondCut = ora.lastIndexOf('-') + 1;
-                dataInViaggio.ora = ora.slice(indexOra, indexOra + 2);
-                dataInViaggio.minuti = ora.slice(indexMin, indexMin + 2);
-                dataInViaggio.anno = ora.slice(0, 4);
-                dataInViaggio.mese = ora.slice(indexFirstCut, indexSecondCut - 1);
-                dataInViaggio.giorno = ora.slice(indexSecondCut, indexOra - 1);
-            }
-            modal = this.modalService.open(MezzoActionsModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                size: 'lg',
-                centered: true
-            });
-            const data = {
-                value: this.mezzo.codice,
-                type: TipoConcorrenzaEnum.CambioStatoPartenza
-            } as AddConcorrenzaDtoInterface;
-            this.store.dispatch(new AddConcorrenza([data]));
-            modal.componentInstance.codicePartenza = this.codicePartenza;
-            modal.componentInstance.statoMezzo = this.mezzo.stato;
-            modal.componentInstance.codiceMezzo = this.mezzo.codice;
-            modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
-            modal.componentInstance.action = action;
-            modal.componentInstance.modificaOrario = !!ora;
-            modal.componentInstance.titleStato = ': ' + action;
-            modal.componentInstance.dataInViaggio = dataInViaggio;
-            modal.componentInstance.listaEventi = this.listaEventi;
-            modal.componentInstance.ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
-            modal.result.then((res: { status: string, result: any }) => {
-                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
-                switch (res.status) {
-                    case 'ok':
-                        if (action) {
-                            this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
-                            const orario = res.result.oraEvento;
-                            const dataEvento = res.result.dataEvento;
-                            const azioneIntervento = res.result.azioneIntervento;
-                            this.actionMezzo.emit({
-                                mezzoAction: this.statoMezzoActions,
-                                oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
-                                dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
-                                azioneIntervento,
-                                codicePartenza: this.codicePartenza,
-                                modificaOrario: res.result.modificaOrario
-                            });
-                        } else {
-                            this.actionMezzo.emit();
-                        }
-                        break;
-                    case 'ko':
-                        break;
-                }
-            }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])));
+        if (event) {
+            event.stopPropagation();
         }
+        let modal;
+        const dataInViaggio = {
+            anno: '',
+            mese: '',
+            giorno: '',
+            ora: '',
+            minuti: ''
+        };
+        if (ora) {
+            const indexOra = ora.indexOf('T') + 1;
+            const indexMin = ora.indexOf(':') + 1;
+            const indexFirstCut = ora.indexOf('-') + 1;
+            const indexSecondCut = ora.lastIndexOf('-') + 1;
+            dataInViaggio.ora = ora.slice(indexOra, indexOra + 2);
+            dataInViaggio.minuti = ora.slice(indexMin, indexMin + 2);
+            dataInViaggio.anno = ora.slice(0, 4);
+            dataInViaggio.mese = ora.slice(indexFirstCut, indexSecondCut - 1);
+            dataInViaggio.giorno = ora.slice(indexSecondCut, indexOra - 1);
+        }
+        modal = this.modalService.open(MezzoActionsModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            size: 'lg',
+            centered: true
+        });
+        const data = {
+            value: this.mezzo.codice,
+            type: TipoConcorrenzaEnum.CambioStatoPartenza
+        } as AddConcorrenzaDtoInterface;
+        this.store.dispatch(new AddConcorrenza([data]));
+        modal.componentInstance.codicePartenza = this.codicePartenza;
+        modal.componentInstance.statoMezzo = this.mezzo.stato;
+        modal.componentInstance.codiceMezzo = this.mezzo.codice;
+        modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
+        modal.componentInstance.action = action;
+        modal.componentInstance.modificaOrario = !!ora;
+        modal.componentInstance.titleStato = ': ' + action;
+        modal.componentInstance.dataInViaggio = dataInViaggio;
+        modal.componentInstance.listaEventi = this.listaEventi;
+        modal.componentInstance.ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
+        modal.result.then((res: { status: string, result: any }) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
+            switch (res.status) {
+                case 'ok':
+                    if (action) {
+                        this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
+                        const orario = res.result.oraEvento;
+                        const dataEvento = res.result.dataEvento;
+                        const azioneIntervento = res.result.azioneIntervento;
+                        this.actionMezzo.emit({
+                            mezzoAction: this.statoMezzoActions,
+                            oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
+                            dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
+                            azioneIntervento,
+                            codicePartenza: this.codicePartenza,
+                            modificaOrario: res.result.modificaOrario
+                        });
+                    } else {
+                        this.actionMezzo.emit();
+                    }
+                    break;
+                case 'ko':
+                    break;
+            }
+        }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])));
     }
 
     getListaEventiMezzo(): void {
