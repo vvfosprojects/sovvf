@@ -8,12 +8,18 @@
     <tbody>
     <tr *ngFor="let utente of listaUtenti">
         <td style="width: 40%" class="pb-1">
-            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-3" ngbTooltip="Rimuovi utente"
-                    placement="bottom" [disabled]="utente.id === idUtenteLoggato"
-                    [class.cursor-not-allowed]="utente.id === idUtenteLoggato"
-                    (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
-                <i class="fas fa-trash"></i>
-            </button>
+            <div class="d-inline-block float-left mr-2"
+                 [ngbTooltip]="tooltipLockedConcorrenza"
+                 placement="left"
+                 [disableTooltip]="!(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
+                <button class="btn btn-sm btn-danger font-weight-bold mt-1" ngbTooltip="Rimuovi utente"
+                        placement="bottom"
+                        [class.cursor-not-allowed]="utente.id === idUtenteLoggato"
+                        [disabled]="utente.id === idUtenteLoggato || (tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
+                        (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
             <div class="h5 font-weight-bold mt-1 pt-1">
                 <span [ngbTooltip]="utente?.codiceFiscale">{{utente.cognome | uppercase}} {{utente.nome | uppercase}}</span>
             </div>
@@ -21,10 +27,16 @@
         <td style="width: 60%">
             <div class="row">
                 <div class="col-1" style="display: flex; align-items: center;">
-                    <button class="btn btn-primary btn-sm font-weight-bold"
-                            (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome, utente.ruoli)">
-                        <i class="fas fa-plus"></i>
-                    </button>
+                    <div class="d-inline-block"
+                         [ngbTooltip]="tooltipLockedConcorrenza"
+                         placement="left"
+                         [disableTooltip]="!(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
+                        <button class="btn btn-primary btn-sm font-weight-bold"
+                                [disabled]="(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
+                                (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome, utente.ruoli)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="col-11">
                     <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
@@ -32,18 +44,26 @@
                             [class.border-bottom]="(i + 1) < utente.ruoli?.length">
                             <div class="clearfix">
                                 <div class="float-left mt-1">
-                                    <i [ngbTooltip]="'In profondità'" placement="top" class="mx-3 far fa-clone"
+                                    <i class="far fa-clone mx-3"
                                        [ngClass]="{'fa-clone': ruolo.ricorsivo, 'fa-square': !ruolo.ricorsivo}"
-                                    ></i>
+                                       [ngbTooltip]="'In profondità'"
+                                       placement="top">
+                                    </i>
                                     <span class="font-weight-bolder mr-1">{{wipeRoleString(ruolo.descrizione)}}</span>
                                     di
                                     <span class="font-weight-bolder ml-1">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>
                                 </div>
                                 <div class="float-right">
-                                    <button class="btn btn-danger btn-sm float-right ml-3"
-                                            (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
-                                        <i class="fas fa-sm fa-sm fa-trash"></i>
-                                    </button>
+                                    <div class="d-inline-block float-right ml-3"
+                                         [ngbTooltip]="tooltipLockedConcorrenza"
+                                         placement="left"
+                                         [disableTooltip]="!(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || !(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
+                                        <button class="btn btn-danger btn-sm"
+                                                [disabled]="(tipoConcorrenzaEnum.EliminaUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.AggiungiRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.ModificaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale]) || (tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
+                                                (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
+                                            <i class="fas fa-sm fa-sm fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -57,6 +77,11 @@
                 </div>
             </div>
         </td>
+
+        <ng-template #tooltipLockedConcorrenza>
+            <i class="fas fa-lock mr-1"></i>
+            {{ getTooltipConcorrenzaText(utente) }}
+        </ng-template>
     </tr>
     <tr *ngIf="listaUtenti?.length <= 0">
         <td>

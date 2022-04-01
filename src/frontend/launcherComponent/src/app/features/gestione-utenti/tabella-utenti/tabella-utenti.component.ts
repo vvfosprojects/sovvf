@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { wipeStringUppercase } from '../../../shared/helper/function-generiche';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-tabella-utenti',
@@ -24,7 +26,9 @@ export class TabellaUtentiComponent {
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
-    constructor() {
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
+    constructor(private lockedConcorrenzaService: LockedConcorrenzaService) {
     }
 
     onRemoveUtente(codFiscale: string, nominativoUtente: string): void {
@@ -44,5 +48,24 @@ export class TabellaUtentiComponent {
 
     wipeRoleString(text: string): string {
         return wipeStringUppercase(text);
+    }
+
+    getTooltipConcorrenzaText(utente: Utente): string {
+        const eliminaUtenteLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.EliminaUtente, [utente.codiceFiscale]);
+        const aggiungiRuoloUtenteLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.AggiungiRuoloUtente, [utente.codiceFiscale]);
+        const modificaRuoloUtenteLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.ModificaRuoloUtente, [utente.codiceFiscale]);
+        const eliminaRuoloUtenteLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.EliminaRuoloUtente, [utente.codiceFiscale]);
+        const allLocked = eliminaUtenteLocked && aggiungiRuoloUtenteLocked && modificaRuoloUtenteLocked && eliminaRuoloUtenteLocked;
+        if (allLocked) {
+            return eliminaUtenteLocked;
+        } else if (eliminaUtenteLocked) {
+            return eliminaUtenteLocked;
+        } else if (aggiungiRuoloUtenteLocked) {
+            return aggiungiRuoloUtenteLocked;
+        } else if (modificaRuoloUtenteLocked) {
+            return modificaRuoloUtenteLocked;
+        } else if (eliminaRuoloUtenteLocked) {
+            return eliminaRuoloUtenteLocked;
+        }
     }
 }

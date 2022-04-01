@@ -2,21 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import {
-    ClearRicercaUtenti,
-    ReducerSelezioneFiltroSede,
-    ResetSediFiltroSelezionate,
-    SetRicercaUtenti
-} from './store/actions/ricerca-utenti/ricerca-utenti.actons';
+import { ClearRicercaUtenti, ReducerSelezioneFiltroSede, ResetSediFiltroSelezionate, SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-    AddRuoloUtenteGestione,
-    AddUtenteGestione,
-    ClearDataModalAddUtenteModal,
-    GetUtentiGestione,
-    RemoveRuoloUtente,
-    RemoveUtente
-} from './store/actions/gestione-utenti/gestione-utenti.actions';
+import { AddRuoloUtenteGestione, AddUtenteGestione, ClearDataModalAddUtenteModal, GetUtentiGestione, RemoveRuoloUtente, RemoveUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
@@ -32,6 +20,8 @@ import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 import { GetDistaccamenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
+import { TipoConcorrenzaEnum } from '../../shared/enum/tipo-concorrenza.enum';
+import { AddConcorrenza, DeleteConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -156,17 +146,24 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         aggiungiRuoloUtenteModal.componentInstance.nominativoUtenteVVF = nominativoUtenteVVF;
         aggiungiRuoloUtenteModal.componentInstance.ruoliAttuali = ruoliAttuali;
         aggiungiRuoloUtenteModal.componentInstance.addRuoloUtente = true;
-        aggiungiRuoloUtenteModal.result.then(
-            (result: { success: boolean }) => {
+        const data = {
+            type: TipoConcorrenzaEnum.AggiungiRuoloUtente,
+            value: event.codFiscale
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        aggiungiRuoloUtenteModal.result.then((result: { success: boolean }) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.AggiungiRuoloUtente, [event.codFiscale]));
                 if (result.success) {
                     this.store.dispatch(new AddRuoloUtenteGestione());
                 } else if (!result.success) {
                     this.store.dispatch(new ClearDataModalAddUtenteModal());
                     console.log('Modal "addRuoloUtente" chiusa con val ->', result);
                 }
-            },
-            (err) => {
-                this.store.dispatch(new ClearDataModalAddUtenteModal());
+            }, (err) => {
+                this.store.dispatch([
+                    new DeleteConcorrenza(TipoConcorrenzaEnum.AggiungiRuoloUtente, [event.codFiscale]),
+                    new ClearDataModalAddUtenteModal()
+                ]);
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
@@ -182,9 +179,13 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + wipeStringUppercase(payload.ruolo.descrizione) + '" su "' + payload.ruolo.descSede + '"?';
-
-        modalConfermaAnnulla.result.then(
-            (val) => {
+        const data = {
+            type: TipoConcorrenzaEnum.EliminaRuoloUtente,
+            value: payload.codFiscale
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        modalConfermaAnnulla.result.then((val) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaRuoloUtente, [payload.codFiscale]));
                 switch (val) {
                     case 'ok':
                         this.store.dispatch(new RemoveRuoloUtente(payload.codFiscale, payload.ruolo));
@@ -194,8 +195,10 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                         break;
                 }
                 // console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            }, (err) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaRuoloUtente, [payload.codFiscale]));
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
         );
     }
 
@@ -213,8 +216,13 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
             { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
         ];
-        modalConfermaAnnulla.result.then(
-            (val) => {
+        const data = {
+            type: TipoConcorrenzaEnum.EliminaUtente,
+            value: payload.codFiscale
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        modalConfermaAnnulla.result.then((val) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaUtente, [payload.codFiscale]));
                 switch (val) {
                     case 'ok':
                         this.store.dispatch(new RemoveUtente(payload.codFiscale));
@@ -224,8 +232,10 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                         break;
                 }
                 // console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            }, (err) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaUtente, [payload.codFiscale]));
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
         );
     }
 
