@@ -48,7 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             {
                 try
                 {
-                    _service.SetCache("Squadre_" + Codice);
+                    //_service.SetCache("Squadre_" + Codice);
 
                     result = await _service.GetAsync(url);
 
@@ -60,17 +60,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                     {
                         result.Distaccamento = Codice;
 
+                        _memoryCache.Set("listaSquadre-" + Codice, result, cacheEntryOptions);
                         _set.Set(result);
                     }
 
-                    _memoryCache.Set("listaSquadre-" + Codice, result, cacheEntryOptions);
                     return result;
                 }
                 catch (Exception e)
                 {
                     result = GetFromDB(Codice);
 
-                    _memoryCache.Set("listaSquadre-" + Codice, result, cacheEntryOptions);
+                    if (result != null && result.Squadre.Length > 0)
+                        _memoryCache.Set("listaSquadre-" + Codice, result, cacheEntryOptions);
+
                     return result;
                 }
             }

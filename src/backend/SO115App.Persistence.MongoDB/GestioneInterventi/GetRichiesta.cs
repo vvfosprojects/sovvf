@@ -254,9 +254,9 @@ namespace SO115App.Persistence.MongoDB
                 if (filtro.IndirizzoIntervento.Indirizzo != null)
                 {
                     if (filtro.SoloChiuse)
-                        result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && o.Localita.Citta.Equals(filtro.IndirizzoIntervento.Citta) && o.Chiusa).ToList();
+                        result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && o.Chiusa).ToList();
                     else
-                        result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && o.Localita.Citta.Equals(filtro.IndirizzoIntervento.Citta) && !o.Chiusa).ToList();
+                        result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && !o.Chiusa).ToList();
                 }
             }
 
