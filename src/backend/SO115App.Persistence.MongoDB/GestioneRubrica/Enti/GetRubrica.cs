@@ -65,11 +65,12 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
 
-            var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Distinct().Contains(c.CodSede)).ToList()
-                .Where(c => c.Descrizione.ToLower().Contains(text) || c.Email.ToLower().Contains(text) || c.Indirizzo.ToLower().Contains(text)).ToList();
+            var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Distinct().Contains(c.CodSede)).ToList();
+
+            var listaFiltrata =  lstEnti.Where(c => c.Descrizione.ToLower().Contains(text)).ToList();
 
             //GESTIONE RICORSIVITA'
-            var result = FiltraByRicorsività(listaPin, lstEnti);
+            var result = FiltraByRicorsività(listaPin, listaFiltrata);
 
             //RECUPERO LE CATEGORIE
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
