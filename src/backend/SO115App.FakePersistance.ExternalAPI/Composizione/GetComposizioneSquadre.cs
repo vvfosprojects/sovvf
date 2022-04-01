@@ -184,8 +184,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })
             .ContinueWith(lstSquadre => lstSquadre.Result.Where(squadra => //FILTRAGGIO
             {
-                bool squadraInRientroSuMezzo = query.Filtro?.CodMezzoSelezionato == null || 
-                    (lstStatiSquadre.Result?.FirstOrDefault(s => s.IdSquadra.Equals(squadra.Codice))?.CodMezzo.Equals(query.Filtro?.CodMezzoSelezionato) ?? false);
+                //bool squadraInRientroSuMezzo = query.Filtro?.CodMezzoSelezionato == null || 
+                //    (lstStatiSquadre.Result?.FirstOrDefault(s => s.IdSquadra.Equals(squadra.Codice))?.CodMezzo.Equals(query.Filtro?.CodMezzoSelezionato) ?? false);
 
                 bool diEmergenza = squadra.DiEmergenza == query.Filtro?.DiEmergenza;
 
@@ -194,6 +194,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
                     query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true :
                     query.Filtro.CodDistaccamentoSelezionato.Equals(squadra.Distaccamento?.Codice);
+
+                var statoMezzo = lstStatiMezzi.Result?.FirstOrDefault(m => m.CodiceMezzo.Equals(query.Filtro?.CodMezzoSelezionato));
+
+                bool squadraInRientroSuMezzo = statoMezzo?.StatoOperativo?.Equals(Costanti.MezzoInRientro) ?? false
+                    ? query.Filtro?.CodMezzoSelezionato == null || (lstStatiSquadre.Result?.FirstOrDefault(s => s.IdSquadra.Equals(squadra.Codice))?.CodMezzo.Equals(query.Filtro?.CodMezzoSelezionato) ?? false)
+                    : distaccamento;
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro.Ricerca) ||
                     squadra.Nome.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
