@@ -63,8 +63,8 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                     break;
 
                 case TipoOperazione.Allerta:
-                    var allerta = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato) && !r.IdOperatore.Equals(idUtente) 
-                                &&   ( r.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                    var allerta = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato) && !r.IdOperatore.Equals(idUtente)
+                                && (r.Type.Equals(TipoOperazione.ChiusuraChiamata)
                                     || r.Type.Equals(TipoOperazione.ChiusuraIntervento)
                                     || r.Type.Equals(TipoOperazione.Trasferimento)
                                     || r.Type.Equals(TipoOperazione.Allerta)));
@@ -84,7 +84,8 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                                     || r.Type.Equals(TipoOperazione.Trasferimento)
                                     || r.Type.Equals(TipoOperazione.InvioPartenza)
                                     || r.Type.Equals(TipoOperazione.Allerta)
-                                    || r.Type.Equals(TipoOperazione.Sganciamento)));
+                                    || r.Type.Equals(TipoOperazione.Sganciamento)
+                                    || r.Type.Equals(TipoOperazione.CambioStatoPartenza)));
 
                     if (trasferimento == null)
                         ret = true;
@@ -110,7 +111,10 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                     var gestPartenza = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
                                     && !r.IdOperatore.Equals(idUtente)
                                     && (r.Type.Equals(TipoOperazione.GestisciPartenza)
-                                    || r.Type.Equals(TipoOperazione.CambioStatoPartenza)));
+                                    || r.Type.Equals(TipoOperazione.CambioStatoPartenza)
+                                    || r.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                                    || r.Type.Equals(TipoOperazione.ChiusuraIntervento)
+                                    || r.Type.Equals(TipoOperazione.Sganciamento)));
 
                     if (gestPartenza == null)
                         ret = true;
@@ -122,7 +126,10 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                     var cambioStatoPartenza = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
                                     && !r.IdOperatore.Equals(idUtente)
                                     && (r.Type.Equals(TipoOperazione.GestisciPartenza)
-                                    || r.Type.Equals(TipoOperazione.CambioStatoPartenza)));
+                                    || r.Type.Equals(TipoOperazione.CambioStatoPartenza)
+                                    || r.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                                    || r.Type.Equals(TipoOperazione.ChiusuraIntervento)
+                                    || r.Type.Equals(TipoOperazione.Sganciamento)));
 
                     if (cambioStatoPartenza == null)
                         ret = true;
@@ -135,7 +142,8 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                                     && !r.IdOperatore.Equals(idUtente)
                                     && (r.Type.Equals(TipoOperazione.Modifica)
                                     || r.Type.Equals(TipoOperazione.ChiusuraIntervento)
-                                    || r.Type.Equals(TipoOperazione.ChiusuraChiamata)));
+                                    || r.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                                    || r.Type.Equals(TipoOperazione.Trasferimento)));
 
                     if (modifica == null)
                         ret = true;
@@ -248,7 +256,9 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                     var eliminaDetTipologia = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
                                                                    && !r.IdOperatore.Equals(idUtente)
                                                                    && (r.Type.Equals(TipoOperazione.ModificaDettaglioTipologia)
-                                                                   || r.Type.Equals(TipoOperazione.EliminaDettaglioTipologia)));
+                                                                   || r.Type.Equals(TipoOperazione.EliminaDettaglioTipologia)
+                                                                   || r.Type.Equals(TipoOperazione.ModificaTriage)
+                                                                   || r.Type.Equals(TipoOperazione.EliminaTriage)));
 
                     if (eliminaDetTipologia == null)
                         ret = true;
@@ -259,7 +269,9 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                 case TipoOperazione.ModificaTriage:
                     var modificaTriage = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
                                                                    && !r.IdOperatore.Equals(idUtente)
-                                                                   && (r.Type.Equals(TipoOperazione.ModificaTriage)
+                                                                   && (r.Type.Equals(TipoOperazione.ModificaDettaglioTipologia)
+                                                                   || r.Type.Equals(TipoOperazione.EliminaDettaglioTipologia)
+                                                                   || r.Type.Equals(TipoOperazione.ModificaTriage)
                                                                    || r.Type.Equals(TipoOperazione.EliminaTriage)));
 
                     if (modificaTriage == null)
@@ -271,7 +283,9 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                 case TipoOperazione.EliminaTriage:
                     var eliminaTriage = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
                                                                    && !r.IdOperatore.Equals(idUtente)
-                                                                   && (r.Type.Equals(TipoOperazione.ModificaTriage)
+                                                                   && (r.Type.Equals(TipoOperazione.ModificaDettaglioTipologia)
+                                                                   || r.Type.Equals(TipoOperazione.EliminaDettaglioTipologia)
+                                                                   || r.Type.Equals(TipoOperazione.ModificaTriage)
                                                                    || r.Type.Equals(TipoOperazione.EliminaTriage)));
 
                     if (eliminaTriage == null)
@@ -283,11 +297,24 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                 case TipoOperazione.AggiungiRuoloUtente:
                     var aggiungiRuoloUtente = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
                                                                    && !r.IdOperatore.Equals(idUtente)
-                                                                   && (r.Type.Equals(TipoOperazione.ModificaRuoloUtente)
+                                                                   && (r.Type.Equals(TipoOperazione.AggiungiRuoloUtente)
+                                                                   || r.Type.Equals(TipoOperazione.ModificaRuoloUtente)
+                                                                   || r.Type.Equals(TipoOperazione.EliminaUtente)));
+                    if (aggiungiRuoloUtente == null)
+                        ret = true;
+                    else
+                        ret = false;
+                    break;
+
+                case TipoOperazione.EliminaUtente:
+                    var eliminaUtente = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
+                                                                   && !r.IdOperatore.Equals(idUtente)
+                                                                   && (r.Type.Equals(TipoOperazione.AggiungiRuoloUtente)
+                                                                   || r.Type.Equals(TipoOperazione.ModificaRuoloUtente)
                                                                    || r.Type.Equals(TipoOperazione.EliminaRuoloUtente)
                                                                    || r.Type.Equals(TipoOperazione.EliminaUtente)));
 
-                    if (aggiungiRuoloUtente == null)
+                    if (eliminaUtente == null)
                         ret = true;
                     else
                         ret = false;
