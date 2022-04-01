@@ -41,15 +41,34 @@
                 <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
                 <td class="align-middle" style="width:30%">{{ dettaglioTipologia.descrizione }}</td>
                 <td style="width:35%">
-                    <button class="btn btn-sm btn-info mr-2" ngbTooltip="Modifica Dettaglio Tipologia"
-                            (click)="onEditDettaglioTipologia(dettaglioTipologia)">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" ngbTooltip="Elimina Dettaglio Tipologia"
-                            (click)="onDeleteDettaglioTipologia(dettaglioTipologia)">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <div class="d-inline-block mr-2"
+                         [ngbTooltip]="tooltipLockedConcorrenza"
+                         placement="left"
+                         [disableTooltip]="!(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id]) || !(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
+                        <button class="btn btn-sm btn-info"
+                                ngbTooltip="Modifica Dettaglio Tipologia"
+                                [disabled]="(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id]) || (tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
+                                (click)="onEditDettaglioTipologia(dettaglioTipologia)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="d-inline-block"
+                         [ngbTooltip]="tooltipLockedConcorrenza"
+                         placement="left"
+                         [disableTooltip]="!(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id]) || !(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
+                        <button class="btn btn-sm btn-danger"
+                                ngbTooltip="Elimina Dettaglio Tipologia"
+                                [disabled]="(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id]) || (tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
+                                (click)="onDeleteDettaglioTipologia(dettaglioTipologia)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </td>
+
+                <ng-template #tooltipLockedConcorrenza>
+                    <i class="fas fa-lock mr-1"></i>
+                    {{ getTooltipConcorrenzaText(dettaglioTipologia) }}
+                </ng-template>
             </tr>
             </tbody>
         </table>
