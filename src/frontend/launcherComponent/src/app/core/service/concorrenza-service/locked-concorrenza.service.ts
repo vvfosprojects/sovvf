@@ -137,18 +137,18 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ModificaPianiDiscendenti
                 ];
                 break;
-            case TipoConcorrenzaEnum.ModificaDettaglioTipologia: // TODO: implementare nel DOM
-                // TODO: completare e rianalizzare, coinvolge anche il triage
+            case TipoConcorrenzaEnum.ModificaDettaglioTipologia:
                 blocks = [
                     TipoConcorrenzaEnum.ModificaDettaglioTipologia,
                     TipoConcorrenzaEnum.EliminaDettaglioTipologia
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaDettaglioTipologia: // TODO: implementare nel DOM
-                // TODO: completare e rianalizzare, coinvolge anche il triage
+            case TipoConcorrenzaEnum.EliminaDettaglioTipologia:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaDettaglioTipologia,
-                    TipoConcorrenzaEnum.ModificaDettaglioTipologia
+                    TipoConcorrenzaEnum.ModificaDettaglioTipologia,
+                    TipoConcorrenzaEnum.ModificaTriage,
+                    TipoConcorrenzaEnum.EliminaTriage
                 ];
                 break;
             case TipoConcorrenzaEnum.ModificaTriage: // TODO: implementare nel DOM
