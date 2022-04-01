@@ -36,19 +36,25 @@ export class LockedConcorrenzaService {
             case TipoConcorrenzaEnum.ChiusuraChiamata:
                 blocks = [
                     TipoConcorrenzaEnum.ChiusuraChiamata,
+                    TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.Trasferimento,
                     TipoConcorrenzaEnum.Sganciamento,
                     TipoConcorrenzaEnum.Modifica,
-                    TipoConcorrenzaEnum.InvioPartenza
+                    TipoConcorrenzaEnum.InvioPartenza,
+                    TipoConcorrenzaEnum.Allerta,
+                    TipoConcorrenzaEnum.CambioStatoPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.ChiusuraIntervento:
                 blocks = [
                     TipoConcorrenzaEnum.ChiusuraIntervento,
+                    TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.Trasferimento,
                     TipoConcorrenzaEnum.Sganciamento,
                     TipoConcorrenzaEnum.Modifica,
-                    TipoConcorrenzaEnum.InvioPartenza
+                    TipoConcorrenzaEnum.InvioPartenza,
+                    TipoConcorrenzaEnum.Allerta,
+                    TipoConcorrenzaEnum.CambioStatoPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.Modifica:
@@ -65,7 +71,10 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.Sganciamento,
-                    TipoConcorrenzaEnum.InvioPartenza
+                    TipoConcorrenzaEnum.InvioPartenza,
+                    TipoConcorrenzaEnum.Allerta,
+                    TipoConcorrenzaEnum.Modifica,
+                    TipoConcorrenzaEnum.CambioStatoPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.InvioPartenza:
@@ -172,13 +181,15 @@ export class LockedConcorrenzaService {
             case TipoConcorrenzaEnum.AggiungiRuoloUtente:
                 blocks = [
                     TipoConcorrenzaEnum.AggiungiRuoloUtente,
+                    TipoConcorrenzaEnum.ModificaRuoloUtente,
                     TipoConcorrenzaEnum.EliminaUtente
                 ];
                 break;
             case TipoConcorrenzaEnum.EliminaRuoloUtente:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaUtente,
-                    TipoConcorrenzaEnum.AggiungiRuoloUtente
+                    TipoConcorrenzaEnum.AggiungiRuoloUtente,
+                    TipoConcorrenzaEnum.ModificaRuoloUtente
                 ];
                 break;
             case TipoConcorrenzaEnum.ModificaRuoloUtente:
