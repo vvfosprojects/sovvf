@@ -63,7 +63,7 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string, ora?: string, event?: MouseEvent): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice])) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])) {
             if (event) {
                 event.stopPropagation();
             }

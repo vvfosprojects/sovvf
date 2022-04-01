@@ -169,6 +169,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     isLockedConcorrenza(): string {
-        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codRichiesta]);
+        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.codRichiesta]);
     }
 }

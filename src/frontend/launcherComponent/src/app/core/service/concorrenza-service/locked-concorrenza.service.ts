@@ -36,19 +36,25 @@ export class LockedConcorrenzaService {
             case TipoConcorrenzaEnum.ChiusuraChiamata:
                 blocks = [
                     TipoConcorrenzaEnum.ChiusuraChiamata,
+                    TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.Trasferimento,
                     TipoConcorrenzaEnum.Sganciamento,
                     TipoConcorrenzaEnum.Modifica,
-                    TipoConcorrenzaEnum.InvioPartenza
+                    TipoConcorrenzaEnum.InvioPartenza,
+                    TipoConcorrenzaEnum.Allerta,
+                    TipoConcorrenzaEnum.CambioStatoPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.ChiusuraIntervento:
                 blocks = [
+                    TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.Trasferimento,
                     TipoConcorrenzaEnum.Sganciamento,
                     TipoConcorrenzaEnum.Modifica,
-                    TipoConcorrenzaEnum.InvioPartenza
+                    TipoConcorrenzaEnum.InvioPartenza,
+                    TipoConcorrenzaEnum.Allerta,
+                    TipoConcorrenzaEnum.CambioStatoPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.Modifica:
@@ -65,7 +71,10 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.Sganciamento,
-                    TipoConcorrenzaEnum.InvioPartenza
+                    TipoConcorrenzaEnum.InvioPartenza,
+                    TipoConcorrenzaEnum.Allerta,
+                    TipoConcorrenzaEnum.Modifica,
+                    TipoConcorrenzaEnum.CambioStatoPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.InvioPartenza:
@@ -89,7 +98,8 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.CambioStatoPartenza,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento,
-                    TipoConcorrenzaEnum.GestisciPartenza
+                    TipoConcorrenzaEnum.GestisciPartenza,
+                    TipoConcorrenzaEnum.Sganciamento
                 ];
                 break;
             case TipoConcorrenzaEnum.GestisciPartenza:
@@ -97,7 +107,8 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.GestisciPartenza,
                     TipoConcorrenzaEnum.CambioStatoPartenza,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
-                    TipoConcorrenzaEnum.ChiusuraIntervento
+                    TipoConcorrenzaEnum.ChiusuraIntervento,
+                    TipoConcorrenzaEnum.Sganciamento
                 ];
                 break;
             case TipoConcorrenzaEnum.Sganciamento:
@@ -137,55 +148,57 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ModificaPianiDiscendenti
                 ];
                 break;
-            case TipoConcorrenzaEnum.ModificaDettaglioTipologia: // TODO: implementare nel DOM
-                // TODO: completare e rianalizzare, coinvolge anche il triage
+            case TipoConcorrenzaEnum.ModificaDettaglioTipologia:
                 blocks = [
                     TipoConcorrenzaEnum.ModificaDettaglioTipologia,
                     TipoConcorrenzaEnum.EliminaDettaglioTipologia
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaDettaglioTipologia: // TODO: implementare nel DOM
-                // TODO: completare e rianalizzare, coinvolge anche il triage
+            case TipoConcorrenzaEnum.EliminaDettaglioTipologia:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaDettaglioTipologia,
-                    TipoConcorrenzaEnum.ModificaDettaglioTipologia
+                    TipoConcorrenzaEnum.ModificaDettaglioTipologia,
+                    TipoConcorrenzaEnum.ModificaTriage,
+                    TipoConcorrenzaEnum.EliminaTriage
                 ];
                 break;
-            case TipoConcorrenzaEnum.ModificaTriage: // TODO: implementare nel DOM
-                // TODO: completare e rianalizzare, coinvolge anche il dettaglio tipologia
+            case TipoConcorrenzaEnum.ModificaTriage:
                 blocks = [
                     TipoConcorrenzaEnum.ModificaTriage,
                     TipoConcorrenzaEnum.EliminaTriage,
+                    TipoConcorrenzaEnum.ModificaDettaglioTipologia,
                     TipoConcorrenzaEnum.EliminaDettaglioTipologia
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaTriage: // TODO: implementare nel DOM
-                // TODO: completare e rianalizzare, coinvolge anche il dettaglio tipologia
+            case TipoConcorrenzaEnum.EliminaTriage:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaTriage,
                     TipoConcorrenzaEnum.ModificaTriage,
+                    TipoConcorrenzaEnum.ModificaDettaglioTipologia,
                     TipoConcorrenzaEnum.EliminaDettaglioTipologia
                 ];
                 break;
-            case TipoConcorrenzaEnum.AggiungiRuoloUtente: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.AggiungiRuoloUtente:
                 blocks = [
                     TipoConcorrenzaEnum.AggiungiRuoloUtente,
+                    TipoConcorrenzaEnum.ModificaRuoloUtente,
                     TipoConcorrenzaEnum.EliminaUtente
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaRuoloUtente: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.EliminaRuoloUtente:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaUtente,
-                    TipoConcorrenzaEnum.AggiungiRuoloUtente
+                    TipoConcorrenzaEnum.AggiungiRuoloUtente,
+                    TipoConcorrenzaEnum.ModificaRuoloUtente
                 ];
                 break;
-            case TipoConcorrenzaEnum.ModificaRuoloUtente: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.ModificaRuoloUtente:
                 blocks = [
                     TipoConcorrenzaEnum.ModificaRuoloUtente,
                     TipoConcorrenzaEnum.EliminaUtente
                 ];
                 break;
-            case TipoConcorrenzaEnum.EliminaUtente: // TODO: implementare nel DOM
+            case TipoConcorrenzaEnum.EliminaUtente:
                 blocks = [
                     TipoConcorrenzaEnum.EliminaUtente,
                     TipoConcorrenzaEnum.AggiungiRuoloUtente,

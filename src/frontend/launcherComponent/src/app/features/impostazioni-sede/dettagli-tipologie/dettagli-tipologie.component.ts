@@ -15,6 +15,7 @@ import { TipologieState } from '../../../shared/store/states/tipologie/tipologie
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-dettagli-tipologie',
@@ -36,11 +37,14 @@ export class DettagliTipologieComponent implements OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
     page: number;
 
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
     private subscriptions: Subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
                 private store: Store,
-                private ngSelectConfig: NgSelectConfig) {
+                private ngSelectConfig: NgSelectConfig,
+                private lockedConcorrenzaService: LockedConcorrenzaService) {
         ngSelectConfig.appendTo = 'body';
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
@@ -144,7 +148,7 @@ export class DettagliTipologieComponent implements OnDestroy {
         modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + dettaglioTipologia.descrizione;
         modalConfermaEliminazione.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il dettaglio?';
         const data = {
-            type: TipoConcorrenzaEnum.ModificaDettaglioTipologia,
+            type: TipoConcorrenzaEnum.EliminaDettaglioTipologia,
             value: dettaglioTipologia.id
         };
         this.store.dispatch(new AddConcorrenza([data]));
@@ -229,4 +233,16 @@ export class DettagliTipologieComponent implements OnDestroy {
         );
     }
 
+    getTooltipConcorrenzaText(dettaglioTipologia: DettaglioTipologia): string {
+        const modificaDettaglioLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.id]);
+        const eliminaDettaglioLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, [dettaglioTipologia.id]);
+        const allLocked = modificaDettaglioLocked && eliminaDettaglioLocked;
+        if (allLocked) {
+            return modificaDettaglioLocked;
+        } else if (modificaDettaglioLocked) {
+            return modificaDettaglioLocked;
+        } else if (eliminaDettaglioLocked) {
+            return eliminaDettaglioLocked;
+        }
+    }
 }

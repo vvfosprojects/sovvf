@@ -103,15 +103,8 @@
         <div *ngIf="richiesta.codiceRichiesta"
              class="col-4 mb-3">
             <div class="box-azione"
-                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
-                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
                  style="height: fit-content"
                  (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
-                <ng-container *ngIf="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
-                    <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
-                    </app-locked-concorrenza>
-                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-edit text-secondary"></i>
                 </div>
@@ -123,15 +116,8 @@
         <div *ngIf="richiesta.codiceRichiesta"
              class="col-4">
             <div class="box-azione"
-                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
-                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
                  style="height: fit-content"
                  (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
-                <ng-container *ngIf="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
-                    <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
-                    </app-locked-concorrenza>
-                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-edit text-secondary"></i>
                 </div>
@@ -164,15 +150,8 @@
         <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Riaperta'"
              class="col-4">
             <div class="box-azione"
-                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
-                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice])"
                  style="height: fit-content"
                  (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">
-                <ng-container *ngIf="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
-                    <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice]">
-                    </app-locked-concorrenza>
-                </ng-container>
                 <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
                     <i class="fas fa-fw fa-forward text-secondary"></i>
                 </div>

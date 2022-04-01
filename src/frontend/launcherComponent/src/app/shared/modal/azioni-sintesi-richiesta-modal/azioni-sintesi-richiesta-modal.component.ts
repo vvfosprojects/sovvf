@@ -41,12 +41,10 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     utente: Utente;
-
     @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
 
     richiesta: SintesiRichiesta;
-
-    statoRichiestaString: Array<StatoRichiestaActions>;
+    statoRichiestaString: StatoRichiestaActions[];
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
@@ -78,7 +76,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onSganciamentoMezzo(richiesta: SintesiRichiesta): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Sganciamento, this.richiesta.codice)) {
             let sganciamentoMezziModal;
             sganciamentoMezziModal = this.modalService.open(ListaMezziSganciamentoModalComponent, {
                 windowClass: 'xxlModal modal-holder',
@@ -105,7 +103,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onClick(stato: StatoRichiestaActions): void {
-        if (!this.isLockedConcorrenza()) {
+        if (this.richiesta.stato === StatoRichiesta.Chiamata ? !this.isLockedConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, this.richiesta.codice) : !this.isLockedConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, this.richiesta.codice)) {
             const codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
             let modalConferma;
             const modalOptions = {
@@ -205,7 +203,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onAddTrasferimentoChiamata(codiceRichiesta: string): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Trasferimento, this.richiesta.codice)) {
             let addTrasferimentoChiamataModal;
             addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
                 windowClass: 'modal-holder',
@@ -237,7 +235,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onAllertaSede(): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Allerta, this.richiesta.codice)) {
             let modalAllertaSede;
             modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
                 windowClass: 'modal-holder',
@@ -290,7 +288,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onModificaEntiIntervenuti(): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.EntiIntervenuti, this.richiesta.codice)) {
             let modalModificaEntiIntervenuti;
             modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
                 windowClass: 'modal-holder',
@@ -315,7 +313,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onModificaStatoFonogramma(): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Fonogramma, this.richiesta.codice)) {
             let modalModificaStatoFonogramma;
             modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
                 windowClass: 'modal-holder',
@@ -372,7 +370,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         return defineChiamataIntervento(codice, codiceRichiesta);
     }
 
-    isLockedConcorrenza(): string {
-        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice]);
+    isLockedConcorrenza(type: TipoConcorrenzaEnum, value: string): string {
+        return this.lockedConcorrenzaService.getLockedConcorrenza(type, [value]);
     }
 }

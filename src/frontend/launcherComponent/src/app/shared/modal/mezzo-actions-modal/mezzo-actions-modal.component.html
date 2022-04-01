@@ -123,6 +123,7 @@
 <div class="modal-footer" style="place-content: space-between;">
     <div class="d-inline-block"
          [ngbTooltip]="tooltipLockedConcorrenza"
+         placement="right"
          [disableTooltip]="!(tipoConcorrenzaEnum.CambioStatoPartenza | checkConcorrenzaLocked: [codiceMezzo])">
         <button class="btn btn-lg btn-danger btn-no-hover font-xxlarge"
                 [disabled]="(!timeActionForm?.valid) || checkInvalidTime() || (tipoConcorrenzaEnum.CambioStatoPartenza | checkConcorrenzaLocked: [codiceMezzo])"

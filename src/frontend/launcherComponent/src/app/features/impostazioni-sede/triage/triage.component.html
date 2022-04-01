@@ -26,7 +26,7 @@
                 </label>
                 <ng-select [id]="'dettaglioTipologiaTriage' + '-' + 'Incendio normale (generico)'"
                            [(ngModel)]="codDettaglioTipologia"
-                           [items]="dettagliTipologie$ | async"
+                           [items]="dettagliTipologie"
                            bindValue="codiceDettaglioTipologia"
                            bindLabel="descrizione"
                            placeholder="Seleziona un Dettaglio Tipologia"
@@ -40,14 +40,14 @@
                 <button class="btn btn-lg btn-no-hover font-weight-bolder mr-2"
                         [class.btn-primary]="!showTriage"
                         [class.btn-secondary]="showTriage"
-                        [disabled]="!codDettaglioTipologia || showTriage"
+                        [disabled]="!codDettaglioTipologia || showTriage || (tipoConcorrenzaEnum.ModificaTriage | checkConcorrenzaLocked: [idDettaglioTipologia])"
                         (click)="onShowTriage()">
                     <i class="fas fa-search mr-1"></i>
                     <ng-template [ngIf]="!dettaglioTipologia">
-                        {{ 'Ricerca triage'  | uppercase }}
+                        {{ 'Ricerca triage' | uppercase }}
                     </ng-template>
                     <ng-template [ngIf]="dettaglioTipologia">
-                        {{ 'Ricerca triage di "' + dettaglioTipologia?.descrizione + '"'  | uppercase }}
+                        {{ 'Ricerca triage di "' + dettaglioTipologia?.descrizione + '"' | uppercase }}
                     </ng-template>
                 </button>
             </div>
@@ -104,11 +104,13 @@
                 <div class="clearfix">
                     <div class="float-left">
                         <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2"
+                                [disabled]="idDettaglioTipologia && (tipoConcorrenzaEnum.ModificaTriage | checkConcorrenzaLocked: [idDettaglioTipologia])"
                                 (click)="saveTriage()">
                             {{ 'Salva Triage' | uppercase }}
                         </button>
                         <ng-template [ngIf]="tItemsBackup">
                             <button class="btn btn-lg btn-no-hover btn-danger font-weight-bolder"
+                                    [disabled]="idDettaglioTipologia && (tipoConcorrenzaEnum.EliminaTriage | checkConcorrenzaLocked: [idDettaglioTipologia])"
                                     (click)="removeTriage()">
                                 {{ 'Elimina Triage' | uppercase }}
                             </button>
@@ -127,11 +129,13 @@
             <ng-template [ngIf]="!tItems">
                 <div class="text-left mt-3">
                     <button class="btn btn-lg btn-no-hover btn-success font-weight-bolder mr-2"
+                            [disabled]="idDettaglioTipologia && (tipoConcorrenzaEnum.ModificaTriage | checkConcorrenzaLocked: [idDettaglioTipologia])"
                             (click)="initTriage()">
                         <i class="fas fa-plus-circle mr-1"></i>
                         {{ 'Aggiungi la prima Domanda' | uppercase }}
                     </button>
                     <button class="btn btn-lg btn-no-hover btn-secondary font-weight-bolder"
+                            [disabled]="idDettaglioTipologia && (tipoConcorrenzaEnum.ModificaTriage | checkConcorrenzaLocked: [idDettaglioTipologia])"
                             (click)="importTriage()">
                         <i class="fas fa-upload mr-1"></i>
                         {{ 'Importa Triage da un altro Dettaglio Tipologia' | uppercase }}

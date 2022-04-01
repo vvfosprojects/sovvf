@@ -12,11 +12,11 @@
             <div class="d-inline-block float-left mr-2"
                  [ngbTooltip]="tooltipLockedConcorrenza"
                  placement="left"
-                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || !(tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])">
+                 [disableTooltip]="!(tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])">
                 <button class="btn btn-sm btn-danger font-weight-bold"
                         ngbTooltip="Rimuovi Documento"
                         placement="bottom"
-                        [disabled]="(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || (tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
+                        [disabled]="(tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
                         (click)="onDeleteDocumento(d?.id, d?.descrizioneDocumento, d?.descrizioneCategoria)">
                     <i class="fas fa-trash"></i>
                 </button>
@@ -24,11 +24,11 @@
             <div class="d-inline-block float-left mr-2"
                  [ngbTooltip]="tooltipLockedConcorrenza"
                  placement="left"
-                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || !(tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])">
+                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id])">
                 <button class="btn btn-sm btn-info font-weight-bold"
                         ngbTooltip="Modifica Documento"
                         placement="bottom"
-                        [disabled]="(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id]) || (tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
+                        [disabled]="(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
                         (click)="onEditDocumento(d)">
                     <i class="fas fa-edit"></i>
                 </button>

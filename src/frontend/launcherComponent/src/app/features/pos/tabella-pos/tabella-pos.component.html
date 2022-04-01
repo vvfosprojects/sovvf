@@ -13,11 +13,11 @@
             <div class="d-inline-block float-left mr-2"
                  [ngbTooltip]="tooltipLockedConcorrenza"
                  placement="left"
-                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id]) || !(tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])">
+                 [disableTooltip]="!(tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])">
                 <button class="btn btn-sm btn-danger font-weight-bold"
                         ngbTooltip="Rimuovi POS"
                         placement="bottom"
-                        [disabled]="(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id]) || (tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])"
+                        [disabled]="(tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])"
                         (click)="onDeletePos(p?.id, p?.descrizionePos)">
                     <i class="fas fa-trash"></i>
                 </button>
@@ -25,11 +25,11 @@
             <div class="d-inline-block float-left mr-2"
                  [ngbTooltip]="tooltipLockedConcorrenza"
                  placement="left"
-                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id]) || !(tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])">
+                 [disableTooltip]="!(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id])">
                 <button class="btn btn-sm btn-info font-weight-bold"
                         ngbTooltip="Modifica POS"
                         placement="bottom"
-                        [disabled]="(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id]) || (tipoConcorrenzaEnum.EliminaPos | checkConcorrenzaLocked: [p.id])"
+                        [disabled]="(tipoConcorrenzaEnum.ModificaPos | checkConcorrenzaLocked: [p.id])"
                         (click)="onEditPos(p)">
                     <i class="fas fa-edit"></i>
                 </button>
