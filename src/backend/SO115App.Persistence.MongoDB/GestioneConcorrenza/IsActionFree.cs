@@ -294,7 +294,7 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                     break;
 
                 default:
-                    ret = false;
+                    ret = true;
                     break;
             }
 
