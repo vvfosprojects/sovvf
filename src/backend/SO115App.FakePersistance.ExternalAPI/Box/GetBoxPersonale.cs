@@ -109,7 +109,7 @@ namespace SO115App.ExternalAPI.Fake.Box
                     Next = workshift.SelectMany(w => w?.Successivo?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
                     Previous = workshift.SelectMany(w => w?.Precedente?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count()
                 },
-                SquadreAssegnate = statoSquadre.Count - statoSquadre.Where(s => !s.StatoSquadra.Equals(Costanti.MezzoInRientro)).Count(),
+                SquadreAssegnate = statoSquadre.Count - statoSquadre.Where(s => s.StatoSquadra.Equals(Costanti.MezzoInRientro)).Count(),
                 workShift = workshift
             };
 
