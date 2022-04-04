@@ -109,10 +109,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             };
         }
 
-        private string MapNote(Evento evento)
+        private static string MapNote(Evento evento)
         {
             switch (evento)
             {
+                case MezzoRiassegnato _:
+                    return ((MezzoRiassegnato)evento).Note;
+
                 case AggiornamentoOrarioStato _:
                     return ((AggiornamentoOrarioStato)evento).Note;
 
@@ -169,6 +172,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         private string MapTarghe(Evento evento)
         {
             var targa = "";
+
+            if (evento is MezzoRiassegnato riassegnato)
+                targa = riassegnato.CodiceMezzo;
 
             if (evento is AggiornamentoOrarioStato)
                 targa = ((AggiornamentoOrarioStato)evento).CodiceMezzo;

@@ -19,7 +19,7 @@ import {
     ResetTriage,
     ClearStateTriageCrud
 } from '../../actions/triage-crud/triage-crud.actions';
-import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
+import { DettagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
 import { GetDettaglioTipologiaByCodTipologiaDto } from '../../../interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
 import { TreeviewItem } from 'ngx-treeview';
@@ -61,7 +61,7 @@ export const TriageStateDefaults: TriageStateModel = {
 
 export class TriageCrudState {
 
-    constructor(private detttagliTipologieService: DetttagliTipologieService,
+    constructor(private dettagliTipologieService: DettagliTipologieService,
                 private triageService: TriageService,
                 private generiMezzoService: GeneriMezzoService) {
     }
@@ -108,7 +108,7 @@ export class TriageCrudState {
 
     @Action(GetDettagliTipologieByCodTipologia)
     getDettagliTipologieByCodTipologia({ patchState }: StateContext<TriageStateModel>, action: GetDettagliTipologieByCodTipologia): void {
-        this.detttagliTipologieService.getDettaglioTipologiaByCodTipologia(action.codTipologia).subscribe((response: GetDettaglioTipologiaByCodTipologiaDto) => {
+        this.dettagliTipologieService.getDettaglioTipologiaByCodTipologia(action.codTipologia).subscribe((response: GetDettaglioTipologiaByCodTipologiaDto) => {
             patchState({
                 dettagliTipologie: response.listaDettaglioTipologie
             });
@@ -237,7 +237,7 @@ export class TriageCrudState {
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
         const triage = state.triageByDettaglioTipologia;
         const triageData = state.triageDataByDettaglioTipologia;
-        this.triageService.add(codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
+        this.triageService.add(codTipologia, codDettaglioTipologia, triage, triageData).subscribe(() => {
             dispatch(new GetTriageByCodDettaglioTipologia(codTipologia, codDettaglioTipologia));
         });
     }
@@ -250,7 +250,7 @@ export class TriageCrudState {
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
         const triage = state.triageByDettaglioTipologia;
         const triageData = state.triageDataByDettaglioTipologia;
-        this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe((res: any) => {
+        this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe(() => {
             dispatch(new GetTriageByCodDettaglioTipologia(codTipologia, codDettaglioTipologia));
         });
     }

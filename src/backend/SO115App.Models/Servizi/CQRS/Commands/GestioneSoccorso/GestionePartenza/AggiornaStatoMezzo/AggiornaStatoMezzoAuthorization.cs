@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
@@ -38,12 +39,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetAllBlocks _getAllBlocks;
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IIsActionFree _isActionFree;
 
         public AggiornaStatoMezzoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
             IGetRichiesta getRichiestaById,
             IGetAllBlocks getAllBlocks,
-            IGetSottoSediByCodSede getSottoSediByCodSede)
+            IGetSottoSediByCodSede getSottoSediByCodSede,
+            IIsActionFree isActionFree)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
@@ -51,6 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _getRichiestaById = getRichiestaById;
             _getAllBlocks = getAllBlocks;
             _getSottoSediByCodSede = getSottoSediByCodSede;
+            _isActionFree = isActionFree;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AggiornaStatoMezzoCommand command)
@@ -67,17 +71,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente.Split('.')[0] + ".1000" });
-                    var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
+                    #region Concorrenza
 
-                    var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Richiesta.Id));
+                    //Controllo Concorrenza
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente });
 
-                    if (findBlock != null && findBlock.Count > 0)
-                    {
-                        var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.IdUtente));
-                        if (verificaUtente.Count == 0)
-                            yield return new AuthorizationResult(Costanti.InterventoBloccato);
-                    }
+                    if (command.Richiesta.CodRichiesta != null)
+                        if (!_isActionFree.Check(TipoOperazione.CambioStatoPartenza, user.Id, listaSediInteressate.ToArray(), command.Richiesta.Codice))
+                            yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+
+                    #endregion Concorrenza
 
                     bool abilitato = false;
                     foreach (var competenza in richiesta.CodUOCompetenza)

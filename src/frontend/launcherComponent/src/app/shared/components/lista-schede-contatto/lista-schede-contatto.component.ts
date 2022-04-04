@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ContatoriSchedeContatto } from '../../interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../interface/scheda-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../enum/range-schede-contatto';
@@ -6,14 +6,14 @@ import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda
 import { PermissionFeatures } from '../../enum/permission-features.enum';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-lista-schede-contatto',
     templateUrl: './lista-schede-contatto.component.html',
-    styleUrls: ['./lista-schede-contatto.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./lista-schede-contatto.component.scss']
 })
-export class ListaSchedeContattoComponent implements OnInit {
+export class ListaSchedeContattoComponent {
 
     @Input() ricerca: string;
     @Input() pageSize: number;
@@ -57,11 +57,9 @@ export class ListaSchedeContattoComponent implements OnInit {
 
     ClassificazioneEnum = ClassificazioneSchedaContatto;
     permessiFeature = PermissionFeatures;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     constructor() {
-    }
-
-    ngOnInit(): void {
     }
 
     onSelectTab(tab: any): void {

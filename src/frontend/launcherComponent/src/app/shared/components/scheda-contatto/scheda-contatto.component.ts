@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { SchedaContatto } from '../../interface/scheda-contatto.interface';
 import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
 import { Priorita } from '../../model/sintesi-richiesta.model';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-scheda-contatto',
     templateUrl: './scheda-contatto.component.html',
-    styleUrls: ['./scheda-contatto.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./scheda-contatto.component.css']
 })
 export class SchedaContattoComponent implements OnChanges {
 
@@ -43,6 +43,7 @@ export class SchedaContattoComponent implements OnChanges {
 
     classificazioneSchedaContatto = ClassificazioneSchedaContatto;
     priorita = Priorita;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     constructor() {
     }

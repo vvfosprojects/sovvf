@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable, NgZone } from '@angular/core';
-import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
+import { DettagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { ResetForm } from '@ngxs/form-plugin';
 import { ClearErroreImportTriage, ClearFormImportTriage, GetAllDettagliTipologiaImportTriage, ImportTriageByCodDettaglioTipologia } from '../actions/import-triage-modal.actions';
 import { DettaglioTipologia } from '../../../../shared/interface/dettaglio-tipologia.interface';
@@ -66,7 +66,7 @@ export class ImportTriageModalState {
         return state.errore;
     }
 
-    constructor(private detttagliTipologieService: DetttagliTipologieService,
+    constructor(private detttagliTipologieService: DettagliTipologieService,
                 private triageService: TriageService,
                 private store: Store,
                 private modalService: NgbModal,
