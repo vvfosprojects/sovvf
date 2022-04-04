@@ -20,6 +20,7 @@
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
@@ -41,11 +42,13 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetAllBlocks _getAllBlocks;
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IIsActionFree _isActionFree;
         private readonly IMapperRichiestaSuSintesi _map;
 
         public AllertaAltreSediAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni, IMapperRichiestaSuSintesi map,
-            IGetRichiesta getRichiestaById, IGetAllBlocks getAllBlocks, IGetSottoSediByCodSede getSottoSediByCodSede)
+            IGetRichiesta getRichiestaById, IGetAllBlocks getAllBlocks, IGetSottoSediByCodSede getSottoSediByCodSede,
+            IIsActionFree isActionFree)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
@@ -53,6 +56,7 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
             _getRichiestaById = getRichiestaById;
             _getAllBlocks = getAllBlocks;
             _getSottoSediByCodSede = getSottoSediByCodSede;
+            _isActionFree = isActionFree;
             _map = map;
         }
 
@@ -71,17 +75,15 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    #region Concorrenza
+
+                    //Controllo Concorrenza
                     var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { Competenze.ToArray()[0].Split('.')[0] + ".1000" });
-                    var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
 
-                    var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Chiamata.Id));
+                    if (!_isActionFree.Check(TipoOperazione.Allerta, user.Id, listaSediInteressate.ToArray(), command.Chiamata.Codice))
+                        yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
 
-                    if (findBlock != null && findBlock.Count != 0)
-                    {
-                        var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.CodUtente));
-                        if (verificaUtente.Count == 0)
-                            yield return new AuthorizationResult(Costanti.InterventoBloccato);
-                    }
+                    #endregion Concorrenza
 
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)

@@ -18,6 +18,8 @@ import { StopBigLoading } from '../../shared/store/actions/loading/loading.actio
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 import { GetSediTrasferimenti } from '../../shared/store/actions/distaccamenti/distaccamenti.actions';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
+import { DeleteConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-trasferimento-chiamata',
@@ -112,13 +114,17 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
             centered: true,
             size: 'lg'
         });
-        addTrasferimentoChiamataModal.result.then(
-            (result: string) => {
-                this.store.dispatch(new ClearFormTrasferimentoChiamata());
+        addTrasferimentoChiamataModal.result.then((result: string) => {
+                this.store.dispatch([
+                    new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento),
+                    new ClearFormTrasferimentoChiamata()
+                ]);
                 console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
-            },
-            (err) => {
-                this.store.dispatch(new ClearFormTrasferimentoChiamata());
+            }, (err) => {
+                this.store.dispatch([
+                    new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento),
+                    new ClearFormTrasferimentoChiamata()
+                ]);
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );

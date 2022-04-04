@@ -5,6 +5,7 @@ import { ClockService } from '../../../features/navbar/clock/clock-service/clock
 import { Subscription } from 'rxjs';
 import { NgbTime } from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 import { makeCopy } from '../../helper/function-generiche';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-mezzo-actions-modal',
@@ -33,6 +34,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     title: string;
     titleStato: string;
     statoMezzo: string;
+    codiceMezzo: string;
     dataInViaggio: any;
 
     listaEventi: any;
@@ -46,6 +48,8 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     azioneIntervento: string;
 
     nowDateInterval: any;
+
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     private subscriptions = new Subscription();
 

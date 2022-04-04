@@ -14,6 +14,7 @@ import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 import { AddTrasferimentoChiamata } from '../../interface/trasferimento-chiamata.interface';
 import { TrasferimentoChiamataService } from '../../../core/service/trasferimento-chiamata/trasferimento-chiamata.service';
+import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 
 @Component({
     selector: 'app-trasferimento-chiamata-modal',
@@ -35,6 +36,8 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
 
     trasferimentoChiamataForm: FormGroup;
     submitted: boolean;
+
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     subscription: Subscription = new Subscription();
 
@@ -66,6 +69,11 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    ngOnDestroy(): void {
+        this.trasferimentoChiamataForm.reset();
+        this.subscription.unsubscribe();
+    }
+
     initForm(): void {
         this.trasferimentoChiamataForm = new FormGroup({
             codiceRichiesta: new FormControl(),
@@ -83,9 +91,16 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         return this.trasferimentoChiamataForm.controls;
     }
 
-    ngOnDestroy(): void {
-        this.trasferimentoChiamataForm.reset();
-        this.subscription.unsubscribe();
+    onChangeCodiceRichiesta(codRichiesta: string): void {
+        const codiceRichiestaFormValue = this.f.codiceRichiesta;
+        if (codiceRichiestaFormValue) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [codiceRichiestaFormValue]));
+        }
+        const data = {
+            type: TipoConcorrenzaEnum.Trasferimento,
+            value: codRichiesta
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
     }
 
     getFormValid(): void {
@@ -169,6 +184,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     isLockedConcorrenza(): string {
-        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codRichiesta]);
+        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.codRichiesta]);
     }
 }
