@@ -30,6 +30,8 @@ import { ItemTriageData } from '../../../shared/interface/item-triage-data.inter
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { ImpostazioniState } from '../../../shared/store/states/impostazioni/impostazioni.state';
 import { ImportTriageModalComponent } from './import-triage-modal/import-triage-modal.component';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
 
 @Component({
     selector: 'app-triage',
@@ -52,6 +54,7 @@ export class TriageComponent implements OnDestroy {
     @Select(TipologieState.tipologie) tipologie$: Observable<Tipologia[]>;
 
     @Select(TriageCrudState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
+    dettagliTipologie: DettaglioTipologia[];
     @Select(TriageCrudState.dettaglioTipologia) dettaglioTipologia$: Observable<DettaglioTipologia>;
     dettaglioTipologia: DettaglioTipologia;
     @Select(TriageCrudState.triageByDettaglioTipologia) triageByDettaglioTipologia$: Observable<TreeviewItem>;
@@ -68,6 +71,7 @@ export class TriageComponent implements OnDestroy {
 
     codTipologia: string;
     codDettaglioTipologia: number;
+    idDettaglioTipologia: string;
 
     showTriage: boolean;
 
@@ -77,6 +81,8 @@ export class TriageComponent implements OnDestroy {
     itemValueTitleEdit: string;
     itemTitleEdit: string;
 
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
     private subscription = new Subscription();
 
     constructor(private store: Store,
@@ -84,13 +90,23 @@ export class TriageComponent implements OnDestroy {
                 private selectConfig: NgSelectConfig) {
         selectConfig.appendTo = 'body';
         selectConfig.notFoundText = 'Nessun elemento trovato';
+        this.getDettagliTipologie();
         this.getDettaglioTipologia();
         this.getEditMode();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+        if (this.idDettaglioTipologia) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaTriage, [this.idDettaglioTipologia]));
+        }
         this.store.dispatch(new ClearStateTriageCrud());
+    }
+
+    getDettagliTipologie(): void {
+        this.dettagliTipologie$.subscribe((dettagliTipologie: DettaglioTipologia[]) => {
+            this.dettagliTipologie = dettagliTipologie;
+        });
     }
 
     getDettaglioTipologia(): void {
@@ -105,12 +121,17 @@ export class TriageComponent implements OnDestroy {
 
     onSetCodTipologia(codTipologia: string): void {
         this.codDettaglioTipologia = null;
+        if (this.idDettaglioTipologia) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaTriage, [this.idDettaglioTipologia]));
+            this.idDettaglioTipologia = null;
+        }
         this.codTipologia = codTipologia;
         this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.codTipologia));
     }
 
     onSetDettaglioTipologia(codDettaglioTipologia: number): void {
         this.codDettaglioTipologia = codDettaglioTipologia;
+        this.idDettaglioTipologia = this.dettagliTipologie?.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === this.codDettaglioTipologia)[0]?.id;
         this.store.dispatch(new SetDettaglioTipologiaTriage(this.codDettaglioTipologia));
     }
 
@@ -121,6 +142,10 @@ export class TriageComponent implements OnDestroy {
         ]);
         this.codTipologia = null;
         this.codDettaglioTipologia = null;
+        if (this.idDettaglioTipologia) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaTriage, [this.idDettaglioTipologia]));
+            this.idDettaglioTipologia = null;
+        }
         this.tItems = null;
         this.tItemsData = null;
         this.showTriage = false;
@@ -132,6 +157,17 @@ export class TriageComponent implements OnDestroy {
             this.getTriageByDettaglioTipologia();
             this.getTriageDataByDettaglioTipologia();
             this.showTriage = true;
+
+            this.idDettaglioTipologia = this.dettagliTipologie?.filter((d: DettaglioTipologia) => d.codiceDettaglioTipologia === this.codDettaglioTipologia)[0]?.id;
+            if (this.idDettaglioTipologia) {
+                const data = {
+                    type: TipoConcorrenzaEnum.ModificaTriage,
+                    value: this.idDettaglioTipologia
+                };
+                this.store.dispatch(new AddConcorrenza([data]));
+            } else {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaTriage, [this.idDettaglioTipologia]));
+            }
         }
     }
 
@@ -698,27 +734,30 @@ export class TriageComponent implements OnDestroy {
         removeTriageModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         removeTriageModal.componentInstance.titolo = 'Eliminazione Triage di "' + this.dettaglioTipologia.descrizione + '"';
         removeTriageModal.componentInstance.messaggioAttenzione = 'Attenzione! Tutti i dati del Triage di "' + this.dettaglioTipologia.descrizione + '" verranno eliminati';
-
-        removeTriageModal.result.then(
-            (val: string) => {
-                switch (val) {
-                    case 'ok':
-                        if (this.viewEditButtons) {
-                            this.toggleViewEditButtons();
-                        }
-                        this.updateTriage(null);
-                        this.store.dispatch(new UpdateTriage());
-                        break;
-                    case 'ko':
-                        break;
-                    default:
-                        break;
-                }
-            },
-            (err) => {
-                console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+        const data = {
+            type: TipoConcorrenzaEnum.EliminaTriage,
+            value: this.idDettaglioTipologia
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        removeTriageModal.result.then((val: string) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaTriage, [this.idDettaglioTipologia]));
+            switch (val) {
+                case 'ok':
+                    if (this.viewEditButtons) {
+                        this.toggleViewEditButtons();
+                    }
+                    this.updateTriage(null);
+                    this.store.dispatch(new UpdateTriage());
+                    break;
+                case 'ko':
+                    break;
+                default:
+                    break;
             }
-        );
+        }, (err) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaTriage, [this.idDettaglioTipologia]));
+            console.error('removeTriageItemModal chiusa senza bottoni. (err => ' + err + ')');
+        });
     }
 
     resetTriage(): void {

@@ -16,12 +16,12 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
         public void Set(List<ComposizioneMezzi> mezzi)
         {
             Parallel.ForEach(mezzi, mezzo =>
-           {
-               var filter = Builders<ComposizioneMezzi>.Filter.Eq(s => s.Id, mezzo.Id);
+            {
+                var filter = Builders<ComposizioneMezzi>.Filter.Eq(s => s.Id, mezzo.Id);
 
-               if (_dbContext.ComposizioneMezziCollection.CountDocuments(filter) <= 0)
-                   _dbContext.ComposizioneMezziCollection.InsertOne(mezzo);
-           });
+                if (_dbContext.ComposizioneMezziCollection.CountDocuments(filter) <= 0)
+                    _dbContext.ComposizioneMezziCollection.InsertOne(mezzo);
+            });
         }
     }
 }

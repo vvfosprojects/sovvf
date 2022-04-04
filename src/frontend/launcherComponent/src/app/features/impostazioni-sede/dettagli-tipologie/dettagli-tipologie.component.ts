@@ -13,6 +13,9 @@ import { ClearFormDettaglioTipologia, RequestAddDettaglioTipologia, RequestDelet
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
 import { NgSelectConfig } from '@ng-select/ng-select';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-dettagli-tipologie',
@@ -34,11 +37,14 @@ export class DettagliTipologieComponent implements OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
     page: number;
 
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
     private subscriptions: Subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
                 private store: Store,
-                private ngSelectConfig: NgSelectConfig) {
+                private ngSelectConfig: NgSelectConfig,
+                private lockedConcorrenzaService: LockedConcorrenzaService) {
         ngSelectConfig.appendTo = 'body';
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
@@ -105,27 +111,33 @@ export class DettagliTipologieComponent implements OnDestroy {
             size: 'lg'
         });
         editVoceRubricaModal.componentInstance.editDettaglioTipologia = dettaglioTipologia;
-        editVoceRubricaModal.result.then(
-            (result: { success: boolean }) => {
-                if (result.success) {
-                    this.updateDettaglioTipologia();
-                } else if (!result.success) {
-                    this.store.dispatch(new ClearFormDettaglioTipologia());
-                    console.log('Modal "editDettaglioTipologia" chiusa con val ->', result);
-                }
-            },
-            (err) => {
+        const data = {
+            type: TipoConcorrenzaEnum.ModificaDettaglioTipologia,
+            value: dettaglioTipologia.id
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        editVoceRubricaModal.result.then((result: { success: boolean }) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.id]));
+            if (result.success) {
+                this.updateDettaglioTipologia();
+            } else if (!result.success) {
                 this.store.dispatch(new ClearFormDettaglioTipologia());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
+                console.log('Modal "editDettaglioTipologia" chiusa con val ->', result);
             }
-        );
+        }, (err) => {
+            this.store.dispatch([
+                new ClearFormDettaglioTipologia(),
+                new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.id])
+            ]);
+            console.error('Modal chiusa senza bottoni. Err ->', err);
+        });
     }
 
     updateDettaglioTipologia(): void {
         this.store.dispatch(new RequestUpdateDettaglioTipologia());
     }
 
-    onDeleteDettaglioTipologia(payload: { codDettaglioTipologia: number, descrizioneDettaglioTipologia: string }): void {
+    onDeleteDettaglioTipologia(dettaglioTipologia: DettaglioTipologia): void {
         let modalConfermaEliminazione: any;
         modalConfermaEliminazione = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
@@ -133,23 +145,24 @@ export class DettagliTipologieComponent implements OnDestroy {
             centered: true
         });
         modalConfermaEliminazione.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-        modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + payload.descrizioneDettaglioTipologia;
+        modalConfermaEliminazione.componentInstance.titolo = 'Elimina ' + dettaglioTipologia.descrizione;
         modalConfermaEliminazione.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il dettaglio?';
-
-        modalConfermaEliminazione.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        this.deleteDettaglioTipologia(payload.codDettaglioTipologia);
-                        break;
-                    case 'ko':
-                        // console.log('Azione annullata');
-                        break;
-                }
-                // console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
+        const data = {
+            type: TipoConcorrenzaEnum.EliminaDettaglioTipologia,
+            value: dettaglioTipologia.id
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
+        modalConfermaEliminazione.result.then((val) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, [dettaglioTipologia.id]));
+            switch (val) {
+                case 'ok':
+                    this.deleteDettaglioTipologia(dettaglioTipologia.codiceDettaglioTipologia);
+                    break;
+            }
+        }, (err) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, [dettaglioTipologia.id]));
+            console.error('Modal chiusa senza bottoni. Err ->', err);
+        });
     }
 
     deleteDettaglioTipologia(codDettaglioTipologia: number): void {
@@ -220,4 +233,16 @@ export class DettagliTipologieComponent implements OnDestroy {
         );
     }
 
+    getTooltipConcorrenzaText(dettaglioTipologia: DettaglioTipologia): string {
+        const modificaDettaglioLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.id]);
+        const eliminaDettaglioLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, [dettaglioTipologia.id]);
+        const allLocked = modificaDettaglioLocked && eliminaDettaglioLocked;
+        if (allLocked) {
+            return modificaDettaglioLocked;
+        } else if (modificaDettaglioLocked) {
+            return modificaDettaglioLocked;
+        } else if (eliminaDettaglioLocked) {
+            return eliminaDettaglioLocked;
+        }
+    }
 }

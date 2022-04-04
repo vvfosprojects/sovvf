@@ -89,6 +89,8 @@ import { VisualizzaDocumentoModalComponent } from './modal/visualizza-documento-
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { UrgenzaSegnalataModalComponent } from './modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
 import { LockedConcorrenzaComponent } from './components/locked-concorrenza/locked-concorrenza.component';
+import { ConcorrenzaService } from '../core/service/concorrenza-service/concorrenza.service';
+import { LockedConcorrenzaService } from '../core/service/concorrenza-service/locked-concorrenza.service';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -202,7 +204,9 @@ const MODULES = [
         MODULES
     ],
     providers: [
-        ChiamataService
+        ChiamataService,
+        ConcorrenzaService,
+        LockedConcorrenzaService
     ]
 })
 export class SharedModule {

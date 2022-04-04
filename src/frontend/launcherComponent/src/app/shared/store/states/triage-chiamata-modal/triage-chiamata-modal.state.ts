@@ -1,6 +1,6 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
+import { DettagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { TriageService } from '../../../../core/service/triage/triage.service';
 import {
     GetDettagliTipologieByCodTipologia,
@@ -51,7 +51,7 @@ export const TriageChiamataModalStateDefaults: TriageChiamataModalStateModel = {
 
 export class TriageChiamataModalState {
 
-    constructor(private detttagliTipologieService: DetttagliTipologieService,
+    constructor(private detttagliTipologieService: DettagliTipologieService,
                 private triageService: TriageService) {
     }
 

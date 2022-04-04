@@ -23,7 +23,8 @@
                         [clearable]="false"
                         placeholder="Seleziona un Codice Chiamata"
                         [closeOnSelect]="true"
-                        [notFoundText]="'Nessun codice richiesta trovato con i parametri di ricerca'">
+                        [notFoundText]="'Nessun codice richiesta trovato con i parametri di ricerca'"
+                        (ngModelChange)="onChangeCodiceRichiesta($event)">
                 </ng-select>
             </div>
             <div class="form-group">
@@ -47,19 +48,24 @@
     </div>
 </div>
 <div class="modal-footer" style="place-content: space-between;">
-    <button type="button" class="btn btn-lg btn-danger btn-no-hover"
-            ngbTooltip="Riempi tutti i campi obbligatori"
-            [disableTooltip]="formValid"
-            [disabled]="!formValid || submitted"
-            (click)="onConferma()">
-        <ng-container *ngIf="!submitted">
-            {{ 'Conferma Trasferimento' | uppercase }}
-        </ng-container>
-        <ng-container *ngIf="submitted">
-            <i class="fas fa-spinner fa-spin mr-1"></i>
-            {{ 'Trasferimento in corso' | uppercase }}
-        </ng-container>
-    </button>
+    <div class="d-inline-block"
+         [ngbTooltip]="tooltipLockedConcorrenza"
+         placement="right"
+         [disableTooltip]="!(tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [f.codiceRichiesta?.value])">
+        <button type="button" class="btn btn-lg btn-danger btn-no-hover"
+                ngbTooltip="Riempi tutti i campi obbligatori"
+                [disableTooltip]="formValid"
+                [disabled]="!formValid || submitted || (tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [f.codiceRichiesta?.value])"
+                (click)="onConferma()">
+            <ng-container *ngIf="!submitted">
+                {{ 'Conferma Trasferimento' | uppercase }}
+            </ng-container>
+            <ng-container *ngIf="submitted">
+                <i class="fas fa-spinner fa-spin mr-1"></i>
+                {{ 'Trasferimento in corso' | uppercase }}
+            </ng-container>
+        </button>
+    </div>
     <button type="button"
             class="btn btn-lg btn-secondary btn-no-hover"
             [disabled]="submitted"
@@ -67,3 +73,8 @@
         {{ 'Annulla' | uppercase }}
     </button>
 </div>
+
+<ng-template #tooltipLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [f.codiceRichiesta?.value] }}
+</ng-template>

@@ -11,10 +11,10 @@ import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
 import {
     ClearCompetenze,
-    ClearCountInterventiProssimita,
+    ClearCountInterventiProssimita, ClearIdChiamata,
     ClearIdChiamataMarker,
-    ClearInterventiProssimita,
-    ClearMarkerChiamata,
+    ClearInterventiProssimita, ClearIstanteRicezioneRichiesta,
+    ClearMarkerChiamata, ClearOperatoreChiamata, ClearPrioritaRichiesta, ClearStatoChiamata,
     ReducerSchedaTelefonata,
     SetCompetenze,
     SetCompetenzeSuccess,
@@ -192,7 +192,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 const richiestaModifica = changes.richiestaModifica.currentValue;
                 if (richiestaModifica) {
                     const data = {
-                        type: TipoConcorrenzaEnum.Richiesta,
+                        type: TipoConcorrenzaEnum.Modifica,
                         value: richiestaModifica.codice
                     } as AddConcorrenzaDtoInterface;
                     this.store.dispatch(new AddConcorrenza([data]));
@@ -238,7 +238,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.clearFormDisconnection();
 
         if (this.modifica) {
-            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta));
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Modifica, [this.richiestaModifica.codice]));
+        }
+
+        if (this.f.codSchedaContatto) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.RegistrazioneSchedaContatto, [this.f.codSchedaContatto]));
         }
     }
 
@@ -299,7 +303,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new ClearMarkerChiamata(),
             new ClearCompetenze(),
             new ClearCountInterventiProssimita(),
-            new ClearInterventiProssimita()
+            new ClearInterventiProssimita(),
+            new ClearIdChiamata(),
+            new ClearOperatoreChiamata(),
+            new ClearStatoChiamata(),
+            new ClearPrioritaRichiesta(),
+            new ClearIstanteRicezioneRichiesta()
         ]);
 
         if (this.richiestaModifica) {
@@ -473,10 +482,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    clearTipologieSelezionate(): void {
-        this.f.codTipologia.patchValue(null);
-    }
-
     checkTipologie(): boolean {
         return !!(this.f.codTipologia.value);
     }
@@ -613,6 +618,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
         const sedeSelezionata = sediSelezionate[0];
         this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, indirizzo));
+
+        console.log('chiamataMarker', this.chiamataMarker);
 
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(lat);
@@ -938,8 +945,13 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     setSchedaContatto(scheda: SchedaContatto): void {
-        const f = this.f;
+        const data = {
+            type: TipoConcorrenzaEnum.RegistrazioneSchedaContatto,
+            value: scheda.codiceScheda
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
 
+        const f = this.f;
         const latitude = +scheda.localita.coordinateString[0];
         const longitude = +scheda.localita.coordinateString[1];
         const locationPOI = new Point({
@@ -1116,9 +1128,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                         this.store.dispatch([
                             new SetFormSubmitted(false),
                             new ClearClipboard(),
+                            new ClearSchedaContattoTelefonata(),
                             new DelChiamataMarker(this.idChiamata)
                         ]);
-                        this.clearTipologieSelezionate();
                         this.reducerSchedaTelefonata('reset');
                         break;
                     case 'ko':

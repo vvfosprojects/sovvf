@@ -28,7 +28,7 @@
             <ng-template ngbTabTitle>
                 <div [ngbTooltip]="tipDifferibile" placement="top-left">
                     <i class="fas fa-square text-secondary mr-2"></i>
-                    <b>Differibile ({{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }})</b>
+                    <b>Deferibile ({{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }})</b>
                 </div>
                 <ng-template #tipDifferibile>
                     <div>Tutte: {{ contatoriSchedeContatto?.differibileSchede?.contatoreTutte }}</div>
@@ -97,7 +97,7 @@
                 [editSchedaContatto]="statoModalita"
                 [schedeContattoSelezionate]="idSelezionatiMerge"
                 [classificazione]="classificazioneMerge"
-                [disableCreaRichiesta]="(permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede) || scheda.gestita"
+                [disableCreaRichiesta]="(permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede) || (tipoConcorrenzaEnum.RegistrazioneSchedaContatto | checkConcorrenzaLocked: [scheda.codiceScheda]) || scheda.gestita"
                 [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
                 [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
                 [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"

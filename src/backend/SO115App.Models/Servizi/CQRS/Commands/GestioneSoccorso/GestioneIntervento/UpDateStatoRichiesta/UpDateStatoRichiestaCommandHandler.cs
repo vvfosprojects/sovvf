@@ -46,11 +46,11 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 
         public void Handle(UpDateStatoRichiestaCommand command)
         {
-            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
+            //var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
 
             if (command.Stato.Equals(Costanti.RichiestaChiusa) || command.Stato.Equals(Costanti.RichiestaSospesa))
             {
-                foreach (var composizione in richiesta.lstPartenzeInCorso)
+                foreach (var composizione in command.Richiesta.lstPartenzeInCorso)
                 {
                     if (!composizione.Sganciata && !composizione.PartenzaAnnullata)
                     {
@@ -64,7 +64,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                             AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
                             statoMezzo.CodiciSede = new string[] { command.CodiceSede };
                             statoMezzo.IdMezzo = composizione.Mezzo.Codice;
-                            statoMezzo.Richiesta = richiesta;
+                            statoMezzo.Richiesta = command.Richiesta;
                             statoMezzo.StatoMezzo = Costanti.MezzoRientrato;
                             _upDatePartenza.Update(statoMezzo);
                         }
@@ -77,17 +77,15 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 
             if (command.EntiIntervenuti != null)
             {
-                richiesta.CodEntiIntervenuti = command.EntiIntervenuti.Select(x => x.Codice).ToList();
+                command.Richiesta.CodEntiIntervenuti = command.EntiIntervenuti.Select(x => x.Codice).ToList();
             }
 
-            richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Motivazione.ToString(), DateTime.UtcNow, command.EntiIntervenuti);
+            command.Richiesta.SincronizzaStatoRichiesta(command.Stato, command.Richiesta.StatoRichiesta, command.IdOperatore, command.Motivazione.ToString(), DateTime.UtcNow, command.EntiIntervenuti);
 
             if (command.Stato == Costanti.RichiestaRiaperta)
-                richiesta.IstanteChiusura = null;
+                command.Richiesta.IstanteChiusura = null;
 
-            command.Richiesta = richiesta;
-
-            _updateRichiestaAssistenza.UpDate(richiesta);
+            _updateRichiestaAssistenza.UpDate(command.Richiesta);
         }
     }
 }

@@ -281,7 +281,7 @@ namespace SO115App.WSNue.Manager
             cleanedXml = regex2.Replace(cleanedXml, "");
             cleanedXml = regexSpazi.Replace(cleanedXml, "");
             cleanedXml = cleanedXml.Replace(@"<?xml version=""1.0"" encoding=""utf-8"" ?>", "")
-                         .Replace(@"<?xml version=""1.0"" encoding=""UTF-8"" standalone=""no""?>","")
+                         .Replace(@"<?xml version=""1.0"" encoding=""UTF-8"" standalone=""no""?>", "")
                          .Replace(@"<?xml version=""1.0"" encoding=""UTF-8""?>", "")
                          .Replace(@"<!DOCTYPE svc_result SYSTEM ""CENTAURO_MLP_CO_CED_SVC_RESULT_10.dtd"">", "");
             cleanedXml = @"<?xml version=""1.0"" encoding=""utf-8"" ?>" + cleanedXml;
@@ -297,6 +297,9 @@ namespace SO115App.WSNue.Manager
             var indirizzo = $"{SchedaXml.SelectSingleNode("//nue:Caller/nue:Location/nue:Manual/nue:Toponymy", namespaces).InnerText} " +
                             $"{SchedaXml.SelectSingleNode("//nue:Caller/nue:Location/nue:Manual/nue:Address", namespaces).InnerText} " +
                             $"{SchedaXml.SelectSingleNode("//nue:Caller/nue:Location/nue:Manual/nue:CivicNumber", namespaces).InnerText}";
+
+            var citta = $"{SchedaXml.SelectSingleNode("//nue:Caller/nue:Location/nue:Manual/nue:City", namespaces).InnerText} ";
+            var provincia = $"{SchedaXml.SelectSingleNode("//nue:Caller/nue:Location/nue:Manual/nue:Province", namespaces).InnerText} ";
 
             Coordinate coordinate = new Coordinate(Convert.ToDouble(Latitudine.Replace(".", ",")), Convert.ToDouble(Longitudine.Replace(".", ",")));
 
@@ -317,6 +320,12 @@ namespace SO115App.WSNue.Manager
             else
                 classificazione = "Conoscenza";
 
+            var localita = new Localita(coordinate, indirizzo, "")
+            {
+                citta = citta,
+                provincia = provincia
+            };
+
             SchedaContatto schedaMapped = new SchedaContatto()
             {
                 classificazione = classificazione,
@@ -329,7 +338,7 @@ namespace SO115App.WSNue.Manager
                 numeroPersoneCoinvolte = Convert.ToInt16(SchedaXml.SelectSingleNode("//nue:InvolvedNumber", namespaces).InnerText),
                 priorita = Convert.ToInt16(SchedaXml.SelectSingleNode("//nue:HighPriority", namespaces).InnerText == "TRUE" ? "1" : "0"),
                 richiedente = new Richiedente(Nome + " " + Cognome, Telefono),
-                localita = new Localita(coordinate, indirizzo, ""),
+                localita = localita,
                 attributoClassificazione = SchedaXml.SelectSingleNode("//nue:ClassificationAttribute", namespaces).InnerText,
                 gestita = false,
                 collegata = false,

@@ -31,6 +31,7 @@ import { RouterState } from '@ngxs/router-plugin';
 import { ChangeView } from './features/home/store/actions/view/view.actions';
 import { AppFeatures } from './shared/enum/app-features.enum';
 import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actions/sedi-treeview/sedi-treeview.actions';
+import { DeleteAllConcorrenza, GetConcorrenza } from './shared/store/actions/concorrenza/concorrenza.actions';
 
 
 @Component({
@@ -127,7 +128,9 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.cdRef.detectChanges();
     }
 
-    ngOnDestroy(): void {
+    @HostListener('window:beforeunload')
+    async ngOnDestroy(): Promise<any> {
+        this.store.dispatch(new DeleteAllConcorrenza());
         this.subscription.unsubscribe();
     }
 
@@ -137,7 +140,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 this.url = url;
                 if ((url && url !== '/login' && url !== '/auth/caslogout' && url !== '/selezione-sede' && url.indexOf('/auth?ticket=') === -1)) {
                     if (this.user) {
-                        this.store.dispatch(new GetDataNavbar());
+                        this.store.dispatch([
+                            new GetDataNavbar(),
+                            new GetConcorrenza()
+                        ]);
                     }
                 }
                 this.store.dispatch(new ToggleSidebarOpened(false));

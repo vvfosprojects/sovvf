@@ -47,7 +47,7 @@
                         <app-sintesi-richiesta [richiesta]="r"
                                                [modificabile]="false"
                                                [gestibile]="false"
-                                               [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate) || (tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [r.codice]) || r.stato === statoRichiesta.Chiusa"
+                                               [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate) || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [r.codice]) || r.stato === statoRichiesta.Chiusa"
                                                (nuovaPartenza)="onNuovaPartenza($event)">
                         </app-sintesi-richiesta>
                     </div>

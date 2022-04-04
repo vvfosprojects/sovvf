@@ -23,6 +23,8 @@ import { HttpEventType } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Navigate } from '@ngxs/router-plugin';
 import { LSNAME } from '../../core/settings/config';
+import { TipoConcorrenzaEnum } from '../../shared/enum/tipo-concorrenza.enum';
+import { AddConcorrenza, DeleteConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
 
 @Component({
     selector: 'app-area-documentale',
@@ -196,8 +198,8 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
 
     onEditDocumento(documento: DocumentoInterface): void {
         let editDocumentoAreaDocumentaleModal: any;
-        this.areaDocumentaleService.getDocumentoById(documento.id).subscribe((data: any) => {
-            switch (data.type) {
+        this.areaDocumentaleService.getDocumentoById(documento.id).subscribe((response: any) => {
+            switch (response.type) {
                 case HttpEventType.DownloadProgress:
                     this.store.dispatch(new StartLoadingDocumentiAreaDocumentale());
                     break;
@@ -212,17 +214,34 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                     editDocumentoAreaDocumentaleModal.componentInstance.descCategoria = this.descCategoria;
                     editDocumentoAreaDocumentaleModal.componentInstance.editDocumento = true;
                     editDocumentoAreaDocumentaleModal.componentInstance.documento = documento;
-                    editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile = data.body;
-                    editDocumentoAreaDocumentaleModal.result.then(
-                        (result: { success: boolean, formData: FormData }) => {
+                    editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile = response.body;
+                    switch (documento.descrizioneCategoria) {
+                        case 'Piani Discendenti':
+                            const data = {
+                                type: TipoConcorrenzaEnum.ModificaPianiDiscendenti,
+                                value: documento.id
+                            };
+                            this.store.dispatch(new AddConcorrenza([data]));
+                            break;
+                    }
+                    editDocumentoAreaDocumentaleModal.result.then((result: { success: boolean, formData: FormData }) => {
+                            switch (documento.descrizioneCategoria) {
+                                case 'Piani Discendenti':
+                                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPianiDiscendenti, [documento.id]));
+                                    break;
+                            }
                             if (result.success) {
                                 this.editDocumento(documento.id, result?.formData);
                             } else if (!result.success) {
                                 this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
                                 console.log('Modal "editDocumento" chiusa con val ->', result);
                             }
-                        },
-                        (err: any) => {
+                        }, (err: any) => {
+                            switch (documento.descrizioneCategoria) {
+                                case 'Piani Discendenti':
+                                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPianiDiscendenti, [documento.id]));
+                                    break;
+                            }
                             this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
                             console.error('Modal "editDocumento" chiusa senza bottoni. Err ->', err);
                         }
@@ -232,7 +251,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
         }, () => console.log('Errore Stampa Documento'));
     }
 
-    onDeleteDocumento(event: { idDocumento: string, descrizioneDocumento: string }): void {
+    onDeleteDocumento(event: { idDocumento: string, descrizioneDocumento: string, descrizioneCategoria: string }): void {
         let confirmDeletePosModal: any;
         confirmDeletePosModal = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
@@ -243,8 +262,21 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
         confirmDeletePosModal.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         confirmDeletePosModal.componentInstance.titolo = 'Eliminazione ' + event.descrizioneDocumento;
         confirmDeletePosModal.componentInstance.messaggio = 'Sei sicuro di voler eliminare ' + event.descrizioneDocumento + '?';
-        confirmDeletePosModal.result.then(
-            (result: string) => {
+        switch (event.descrizioneCategoria) {
+            case 'Piani Discendenti':
+                const data = {
+                    type: TipoConcorrenzaEnum.EliminaPianiDiscendenti,
+                    value: event.idDocumento
+                };
+                this.store.dispatch(new AddConcorrenza([data]));
+                break;
+        }
+        confirmDeletePosModal.result.then((result: string) => {
+                switch (event.descrizioneCategoria) {
+                    case 'Piani Discendenti':
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaPianiDiscendenti, [event.idDocumento]));
+                        break;
+                }
                 switch (result) {
                     case 'ok':
                         this.deleteDocumento(event.idDocumento);
@@ -254,8 +286,12 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                         console.log('Modal "deleteDocumento" chiusa con val ->', result);
                         break;
                 }
-            },
-            (err: any) => {
+            }, (err: any) => {
+                switch (event.descrizioneCategoria) {
+                    case 'Piani Discendenti':
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaPianiDiscendenti, [event.idDocumento]));
+                        break;
+                }
                 this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
                 console.error('Modal "deleteDocumento" chiusa senza bottoni. Err ->', err);
             }
