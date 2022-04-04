@@ -23,7 +23,7 @@ export class AuthService {
         this.store.dispatch(new StartLoading());
         return this.http.post<Utente>(`${API_AUTH}/Login`, { username, password }).pipe(
             map(response => {
-                if (response && response.token) {
+                if (response?.token) {
                     this.store.dispatch([
                         new SetCurrentJwt(response.token),
                         new SetCurrentUser(response),
