@@ -37,6 +37,8 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     trasferimentoChiamataForm: FormGroup;
     submitted: boolean;
 
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
     subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
