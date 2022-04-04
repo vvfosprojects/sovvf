@@ -24,6 +24,7 @@ using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue
 {
@@ -55,19 +56,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
 
             var ListaSchedefiltrata = new List<SchedaContatto>();
 
-            foreach (var scheda in ListaSchede)
-            {
-                if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-                {
-                    ListaSchedefiltrata.Add(scheda);
-                }
-                else
-                {
-                    var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
-                    if (!schedaRaggruppata.Collegata)
-                        ListaSchedefiltrata.Add(schedaRaggruppata);
-                }
-            }
+            Parallel.ForEach(ListaSchede, scheda =>
+           {
+               if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
+               {
+                   ListaSchedefiltrata.Add(scheda);
+               }
+               else
+               {
+                   var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
+                   if (!schedaRaggruppata.Collegata)
+                       ListaSchedefiltrata.Add(schedaRaggruppata);
+               }
+           });
 
             return ListaSchedefiltrata;
 

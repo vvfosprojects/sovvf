@@ -276,6 +276,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         } as AddConcorrenzaDtoInterface;
         this.store.dispatch(new AddConcorrenza([data]));
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.GestisciPartenza, [this.richiesta.partenze[index].codiceMezzo]));
             switch (res.status) {
                 case 'ok' :
                     break;
