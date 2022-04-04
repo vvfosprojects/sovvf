@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 {
@@ -61,19 +62,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             var ListaSchede = _getSchedeContatto_WSNUE.GetAllSchedeContatto(codiceSede);
             List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
 
-            foreach (SchedaContatto scheda in ListaSchede)
+            Parallel.ForEach(ListaSchede, scheda =>
             {
-                if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-                {
-                    ListaSchedefiltrata.Add(scheda);
-                }
-                else
-                {
-                    var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
-                    if (!schedaRaggruppata.Collegata)
-                        ListaSchedefiltrata.Add(schedaRaggruppata);
-                }
-            }
+               if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
+               {
+                   ListaSchedefiltrata.Add(scheda);
+               }
+               else
+               {
+                   var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
+                   if (!schedaRaggruppata.Collegata)
+                       ListaSchedefiltrata.Add(schedaRaggruppata);
+               }
+           });
 
             return ListaSchedefiltrata;
         }
