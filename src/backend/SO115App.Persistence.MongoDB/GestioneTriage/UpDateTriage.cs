@@ -31,10 +31,10 @@ namespace SO115App.Persistence.MongoDB.GestioneTriage
                 filterDataDelete &= Builders<TriageData>.Filter.Eq(s => s.CodiceSede, upDateTriageCommand.Triage.CodiceSede);
                 _dBContex.TriageDataCollection.DeleteMany(filterDataDelete);
 
-                foreach (var data in upDateTriageCommand.ListaTriageData)
-                {
-                    _dBContex.TriageDataCollection.InsertOne(data);
-                }
+                //foreach (var data in upDateTriageCommand.ListaTriageData)
+                //{
+                //    _dBContex.TriageDataCollection.InsertOne(data);
+                //}
             }
             else
             {
