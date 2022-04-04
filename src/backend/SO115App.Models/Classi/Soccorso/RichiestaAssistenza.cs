@@ -662,6 +662,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                         if (contChiusura > contRiapertura)
                             return new Chiusa();
+                        else if (CodRichiesta != null)
+                            return new Sospesa();
                         else
                             return new InAttesa();
                     }
@@ -673,6 +675,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     if (contChiusura > contRiapertura)
                         return new Chiusa();
+                    else if (CodRichiesta != null)
+                        return new Sospesa();
                     else
                         return new InAttesa();
                 }
