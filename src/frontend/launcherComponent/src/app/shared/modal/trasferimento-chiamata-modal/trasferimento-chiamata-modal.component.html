@@ -23,7 +23,8 @@
                         [clearable]="false"
                         placeholder="Seleziona un Codice Chiamata"
                         [closeOnSelect]="true"
-                        [notFoundText]="'Nessun codice richiesta trovato con i parametri di ricerca'">
+                        [notFoundText]="'Nessun codice richiesta trovato con i parametri di ricerca'"
+                        (ngModelChange)="onChangeCodiceRichiesta($event)">
                 </ng-select>
             </div>
             <div class="form-group">
