@@ -44,12 +44,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
 
             var listaSchedeContatto = new ConcurrentBag<SchedaContatto>();
 
-            Parallel.ForEach(lstSedi, sede =>
+            foreach (var sede in lstSedi.Distinct())
             {
                 var lstSchedeSede = _getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, null, query.Filters.RangeVisualizzazione, sede, query.Filters.Classificazione, sede);
 
                 lstSchedeSede.ForEach(s => listaSchedeContatto.Add(s));
-            });
+            };
 
             var result = listaSchedeContatto.OrderByDescending(s => s.DataInserimento).ToList();
 
