@@ -124,6 +124,14 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         }
     }
 
+    getIndirizzoFormatted(): string {
+        let indirizzo = this.richiesta?.localita?.indirizzo;
+        if (this.richiesta?.localita?.provincia) {
+            indirizzo = indirizzo + ', ' + this.richiesta?.localita?.provincia;
+        }
+        return indirizzo;
+    }
+
     indirizzoClick(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.clickIndirizzo.emit(richiesta);

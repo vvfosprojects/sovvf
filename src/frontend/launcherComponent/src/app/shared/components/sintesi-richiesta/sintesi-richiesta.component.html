@@ -242,11 +242,10 @@
                                 </ng-container>
                                 <ng-container *ngIf="richiesta?.localita?.indirizzo">
                                     <div class="d-inline-block font-xxlarge"
-                                         ngbTooltip="{{ richiesta.localita.indirizzo }}, {{ richiesta?.localita?.provincia }}"
+                                         [ngbTooltip]="getIndirizzoFormatted()"
                                          [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 20">
-                                      {{ richiesta?.localita?.indirizzo | truncate:20 }},
-                                        {{ richiesta?.localita?.provincia }}
-                                  </div>
+                                      {{ getIndirizzoFormatted() | truncate:20 }}
+                                    </div>
                                 </ng-container>
                             <span *ngIf="!partenza"
                                   class="list-inline list-unstyled m-0 ml-2 font-xxlarge"

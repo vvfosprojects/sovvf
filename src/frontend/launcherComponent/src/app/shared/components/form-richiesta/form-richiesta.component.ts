@@ -209,11 +209,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             if (changes.schedaContattoDettaglio?.currentValue) {
                 this.f.noteNue.patchValue(this.schedaContattoDettaglio);
             }
-            // if (changes.competenze?.currentValue) {
-            //     if (this.f.indirizzo && this.f.latitudine && this.f.longitudine && !this.modifica) {
-            //         this.selectCompetenzaAuto();
-            //     }
-            // }
             if (changes.loadingCompetenze?.currentValue !== null) {
                 if (this.f) {
                     switch (changes.loadingCompetenze?.currentValue) {
@@ -370,6 +365,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     patchForm(): void {
+        let indirizzo = this.richiestaModifica?.localita?.indirizzo;
+        if (this.richiestaModifica?.localita?.provincia) {
+            indirizzo = indirizzo + ', ' + this.richiestaModifica?.localita?.provincia;
+        }
         this.richiestaForm.patchValue({
             id: this.richiestaModifica.id,
             codice: this.richiestaModifica.codice,
@@ -380,7 +379,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             istanteRicezioneRichiesta: this.richiestaModifica.istanteRicezioneRichiesta,
             nominativo: this.richiestaModifica.richiedente.nominativo,
             telefono: this.richiestaModifica.richiedente.telefono,
-            indirizzo: this.richiestaModifica.localita.indirizzo,
+            indirizzo,
             latitudine: this.richiestaModifica.localita.coordinate.latitudine,
             longitudine: this.richiestaModifica.localita.coordinate.longitudine,
             provincia: this.richiestaModifica.localita.provincia,
