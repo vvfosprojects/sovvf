@@ -7,13 +7,13 @@ import { StartLoading, StopLoading } from '../../shared/store/actions/loading/lo
 
 @Injectable()
 export class LoaderInterceptor implements HttpInterceptor {
-  constructor(public store: Store) {
-  }
+    constructor(public store: Store) {
+    }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.store.dispatch(new StartLoading());
-    return next.handle(req).pipe(
-      finalize(() => this.store.dispatch(new StopLoading()))
-    );
-  }
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        this.store.dispatch(new StartLoading());
+        return next.handle(req).pipe(
+            finalize(() => this.store.dispatch(new StopLoading()))
+        );
+    }
 }

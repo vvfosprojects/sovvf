@@ -85,6 +85,8 @@ import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
 import { CustomDatepickerI18nService } from './core/service/custom-datepicker-i18n/custom-datepicker-i18n.service';
 import { GestisciSchedaContattoModalState } from './shared/store/states/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.state';
 import { ConcorrenzaState } from './shared/store/states/concorrenza/concorrenza.state';
+import { HttpCancelService } from './core/service/common/http-cancel.service';
+import { ManageHttpInterceptor } from './core/interceptor/manage-http.interceptor';
 
 @NgModule({
     declarations: [
@@ -161,6 +163,8 @@ import { ConcorrenzaState } from './shared/store/states/concorrenza/concorrenza.
     ],
     providers: [
         I18n,
+        HttpCancelService,
+        { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },

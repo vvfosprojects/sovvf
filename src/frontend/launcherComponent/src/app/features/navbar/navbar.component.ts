@@ -202,7 +202,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         if (codaChiamateStatus) {
             this.toggleCodaChiamate();
         } else if (mezziInServizioStatus) {
-            this.toggleMezziInSerivizo();
+            this.toggleMezziInServizio();
         } else if (schedeContattoStatus) {
             this.toggleSchedeContatto();
         } else if (chiamataStatus) {
@@ -220,7 +220,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ToggleSidebarOpened(!sidebarOpened));
     }
 
-    toggleMezziInSerivizo(): void {
+    toggleMezziInServizio(): void {
         this.returnToHome();
         this.store.dispatch(new ToggleMezziInServizio());
     }

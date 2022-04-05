@@ -42,6 +42,7 @@ import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/compo
 import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
 import { Injectable } from '@angular/core';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
+import { HttpCancelService } from '../../../../../core/service/common/http-cancel.service';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -95,7 +96,8 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
 
 export class ViewComponentState {
 
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private httpCancelService: HttpCancelService) {
     }
 
     @Selector()
@@ -256,6 +258,7 @@ export class ViewComponentState {
 
     @Action(ToggleModifica)
     toggleModifica({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleModifica): void {
+        this.httpCancelService.cancelPendingRequests();
         const state = getState();
         const currentState = makeCopy(state);
         const stateDefault = makeCopy(ViewComponentStateDefault);
