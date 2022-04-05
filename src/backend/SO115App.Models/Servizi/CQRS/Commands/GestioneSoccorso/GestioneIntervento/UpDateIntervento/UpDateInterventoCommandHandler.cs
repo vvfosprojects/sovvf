@@ -124,7 +124,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.CodSOCompetente = codSocompetente;
             richiesta.Tipologie = listaCodiciTipologie;
             richiesta.DettaglioTipologia = command.Chiamata.DettaglioTipologia;
-            richiesta.CodZoneEmergenza = new string[] { command.Chiamata.ZoneEmergenza };
+            richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza !=null ? new string[] { command.Chiamata.ZoneEmergenza } : null;
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
             richiesta.Descrizione = command.Chiamata.Descrizione;
