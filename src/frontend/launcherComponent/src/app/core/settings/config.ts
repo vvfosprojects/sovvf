@@ -10,5 +10,8 @@ export const LSNAME = {
     cacheSedi: 'KEY_CACHE_SEDI_TREE_SELECTED',
     impostazioni: 'imp-sovvf',
     areaDocumentale: 'area-documentale',
-    mapPanDelay: 500
+    mapPanDelay: 500,
+    pagesSession: {
+        pageRichieste: 'PAGE_RICHIESTE'
+    }
 };

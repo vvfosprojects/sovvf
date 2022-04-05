@@ -58,6 +58,9 @@ import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi } from '../../../../../sh
 import { SetRedirectComposizionePartenza } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { FiltroZoneEmergenzaState } from '../filterbar/filtro-zone-emergenza.state';
 import { HttpErrorResponse } from '@angular/common/http';
+import { setPageSession } from '../../../../../shared/helper/function-paginazione-session';
+import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
+import { LSNAME } from '../../../../../core/settings/config';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -171,12 +174,13 @@ export class RichiesteState {
                 periodoChiuseChiamate,
                 periodoChiusiInterventi
             };
+            const pageSession = sessionStorage.getItem(LSNAME.pagesSession.pageRichieste);
             const pagination = {
-                page: action.options && action.options.page ? action.options.page : 1,
-                pageSize: richiestePerPagina,
+                page: action.options?.page ? action.options.page : pageSession ? +pageSession : 1,
+                pageSize: richiestePerPagina
             };
-
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
+                setPageSession(AppFeatures.Richieste, pagination.page.toString());
                 const richiesteActive = this.store.selectSnapshot(ViewComponentState.richiesteStatus);
                 const listaRichieste = makeCopy(response.sintesiRichiesta);
                 if (richiestaFissata && listaRichieste.length >= 7) {
