@@ -192,8 +192,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 bool turno = FiltroTurno(query.Filtro.Turno, squadra.Turno);
 
                 bool distaccamento = string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato) ?
-                    query.Filtro.CodiciDistaccamenti?.Contains(squadra.Distaccamento?.Codice) ?? true :
-                    query.Filtro.CodDistaccamentoSelezionato.Equals(squadra.Distaccamento?.Codice);
+                    query.Filtro.CodiciDistaccamenti?.Select(s => s.Split('.')[0]).Contains(squadra.Distaccamento?.Codice.Split('.')[0]) ?? true :
+                    query.Filtro.CodDistaccamentoSelezionato.Split('.')[0].Equals(squadra.Distaccamento?.Codice.Split('.')[0]);
 
                 var statoMezzo = lstStatiMezzi.Result?.FirstOrDefault(m => m.CodiceMezzo.Equals(query.Filtro?.CodMezzoSelezionato));
 
