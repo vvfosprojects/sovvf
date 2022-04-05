@@ -61,9 +61,13 @@
                     </app-risultati-alert>
                 </div>
                 <div *ngIf="vociRubricaPersonale?.length" class="col-12">
+                    <ng-container *ngIf="loading$ | async">
+                        <app-partial-loader></app-partial-loader>
+                    </ng-container>
                     <app-tabella-rubrica-personale [vociRubricaPersonale]="vociRubricaPersonale$ | async"
                                                    [totalItems]="totalItems$ | async"
-                                                   [pageSize]="pageSize" [page]="page$ | async"
+                                                   [pageSize]="pageSize"
+                                                   [page]="page$ | async"
                                                    [loading]="loading$ | async"
                                                    [pageSizes]="pageSizes$ | async"
                                                    (pageChange)="onPageChange($event)"
