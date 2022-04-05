@@ -249,7 +249,7 @@ export class TriageCrudState {
         const codTipologia = state.dettaglioTipologia.codiceTipologia;
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
         const triage = state.triageByDettaglioTipologia;
-        const triageData = state.triageDataByDettaglioTipologia;
+        const triageData = triage ? state.triageDataByDettaglioTipologia : null;
         this.triageService.update(idTriage, codTipologia, codDettaglioTipologia, triage, triageData).subscribe(() => {
             dispatch(new GetTriageByCodDettaglioTipologia(codTipologia, codDettaglioTipologia));
         });
