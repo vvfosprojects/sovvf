@@ -48,23 +48,26 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
             var result = new ConcurrentQueue<PersonaleRubrica>();
             Parallel.ForEach(lstPersonale, personale =>
             {
-                var contatti = lstAnagraficaPersonaleVVF.Find(p => p.codiceFiscale.Equals(personale.codiceFiscale)).contatti;
-
-                var rubricaPersonale = new PersonaleRubrica()
+                if (lstAnagraficaPersonaleVVF.Find(p => p.codiceFiscale.Equals(personale.codiceFiscale)) != null)
                 {
-                    Nominativo = $"{personale.cognome} {personale.nome}",
-                    Qualifica = personale.qualifica?.nome,
-                    Sede = personale.sede?.descrizione,
-                    Specializzazione = string.Concat(personale.specializzazioni?.Select(s => s?.descrizione + ", ")).TrimEnd(',', ' '),
-                    Turno = personale.turno,
-                    Telefono1 = contatti.Count() > 0 ? contatti[0] : "",
-                    Telefono2 = contatti.Count() > 1 ? contatti[1] : "",
-                    Telefono3 = contatti.Count() > 2 ? contatti[2] : "",
-                    Stato = null, //dettaglioDipendente?.oraIngresso == null ? StatoPersonaleRubrica.NonInServizio : StatoPersonaleRubrica.InServizio,
-                    Tipo = personale.tipoPersonale.codice == "2" ? TipoPersonaleRubrica.SoloOperativi : TipoPersonaleRubrica.AltroPersonale ?? TipoPersonaleRubrica.AltroPersonale
-                };
+                    var contatti = lstAnagraficaPersonaleVVF.Find(p => p.codiceFiscale.Equals(personale.codiceFiscale)).contatti;
 
-                result.Enqueue(rubricaPersonale);
+                    var rubricaPersonale = new PersonaleRubrica()
+                    {
+                        Nominativo = $"{personale.cognome} {personale.nome}",
+                        Qualifica = personale.qualifica?.nome,
+                        Sede = personale.sede?.descrizione,
+                        Specializzazione = string.Concat(personale.specializzazioni?.Select(s => s?.descrizione + ", ")).TrimEnd(',', ' '),
+                        Turno = personale.turno,
+                        Telefono1 = contatti.Count() > 0 ? contatti[0] : "",
+                        Telefono2 = contatti.Count() > 1 ? contatti[1] : "",
+                        Telefono3 = contatti.Count() > 2 ? contatti[2] : "",
+                        Stato = null, //dettaglioDipendente?.oraIngresso == null ? StatoPersonaleRubrica.NonInServizio : StatoPersonaleRubrica.InServizio,
+                        Tipo = personale.tipoPersonale.codice == "2" ? TipoPersonaleRubrica.SoloOperativi : TipoPersonaleRubrica.AltroPersonale ?? TipoPersonaleRubrica.AltroPersonale
+                    };
+
+                    result.Enqueue(rubricaPersonale);
+                }
             });
 
             //FILTRI
@@ -96,7 +99,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubricaPersonale
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = lstPersonale.Count()
+                    TotalItems = filteredResult.Count()
                 }
             };
         }

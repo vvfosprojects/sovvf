@@ -455,7 +455,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             clearTriageChiamataModalData(this.store);
         }
         this.pos = null;
-        if (codTipologia && !this.richiestaModifica) {
+        if (codTipologia) {
             // Prendo i dettagli tipologia
             this.store.dispatch(new GetDettagliTipologieByCodTipologia(+codTipologia));
         }
