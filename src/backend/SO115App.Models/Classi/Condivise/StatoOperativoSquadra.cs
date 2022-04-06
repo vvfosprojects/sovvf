@@ -43,6 +43,11 @@ namespace SO115App.Models.Classi.Condivise
         public string StatoSquadra { get; set; }
 
         /// <summary>
+        /// il turno al momento dell'inserimento
+        /// </summary>
+        public string TurnoSquadra { get; set; }
+
+        /// <summary>
         ///   il codice sede della squadra
         /// </summary>
         public string CodiceSede { get; set; }

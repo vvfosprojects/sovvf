@@ -59,6 +59,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly Turno TurnoPrecedente;
         private readonly Turno TurnoSuccessivo;
 
+        private string codiceTurno; 
+
         public GetComposizioneSquadre(IGetSquadre getSquadre,
             IGetStatoSquadra getStatoSquadre,
             IGetMezziUtilizzabili getMezzi,
@@ -81,7 +83,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         {
             var lstSedi = _getSedi.GetAll();
 
-            var codiceTurno = "";
 
             switch (query.Filtro.Turno) //FILTRO PER TURNO
             {
@@ -94,7 +95,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 case null: goto case TurnoRelativo.Attuale;
             }
 
-            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno, query.Filtro.CodiciDistaccamenti?.ToList() ?? lstSedi.Result.Select(s => s.Codice).ToList()));
+            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno.Substring(0 ,1)).ToList());
             var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
             var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Result.Where(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).ToList()))?.Result;
 
@@ -169,7 +170,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         Stato = MappaStato(lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals(squadra.Codice))?.StatoSquadra ?? Costanti.MezzoInSede),
                         Codice = squadra.Codice,
-                        Turno = squadra.TurnoAttuale.ToCharArray()[0],
+                        Turno = lstStatiSquadre.Result.FirstOrDefault(c => c.IdSquadra.Equals(squadra.Codice))?.TurnoSquadra.ToCharArray()[0] ?? squadra.TurnoAttuale.ToCharArray()[0],
                         Nome = squadra.Descrizione,
                         DiEmergenza = squadra.Emergenza,
                         Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione() ?? null,
@@ -184,9 +185,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             })
             .ContinueWith(lstSquadre => lstSquadre.Result.Where(squadra => //FILTRAGGIO
             {
-                //bool squadraInRientroSuMezzo = query.Filtro?.CodMezzoSelezionato == null || 
-                //    (lstStatiSquadre.Result?.FirstOrDefault(s => s.IdSquadra.Equals(squadra.Codice))?.CodMezzo.Equals(query.Filtro?.CodMezzoSelezionato) ?? false);
-
                 bool diEmergenza = squadra.DiEmergenza == query.Filtro?.DiEmergenza;
 
                 bool turno = FiltroTurno(query.Filtro.Turno, squadra.Turno);
@@ -257,8 +255,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             null => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra.ToString()),
 
             //IN DISUSO
-            TurnoRelativo.Attuale => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra),
-            _ => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra),
+            TurnoRelativo.Attuale => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra.ToString()),
+            _ => TurnoAttuale.Codice.Substring(0, 1).Equals(turnoSquadra.ToString()),
         };
     }
 }

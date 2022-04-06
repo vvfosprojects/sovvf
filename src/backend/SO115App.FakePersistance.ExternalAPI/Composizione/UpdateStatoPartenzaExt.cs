@@ -27,6 +27,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,13 +46,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetUscitaMezzo _setUscitaMezzo;
         private readonly ISetRientroMezzo _setRientroMezzo;
         private readonly IGetTipologieByCodice _getTipologie;
+        private readonly IGetTurno _getTurno;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public UpdateStatoPartenzaExt(ISetStatoOperativoMezzo setStatoOperativoMezzo,
             ISetStatoSquadra setStatoSquadra, IUpDateRichiestaAssistenza upDateRichiesta,
-            ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo, IGetTipologieByCodice getTipologie)
+            ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo, IGetTipologieByCodice getTipologie,
+            IGetTurno getTurno)
         {
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
@@ -61,6 +64,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _setUscitaMezzo = setUscitaMezzo;
 
             _getTipologie = getTipologie;
+
+            _getTurno = getTurno;
         }
 
         /// <summary>
@@ -71,6 +76,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public void Update(AggiornaStatoMezzoCommand command)
         {
+            string turnoAttuale = _getTurno.Get().Codice.Substring(0, 1);
+
             _upDateRichiesta.UpDate(command.Richiesta);
 
             var codiceSedeMezzo = command.CodiciSede.First();
@@ -103,7 +110,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     foreach (var squadra in partenza.Partenza.Squadre)
                     {
-                        _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, partenza.Partenza.Turno);
+                        _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, turnoAttuale, partenza.Partenza.Squadre.First().Turno);
                     }
                 }
             }

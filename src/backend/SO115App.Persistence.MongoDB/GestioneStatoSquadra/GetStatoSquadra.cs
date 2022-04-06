@@ -59,7 +59,7 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
                     return lista;
                 }
                 //return lista.FindAll(x => x.Turno.Substring(0, 1).Equals(turno));
-                return lista.FindAll(x => x.Turno.Contains(turno));
+                return lista.FindAll(x => x.TurnoSquadra.Contains(turno));
             }
 
             var listaAll = _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.Empty).ToList();
@@ -68,7 +68,7 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
                 return listaAll;
             }
             //return listaAll.FindAll(x => x.Turno.Substring(0, 1).Equals(turno));
-            return listaAll.FindAll(x => x.Turno.Equals(turno));
+            return listaAll.FindAll(x => x.TurnoSquadra.Contains(turno));
         }
     }
 }
