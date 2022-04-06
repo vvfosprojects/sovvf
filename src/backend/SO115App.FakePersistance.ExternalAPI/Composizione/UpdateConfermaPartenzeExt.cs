@@ -184,9 +184,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
 
                     if (partenza.Mezzo.Distaccamento.Codice != null)
-                        _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, turnoAttuale, partenza.Squadre.First().Turno);
+                        _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, turnoAttuale, squadra.Turno);
                     else if (partenza.Mezzo.Appartenenza != null)
-                        _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, turnoAttuale, partenza.Squadre.First().Turno);
+                        _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, turnoAttuale, squadra.Turno);
                 });
             });
 

@@ -51,8 +51,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
         public async Task<List<PreAccoppiato>> GetAsync(PreAccoppiatiQuery query)
         {
+            string codiceTurno = _getTurno.Get().Codice.Substring(0, 1);
+
             var lstStatoMezzi = _getStatoMezzi.Get(query.CodiceSede);
-            var lstStatoSquadre = _getStatoSquadre.Get(_getTurno.Get().Codice, query.CodiceSede.ToList());
+            var lstStatoSquadre = _getStatoSquadre.Get(codiceTurno, query.CodiceSede.ToList());
 
             var lstProvinceSedi = query.CodiceSede.Select(sede => sede.Split('.')[0]).Distinct();
             var lstSquadreWS = lstProvinceSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede).Result).ToList();
@@ -103,7 +105,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                                 {
                                     Codice = s.Codice,
                                     Nome = s.Descrizione,
-                                    Stato = MappaStatoSquadra(lstStatoSquadre, s.Codice),
+                                    Stato = MappaStatoSquadra(lstStatoSquadre, s.Codice, codiceTurno),
                                     Membri = MapMembriInComponenti(s.Membri.ToList())
                                 }).ToList(),
                                 StatoMezzo = lstStatoMezzi.FirstOrDefault(m => squadraPreaccoppiata.CodiciMezziPreaccoppiati?.Any(c => c.Equals(m.CodiceMezzo)) ?? false)?.StatoOperativo ?? Costanti.MezzoInSede,
@@ -139,9 +141,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             return result;
         }
 
-        private static API.Models.Classi.Condivise.Squadra.StatoSquadra MappaStatoSquadra(List<StatoOperativoSquadra> lstStatoSquadre, string codiceSquadra)
+        private static API.Models.Classi.Condivise.Squadra.StatoSquadra MappaStatoSquadra(List<StatoOperativoSquadra> lstStatoSquadre, string codiceSquadra, string codiceTurno)
         {
-            var squadra = lstStatoSquadre.Find(s => s.IdSquadra.Equals(codiceSquadra));
+            var squadra = lstStatoSquadre.Find(s => s.IdSquadra.Equals($"{codiceSquadra}_{codiceTurno}"));
 
             if (squadra != null)
             {

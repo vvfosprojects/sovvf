@@ -112,11 +112,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     var lstSquadreInRientro = Task.Run(() => lstStatiSquadre.Where(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo.Equals(m.Codice)).Select(s => new SquadraSemplice()
                     {
-                        Codice = s.IdSquadra,
+                        Codice = s.Codice,
                         Distaccamento = new Sede(lstSedi.Result.FirstOrDefault(sede => sede?.Codice == s.CodiceSede)?.Descrizione),
-                        Nome = s.IdSquadra,
+                        Nome = s.Codice,
                         Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
-                        Membri = lstSquadre.FirstOrDefault(sq => sq.Codice.Equals(s.IdSquadra))?.Membri.Select(m => new Componente()
+                        Membri = lstSquadre.FirstOrDefault(sq => $"{sq.Codice}_{codiceTurno}".Equals(s.IdSquadra))?.Membri.Select(m => new Componente()
                         {
                             CodiceFiscale = m.CodiceFiscale,
                             DescrizioneQualifica = m.Ruolo,
