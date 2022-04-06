@@ -20,7 +20,8 @@
                             </app-tasto-chiamata-mappa>
                         </div>
                     </ng-container>
-                    <ng-container *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)">
+                    <ng-container
+                            *ngIf="((chiamataStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)">
                         <div class="d-inline mr-4 ml-3">
                             <app-tasto-schede-contatto
                                     [active]="schedeContattoStatus$ | async"
@@ -43,43 +44,48 @@
                 </div>
             </div>
             <div class="mr-3">
-                <app-ricerca
-                        *ngIf="((chiamataStatus$ | async) === false) && ((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((mapsStatus$ | async) === false)"
-                        [ricerca]="ricerca$ | async"
-                        [debounce]="true"
-                        [placeholder]="getRicercaPlaceholder()"
-                        (search)="onSearch($event)">
-                </app-ricerca>
+                <ng-container
+                        *ngIf="((chiamataStatus$ | async) === false) && ((codaChiamateStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false) && ((mapsStatus$ | async) === false)">
+                    <app-ricerca [ricerca]="ricerca$ | async"
+                                 [debounce]="true"
+                                 [placeholder]="getRicercaPlaceholder()"
+                                 [richiesteStatus]="richiesteStatus$ | async"
+                                 (search)="onSearch($event)">
+                    </app-ricerca>
+                </ng-container>
             </div>
             <div class="">
-                <app-filtri-richieste *ngIf="richiesteStatus$ | async"
-                                      [filtri]="filtriRichieste$ | async"
-                                      [statiRichiesta]="filtriStatiRichieste$ | async"
-                                      [chiuse]="filtriRichiesteChiuse$ | async"
-                                      [altriFiltri]="altriFiltri$ | async"
-                                      [filtriAttiviToolTip]="filtriAttiviToolTip$ | async"
-                                      [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
-                                      [disableFilters]="loadingRichieste$ | async"
-                                      (filtroSelezionato)="onSelezioneFiltroRichieste($event)"
-                                      (filtroDeselezionato)="onDeselezioneFiltroRichieste($event)"
-                                      (filtriReset)="eliminaFiltriAttiviRichieste()">
-                </app-filtri-richieste>
-                <app-filtri-schede-contatto *ngIf="schedeContattoStatus$ | async"
-                                            [nightMode]="nightMode"
-                                            [filtri]="filtriSchedeContatto$ | async"
-                                            [filtriSelezionati]="filtriSelezionatiSchedeContatto$ | async"
-                                            [disableFilters]="loadingSchedeContatto$ | async"
-                                            (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
-                                            (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
-                </app-filtri-schede-contatto>
-                <app-filtri-mezzi-servizio *ngIf="mezziInServizioStatus$ | async"
-                                           [filtri]="filtriMezziInServizio$ | async"
-                                           [nightMode]="nightMode"
-                                           [filtriSelezionati]="filtriSelezionatiMezziInServizio$ | async"
-                                           [disableFilters]="loadingMezziInServizio$ | async"
-                                           (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
-                                           (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
-                </app-filtri-mezzi-servizio>
+                <ng-container *ngIf="richiesteStatus$ | async">
+                    <app-filtri-richieste [filtri]="filtriRichieste$ | async"
+                                          [statiRichiesta]="filtriStatiRichieste$ | async"
+                                          [chiuse]="filtriRichiesteChiuse$ | async"
+                                          [altriFiltri]="altriFiltri$ | async"
+                                          [filtriAttiviToolTip]="filtriAttiviToolTip$ | async"
+                                          [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
+                                          [disableFilters]="loadingRichieste$ | async"
+                                          (filtroSelezionato)="onSelezioneFiltroRichieste($event)"
+                                          (filtroDeselezionato)="onDeselezioneFiltroRichieste($event)"
+                                          (filtriReset)="eliminaFiltriAttiviRichieste()">
+                    </app-filtri-richieste>
+                </ng-container>
+                <ng-container *ngIf="schedeContattoStatus$ | async">
+                    <app-filtri-schede-contatto [nightMode]="nightMode"
+                                                [filtri]="filtriSchedeContatto$ | async"
+                                                [filtriSelezionati]="filtriSelezionatiSchedeContatto$ | async"
+                                                [disableFilters]="loadingSchedeContatto$ | async"
+                                                (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
+                                                (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
+                    </app-filtri-schede-contatto>
+                </ng-container>
+                <ng-container *ngIf="mezziInServizioStatus$ | async">
+                    <app-filtri-mezzi-servizio [filtri]="filtriMezziInServizio$ | async"
+                                               [nightMode]="nightMode"
+                                               [filtriSelezionati]="filtriSelezionatiMezziInServizio$ | async"
+                                               [disableFilters]="loadingMezziInServizio$ | async"
+                                               (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
+                                               (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
+                    </app-filtri-mezzi-servizio>
+                </ng-container>
             </div>
         </div>
     </div>
