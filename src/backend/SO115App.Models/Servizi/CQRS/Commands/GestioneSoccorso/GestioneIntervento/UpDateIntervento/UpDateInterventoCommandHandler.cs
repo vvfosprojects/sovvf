@@ -153,23 +153,23 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             switch (prioritaRichiesta)
             {
-                case 0:
+                case 1:
                     new AssegnazionePriorita(richiesta, Priorita.Bassissima, DateTime.UtcNow, command.CodUtente);
                     break;
 
-                case 1:
+                case 2:
                     new AssegnazionePriorita(richiesta, Priorita.Bassa, DateTime.UtcNow, command.CodUtente);
                     break;
 
-                case 2:
+                case 3:
                     new AssegnazionePriorita(richiesta, Priorita.Media, DateTime.UtcNow, command.CodUtente);
                     break;
 
-                case 3:
+                case 4:
                     new AssegnazionePriorita(richiesta, Priorita.Alta, DateTime.UtcNow, command.CodUtente);
                     break;
 
-                case 4:
+                case 5:
                     new AssegnazionePriorita(richiesta, Priorita.Altissima, DateTime.UtcNow, command.CodUtente);
                     break;
             };
