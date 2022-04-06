@@ -210,8 +210,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 return lstMezzi.Result //ORDINAMENTO
                 .OrderByDescending(mezzo => mezzo.IndiceOrdinamento)
-                .OrderBy(mezzo => (!query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
-                .OrderBy(mezzo => (!query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice)) ?? false)
+                .OrderBy(mezzo => !mezzo.SquadrePreaccoppiate.Select(s => s.Codice).Contains(query.Filtro?.CodSquadraSelezionata))
+                .OrderBy(mezzo => !query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice) ?? false)
+                .OrderBy(mezzo => !query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice) ?? false)
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInSede))
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInRientro))
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
