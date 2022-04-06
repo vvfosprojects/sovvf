@@ -90,7 +90,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             #endregion
 
-            var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno, query.CodiciSedi.ToList());
+            var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno.Substring(0, 1));
             var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && !s.spotType.ToUpper().Equals("MODULE")).ToList();
 
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
@@ -110,7 +110,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Turno = sq.TurnoAttuale.ToCharArray()[0]
                     }).ToList());
 
-                    var lstSquadreInRientro = Task.Run(() => lstStatiSquadre.Where(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo == m.Codice).Select(s => new SquadraSemplice()
+                    var lstSquadreInRientro = Task.Run(() => lstStatiSquadre.Where(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo.Equals(m.Codice)).Select(s => new SquadraSemplice()
                     {
                         Codice = s.IdSquadra,
                         Distaccamento = new Sede(lstSedi.Result.FirstOrDefault(sede => sede?.Codice == s.CodiceSede)?.Descrizione),
