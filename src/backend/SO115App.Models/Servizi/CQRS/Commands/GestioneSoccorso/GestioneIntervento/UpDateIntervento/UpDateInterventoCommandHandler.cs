@@ -125,7 +125,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.CodSOCompetente = codSocompetente;
             richiesta.Tipologie = listaCodiciTipologie;
             richiesta.DettaglioTipologia = command.Chiamata.DettaglioTipologia;
-            richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza !=null ? new string[] { command.Chiamata.ZoneEmergenza } : null;
+            richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza != null ? new string[] { command.Chiamata.ZoneEmergenza } : null;
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
             richiesta.Descrizione = command.Chiamata.Descrizione;
@@ -151,33 +151,29 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             var prioritaRichiesta = command.Chiamata.PrioritaRichiesta;
 
-
-            if (prioritaRichiesta != 0)
+            switch (prioritaRichiesta)
             {
-                switch (prioritaRichiesta)
-                {
-                    case 0:
-                        new AssegnazionePriorita(richiesta, Priorita.Bassissima, DateTime.UtcNow, command.CodUtente);
-                        break;
+                case 0:
+                    new AssegnazionePriorita(richiesta, Priorita.Bassissima, DateTime.UtcNow, command.CodUtente);
+                    break;
 
-                    case 1:
-                        new AssegnazionePriorita(richiesta, Priorita.Bassa, DateTime.UtcNow, command.CodUtente);
-                        break;
+                case 1:
+                    new AssegnazionePriorita(richiesta, Priorita.Bassa, DateTime.UtcNow, command.CodUtente);
+                    break;
 
-                    case 2:
-                        new AssegnazionePriorita(richiesta, Priorita.Media, DateTime.UtcNow, command.CodUtente);
-                        break;
+                case 2:
+                    new AssegnazionePriorita(richiesta, Priorita.Media, DateTime.UtcNow, command.CodUtente);
+                    break;
 
-                    case 3:
-                        new AssegnazionePriorita(richiesta, Priorita.Alta, DateTime.UtcNow, command.CodUtente);
-                        break;
+                case 3:
+                    new AssegnazionePriorita(richiesta, Priorita.Alta, DateTime.UtcNow, command.CodUtente);
+                    break;
 
-                    case 4:
-                        new AssegnazionePriorita(richiesta, Priorita.Altissima, DateTime.UtcNow, command.CodUtente);
-                        break;
-                };
-                
-            }
+                case 4:
+                    new AssegnazionePriorita(richiesta, Priorita.Altissima, DateTime.UtcNow, command.CodUtente);
+                    break;
+            };
+
             new RichiestaModificata(richiesta, DateTime.UtcNow, command.CodUtente);
 
             if (modificaInterventoChiuso)
