@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Mezzo } from '../../../model/mezzo.model';
 import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
@@ -18,8 +18,7 @@ import { Store } from '@ngxs/store';
 @Component({
     selector: 'app-mezzo-actions',
     templateUrl: './mezzo-actions.component.html',
-    styleUrls: ['./mezzo-actions.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./mezzo-actions.component.css']
 })
 export class MezzoActionsComponent implements OnInit {
 
@@ -29,6 +28,7 @@ export class MezzoActionsComponent implements OnInit {
     @Input() doubleMonitor: Mezzo;
     @Input() listaEventi: any;
     @Input() listaEventiMezzo: any;
+    @Input() disabledModificaStatoMezzo: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
@@ -63,7 +63,7 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string, ora?: string, event?: MouseEvent): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])) {
+        if (!this.disabledModificaStatoMezzo && !this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])) {
             if (event) {
                 event.stopPropagation();
             }

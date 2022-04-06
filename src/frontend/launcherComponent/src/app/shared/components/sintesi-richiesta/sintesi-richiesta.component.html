@@ -243,7 +243,7 @@
                                 <ng-container *ngIf="richiesta?.localita?.indirizzo">
                                     <div class="d-inline-block font-xxlarge"
                                          [ngbTooltip]="getIndirizzoFormatted()"
-                                         [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 20">
+                                         [disableTooltip]="getIndirizzoFormatted()?.length <= 20">
                                       {{ getIndirizzoFormatted() | truncate:20 }}
                                     </div>
                                 </ng-container>
@@ -294,8 +294,6 @@
                                     <button class="btn btn-light border py-0 px-0 mr-1"
                                             [class.on-gestione]="inGestione"
                                             ngbTooltip="Gestisci"
-                                            [disabled]="disabledGestisciRichiesta"
-                                            [class.cursor-not-allowed]="disabledGestisciRichiesta"
                                             (click)="onGestioneRichiesta($event)">
                                         <i class="fas fa-fw "
                                            [ngClass]="methods.toggleGestioneClass(inGestione)"></i>
@@ -483,6 +481,7 @@
                                                                 [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenze)"
                                                                 [loadingActionMezzo]="loadingActionMezzo"
                                                                 [annullaStatoMezzi]="annullaStatoMezzi"
+                                                                [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
                                                                 (actionMezzo)="onActionMezzo($event)"
                                                                 (eliminaPartenza)="onEliminaPartenza($event)"
                                                                 (modificaPartenza)="onModificaPartenza($event)"

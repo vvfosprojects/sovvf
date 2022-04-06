@@ -9,6 +9,7 @@
                    [listaEventiMezzo]="listaEventiMezzo"
                    [listaEventi]="richiesta?.eventi"
                    [actionsAttive]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa"
+                   [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
                    (actionMezzo)="onActionMezzo($event)">
         </app-mezzo>
     </div>
@@ -48,8 +49,8 @@
                         <button class="btn btn-sm btn-info d-inline-block"
                                 ngbTooltip="Gestisci Partenza"
                                 placement="top"
-                                [disabled]="tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice]"
-                                [class.cursor-not-allowed]="tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice]"
+                                [disabled]="disabledModificaStatoMezzo || (tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice])"
+                                [class.cursor-not-allowed]="disabledModificaStatoMezzo || (tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice])"
                                 (click)="onModificaPartenza(); $event.stopPropagation()">
                             <i class="fas fa-cog"></i>
                         </button>
