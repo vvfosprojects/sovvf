@@ -209,11 +209,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             if (changes.schedaContattoDettaglio?.currentValue) {
                 this.f.noteNue.patchValue(this.schedaContattoDettaglio);
             }
-            // if (changes.competenze?.currentValue) {
-            //     if (this.f.indirizzo && this.f.latitudine && this.f.longitudine && !this.modifica) {
-            //         this.selectCompetenzaAuto();
-            //     }
-            // }
             if (changes.loadingCompetenze?.currentValue !== null) {
                 if (this.f) {
                     switch (changes.loadingCompetenze?.currentValue) {
@@ -370,6 +365,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     patchForm(): void {
+        let indirizzo = this.richiestaModifica?.localita?.indirizzo;
+        if (this.richiestaModifica?.localita?.provincia) {
+            indirizzo = indirizzo + ', ' + this.richiestaModifica?.localita?.provincia;
+        }
         this.richiestaForm.patchValue({
             id: this.richiestaModifica.id,
             codice: this.richiestaModifica.codice,
@@ -380,7 +379,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             istanteRicezioneRichiesta: this.richiestaModifica.istanteRicezioneRichiesta,
             nominativo: this.richiestaModifica.richiedente.nominativo,
             telefono: this.richiestaModifica.richiedente.telefono,
-            indirizzo: this.richiestaModifica.localita.indirizzo,
+            indirizzo,
             latitudine: this.richiestaModifica.localita.coordinate.latitudine,
             longitudine: this.richiestaModifica.localita.coordinate.longitudine,
             provincia: this.richiestaModifica.localita.provincia,
@@ -412,8 +411,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             noteNue: this.richiestaModifica.noteNue
         });
 
-        console.log('this.richiestaModifica.stato', this.richiestaModifica.stato);
-
         this.store.dispatch([
             new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice),
             new UpdateFormValue({
@@ -421,7 +418,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     stato: this.richiestaModifica.stato,
                     codPrimaCompetenza: this.richiestaModifica.competenze?.length > 0 ? this.richiestaModifica.competenze[0]?.codice : null,
                     codSecondaCompetenza: this.richiestaModifica.competenze?.length > 1 ? this.richiestaModifica.competenze[1]?.codice : null,
-                    codTerzaCompetenza: this.richiestaModifica.competenze?.length > 2 ? this.richiestaModifica.competenze[2]?.codice : null
+                    codTerzaCompetenza: this.richiestaModifica.competenze?.length > 2 ? this.richiestaModifica.competenze[2]?.codice : null,
+                    esercitazione: this.richiestaModifica.esercitazione
                 },
                 path: 'schedaTelefonata.richiestaForm'
             })
@@ -618,8 +616,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
         const sedeSelezionata = sediSelezionate[0];
         this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, indirizzo));
-
-        console.log('chiamataMarker', this.chiamataMarker);
 
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(lat);
@@ -919,18 +915,15 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         triageModal.result.then((res: TriageModalResult) => {
             switch (res.type) {
                 case 'success':
-                    console.log('TriageModalResult', res);
                     if (res?.triageSummary?.length) {
                         saveTriageSummary(this.store, res.triageSummary);
                     }
                     break;
                 case 'dismiss':
-                    console.log('TriageModalResult', res);
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
                     break;
                 default:
-                    console.log('TriageModalResult: default');
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
                     break;
@@ -1133,11 +1126,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                         ]);
                         this.reducerSchedaTelefonata('reset');
                         break;
-                    case 'ko':
-                        console.log('Azione annullata');
-                        break;
                 }
-                console.log('Modal chiusa con val ->', val);
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );

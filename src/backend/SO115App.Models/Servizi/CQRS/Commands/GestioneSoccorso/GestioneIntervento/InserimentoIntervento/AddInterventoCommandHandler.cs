@@ -36,6 +36,7 @@ using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -76,7 +77,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var utentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico?.Select(u => u.Nominativo).ToList();
 
             command.Chiamata.Localita.SplitIndirizzo();
-
 
             //casistica che gestisce la registrazione di una chiamata non di competenza diretta. Es. registro a Milano una chiamata di Torino
             var codSocompetente = "";
@@ -128,8 +128,30 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CodiceSchedaContatto = command.Chiamata.CodiceSchedaNue
             };
 
-            var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
-            new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
+            var prioritaRichiesta = command.Chiamata.PrioritaRichiesta;
+
+            switch (prioritaRichiesta)
+            {
+                case 1:
+                    new AssegnazionePriorita(richiesta, Priorita.Bassissima, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 2:
+                    new AssegnazionePriorita(richiesta, Priorita.Bassa, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 3:
+                    new AssegnazionePriorita(richiesta, Priorita.Media, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 4:
+                    new AssegnazionePriorita(richiesta, Priorita.Alta, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 5:
+                    new AssegnazionePriorita(richiesta, Priorita.Altissima, DateTime.UtcNow, command.CodUtente);
+                    break;
+            };
 
             if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
                 new MarcaRilevante(richiesta, DateTime.UtcNow, command.CodUtente, "", command.Chiamata.RilevanteGrave,
