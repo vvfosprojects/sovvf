@@ -45,9 +45,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var result = _client.PutAsync(uri, content, _getToken.GeneraToken()).Result;
 
+            
+            //NON DOBBIAMO TORNARE UN ERRORE SE GAC VA MALE
             if (result != null && result.TrueForAll(item => item.codiceEsito != "200" && item.codiceEsito != "201"))
             {
-                throw new Exception($"Errore servizio uscita GAC: {result.First().codiceEsito}, {result.First().descrizioneEsito}");
+                //throw new Exception($"Errore servizio uscita GAC: {result.First().codiceEsito}, {result.First().descrizioneEsito}");
             }
         }
     }
