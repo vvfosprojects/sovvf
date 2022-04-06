@@ -116,7 +116,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Distaccamento = new Sede(lstSedi.Result.FirstOrDefault(sede => sede?.Codice == s.CodiceSede)?.Descrizione),
                         Nome = s.Codice,
                         Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
-                        Membri = lstSquadre.FirstOrDefault(sq => $"{sq.Codice}_{codiceTurno}".Equals(s.IdSquadra))?.Membri.Select(m => new Componente()
+                        Membri = lstSquadre.FirstOrDefault(sq => $"{sq.Codice}_{sq.TurnoAttuale}".Equals(s.IdSquadra))?.Membri.Select(m => new Componente()
                         {
                             CodiceFiscale = m.CodiceFiscale,
                             DescrizioneQualifica = m.Ruolo,
