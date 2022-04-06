@@ -68,7 +68,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         {
             Log.Information("Inserimento Intervento - Inizio scrittura internvento");
 
-            var sedi = _getSedi.GetAll().Result.Where(s => command.CodCompetenze.Contains(s.Codice)).ToList();
+            //var sedi = _getSedi.GetAll().Result.FindAll(s => command.Chiamata.Competenze);
 
             command.Chiamata.Codice = _generaCodiceRichiesta.GeneraCodiceChiamata(command.CodiceSede, DateTime.UtcNow.Year);
 
@@ -100,7 +100,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
                 CodUOCompetenza = command.CodCompetenze.ToArray(),
-                Competenze = sedi,
+                Competenze = command.Chiamata.Competenze,
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = codSocompetente,
                 CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c).ToList(),
@@ -112,7 +112,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             };
 
             //Aggiungo le competenze alla chiamata per la gestione delle notifiche di CodaChiamate
-            command.Chiamata.Competenze = sedi;
+            //command.Chiamata.Competenze = sedi;
 
             if (command.Chiamata.Tags != null)
                 richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);

@@ -56,6 +56,8 @@ namespace SO115App.Models.Servizi.CustomMapper
                   .ForMember(x => x.Presidiata, y => y.MapFrom(z => z.Presidiata))
                   .ForMember(x => x.Aperta, y => y.MapFrom(z => z.Aperta))
                   .ForMember(x => x.Sospesa, y => y.MapFrom(z => z.Sospesa))
+                  .ForMember(x => x.CodUOCompetenza, y => y.MapFrom(z => z.CodUOCompetenza))
+                  .ForMember(x => x.Competenze, y => y.MapFrom(z => z.Competenze))
                   .ForMember(x => x.DettaglioTipologia, y => MapDettaglioTipologia(richiesta.DettaglioTipologia, richiesta.CodSOCompetente)));
 
                 _mapper = mapConfing.CreateMapper();
