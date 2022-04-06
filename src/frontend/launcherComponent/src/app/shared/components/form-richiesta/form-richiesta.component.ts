@@ -369,6 +369,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         if (this.richiestaModifica?.localita?.provincia) {
             indirizzo = indirizzo + ', ' + this.richiestaModifica?.localita?.provincia;
         }
+        console.log('richiestaModifica', this.richiestaModifica);
         this.richiestaForm.patchValue({
             id: this.richiestaModifica.id,
             codice: this.richiestaModifica.codice,
@@ -420,7 +421,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     stato: this.richiestaModifica.stato,
                     codPrimaCompetenza: this.richiestaModifica.competenze?.length > 0 ? this.richiestaModifica.competenze[0]?.codice : null,
                     codSecondaCompetenza: this.richiestaModifica.competenze?.length > 1 ? this.richiestaModifica.competenze[1]?.codice : null,
-                    codTerzaCompetenza: this.richiestaModifica.competenze?.length > 2 ? this.richiestaModifica.competenze[2]?.codice : null
+                    codTerzaCompetenza: this.richiestaModifica.competenze?.length > 2 ? this.richiestaModifica.competenze[2]?.codice : null,
+                    esercitazione: this.richiestaModifica.esercitazione
                 },
                 path: 'schedaTelefonata.richiestaForm'
             })
@@ -1071,6 +1073,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     getCheckboxEsercitazioneState(): CheckboxInterface {
+        console.log('this.f.esercitazione.value', this.f.esercitazione.value);
         const id = 'check-chiamata-esercitazione';
         const status = this.f.esercitazione.value;
         const label = 'ESERCITAZIONE';
