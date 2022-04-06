@@ -31,6 +31,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
 namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
@@ -150,9 +151,33 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             var prioritaRichiesta = command.Chiamata.PrioritaRichiesta;
 
-            //if (richiesta.PrioritaRichiesta != prioritaRichiesta)
-            //    new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
 
+            if (prioritaRichiesta != 0)
+            {
+                switch (prioritaRichiesta)
+                {
+                    case 0:
+                        new AssegnazionePriorita(richiesta, Priorita.Bassissima, DateTime.UtcNow, command.CodUtente);
+                        break;
+
+                    case 1:
+                        new AssegnazionePriorita(richiesta, Priorita.Bassa, DateTime.UtcNow, command.CodUtente);
+                        break;
+
+                    case 2:
+                        new AssegnazionePriorita(richiesta, Priorita.Media, DateTime.UtcNow, command.CodUtente);
+                        break;
+
+                    case 3:
+                        new AssegnazionePriorita(richiesta, Priorita.Alta, DateTime.UtcNow, command.CodUtente);
+                        break;
+
+                    case 4:
+                        new AssegnazionePriorita(richiesta, Priorita.Altissima, DateTime.UtcNow, command.CodUtente);
+                        break;
+                };
+                
+            }
             new RichiestaModificata(richiesta, DateTime.UtcNow, command.CodUtente);
 
             if (modificaInterventoChiuso)
