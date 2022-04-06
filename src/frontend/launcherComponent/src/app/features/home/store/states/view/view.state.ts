@@ -192,6 +192,7 @@ export class ViewComponentState {
 
     @Action(ToggleCodaChiamate)
     toggleCodaChiamate({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
+        this.httpCancelService.cancelPendingRequests();
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         if (!state.view.codaChiamate.active) {
@@ -288,6 +289,7 @@ export class ViewComponentState {
 
     @Action(ToggleRichieste)
     toggleRichieste({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
+        this.httpCancelService.cancelPendingRequests();
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         dispatch(new SaveView(makeCopy(state)));
@@ -301,6 +303,7 @@ export class ViewComponentState {
 
     @Action(ToggleComposizione)
     toggleComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleComposizione): void {
+        this.httpCancelService.cancelPendingRequests();
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         dispatch(new SaveView(makeCopy(state)));
@@ -314,6 +317,7 @@ export class ViewComponentState {
 
     @Action(TurnOffComposizione)
     turnOffComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
+        this.httpCancelService.cancelPendingRequests();
         const state = getState();
         const currentState = makeCopy(state);
         const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
@@ -347,6 +351,7 @@ export class ViewComponentState {
 
     @Action(ToggleMezziInServizio)
     toggleGestioneRisorse({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
+        this.httpCancelService.cancelPendingRequests();
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
 
@@ -372,6 +377,7 @@ export class ViewComponentState {
 
     @Action(ToggleSchedeContatto)
     toggleSchedeContatto({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
+        this.httpCancelService.cancelPendingRequests();
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         if (!state.view.schedeContatto.active) {

@@ -8,6 +8,10 @@ import { HttpCancelService } from '../service/common/http-cancel.service';
 @Injectable()
 export class ManageHttpInterceptor implements HttpInterceptor {
 
+    bypassUrls = [
+        '/selezione-sede',
+        '/login'
+    ];
     private urlAfterRedirects;
 
     constructor(router: Router,
@@ -18,7 +22,9 @@ export class ManageHttpInterceptor implements HttpInterceptor {
                     this.urlAfterRedirects = event.urlAfterRedirects;
                 } else {
                     if (event.urlAfterRedirects && this.urlAfterRedirects !== event.urlAfterRedirects) {
-                        this.httpCancelService.cancelPendingRequests();
+                        if (!this.bypassUrls.includes(this.urlAfterRedirects)) {
+                            this.httpCancelService.cancelPendingRequests();
+                        }
                         this.urlAfterRedirects = event.urlAfterRedirects;
                     }
                 }
