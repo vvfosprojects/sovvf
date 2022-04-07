@@ -44,6 +44,14 @@ export class SetCountInterventiProssimita {
     }
 }
 
+export class StartLoadingCountInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Start Loading Count Interventi Vicinanze';
+}
+
+export class StopLoadingCountInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Stop Loading Count Interventi Vicinanze';
+}
+
 export class ClearCountInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Clear Count Interventi Vicinanze';
 }
@@ -53,6 +61,14 @@ export class SetInterventiProssimita {
 
     constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze: string[]) {
     }
+}
+
+export class StartLoadingInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Start Loading Interventi Vicinanze';
+}
+
+export class StopLoadingInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Stop Loading Interventi Vicinanze';
 }
 
 export class ClearInterventiProssimita {

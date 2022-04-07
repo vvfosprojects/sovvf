@@ -12,5 +12,6 @@ namespace SO115App.Models.Classi.Composizione
         public string[]? Tipo { get; set; }
         public bool? Autista { get; set; }
         public TurnoRelativo? Turno { get; set; }
+        public string CodSquadraSelezionata { get; set; }
     }
 }

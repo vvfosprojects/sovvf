@@ -27,7 +27,11 @@ export const PermessiStateDefaults: PermessiStateModel = {
             roles: [Role.GestoreRichieste, Role.GestoreChiamate]
         },
         {
-            feature: PermissionFeatures.GestisciRichiesta,
+            feature: PermissionFeatures.AzioniRichiesta,
+            roles: [Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.ModificaStatoMezzo,
             roles: [Role.GestoreRichieste]
         },
         {

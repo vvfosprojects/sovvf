@@ -24,12 +24,12 @@
                        (click)="onChangeCheckboxOrarioPersonalizzato()">
                 <label for="orarioPersonalizzato">Orario personalizzato</label>
             </div>
-
             <ng-container *ngIf="f?.orarioPersonalizzato.value">
                 <hr>
                 <div class="d-flex align-items-center justify-content-center">
                     <div class="form-group">
-                        <div class="input-group" style="width: 180px;">
+                        <div class="input-group"
+                             style="width: 180px;">
                             <input class="form-control"
                                    placeholder="aaaa-mm-gg"
                                    name="dp"
@@ -50,48 +50,54 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="md-form md-outline" id="default-picker"
-                             style="display: flex; justify-content: center;">
-                            <ngb-timepicker #timepickerRef
-                                            [(ngModel)]="time"
-                                            [ngModelOptions]="{standalone: true}"
-                                            style="margin-left: 25px;">
-                            </ngb-timepicker>
-                            <i (click)="onDateNow()" class="far fa-clock" ngbTooltip="Imposta Data e Ora di adesso"
-                               placement="right"
-                               style="align-self: center; padding-left: 10px; font-size: 25px; cursor: pointer"></i>
+                    <div class="form-group ml-2">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div>
+                                <ngb-timepicker #timepickerRef
+                                                [(ngModel)]="time"
+                                                [ngModelOptions]="{standalone: true}">
+                                </ngb-timepicker>
+                            </div>
+                            <div>
+                                <i class="far fa-clock cursor-pointer ml-3"
+                                   style="font-size: 25px"
+                                   ngbTooltip="Imposta Data e Ora di adesso"
+                                   placement="right"
+                                   (click)="onDateNow()">
+                                </i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </ng-container>
-
-            <div *ngIf="action === 'Rientrato' && ultimoMezzo && !modificaOrario" class="alert alert-warning mt-2 mb-0">
-                <span class="mr-4">Scegliere azione Intervento:</span>
-                <div class="form-check-inline">
-                    <input class="form-check-input radio-custom" type="radio" id="sospesa" name="sospesa"
-                           [checked]="checkbox.sospesa"
-                           (click)="onCheck('sospesa')">
-                    <label class="form-check-label" for="sospesa">
-                        Sospendi
-                    </label>
+            <ng-container *ngIf="action === 'Rientrato' && ultimoMezzo && !modificaOrario">
+                <div class="alert alert-warning mt-2 mb-0">
+                    <span class="mr-4">Scegliere azione Intervento:</span>
+                    <div class="form-check-inline">
+                        <input class="form-check-input radio-custom" type="radio" id="sospesa" name="sospesa"
+                               [checked]="checkbox.sospesa"
+                               (click)="onCheck('sospesa')">
+                        <label class="form-check-label" for="sospesa">
+                            Sospendi
+                        </label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input class="form-check-input radio-custom" type="radio" id="chiusa" name="chiusa"
+                               [checked]="checkbox.chiusa"
+                               (click)="onCheck('chiusa')">
+                        <label class="form-check-label" for="chiusa">
+                            Chiudi
+                        </label>
+                    </div>
+                    <!--          <div class="form-check-inline">-->
+                    <!--              <input class="form-check-input radio-custom" type="radio" id="aperta" name="aperta" [checked]="checkbox.aperta"-->
+                    <!--                     (click)="onCheck('aperta')">-->
+                    <!--              <label class="form-check-label" for="aperta">-->
+                    <!--                  Mantieni Aperto-->
+                    <!--              </label>-->
+                    <!--          </div>-->
                 </div>
-                <div class="form-check-inline">
-                    <input class="form-check-input radio-custom" type="radio" id="chiusa" name="chiusa"
-                           [checked]="checkbox.chiusa"
-                           (click)="onCheck('chiusa')">
-                    <label class="form-check-label" for="chiusa">
-                        Chiudi
-                    </label>
-                </div>
-                <!--          <div class="form-check-inline">-->
-                <!--              <input class="form-check-input radio-custom" type="radio" id="aperta" name="aperta" [checked]="checkbox.aperta"-->
-                <!--                     (click)="onCheck('aperta')">-->
-                <!--              <label class="form-check-label" for="aperta">-->
-                <!--                  Mantieni Aperto-->
-                <!--              </label>-->
-                <!--          </div>-->
-            </div>
+            </ng-container>
         </form>
     </ng-container>
     <ng-container *ngIf="!timeActionForm">

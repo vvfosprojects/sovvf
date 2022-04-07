@@ -56,6 +56,7 @@ import { ZonaEmergenza } from '../../features/zone-emergenza/model/zona-emergenz
 import { GetConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
 import { UpdateRichiestaSganciamento } from '../../features/home/store/actions/composizione-partenza/richiesta-sganciamento.actions';
 import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import { RicercaRubricaState } from '../../features/rubrica/store/states/ricerca-rubrica/ricerca-rubrica.state';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -404,26 +405,32 @@ export class SignalRService {
         this.hubNotification.on('NotifyAddEnte', (response: ResponseAddEnteRubricaInterface) => {
             console.log('NotifyAddEnte', response);
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch([
-                new AddVoceRubrica(),
-                new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems })
-            ]);
+            const ricercaRubrica = this.store.selectSnapshot(RicercaRubricaState.ricerca);
+            const isRubricaRoute = this.store.selectSnapshot(RouterState.url) ? this.store.selectSnapshot(RouterState.url) === '/rubrica' : false;
+            this.store.dispatch(new AddVoceRubrica());
+            if (!ricercaRubrica && isRubricaRoute) {
+                this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            }
         });
         this.hubNotification.on('NotifyUpdateEnte', (response: ResponseUpdateEnteRubricaInterface) => {
             console.log('NotifyUpdateEnte', response);
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch([
-                new UpdateVoceRubrica(response.data),
-                new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems })
-            ]);
+            const ricercaRubrica = this.store.selectSnapshot(RicercaRubricaState.ricerca);
+            const isRubricaRoute = this.store.selectSnapshot(RouterState.url) ? this.store.selectSnapshot(RouterState.url) === '/rubrica' : false;
+            this.store.dispatch(new UpdateVoceRubrica(response.data));
+            if (!ricercaRubrica && isRubricaRoute) {
+                this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            }
         });
         this.hubNotification.on('NotifyDeleteEnte', (response: ResponseDeleteEnteRubricaInterface) => {
             console.log('NotifyDeleteEnte', response);
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            this.store.dispatch([
-                new DeleteVoceRubrica(response.data),
-                new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems })
-            ]);
+            const ricercaRubrica = this.store.selectSnapshot(RicercaRubricaState.ricerca);
+            const isRubricaRoute = this.store.selectSnapshot(RouterState.url) ? this.store.selectSnapshot(RouterState.url) === '/rubrica' : false;
+            this.store.dispatch(new DeleteVoceRubrica(response.data));
+            if (!ricercaRubrica && isRubricaRoute) {
+                this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            }
         });
 
         /**

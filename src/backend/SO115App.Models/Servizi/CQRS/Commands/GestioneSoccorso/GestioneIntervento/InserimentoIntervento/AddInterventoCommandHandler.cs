@@ -36,6 +36,7 @@ using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -67,7 +68,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         {
             Log.Information("Inserimento Intervento - Inizio scrittura internvento");
 
-            var sedi = _getSedi.GetAll().Result.Where(s => command.CodCompetenze.Contains(s.Codice)).ToList();
+            //var sedi = _getSedi.GetAll().Result.FindAll(s => command.Chiamata.Competenze);
 
             command.Chiamata.Codice = _generaCodiceRichiesta.GeneraCodiceChiamata(command.CodiceSede, DateTime.UtcNow.Year);
 
@@ -76,7 +77,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var utentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico?.Select(u => u.Nominativo).ToList();
 
             command.Chiamata.Localita.SplitIndirizzo();
-
 
             //casistica che gestisce la registrazione di una chiamata non di competenza diretta. Es. registro a Milano una chiamata di Torino
             var codSocompetente = "";
@@ -100,7 +100,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
                 CodUOCompetenza = command.CodCompetenze.ToArray(),
-                Competenze = sedi,
+                Competenze = command.Chiamata.Competenze,
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = codSocompetente,
                 CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c).ToList(),
@@ -112,7 +112,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             };
 
             //Aggiungo le competenze alla chiamata per la gestione delle notifiche di CodaChiamate
-            command.Chiamata.Competenze = sedi;
+            //command.Chiamata.Competenze = sedi;
 
             if (command.Chiamata.Tags != null)
                 richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);
@@ -128,8 +128,30 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CodiceSchedaContatto = command.Chiamata.CodiceSchedaNue
             };
 
-            var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
-            new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
+            var prioritaRichiesta = command.Chiamata.PrioritaRichiesta;
+
+            switch (prioritaRichiesta)
+            {
+                case 1:
+                    new AssegnazionePriorita(richiesta, Priorita.Bassissima, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 2:
+                    new AssegnazionePriorita(richiesta, Priorita.Bassa, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 3:
+                    new AssegnazionePriorita(richiesta, Priorita.Media, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 4:
+                    new AssegnazionePriorita(richiesta, Priorita.Alta, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 5:
+                    new AssegnazionePriorita(richiesta, Priorita.Altissima, DateTime.UtcNow, command.CodUtente);
+                    break;
+            };
 
             if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
                 new MarcaRilevante(richiesta, DateTime.UtcNow, command.CodUtente, "", command.Chiamata.RilevanteGrave,
