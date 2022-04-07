@@ -16,16 +16,20 @@ import {
     RemoveChiamataMarker,
     SetChiamataMarker,
     UpdateChiamataMarker,
-    UpdateItemChiamataMarker
+    UpdateItemChiamataMarker,
+    StartLoadingChiamateMarkers,
+    StopLoadingChiamateMarkers
 } from '../actions/chiamate-markers.actions';
 import { Injectable } from '@angular/core';
 
 export interface ChiamateMarkersStateModel {
     chiamateMarkers: ChiamataMarker[];
+    loading: boolean;
 }
 
 export const ChiamateMarkersStateDefaults: ChiamateMarkersStateModel = {
     chiamateMarkers: null,
+    loading: false
 };
 
 @Injectable()
@@ -41,25 +45,40 @@ export class ChiamateMarkersState {
         return state.chiamateMarkers;
     }
 
+    @Selector()
+    static loading(state: ChiamateMarkersStateModel): boolean {
+        return state.loading;
+    }
+
     constructor(private chiamateMarkerService: ChiamateMarkerService,
                 private store: Store) {
     }
 
     @Action(GetChiamateMarkers)
     getChiamateMarkers({ dispatch }: StateContext<ChiamateMarkersStateModel>): void {
+        dispatch(new StartLoadingChiamateMarkers());
         this.chiamateMarkerService.getChiamateMarkers().subscribe((data: ChiamataMarker[]) => {
-            dispatch(new SetChiamateMarkers(data));
+            dispatch([
+                new SetChiamateMarkers(data),
+                new StopLoadingChiamateMarkers()
+            ]);
         }, error => {
             console.error(error);
-            dispatch(new ShowToastr(ToastrType.Error, 'Reperimento delle chiamate fallito', 'Si è verificato un errore, riprova.', 5));
+            dispatch([
+                new StopLoadingChiamateMarkers(),
+                new ShowToastr(ToastrType.Error, 'Reperimento delle chiamate fallito', 'Si è verificato un errore, riprova.', 5)
+            ]);
         });
     }
 
     @Action(SetChiamataMarker)
     setChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: SetChiamataMarker): void {
+        dispatch(new StartLoadingChiamateMarkers());
         this.chiamateMarkerService.setChiamataInCorso(action.chiamataMarker, action.codCompetenze).subscribe(() => {
+            dispatch(new StopLoadingChiamateMarkers());
         }, () => {
             dispatch([
+                new StopLoadingChiamateMarkers(),
                 new ClearIndirizzo(),
                 new GetInitCentroMappa()
             ]);
@@ -68,9 +87,12 @@ export class ChiamateMarkersState {
 
     @Action(UpdateChiamataMarker)
     updateChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: UpdateChiamataMarker): void {
+        dispatch(new StartLoadingChiamateMarkers());
         this.chiamateMarkerService.updateChiamataInCorso(action.chiamataMarker, action.codCompetenze).subscribe(() => {
+            dispatch(new StopLoadingChiamateMarkers());
         }, () => {
             dispatch([
+                new StopLoadingChiamateMarkers(),
                 new ClearIndirizzo(),
                 new GetInitCentroMappa()
             ]);
@@ -80,14 +102,18 @@ export class ChiamateMarkersState {
     @Action(DelChiamataMarker)
     delChiamataMarker({ getState, dispatch }: StateContext<ChiamateMarkersStateModel>, action: DelChiamataMarker): void {
         const state = getState();
-
         if (state.chiamateMarkers) {
             const marker = state.chiamateMarkers.find(chiamataMarker => chiamataMarker.id === action.id);
             if (marker) {
+                dispatch(new StartLoadingChiamateMarkers());
                 this.chiamateMarkerService.deleteChiamataInCorso(marker).subscribe(() => {
+                    dispatch(new StopLoadingChiamateMarkers());
                 }, error => {
                     console.error(error);
-                    dispatch(new ShowToastr(ToastrType.Error, 'Cancellazione della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
+                    dispatch([
+                        new StopLoadingChiamateMarkers(),
+                        new ShowToastr(ToastrType.Error, 'Cancellazione della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5)
+                    ]);
                 });
             }
         }
@@ -140,6 +166,20 @@ export class ChiamateMarkersState {
                 })
             );
         }
+    }
+
+    @Action(StartLoadingChiamateMarkers)
+    startLoadingChiamateMarkers({ patchState }: StateContext<ChiamateMarkersStateModel>): void {
+        patchState({
+            loading: true
+        });
+    }
+
+    @Action(StopLoadingChiamateMarkers)
+    stopLoadingChiamateMarkers({ patchState }: StateContext<ChiamateMarkersStateModel>): void {
+        patchState({
+            loading: false
+        });
     }
 
     @Action(ClearChiamateMarkers)

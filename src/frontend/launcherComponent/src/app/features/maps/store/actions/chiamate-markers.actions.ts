@@ -1,5 +1,4 @@
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
-import { Sede } from '../../../../shared/model/sede.model';
 
 export class GetChiamateMarkers {
     static readonly type = '[Chiamate Marker] Get Chiamate Markers API';
@@ -52,6 +51,14 @@ export class RemoveChiamataMarker {
 
     constructor(public id: string) {
     }
+}
+
+export class StartLoadingChiamateMarkers {
+    static readonly type = '[Chiamate Marker] Start Loading Chiamate Marker';
+}
+
+export class StopLoadingChiamateMarkers {
+    static readonly type = '[Chiamate Marker] Stop Loading Chiamate Marker';
 }
 
 export class ClearChiamateMarkers {
