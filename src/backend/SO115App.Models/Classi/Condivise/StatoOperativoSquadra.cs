@@ -33,14 +33,21 @@ namespace SO115App.Models.Classi.Condivise
         public string IdRichiesta { get; set; }
 
         /// <summary>
-        ///   l'id della squadra in uno stato operativo
+        ///   serve a distinguere la squadra tra i turni, è formato dal codice e il turno
         /// </summary>
         public string IdSquadra { get; set; }
+
+        public string Codice { get; set; }
 
         /// <summary>
         ///   lo stato operativo della squadra
         /// </summary>
         public string StatoSquadra { get; set; }
+
+        /// <summary>
+        /// il turno al momento dell'inserimento
+        /// </summary>
+        public string TurnoSquadra { get; set; }
 
         /// <summary>
         ///   il codice sede della squadra

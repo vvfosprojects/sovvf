@@ -31,13 +31,13 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
 {
     public class ConfermaPartenzeNotification : ICommandNotifier<ConfermaPartenzeCommand>
     {
-        private readonly IDeleteNotification _sender;
+        private readonly INotificationConfermaPartenze _sender;
         private readonly ICallMatrix _callMatrix;
         private readonly INotifyUpDateRichiesta _notifyUpDateRichiesta;
         private readonly IMappingESRIMessage _mappingESRIMessage;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
-        public ConfermaPartenzeNotification(IDeleteNotification sender,
+        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender,
                                             ICallMatrix callMatrix,
                                             INotifyUpDateRichiesta notifyUpDateRichiesta,
                                             IMappingESRIMessage mappingESRIMessage,
