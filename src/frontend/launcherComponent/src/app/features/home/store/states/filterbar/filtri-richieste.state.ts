@@ -282,7 +282,7 @@ export class FiltriRichiesteState {
                 this.store.dispatch(new SetFiltroBoxRichieste(action.filtro.name));
             }
         }
-        dispatch(new GetListaRichieste());
+        dispatch(new GetListaRichieste({ page: 1 }));
     }
 
     @Action(ClearFiltroSenzaEsecuzione)
@@ -305,7 +305,7 @@ export class FiltriRichiesteState {
                 filtriRichiesteSelezionati: removeItem<VoceFiltro>(filtro => filtro.codice === action.filtro.codice),
             })
         );
-        dispatch(new GetListaRichieste());
+        dispatch(new GetListaRichieste({ page: 1 }));
     }
 
     @Action(SetFiltroBoxRichieste)
@@ -374,7 +374,7 @@ export class FiltriRichiesteState {
                 }
             })
         );
-        dispatch(new GetListaRichieste());
+        dispatch(new GetListaRichieste({ page: 1 }));
     }
 
     @Action(ClearFiltriTipologiaSelezionatiRichieste)
@@ -392,7 +392,7 @@ export class FiltriRichiesteState {
         ]);
         if (!action.options || !action.options.preventGetList) {
             dispatch([
-                new GetListaRichieste()
+                new GetListaRichieste({ page: 1 })
             ]);
         }
     }
