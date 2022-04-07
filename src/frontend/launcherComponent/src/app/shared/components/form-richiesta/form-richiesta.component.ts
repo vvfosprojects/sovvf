@@ -11,10 +11,15 @@ import { Utente } from '../../model/utente.model';
 import { ClearClipboard } from '../../../features/home/store/actions/form-richiesta/clipboard.actions';
 import {
     ClearCompetenze,
-    ClearCountInterventiProssimita, ClearIdChiamata,
+    ClearCountInterventiProssimita,
+    ClearIdChiamata,
     ClearIdChiamataMarker,
-    ClearInterventiProssimita, ClearIstanteRicezioneRichiesta,
-    ClearMarkerChiamata, ClearOperatoreChiamata, ClearPrioritaRichiesta, ClearStatoChiamata,
+    ClearInterventiProssimita,
+    ClearIstanteRicezioneRichiesta,
+    ClearMarkerChiamata,
+    ClearOperatoreChiamata,
+    ClearPrioritaRichiesta,
+    ClearStatoChiamata,
     ReducerSchedaTelefonata,
     SetCompetenze,
     SetCompetenzeSuccess,
@@ -73,6 +78,7 @@ import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
 import { createChiamataMarker } from '../../helper/mappa/chiamata-marker';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
+import { ChiamateMarkersState } from '../../../features/maps/store/states/chiamate-markers.state';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -97,8 +103,17 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
 
+    @Select(ChiamateMarkersState.loading) loadingChiamateMarkers$: Observable<boolean>;
+    loadingChiamateMarkers: boolean;
+
+    @Select(SchedaTelefonataState.formValid) formValid$: Observable<boolean>;
+    formValid: boolean;
     @Select(SchedaTelefonataState.loadingDettagliTipologia) loadingDettagliTipologia$: Observable<boolean>;
     loadingDettagliTipologia: boolean;
+    @Select(SchedaTelefonataState.loadingCountInterventiProssimita) loadingCountInterventiProssimita$: Observable<boolean>;
+    loadingCountInterventiProssimita: boolean;
+    @Select(SchedaTelefonataState.loadingInterventiProssimita) loadingInterventiProssimita$: Observable<boolean>;
+    loadingInterventiProssimita: boolean;
 
     @Select(TipologicheMezziState.tipologiche) tipologiche$: Observable<ListaTipologicheMezzi>;
     distaccamenti: TipologicaComposizionePartenza[];
@@ -116,7 +131,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Input() countInterventiChiusiStessoIndirizzo: number;
     @Input() interventiChiusiStessoIndirizzo: SintesiRichiesta[];
     @Input() enti: EnteInterface[];
-    @Input() disabledInviaPartenza = false;
+    @Input() disabledInviaPartenza: boolean;
     @Input() resetChiamata: boolean;
     @Input() loadingSchedaRichiesta: boolean;
     @Input() loadingCompetenze: boolean;
@@ -159,7 +174,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.getIdChiamata();
         this.getScorciatoieTelefono();
         this.initForm();
+        this.getFormValid();
+        this.getLoadingChiamateMarkers();
         this.getLoadingDettagliTipologia();
+        this.getLoadingCountInterventiProssimita();
+        this.getLoadingInterventiProssimita();
         this.getDettagliTipologia();
         this.getTipologiche();
         this.getTriage();
@@ -321,10 +340,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             id: [null],
             codice: [null],
             codiceRichiesta: [null],
-            operatore: [null],
+            operatore: [null, [Validators.required]],
             codTipologia: [null, [Validators.required]],
             dettaglioTipologia: [null],
-            istanteRicezioneRichiesta: [null],
+            istanteRicezioneRichiesta: [null, [Validators.required]],
             nominativo: [null, [Validators.required]],
             telefono: [null, [Validators.required]], // Inserire se necessario => Validators.pattern('^(\\+?)[0-9]+$')
             indirizzo: [null, [Validators.required]],
@@ -357,7 +376,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             descrizione: [null],
             zoneEmergenza: [null],
             prioritaRichiesta: [null, [Validators.required]],
-            stato: [null],
+            stato: [null, [Validators.required]],
             urgenza: [null],
             esercitazione: [null],
             noteNue: [null]
@@ -484,12 +503,42 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         return !!(this.f.codTipologia.value);
     }
 
+    getFormValid(): void {
+        this.subscription.add(
+            this.formValid$.subscribe((formValid: boolean) => {
+                this.formValid = formValid;
+            })
+        );
+    }
+
+    getLoadingChiamateMarkers(): void {
+        this.subscription.add(
+            this.loadingChiamateMarkers$.subscribe((loading: boolean) => {
+                this.loadingChiamateMarkers = loading;
+            })
+        );
+    }
+
     getLoadingDettagliTipologia(): void {
         this.subscription.add(
             this.loadingDettagliTipologia$.subscribe((loading: boolean) => {
-                if (loading) {
-                    this.loadingDettagliTipologia = loading;
-                }
+                this.loadingDettagliTipologia = loading;
+            })
+        );
+    }
+
+    getLoadingCountInterventiProssimita(): void {
+        this.subscription.add(
+            this.loadingCountInterventiProssimita$.subscribe((loading: boolean) => {
+                this.loadingCountInterventiProssimita = loading;
+            })
+        );
+    }
+
+    getLoadingInterventiProssimita(): void {
+        this.subscription.add(
+            this.loadingInterventiProssimita$.subscribe((loading: boolean) => {
+                this.loadingInterventiProssimita = loading;
             })
         );
     }
@@ -1145,7 +1194,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     formIsInvalid(): boolean {
-        return !!(this.richiestaForm.invalid);
+        return !!(this.richiestaForm.invalid) || !this.formValid || this.loadingCompetenze || this.loadingChiamateMarkers || this.loadingCountInterventiProssimita || this.loadingInterventiProssimita;
     }
 
     checkSubmit(): boolean {

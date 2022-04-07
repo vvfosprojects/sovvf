@@ -575,7 +575,7 @@
                 <div class="row-creazione">
                     <ng-template [ngIf]="!modifica">
                         <button class="btn btn-primary btn-no-hover btn-xlarge" style="width: 25%"
-                                [disabled]="loadingCompetenze || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="(!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
@@ -583,7 +583,7 @@
                             Conferma e Invia Partenza
                         </button>
                         <button class="btn btn-danger btn-no-hover btn-xlarge btn-creazione"
-                                [disabled]="loadingCompetenze || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
+                                [disabled]="(!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
                                 ngbTooltip="Metti In Coda"
                                 placement="top">
@@ -598,7 +598,7 @@
                         <ng-container *ngIf="!apertoFromMappa">
                             <button class="btn btn-outline-secondary btn-no-hover btn-xlarge btn-creazione"
                                     type="button"
-                                    [disabled]="loadingCompetenze || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
+                                    [disabled]="(!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
                                     (click)="onInAttesa()">
                                 <i class="fas fa-pause mr-1"></i>
                                 In Attesa
@@ -636,7 +636,7 @@
                         </button>
                         <button class="btn btn-primary btn-no-hover btn-xlarge btn-modifica"
                                 style="min-width: 100px; width: 400px"
-                                [disabled]="loadingCompetenze || !richiestaModifica?.competenze?.length || richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="!richiestaModifica?.competenze?.length || richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
