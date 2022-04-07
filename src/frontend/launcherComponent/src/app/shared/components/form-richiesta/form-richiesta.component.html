@@ -428,9 +428,7 @@
             <!-- NOTE -->
             <ng-container *ngIf="!apertoFromMappa">
                 <div class="row p-2 my-2 bg-secondary"></div>
-                <div class="row"
-                     [class.mb-5]="!modifica"
-                     [class.mb-4]="modifica">
+                <div class="row mb-4">
                     <div class="col-8">
                         <div class="row">
                             <div *ngIf="richiestaModifica?.codiceRichiesta" class="col-4 mb-2 pr-2">
@@ -532,40 +530,42 @@
                                     (click)="setUrgenza()">
                             </app-checkbox>
                         </div>
-                        <div *ngIf="richiestaModifica?.stato === StatoRichiesta.Chiamata"
-                             class="wrapper-grid mt-3">
-                            <span class="mb-0 h5">Priorità</span>
-                            <span class="pl-2"
-                                  style="font-size: 18px;">
-                          <ngb-rating [starTemplate]="t"
-                                      [rate]="richiestaModifica.prioritaRichiesta"
-                                      [max]="4"
-                                      (rateChange)="onChangePrioritaRichiesta($event)"
-                                      style="display: inline-grid !important; transform: rotate(180deg)"></ngb-rating>
-                          <ng-template #t
-                                       let-fill="fill"
-                                       let-index="index">
-                          <span class="circle"
-                                [class.filled]="fill === 100"
-                                [class.bad]="index > 2 && fill === 100">
-                            <i class="fas fa-circle mr-1"></i>
-                          </span>
-                          </ng-template>
-                          <span style="width: max-content; display: inline-grid; margin-left: 8px">
-                              <span>Alta</span>
-                              <span>Media</span>
-                              <span>Bassa</span>
-                              <span>Nessuna</span>
-                          </span>
-                        </span>
-                            <span *ngIf="submitted && f.prioritaRichiesta.errors"
-                                  class="form-text small">
-                            <span *ngIf="f.prioritaRichiesta.errors.required"
-                                  class="text-danger">
-                                La priorità è richiesta
-                            </span>
-                        </span>
-                        </div>
+                        <ng-container
+                                *ngIf="!richiestaModifica || (richiestaModifica?.stato === StatoRichiesta.Chiamata)">
+                            <div class="wrapper-grid mt-3">
+                                <span class="mb-0 h5">Priorità</span>
+                                <span class="pl-2"
+                                      style="font-size: 18px;">
+                                    <ngb-rating [starTemplate]="t"
+                                                [rate]="!richiestaModifica ? f?.prioritaRichiesta?.value : richiestaModifica?.prioritaRichiesta"
+                                                [max]="4"
+                                                (rateChange)="onChangePrioritaRichiesta($event)"
+                                                style="display: inline-grid !important; transform: rotate(180deg)"></ngb-rating>
+                                    <ng-template #t
+                                                 let-fill="fill"
+                                                 let-index="index">
+                                        <div class="d-inline-block circle"
+                                             [class.filled]="fill === 100"
+                                             [class.bad]="index > 2 && fill === 100">
+                                            <i class="fas fa-circle mr-1"></i>
+                                        </div>
+                                    </ng-template>
+                                    <span style="width: max-content; display: inline-grid; margin-left: 8px">
+                                        <span>Alta</span>
+                                        <span>Media</span>
+                                        <span>Bassa</span>
+                                        <span>Nessuna</span>
+                                    </span>
+                                </span>
+                                <span *ngIf="submitted && f.prioritaRichiesta.errors"
+                                      class="form-text small">
+                                    <span *ngIf="f.prioritaRichiesta.errors.required"
+                                          class="text-danger">
+                                        La priorità è richiesta
+                                    </span>
+                                </span>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
             </ng-container>
@@ -575,7 +575,7 @@
                 <div class="row-creazione">
                     <ng-template [ngIf]="!modifica">
                         <button class="btn btn-primary btn-no-hover btn-xlarge" style="width: 25%"
-                                [disabled]="loadingCompetenze || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="(!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
@@ -583,7 +583,7 @@
                             Conferma e Invia Partenza
                         </button>
                         <button class="btn btn-danger btn-no-hover btn-xlarge btn-creazione"
-                                [disabled]="loadingCompetenze || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
+                                [disabled]="(!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
                                 ngbTooltip="Metti In Coda"
                                 placement="top">
@@ -598,7 +598,7 @@
                         <ng-container *ngIf="!apertoFromMappa">
                             <button class="btn btn-outline-secondary btn-no-hover btn-xlarge btn-creazione"
                                     type="button"
-                                    [disabled]="loadingCompetenze || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
+                                    [disabled]="(!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
                                     (click)="onInAttesa()">
                                 <i class="fas fa-pause mr-1"></i>
                                 In Attesa
@@ -636,7 +636,7 @@
                         </button>
                         <button class="btn btn-primary btn-no-hover btn-xlarge btn-modifica"
                                 style="min-width: 100px; width: 400px"
-                                [disabled]="loadingCompetenze || !richiestaModifica?.competenze?.length || richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid()"
+                                [disabled]="!richiestaModifica?.competenze?.length || richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid()"
                                 [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
@@ -668,7 +668,8 @@
                                 [interventiChiusiStessoIndirizzo]="interventiChiusiStessoIndirizzo"
                                 [triageSummary]="triageSummary"
                                 [pos]="getTipologia(f.codTipologia.value) ? pos : null"
-                                [schedaContatto]="schedaContatto">
+                                [schedaContatto]="schedaContatto"
+                                [idRichiestaModifica]="richiestaModifica?.id">
             </app-triage-summary>
         </div>
     </div>

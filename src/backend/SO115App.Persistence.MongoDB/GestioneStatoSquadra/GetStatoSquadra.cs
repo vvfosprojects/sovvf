@@ -54,21 +54,14 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
             {
                 var lista = _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.In(x => x.CodiceSede, codiciSede)).ToList();
 
-                if (turno.Trim().Length == 0)
-                {
-                    return lista;
-                }
-                //return lista.FindAll(x => x.Turno.Substring(0, 1).Equals(turno));
-                return lista.FindAll(x => x.Turno.Contains(turno));
+                return lista.FindAll(x => x.TurnoSquadra.Contains(turno));
             }
-
-            var listaAll = _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.Empty).ToList();
-            if (turno.Trim().Length == 0)
+            else
             {
-                return listaAll;
+                var listaAll = _dbContext.StatoSquadraCollection.Find(Builders<StatoOperativoSquadra>.Filter.Empty).ToList();
+
+                return listaAll.FindAll(x => x.TurnoSquadra.Contains(turno));
             }
-            //return listaAll.FindAll(x => x.Turno.Substring(0, 1).Equals(turno));
-            return listaAll.FindAll(x => x.Turno.Equals(turno));
         }
     }
 }

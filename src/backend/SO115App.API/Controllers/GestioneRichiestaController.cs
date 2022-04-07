@@ -300,6 +300,7 @@ namespace SO115App.API.Controllers
         {
             var idOperatore = Request.Headers["IdUtente"];
             parametri.CodUtente = idOperatore;
+            parametri.CodiceSede = Request.Headers["codicesede"];
 
             try
             {

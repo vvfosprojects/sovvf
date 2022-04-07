@@ -137,22 +137,24 @@
             </ngb-panel>
         </ng-template>
         <!-- INTERVENTI IN PROSSIMITA' -->
-        <ng-template [ngIf]="countInterventiProssimita || interventiProssimita?.length">
-            <ngb-panel id="interventiInProssimita" [disabled]="!countInterventiProssimita || !interventiProssimita?.length">
+        <ng-template [ngIf]="countInterventiProssimitaFiltered || interventiProssimitaFiltered?.length">
+            <ngb-panel id="interventiInProssimita"
+                       [disabled]="!countInterventiProssimitaFiltered || !interventiProssimitaFiltered?.length">
                 <ng-template ngbPanelTitle>
                     <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.interventiInProssimita" class="float-right cursor-pointer mr-2"><i
                             class="fas fa-chevron-down"></i></span>
                         <span *ngIf="!infoAggiuntive.interventiInProssimita" class="float-right cursor-pointer mr-2"><i
                                 class="fas fa-chevron-up"></i></span>
-                        <span>INTERVENTI IN PROSSIMITA' ({{ countInterventiProssimita ? countInterventiProssimita : 0 }}
-                            )</span>
+                        INTERVENTI IN PROSSIMITA'
+                        ({{ countInterventiProssimitaFiltered ? countInterventiProssimitaFiltered : 0 }})
                     </div>
                 </ng-template>
                 <ng-template ngbPanelContent>
                     <div class="px-3">
                         <ul class="list-group">
-                            <li *ngFor="let interventoProssimita of interventiProssimita" class="list-group-item mb-2"
+                            <li *ngFor="let interventoProssimita of interventiProssimitaFiltered"
+                                class="list-group-item mb-2"
                                 style="display: list-item">
                                 <div>
                                     <b class="mr-2"
@@ -170,9 +172,10 @@
                                     </a>
                                 </div>
                                 <div>
-                                    <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoProssimita?.tipologie"
-                                                                     [triage]="true"
-                                                                     [descrizioneRichiesta]="interventoProssimita?.descrizione">
+                                    <app-tipologia-sintesi-richiesta
+                                            [tipologieRichiesta]="interventoProssimita?.tipologie"
+                                            [triage]="true"
+                                            [descrizioneRichiesta]="interventoProssimita?.descrizione">
                                     </app-tipologia-sintesi-richiesta>
                                 </div>
                                 <div>
@@ -192,21 +195,24 @@
             </ngb-panel>
         </ng-template>
         <!-- INTERVENTI STESSA VIA -->
-        <ng-template [ngIf]="countInterventiStessaVia || interventiStessaVia?.length">
-            <ngb-panel id="interventiStessaVia" [disabled]="!countInterventiStessaVia || !interventiStessaVia?.length">
+        <ng-template [ngIf]="countInterventiStessaViaFiltered || interventiStessaViaFiltered?.length">
+            <ngb-panel id="interventiStessaVia"
+                       [disabled]="!countInterventiStessaViaFiltered || !interventiStessaViaFiltered?.length">
                 <ng-template ngbPanelTitle>
                     <div class="font-weight-bold text-white d-inline-flex">
                     <span *ngIf="infoAggiuntive.interventiStessaVia" class="float-right cursor-pointer mr-2"><i
                             class="fas fa-chevron-down"></i></span>
                         <span *ngIf="!infoAggiuntive.interventiStessaVia" class="float-right cursor-pointer mr-2"><i
                                 class="fas fa-chevron-up"></i></span>
-                        <span>INTERVENTI STESSA VIA ({{ countInterventiStessaVia ? countInterventiStessaVia : 0 }})</span>
+                        INTERVENTI STESSA VIA
+                        ({{ countInterventiStessaViaFiltered ? countInterventiStessaViaFiltered : 0 }})
                     </div>
                 </ng-template>
                 <ng-template ngbPanelContent>
                     <div class="px-3">
                         <ul class="list-group">
-                            <li *ngFor="let interventoStessaVia of interventiStessaVia" class="list-group-item mb-2"
+                            <li *ngFor="let interventoStessaVia of interventiStessaViaFiltered"
+                                class="list-group-item mb-2"
                                 style="display: list-item">
                                 <div>
                                     <b class="mr-2"
@@ -224,9 +230,10 @@
                                     </a>
                                 </div>
                                 <div>
-                                    <app-tipologia-sintesi-richiesta [tipologieRichiesta]="interventoStessaVia?.tipologie"
-                                                                     [triage]="true"
-                                                                     [descrizioneRichiesta]="interventoStessaVia?.descrizione">
+                                    <app-tipologia-sintesi-richiesta
+                                            [tipologieRichiesta]="interventoStessaVia?.tipologie"
+                                            [triage]="true"
+                                            [descrizioneRichiesta]="interventoStessaVia?.descrizione">
                                     </app-tipologia-sintesi-richiesta>
                                 </div>
                                 <div>
@@ -255,8 +262,8 @@
                           class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-down"></i></span>
                         <span *ngIf="!infoAggiuntive.interventiChiusiStessoIndirizzo"
                               class="float-right cursor-pointer mr-2"><i class="fas fa-chevron-up"></i></span>
-                        <span>INTERVENTI CHIUSI CON STESSO INDIRIZZO
-                    ({{ countInterventiChiusiStessoIndirizzo ? countInterventiChiusiStessoIndirizzo : 0 }})</span>
+                        INTERVENTI CHIUSI CON STESSO INDIRIZZO
+                        ({{ countInterventiChiusiStessoIndirizzo ? countInterventiChiusiStessoIndirizzo : 0 }})
                     </div>
                 </ng-template>
                 <ng-template ngbPanelContent>

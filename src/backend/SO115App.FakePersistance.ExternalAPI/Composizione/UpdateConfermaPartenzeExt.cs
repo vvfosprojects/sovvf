@@ -28,6 +28,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,10 +49,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetRientroMezzo _setRientroMezzo;
         private readonly IGetTipologieByCodice _getTipologie;
         private readonly Models.Servizi.Infrastruttura.SistemiEsterni.OPService.ISetStatoSquadra _setStatoSquadraOPService;
+        private readonly IGetTurno _getTurni;
 
         public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo,
             ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo,
-            SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService.ISetStatoSquadra setStatoSquadraOPService, IGetTipologieByCodice getTipologie)
+            SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService.ISetStatoSquadra setStatoSquadraOPService, IGetTipologieByCodice getTipologie,
+            IGetTurno getTurni)
         {
             _updateRichiesta = updateRichiesta;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
@@ -60,6 +63,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _setRientroMezzo = setRientroMezzo;
             _setStatoSquadraOPService = setStatoSquadraOPService;
             _getTipologie = getTipologie;
+            _getTurni = getTurni;
         }
 
         /// <summary>
@@ -69,6 +73,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         /// <returns>ConfermaPartenze</returns>
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
+            string turnoAttuale = _getTurni.Get().Codice.Substring(0 ,1);
+
             var codiceSede = command.ConfermaPartenze.CodiceSede.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
 
             Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
@@ -178,9 +184,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
 
                     if (partenza.Mezzo.Distaccamento.Codice != null)
-                        _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
+                        _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, turnoAttuale, squadra.Turno);
                     else if (partenza.Mezzo.Appartenenza != null)
-                        _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Turno);
+                        _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, turnoAttuale, squadra.Turno);
                 });
             });
 

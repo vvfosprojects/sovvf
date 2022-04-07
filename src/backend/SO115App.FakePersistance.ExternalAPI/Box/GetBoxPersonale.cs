@@ -69,7 +69,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var box = workshift.SelectMany(w => w.Squadre).Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT")).ToList();
 
-            var statoSquadre = _getStatoSquadra.Get(_getTurno.Get().Codice, listaCodiciSedeConSottoSedi);
+            var statoSquadre = _getStatoSquadra.Get(_getTurno.Get().Codice.Substring(0, 1), listaCodiciSedeConSottoSedi);
 
             var result = new BoxPersonale
             {

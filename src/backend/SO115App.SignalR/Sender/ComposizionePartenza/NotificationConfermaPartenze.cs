@@ -37,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
 {
-    public class NotificationConfermaPartenze : IDeleteNotification
+    public class NotificationConfermaPartenze : INotificationConfermaPartenze
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
@@ -133,16 +133,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                         var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
                         _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
                     });
-
-                    //Task.Factory.StartNew(() =>
-                    //{
-                    //    var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                    //    {
-                    //        CodiciSedi = new string[] { sede }
-                    //    };
-                    //    var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-                    //    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.Result.CodiceRichiesta));
-                    //});
 
                     Task.Factory.StartNew(() =>
                     {
