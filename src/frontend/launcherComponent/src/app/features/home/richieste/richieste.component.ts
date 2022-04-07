@@ -220,7 +220,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             this.ricerca$.subscribe((ricerca: any) => {
                 if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
-                    this.store.dispatch(new GetListaRichieste());
+                    this.store.dispatch(new GetListaRichieste({ page: 1 }));
                 }
             })
         );
