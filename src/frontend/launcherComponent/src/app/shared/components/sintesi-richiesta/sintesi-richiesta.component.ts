@@ -62,6 +62,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledModificaRichiesta: boolean;
     @Input() disabledGestisciRichiesta: boolean;
     @Input() disabledAzioniRichiesta: boolean;
+    @Input() disabledModificaStatoMezzo: boolean;
     @Input() disabledComposizionePartenza: boolean;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
@@ -122,6 +123,14 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         if (richiesta) {
             this.clickRichiesta.emit(richiesta);
         }
+    }
+
+    getIndirizzoFormatted(): string {
+        let indirizzo = this.richiesta?.localita?.indirizzo;
+        if (this.richiesta?.localita?.provincia) {
+            indirizzo = indirizzo + ', ' + this.richiesta?.localita?.provincia;
+        }
+        return indirizzo;
     }
 
     indirizzoClick(richiesta: SintesiRichiesta): void {

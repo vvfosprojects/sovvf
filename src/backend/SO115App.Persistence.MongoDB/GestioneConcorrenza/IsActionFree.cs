@@ -99,6 +99,7 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                                     && (r.Type.Equals(TipoOperazione.ChiusuraChiamata)
                                     || r.Type.Equals(TipoOperazione.ChiusuraIntervento)
                                     || r.Type.Equals(TipoOperazione.Trasferimento)
+                                    || r.Type.Equals(TipoOperazione.InvioPartenza)
                                     || r.Type.Equals(TipoOperazione.Sganciamento)));
 
                     if (sganciamento == null)
@@ -143,6 +144,7 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                                     && (r.Type.Equals(TipoOperazione.Modifica)
                                     || r.Type.Equals(TipoOperazione.ChiusuraIntervento)
                                     || r.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                                    || r.Type.Equals(TipoOperazione.Allerta)
                                     || r.Type.Equals(TipoOperazione.Trasferimento)));
 
                     if (modifica == null)

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { SchedaContatto } from '../../interface/scheda-contatto.interface';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Tipologia } from '../../model/tipologia.model';
@@ -17,8 +17,7 @@ import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-triage-summary',
     templateUrl: './triage-summary.component.html',
-    styleUrls: ['./triage-summary.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./triage-summary.component.scss']
 })
 export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -35,6 +34,12 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     @Input() pos: PosInterface[];
     @Input() schedaContatto: SchedaContatto;
     @Input() dettaglioSchedaContatto: string;
+    @Input() idRichiestaModifica: string;
+
+    countInterventiProssimitaFiltered: number;
+    interventiProssimitaFiltered: SintesiRichiesta[];
+    countInterventiStessaViaFiltered: number;
+    interventiStessaViaFiltered: SintesiRichiesta[];
 
     contatoreGeneriMezzo: number;
     generiMezzo: string[];
@@ -72,10 +77,50 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.schedaContatto?.currentValue) {
             this.schedaContatto = changes?.schedaContatto?.currentValue;
         }
+        if (changes?.countInterventiProssimita?.currentValue) {
+            this.countInterventiProssimitaFiltered = this.countInterventiProssimita;
+            if (this.idRichiestaModifica) {
+                this.filterCountInterventiProssimita();
+            }
+        }
+        if (changes?.interventiProssimita?.currentValue) {
+            this.interventiProssimitaFiltered = this.interventiProssimita;
+            if (this.idRichiestaModifica) {
+                this.filterInterventiProssimita();
+            }
+        }
+        if (changes?.countInterventiStessaVia?.currentValue) {
+            this.countInterventiStessaViaFiltered = this.countInterventiStessaVia;
+            if (this.idRichiestaModifica) {
+                this.filterCountInterventiStessaVia();
+            }
+        }
+        if (changes?.interventiStessaVia?.currentValue) {
+            this.interventiStessaViaFiltered = this.interventiStessaVia;
+            if (this.idRichiestaModifica) {
+                this.filterInterventiStessaVia();
+            }
+        }
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+    }
+
+    filterCountInterventiProssimita(): void {
+        this.countInterventiProssimitaFiltered = this.countInterventiProssimitaFiltered - this.interventiProssimita.filter((r: SintesiRichiesta) => r.id === this.idRichiestaModifica)?.length;
+    }
+
+    filterInterventiProssimita(): void {
+        this.interventiProssimitaFiltered = this.interventiProssimita.filter((r: SintesiRichiesta) => r.id !== this.idRichiestaModifica);
+    }
+
+    filterCountInterventiStessaVia(): void {
+        this.countInterventiStessaViaFiltered = this.countInterventiStessaViaFiltered - this.interventiStessaVia.filter((r: SintesiRichiesta) => r.id === this.idRichiestaModifica)?.length;
+    }
+
+    filterInterventiStessaVia(): void {
+        this.interventiStessaViaFiltered = this.interventiStessaVia.filter((r: SintesiRichiesta) => r.id !== this.idRichiestaModifica);
     }
 
     onDownloadPos(pos: PosInterface): void {

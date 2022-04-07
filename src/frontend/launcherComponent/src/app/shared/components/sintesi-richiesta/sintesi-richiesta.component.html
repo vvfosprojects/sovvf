@@ -242,11 +242,10 @@
                                 </ng-container>
                                 <ng-container *ngIf="richiesta?.localita?.indirizzo">
                                     <div class="d-inline-block font-xxlarge"
-                                         ngbTooltip="{{ richiesta.localita.indirizzo }}, {{ richiesta?.localita?.provincia }}"
-                                         [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 20">
-                                      {{ richiesta?.localita?.indirizzo | truncate:20 }},
-                                        {{ richiesta?.localita?.provincia }}
-                                  </div>
+                                         [ngbTooltip]="getIndirizzoFormatted()"
+                                         [disableTooltip]="getIndirizzoFormatted()?.length <= 20">
+                                      {{ getIndirizzoFormatted() | truncate:20 }}
+                                    </div>
                                 </ng-container>
                             <span *ngIf="!partenza"
                                   class="list-inline list-unstyled m-0 ml-2 font-xxlarge"
@@ -295,8 +294,6 @@
                                     <button class="btn btn-light border py-0 px-0 mr-1"
                                             [class.on-gestione]="inGestione"
                                             ngbTooltip="Gestisci"
-                                            [disabled]="disabledGestisciRichiesta"
-                                            [class.cursor-not-allowed]="disabledGestisciRichiesta"
                                             (click)="onGestioneRichiesta($event)">
                                         <i class="fas fa-fw "
                                            [ngClass]="methods.toggleGestioneClass(inGestione)"></i>
@@ -484,6 +481,7 @@
                                                                 [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenze)"
                                                                 [loadingActionMezzo]="loadingActionMezzo"
                                                                 [annullaStatoMezzi]="annullaStatoMezzi"
+                                                                [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
                                                                 (actionMezzo)="onActionMezzo($event)"
                                                                 (eliminaPartenza)="onEliminaPartenza($event)"
                                                                 (modificaPartenza)="onModificaPartenza($event)"

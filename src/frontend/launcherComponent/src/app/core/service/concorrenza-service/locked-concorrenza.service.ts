@@ -208,12 +208,15 @@ export class LockedConcorrenzaService {
                 break;
             case TipoConcorrenzaEnum.Sostituzione: // TODO: implementare nel DOM
                 // TODO: completare blocks
+                blocks = [];
                 break;
             case TipoConcorrenzaEnum.Fonogramma: // TODO: implementare nel DOM
                 // TODO: completare blocks
+                blocks = [];
                 break;
             case TipoConcorrenzaEnum.EntiIntervenuti: // TODO: implementare nel DOM
                 // TODO: completare blocks
+                blocks = [];
                 break;
         }
         concorrenzaFound = concorrenza?.filter((c: ConcorrenzaInterface) => blocks.includes(c.type) && value.includes(c.value) && c.idOperatore !== currentUser.id)[0];

@@ -62,7 +62,7 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationAddPrenotazioneMezzo,
                 SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato.NotificationAddPrenotazioneMezzo>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.IDeleteNotification,
+                SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
                 SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();
 
             container.Register<

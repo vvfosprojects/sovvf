@@ -15,5 +15,6 @@ namespace SO115App.API.Models.Classi.Composizione
         public string CodiceSede { get; set; }
         public RichiestaAssistenza richiesta { get; set; }
         public string IdOperatore { get; set; }
+        public string TurnoSquadra { get; set; }
     }
 }

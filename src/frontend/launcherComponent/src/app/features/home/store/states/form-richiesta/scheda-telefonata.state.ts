@@ -29,10 +29,14 @@ import {
     SetRedirectComposizionePartenza,
     StartChiamata,
     StartLoadingCompetenze,
+    StartLoadingCountInterventiProssimita,
     StartLoadingDettagliTipologia,
+    StartLoadingInterventiProssimita,
     StartLoadingSchedaRichiesta,
     StopLoadingCompetenze,
+    StopLoadingCountInterventiProssimita,
     StopLoadingDettagliTipologia,
+    StopLoadingInterventiProssimita,
     StopLoadingSchedaRichiesta,
     UpdateScorciatoiaTelefono
 } from '../../actions/form-richiesta/scheda-telefonata.actions';
@@ -115,6 +119,8 @@ export interface SchedaTelefonataStateModel {
     loadingSchedaRichiesta: boolean;
     loadingCompetenze: boolean;
     loadingDettagliTipologia: boolean;
+    loadingCountInterventiProssimita: boolean;
+    loadingInterventiProssimita: boolean;
     redirectComposizionePartenza: boolean;
 }
 
@@ -148,7 +154,9 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     loadingSchedaRichiesta: false,
     loadingCompetenze: false,
     loadingDettagliTipologia: false,
-    redirectComposizionePartenza: false,
+    loadingCountInterventiProssimita: false,
+    loadingInterventiProssimita: false,
+    redirectComposizionePartenza: false
 };
 
 @Injectable()
@@ -176,13 +184,18 @@ export class SchedaTelefonataState {
     }
 
     @Selector()
-    static scorciatoieTelefono(state: SchedaTelefonataStateModel): any {
-        return state.scorciatoieTelefono;
+    static formValid(state: SchedaTelefonataStateModel): boolean {
+        return state.richiestaForm.status === 'VALID';
     }
 
     @Selector()
     static formSubmitted(state: SchedaTelefonataStateModel): boolean {
         return state.submitted;
+    }
+
+    @Selector()
+    static scorciatoieTelefono(state: SchedaTelefonataStateModel): any {
+        return state.scorciatoieTelefono;
     }
 
     @Selector()
@@ -243,6 +256,16 @@ export class SchedaTelefonataState {
     @Selector()
     static loadingDettagliTipologia(state: SchedaTelefonataStateModel): boolean {
         return state.loadingDettagliTipologia;
+    }
+
+    @Selector()
+    static loadingCountInterventiProssimita(state: SchedaTelefonataStateModel): boolean {
+        return state.loadingCountInterventiProssimita;
+    }
+
+    @Selector()
+    static loadingInterventiProssimita(state: SchedaTelefonataStateModel): boolean {
+        return state.loadingInterventiProssimita;
     }
 
     @Selector()
@@ -442,6 +465,7 @@ export class SchedaTelefonataState {
 
     @Action(SetCountInterventiProssimita)
     setCountInterventiProssimita({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiProssimita): void {
+        dispatch(new StartLoadingCountInterventiProssimita());
         this.chiamataService.getCountInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: CountInterventiProssimitaResponse) => {
             if (res) {
                 patchState({
@@ -450,7 +474,27 @@ export class SchedaTelefonataState {
                     countInterventiChiusiStessoIndirizzo: res.countInterventiChiusiStessoIndirizzo
                 });
             }
-        }, () => dispatch(new ClearCountInterventiProssimita()));
+            dispatch(new StopLoadingCountInterventiProssimita());
+        }, () => {
+            dispatch([
+                new ClearCountInterventiProssimita(),
+                new StopLoadingCountInterventiProssimita()
+            ]);
+        });
+    }
+
+    @Action(StartLoadingCountInterventiProssimita)
+    startLoadingCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingCountInterventiProssimita: true
+        });
+    }
+
+    @Action(StopLoadingCountInterventiProssimita)
+    stopLoadingCountInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingCountInterventiProssimita: false
+        });
     }
 
     @Action(ClearCountInterventiProssimita)
@@ -464,6 +508,7 @@ export class SchedaTelefonataState {
 
     @Action(SetInterventiProssimita)
     setInterventiProssimita({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiProssimita): void {
+        dispatch(new StartLoadingInterventiProssimita());
         this.chiamataService.getInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze).subscribe((res: InterventiProssimitaResponse) => {
             if (res) {
                 patchState({
@@ -472,7 +517,27 @@ export class SchedaTelefonataState {
                     interventiChiusiStessoIndirizzo: res.dataArrayInterventiChiusiStessoIndirizzo
                 });
             }
-        }, () => dispatch(new ClearInterventiProssimita()));
+            dispatch(new StopLoadingInterventiProssimita());
+        }, () => {
+            dispatch([
+                new ClearInterventiProssimita(),
+                new StopLoadingInterventiProssimita()
+            ]);
+        });
+    }
+
+    @Action(StartLoadingInterventiProssimita)
+    startLoadingInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingInterventiProssimita: true
+        });
+    }
+
+    @Action(StopLoadingInterventiProssimita)
+    stopLoadingInterventiProssimita({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
+        patchState({
+            loadingInterventiProssimita: false
+        });
     }
 
     @Action(ClearInterventiProssimita)

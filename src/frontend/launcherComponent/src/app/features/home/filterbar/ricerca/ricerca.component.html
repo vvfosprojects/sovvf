@@ -4,17 +4,41 @@
        type="text"
        name="ricercaDebounce"
        class="form-control"
-       appDebounceKeyUp
+       [class.cursor-not-allowed]="disableSearch"
        [(ngModel)]="ricerca"
-       [debounceTime]="600"
-       [placeholder]="placeholder ? placeholder : ''"
-       (debounceKeyUp)="onSearch()"
        [disabled]="disableSearch"
-       [class.cursor-not-allowed]="disableSearch">
+       [placeholder]="placeholder ? placeholder : ''"
+       [ngbTooltip]="richiesteStatus ? campiRicerca : null"
+       placement="bottom"
+       appDebounceKeyUp
+       [debounceTime]="600"
+       (debounceKeyUp)="onSearch()">
+<ng-template #campiRicerca>
+    <h5 class="font-weight-bolder mb-1">Ricerca su:</h5>
+    <ul class="list-unstyled mb-0">
+        <li>Descrizione Tipologia</li>
+        <li>Indirizzo</li>
+        <li>Città</li>
+        <li>Provincia</li>
+        <li>Codice Richiesta</li>
+        <li>Codice Chiamata</li>
+        <li>Tags</li>
+        <li>Codice SO Competente</li>
+        <li>Telefono</li>
+        <li>Nominativo Richiedente</li>
+        <li>Note NUE</li>
+        <li>Note Pubbliche</li>
+        <li>Note Private</li>
+        <li>Codice Mezzo</li>
+        <li>Nome Squadra</li>
+    </ul>
+</ng-template>
 <!-- NO DEBOUNCE INPUT -->
 <input *ngIf="!debounce"
-       class="form-control"
+       id="ricercaNoDebounce"
        type="text"
+       name="ricercaNoDebounce"
+       class="form-control"
        [(ngModel)]="ricerca"
-       [placeholder]="placeholder ? placeholder : ''" name="ricercaNoDebounce" id="ricercaNoDebounce"
+       [placeholder]="placeholder ? placeholder : ''"
        (ngModelChange)="onSearch()">

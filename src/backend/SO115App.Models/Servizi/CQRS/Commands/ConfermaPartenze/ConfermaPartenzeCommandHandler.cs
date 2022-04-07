@@ -142,7 +142,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             #endregion SGANCIAMENTO
 
-
             var PartenzaEsistente = false;
 
             //PARALLEL
@@ -220,6 +219,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 command.Richiesta.UtPresaInCarico = new List<string> { nominativo };
 
             //GESTIONE CODICE PARTENZA
+            var turnoAttuale = _getTurno.Get().Codice;
             int codpart = _getMaxCodicePartenza.GetMax();
             foreach (var partenza in command.ConfermaPartenze.Partenze.Where(p => p.Codice == "0" || p.Codice == null))
             {
@@ -230,7 +230,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 else if (partenza.Mezzo.Appartenenza != null)
                     partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codpart;
 
-                partenza.Turno = _getTurno.Get().Codice;
+                partenza.Turno = turnoAttuale;
 
                 command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
                 command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
@@ -274,9 +274,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             //SALVO SUL DB
 
-            //if(richiesteDaTerminare != null && richiesteDaTerminare.Count > 0) foreach (var richiesta in richiesteDaTerminare.Where(r => !r.CodRichiesta.Equals(command.Richiesta.CodRichiesta)))
-            //{
-            //}
+            command.ConfermaPartenze.TurnoSquadra = command.ConfermaPartenze.Partenze.First().Squadre.First().Turno;
 
             _updateConfermaPartenze.Update(command);
         }
