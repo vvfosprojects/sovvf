@@ -600,14 +600,9 @@ export class SchedaTelefonataState {
             }
 
             let competenze = state.competenze;
-            console.log('competenze', competenze);
             let codCompetenze: string[];
             if (competenze?.length <= 0) {
                 codCompetenze = [];
-                console.log('f.codPrimaCompetenza', f.codPrimaCompetenza);
-                console.log('f.codSecondaCompetenza', f.codSecondaCompetenza);
-                console.log('f.codTerzaCompetenza', f.codTerzaCompetenza);
-                console.log('f.codCompetenzaCentrale', f.codCompetenzaCentrale);
                 if (!f.codPrimaCompetenza && !f.codSecondaCompetenza && !f.codTerzaCompetenza) {
                     codCompetenze = [f.codCompetenzaCentrale];
                 } else {
@@ -622,7 +617,6 @@ export class SchedaTelefonataState {
                     }
                 }
             }
-            console.log('codCompetenze', codCompetenze);
 
             if (!competenze?.length) {
                 const distaccamenti = this.store.selectSnapshot(DistaccamentiState.distaccamenti);
