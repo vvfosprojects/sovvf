@@ -1,4 +1,5 @@
-﻿using Persistence.MongoDB;
+﻿using MongoDB.Driver;
+using Persistence.MongoDB;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 
@@ -12,7 +13,9 @@ namespace SO115App.Persistence.MongoDB.GestioneComposizioneMezzi
 
         public void Set(WorkShift workshift)
         {
-            _dbContext.SquadreCollection.InsertOne(workshift);
+            var filter = Builders<WorkShift>.Filter.Eq(s => s.Distaccamento, workshift.Distaccamento);
+
+            _dbContext.SquadreCollection.ReplaceOne(filter, workshift);
         }
     }
 }

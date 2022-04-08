@@ -26,6 +26,9 @@ export class RichiestaForm {
     codPrimaCompetenza?: string;
     codSecondaCompetenza?: string;
     codTerzaCompetenza?: string;
+    codPrimaCompetenzaManuale?: string;
+    codSecondaCompetenzaManuale?: string;
+    codTerzaCompetenzaManuale?: string;
     complessita: Complessita;
     istantePresaInCarico: Date;
     istantePrimaAssegnazione: Date;
