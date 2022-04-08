@@ -95,7 +95,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                 {
                     var listaSquadre = new List<SquadraOpService>();
 
-                    if (listaAttuale != null)
+                    if (listaAttuale.Count > 0)
                         listaSquadre = listaAttuale[0].Squadre.Where(s => s.Distaccamento.Equals(unita.Codice)).ToList();
 
                     var statoSquadre = _getStatoSquadra.Get(turnoCorrente, new List<string> { unita.Codice });
