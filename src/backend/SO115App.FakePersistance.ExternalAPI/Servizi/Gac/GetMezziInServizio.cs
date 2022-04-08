@@ -104,7 +104,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 listaMezzoInServizio.Add(mezzoInServizio);
             });
 
-            return listaMezzoInServizio
+            var listaFiltrata = listaMezzoInServizio.Where(x => x != null);
+
+            return listaFiltrata
                 .OrderBy(c => c.Mezzo.Mezzo.Stato == Costanti.MezzoInSede).ToList();
         }
     }
