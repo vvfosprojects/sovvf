@@ -88,6 +88,7 @@ import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/functi
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import * as data from '../../../../../../assets/province/province.json';
+import { DistaccamentiState } from '../../../../../shared/store/states/distaccamenti/distaccamenti.state';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -421,34 +422,36 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetCompetenzeSuccess)
-    setCompetenzeSuccess({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenzeSuccess): void {
+    setCompetenzeSuccess({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenzeSuccess): void {
         dispatch([
             new SetCountInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze),
             new SetInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze),
             new StopLoadingCompetenze()
         ]);
 
-        const codCompetenze = action.codCompetenze;
-        if (codCompetenze?.length === 1) {
-            dispatch(new UpdateFormValue({
-                value: {
-                    codCompetenzaCentrale: codCompetenze[0],
-                    codPrimaCompetenza: null,
-                    codSecondaCompetenza: null,
-                    codTerzaCompetenza: null
-                },
-                path: 'schedaTelefonata.richiestaForm'
-            }));
-        } else if (codCompetenze?.length === 3) {
-            dispatch(new UpdateFormValue({
-                value: {
-                    codCompetenzaCentrale: null,
-                    codPrimaCompetenza: codCompetenze[0],
-                    codSecondaCompetenza: codCompetenze[1],
-                    codTerzaCompetenza: codCompetenze[2]
-                },
-                path: 'schedaTelefonata.richiestaForm'
-            }));
+        if (!action.options?.manualSelect) {
+            const codCompetenze = action.codCompetenze;
+            if (codCompetenze?.length === 1) {
+                dispatch(new UpdateFormValue({
+                    value: {
+                        codCompetenzaCentrale: codCompetenze[0],
+                        codPrimaCompetenza: null,
+                        codSecondaCompetenza: null,
+                        codTerzaCompetenza: null
+                    },
+                    path: 'schedaTelefonata.richiestaForm'
+                }));
+            } else if (codCompetenze?.length === 3) {
+                dispatch(new UpdateFormValue({
+                    value: {
+                        codCompetenzaCentrale: getState().richiestaForm.model?.codCompetenzaCentrale,
+                        codPrimaCompetenza: codCompetenze[0],
+                        codSecondaCompetenza: codCompetenze[1],
+                        codTerzaCompetenza: codCompetenze[2]
+                    },
+                    path: 'schedaTelefonata.richiestaForm'
+                }));
+            }
         }
 
         if (action.markerChiamata) {
@@ -598,11 +601,11 @@ export class SchedaTelefonataState {
                 tipologia = tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
             }
 
-            const competenze = state.competenze;
+            let competenze = state.competenze;
             let codCompetenze: string[];
             if (competenze?.length <= 0) {
                 codCompetenze = [];
-                if (!f.codPrimaCompetenza && !f.codSecondaCompetenza && !f.codTerzaCompetenza) {
+                if (!f.codPrimaCompetenza && !f.codSecondaCompetenza && !f.codTerzaCompetenza && !f.codPrimaCompetenzaManuale && !f.codSecondaCompetenzaManuale && !f.codTerzaCompetenzaManuale) {
                     codCompetenze = [f.codCompetenzaCentrale];
                 } else {
                     if (f.codPrimaCompetenza) {
@@ -614,7 +617,28 @@ export class SchedaTelefonataState {
                     if (f.codTerzaCompetenza) {
                         codCompetenze.push(f.codTerzaCompetenza);
                     }
+                    if (f.codPrimaCompetenzaManuale) {
+                        codCompetenze.push(f.codPrimaCompetenzaManuale);
+                    }
+                    if (f.codSecondaCompetenzaManuale) {
+                        codCompetenze.push(f.codSecondaCompetenzaManuale);
+                    }
+                    if (f.codTerzaCompetenzaManuale) {
+                        codCompetenze.push(f.codTerzaCompetenzaManuale);
+                    }
                 }
+            }
+
+            if (!competenze?.length) {
+                const distaccamenti = this.store.selectSnapshot(DistaccamentiState.distaccamenti);
+                const competenzeToAdd = [];
+                codCompetenze?.forEach((codCompetenza: string) => {
+                    const competenza = distaccamenti.filter((d: Sede) => codCompetenza === d.codice)[0];
+                    if (competenza) {
+                        competenzeToAdd.push(competenza);
+                    }
+                });
+                competenze = competenzeToAdd;
             }
 
             const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
