@@ -172,3 +172,14 @@ export class StartLoadingSchedeContatto {
 export class StopLoadingSchedeContatto {
     static readonly type = '[SchedeContatto] Stop Loading Schede Contatto';
 }
+
+export class StartLoadingDettaglioSchedaContatto {
+    static readonly type = '[SchedeContatto] Start Loading Dettaglio Scheda Contatto';
+
+    constructor(public codiceScheda: string) {
+    }
+}
+
+export class StopLoadingDettaglioSchedaContatto {
+    static readonly type = '[SchedeContatto] Stop Loading Dettaglio Scheda Contatto';
+}
