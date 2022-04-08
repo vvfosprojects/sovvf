@@ -88,6 +88,7 @@ import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/functi
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import * as data from '../../../../../../assets/province/province.json';
+import { DistaccamentiState } from '../../../../../shared/store/states/distaccamenti/distaccamenti.state';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -598,10 +599,15 @@ export class SchedaTelefonataState {
                 tipologia = tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
             }
 
-            const competenze = state.competenze;
+            let competenze = state.competenze;
+            console.log('competenze', competenze);
             let codCompetenze: string[];
             if (competenze?.length <= 0) {
                 codCompetenze = [];
+                console.log('f.codPrimaCompetenza', f.codPrimaCompetenza);
+                console.log('f.codSecondaCompetenza', f.codSecondaCompetenza);
+                console.log('f.codTerzaCompetenza', f.codTerzaCompetenza);
+                console.log('f.codCompetenzaCentrale', f.codCompetenzaCentrale);
                 if (!f.codPrimaCompetenza && !f.codSecondaCompetenza && !f.codTerzaCompetenza) {
                     codCompetenze = [f.codCompetenzaCentrale];
                 } else {
@@ -615,6 +621,19 @@ export class SchedaTelefonataState {
                         codCompetenze.push(f.codTerzaCompetenza);
                     }
                 }
+            }
+            console.log('codCompetenze', codCompetenze);
+
+            if (!competenze?.length) {
+                const distaccamenti = this.store.selectSnapshot(DistaccamentiState.distaccamenti);
+                const competenzeToAdd = [];
+                codCompetenze?.forEach((codCompetenza: string) => {
+                    const competenza = distaccamenti.filter((d: Sede) => codCompetenza === d.codice)[0];
+                    if (competenza) {
+                        competenzeToAdd.push(competenza);
+                    }
+                });
+                competenze = competenzeToAdd;
             }
 
             const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
