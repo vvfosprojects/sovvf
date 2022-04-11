@@ -24,7 +24,9 @@ import {
     SetSchedaContattoSelezionata,
     SetSchedaContattoTelefonata,
     SetTabAttivo,
+    StartLoadingDettaglioSchedaContatto,
     StartLoadingSchedeContatto,
+    StopLoadingDettaglioSchedaContatto,
     StopLoadingSchedeContatto,
     ToggleCollapsed,
     UndoMergeSchedeContatto,
@@ -72,6 +74,7 @@ export interface SchedeContattoStateModel {
     idVisualizzati: string[];
     idCollapsed: string[];
     loadingSchedeContatto: boolean;
+    loadingDettaglioSchedeContatto: string;
 }
 
 export const SchedeContattoEmpty = {
@@ -85,6 +88,7 @@ export const SchedeContattoEmpty = {
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     contatoriSchedeContatto: new ContatoriSchedeContattoModel(),
     ...SchedeContattoEmpty,
+    loadingDettaglioSchedeContatto: undefined,
     schedaContattoTelefonata: undefined,
     codiceSchedaContattoHover: undefined,
     codiceSchedaContattoSelezionata: undefined,
@@ -112,6 +116,11 @@ export class SchedeContattoState {
     @Selector()
     static loadingSchedeContatto(state: SchedeContattoStateModel): boolean {
         return state.loadingSchedeContatto;
+    }
+
+    @Selector()
+    static loadingDettaglioSchedeContatto(state: SchedeContattoStateModel): string {
+        return state.loadingDettaglioSchedeContatto;
     }
 
     @Selector()
@@ -518,6 +527,7 @@ export class SchedeContattoState {
                 modal.componentInstance.schedaContatto = schedaContattoDetail;
             });
         } else {
+            dispatch(new StartLoadingDettaglioSchedaContatto(action.codiceScheda));
             this.schedeContattoService.getSchedaContatto(action.codiceScheda).subscribe((schedaContatto: SchedaContatto) => {
                 this.ngZone.run(() => {
                     const modal = this.modal.open(DettaglioSchedaContattoModalComponent, {
@@ -529,7 +539,8 @@ export class SchedeContattoState {
                     );
                     modal.componentInstance.schedaContatto = schedaContatto;
                 });
-            });
+                dispatch(new StopLoadingDettaglioSchedaContatto());
+            }, () => dispatch(new StopLoadingDettaglioSchedaContatto()));
         }
     }
 
@@ -544,6 +555,20 @@ export class SchedeContattoState {
     stopLoadingSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
         patchState({
             loadingSchedeContatto: false
+        });
+    }
+
+    @Action(StartLoadingDettaglioSchedaContatto)
+    startLoadingDettaglioSchedaContatto({ patchState }: StateContext<SchedeContattoStateModel>, action: StartLoadingDettaglioSchedaContatto): void {
+        patchState({
+            loadingDettaglioSchedeContatto: action.codiceScheda
+        });
+    }
+
+    @Action(StopLoadingDettaglioSchedaContatto)
+    stopLoadingDettaglioSchedaContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
+        patchState({
+            loadingDettaglioSchedeContatto: SchedeContattoStateDefaults.loadingDettaglioSchedeContatto
         });
     }
 }

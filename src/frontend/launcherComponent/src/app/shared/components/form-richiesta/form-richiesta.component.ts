@@ -79,6 +79,7 @@ import { createChiamataMarker } from '../../helper/mappa/chiamata-marker';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
 import { ChiamateMarkersState } from '../../../features/maps/store/states/chiamate-markers.state';
+import { HttpCancelService } from '../../../core/service/common/http-cancel.service';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -169,7 +170,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     constructor(private formBuilder: FormBuilder,
                 private store: Store,
                 private modalService: NgbModal,
-                private esriService: EsriService) {
+                private esriService: EsriService,
+                private httpCancelService: HttpCancelService) {
         this.store.dispatch(new StartChiamata());
         this.getIdChiamata();
         this.getScorciatoieTelefono();
@@ -253,6 +255,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
         if (this.modifica) {
             this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Modifica, [this.richiestaModifica.codice]));
+            if (this.richiestaModifica.codiceSchedaNue) {
+                this.httpCancelService.cancelPendingRequests();
+            }
         }
 
         if (this.f.codSchedaContatto) {
@@ -355,9 +360,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             civico: [null],
             competenze: [null],
             codCompetenzaCentrale: [null],
-            codPrimaCompetenza: [{ value: null, disabled: true }],
-            codSecondaCompetenza: [{ value: null, disabled: true }],
-            codTerzaCompetenza: [{ value: null, disabled: true }],
+            codPrimaCompetenza: [null],
+            codSecondaCompetenza: [null],
+            codTerzaCompetenza: [null],
+            codPrimaCompetenzaManuale: [{ value: null, disabled: true }],
+            codSecondaCompetenzaManuale: [{ value: null, disabled: true }],
+            codTerzaCompetenzaManuale: [{ value: null, disabled: true }],
             codSchedaContatto: [{ value: null, disabled: true }],
             piano: [null],
             palazzo: [null],
@@ -633,8 +641,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 if (tipologiche?.distaccamenti?.length) {
                     this.distaccamenti = tipologiche.distaccamenti;
                     this.distaccamentiFiltered = makeCopy(this.distaccamenti);
-                    if (this.f?.codPrimaCompetenza?.disabled) {
-                        this.f.codPrimaCompetenza.enable();
+                    if (this.f?.codPrimaCompetenzaManuale?.disabled) {
+                        this.f.codPrimaCompetenzaManuale.enable();
                     }
                 }
             })
@@ -770,6 +778,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.codPrimaCompetenza.patchValue(null);
             this.f.codSecondaCompetenza.patchValue(null);
             this.f.codTerzaCompetenza.patchValue(null);
+            this.f.codPrimaCompetenzaManuale.patchValue(null);
+            this.f.codSecondaCompetenzaManuale.patchValue(null);
+            this.f.codTerzaCompetenzaManuale.patchValue(null);
             this.f.latitudine.patchValue(null);
             this.f.longitudine.patchValue(null);
             this.f.provincia.patchValue(null);
@@ -853,6 +864,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.codPrimaCompetenza.patchValue(null);
             this.f.codSecondaCompetenza.patchValue(null);
             this.f.codTerzaCompetenza.patchValue(null);
+            this.f.codPrimaCompetenzaManuale.patchValue(null);
+            this.f.codSecondaCompetenzaManuale.patchValue(null);
+            this.f.codTerzaCompetenzaManuale.patchValue(null);
         }
     }
 
@@ -879,51 +893,51 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         switch (nCompetenza) {
             case 1:
                 if (codCompetenza) {
-                    if (this.f.codSecondaCompetenza.disabled) {
-                        this.f.codSecondaCompetenza.enable();
+                    if (this.f.codSecondaCompetenzaManuale.disabled) {
+                        this.f.codSecondaCompetenzaManuale.enable();
                     }
                 } else {
-                    if (this.f.codSecondaCompetenza.enabled) {
-                        this.f.codSecondaCompetenza.patchValue(null);
-                        this.f.codSecondaCompetenza.disable();
+                    if (this.f.codSecondaCompetenzaManuale.enabled) {
+                        this.f.codSecondaCompetenzaManuale.patchValue(null);
+                        this.f.codSecondaCompetenzaManuale.disable();
                     }
-                    if (this.f.codTerzaCompetenza.enabled) {
-                        this.f.codTerzaCompetenza.patchValue(null);
-                        this.f.codTerzaCompetenza.disable();
+                    if (this.f.codTerzaCompetenzaManuale.enabled) {
+                        this.f.codTerzaCompetenzaManuale.patchValue(null);
+                        this.f.codTerzaCompetenzaManuale.disable();
                     }
                 }
                 break;
             case 2:
                 if (codCompetenza) {
-                    if (this.f.codTerzaCompetenza.disabled) {
-                        this.f.codTerzaCompetenza.enable();
+                    if (this.f.codTerzaCompetenzaManuale.disabled) {
+                        this.f.codTerzaCompetenzaManuale.enable();
                     }
                 } else {
-                    if (this.f.codTerzaCompetenza.enabled) {
-                        this.f.codTerzaCompetenza.patchValue(null);
-                        this.f.codTerzaCompetenza.disable();
+                    if (this.f.codTerzaCompetenzaManuale.enabled) {
+                        this.f.codTerzaCompetenzaManuale.patchValue(null);
+                        this.f.codTerzaCompetenzaManuale.disable();
                     }
                 }
                 break;
         }
-        this.distaccamentiFiltered = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id !== this.f.codPrimaCompetenza.value && d.id !== this.f.codSecondaCompetenza.value && d.id !== this.f.codTerzaCompetenza.value);
+        this.distaccamentiFiltered = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id !== this.f.codPrimaCompetenzaManuale.value && d.id !== this.f.codSecondaCompetenzaManuale.value && d.id !== this.f.codTerzaCompetenzaManuale.value);
 
         if (codCompetenza) {
             const codCompetenze = [];
-            if (this.f.codPrimaCompetenza?.value) {
-                codCompetenze.push(this.f.codPrimaCompetenza?.value);
+            if (this.f.codPrimaCompetenzaManuale?.value) {
+                codCompetenze.push(this.f.codPrimaCompetenzaManuale?.value);
             }
             if (this.f.codSecondaCompetenza?.value) {
-                codCompetenze.push(this.f.codSecondaCompetenza?.value);
+                codCompetenze.push(this.f.codSecondaCompetenzaManuale?.value);
             }
             if (this.f.codTerzaCompetenza?.value) {
-                codCompetenze.push(this.f.codTerzaCompetenza?.value);
+                codCompetenze.push(this.f.codTerzaCompetenzaManuale?.value);
             }
             const coordinate = {
                 latitudine: this.f.latitudine?.value,
                 longitudine: this.f.longitudine?.value
             };
-            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
+            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker, { manualSelect: true }));
         }
     }
 

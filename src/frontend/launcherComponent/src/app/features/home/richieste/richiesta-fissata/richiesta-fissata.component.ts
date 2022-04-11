@@ -28,6 +28,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() disabledModificaStatoMezzo: boolean;
 
     @Input() loadingActionRichiesta: string[];
+    @Input() loadingDettaglioSchedaContatto: string;
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
