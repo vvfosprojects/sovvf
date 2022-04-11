@@ -59,6 +59,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disableFissaInAlto: boolean;
     @Input() loadingEliminaPartenza: boolean;
     @Input() loadingActionMezzo: string[];
+    @Input() loadingDettaglioSchedaContatto: string;
     @Input() disabledModificaRichiesta: boolean;
     @Input() disabledGestisciRichiesta: boolean;
     @Input() disabledAzioniRichiesta: boolean;
@@ -84,7 +85,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     methods = new HelperSintesiRichiesta();
     live = true;
-    dettaglioSoccorsoAereo = false;
+    dettaglioSoccorsoAereo: boolean;
 
     // Enum
     StatoRichiesta = StatoRichiesta;
@@ -222,7 +223,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     }
 
     onDettaglioSchedaContatto(codiceScheda: string): void {
-        if (codiceScheda) {
+        if (codiceScheda && !this.loadingDettaglioSchedaContatto) {
             this.store.dispatch(new OpenDettaglioSchedaContatto(codiceScheda));
         }
     }

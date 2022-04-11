@@ -79,6 +79,7 @@ import { createChiamataMarker } from '../../helper/mappa/chiamata-marker';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
 import { ChiamateMarkersState } from '../../../features/maps/store/states/chiamate-markers.state';
+import { HttpCancelService } from '../../../core/service/common/http-cancel.service';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -169,7 +170,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     constructor(private formBuilder: FormBuilder,
                 private store: Store,
                 private modalService: NgbModal,
-                private esriService: EsriService) {
+                private esriService: EsriService,
+                private httpCancelService: HttpCancelService) {
         this.store.dispatch(new StartChiamata());
         this.getIdChiamata();
         this.getScorciatoieTelefono();
@@ -253,6 +255,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
         if (this.modifica) {
             this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Modifica, [this.richiestaModifica.codice]));
+            if (this.richiestaModifica.codiceSchedaNue) {
+                this.httpCancelService.cancelPendingRequests();
+            }
         }
 
         if (this.f.codSchedaContatto) {

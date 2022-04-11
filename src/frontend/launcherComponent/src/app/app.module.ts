@@ -64,6 +64,8 @@ import { TastoChiamataMappaState } from './features/maps/store/states/tasto-chia
 import { SchedaTelefonataState } from './features/home/store/states/form-richiesta/scheda-telefonata.state';
 import { TastoZonaEmergenzaMappaState } from './features/zone-emergenza/store/states/tasto-zona-emergenza-mappa/tasto-zona-emergenza-mappa.state';
 import { SganciamentoMezziState } from './shared/store/states/sganciamento-mezzi/sganciamento-mezzi.state';
+import { GestisciSchedaContattoModalState } from './shared/store/states/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.state';
+import { ConcorrenzaState } from './shared/store/states/concorrenza/concorrenza.state';
 /**
  * Route
  */
@@ -71,7 +73,8 @@ import { APP_ROUTING } from './app-routing.module';
 /**
  * Interceptor
  */
-import { ErrorInterceptor, JwtInterceptor, LoaderInterceptor } from './core/interceptor';
+import { ManageHttpInterceptor, ErrorInterceptor, JwtInterceptor, LoaderInterceptor } from './core/interceptor';
+import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
 /**
  * Module Components
  */
@@ -81,10 +84,8 @@ import { AppLoadModule } from './core/app-load/app-load.module';
 /**
  * Provider
  */
-import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
 import { CustomDatepickerI18nService } from './core/service/custom-datepicker-i18n/custom-datepicker-i18n.service';
-import { GestisciSchedaContattoModalState } from './shared/store/states/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.state';
-import { ConcorrenzaState } from './shared/store/states/concorrenza/concorrenza.state';
+import { HttpCancelService } from './core/service/common/http-cancel.service';
 
 @NgModule({
     declarations: [
@@ -161,6 +162,8 @@ import { ConcorrenzaState } from './shared/store/states/concorrenza/concorrenza.
     ],
     providers: [
         I18n,
+        HttpCancelService,
+        { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
