@@ -73,13 +73,15 @@ import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { AppState } from '../../store/states/app/app.state';
+import { ChiamateMarkersState } from '../../../features/maps/store/states/chiamate-markers.state';
+import { HttpCancelService } from '../../../core/service/common/http-cancel.service';
+import { AuthState } from '../../../features/auth/store/auth.state';
 import { getPrioritaTriage } from '../../helper/function-triage';
 import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
 import { createChiamataMarker } from '../../helper/mappa/chiamata-marker';
+import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
-import { ChiamateMarkersState } from '../../../features/maps/store/states/chiamate-markers.state';
-import { HttpCancelService } from '../../../core/service/common/http-cancel.service';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -721,9 +723,18 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.longitudine.disable();
         this.f.indirizzo.disable();
 
+        const currentUser = this.store.selectSnapshot(AuthState.currentUser);
         this.store.dispatch(new UpdateFormValue({
             path: 'schedaTelefonata.richiestaForm',
             value: {
+                operatore: currentUser,
+                stato: StatoRichiesta.Chiamata,
+                istanteRicezioneRichiesta: new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]),
+                rilevanzaGrave: false,
+                rilevanzaStArCu: false,
+                prioritaRichiesta: 3,
+                urgenza: false,
+                esercitazione: false,
                 provincia,
                 cap,
                 regione,
