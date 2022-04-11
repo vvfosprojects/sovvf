@@ -26,7 +26,7 @@ namespace SO115App.API.Controllers
         }
 
         /// <summary>
-        ///   Restituisce il PDF del dettaglio di uno specifico intervento
+        ///   // Restituisce il PDF del dettaglio di uno specifico intervento
         /// </summary>
         [HttpGet("DettaglioRichiesta")]
         [ProducesResponseType(typeof(byte[]), 200)]
