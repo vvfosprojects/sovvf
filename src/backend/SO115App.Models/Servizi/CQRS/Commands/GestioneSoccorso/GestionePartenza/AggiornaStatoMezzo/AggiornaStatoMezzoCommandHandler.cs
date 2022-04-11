@@ -78,6 +78,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     case Costanti.MezzoInViaggio:
 
+                        if (istante > DateTime.UtcNow)
+                            throw new System.Exception("L'orario inserito non può essere superiore all'orario attuale.");
+
                         var IstantePrecedente = richiesta.ListaEventi.ToList().FirstOrDefault(e => e is UscitaPartenza arrivo && arrivo.CodicePartenza == command.CodicePartenza)?.Istante;
                         var IstanteSuccessivo = richiesta.ListaEventi.ToList().FirstOrDefault(e => e is ArrivoSulPosto arrivo && arrivo.CodicePartenza == command.CodicePartenza)?.Istante;
 
@@ -162,6 +165,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 if (statoAttuale.Equals("In Viaggio"))
                 {
+                    if (istante > DateTime.UtcNow)
+                        throw new System.Exception("L'orario inserito non può essere superiore all'orario attuale.");
+
                     if (command.StatoMezzo.Equals("Sul Posto"))
                     {
                         if (IstanteInViaggio > istante)

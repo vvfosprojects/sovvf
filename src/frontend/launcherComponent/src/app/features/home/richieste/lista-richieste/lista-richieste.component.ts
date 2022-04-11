@@ -32,6 +32,7 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() loadingActionMezzo: string[] = [];
     @Input() loadingProgressBarMezzo: string[] = [];
     @Input() loadingEliminaPartenza: boolean;
+    @Input() loadingDettaglioSchedaContatto: string;
 
     // Paginazione
     @Input() page: number;

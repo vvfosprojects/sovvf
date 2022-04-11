@@ -34,6 +34,7 @@ import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { DeleteAllConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 
 @Component({
     selector: 'app-richieste',
@@ -80,6 +81,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
     enti: EnteInterface[];
+
+    @Select(SchedeContattoState.loadingDettaglioSchedeContatto) loadingDettaglioSchedaContatto$: Observable<string>;
 
     loaderRichieste = true;
     listHeightClass = 'm-h-720';
