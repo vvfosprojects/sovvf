@@ -404,6 +404,9 @@
                                                     </i>
                                                     S. NUE
                                                     <div class="d-inline-block font-weight-bold mr-1 cursor-pointer"
+                                                         [class.cursor-pointer]="loadingDettaglioSchedaContatto && loadingDettaglioSchedaContatto === richiesta?.codiceSchedaNue"
+                                                         [class.cursor-loading]="loadingDettaglioSchedaContatto && loadingDettaglioSchedaContatto === richiesta?.codiceSchedaNue"
+                                                         [class.opacity-50]="loadingDettaglioSchedaContatto && loadingDettaglioSchedaContatto === richiesta?.codiceSchedaNue"
                                                          (click)="onDettaglioSchedaContatto(richiesta?.codiceSchedaNue)">
                                                         {{ richiesta?.codiceSchedaNue }}
                                                     </div>
