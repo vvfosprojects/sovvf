@@ -86,11 +86,10 @@ import { ViewComponentState } from '../view/view.state';
 import { RouterState } from '@ngxs/router-plugin';
 import { AppState } from '../../../../../shared/store/states/app/app.state';
 import { DistaccamentiState } from '../../../../../shared/store/states/distaccamenti/distaccamenti.state';
+import { TurnoState } from '../../../../navbar/store/states/turno.state';
 import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/function-triage';
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
-import { TurnoState } from '../../../../navbar/store/states/turno.state';
-import { DistaccamentiState } from '../../../../../shared/store/states/distaccamenti/distaccamenti.state';
 import * as data from '../../../../../../assets/province/province.json';
 
 export interface SchedaTelefonataStateModel {
