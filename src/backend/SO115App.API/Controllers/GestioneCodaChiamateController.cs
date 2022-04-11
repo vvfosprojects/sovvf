@@ -26,7 +26,7 @@ namespace SO115App.API.Controllers
         }
 
         /// <summary>
-        ///   Restituisce le informazioni utili a formare l'istogramma di Coda Chiamate
+        ///   // Restituisce le informazioni utili a formare l'istogramma di Coda Chiamate
         /// </summary>
         [HttpGet("GetInfoIstogramma")]
         [ProducesResponseType(typeof(CodaChiamateResult), 200)]
