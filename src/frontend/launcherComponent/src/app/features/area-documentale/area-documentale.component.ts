@@ -214,7 +214,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                     editDocumentoAreaDocumentaleModal.componentInstance.descCategoria = this.descCategoria;
                     editDocumentoAreaDocumentaleModal.componentInstance.editDocumento = true;
                     editDocumentoAreaDocumentaleModal.componentInstance.documento = documento;
-                    editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile = response.body;
+                    editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile =  new Blob([response.body], { type: response.body.type });
                     switch (documento.descrizioneCategoria) {
                         case 'Piani Discendenti':
                             const data = {
