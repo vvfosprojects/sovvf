@@ -44,9 +44,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 
         public async Task SendNotification(CancellazioneChiamataInCorsoMarkerCommand chiamata)
         {
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.ChiamataInCorso.Localita.Coordinate);
+            //var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.ChiamataInCorso.Localita.Coordinate);
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
+            var SediDaNotificare = _getGerarchiaToSend.Get(chiamata.ChiamataInCorso.Competenze[0]);
             //SediDaNotificare.Add(chiamata.ChiamataInCorso.CodiceSedeOperatore);
 
             foreach (var sede in SediDaNotificare)
