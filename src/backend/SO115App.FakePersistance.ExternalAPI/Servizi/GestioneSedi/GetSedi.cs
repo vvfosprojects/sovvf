@@ -96,23 +96,38 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<DistaccamentoUC> GetInfoSede(string codSede)
         {
-            try
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(6));
+
+            DistaccamentoUC sede = new DistaccamentoUC();
+
+            if (!_memoryCache.TryGetValue("GetInfoSede-" + codSede, out sede))
             {
-                var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
-                var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
+                try
+                {
+                    var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+                    var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
 
-                _serviceSedi.SetCache(codSede);
+                    _serviceSedi.SetCache(codSede);
 
-                var sede = _serviceSedi.GetAsync(url).Result;
+                    sede = _serviceSedi.GetAsync(url).Result;
 
-                if (sede == null)
-                    return get(codSede);
+                    if (sede == null)
+                        sede = get(codSede);
 
-                return sede;
+                    _memoryCache.Set("GetInfoSede-" + codSede, sede, cacheEntryOptions);
+                    return sede;
+
+                }
+                catch (Exception)
+                {
+                    sede = get(codSede);
+                    _memoryCache.Set("GetInfoSede-" + codSede, sede, cacheEntryOptions);
+                    return sede;
+                }
             }
-            catch (Exception)
+            else
             {
-                return get(codSede);
+                return sede;
             }
 
             DistaccamentoUC get(string codSede)
