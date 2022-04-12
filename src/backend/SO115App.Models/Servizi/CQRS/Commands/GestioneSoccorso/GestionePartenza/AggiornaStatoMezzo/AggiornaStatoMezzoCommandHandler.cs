@@ -280,28 +280,32 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 //SE CAMBIO ORARIO DI UNO STATO AVVISO GAC
                 var dataRientro = richiesta.ListaEventi.OfType<PartenzaRientrata>().LastOrDefault(p => p.CodicePartenza == partenza.CodicePartenza)?.Istante;
-                if (command.StatoMezzo.Equals(statoAttuale) && statoAttuale.Equals(Costanti.MezzoInViaggio)) _modificaGac.Send(new ModificaMovimentoGAC()
+                
+                if (command.StatoMezzo.Equals(statoAttuale) && statoAttuale.Equals(Costanti.MezzoInViaggio))
                 {
-                    comune = new ComuneGAC() { descrizione = richiesta.Localita.Citta },
-                    dataIntervento = richiesta.dataOraInserimento,
-                    localita = richiesta.Localita.Indirizzo,
-                    latitudine = richiesta.Localita.Coordinate.Latitudine.ToString(),
-                    longitudine = richiesta.Localita.Coordinate.Longitudine.ToString(),
-                    provincia = new ProvinciaGAC() { descrizione = richiesta.Localita.Provincia },
-                    targa = command.IdMezzo.Split('.')[1],
-                    tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
-                    idPartenza = partenza.Partenza.Codice,
-                    numeroIntervento = richiesta.CodRichiesta,
-                    autistaUscita = partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).Nominativo,
-                    autistaRientro = partenza.Partenza.Terminata ? partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale : null,
-                    dataRientro = dataRientro,
-                    dataUscita = command.DataOraAggiornamento,
-                    tipoUscita = new TipoUscita()
+                    _modificaGac.Send(new ModificaMovimentoGAC()
                     {
-                        codice = richiesta.Tipologie.Select(t => t.Codice).First(),
-                        descrizione = _getTipologie.Get(new List<string>() { richiesta.Tipologie.Select(t => t.Codice).First() }).First().Descrizione
-                    }
-                });
+                        comune = new ComuneGAC() { descrizione = richiesta.Localita.Citta },
+                        dataIntervento = richiesta.dataOraInserimento,
+                        localita = richiesta.Localita.Indirizzo,
+                        latitudine = richiesta.Localita.Coordinate.Latitudine.ToString(),
+                        longitudine = richiesta.Localita.Coordinate.Longitudine.ToString(),
+                        provincia = new ProvinciaGAC() { descrizione = richiesta.Localita.Provincia },
+                        targa = command.IdMezzo.Split('.')[1],
+                        tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                        idPartenza = partenza.Partenza.Codice,
+                        numeroIntervento = richiesta.CodRichiesta,
+                        autistaUscita = partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).Nominativo,
+                        autistaRientro = partenza.Partenza.Terminata ? partenza.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica.Equals("DRIVER")).CodiceFiscale : null,
+                        dataRientro = dataRientro,
+                        dataUscita = command.DataOraAggiornamento,
+                        tipoUscita = new TipoUscita()
+                        {
+                            codice = richiesta.Tipologie.Select(t => t.Codice).First(),
+                            descrizione = _getTipologie.Get(new List<string>() { richiesta.Tipologie.Select(t => t.Codice).First() }).First().Descrizione
+                        }
+                    });
+                }
 
                 _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                 {

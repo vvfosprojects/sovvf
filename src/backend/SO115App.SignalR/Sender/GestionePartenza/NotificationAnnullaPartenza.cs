@@ -79,16 +79,11 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     },
                     CodiciSede = new string[] { sede }
                 };
-                //var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-                //command.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == command.CodiceRichiesta);
                 var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
                 {
                     CodiciSedi = new string[] { sede }
                 };
 
-                //var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-
-                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
                 _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
 
                 var boxRichiesteQuery = new BoxRichiesteQuery()
@@ -134,8 +129,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 {
                     Filtro = areaMappa,
                 };
-                //var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
-                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == command.Chiamata.Codice));
 
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
             });

@@ -830,8 +830,12 @@ export class SchedaTelefonataState {
                     new StartChiamata()
                 ]);
             } else {
+                const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+                if (chiamataStatus) {
+                    dispatch(new ToggleChiamata());
+                }
+
                 dispatch([
-                    new ToggleChiamata(),
                     new CestinaChiamata(),
                     new ClearIdChiamata(),
                     new ClearOperatoreChiamata(),

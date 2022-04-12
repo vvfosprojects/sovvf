@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
+using System.Threading.Tasks;
 
 namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
@@ -33,7 +34,10 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 
         public void Notify(ChiamataInCorsoMarkerCommand command)
         {
-            _sender.SendNotification(command);
+            Task.Run(() =>
+            {
+                _sender.SendNotification(command);
+            });
         }
     }
 }
