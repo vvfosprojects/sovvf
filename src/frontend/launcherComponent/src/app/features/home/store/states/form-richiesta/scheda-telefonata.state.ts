@@ -85,6 +85,7 @@ import { ChiamateMarkersState } from '../../../../maps/store/states/chiamate-mar
 import { ViewComponentState } from '../view/view.state';
 import { RouterState } from '@ngxs/router-plugin';
 import { AppState } from '../../../../../shared/store/states/app/app.state';
+import { DistaccamentiState } from '../../../../../shared/store/states/distaccamenti/distaccamenti.state';
 import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/function-triage';
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
@@ -188,7 +189,7 @@ export class SchedaTelefonataState {
 
     @Selector()
     static formValid(state: SchedaTelefonataStateModel): boolean {
-        return state.richiestaForm.status === 'VALID';
+        return !state.richiestaForm.status || state.richiestaForm.status === 'VALID';
     }
 
     @Selector()
@@ -830,8 +831,12 @@ export class SchedaTelefonataState {
                     new StartChiamata()
                 ]);
             } else {
+                const chiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+                if (chiamataStatus) {
+                    dispatch(new ToggleChiamata());
+                }
+
                 dispatch([
-                    new ToggleChiamata(),
                     new CestinaChiamata(),
                     new ClearIdChiamata(),
                     new ClearOperatoreChiamata(),

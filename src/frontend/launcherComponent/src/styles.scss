@@ -134,6 +134,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     font-weight: 400;
   }
 }
+
 // END Single Monitor Styles
 
 // Double Monitor Styles
@@ -145,6 +146,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   .fas {
     font-weight: 900 $SO-i;
   }
+
   //
 
   button {
@@ -181,6 +183,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     padding-right: $SO-middle $SO-i;
   }
 }
+
 // END Double Monitor Styles
 
 // Sun Mode Styles
@@ -194,6 +197,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
       color: $SO-black $SO-i;
     }
   }
+
   //
 
   .table-striped > tbody > tr:nth-child(odd) > .td-logbook,
@@ -262,6 +266,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     color: rgba(40, 167, 69, 0.7)
   }
 }
+
 // END Sun Mode Styles
 
 .popover {
@@ -281,6 +286,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
       color: $SO-black $SO-i;
     }
   }
+
   //
 
   // style Esri
@@ -293,6 +299,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
     background-color: $SO-dark-light $SO-i;
     color: $SO-white $SO-i;
   }
+
   //
 
   // Feature Emergenza
@@ -309,6 +316,7 @@ $SO-card-shadow-secondary-soft: 0 0 4px 2px #868e96;
   .ng-wizard-theme-default > ul.step-anchor > li.done > a {
     color: $SO-secondary $SO-i;
   }
+
   //
 
   a {
@@ -780,6 +788,10 @@ a:hover {
 .cursor-not-allowed {
   cursor: not-allowed;
   transform: scale(1) $SO-i;
+}
+
+.cursor-loading {
+  cursor: wait;
 }
 
 .status_preaccoppiato_nonselezionato {

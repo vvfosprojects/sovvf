@@ -212,7 +212,7 @@ export class PosComponent implements OnInit, OnDestroy {
                     editPosModal.componentInstance.dettagliTipologie = this.dettagliTipologie;
                     editPosModal.componentInstance.editPos = true;
                     editPosModal.componentInstance.pos = pos;
-                    editPosModal.componentInstance.posFdFile = response.body;
+                    editPosModal.componentInstance.posFdFile = new Blob([response.body], { type: response.body.type });
                     const data = {
                         type: TipoConcorrenzaEnum.ModificaPos,
                         value: pos.id

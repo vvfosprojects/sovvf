@@ -88,7 +88,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
             descrizionePos: editPos.descrizionePos,
             tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
             tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie),
-            file: editPos.FDFile
+            file: this.posFdFile
         });
 
         this.store.dispatch(new UpdateFormValue({
@@ -96,7 +96,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
                 descrizionePos: editPos.descrizionePos,
                 tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
                 tipoglieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie),
-                file: editPos.FDFile
+                file: this.posFdFile
             },
             path: 'posModal.posForm'
         }));

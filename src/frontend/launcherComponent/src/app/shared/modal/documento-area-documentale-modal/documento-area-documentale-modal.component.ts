@@ -85,7 +85,7 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
         this.documentoAreaDocumentaleForm.patchValue({
             descrizioneDocumento: editDocumento.descrizioneDocumento,
             descrizioneCategoria: editDocumento.descrizioneCategoria,
-            file: editDocumento.FDFile
+            file: this.documentoFdFile
         });
 
         if (!this.formData) {

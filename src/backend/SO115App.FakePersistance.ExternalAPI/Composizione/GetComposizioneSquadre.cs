@@ -163,7 +163,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     {
                         Stato = MappaStato(lstStatiSquadre.Result.Find(statosquadra => statosquadra.IdSquadra.Equals($"{squadra.Codice}_{codiceTurno}"))?.StatoSquadra ?? Costanti.MezzoInSede),
                         Codice = squadra.Codice,
-                        Turno = lstStatiSquadre.Result.FirstOrDefault(c => c.IdSquadra.Equals($"{squadra.Codice}_{codiceTurno}"))?.TurnoSquadra.ToCharArray()[0] ?? squadra.TurnoAttuale.ToCharArray()[0],
+                        Turno = squadra.TurnoAttuale.ToCharArray()[0],
                         Nome = squadra.Descrizione,
                         DiEmergenza = squadra.Emergenza,
                         Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione() ?? null,
