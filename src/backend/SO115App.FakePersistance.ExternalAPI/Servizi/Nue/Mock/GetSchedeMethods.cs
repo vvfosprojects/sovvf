@@ -58,23 +58,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// </summary>
         public List<SchedaContatto> GetList(string codiceSede)
         {
-            var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede)).ToList();
-            var ListaSchede = _getSchedeContatto_WSNUE.GetAllSchedeContatto(codiceSede);
+            List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            if (codiceSede.Length > 0)
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede)).ToList();
+            else
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+
             List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
 
-            Parallel.ForEach(ListaSchede, scheda =>
+            var ListaSchedeRaggruppate = listaSchedeContatto;
+            Parallel.ForEach(listaSchedeContatto, scheda =>
             {
-               if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-               {
-                   ListaSchedefiltrata.Add(scheda);
-               }
-               else
-               {
-                   var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
-                   if (!schedaRaggruppata.Collegata)
-                       ListaSchedefiltrata.Add(schedaRaggruppata);
-               }
-           });
+                if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
+                {
+                    ListaSchedefiltrata.Add(scheda);
+                }
+                else
+                {
+                    var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
+                    if (!schedaRaggruppata.Collegata)
+                        ListaSchedefiltrata.Add(schedaRaggruppata);
+                }
+            });
 
             return ListaSchedefiltrata;
         }
