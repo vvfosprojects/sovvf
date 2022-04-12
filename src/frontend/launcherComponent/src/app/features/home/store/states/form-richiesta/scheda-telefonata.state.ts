@@ -85,6 +85,7 @@ import { ChiamateMarkersState } from '../../../../maps/store/states/chiamate-mar
 import { ViewComponentState } from '../view/view.state';
 import { RouterState } from '@ngxs/router-plugin';
 import { AppState } from '../../../../../shared/store/states/app/app.state';
+import { TurnoState } from '../../../../navbar/store/states/turno.state';
 import { DistaccamentiState } from '../../../../../shared/store/states/distaccamenti/distaccamenti.state';
 import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/function-triage';
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
