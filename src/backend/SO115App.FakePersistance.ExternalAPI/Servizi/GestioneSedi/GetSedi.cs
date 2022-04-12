@@ -50,48 +50,78 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<List<SedeUC>> GetDirezioniProvinciali(string codSede = null)
         {
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(6));
+
             var baseurl = URLProvvisorio; //_config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
 
             List<SedeUC> result = null;
 
-            if (codSede != null)
+            if (!_memoryCache.TryGetValue("GetDirezioniRegionali-" + codSede, out result))
             {
-                var url = new Uri(baseurl + "/GetComandiProvinciali" + "?codSede=" + codSede);
-                _serviceDirezioni.SetCache(url.AbsoluteUri);
-                result = await _serviceDirezioni.GetAsync(url);
+                if (codSede != null)
+                {
+                    var url = new Uri(baseurl + "/GetComandiProvinciali" + "?codSede=" + codSede);
+                    _serviceDirezioni.SetCache(url.AbsoluteUri);
+                    result = await _serviceDirezioni.GetAsync(url);
+                    _memoryCache.Set("GetDirezioniRegionali-" + codSede, result, cacheEntryOptions);
+                }
+                else
+                {
+                    var url = new Uri(baseurl + "/GetComandiProvinciali");
+                    _serviceDirezioni.SetCache(url.AbsoluteUri);
+                    result = await _serviceDirezioni.GetAsync(url);
+                    _memoryCache.Set("GetDirezioniRegionali-" + codSede, result, cacheEntryOptions);
+                }
+
+                return result;
             }
             else
-            {
-                var url = new Uri(baseurl + "/GetComandiProvinciali");
-                _serviceDirezioni.SetCache(url.AbsoluteUri);
-                result = await _serviceDirezioni.GetAsync(url);
-            }
-
-            return result;
+                return result;
         }
 
         public async Task<List<SedeUC>> GetDirezioniRegionali(string codSede = null)
         {
-            var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
-            var url = new Uri(baseurl + "/GetDirezioniRegionali" + "?codSede=" + codSede);
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(6));
 
-            _serviceDirezioni.SetCache(url.AbsoluteUri);
+            List<SedeUC> lstSediRegionali = new List<SedeUC>();
 
-            var lstSediRegionali = await _serviceDirezioni.GetAsync(url);
+            if (!_memoryCache.TryGetValue("GetDirezioniRegionali-" + codSede, out lstSediRegionali))
+            {
+                var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+                var url = new Uri(baseurl + "/GetDirezioniRegionali" + "?codSede=" + codSede);
 
-            return lstSediRegionali;
+                _serviceDirezioni.SetCache(url.AbsoluteUri);
+
+                lstSediRegionali = await _serviceDirezioni.GetAsync(url);
+                _memoryCache.Set("GetDirezioniRegionali-" + codSede, lstSediRegionali, cacheEntryOptions);
+                return lstSediRegionali;
+            }
+            else
+                return lstSediRegionali;
         }
 
         public async Task<List<SedeUC>> GetFigli(string codSede = null)
         {
-            var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
-            var url = new Uri(baseurl + "/GetChildSede" + "?codSede=" + codSede);
 
-            _serviceDirezioni.SetCache(url.AbsoluteUri);
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(6));
 
-            var lstFigli = await _serviceDirezioni.GetAsync(url);
+            List<SedeUC> lstFigli = new List<SedeUC>();
 
-            return lstFigli.Where(f => f.tipologiaDistaccamento.codice != "14" && f.tipologiaDistaccamento.codice != "9").ToList();
+            if (!_memoryCache.TryGetValue("GetChildSede-" + codSede, out lstFigli))
+            {
+                var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+                var url = new Uri(baseurl + "/GetChildSede" + "?codSede=" + codSede);
+
+                _serviceDirezioni.SetCache(url.AbsoluteUri);
+
+                lstFigli = await _serviceDirezioni.GetAsync(url);
+                _memoryCache.Set("GetChildSede-" + codSede, lstFigli, cacheEntryOptions);
+
+                return lstFigli.Where(f => f.tipologiaDistaccamento.codice != "14" && f.tipologiaDistaccamento.codice != "9").ToList();
+            }
+            else
+                return lstFigli;
+
         }
 
         public async Task<DistaccamentoUC> GetInfoSede(string codSede)
