@@ -57,7 +57,7 @@ namespace SO115App.ExternalAPI.Client
         public async Task<ResponseObject> GetAsync(Uri url, string token = null)
         {
             Stopwatch stopWatch = new Stopwatch();
-            Log.Information($"--------------------------- INIZIO GET ASYNC BEARER --------------------------- {DateTime.Now}");
+            Log.Information($"--------------------------- INIZIO GET ASYNC BEARER {url.AbsoluteUri} --------------------------- {DateTime.Now}");
             Log.Information(url.AbsoluteUri);
             stopWatch.Start();
 
@@ -70,7 +70,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
             Log.Information(response.Content.ReadAsStringAsync().Result);
-            Log.Information($"--------------------------- FINE GET ASYNC BEARER --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
+            Log.Information($"--------------------------- FINE GET ASYNC BEARER {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             return manageResponse(response);
         }
@@ -78,7 +78,7 @@ namespace SO115App.ExternalAPI.Client
         public async Task<ResponseObject> GetAsync(Uri url, string username, string password)
         {
             Stopwatch stopWatch = new Stopwatch();
-            Log.Information($"--------------------------- INIZIO GET ASYNC BASIC --------------------------- {DateTime.Now}");
+            Log.Information($"--------------------------- INIZIO GET ASYNC BASIC {url.AbsoluteUri} --------------------------- {DateTime.Now}");
             Log.Information(url.AbsoluteUri);
             stopWatch.Start();
             _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
@@ -87,7 +87,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
             Log.Information(response.Content.ReadAsStringAsync().Result);
-            Log.Information($"--------------------------- FINE GET ASYNC BASIC --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
+            Log.Information($"--------------------------- FINE GET ASYNC BASIC {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             return manageResponse(response);
         }
@@ -95,7 +95,7 @@ namespace SO115App.ExternalAPI.Client
         public async Task<ResponseObject> PostAsync(Uri url, HttpContent content = null, string token = null)
         {
             Stopwatch stopWatch = new Stopwatch();
-            Log.Information($"--------------------------- INIZIO POST ASYNC --------------------------- {DateTime.Now}");
+            Log.Information($"--------------------------- INIZIO POST ASYNC {url.AbsoluteUri} --------------------------- {DateTime.Now}");
             Log.Information(url.AbsoluteUri);
             stopWatch.Start();
 
@@ -110,7 +110,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
             Log.Information(response.Content.ReadAsStringAsync().Result);
-            Log.Information($"--------------------------- FINE POST ASYNC --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
+            Log.Information($"--------------------------- FINE POST ASYNC {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             return manageResponse(response);
         }
@@ -118,7 +118,7 @@ namespace SO115App.ExternalAPI.Client
         public async Task<ResponseObject> PostAsyncFormData(Uri url, HttpContent content = null, string token = null)
         {
             Stopwatch stopWatch = new Stopwatch();
-            Log.Information($"--------------------------- INIZIO POST ASYNC FORM DATA --------------------------- {DateTime.Now}");
+            Log.Information($"--------------------------- INIZIO POST ASYNC FORM DATA {url.AbsoluteUri} --------------------------- {DateTime.Now}");
             Log.Information(url.AbsoluteUri);
             stopWatch.Start();
 
@@ -131,7 +131,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
             Log.Information(response.Content.ReadAsStringAsync().Result);
-            Log.Information($"--------------------------- FINE POST ASYNC FORM DATA  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
+            Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             return manageResponse(response);
         }
