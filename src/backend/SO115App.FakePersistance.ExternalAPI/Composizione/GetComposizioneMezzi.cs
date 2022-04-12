@@ -90,7 +90,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             #endregion
 
-            var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno.Substring(0, 1));
+            var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno.Substring(0, 1),query.CodiciSedi.ToList());
             var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && !s.spotType.ToUpper().Equals("MODULE")).ToList();
 
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
