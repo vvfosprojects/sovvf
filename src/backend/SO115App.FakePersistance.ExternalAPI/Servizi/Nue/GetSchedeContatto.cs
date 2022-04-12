@@ -50,14 +50,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> ListaSchedeContatto(string codiceSede)
         {
-            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
-            var ListaSchede = _getSchede.GetSchede(codiceSede);//json
-            var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+            List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+
+            if (codiceSede.Length > 0)
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede)).ToList();
+            else
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+
+            var ListaSchedeRaggruppate = listaSchedeContatto;
 
             var ListaSchedefiltrata = new List<SchedaContatto>();
 
-            Parallel.ForEach(ListaSchede, scheda =>
-           {
+            Parallel.ForEach(listaSchedeContatto, scheda =>
+            {
                if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
                {
                    ListaSchedefiltrata.Add(scheda);
@@ -68,11 +73,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
                    if (!schedaRaggruppata.Collegata)
                        ListaSchedefiltrata.Add(schedaRaggruppata);
                }
-           });
+            });
 
             return ListaSchedefiltrata;
 
-            //---------------------------------------------------------------------------------------
         }
     }
 }
