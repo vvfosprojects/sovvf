@@ -275,4 +275,5 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
     }
+
 }
