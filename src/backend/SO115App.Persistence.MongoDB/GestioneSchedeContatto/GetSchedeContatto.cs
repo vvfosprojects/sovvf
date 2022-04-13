@@ -27,10 +27,7 @@ namespace SO115App.Persistence.MongoDB.GestioneSchedeContatto
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
 
             if (CodiceSede.Length > 0)
-            {
-                var lll = _dbContext.SchedeContattoCollection.Find(s => s.CodiceSede != "").ToList();
                 listaSchedeContatto = _dbContext.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(CodiceSede)).ToList();
-            }
             else
                 listaSchedeContatto = _dbContext.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
 

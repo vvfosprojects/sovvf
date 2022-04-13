@@ -27,6 +27,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichieste
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.SignalR.Utility;
@@ -79,17 +80,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     },
                     CodiciSede = new string[] { sede }
                 };
-                //var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-                //command.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == command.CodiceRichiesta);
                 var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
                 {
                     CodiciSedi = new string[] { sede }
                 };
-
-                //var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-
-                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
-                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
 
                 var boxRichiesteQuery = new BoxRichiesteQuery()
                 {
@@ -119,7 +113,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 };
                 var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
                 var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
 
                 var areaMappa = new AreaMappa()
@@ -134,10 +127,14 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 {
                     Filtro = areaMappa,
                 };
-                //var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
-                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == command.Chiamata.Codice));
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
+
+                if(!command.StatoMezzo.Equals(Costanti.MezzoInViaggio))
+                {
+                    _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
+                }
             });
         }
     }
