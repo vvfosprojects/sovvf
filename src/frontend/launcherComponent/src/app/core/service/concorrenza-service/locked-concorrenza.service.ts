@@ -117,6 +117,7 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Sganciamento,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento,
+                    TipoConcorrenzaEnum.InvioPartenza,
                     TipoConcorrenzaEnum.Trasferimento
                 ];
                 break;
