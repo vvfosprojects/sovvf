@@ -60,6 +60,7 @@ export class LockedConcorrenzaService {
             case TipoConcorrenzaEnum.Modifica:
                 blocks = [
                     TipoConcorrenzaEnum.Modifica,
+                    TipoConcorrenzaEnum.Allerta,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.Trasferimento
