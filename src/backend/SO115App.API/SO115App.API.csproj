@@ -16,6 +16,7 @@
     <None Include="..\shared\SO115.licenseheader" Link="SO115.licenseheader" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.14" />
@@ -47,6 +48,7 @@
     <ProjectReference Include="..\SO115App.CompositionRoot\SO115App.CompositionRoot.csproj" />
     <ProjectReference Include="..\SO115App.Logging\SO115App.Logging.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
+    <ProjectReference Include="..\SO115App.Monitor\SO115App.Monitor.csproj" />
     <ProjectReference Include="..\SO115App.SignalR\SO115App.SignalR.csproj" />
   </ItemGroup>
   <ItemGroup>

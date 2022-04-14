@@ -96,10 +96,18 @@ export class CodaChiamateState {
         dispatch(new StartLoadingCodaChiamate());
         this.codaChiamateService.getDataGrafico().subscribe((response: DataGraficoCodaChiamateDto) => {
             if (response?.infoIstogramma) {
+                const infoIstogramma = response.infoIstogramma.map((value: ItemGraficoCodaChiamate) => {
+                    return {
+                        codDistaccamento: value.codDistaccamento,
+                        descDistaccamento: value.descDistaccamento,
+                        numRichieste: value.numRichieste > 0 ? value.numRichieste : 0,
+                        squadreLibere: value.squadreLibere > 0 ? value.squadreLibere : 0,
+                        squadreOccupate: value.squadreOccupate > 0 ? value.squadreOccupate : 0
+                    };
+                });
                 patchState({
-                        data: response.infoIstogramma
-                    }
-                );
+                    data: infoIstogramma
+                });
                 dispatch(new SortDataGrafico());
             }
             dispatch(new StopLoadingCodaChiamate());

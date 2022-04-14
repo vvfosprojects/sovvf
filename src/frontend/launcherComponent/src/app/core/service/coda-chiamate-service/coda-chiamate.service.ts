@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { ItemGraficoCodaChiamate } from '../../../shared/interface/item-grafico-coda-chiamate';
 import { DataGraficoCodaChiamateDto } from '../../../shared/interface/dto/coda-chiamate/data-grafico-coda-chiamate-dto.interface';
 import { DettaglioSedeCodaChiamateDto } from '../../../shared/interface/dto/coda-chiamate/dettaglio-sede-coda-chiamate-dto.interface';
 
