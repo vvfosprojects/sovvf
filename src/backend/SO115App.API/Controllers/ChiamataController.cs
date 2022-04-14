@@ -49,7 +49,7 @@ namespace SO115App.API.Controllers
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
         /// <summary>
-        ///   // Costruttore della classe
+        ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public ChiamataController(
