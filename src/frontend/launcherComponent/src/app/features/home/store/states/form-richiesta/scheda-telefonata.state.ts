@@ -829,6 +829,8 @@ export class SchedaTelefonataState {
                     new ClearPrioritaRichiesta(),
                     new ClearIstanteRicezioneRichiesta(),
                     new ClearSchedaContattoTelefonata(),
+                    new ClearCountInterventiProssimita(),
+                    new ClearInterventiProssimita(),
                     new StartChiamata()
                 ]);
             } else {

@@ -27,6 +27,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichieste
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.SignalR.Utility;
@@ -84,8 +85,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     CodiciSedi = new string[] { sede }
                 };
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
-
                 var boxRichiesteQuery = new BoxRichiesteQuery()
                 {
                     CodiciSede = new string[] { sede }
@@ -114,7 +113,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 };
                 var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
                 var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
 
                 var areaMappa = new AreaMappa()
@@ -130,7 +128,13 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     Filtro = areaMappa,
                 };
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
+
+                if(!command.StatoMezzo.Equals(Costanti.MezzoInViaggio))
+                {
+                    _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
+                }
             });
         }
     }
