@@ -54,6 +54,7 @@
 
   <ItemGroup>
     <Folder Include="Servizi\CQRS\Commands\GestioneRubrica\Enti\DeleteEnte\" />
+    <Folder Include="Servizi\Infrastruttura\Monitor\" />
     <Folder Include="Servizi\Infrastruttura\SistemiEsterni\Distaccamenti\CoordinateTask\" />
   </ItemGroup>
 </Project>
