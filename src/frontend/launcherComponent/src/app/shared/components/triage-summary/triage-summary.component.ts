@@ -82,24 +82,32 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
             if (this.idRichiestaModifica) {
                 this.filterCountInterventiProssimita();
             }
+        } else if (!changes?.countInterventiProssimita?.currentValue && changes?.countInterventiProssimita?.previousValue) {
+            this.countInterventiProssimitaFiltered = null;
         }
         if (changes?.interventiProssimita?.currentValue) {
             this.interventiProssimitaFiltered = this.interventiProssimita;
             if (this.idRichiestaModifica) {
                 this.filterInterventiProssimita();
             }
+        } else if (!changes?.interventiProssimita?.currentValue && changes?.interventiProssimita?.previousValue) {
+            this.interventiProssimitaFiltered = null;
         }
         if (changes?.countInterventiStessaVia?.currentValue) {
             this.countInterventiStessaViaFiltered = this.countInterventiStessaVia;
             if (this.idRichiestaModifica) {
                 this.filterCountInterventiStessaVia();
             }
+        } else if (!changes?.countInterventiStessaVia?.currentValue && changes?.countInterventiStessaVia?.previousValue) {
+            this.countInterventiStessaViaFiltered = null;
         }
         if (changes?.interventiStessaVia?.currentValue) {
             this.interventiStessaViaFiltered = this.interventiStessaVia;
             if (this.idRichiestaModifica) {
                 this.filterInterventiStessaVia();
             }
+        } else if (!changes?.interventiStessaVia?.currentValue && changes?.interventiStessaVia?.previousValue) {
+            this.interventiStessaViaFiltered = null;
         }
     }
 

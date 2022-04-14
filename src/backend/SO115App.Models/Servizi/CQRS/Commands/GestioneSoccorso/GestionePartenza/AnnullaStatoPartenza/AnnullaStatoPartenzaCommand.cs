@@ -35,5 +35,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public string CodiceRichiesta { get; set; }
         public string CodicePartenza { get; set; }
         public string TargaMezzo { get; set; }
+
+        public string StatoMezzo { get; set; }
     }
 }

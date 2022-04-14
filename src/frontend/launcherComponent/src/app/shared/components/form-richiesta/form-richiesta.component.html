@@ -651,6 +651,9 @@
     <!-- Resoconto triage -->
     <div class="col-4 h-100 scroll-y px-0 pb-3"
          [class.bg-resoconto-triage]="!apertoFromMappa">
+        <ng-container *ngIf="loadingCountInterventiProssimita || loadingInterventiProssimita">
+            <app-partial-loader></app-partial-loader>
+        </ng-container>
         <div class="bg-secondary font-weight-bold border-bottom border-light text-center"
              style="color: #ffffff">
             INFO AGGIUNTIVE

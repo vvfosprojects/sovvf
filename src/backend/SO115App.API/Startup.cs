@@ -18,8 +18,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using AutoMapper;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Connections;
@@ -38,6 +40,7 @@ using SO115App.CompositionRoot;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Monitor;
 using SO115App.SignalR;
 using StackExchange.Redis;
 using System;
@@ -146,6 +149,10 @@ namespace SO115App.API
                     options.HandshakeTimeout = TimeSpan.FromMinutes(480);
                     options.MaximumReceiveMessageSize = 300000;
                 });
+
+            services.AddHealthChecks();//.AddCheck<SOHealthCheck>("SOHeathCheck");
+            services.AddHealthChecksUI().AddInMemoryStorage();
+
             IntegrateSimpleInjector(services);
         }
 
@@ -200,6 +207,13 @@ namespace SO115App.API
                 });
                 endpoints.MapControllers();
             });
+
+            app.UseHealthChecks("/health", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+            app.UseHealthChecksUI();
 
             app.UseHttpsRedirection();
 
