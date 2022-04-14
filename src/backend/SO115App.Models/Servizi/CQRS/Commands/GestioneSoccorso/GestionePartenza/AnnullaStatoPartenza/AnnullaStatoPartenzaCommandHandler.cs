@@ -80,14 +80,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             if (date >= ultimoMovimento.DataOraInserimento.AddMinutes(1))
                 throw new Exception($"Annullamento non più disponibile per il mezzo {partenza.CodiceMezzo}.");
 
-            string statoMezzoAttuale = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
+            command.StatoMezzo = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
 
-            if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(statoMezzoAttuale))
+            if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(command.StatoMezzo))
             {
                 string nuovoStatoMezzo = null;
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
-                    .Where(e => !(e is AnnullamentoStatoPartenza))
+                    .Where(e => e is not AnnullamentoStatoPartenza)
                     .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza)).Where(e => e.DataOraInserimento < command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => !(e is AnnullamentoStatoPartenza && e.CodicePartenza.Equals(partenza.CodicePartenza))).Last().DataOraInserimento)
                     .Last();
 
@@ -110,7 +110,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         break;
                 }
 
-                string note = $"Il cambio stato {statoMezzoAttuale} è stato annullato e il mezzo è tornato nello stato {nuovoStatoMezzo}";
+                string note = $"Il cambio stato {command.StatoMezzo} è stato annullato e il mezzo è tornato nello stato {nuovoStatoMezzo}";
 
                 new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, Costanti.AnnullamentoStatoPartenza, command.CodicePartenza, note);
 
@@ -183,6 +183,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 command.Chiamata = _mapper.Map(command.Richiesta);
             }
+            else
+                throw new Exception("Impossibile annullare lo stato");
         }
     }
 }

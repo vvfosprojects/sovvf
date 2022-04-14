@@ -639,27 +639,40 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                var partenze = this.Partenze;
+                    var partenze = this.Partenze;
 
-                if (partenze.Count > 0)
-                {
-                    if (partenze.ToList().FindAll(p => p.Partenza.Terminata || p.Partenza.Sganciata).Count < partenze.Count)
+                    if (partenze.Count > 0)
                     {
-                        var partenzeAperte = partenze.ToList().FindAll(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
+                        if (partenze.ToList().FindAll(p => p.Partenza.Terminata || p.Partenza.Sganciata).Count < partenze.Count)
+                        {
+                            var partenzeAperte = partenze.ToList().Where(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
 
-                        if ((partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio)).Count > 0 ||
-                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro)).Count > 0) &&
-                            partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count == 0)
-                            return new Assegnata();
-                        else if (partenzeAperte.FindAll(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count > 0)
-                            return new Presidiata();
+                            if ((partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio)).Count() > 0 ||
+                                partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro)).Count() > 0) &&
+                                partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count() == 0)
+                                return new Assegnata();
+                            else if (partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count() > 0)
+                                return new Presidiata();
+                            else
+                                return new Sospesa();
+                        }
                         else
-                            return new Sospesa();
+                        {
+                            var contChiusura = _eventi.Where(e => e is ChiusuraRichiesta).Count();
+                            var contRiapertura = _eventi.Where(e => e is RiaperturaRichiesta).Count();
+
+                            if (contChiusura > contRiapertura)
+                                return new Chiusa();
+                            else if (CodRichiesta != null)
+                                return new Sospesa();
+                            else
+                                return new InAttesa();
+                        }
                     }
                     else
                     {
-                        var contChiusura = _eventi.FindAll(e => e is ChiusuraRichiesta).Count;
-                        var contRiapertura = _eventi.FindAll(e => e is RiaperturaRichiesta).Count;
+                        var contChiusura = _eventi.Where(e => e is ChiusuraRichiesta).Count();
+                        var contRiapertura = _eventi.Where(e => e is RiaperturaRichiesta).Count();
 
                         if (contChiusura > contRiapertura)
                             return new Chiusa();
@@ -667,20 +680,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                             return new Sospesa();
                         else
                             return new InAttesa();
-                    }
-                }
-                else
-                {
-                    var contChiusura = _eventi.FindAll(e => e is ChiusuraRichiesta).Count;
-                    var contRiapertura = _eventi.FindAll(e => e is RiaperturaRichiesta).Count;
-
-                    if (contChiusura > contRiapertura)
-                        return new Chiusa();
-                    else if (CodRichiesta != null)
-                        return new Sospesa();
-                    else
-                        return new InAttesa();
-                }
+                    }                
             }
         }
 
