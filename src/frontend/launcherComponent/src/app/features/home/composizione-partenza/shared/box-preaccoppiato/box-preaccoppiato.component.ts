@@ -227,4 +227,16 @@ export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
         return nomeStatiSquadra(statoSquadra);
     }
 
+    isLockedConcorrenza(): string {
+        const isLockedMezzo = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Mezzo, [this.partenzaPreAccopiati.codiceMezzo]);
+        const isLockedSquadra = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, this.codiciSquadre);
+
+        if (isLockedMezzo && isLockedSquadra) {
+            return isLockedMezzo;
+        } else if (isLockedMezzo) {
+            return isLockedMezzo;
+        } else if (isLockedSquadra) {
+            return isLockedSquadra;
+        }
+    }
 }
