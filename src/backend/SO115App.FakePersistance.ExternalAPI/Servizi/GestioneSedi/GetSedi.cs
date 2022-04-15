@@ -56,21 +56,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
             List<SedeUC> result = null;
 
-            if (!_memoryCache.TryGetValue("GetComandiProvinciali-" + codSede, out result))
+            if (!_memoryCache.TryGetValue("GetDirezioniRegionali-" + codSede, out result))
             {
                 if (codSede != null)
                 {
                     var url = new Uri(baseurl + "/GetComandiProvinciali" + "?codSede=" + codSede);
                     _serviceDirezioni.SetCache(url.AbsoluteUri);
                     result = await _serviceDirezioni.GetAsync(url);
-                    _memoryCache.Set("GetComandiProvinciali-" + codSede, result, cacheEntryOptions);
+                    _memoryCache.Set("GetDirezioniRegionali-" + codSede, result, cacheEntryOptions);
                 }
                 else
                 {
                     var url = new Uri(baseurl + "/GetComandiProvinciali");
                     _serviceDirezioni.SetCache(url.AbsoluteUri);
                     result = await _serviceDirezioni.GetAsync(url);
-                    _memoryCache.Set("GetComandiProvinciali-" + codSede, result, cacheEntryOptions);
+                    _memoryCache.Set("GetDirezioniRegionali-" + codSede, result, cacheEntryOptions);
                 }
 
                 return result;
@@ -313,6 +313,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             if (!_memoryCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
             {
                 //OTTENGO TUTTE LE SEDI, PER OGNI LIVELLO
+
                 try
                 {
                     var lstRegionali = GetDirezioniRegionali().Result;
@@ -327,13 +328,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     var result = new UnitaOperativa(con.Id, con.Descrizione, con.Coordinate);
 
                     //REGIONI
-                    await Task.Run(() => Parallel.ForEach(lstRegionali, regionale =>
+                    foreach (var regionale in lstRegionali)
                     {
                         var info = GetInfoSede(regionale.id).Result;
-                        var unita = new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString())));
 
-                        lock ("unita") { result.AddFiglio(unita); }
-                    })).ContinueWith(res => Parallel.ForEach(lstProvinciali, provinciale =>
+                        result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString()))));
+                    };
+
+                    //PROVINCE
+                    foreach (var provinciale in lstProvinciali)
                     {
                         var info = GetInfoSede(provinciale.id).Result;
 
@@ -341,15 +344,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                         var lstComunali = new List<UnitaOperativa>();
 
-                        //COMUNI
-                        Parallel.ForEach(listaComuni, comune =>
+                        foreach (var comune in listaComuni)
                         {
                             if (comune.coordinate.Trim().Length > 0)
                             {
                                 try
                                 {
                                     var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',')[0].ToString()), Convert.ToDouble(comune.coordinate.Split(',')[1].ToString())));
-                                    lock ("comune") { lstComunali.Add(unita); }
+                                    lstComunali.Add(unita);
                                 }
                                 catch
                                 {
@@ -357,22 +359,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                                     {
                                         comune.coordinate = comune.DmsToDdString(comune.coordinate);
                                         var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',')[0].ToString()), Convert.ToDouble(comune.coordinate.Split(',')[1].ToString())));
-                                        lock ("comune") { lstComunali.Add(unita); }
+                                        lstComunali.Add(unita);
                                     }
                                 }
                             }
                             else
                             {
                                 var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(0, 0));
-                                lock ("comune") { lstComunali.Add(unita); }
+                                lstComunali.Add(unita);
                             }
-                        });
-
+                        }
                         var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
 
                         if (centrale != null)
                         {
-                            lock ("comune") { lstComunali.Remove(centrale); }
+                            lstComunali.Remove(centrale);
 
                             try
                             {
@@ -380,16 +381,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                                 {
                                     var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString())));
 
-                                    lock ("comune") { lstComunali.ForEach(c => unitaComunali.AddFiglio(c)); }
+                                    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
-                                    lock ("unita") { result.Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali); }
+                                    result.Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
                                 }
                             }
-                            catch (Exception e)
-                            {
-                            }
+                            catch { }
                         }
-                    }));
+                    };
 
                     ListaSediAlberate = result;
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
