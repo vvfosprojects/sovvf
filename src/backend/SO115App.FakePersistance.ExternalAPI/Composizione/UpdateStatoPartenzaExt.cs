@@ -92,34 +92,21 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodicePartenza.Equals(partenzaRientro.Partenza.Codice)).Istante;
 
-                    Task.Run(() =>{ 
-                        _setRientroMezzo.Set(new RientroGAC()
-                        {
-                            targa = partenzaRientro.Partenza.Mezzo.Codice.Split('.')[1],
-                            tipoMezzo = partenzaRientro.CodiceMezzo.Split('.')[0],
-                            idPartenza = partenzaRientro.Partenza.Codice.ToString(),
-                            numeroIntervento = command.Richiesta.CodRichiesta,
-                            dataIntervento = dataIntervento,
-                            dataRientro = dataRientro,
-                            autista = partenzaRientro.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
-                        });
-                    });
+                    Task.Run(() => _setRientroMezzo.Set(new RientroGAC()
+                    {
+                        targa = partenzaRientro.Partenza.Mezzo.Codice.Split('.')[1],
+                        tipoMezzo = partenzaRientro.CodiceMezzo.Split('.')[0],
+                        idPartenza = partenzaRientro.Partenza.Codice.ToString(),
+                        numeroIntervento = command.Richiesta.CodRichiesta,
+                        dataIntervento = dataIntervento,
+                        dataRientro = dataRientro,
+                        autista = partenzaRientro.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
+                    }));
                 }
 
                 _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
-                if (command.StatoMezzo.Equals(Costanti.MezzoRientrato))
-                {
-                    foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
-                    {
-                        foreach (var squadra in partenza.Partenza.Squadre)
-                        {
-                            _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.Richiesta.CodRichiesta, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, turnoAttuale, squadra.Turno);
-                        }
-                    }
-                }
-                else
-                {
+                
                     foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo && !c.Partenza.Terminata))
                     {
                         foreach (var squadra in partenza.Partenza.Squadre)
@@ -127,7 +114,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.Richiesta.CodRichiesta, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, turnoAttuale, squadra.Turno);
                         }
                     }
-                }
+                
             }
         }
 

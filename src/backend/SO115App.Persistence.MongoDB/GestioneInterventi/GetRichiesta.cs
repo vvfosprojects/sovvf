@@ -135,6 +135,7 @@ namespace SO115App.Persistence.MongoDB
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePrivate", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.codiceMezzo", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.nome", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.codice", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("tipologie.descrizione", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
 
                 var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
