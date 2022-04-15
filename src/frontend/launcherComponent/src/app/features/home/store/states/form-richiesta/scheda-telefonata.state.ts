@@ -87,6 +87,7 @@ import { RouterState } from '@ngxs/router-plugin';
 import { AppState } from '../../../../../shared/store/states/app/app.state';
 import { TurnoState } from '../../../../navbar/store/states/turno.state';
 import { DistaccamentiState } from '../../../../../shared/store/states/distaccamenti/distaccamenti.state';
+import { TurnoState } from '../../../../navbar/store/states/turno.state';
 import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/function-triage';
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
