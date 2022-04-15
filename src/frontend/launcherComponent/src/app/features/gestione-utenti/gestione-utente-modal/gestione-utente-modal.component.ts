@@ -95,6 +95,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     getListaUtentiVVF(): void {
         this.subscription.add(
             this.listaUtentiVVF$.subscribe((listaUtentiVVF: UtenteVvfInterface[]) => {
+                this.addUtenteRuoloForm.reset();
                 if (listaUtentiVVF?.length) {
                     this.listaUtentiVVF = listaUtentiVVF;
 
