@@ -482,36 +482,33 @@ export class BoxPartenzaState {
                 );
             }
 
-            // controllo se ho raggiunto il numero massimo di box-partenza (2 MAX)
-            if (state.boxPartenzaList.length < 2) {
-                const newBoxes = [];
-                // creo boxes
-                for (const mezzoComp of [squadraComp.mezziPreaccoppiati[0]]) {
-                    const id = makeID();
-                    newBoxes.push({
-                        id,
-                        mezzoComposizione: mezzoComp,
-                        squadreComposizione: [squadraComp]
-                    });
-                }
-                const data = {
-                    type: TipoConcorrenzaEnum.Mezzo,
-                    value: squadraComp.mezziPreaccoppiati[0].mezzo.codice
-                } as AddConcorrenzaDtoInterface;
-                dispatch(new AddConcorrenza([data]));
-
-                // creo i nuovi box partenza
-                setState(
-                    patch({
-                        boxPartenzaList: append(newBoxes)
-                    })
-                );
-
-                dispatch([
-                    new SelectBoxPartenza(newBoxes[newBoxes.length - 1].id, false, true),
-                    new GetListeComposizioneAvanzata(null, false, false, true)
-                ]);
+            const newBoxes = [];
+            // creo boxes
+            for (const mezzoComp of [squadraComp.mezziPreaccoppiati[0]]) {
+                const id = makeID();
+                newBoxes.push({
+                    id,
+                    mezzoComposizione: mezzoComp,
+                    squadreComposizione: [squadraComp]
+                });
             }
+            const data = {
+                type: TipoConcorrenzaEnum.Mezzo,
+                value: squadraComp.mezziPreaccoppiati[0].mezzo.codice
+            } as AddConcorrenzaDtoInterface;
+            dispatch(new AddConcorrenza([data]));
+
+            // creo i nuovi box partenza
+            setState(
+                patch({
+                    boxPartenzaList: append(newBoxes)
+                })
+            );
+
+            dispatch([
+                new SelectBoxPartenza(newBoxes[newBoxes.length - 1].id, false, true),
+                new GetListeComposizioneAvanzata(null, false, false, true)
+            ]);
         }
     }
 }
