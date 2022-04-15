@@ -156,14 +156,14 @@ namespace SO115App.API
                 options.DatabaseName = Configuration.GetSection("DatabaseSettings:DatabaseName").Value;
             });
 
-            services.AddHealthChecks()
-                    .AddCheck<MongoDBHealthCheck>("SO115-MongoDB")
-                    .AddUrlGroup(new Uri("https://sovvf-be-test.dipvvf.it/hc"), "SO115-TEST-BE")
-                    .AddUrlGroup(new Uri("https://sovvf-be-demo.dipvvf.it/hc"), "SO115-DEMO-BE")
-                    .AddSignalRHub("https://sovvf-be-test.dipvvf.it/NotificationHub", name: "SO115-TEST-SignalR")
-                    .AddSignalRHub("https://sovvf-be-demo.dipvvf.it/NotificationHub", name: "SO115-DEMO-SignalR");
+            //services.AddHealthChecks()
+            //        .AddCheck<MongoDBHealthCheck>("SO115-MongoDB")
+            //        .AddUrlGroup(new Uri("https://sovvf-be-test.dipvvf.it/hc"), "SO115-TEST-BE")
+            //        .AddUrlGroup(new Uri("https://sovvf-be-demo.dipvvf.it/hc"), "SO115-DEMO-BE")
+            //        .AddSignalRHub("https://sovvf-be-test.dipvvf.it/NotificationHub", name: "SO115-TEST-SignalR")
+            //        .AddSignalRHub("https://sovvf-be-demo.dipvvf.it/NotificationHub", name: "SO115-DEMO-SignalR");
 
-            services.AddHealthChecksUI().AddInMemoryStorage();
+            //services.AddHealthChecksUI().AddInMemoryStorage();
 
             IntegrateSimpleInjector(services);
         }
@@ -220,12 +220,12 @@ namespace SO115App.API
                 endpoints.MapControllers();
             });
 
-            app.UseHealthChecks("/hc", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-            app.UseHealthChecksUI();
+            //app.UseHealthChecks("/hc", new HealthCheckOptions()
+            //{
+            //    Predicate = _ => true,
+            //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            //});
+            //app.UseHealthChecksUI();
 
             app.UseHttpsRedirection();
 
