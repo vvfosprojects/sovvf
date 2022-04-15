@@ -3,10 +3,8 @@
      (mouseleave)="onHoverOut()"
      (mouseenter)="onHoverIn()"
      (click)="onClick()">
-    <ng-container
-            *ngIf="(tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [partenzaPreAccopiati.codiceMezzo]) || (tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: codiciSquadre)">
-        <app-locked-concorrenza
-                [nominativoOperatore]="tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [partenzaPreAccopiati.codiceMezzo] ? (tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [partenzaPreAccopiati.codiceMezzo]) : (tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: codiciSquadre)">
+    <ng-container *ngIf="isLockedConcorrenza()">
+        <app-locked-concorrenza [nominativoOperatore]="isLockedConcorrenza()">
         </app-locked-concorrenza>
     </ng-container>
     <ng-container *ngIf="elimina">

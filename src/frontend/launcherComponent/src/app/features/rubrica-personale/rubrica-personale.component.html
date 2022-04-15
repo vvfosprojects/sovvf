@@ -27,9 +27,10 @@
                                        [hideSelected]="true"
                                        [searchable]="false"
                                        [loading]="!filtriStatoPersonale"
+                                       [readonly]="true"
+                                       placeholder="Stato: Tutti"
                                        (change)="addFiltro($event, 'stato')"
-                                       (clear)="clearFiltro('stato')"
-                                       placeholder="Stato: Tutti">
+                                       (clear)="clearFiltro('stato')">
                             </ng-select>
                             <ng-select class="align-self-center custom w-50 float-right custom"
                                        [items]="filtriTipoPersonale"
@@ -38,9 +39,9 @@
                                        [hideSelected]="true"
                                        [searchable]="false"
                                        [loading]="!filtriTipoPersonale"
+                                       placeholder="Tipo: Tutti"
                                        (change)="addFiltro($event, 'tipo')"
-                                       (clear)="clearFiltro('tipo')"
-                                       placeholder="Tipo: Tutti">
+                                       (clear)="clearFiltro('tipo')">
                             </ng-select>
                         </div>
                         <div class="col-4">
