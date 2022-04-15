@@ -158,8 +158,8 @@ namespace SO115App.API
 
             services.AddHealthChecks()
                     .AddCheck<MongoDBHealthCheck>("SO115-MongoDB")
-                    .AddUrlGroup(new Uri("https://sovvf-be-test.dipvvf.it/health"), "SO115-TEST-BE")
-                    .AddUrlGroup(new Uri("https://sovvf-be-demo.dipvvf.it/health"), "SO115-DEMO-BE")
+                    .AddUrlGroup(new Uri("https://sovvf-be-test.dipvvf.it/hc"), "SO115-TEST-BE")
+                    .AddUrlGroup(new Uri("https://sovvf-be-demo.dipvvf.it/hc"), "SO115-DEMO-BE")
                     .AddSignalRHub("https://sovvf-be-test.dipvvf.it/NotificationHub", name: "SO115-TEST-SignalR")
                     .AddSignalRHub("https://sovvf-be-demo.dipvvf.it/NotificationHub", name: "SO115-DEMO-SignalR");
 
