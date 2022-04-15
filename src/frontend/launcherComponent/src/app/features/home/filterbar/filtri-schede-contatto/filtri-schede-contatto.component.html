@@ -22,6 +22,7 @@
                         <app-filtro [filtro]="f"
                                     [useCheckbox]="true"
                                     [selezionato]="_isSelezionato(f)"
+                                    [disabled]="disableFilters"
                                     (filtroSelezionato)="onSelezioneFiltro($event)"
                                     (filtroDeselezionato)="onSelezioneFiltro($event)"></app-filtro>
                     </ng-container>
@@ -32,6 +33,7 @@
                         <app-filtro [filtro]="f"
                                     [useCheckbox]="true"
                                     [selezionato]="_isSelezionato(f)"
+                                    [disabled]="disableFilters"
                                     (filtroSelezionato)="onSelezioneFiltro($event)"
                                     (filtroDeselezionato)="onSelezioneFiltro($event)"></app-filtro>
                     </ng-container>
