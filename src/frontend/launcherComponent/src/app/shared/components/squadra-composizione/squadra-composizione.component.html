@@ -71,7 +71,7 @@
                                 triggers="mouseenter:mouseleave"
                                 tabindex="0"
                                 style="cursor:pointer; vertical-align: baseline"
-                                [disabled]="disableBtnFeature || loadingMezzi || itemSelezionato"
+                                [disabled]="disableBtnFeature || loadingMezzi || itemSelezionato || (boxPartenzaList[1]?.squadreComposizione?.length || boxPartenzaList[1]?.mezzoComposizione)"
                                 (click)="onClick(false, true); $event.stopPropagation()">
                             <div class="d-inline-block font-weight-bold"
                                  style="font-weight: 500">
