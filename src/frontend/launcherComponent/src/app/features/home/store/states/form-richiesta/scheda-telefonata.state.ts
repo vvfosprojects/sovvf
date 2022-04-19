@@ -16,6 +16,7 @@ import {
     ClearStatoChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
+    InsertChiamataTest,
     MarkerChiamata,
     ReducerSchedaTelefonata,
     ResetChiamata,
@@ -84,11 +85,15 @@ import { ChiamateMarkersState } from '../../../../maps/store/states/chiamate-mar
 import { ViewComponentState } from '../view/view.state';
 import { RouterState } from '@ngxs/router-plugin';
 import { AppState } from '../../../../../shared/store/states/app/app.state';
+import { TurnoState } from '../../../../navbar/store/states/turno.state';
 import { DistaccamentiState } from '../../../../../shared/store/states/distaccamenti/distaccamenti.state';
+import { TurnoState } from '../../../../navbar/store/states/turno.state';
 import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/function-triage';
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import * as data from '../../../../../../assets/province/province.json';
+import { TurnoState } from '../../../../navbar/store/states/turno.state';
+import { DistaccamentiState } from '../../../../../shared/store/states/distaccamenti/distaccamenti.state';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -579,6 +584,56 @@ export class SchedaTelefonataState {
     setFormSubmitted({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetFormSubmitted): void {
         patchState({
             submitted: action.value
+        });
+    }
+
+    @Action(InsertChiamataTest)
+    insertChiamataTest({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+        dispatch(new StartLoadingSchedaRichiesta());
+        const utenteLoggato = this.store.selectSnapshot(AuthState.currentUser);
+        const turno = this.store.selectSnapshot(TurnoState.turnoCalendario).corrente;
+        const tipologie = this.store.selectSnapshot(TipologieState.tipologie);
+        const chiamata = new SintesiRichiesta(
+            null,
+            null,
+            null,
+            utenteLoggato,
+            new Date(),
+            StatoRichiesta.Chiamata,
+            3,
+            [tipologie[0]],
+            null,
+            'Incendio normale (generico)',
+            { telefono: '3518103364', nominativo: 'SANTE SALVATI' },
+            utenteLoggato.sede,
+            [
+                utenteLoggato.sede
+            ],
+            [utenteLoggato.sede.codice],
+            null,
+            null,
+            null,
+            false,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            AzioneChiamataEnum.MettiInCoda,
+            turno,
+            null,
+            null,
+            null,
+            null,
+            null,
+            false,
+            null,
+            null
+        );
+
+        this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
         });
     }
 
