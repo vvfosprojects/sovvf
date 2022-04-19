@@ -20,7 +20,7 @@
                     <div *ngFor="let s of squadre"
                          class="d-flex justify-content-between align-items-center font-xxlarge px-3">
                         <div class="">
-                            {{ s.nome }} ({{ s?.turno }})
+                            {{ s.codice }} ({{ s?.turno }})
                         </div>
                         <div class="">
                             <app-icona-stato [stato]="_nomeStatiSquadra(s.stato)"></app-icona-stato>
