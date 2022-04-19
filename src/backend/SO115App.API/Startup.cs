@@ -29,6 +29,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -158,12 +159,16 @@ namespace SO115App.API
 
             services.AddHealthChecks()
                     .AddCheck<MongoDBHealthCheck>("SO115-MongoDB")
-                    .AddUrlGroup(new Uri("https://sovvf-be-demo.dipvvf.it/hc"), "SO115-DEMO-BE");
+                    .AddSignalRHub("https://sovvf-be-demo.dipvvf.it/NotificationHub", name: "SO115-DEMO-SignalR");
+            //.AddCheck("SO115WEB", () => new HealthCheckResult(HealthStatus.Healthy, "SO115WEB"), new string[] { "" })
+            //.AddUrlGroup(new Uri("https://sovvf-be-demo.dipvvf.it"), "SO115-DEMO-BE")
             //.AddUrlGroup(new Uri("https://sovvf-be-test.dipvvf.it/hc"), "SO115-TEST-BE")
             //.AddSignalRHub("https://sovvf-be-test.dipvvf.it/NotificationHub", name: "SO115-TEST-SignalR")
-            //.AddSignalRHub("https://sovvf-be-demo.dipvvf.it/NotificationHub", name: "SO115-DEMO-SignalR");
 
-            services.AddHealthChecksUI().AddInMemoryStorage();
+            services.AddHealthChecksUI(setupSettings: setup =>
+                  {
+                      setup.SetEvaluationTimeInSeconds(300);
+                  }).AddInMemoryStorage();
 
             IntegrateSimpleInjector(services);
         }
@@ -223,7 +228,7 @@ namespace SO115App.API
             app.UseHealthChecks("/hc", new HealthCheckOptions()
             {
                 Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
             });
             app.UseHealthChecksUI();
 
