@@ -11,6 +11,7 @@ import { ViewportState } from '../../shared/store/states/viewport/viewport.state
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSedeCurrentUser } from '../auth/store/auth.actions';
+import { LSNAME } from '../../core/settings/config';
 
 @Component({
     templateUrl: 'selezione-sede.component.html',
@@ -42,6 +43,10 @@ export class SelezioneSedeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        const cacheSedi = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cacheSedi) {
+            this.store.dispatch(new Navigate(['/' + RoutesPath.Home]));
+        }
         this.store.dispatch(new StopBigLoading());
         this.initForm();
     }
