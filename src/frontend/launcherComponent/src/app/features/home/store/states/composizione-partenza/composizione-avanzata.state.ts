@@ -202,8 +202,10 @@ export class ComposizioneAvanzataState {
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)
     unselectMezziAndSquadreComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>): void {
-        dispatch(new ClearSelectedMezziComposizione());
-        dispatch(new ClearSelectedSquadreComposizione());
+        dispatch([
+            new ClearSelectedMezziComposizione(),
+            new ClearSelectedSquadreComposizione()
+        ]);
     }
 
     @Action(ClearComposizioneAvanzata)
