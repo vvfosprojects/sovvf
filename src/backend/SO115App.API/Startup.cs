@@ -160,7 +160,7 @@ namespace SO115App.API
             services.AddHealthChecks()
                     .AddCheck<MongoDBHealthCheck>("SO115-MongoDB")
                     .AddSignalRHub("https://sovvf-be-demo.dipvvf.it/NotificationHub", name: "SO115-DEMO-SignalR");
-            //.AddCheck("SO115WEB", () => new HealthCheckResult(HealthStatus.Healthy, "SO115WEB"), new string[] { "" })
+            ////.AddCheck("SO115WEB", () => new HealthCheckResult(HealthStatus.Healthy, "SO115WEB"), new string[] { "" })
             //.AddUrlGroup(new Uri("https://sovvf-be-demo.dipvvf.it"), "SO115-DEMO-BE")
             //.AddUrlGroup(new Uri("https://sovvf-be-test.dipvvf.it/hc"), "SO115-TEST-BE")
             //.AddSignalRHub("https://sovvf-be-test.dipvvf.it/NotificationHub", name: "SO115-TEST-SignalR")
