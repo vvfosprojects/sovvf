@@ -6,6 +6,7 @@ import { PermessiFeatureInterface } from '../../../shared/interface/permessi-fea
 import { Ruolo } from '../../../shared/model/utente.model';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RuoliUtenteLoggatoState } from '../../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
+import { AppState } from '../../../shared/store/states/app/app.state';
 
 @Injectable({
     providedIn: 'root'
@@ -34,6 +35,7 @@ export class PermessiService {
 
     checkUserPermissionByFeature(feature: PermissionFeatures): boolean {
         const featureIndex = searchFeatureIndex(this.permessi, feature);
+        const codSede = this.store.selectSnapshot(AppState.vistaSedi)[0];
         if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
             if (checkRuoliUtente(this.ruoli, this.permessi, featureIndex)) {
                 return true;
@@ -44,7 +46,7 @@ export class PermessiService {
         function checkRuoliUtente(ruoli, permessi, index): boolean {
             let count = 0;
             ruoli.forEach((ruolo: Ruolo) => {
-                if (permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
+                if ((!codSede || (codSede === ruolo.codSede)) && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
                     count++;
                 }
             });
