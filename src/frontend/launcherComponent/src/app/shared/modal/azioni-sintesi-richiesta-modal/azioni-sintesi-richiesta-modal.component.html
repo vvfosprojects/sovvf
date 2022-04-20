@@ -177,13 +177,10 @@
         </div>
     </div>
 </div>
-<div class="modal-footer">
-    <div class="row w-100">
-        <div class="col-12 text-right">
-            <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" style="width: 10%"
-                    (click)="chiudiModalAzioniSintesi('ko')">
-                {{ 'Chiudi'.toLocaleUpperCase() }}
-            </button>
-        </div>
-    </div>
+<div class="modal-footer d-flex align-items-center justify-content-end">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="chiudiModalAzioniSintesi('ko')">
+        {{ 'Chiudi' | uppercase }}
+    </button>
 </div>

@@ -65,30 +65,37 @@
     </div>
 </div>
 
-<div class="modal-footer">
-    <div class="row w-100">
-        <div class="col-12 text-right">
-            <button *ngIf="!submitted && (motivazione && tipologiaChecked)" type="button"
-                    class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
-                    (click)="chiudiModalSoccorsoAereo('ok')">
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="chiudiModalSoccorsoAereo('ko')">
+        {{ 'Chiudi' | uppercase }}
+    </button>
+    <ng-container *ngIf="!submitted && (motivazione && tipologiaChecked)">
+        <button type="button"
+                class="btn btn-lg btn-success btn-no-hover font-weight-bolder"
+                (click)="chiudiModalSoccorsoAereo('ok')">
+            {{ 'Richiedi' | uppercase }}
+        </button>
+    </ng-container>
+    <ng-container *ngIf="!motivazione || !tipologiaChecked">
+        <div class="d-inline-block"
+             tabindex="0"
+             ngbTooltip="Inserisci Azione e Motivazione"
+             placement="top">
+            <button type="button"
+                    class="btn btn-lg btn-success btn-no-hover font-weight-bolder"
+                    [disabled]="true">
                 {{ 'Richiedi' | uppercase }}
             </button>
-            <span *ngIf="!motivazione || !tipologiaChecked" class="float-left" tabindex="0"
-                  ngbTooltip="Inserisci Azione e Motivazione" placement="top">
-                <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder float-left"
-                        disabled>
-                  {{ 'Richiedi' | uppercase }}
-                </button>
-            </span>
-            <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2"
-                    (click)="chiudiModalSoccorsoAereo('ko')">
-                {{ 'Chiudi' | uppercase }}
-            </button>
-            <button *ngIf="submitted" type="button" class="btn btn-lg btn-success btn-no-hover float-left"
-                    [disabled]="true">
-                <i class="fas fa-spin fa-spinner mr-1"></i>
-                {{ 'Invio Richiesta' | uppercase }}
-            </button>
         </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="submitted">
+        <button type="button"
+                class="btn btn-lg btn-success btn-no-hover"
+                [disabled]="true">
+            <i class="fas fa-spin fa-spinner mr-1"></i>
+            {{ 'Invio Richiesta' | uppercase }}
+        </button>
+    </ng-container>
 </div>

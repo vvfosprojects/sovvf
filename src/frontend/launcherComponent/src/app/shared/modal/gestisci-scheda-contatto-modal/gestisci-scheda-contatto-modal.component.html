@@ -16,14 +16,14 @@
         </ng-select>
     </form>
 </div>
-<div class="modal-footer justify-content-between">
-    <button class="btn btn-lg btn-danger btn-no-hover"
-            (click)="close('ok')">
-        {{ 'Conferma' | uppercase }}
-    </button>
-    <button class="btn btn-lg btn-secondary btn-no-hover text-right"
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
             (click)="close('ko')">
         {{ 'Chiudi' | uppercase }}
+    </button>
+    <button class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+            (click)="close('ok')">
+        {{ 'Conferma' | uppercase }}
     </button>
 </div>
 

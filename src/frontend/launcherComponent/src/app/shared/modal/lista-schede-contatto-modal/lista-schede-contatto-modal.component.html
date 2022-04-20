@@ -43,6 +43,10 @@
                                (pageChange)="onPageChange($event)">
     </app-lista-schede-contatto>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-danger" (click)="closeModal('ko')">Chiudi</button>
+<div class="modal-footer d-flex align-items-center justify-content-end">
+    <button type="button"
+            class="btn btn-lg btn-danger font-weight-bolder"
+            (click)="closeModal('ko')">
+        {{ 'Chiudi' | uppercase }}
+    </button>
 </div>

@@ -39,8 +39,10 @@
         <div class="font-weight-bolder mx-3">{{ getStatoFonogrammaStringByEnum(fonogramma.stato) }}</div>
     </div>
 </div>
-<div class="modal-footer">
-    <button class="btn btn-lg btn-danger btn-no-hover text-right" style="font-weight:600" (click)="onClose()">
+<div class="modal-footer d-flex align-items-center justify-content-end">
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+            (click)="onClose()">
         {{ 'Chiudi' | uppercase }}
     </button>
 </div>
