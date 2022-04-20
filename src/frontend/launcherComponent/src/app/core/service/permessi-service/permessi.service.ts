@@ -35,7 +35,11 @@ export class PermessiService {
 
     checkUserPermissionByFeature(feature: PermissionFeatures): boolean {
         const featureIndex = searchFeatureIndex(this.permessi, feature);
-        const codSede = this.store.selectSnapshot(AppState.vistaSedi)[0];
+        const vistaSedi = this.store.selectSnapshot(AppState.vistaSedi);
+        let codSede: string;
+        if (vistaSedi) {
+            codSede = vistaSedi[0];
+        }
         if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
             if (checkRuoliUtente(this.ruoli, this.permessi, featureIndex)) {
                 return true;
