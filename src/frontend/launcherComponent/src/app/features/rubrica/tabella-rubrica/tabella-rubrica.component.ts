@@ -15,6 +15,7 @@ export class TabellaRubricaComponent {
     @Input() totalItems: number;
     @Input() loading: boolean;
     @Input() vociRubrica: EnteInterface[];
+    @Input() nightMode: boolean;
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
