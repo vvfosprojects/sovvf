@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Mezzo } from '../../../model/mezzo.model';
 import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
@@ -9,21 +9,26 @@ import { calcolaActionSuggeritaMezzo, statoMezzoActionColor, statoMezzoActionsEn
 import { EventoMezzo } from '../../../interface/evento-mezzo.interface';
 import { LockedConcorrenzaService } from '../../../../core/service/concorrenza-service/locked-concorrenza.service';
 import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
+import { SintesiRichiesta } from '../../../model/sintesi-richiesta.model';
+import { Partenza } from '../../../model/partenza.model';
+import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../store/actions/concorrenza/concorrenza.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-mezzo-actions',
     templateUrl: './mezzo-actions.component.html',
-    styleUrls: ['./mezzo-actions.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./mezzo-actions.component.css']
 })
 export class MezzoActionsComponent implements OnInit {
 
-    @Input() codiceRichiesta: string;
+    @Input() richiesta: SintesiRichiesta;
     @Input() mezzo: Mezzo;
     @Input() codicePartenza: string;
     @Input() doubleMonitor: Mezzo;
     @Input() listaEventi: any;
     @Input() listaEventiMezzo: any;
+    @Input() disabledModificaStatoMezzo: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
@@ -44,7 +49,8 @@ export class MezzoActionsComponent implements OnInit {
     constructor(dropdownConfig: NgbDropdownConfig,
                 tooltipConfig: NgbTooltipConfig,
                 private modalService: NgbModal,
-                private lockedConcorrenzaService: LockedConcorrenzaService) {
+                private lockedConcorrenzaService: LockedConcorrenzaService,
+                private store: Store) {
         dropdownConfig.container = 'body';
         dropdownConfig.placement = 'top';
         tooltipConfig.container = 'body';
@@ -57,7 +63,7 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string, ora?: string, event?: MouseEvent): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.codiceRichiesta])) {
+        if (!this.disabledModificaStatoMezzo && !this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])) {
             if (event) {
                 event.stopPropagation();
             }
@@ -86,26 +92,37 @@ export class MezzoActionsComponent implements OnInit {
                 size: 'lg',
                 centered: true
             });
+            const data = {
+                value: this.mezzo.codice,
+                type: TipoConcorrenzaEnum.CambioStatoPartenza
+            } as AddConcorrenzaDtoInterface;
+            this.store.dispatch(new AddConcorrenza([data]));
             modal.componentInstance.codicePartenza = this.codicePartenza;
             modal.componentInstance.statoMezzo = this.mezzo.stato;
+            modal.componentInstance.codiceMezzo = this.mezzo.codice;
             modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
-            modal.componentInstance.titleStato = !ora ? '' : ': ' + action;
+            modal.componentInstance.action = action;
+            modal.componentInstance.modificaOrario = !!ora;
+            modal.componentInstance.titleStato = ': ' + action;
             modal.componentInstance.dataInViaggio = dataInViaggio;
             modal.componentInstance.listaEventi = this.listaEventi;
+            modal.componentInstance.ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
             modal.result.then((res: { status: string, result: any }) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
                 switch (res.status) {
-                    case 'ok' :
+                    case 'ok':
                         if (action) {
                             this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
                             const orario = res.result.oraEvento;
-                            const data = res.result.dataEvento;
+                            const dataEvento = res.result.dataEvento;
                             const azioneIntervento = res.result.azioneIntervento;
                             this.actionMezzo.emit({
                                 mezzoAction: this.statoMezzoActions,
                                 oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
-                                dataEvento: { giorno: data.day, mese: data.month, anno: data.year },
+                                dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
                                 azioneIntervento,
-                                codicePartenza: this.codicePartenza
+                                codicePartenza: this.codicePartenza,
+                                modificaOrario: res.result.modificaOrario
                             });
                         } else {
                             this.actionMezzo.emit();
@@ -114,7 +131,7 @@ export class MezzoActionsComponent implements OnInit {
                     case 'ko':
                         break;
                 }
-            });
+            }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])));
         }
     }
 

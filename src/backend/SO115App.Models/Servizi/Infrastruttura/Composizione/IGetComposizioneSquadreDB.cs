@@ -1,10 +1,9 @@
-﻿using SO115App.Models.Classi.Composizione;
-using System.Collections.Generic;
+﻿using SO115App.Models.Classi.ServiziEsterni.OPService;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Composizione
 {
     public interface IGetComposizioneSquadreDB
     {
-        List<ComposizioneSquadra> Get();
+        WorkShift GetByCodiceDistaccamento(string codice);
     }
 }

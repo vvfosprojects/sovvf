@@ -48,8 +48,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             var result = _client.PostAsyncFormData(uri, multipartFormDataContent).Result;
 
-            if (result != null && result.updateResults[0].success == false)
-                throw new Exception($"Errore servizio ESRI");
+            //if (result != null && result.updateResults[0].success == false)
+            //    throw new Exception($"Errore servizio ESRI");
         }
     }
 }

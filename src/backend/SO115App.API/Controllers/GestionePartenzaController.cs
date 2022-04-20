@@ -39,6 +39,8 @@ namespace SO115App.API.Controllers
         ///   Aggiorna lo stato di una partenza
         /// </summary>
         [HttpPost("AggiornaPartenza")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AggiornaPartenza([FromBody] AggiornaStatoMezzoCommand command)
         {
             command.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(',');
@@ -51,7 +53,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
                     return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });
@@ -64,6 +66,8 @@ namespace SO115App.API.Controllers
         ///   Annulla uno stato precedentemente inserito, di una specifica partenza
         /// </summary>
         [HttpPost("AnnullaStatoPartenza")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AnnullaStatoPartenza([FromBody] AnnullaStatoPartenzaCommand command)
         {
             command.IdOperatore = Request.Headers["IdUtente"];
@@ -77,7 +81,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
                     return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });
@@ -90,6 +94,8 @@ namespace SO115App.API.Controllers
         ///   Modifica una partenza
         /// </summary>
         [HttpPost("ModificaPartenza")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> ModificaPartenza([FromBody] ModificaPartenza partenza)
         {
             var command = new ModificaPartenzaCommand()
@@ -108,7 +114,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
                     return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });
@@ -121,6 +127,8 @@ namespace SO115App.API.Controllers
         ///   Registra una sostituzione all'interno di una partenza
         /// </summary>
         [HttpPost("SostituzionePartenza")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> SostituzionePartenza([FromBody] SostituzioneDTO partenzeDaSostituire)
         {
             partenzeDaSostituire.idOperatore = Request.Headers["IdUtente"];
@@ -138,7 +146,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
                     return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });

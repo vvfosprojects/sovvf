@@ -140,7 +140,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.store.dispatch([
-            new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta),
+            new DeleteConcorrenza(TipoConcorrenzaEnum.InvioPartenza, [this.richiesta.codice]),
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
             new ClearPreaccoppiati(),
@@ -159,10 +159,10 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                     this.richiesta = r;
                     const currentUser = this.store.selectSnapshot(AuthState.currentUser);
                     const concorrenza = this.store.selectSnapshot(ConcorrenzaState.concorrenza);
-                    const richiestaConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.Richiesta && c.value === this.richiesta.codice)[0];
+                    const richiestaConcorrenza = concorrenza.filter((c: ConcorrenzaInterface) => c.type === TipoConcorrenzaEnum.InvioPartenza && c.value === this.richiesta.codice)[0];
                     if (!richiestaConcorrenza) {
                         const data = {
-                            type: TipoConcorrenzaEnum.Richiesta,
+                            type: TipoConcorrenzaEnum.InvioPartenza,
                             value: this.richiesta.codice
                         } as AddConcorrenzaDtoInterface;
                         this.store.dispatch(new AddConcorrenza([data]));

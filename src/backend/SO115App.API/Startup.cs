@@ -18,8 +18,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using AutoMapper;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Connections;
@@ -27,6 +29,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -38,6 +41,7 @@ using SO115App.CompositionRoot;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Monitor;
 using SO115App.SignalR;
 using StackExchange.Redis;
 using System;
@@ -104,6 +108,7 @@ namespace SO115App.API
             });
             services.AddSwaggerGen(c =>
             {
+                c.CustomSchemaIds(type => type.ToString());
                 c.SwaggerDoc("SO115", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SO115", Version = "v1.0" });
                 var filePath = Path.Combine(System.AppContext.BaseDirectory, "SO115App.API.xml");
                 c.IncludeXmlComments(filePath);
@@ -145,6 +150,26 @@ namespace SO115App.API
                     options.HandshakeTimeout = TimeSpan.FromMinutes(480);
                     options.MaximumReceiveMessageSize = 300000;
                 });
+
+            services.Configure<Mongosettings>(options =>
+            {
+                options.Connection = Configuration.GetSection("DatabaseSettings:ConnectionString").Value;
+                options.DatabaseName = Configuration.GetSection("DatabaseSettings:DatabaseName").Value;
+            });
+
+            services.AddHealthChecks()
+                    .AddCheck<MongoDBHealthCheck>("SO115-MongoDB")
+                    .AddSignalRHub("https://sovvf-be-demo.dipvvf.it/NotificationHub", name: "SO115-DEMO-SignalR");
+            //.AddCheck("SO115WEB", () => new HealthCheckResult(HealthStatus.Healthy, "SO115WEB"), new string[] { "" })
+            //.AddUrlGroup(new Uri("https://sovvf-be-demo.dipvvf.it"), "SO115-DEMO-BE")
+            //.AddUrlGroup(new Uri("https://sovvf-be-test.dipvvf.it/hc"), "SO115-TEST-BE")
+            //.AddSignalRHub("https://sovvf-be-test.dipvvf.it/NotificationHub", name: "SO115-TEST-SignalR")
+
+            services.AddHealthChecksUI(setupSettings: setup =>
+                  {
+                      setup.SetEvaluationTimeInSeconds(300);
+                  }).AddInMemoryStorage();
+
             IntegrateSimpleInjector(services);
         }
 
@@ -170,7 +195,7 @@ namespace SO115App.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSimpleInjector(container);
-            LogConfigurator.Configure(Configuration);
+            //LogConfigurator.Configure(Configuration);
 
             if (env.IsDevelopment())
             {
@@ -199,6 +224,13 @@ namespace SO115App.API
                 });
                 endpoints.MapControllers();
             });
+
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
+            });
+            app.UseHealthChecksUI();
 
             app.UseHttpsRedirection();
 

@@ -31,6 +31,9 @@ import { Mezzo } from '../../model/mezzo.model';
 import { MezziInServizioState } from '../../../features/home/store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { PosDettaglioModalComponent } from '../../modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { nomeStatiSquadra } from '../../helper/function-composizione';
+import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -56,9 +59,11 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disableFissaInAlto: boolean;
     @Input() loadingEliminaPartenza: boolean;
     @Input() loadingActionMezzo: string[];
+    @Input() loadingDettaglioSchedaContatto: string;
     @Input() disabledModificaRichiesta: boolean;
     @Input() disabledGestisciRichiesta: boolean;
     @Input() disabledAzioniRichiesta: boolean;
+    @Input() disabledModificaStatoMezzo: boolean;
     @Input() disabledComposizionePartenza: boolean;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
@@ -80,7 +85,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     methods = new HelperSintesiRichiesta();
     live = true;
-    dettaglioSoccorsoAereo = false;
+    dettaglioSoccorsoAereo: boolean;
 
     // Enum
     StatoRichiesta = StatoRichiesta;
@@ -119,6 +124,14 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         if (richiesta) {
             this.clickRichiesta.emit(richiesta);
         }
+    }
+
+    getIndirizzoFormatted(): string {
+        let indirizzo = this.richiesta?.localita?.indirizzo;
+        if (this.richiesta?.localita?.provincia) {
+            indirizzo = indirizzo + ', ' + this.richiesta?.localita?.provincia;
+        }
+        return indirizzo;
     }
 
     indirizzoClick(richiesta: SintesiRichiesta): void {
@@ -205,8 +218,12 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         return checkNumeroPartenzeAttive(partenze);
     }
 
+    _nomeStatiSquadra(statoSquadra: number): string {
+        return nomeStatiSquadra(statoSquadra);
+    }
+
     onDettaglioSchedaContatto(codiceScheda: string): void {
-        if (codiceScheda) {
+        if (codiceScheda && !this.loadingDettaglioSchedaContatto) {
             this.store.dispatch(new OpenDettaglioSchedaContatto(codiceScheda));
         }
     }
@@ -263,14 +280,20 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         modalModificaPartenza.componentInstance.singolaPartenza = this.richiesta.partenze[index];
         modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.richiesta = this.richiesta;
+        const data = {
+            value: this.richiesta.partenze[index].codiceMezzo,
+            type: TipoConcorrenzaEnum.GestisciPartenza
+        } as AddConcorrenzaDtoInterface;
+        this.store.dispatch(new AddConcorrenza([data]));
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.GestisciPartenza, [this.richiesta.partenze[index].codiceMezzo]));
             switch (res.status) {
                 case 'ok' :
                     break;
                 case 'ko':
                     break;
             }
-        });
+        }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.GestisciPartenza, [this.richiesta.partenze[index].codiceMezzo])));
     }
 
     onDettaglioStatoFonogramma(): void {

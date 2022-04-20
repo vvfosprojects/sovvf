@@ -22,9 +22,13 @@ export class GestioneUtentiService {
     constructor(private http: HttpClient) {
     }
 
-    getUtentiVVF(text: string): Observable<UtenteVvfInterface[]> {
-        const url = !text ? API_URL_PERSONALE_VVF : API_URL_PERSONALE_VVF + '?text=' + text;
-        return this.http.get<UtenteVvfInterface[]>(url);
+    getUtentiVVF(nome: string, cognome: string, codiceFiscale: string): Observable<UtenteVvfInterface[]> {
+        const searchUtenteVVF = {
+            nome,
+            cognome,
+            codiceFiscale
+        };
+        return this.http.post<UtenteVvfInterface[]>(API_URL_PERSONALE_VVF, searchUtenteVVF);
     }
 
     // Todo aggiungere un map e tornare Utente

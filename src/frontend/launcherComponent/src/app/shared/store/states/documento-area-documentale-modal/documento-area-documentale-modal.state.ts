@@ -1,17 +1,15 @@
-import { State, Selector, Action, StateContext, Store } from '@ngxs/store';
+import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { AddDocumentoAreaDocumentale, DeleteDocumentoAreaDocumentale, EditDocumentoAreaDocumentale, ResetDocumentoAreaDocumentaleModal } from '../../actions/documento-area-documentale-modal/documento-area-documentale-modal.actions';
-import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { AreaDocumentaleService } from 'src/app/core/service/area-documentale-service/area-documentale.service';
-import { DocumentoInterface } from 'src/app/shared/interface/documento.interface';
 import { GetDocumentiAreaDocumentale } from '../../../../features/area-documentale/store/actions/area-documentale/area-documentale.actions';
 
 export interface DocumentoAreaDocumentaleModalStateModel {
     documentoAreaDocumentaleForm: {
         model?: {
-            codSede: string;
             descrizioneDocumento: string;
             descrizioneCategoria: string;
+            file: any;
         };
         dirty: boolean;
         status: string;
@@ -22,9 +20,9 @@ export interface DocumentoAreaDocumentaleModalStateModel {
 export const DocumentoAreaDocumentaleModalStateDefaults: DocumentoAreaDocumentaleModalStateModel = {
     documentoAreaDocumentaleForm: {
         model: {
-            codSede: undefined,
             descrizioneDocumento: undefined,
-            descrizioneCategoria: undefined
+            descrizioneCategoria: undefined,
+            file: undefined
         },
         dirty: false,
         status: '',
@@ -40,8 +38,7 @@ export const DocumentoAreaDocumentaleModalStateDefaults: DocumentoAreaDocumental
 
 export class DocumentoAreaDocumentaleState {
 
-    constructor(private store: Store,
-                private areaDocumentaleService: AreaDocumentaleService) {
+    constructor(private areaDocumentaleService: AreaDocumentaleService) {
     }
 
     @Selector()
@@ -54,15 +51,14 @@ export class DocumentoAreaDocumentaleState {
         const state = getState();
         const formValue = state.documentoAreaDocumentaleForm.model;
         const formData = action.formData;
-        formData.append('codSede', formValue.codSede);
         formData.append('descrizioneDocumento', formValue.descrizioneDocumento);
         formData.append('descrizioneCategoria', formValue.descrizioneCategoria);
-        this.areaDocumentaleService.add(formData).subscribe((response: DocumentoInterface) => {
+        this.areaDocumentaleService.add(formData).subscribe(() => {
             dispatch([
                 new ResetDocumentoAreaDocumentaleModal(),
                 new GetDocumentiAreaDocumentale()
             ]);
-        }, (err => dispatch(new ResetDocumentoAreaDocumentaleModal())));
+        }, () => dispatch(new ResetDocumentoAreaDocumentaleModal()));
     }
 
     @Action(EditDocumentoAreaDocumentale)
@@ -74,30 +70,24 @@ export class DocumentoAreaDocumentaleState {
             formData = new FormData();
         }
         formData.append('id', action.id);
-        formData.append('codSede', formValue.codSede);
         formData.append('descrizioneDocumento', formValue.descrizioneDocumento);
         formData.append('descrizioneCategoria', formValue.descrizioneCategoria);
-        this.areaDocumentaleService.edit(formData).subscribe((response: DocumentoInterface) => {
+        this.areaDocumentaleService.edit(formData).subscribe(() => {
             dispatch([
                 new ResetDocumentoAreaDocumentaleModal(),
                 new GetDocumentiAreaDocumentale()
             ]);
-        }, (err => dispatch(new ResetDocumentoAreaDocumentaleModal())));
+        }, () => dispatch(new ResetDocumentoAreaDocumentaleModal()));
     }
 
     @Action(DeleteDocumentoAreaDocumentale)
     deleteDocumentoAreaDocumentale({ dispatch }: StateContext<DocumentoAreaDocumentaleModalStateModel>, action: DeleteDocumentoAreaDocumentale): void {
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            this.areaDocumentaleService.delete(action.id, codSede).subscribe(() => {
-                dispatch([
-                    new ResetDocumentoAreaDocumentaleModal(),
-                    new GetDocumentiAreaDocumentale()
-                ]);
-            }, (err => dispatch(new ResetDocumentoAreaDocumentaleModal())));
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+        this.areaDocumentaleService.delete(action.id).subscribe(() => {
+            dispatch([
+                new ResetDocumentoAreaDocumentaleModal(),
+                new GetDocumentiAreaDocumentale()
+            ]);
+        }, () => dispatch(new ResetDocumentoAreaDocumentaleModal()));
     }
 
     @Action(ResetDocumentoAreaDocumentaleModal)

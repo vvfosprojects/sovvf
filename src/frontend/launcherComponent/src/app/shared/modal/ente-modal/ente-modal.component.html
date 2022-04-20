@@ -1,6 +1,7 @@
 <div class="modal-header">
-    <h4 class="modal-title font-weight-bold">
-        {{ getTitle() | uppercase }}
+    <h4 class="modal-title font-weight-bold"
+        [ngbTooltip]="editEnte?.descrizione?.length > 35 ? getTitle().toLocaleUpperCase() : null">
+        {{ (getTitle() | uppercase) | truncate: 35 }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onDismiss()">
@@ -35,21 +36,19 @@
         <div class="form-group">
             <label for="telefono">
                 Telefono
-                <small *ngIf="!f.fax.value && !editEnte" class="text-danger">*</small>
-                <small *ngIf="f.fax.value || editEnte" class="text-muted">(opzionale)</small>
+                <small class="text-muted">(opzionale)</small>
             </label>
             <input id="telefono" type="tel" formControlName="telefono" class="form-control"
-                   placeholder="Inserisci il Telefono" (keypress)="checkInputPattern($event, 'PHONE')"
+                   placeholder="Inserisci il Telefono"
                    (paste)="checkInputPattern($event, 'PHONE')">
         </div>
         <div class="form-group">
             <label for="fax">
                 Fax
-                <small *ngIf="!f.telefono.value && !editEnte" class="text-danger">*</small>
-                <small *ngIf="f.telefono.value || editEnte" class="text-muted">(opzionale)</small>
+                <small class="text-muted">(opzionale)</small>
             </label>
             <input id="fax" type="tel" formControlName="fax" class="form-control"
-                   placeholder="Inserisci il Fax" (keypress)="checkInputPattern($event, 'PHONE')"
+                   placeholder="Inserisci il Fax"
                    (paste)="checkInputPattern($event, 'PHONE')">
         </div>
         <div class="my-3">

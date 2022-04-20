@@ -26,7 +26,8 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Mezzo
     {
-        public Mezzo() { }
+        public Mezzo()
+        { }
 
         public Mezzo(string codice, string descrizione, string genere, string stato,
                      string appartenenza, Sede distaccamento, Coordinate coordinate)
@@ -112,6 +113,8 @@ namespace SO115App.API.Models.Classi.Condivise
         public bool PreAccoppiato { get; set; } = false;
 
         public List<IstanteCambioStato> IstantiCambiStato { get; set; } = null;
+
+        public bool Istituto { get; set; }
     }
 
     public class IstanteCambioStato

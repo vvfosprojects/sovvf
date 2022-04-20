@@ -4,7 +4,7 @@ import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.i
 export class GetUtentiVVF {
     static readonly type = '[GestioneUtenti] Get Utenti VVF';
 
-    constructor(public text?: string) { }
+    constructor(public nome: string, public cognome: string, public codiceFiscale: string) { }
 }
 
 export class SetUtentiVVF {

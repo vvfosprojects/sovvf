@@ -11,8 +11,8 @@ import { ItemChart, ItemChartEmit } from '../../../../shared/interface/item-char
 export class GraficoDistaccamentiComponent {
 
     @Input() data: ItemChart[];
-
     @Input() view: any;
+    @Input() loadingItemData: boolean;
 
     // options
     @Input() showXAxis: boolean;
@@ -25,6 +25,8 @@ export class GraficoDistaccamentiComponent {
     @Input() yAxisLabel: string;
     @Input() showYAxisLabel: boolean;
     @Input() xAxisLabel: string;
+    @Input() maxYAxisTickLength: number;
+    @Input() trimXAxisTicks: boolean;
     @Input() roundDomains: boolean;
     @Input() barPadding: number;
     @Input() groupPadding: number;
@@ -41,7 +43,9 @@ export class GraficoDistaccamentiComponent {
     @Output() deactivate: EventEmitter<ItemChartEmit> = new EventEmitter<ItemChartEmit>();
 
     onSelect(data: ItemChartEmit): void {
-        this.selectChartItem.emit(data);
+        if (!this.loadingItemData) {
+            this.selectChartItem.emit(data);
+        }
     }
 
     onActivate(data: ItemChartEmit): void {

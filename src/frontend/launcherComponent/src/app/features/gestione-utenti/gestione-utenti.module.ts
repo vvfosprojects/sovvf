@@ -12,7 +12,7 @@ import { GestioneUtentiComponent } from './gestione-utenti.component';
 import { RicercaUtentiComponent } from './ricerca-utenti/ricerca-utenti.component';
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
-import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
+import { RicercaUtenteVvfComponent } from './ricerca-utente-vvf/ricerca-utente-vvf.component';
 /**
  * Routing
  */
@@ -35,7 +35,8 @@ import { MapsModule } from '../maps/maps.module';
         GestioneUtentiComponent,
         RicercaUtentiComponent,
         TabellaUtentiComponent,
-        GestioneUtenteModalComponent
+        GestioneUtenteModalComponent,
+        RicercaUtenteVvfComponent
     ],
     imports: [
         CommonModule,

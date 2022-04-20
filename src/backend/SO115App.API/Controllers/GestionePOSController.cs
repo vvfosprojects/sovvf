@@ -46,11 +46,12 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di inserire una POS
         /// </summary>
         [HttpPost("Add")]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add([FromForm] DtoPos pos)
         {
             //var codiceSede = Request.Headers["codicesede"];
 
-            //pos.CodSede = codiceSede;
+            pos.CodSede = Request.Headers["codicesede"];
             var command = new AddPosCommand()
             {
                 Pos = pos
@@ -63,7 +64,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -73,15 +74,18 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista delle POS
         /// </summary>
         [HttpPost("")]
+        [ProducesResponseType(typeof(GetElencoPOSResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get([FromBody] GetElencoPOSQuery getListaPosQuery)
         {
+            getListaPosQuery.CodiceSede = Request.Headers["codicesede"];
             try
             {
                 return Ok(_getHandler.Handle(getListaPosQuery));
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -91,13 +95,15 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce una specifica POS
         /// </summary>
         [HttpGet("GetPosById")]
+        [ProducesResponseType(typeof(MemoryStream), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetPosById(string Id, string CodSede)
         {
             //var codiceSede = Request.Headers["codicesede"];
 
             var getQuery = new GetPOSByIdQuery()
             {
-                CodiceSede = CodSede,
+                CodiceSede = Request.Headers["codicesede"],
                 IdPos = Id
             };
 
@@ -107,7 +113,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -117,12 +123,13 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di eliminare una POS
         /// </summary>
         [HttpGet("Delete")]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete(string Id, string CodSede)
         {
             //var codiceSede = Request.Headers["codicesede"];
             var command = new DeletePosCommand()
             {
-                codSede = CodSede,
+                codSede = Request.Headers["codicesede"],
                 Id = Id
             };
 
@@ -133,7 +140,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -143,11 +150,12 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di modificare una POS
         /// </summary>
         [HttpPost("Edit")]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Edit([FromForm] DtoPos pos)
         {
             //var codiceSede = Request.Headers["codicesede"];
 
-            //pos.CodSede = codiceSede;
+            pos.CodSede = Request.Headers["codicesede"];
             var command = new EditPosCommand()
             {
                 Pos = pos
@@ -160,7 +168,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }

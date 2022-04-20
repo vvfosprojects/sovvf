@@ -1,6 +1,7 @@
 <div class="modal-header">
-    <h4 class="modal-title font-weight-bold">
-        {{ titolo | uppercase }}
+    <h4 class="modal-title font-weight-bold"
+        [ngbTooltip]="titolo.length > 20 ? titolo.toLocaleUpperCase() : null">
+        {{ (titolo | uppercase) | truncate: 20 }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="modal.dismiss('cross')">
@@ -9,7 +10,7 @@
 </div>
 <div class="modal-body">
     <ng-container *ngIf="stampa"
-         class="d-flex justify-content-between">
+                  class="d-flex justify-content-between">
         <div class="form-check-inline">
             <input class="form-check-input radio-custom" type="radio" id="pdf" name="pdf" [checked]="checkbox.pdf"
                    (click)="onCheck('pdf')">

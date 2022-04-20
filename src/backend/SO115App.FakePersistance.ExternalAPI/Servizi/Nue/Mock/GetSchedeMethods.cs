@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 {
@@ -42,7 +43,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         private readonly string SchedeContattoJson = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
         private readonly string Competenza = "Competenza";
         private readonly string Conoscenza = "Conoscenza";
-        private readonly string Differibile = "Differibile";
+        private readonly string Deferibile = "Deferibile";
         private readonly DbContext _context;
         private readonly IGetSchedeContatto_WSNUE _getSchedeContatto_WSNUE;
 
@@ -57,11 +58,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// </summary>
         public List<SchedaContatto> GetList(string codiceSede)
         {
-            var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede)).ToList();
-            var ListaSchede = _getSchedeContatto_WSNUE.GetAllSchedeContatto(codiceSede);
+            List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            if (codiceSede.Length > 0)
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede)).ToList();
+            else
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+
             List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
 
-            foreach (SchedaContatto scheda in ListaSchede)
+            var ListaSchedeRaggruppate = listaSchedeContatto;
+            Parallel.ForEach(listaSchedeContatto, scheda =>
             {
                 if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
                 {
@@ -73,7 +79,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                     if (!schedaRaggruppata.Collegata)
                         ListaSchedefiltrata.Add(schedaRaggruppata);
                 }
-            }
+            });
 
             return ListaSchedefiltrata;
         }
@@ -288,7 +294,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 
             var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza) && x.Collegata == false);
             var listaSchedeConoscenza = listaSchede.FindAll(x => x.Classificazione.Equals(Conoscenza));
-            var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Differibile));
+            var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Deferibile));
             return new InfoNue
             {
                 TotaleSchede = new ContatoreNue

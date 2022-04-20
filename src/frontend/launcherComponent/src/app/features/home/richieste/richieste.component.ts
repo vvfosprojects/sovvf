@@ -14,7 +14,7 @@ import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-s
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
-import { GetInitZoomCentroMappa, SetCentroMappa, SetZoomCentroMappa } from '../../maps/store/actions/centro-mappa.actions';
+import { SetCentroMappa, SetZoomCentroMappa } from '../../maps/store/actions/centro-mappa.actions';
 import { SetRichiestaModifica } from '../store/actions/form-richiesta/richiesta-modifica.actions';
 import { SetRichiestaComposizione } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
@@ -34,6 +34,7 @@ import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { DeleteAllConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 
 @Component({
     selector: 'app-richieste',
@@ -80,6 +81,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Select(EntiState.enti) enti$: Observable<EnteInterface[]>;
     enti: EnteInterface[];
+
+    @Select(SchedeContattoState.loadingDettaglioSchedeContatto) loadingDettaglioSchedaContatto$: Observable<string>;
 
     loaderRichieste = true;
     listHeightClass = 'm-h-720';
@@ -220,7 +223,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             this.ricerca$.subscribe((ricerca: any) => {
                 if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
-                    this.store.dispatch(new GetListaRichieste());
+                    this.store.dispatch(new GetListaRichieste({ page: 1 }));
                 }
             })
         );
@@ -267,10 +270,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     onDefissa(): void {
-        this.store.dispatch([
-            new GetInitZoomCentroMappa(),
-            new ClearRichiestaFissata()
-        ]);
+        this.store.dispatch(new ClearRichiestaFissata());
     }
 
     onModificaRichiesta(richiesta: SintesiRichiesta): void {

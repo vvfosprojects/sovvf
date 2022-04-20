@@ -14,7 +14,7 @@ const API_DETTAGLI_TIPOLOGIE = BASE_URL + environment.apiUrl.dettagliTipologie;
 @Injectable({
     providedIn: 'root'
 })
-export class DetttagliTipologieService {
+export class DettagliTipologieService {
 
 
     constructor(private http: HttpClient) {

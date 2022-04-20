@@ -105,27 +105,27 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 };
                 var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 
-                var boxMezziQuery = new BoxMezziQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+               var boxMezziQuery = new BoxMezziQuery()
+               {
+                   CodiciSede = new string[] { sede }
+               };
+               var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
 
-                var boxPersonaleQuery = new BoxPersonaleQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+               var boxPersonaleQuery = new BoxPersonaleQuery()
+               {
+                   CodiciSede = new string[] { sede }
+               };
+               var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
 
-                var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                {
-                    CodiciSedi = new string[] { sede }
-                };
+               var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+               {
+                   CodiciSedi = new string[] { sede }
+               };
 
-                var ChiamataUpd = _iGetListaRichieste.GetListaRichiesteMarker(sintesiRichiesteAssistenzaMarkerQuery).LastOrDefault(sintesi => sintesi.Id == command.IdRichiesta);
+               var ChiamataUpd = _iGetListaRichieste.GetListaRichiesteMarker(sintesiRichiesteAssistenzaMarkerQuery).LastOrDefault(sintesi => sintesi.Id == command.IdRichiesta);
 
-                var SintesiRichiesta = _getSintesiById.GetSintesi(ChiamataUpd.Codice);
-                command.Chiamata = SintesiRichiesta;
+               var SintesiRichiesta = _getSintesiById.GetSintesi(ChiamataUpd.Codice);
+               command.Chiamata = SintesiRichiesta;
 
                 var info = new InfoDaNotificareUpDateStato()
                 {

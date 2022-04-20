@@ -47,6 +47,7 @@
     <ProjectReference Include="..\SO115App.CompositionRoot\SO115App.CompositionRoot.csproj" />
     <ProjectReference Include="..\SO115App.Logging\SO115App.Logging.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
+    <ProjectReference Include="..\SO115App.Monitor\SO115App.Monitor.csproj" />
     <ProjectReference Include="..\SO115App.SignalR\SO115App.SignalR.csproj" />
   </ItemGroup>
   <ItemGroup>

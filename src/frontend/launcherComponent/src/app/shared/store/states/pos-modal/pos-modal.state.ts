@@ -6,12 +6,10 @@ import { TipologiaPos } from '../../../interface/pos.interface';
 import { Tipologia } from '../../../model/tipologia.model';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { GetPos } from '../../../../features/pos/store/actions/pos/pos.actions';
-import { AuthState } from 'src/app/features/auth/store/auth.state';
 
 export interface PosModalStateModel {
     posForm: {
         model?: {
-            codSede: string;
             descrizionePos: string;
             tipologie: Tipologia[];
             tipologieDettagli: DettaglioTipologia[];
@@ -25,7 +23,6 @@ export interface PosModalStateModel {
 export const PosModalStateDefaults: PosModalStateModel = {
     posForm: {
         model: {
-            codSede: undefined,
             descrizionePos: undefined,
             tipologie: undefined,
             tipologieDettagli: undefined
@@ -76,7 +73,6 @@ export class PosModalState {
             listaTipologiePos.push(tempTipologiaPos);
         });
         const formData = action.formData;
-        formData.append('codSede', formValue.codSede);
         formData.append('descrizionePos', formValue.descrizionePos);
         formData.append('listaTipologie', JSON.stringify(listaTipologiePos));
         this.posService.add(formData).subscribe(() => {
@@ -112,7 +108,6 @@ export class PosModalState {
             formData = new FormData();
         }
         formData.append('id', action.id);
-        formData.append('codSede', formValue.codSede);
         formData.append('descrizionePos', formValue.descrizionePos);
         formData.append('listaTipologie', JSON.stringify(listaTipologiePos));
         this.posService.edit(formData).subscribe(() => {
@@ -125,17 +120,12 @@ export class PosModalState {
 
     @Action(DeletePos)
     deletePos({ dispatch }: StateContext<PosModalStateModel>, action: DeletePos): void {
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            this.posService.delete(action.id, codSede).subscribe(() => {
-                dispatch([
-                    new ResetPosModal(),
-                    new GetPos()
-                ]);
-            }, (() => dispatch(new ResetPosModal())));
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+        this.posService.delete(action.id).subscribe(() => {
+            dispatch([
+                new ResetPosModal(),
+                new GetPos()
+            ]);
+        }, (() => dispatch(new ResetPosModal())));
     }
 
     @Action(ResetPosModal)

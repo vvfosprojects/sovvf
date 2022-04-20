@@ -51,7 +51,6 @@ export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
         new VoceFiltro('4', Categoria.InViaggio, 'In Viaggio', false),
         new VoceFiltro('6', Categoria.SulPosto, 'Sul Posto', false),
         new VoceFiltro('2', Categoria.InRientro, 'In Rientro', false),
-        new VoceFiltro('1', Categoria.FuoriServizio, 'Fuori Servizio', false),
         new VoceFiltro('5', Categoria.Istituto, 'Istituto', false),
     ],
     loadingMezziInServizio: false

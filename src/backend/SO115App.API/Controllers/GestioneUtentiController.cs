@@ -53,6 +53,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di aggiungere un nuovo utente
         /// </summary>
         [HttpPost("AddUtente")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult AddUtente([FromBody] AddUtenteCommand command)
         {
             command.CodiceSede = Request.Headers["codiceSede"];
@@ -65,7 +67,7 @@ namespace SO115App.API.Controllers
             {
                 ex = ex.GetBaseException();
 
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 if (ex.Message.Contains(Costanti.RuoloUtentePresente))
                     return StatusCode(403, new { message = Costanti.RuoloUtentePresente });
@@ -78,6 +80,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di rimuovere utente
         /// </summary>
         [HttpPost("DeleteUtente")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult DeleteUtente([FromBody] DeleteUtenteCommand command)
         {
             command.CodiceSede = Request.Headers["codiceSede"];
@@ -90,7 +94,7 @@ namespace SO115App.API.Controllers
             {
                 ex = ex.GetBaseException();
 
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message, stackTrace = ex.StackTrace });
             }
@@ -100,6 +104,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce uno specifico Utente
         /// </summary>
         [HttpGet("GetUtente")]
+        [ProducesResponseType(typeof(DettaglioUtenteResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult GetUtente(string id)
         {
             var query = new DettaglioUtenteQuery();
@@ -112,7 +118,7 @@ namespace SO115App.API.Controllers
             }
             catch (System.Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains("404"))
                     return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
@@ -125,6 +131,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista degli Utenti
         /// </summary>
         [HttpPost("GetUtenti")]
+        [ProducesResponseType(typeof(ListaOperatoriResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public IActionResult GetUtenti([FromBody] ListaOperatoriQuery query)
         {
             query.IdUtente = Request.Headers["IdUtente"];
@@ -135,7 +143,7 @@ namespace SO115App.API.Controllers
             }
             catch (System.Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains("404"))
                     return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });

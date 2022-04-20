@@ -4,6 +4,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
 
             var lstMovimentiPartenza = lstRichiesteMezzo
                 .SelectMany(r => r.ListaEventi.OfType<AbstractPartenza>()
-                .Where(p => p.CodiceMezzo.Equals(cambioStatoMezzo.CodMezzo) && !(p is RichiestaSoccorsoAereo))
+                .Where(p => p.CodiceMezzo.Equals(cambioStatoMezzo.CodMezzo) && !(p is RichiestaSoccorsoAereo) && !(p is AnnullamentoStatoPartenza))
                 .GroupBy(p => p.CodicePartenza))
                 .Where(p => p.Key == codicePartenza)
                 .ToList();

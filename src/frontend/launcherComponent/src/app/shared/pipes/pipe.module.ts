@@ -18,6 +18,7 @@ import { CompetenzaFormatPipe } from './competenza-format.pipe';
 import { TipoNotificaPipe } from './tipo-notifica.pipe';
 import { ReversePipe } from './reverse.pipe';
 import { ConcorrenzaLockedPipe } from './concorrenza-locked.pipe';
+import { MezzoInRientroDisabledPipe } from './mezzo-in-rientro-disabled.pipe';
 
 const COMPONENTS = [
     TruncatePipe,
@@ -38,7 +39,8 @@ const COMPONENTS = [
     CompetenzaFormatPipe,
     TipoNotificaPipe,
     ReversePipe,
-    ConcorrenzaLockedPipe
+    ConcorrenzaLockedPipe,
+    MezzoInRientroDisabledPipe
 ];
 
 @NgModule({

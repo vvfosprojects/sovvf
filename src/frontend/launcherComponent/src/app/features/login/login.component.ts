@@ -11,7 +11,7 @@ import { AuthState } from '../auth/store/auth.state';
 import { Utente } from '../../shared/model/utente.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
-import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import { StopBigLoading, StopLoading } from '../../shared/store/actions/loading/loading.actions';
 import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 
 @Component({
@@ -80,14 +80,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.authenticationService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
-            .subscribe(
-                () => {
-                    this.store.dispatch(new RecoveryUrl());
-                },
-                error => {
-                    this.submitted = false;
-                    this.error = error;
-                });
+            .subscribe(() => {
+                this.store.dispatch(new RecoveryUrl());
+            }, (error) => {
+                this.submitted = false;
+                this.error = error;
+                this.store.dispatch(new StopLoading());
+            });
     }
 
     onCasLogin(): void {

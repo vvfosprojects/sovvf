@@ -40,7 +40,7 @@
             <ng-container *ngIf="schedaContatto?.codiceInterventoAssociato">
                 <i class="fas fa-hashtag mr-2 guida"></i>
                 <span>Codice {{ defineChiamataIntervento(schedaContatto.codiceInterventoAssociato) }}</span>
-                <button class="btn btn-outline-light ml-4"
+                <button class="btn btn-light ml-4"
                         (click)="onDettaglioRichiesta(schedaContatto.codiceInterventoAssociato)">
                     {{ schedaContatto.codiceInterventoAssociato }}
                 </button>

@@ -31,6 +31,7 @@ import { SetRedirectComposizionePartenza, StartLoadingSchedaRichiesta, StopLoadi
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
+import { Sede } from '../../../../../shared/model/sede.model';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
@@ -125,12 +126,32 @@ export class RichiestaModificaState {
             let tipologia: Tipologia;
 
             if (f) {
-
                 if (f.codTipologia) {
                     tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
                 }
 
-                const competenze = this.store.selectSnapshot(SchedaTelefonataState.competenze);
+                let competenze = this.store.selectSnapshot(SchedaTelefonataState.competenze) ? this.store.selectSnapshot(SchedaTelefonataState.competenze) : [];
+                let codCompetenze: string[];
+                if (!competenze?.length) {
+                    competenze = getState().richiestaModifica.competenze;
+                    codCompetenze = [];
+                    if (!f.codPrimaCompetenza && !f.codSecondaCompetenza && !f.codTerzaCompetenza) {
+                        codCompetenze = [f.codCompetenzaCentrale];
+                    } else {
+                        if (f.codPrimaCompetenza) {
+                            codCompetenze.push(f.codPrimaCompetenza);
+                        }
+                        if (f.codSecondaCompetenza) {
+                            codCompetenze.push(f.codSecondaCompetenza);
+                        }
+                        if (f.codTerzaCompetenza) {
+                            codCompetenze.push(f.codTerzaCompetenza);
+                        }
+                    }
+                } else {
+                    codCompetenze = competenze.map((c: Sede) => c.codice);
+                }
+
                 const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
                 const tipiTerreno = [] as TipoTerreno[];
 
@@ -182,8 +203,8 @@ export class RichiestaModificaState {
                         regione: f.regione,
                         civico: f.civico
                     },
-                    competenze ? competenze : f.competenze,
-                    null,
+                    competenze,
+                    codCompetenze,
                     f.complessita,
                     f.istantePresaInCarico,
                     f.istantePrimaAssegnazione,

@@ -20,7 +20,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
-import { Utente } from '../../../../../shared/model/utente.model';
+import { Ruolo, Utente } from '../../../../../shared/model/utente.model';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -108,12 +108,15 @@ export class GestioneUtentiState {
     @Action(GetUtentiVVF)
     getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF): void {
         dispatch(new StartLoadingGestioneUtenti());
-        this.gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
+        const nome = action.nome;
+        const cognome = action.cognome;
+        const codiceFiscale = action.codiceFiscale;
+        this.gestioneUtenti.getUtentiVVF(nome, cognome, codiceFiscale).subscribe((data: UtenteVvfInterface[]) => {
             dispatch([
                 new SetUtentiVVF(data),
                 new StopLoadingGestioneUtenti()
             ]);
-        });
+        }, () => dispatch(new StopLoadingGestioneUtenti()));
     }
 
     @Action(SetUtentiVVF)
@@ -146,14 +149,20 @@ export class GestioneUtentiState {
                 pageSize: this.store.selectSnapshot(PaginationState.pageSize)
             };
             this.gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
+                    let listaSediPresentiUnique = [];
+                    if (response?.listaSediPresenti?.length) {
+                        listaSediPresentiUnique = [
+                            ...new Map(response.listaSediPresenti.map((ruolo: Ruolo) => [ruolo.codSede, ruolo])).values(),
+                        ];
+                    }
                     dispatch([
                         new SetUtentiGestione(response.dataArray),
                         new PatchPagination(response.pagination),
-                        new SetSediFiltro(response.listaSediPresenti),
+                        new SetSediFiltro(listaSediPresentiUnique),
                         new StopLoadingGestioneUtenti()
                     ]);
                 },
-                error => {
+                () => {
                     const utente = this.store.selectSnapshot(AuthState.currentUser);
                     if (!_isAdministrator(utente, { sede: utente.sede })) {
                         dispatch(new Navigate(['/home']));
@@ -200,7 +209,7 @@ export class GestioneUtentiState {
     }
 
     @Action(SuccessAddUtenteGestione)
-    successAddUtenteGestione({ dispatch }: StateContext<GestioneUtentiStateModel>, action: SuccessAddUtenteGestione): void {
+    successAddUtenteGestione({ dispatch }: StateContext<GestioneUtentiStateModel>): void {
         const pagina = this.store.selectSnapshot(PaginationState.page);
         if (pagina === 1) {
             dispatch(new GetUtentiGestione());

@@ -16,9 +16,8 @@ export class PosService {
     constructor(private http: HttpClient) {
     }
 
-    getPos(codiceSede: string, filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
+    getPos(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
         const obj = {
-            codiceSede,
             filters: {
                 search: filters.search
             },
@@ -27,10 +26,10 @@ export class PosService {
         return this.http.post(API_POS, obj);
     }
 
-    getPosById(id: string, codSede: string): Observable<HttpEvent<Blob>> {
+    getPosById(id: string): Observable<HttpEvent<Blob>> {
         return this.http.request(new HttpRequest(
             'GET',
-            API_POS + '/GetPosById?Id=' + id + '&CodSede=' + codSede,
+            API_POS + '/GetPosById?Id=' + id,
             null,
             {
                 reportProgress: true,
@@ -46,7 +45,7 @@ export class PosService {
         return this.http.post<any>(API_POS + '/Edit', formData);
     }
 
-    delete(id: string, codSede: string): Observable<any> {
-        return this.http.get<any>(API_POS + '/Delete?Id=' + id + '&CodSede=' + codSede);
+    delete(id: string): Observable<any> {
+        return this.http.get<any>(API_POS + '/Delete?Id=' + id);
     }
 }

@@ -22,6 +22,7 @@ using SO115App.API.Models.Classi.Boxes;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -64,7 +65,7 @@ namespace SO115App.ExternalAPI.Fake.Box
                 InViaggio = listaMezzi?.Where(x => x.Value == Costanti.MezzoInViaggio).Count() ?? 0,
                 InRientro = listaMezzi?.Where(x => x.Value == Costanti.MezzoInRientro).Count() ?? 0,
                 SulPosto = listaMezzi?.Where(x => x.Value == Costanti.MezzoSulPosto).Count() ?? 0,
-                Istituto = listaMezzi?.Where(x => x.Value == Costanti.MezzoIstituto).Count() ?? 0,
+                Istituto = Convert.ToInt32(listaMezzi?.Where(x => x.Key == Costanti.MezzoIstituto).First().Value),
                 //InServizio = mezzi.InSede + mezzi.InRientro + mezzi.SulPosto + mezzi.Istituto + mezzi.InViaggio
             };
 

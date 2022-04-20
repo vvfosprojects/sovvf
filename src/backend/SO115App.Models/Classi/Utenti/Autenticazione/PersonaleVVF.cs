@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Classi.Utenti.Autenticazione
 {
@@ -16,6 +17,7 @@ namespace SO115App.Models.Classi.Utenti.Autenticazione
         public DistaccamentoPersonale sede { get; set; }
         public List<Specializzazione> specializzazioni { get; set; }
         public string turno { get; set; }
+        public TipoPersonale tipoPersonale { get; set; }
     }
 
     public class QualificaPersonale

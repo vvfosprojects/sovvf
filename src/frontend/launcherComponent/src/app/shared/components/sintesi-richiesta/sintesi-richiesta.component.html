@@ -125,7 +125,6 @@
                                         <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
                                                 [ngbPopover]="popSquadre"
                                                 container="body"
-                                                popoverTitle="Squadre"
                                                 triggers="click"
                                                 tabindex="0"
                                                 placement="bottom-right"
@@ -135,11 +134,22 @@
                                             <span>{{ squadre?.length }}</span>
                                         </button>
                                         <ng-template #popSquadre>
-                                            <div class="h6" *ngFor="let s of squadre">
-                                                <span>{{ s['nome'] }}</span>
-                                                <span> ({{ s['turno'] }})</span>
+                                            <div [class.text-light]="nightMode">
+                                                <h5 class="font-weight-bolder">
+                                                    Squadre
+                                                </h5>
+                                                <div *ngFor="let s of squadre; let i = index">
+                                                    <h6 [class.mb-0]="(i + 1) === squadre.length">
+                                                        <app-icona-stato [stato]="_nomeStatiSquadra(s.stato)">
+                                                        </app-icona-stato>
+                                                        {{ s.nome }}
+                                                        ({{ s.turno }})
+                                                    </h6>
+                                                </div>
+                                                <ng-container *ngIf="!squadre?.length">
+                                                    <h6 class="mb-0">Nessuna Squadra</h6>
+                                                </ng-container>
                                             </div>
-                                            <h6 class="mb-0" *ngIf="squadre?.length === 0">Nessuna Squadra</h6>
                                         </ng-template>
                                     </ng-container>
                                 </span>
@@ -148,34 +158,39 @@
                                 <span class="nowrap">
                                     <button class="btn btn-light border pl-0 py-0 big_numbers mr-1"
                                             [ngbPopover]="popMezzi"
-                                            popoverTitle="Mezzi"
                                             triggers="click"
                                             tabindex="0"
                                             placement="bottom-right"
                                             (click)="$event.stopPropagation()">
                                         <i class="guida fas fa-truck fa-fw ml-2 mr-1" ngbTooltip="Numero Mezzi"></i>
                                         <span>{{ methods.numeroMezzi(richiesta) }}</span>
-                                        <span *ngIf="methods.numeroMezziInRietro(richiesta) > 0">:{{ methods.numeroMezziInRietro(richiesta) }}
+                                        <span *ngIf="methods.numeroMezziInRientro(richiesta) > 0">:{{ methods.numeroMezziInRientro(richiesta) }}
                                             r</span>
                                     </button>
 
                                     <ng-template #popMezzi>
-                                        <div class="nowrap" *ngFor="let m of methods.mezziRichiesta(richiesta)">
-                                            <span>
-                                                <span class="badge badge-secondary">{{ m?.stato }}</span>
-                                                <span class="font-weight-bold mx-1">{{ m?.descrizione }}</span>
-                                                <small>{{ m?.genere }}</small>
-                                            </span>
+                                        <div [class.text-light]="nightMode">
+                                            <h5 class="font-weight-bolder">
+                                                Mezzi
+                                            </h5>
+                                            <div *ngFor="let m of methods.mezziRichiesta(richiesta); let i = index">
+                                                <h6 [class.mb-0]="(i + 1) === methods.mezziRichiesta(richiesta)?.length">
+                                                    <app-icona-stato [stato]="m.stato"></app-icona-stato>
+                                                    {{ m?.descrizione }}
+                                                    {{ m?.genere }}
+                                                </h6>
+                                            </div>
+                                            <ng-container
+                                                    *ngIf="methods.numeroMezzi(richiesta) === 0 && methods.numeroMezziInRientro(richiesta) === 0">
+                                                <h6 class="mb-0">Nessun Mezzo</h6>
+                                            </ng-container>
                                         </div>
-                                        <h6 class="mb-0"
-                                            *ngIf="methods.numeroMezzi(richiesta) === 0 && methods.numeroMezziInRietro(richiesta) === 0 ">
-                                            Nessun Mezzo
-                                        </h6>
                                     </ng-template>
                                 </span>
 
                                 <button *ngIf="!fissata && fissabile"
-                                        class="btn btn-light border py-0 px-0" style="width: 45px"
+                                        class="btn btn-light border py-0 px-0"
+                                        style="width: 45px"
                                         ngbTooltip="Fissa in alto"
                                         [disabled]="disableFissaInAlto"
                                         (click)="fissaClick(richiesta); $event.stopPropagation()">
@@ -183,7 +198,8 @@
                                 </button>
 
                                 <button *ngIf="fissata && fissabile"
-                                        class="btn btn-primary py-0 px-0" style="width: 45px"
+                                        class="btn btn-primary py-0 px-0"
+                                        style="width: 45px"
                                         ngbTooltip="Inserisci nella lista"
                                         (click)="fissaClick(richiesta); $event.stopPropagation()">
                                     <i class="fas fa-fw fa-thumbtack fa-rotate-45"></i>
@@ -225,11 +241,11 @@
                                   </span>
                                 </ng-container>
                                 <ng-container *ngIf="richiesta?.localita?.indirizzo">
-                                    <span ngbTooltip="{{ richiesta.localita.indirizzo }}"
-                                          class="font-xxlarge"
-                                          [disableTooltip]="richiesta?.localita?.indirizzo?.length <= 30">
-                                      {{ richiesta?.localita?.indirizzo | truncate:30 }}
-                                  </span>
+                                    <div class="d-inline-block font-xxlarge"
+                                         [ngbTooltip]="getIndirizzoFormatted()"
+                                         [disableTooltip]="getIndirizzoFormatted()?.length <= 20">
+                                      {{ getIndirizzoFormatted() | truncate:20 }}
+                                    </div>
                                 </ng-container>
                             <span *ngIf="!partenza"
                                   class="list-inline list-unstyled m-0 ml-2 font-xxlarge"
@@ -278,8 +294,6 @@
                                     <button class="btn btn-light border py-0 px-0 mr-1"
                                             [class.on-gestione]="inGestione"
                                             ngbTooltip="Gestisci"
-                                            [disabled]="disabledGestisciRichiesta"
-                                            [class.cursor-not-allowed]="disabledGestisciRichiesta"
                                             (click)="onGestioneRichiesta($event)">
                                         <i class="fas fa-fw "
                                            [ngClass]="methods.toggleGestioneClass(inGestione)"></i>
@@ -287,8 +301,8 @@
                                 </ng-container>
                                 <ng-container *ngIf="modificabile">
                                     <div class="d-inline-block"
-                                         [ngbTooltip]="tooltipLockedConcorrenza"
-                                         [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [this.richiesta.codice])"
+                                         [ngbTooltip]="tooltipModificaLockedConcorrenza"
+                                         [disableTooltip]="!(tipoConcorrenzaEnum.Modifica | checkConcorrenzaLocked: [this.richiesta.codice])"
                                          placement="left">
                                         <button class="btn btn-light border py-0 px-0 mr-1"
                                                 ngbTooltip="Modifica"
@@ -300,8 +314,8 @@
                                     </div>
                                 </ng-container>
                                 <div class="d-inline-block"
-                                     [ngbTooltip]="tooltipLockedConcorrenza"
-                                     [disableTooltip]="!(tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [this.richiesta.codice])"
+                                     [ngbTooltip]="tooltipInvioPartenzaLockedConcorrenza"
+                                     [disableTooltip]="!(tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [this.richiesta.codice])"
                                      placement="left">
                                     <button *ngIf="!partenza && composizionePartenza"
                                             class="btn btn-light border py-0 px-2"
@@ -316,11 +330,10 @@
                         </div>
                     </div>
 
-                    <!-- box note localita e zone emergenza -->
+                    <!-- II livello di dettaglio -->
                     <ng-container *ngIf="inGestione">
                         <div class="col-12 default-cursor"
                              [class.d-none]="partenza">
-                            <!-- II livello di dettaglio -->
                             <div class="row mt-2">
                                 <!-- I colonna -->
                                 <div class="col-2">
@@ -391,6 +404,9 @@
                                                     </i>
                                                     S. NUE
                                                     <div class="d-inline-block font-weight-bold mr-1 cursor-pointer"
+                                                         [class.cursor-pointer]="loadingDettaglioSchedaContatto && loadingDettaglioSchedaContatto === richiesta?.codiceSchedaNue"
+                                                         [class.cursor-loading]="loadingDettaglioSchedaContatto && loadingDettaglioSchedaContatto === richiesta?.codiceSchedaNue"
+                                                         [class.opacity-50]="loadingDettaglioSchedaContatto && loadingDettaglioSchedaContatto === richiesta?.codiceSchedaNue"
                                                          (click)="onDettaglioSchedaContatto(richiesta?.codiceSchedaNue)">
                                                         {{ richiesta?.codiceSchedaNue }}
                                                     </div>
@@ -462,15 +478,13 @@
                                          style="height: fit-content">
                                         <div class="scroll-y max-height-richiesta">
                                             <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
-                                            <app-lista-partenze [codiceRichiesta]="richiesta.codice"
-                                                                [partenze]="richiesta?.partenze"
-                                                                [listaEventi]="richiesta?.eventi"
-                                                                [statoRichiesta]="richiesta?.stato"
+                                            <app-lista-partenze [richiesta]="richiesta"
                                                                 [inGestione]="inGestione"
                                                                 [idDaSganciare]="idDaSganciare"
                                                                 [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenze)"
                                                                 [loadingActionMezzo]="loadingActionMezzo"
                                                                 [annullaStatoMezzi]="annullaStatoMezzi"
+                                                                [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
                                                                 (actionMezzo)="onActionMezzo($event)"
                                                                 (eliminaPartenza)="onEliminaPartenza($event)"
                                                                 (modificaPartenza)="onModificaPartenza($event)"
@@ -549,6 +563,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- box note localita e zone emergenza -->
                             <ng-container
                                     *ngIf="richiesta?.localita?.note || richiesta?.notePrivate || richiesta?.notePubbliche || richiesta?.zoneEmergenza?.length || richiesta?.tags?.length">
                                 <div class="row">
@@ -589,7 +604,7 @@
                                                         </div>
                                                     </ng-container>
                                                 </div>
-                                                <ng-container *ngIf="richiesta?.zoneEmergenza?.length">
+                                                <!-- <ng-container *ngIf="richiesta?.zoneEmergenza?.length">
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div *ngFor="let ze of richiesta.zoneEmergenza"
@@ -598,7 +613,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </ng-container>
+                                                </ng-container> -->
                                                 <ng-container *ngIf="richiesta?.tags?.length">
                                                     <div class="row">
                                                         <div class="mt-1 col-12">
@@ -625,7 +640,12 @@
     </div>
 </div>
 
-<ng-template #tooltipLockedConcorrenza>
+<ng-template #tooltipModificaLockedConcorrenza>
     <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Richiesta | checkConcorrenzaLocked: [richiesta.codice] }}
+    {{ tipoConcorrenzaEnum.Modifica | checkConcorrenzaLocked: [richiesta.codice] }}
+</ng-template>
+
+<ng-template #tooltipInvioPartenzaLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiesta.codice] }}
 </ng-template>

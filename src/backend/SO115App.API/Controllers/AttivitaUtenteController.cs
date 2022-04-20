@@ -31,6 +31,8 @@ namespace SO115App.API.Controllers
         ///   EndPoint per la registrazione dell'utente che ha preso in carico un'intervento.
         /// </summary>
         [HttpPost("AddPresaInCarico")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> AddPresaInCarico([FromBody] SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
@@ -52,7 +54,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -62,6 +64,8 @@ namespace SO115App.API.Controllers
         ///   EndPoint per la deregistrazione dell'utente che ha preso in carico un'intervento.
         /// </summary>
         [HttpPost("DeletePresaInCarico")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> DeletePresaInCarico([FromBody] SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
@@ -83,7 +87,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }

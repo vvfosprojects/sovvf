@@ -24,13 +24,11 @@ namespace SO115App.Models.Classi.Utility
                         var Distaccamento = serviceSedi.GetInfoSede(codCompetenza).Result;
                         var info = alberatura.Result.Find(a => a.Codice.Equals(codCompetenza));
 
-                        var x = Distaccamento.Descrizione.ToUpper().Replace("CENTRALE", info.Descrizione);
-
                         var sede = Distaccamento.MapSede();
 
                         if (sede != null)
                         {
-                            sede.Descrizione = x;
+                            sede.Descrizione = info.Descrizione;
 
                             listaSedi.Add(sede);
                         }

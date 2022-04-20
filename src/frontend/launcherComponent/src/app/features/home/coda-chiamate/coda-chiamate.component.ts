@@ -16,6 +16,7 @@ export class CodaChiamateComponent implements OnInit {
 
     @Select(CodaChiamateState.dataGrafico) dataGrafico$: Observable<ItemChart[]>;
     @Select(CodaChiamateState.loading) loading$: Observable<boolean>;
+    @Select(CodaChiamateState.loadingItemData) loadingItemData$: Observable<boolean>;
 
     constructor(private store: Store) {
     }
@@ -26,7 +27,6 @@ export class CodaChiamateComponent implements OnInit {
 
     onSelect(data: ItemChartEmit): void {
         this.store.dispatch(new OpenModalDettaglioDistaccamento(data));
-        // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
     }
 
     heightCodaChiamate(): string {

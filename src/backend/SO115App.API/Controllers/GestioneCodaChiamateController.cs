@@ -29,6 +29,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce le informazioni utili a formare l'istogramma di Coda Chiamate
         /// </summary>
         [HttpGet("GetInfoIstogramma")]
+        [ProducesResponseType(typeof(CodaChiamateResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetInfoIstogramma()
         {
             try
@@ -44,7 +46,7 @@ namespace SO115App.API.Controllers
             {
                 ex = ex.GetBaseException();
 
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else
                     return BadRequest(ex);
@@ -56,6 +58,8 @@ namespace SO115App.API.Controllers
         ///   Coda Chiamate
         /// </summary>
         [HttpGet("GetDettaglioSede")]
+        [ProducesResponseType(typeof(CodaChiamateDettaglioResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetDettaglioSede(string codiceSede)
         {
             try
@@ -71,7 +75,7 @@ namespace SO115App.API.Controllers
             {
                 ex = ex.GetBaseException();
 
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else
                     return BadRequest(ex);

@@ -31,6 +31,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 
 namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
@@ -112,9 +113,19 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
                     utentiPresaInCarico.Add(utente.Nominativo);
 
+            //casistica che gestisce la registrazione di una chiamata non di competenza diretta. Es. registro a Milano una chiamata di Torino
+            var codSocompetente = "";
+            if (command.CodiceSede.Split('.')[0].Equals(command.Chiamata.CodCompetenze.ToList()[0].Split('.')[0]))
+                codSocompetente = command.Chiamata.CodCompetenze.ToList()[0];
+            else
+                codSocompetente = command.CodiceSede;
+
+            richiesta.CodUOCompetenza = command.Chiamata.CodCompetenze.ToArray();
+            richiesta.Competenze = command.Chiamata.Competenze;
+            richiesta.CodSOCompetente = codSocompetente;
             richiesta.Tipologie = listaCodiciTipologie;
             richiesta.DettaglioTipologia = command.Chiamata.DettaglioTipologia;
-            richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza;
+            richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza != null ? new string[] { command.Chiamata.ZoneEmergenza } : null;
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
             richiesta.Descrizione = command.Chiamata.Descrizione;
@@ -140,8 +151,28 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
             var prioritaRichiesta = command.Chiamata.PrioritaRichiesta;
 
-            if (richiesta.PrioritaRichiesta != prioritaRichiesta)
-                new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
+            switch (prioritaRichiesta)
+            {
+                case 1:
+                    new AssegnazionePriorita(richiesta, Priorita.Bassissima, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 2:
+                    new AssegnazionePriorita(richiesta, Priorita.Bassa, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 3:
+                    new AssegnazionePriorita(richiesta, Priorita.Media, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 4:
+                    new AssegnazionePriorita(richiesta, Priorita.Alta, DateTime.UtcNow, command.CodUtente);
+                    break;
+
+                case 5:
+                    new AssegnazionePriorita(richiesta, Priorita.Altissima, DateTime.UtcNow, command.CodUtente);
+                    break;
+            };
 
             new RichiestaModificata(richiesta, DateTime.UtcNow, command.CodUtente);
 

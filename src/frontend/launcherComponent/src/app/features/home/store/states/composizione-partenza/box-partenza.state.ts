@@ -94,7 +94,7 @@ export class BoxPartenzaState {
         // controllo se tutti i box-partenza sono validi
         if (validateBoxesPartenza(state.boxPartenzaList)) {
             // controllo se ho raggiunto il numero massimo di box-partenza (2 MAX)
-            if (state.boxPartenzaList.length <= 2) {
+            if (state.boxPartenzaList.length < 2) {
                 // creo il nuovo box partenza
                 setState(
                     patch({
@@ -207,7 +207,6 @@ export class BoxPartenzaState {
                 if (boxPartenza.id === state.idBoxPartenzaSelezionato) {
                     // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
                     if (boxPartenza.mezzoComposizione) {
-                        console.log('remove mezzo', boxPartenza.mezzoComposizione.mezzo.codice);
                         dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [boxPartenza.mezzoComposizione.mezzo.codice]));
                         dispatch(new UnselectMezzoComposizione());
                     }
@@ -249,7 +248,6 @@ export class BoxPartenzaState {
         });
         state.boxPartenzaList.forEach((box: BoxPartenza) => {
             if (box.id === action.idBoxPartenza) {
-                console.log('boxPartenza', box);
                 if (box.mezzoComposizione) {
                     dispatch(new SelectMezzoComposizione(box.mezzoComposizione, true));
                 }
@@ -355,14 +353,12 @@ export class BoxPartenzaState {
             produce(state, draft => {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box.id === state.idBoxPartenzaSelezionato) {
-                        console.log('select mezzo', action.mezzo.mezzo.codice);
                         const data = {
                             type: TipoConcorrenzaEnum.Mezzo,
                             value: action.mezzo.mezzo.codice
                         } as AddConcorrenzaDtoInterface;
                         dispatch(new AddConcorrenza([data]));
                         if (box.mezzoComposizione) {
-                            console.log('remove mezzo', box.mezzoComposizione.mezzo.codice);
                             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [box.mezzoComposizione.mezzo.codice]));
                         }
                         box.mezzoComposizione = action.mezzo;
@@ -379,9 +375,7 @@ export class BoxPartenzaState {
             produce(state, draft => {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box && box.mezzoComposizione) {
-                        // console.log('mezzoComposizione', box.mezzoComposizione);
                         if (box.mezzoComposizione && action.mezzoComp && box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
-                            // console.log('codiceMezzo', box.mezzoComposizione.mezzo.codice);
                             box.mezzoComposizione = action.mezzoComp;
                         }
                     }
@@ -398,7 +392,6 @@ export class BoxPartenzaState {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box.id === state.idBoxPartenzaSelezionato) {
                         if (box.mezzoComposizione) {
-                            console.log('remove mezzo', box.mezzoComposizione.mezzo.codice);
                             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [box.mezzoComposizione.mezzo.codice]));
                         }
                         box.mezzoComposizione = null;
@@ -413,7 +406,6 @@ export class BoxPartenzaState {
         const state = getState();
         const boxPartenzaList = state.boxPartenzaList;
         boxPartenzaList.forEach((b: BoxPartenza) => {
-            console.log('remove mezzo', b.mezzoComposizione.mezzo.codice);
             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [b.mezzoComposizione.mezzo.codice]));
             const codiciSquadre = b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice);
             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
@@ -437,39 +429,38 @@ export class BoxPartenzaState {
                 })
             );
         }
+        // controllo se ho raggiunto il numero massimo di box-partenza (2 MAX)
+        if (state.boxPartenzaList.length < 2) {
+            const newBoxes = [];
+            // creo boxes
+            for (const mezzoComp of squadraComp.mezziInRientro) {
+                const id = makeID();
+                newBoxes.push({
+                    id,
+                    mezzoComposizione: mezzoComp,
+                    squadreComposizione: [squadraComp]
+                });
+            }
+            const data = {
+                type: TipoConcorrenzaEnum.Mezzo,
+                value: squadraComp.mezziInRientro[0].mezzo.codice
+            } as AddConcorrenzaDtoInterface;
+            dispatch(new AddConcorrenza([data]));
 
-        const newBoxes = [];
-        // creo boxes
-        for (const mezzoComp of squadraComp.mezziInRientro) {
-            const id = makeID();
-            newBoxes.push({
-                id,
-                mezzoComposizione: mezzoComp,
-                squadreComposizione: [squadraComp]
-            });
+            // creo i nuovi box partenza
+            setState(
+                patch({
+                    boxPartenzaList: append(newBoxes)
+                })
+            );
+
+            dispatch([
+                new SelectBoxPartenza(newBoxes[newBoxes.length - 1].id, true),
+                new SelectSquadraComposizione(squadraComp),
+                new SelectMezzoComposizione(newBoxes[newBoxes.length - 1].mezzoComposizione),
+                new GetListeComposizioneAvanzata()
+            ]);
         }
-        console.log('newBoxes', newBoxes);
-        console.log('select mezzo', squadraComp.mezziInRientro[0].mezzo.codice);
-        const data = {
-            type: TipoConcorrenzaEnum.Mezzo,
-            value: squadraComp.mezziInRientro[0].mezzo.codice
-        } as AddConcorrenzaDtoInterface;
-        dispatch(new AddConcorrenza([data]));
-
-        // creo i nuovi box partenza
-        setState(
-            patch({
-                boxPartenzaList: append(newBoxes)
-            })
-        );
-
-        dispatch([
-            // new SelectBoxPartenza(newBoxes[newBoxes.length - 1].id, true),
-            new SelectBoxPartenza(newBoxes[newBoxes.length - 1].id, true),
-            new SelectSquadraComposizione(squadraComp),
-            new SelectMezzoComposizione(newBoxes[newBoxes.length - 1].mezzoComposizione),
-            new GetListeComposizioneAvanzata()
-        ]);
     }
 
     @Action(AddBoxesPartenzaPreAccoppiato)
@@ -501,8 +492,6 @@ export class BoxPartenzaState {
                     squadreComposizione: [squadraComp]
                 });
             }
-            console.log('newBoxes', newBoxes);
-            console.log('select mezzo', squadraComp.mezziPreaccoppiati[0].mezzo.codice);
             const data = {
                 type: TipoConcorrenzaEnum.Mezzo,
                 value: squadraComp.mezziPreaccoppiati[0].mezzo.codice
@@ -560,11 +549,10 @@ export function disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPart
     if (boxPartenzaList && boxPartenzaList.length > 0) {
         let boxValidiCount = 0;
         for (const boxPartenza of boxPartenzaList) {
-            if (boxPartenza.mezzoComposizione && (boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro || boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede) && boxPartenza.squadreComposizione && boxPartenza.squadreComposizione.length > 0) {
+            if ((boxPartenza.mezzoComposizione?.mezzo?.stato === StatoMezzo.InRientro || boxPartenza.mezzoComposizione?.mezzo?.stato === StatoMezzo.InSede) && boxPartenza.squadreComposizione?.length) {
                 boxValidiCount++;
             }
         }
-        // console.log(`Box partenza: ${boxPartenzaList.length} di cui validi ${boxValidiCount}`);
         if (boxPartenzaList.length === boxValidiCount) {
             return false;
         }

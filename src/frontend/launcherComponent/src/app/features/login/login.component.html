@@ -30,8 +30,8 @@
                                 <span class="font-weight-bold">Le credenziali inserite non sono corrette</span>
                             </div>
                             <div class="form-group text-center">
-                                <button [disabled]="loading || submitted"
-                                        class="btn btn-lg btn-block btn-utentepsw mt-3 btn-no-hover"
+                                <button class="btn btn-lg btn-block btn-utentepsw mt-3 btn-no-hover"
+                                        [disabled]="loading || submitted || loginForm.invalid"
                                         (click)="onSubmit()">
                                     <ng-template [ngIf]="!loading && !submitted">Accedi</ng-template>
                                     <ng-template [ngIf]="loading || submitted">

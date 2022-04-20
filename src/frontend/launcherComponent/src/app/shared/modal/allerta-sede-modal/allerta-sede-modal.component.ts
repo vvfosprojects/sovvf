@@ -7,13 +7,12 @@ import { AllertaSedeModalState } from '../../store/states/allerta-sede-modal/all
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { DistaccamentiState } from '../../store/states/distaccamenti/distaccamenti.state';
 import { Sede } from '../../model/sede.model';
-import { AuthState } from '../../../features/auth/store/auth.state';
-import { Utente } from '../../model/utente.model';
-import { makeCopy } from '../../helper/function-generiche';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { makeCopy } from '../../helper/function-generiche';
+import { AppState } from '../../store/states/app/app.state';
 
 @Component({
     selector: 'app-allerta-sede-modal',
@@ -27,8 +26,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     formValid: boolean;
     @Select(DistaccamentiState.sediAllerta) distaccamenti$: Observable<Sede[]>;
     distaccamenti: Sede[];
-    @Select(AuthState.currentUser) user$: Observable<Utente>;
-    codiceSedeUser: any;
     @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
     generiMezzi: TipologicaComposizionePartenza[];
 
@@ -53,7 +50,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.initForm();
         this.getFormValid();
         this.getSedi();
-        this.getCodiceSedeUser();
         this.getGenereMezzo();
     }
 
@@ -71,7 +67,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.f.codRichiesta.patchValue(this.codRichiesta);
         this.store.dispatch(new GetFiltriComposizione());
-        this.removeSedeUser();
+        this.removeSedeTreeviewSelezionata();
     }
 
     ngOnDestroy(): void {
@@ -107,22 +103,14 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    removeSedeUser(): void {
+    removeSedeTreeviewSelezionata(): void {
+        const codiceSedeSelezionata = this.store.selectSnapshot(AppState.vistaSedi)[0];
         const distaccamentiUnique = makeCopy(this.distaccamenti);
         const codiciDistaccamenti = [];
         distaccamentiUnique.forEach(x => codiciDistaccamenti.push(x.codice));
-        const indexRemove = codiciDistaccamenti.indexOf(this.codiceSedeUser);
+        const indexRemove = codiciDistaccamenti.indexOf(codiceSedeSelezionata);
         distaccamentiUnique.splice(indexRemove, 1);
         this.distaccamenti = distaccamentiUnique;
-    }
-
-    getCodiceSedeUser(): void {
-        this.subscriptions.add(
-            this.user$.subscribe((user: any) => {
-                this.codiceSedeUser = user.sede.codice;
-            })
-        );
-
     }
 
     onPatchSedi(event: Sede[]): void {

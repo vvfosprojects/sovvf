@@ -73,7 +73,7 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
                 {
                     bool abilitato = false;
 
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, Competenze[0], Costanti.GestoreChiamate))
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.AddChiamataInCorso.CodiceSedeOperatore, Costanti.GestoreChiamate))
                         abilitato = true;
 
                     if (!abilitato)

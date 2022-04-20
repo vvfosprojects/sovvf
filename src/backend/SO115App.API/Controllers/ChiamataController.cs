@@ -67,6 +67,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Aggiunta intervento
         /// </summary>
+        [ProducesResponseType(typeof(SintesiRichiesta), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] Intervento chiamata)
         {
@@ -99,7 +101,7 @@ namespace SO115App.API.Controllers
             {
                 ex = ex.GetBaseException();
 
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
 
                 Log.Error($"--------------------------- ERRORE SCRITTURA INTERVENTO --------------------------- {DateTime.Now}");
@@ -111,6 +113,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Aggiunta interventi direttamente da Survey123
         /// </summary>
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         [HttpPost("AddFromSurvey123")]
         public async Task<IActionResult> AddFromSurvey123([FromBody] ChiamataFromSurvey123 chiamata)
         {
@@ -131,7 +135,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -140,8 +144,10 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Modifica Intervento
         /// </summary>
+        //
+        [ProducesResponseType(typeof(string), 400)]
         [HttpPost("UpdateIntervento")]
-        public async Task<IActionResult> UpdateIntervento([FromBody] SintesiRichiesta chiamata)
+        public async Task<IActionResult> UpdateIntervento([FromBody] Intervento chiamata)
         {
             var codiceSede = Request.Headers["codicesede"];
             var idUtente = Request.Headers["IdUtente"];
@@ -160,7 +166,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }

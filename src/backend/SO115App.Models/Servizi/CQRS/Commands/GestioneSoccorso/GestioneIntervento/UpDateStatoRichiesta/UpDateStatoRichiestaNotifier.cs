@@ -21,6 +21,7 @@ using CQRS.Commands.Notifiers;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
+using System.Threading.Tasks;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
@@ -46,9 +47,12 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         {
             _sender.SendNotification(command);
 
-            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
-            var infoESRI = _mappingESRIMessage.Map(sintesi);
-            _notifyUpDateRichiesta.UpDate(infoESRI);
+            Task.Run(() =>
+            {
+                var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
+                var infoESRI = _mappingESRIMessage.Map(sintesi);
+                _notifyUpDateRichiesta.UpDate(infoESRI);
+            });
         }
     }
 }

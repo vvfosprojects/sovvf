@@ -11,6 +11,7 @@ using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneDocumentale.
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneDocumentale.RicercaElencoDoc;
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -46,8 +47,10 @@ namespace SO115App.API.Controllers
         ///   Aggiunge un nuovo documento nell'area documentale
         /// </summary>
         [HttpPost("Add")]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add([FromForm] DtoDocumentale doc)
         {
+            doc.CodSede = Request.Headers["codicesede"];
             var command = new AddDocCommand()
             {
                 Documento = doc
@@ -60,7 +63,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -70,15 +73,18 @@ namespace SO115App.API.Controllers
         ///   Restituisce la lista dei documenti presenti
         /// </summary>
         [HttpPost("")]
+        [ProducesResponseType(typeof(GetElencoDocResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get([FromBody] GetElencoDocQuery getListaDocQuery)
         {
+            getListaDocQuery.CodiceSede = Request.Headers["codicesede"];
             try
             {
                 return Ok(_getHandler.Handle(getListaDocQuery));
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -88,11 +94,13 @@ namespace SO115App.API.Controllers
         ///   Restituisce uno specifico documento
         /// </summary>
         [HttpGet("GetDocumentoById")]
+        [ProducesResponseType(typeof(MemoryStream), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetDocById(string Id, string CodSede)
         {
             var getQuery = new GetDocByIdQuery()
             {
-                CodiceSede = CodSede,
+                CodiceSede = Request.Headers["codicesede"],
                 IdDoc = Id
             };
 
@@ -102,7 +110,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -112,11 +120,12 @@ namespace SO115App.API.Controllers
         ///   Cancella uno specifico documento
         /// </summary>
         [HttpGet("Delete")]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete(string Id, string CodSede)
         {
             var command = new DeleteDocCommand()
             {
-                codSede = CodSede,
+                codSede = Request.Headers["codicesede"],
                 Id = Id
             };
 
@@ -127,7 +136,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -137,8 +146,10 @@ namespace SO115App.API.Controllers
         ///   Modifica uno specifico documento
         /// </summary>
         [HttpPost("Edit")]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Edit([FromForm] DtoDocumentale doc)
         {
+            doc.CodSede = Request.Headers["codicesede"];
             var command = new EditDocCommand()
             {
                 Documento = doc
@@ -151,7 +162,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }

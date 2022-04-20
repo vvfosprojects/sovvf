@@ -53,6 +53,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce la lista dei PreAccoppiati
         /// </summary>
         [HttpPost("")]
+        [ProducesResponseType(typeof(PreAccoppiatiResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Post(FiltriPreaccoppiati filtri)
         {
             var query = new PreAccoppiatiQuery()
@@ -68,7 +70,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message, stackTrace = ex.StackTrace });
             }

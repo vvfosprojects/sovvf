@@ -43,6 +43,7 @@ using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Soccorso.Eventi.ELogBook;
 using SO115App.Models.Classi.Soccorso.Eventi.Emergenza;
@@ -50,6 +51,7 @@ using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Soccorso.Eventi.Statri;
 using SO115App.Models.Classi.Triage;
 using SO115App.Persistence.MongoDB.Mappings;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Evento = SO115App.Models.Classi.NUE.EventoNue;
@@ -121,6 +123,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<RichiestaSoccorsoAereo>();
             BsonClassMap.RegisterClassMap<AnnullamentoRichiestaSoccorsoAereo>();
             BsonClassMap.RegisterClassMap<AggiornamentoOrarioStato>();
+            BsonClassMap.RegisterClassMap<MezzoRiassegnato>();
 
             BsonClassMap.RegisterClassMap<PartenzaRientrata>();
             BsonClassMap.RegisterClassMap<PartenzaInRientro>();
@@ -145,6 +148,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<Evento>();
             BsonClassMap.RegisterClassMap<InsertSchedaNueRequest>();
             BsonClassMap.RegisterClassMap<Esri_Params>();
+            BsonClassMap.RegisterClassMap<SquadraOpService>();
 
             EmergenzaMap.Map();
             TipologieEmergenzaMap.Map();
@@ -177,10 +181,11 @@ namespace Persistence.MongoDB
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
-            BsonClassMap.RegisterClassMap<ComposizioneSquadra>(cm =>
+
+            BsonClassMap.RegisterClassMap<WorkShift>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(c => c.Id)
+                cm.MapIdMember(c => c.IdMongo)
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
@@ -202,11 +207,11 @@ namespace Persistence.MongoDB
             }
         }
 
-        public IMongoCollection<ComposizioneSquadra> ComposizioneSquadreCollection
+        public IMongoCollection<WorkShift> SquadreCollection
         {
             get
             {
-                return database.GetCollection<ComposizioneSquadra>("composizioneSquadre");
+                return database.GetCollection<WorkShift>("squadre");
             }
         }
 
@@ -384,6 +389,16 @@ namespace Persistence.MongoDB
             {
                 return database.GetCollection<SchedaContattoWSNue>("schedeNue");
             }
+        }
+
+        public bool CheckComposizioneSquadreExists()
+        {
+            var col = database.GetCollection<WorkShift>("squadre");
+
+            if (col != null)
+                return true;
+            else
+                return false;
         }
 
         public bool DeleteDB(string nomeCollection)

@@ -37,7 +37,7 @@
             </div>
             <div class="col-1 d-flex align-items-center">
                 <i class="fas fa-desktop mr-2" ngbTooltip="Postazione Operatore" placement="left"></i>
-                {{scheda.operatoreChiamata?.codicePostazioneOperatore || 'N/D'}}
+                {{ scheda.operatoreChiamata?.codicePostazioneOperatore || 'N/D' }}
             </div>
             <div class="col-2 text-right">
                 <ng-container *ngIf="!editSchedaContatto">
@@ -47,19 +47,28 @@
                             (click)="onDettaglioScheda(scheda.codiceScheda); $event.stopPropagation()">
                         <i class="fas fa-info-circle"></i>
                     </button>
-                    <button class="btn btn-lg btn-no-hover mr-1" [ngClass]="btnGestita.type"
-                            ngbTooltip="{{btnGestita.tooltip}}" [disabled]="disableGestisci" placement="left"
-                            [class.cursor-not-allowed]="disableCreaRichiesta"
+                    <button class="btn btn-lg btn-no-hover mr-1"
+                            [ngClass]="btnGestita.type"
+                            [class.cursor-not-allowed]="disableGestisci"
+                            [disabled]="disableGestisci"
+                            [ngbTooltip]="btnGestita.tooltip"
+                            placement="left"
                             (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
                         <i class="fas fa-cog"></i>
                     </button>
-                    <button class="btn btn-lg btn-no-hover btn-success"
-                            ngbTooltip="Crea richiesta di assistenza"
-                            [disabled]="disableCreaRichiesta" [class.cursor-not-allowed]="disableCreaRichiesta"
-                            placement="left"
-                            (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
+                    <div class="d-inline-block"
+                         [ngbTooltip]="tooltipLockedConcorrenza"
+                         placement="left"
+                         [disableTooltip]="!(tipoConcorrenzaEnum.RegistrazioneSchedaContatto | checkConcorrenzaLocked: [scheda.codiceScheda])">
+                        <button class="btn btn-lg btn-no-hover btn-success"
+                                [class.cursor-not-allowed]="disableCreaRichiesta"
+                                [disabled]="disableCreaRichiesta"
+                                ngbTooltip="Crea richiesta di assistenza"
+                                placement="left"
+                                (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </ng-container>
                 <ng-container *ngIf="editSchedaContatto && !this.scheda.gestita && !this.scheda.collegate?.length">
                     <input type="checkbox"
@@ -112,3 +121,8 @@
         </ng-container>
     </li>
 </ng-container>
+
+<ng-template #tooltipLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.RegistrazioneSchedaContatto | checkConcorrenzaLocked: [scheda.codiceScheda] }}
+</ng-template>

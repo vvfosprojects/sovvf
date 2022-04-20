@@ -8,6 +8,7 @@ import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { statoMezzoColor } from '../../helper/function-mezzo';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-mezzo',
@@ -16,7 +17,7 @@ import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 })
 export class MezzoComponent {
 
-    @Input() codiceRichiesta: string;
+    @Input() richiesta: SintesiRichiesta;
     @Input() mezzo: Mezzo;
     @Input() codicePartenza: string;
     @Input() listaEventi: any;
@@ -24,6 +25,7 @@ export class MezzoComponent {
     @Input() actionsAttive: boolean;
     @Input() mezzoInServizioPage: boolean;
     @Input() listaEventiMezzo: EventoMezzo[];
+    @Input() disabledModificaStatoMezzo: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
 
@@ -53,9 +55,9 @@ export class MezzoComponent {
             data.setSeconds(orario.secondi);
             data.setMilliseconds(0);
             data = new Date(data.getTime());
-            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento: action.azioneIntervento, codicePartenza: this.codicePartenza };
+            actionMezzo = { mezzo: this.mezzo, action: action.mezzoAction, data, azioneIntervento: action.azioneIntervento, codicePartenza: this.codicePartenza, modificaOrario: action.modificaOrario };
         } else {
-            actionMezzo = { mezzo: this.mezzo, action: null };
+            actionMezzo = { mezzo: this.mezzo, action: null, modificaOrario: action.modificaOrario };
         }
         this.actionMezzo.emit(actionMezzo);
     }

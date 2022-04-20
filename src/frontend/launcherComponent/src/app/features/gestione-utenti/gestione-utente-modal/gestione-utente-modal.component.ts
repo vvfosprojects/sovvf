@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
-import { ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role, Ruolo } from '../../../shared/model/utente.model';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { DistaccamentiState } from '../../../shared/store/states/distaccamenti/distaccamenti.state';
 import { Sede } from '../../../shared/model/sede.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
+import { makeCopy } from '../../../shared/helper/function-generiche';
 
 @Component({
     selector: 'app-gestione-utente-modal',
@@ -20,6 +20,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
     @Select(GestioneUtentiState.loadingGestioneUtenti) loading$: Observable<boolean>;
     @Select(GestioneUtentiState.listaUtentiVVF) listaUtentiVVF$: Observable<UtenteVvfInterface[]>;
+    listaUtentiVVF: UtenteVvfInterface[];
     @Select(GestioneUtentiState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
     @Select(DistaccamentiState.distaccamenti) distaccamenti$: Observable<Sede[]>;
@@ -28,11 +29,11 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     ruoli: string[] = [];
 
     addUtenteRuoloForm: FormGroup;
-    typeahead = new Subject<string>();
     checkboxState: { id: string, status: boolean, label: string, disabled: boolean };
     submitted: boolean;
 
     // aggiungi ruolo utente
+    addRuoloUtente: boolean;
     codFiscaleUtenteVVF: string;
     nominativoUtenteVVF: string;
     ruoliAttuali: Ruolo[];
@@ -45,8 +46,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.initForm();
         this.getFormValid();
         this.getUtenteValueChanges();
-        this.getUtentiVVF();
-        this.getSearchUtentiVVF();
+        this.getListaUtentiVVF();
         this.getDistaccamenti();
     }
 
@@ -60,7 +60,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.addUtenteRuoloForm = this.fb.group({
             utente: [null, Validators.required],
             sedi: [null, Validators.required],
-            ricorsivo: [true],
+            ricorsivo: [true, Validators.required],
             ruolo: [null, Validators.required]
         });
         // Init disabled input
@@ -94,27 +94,32 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         return this.addUtenteRuoloForm.controls;
     }
 
-    getUtentiVVF(search?: string): void {
-        if (search && search.length >= 3) {
-            this.store.dispatch(new GetUtentiVVF(search));
-        } else {
-            this.store.dispatch(new ClearUtentiVVF());
-        }
-    }
+    getListaUtentiVVF(): void {
+        this.subscription.add(
+            this.listaUtentiVVF$.subscribe((listaUtentiVVF: UtenteVvfInterface[]) => {
+                this.addUtenteRuoloForm.reset();
+                this.f.ricorsivo.patchValue(true);
+                if (listaUtentiVVF?.length) {
+                    this.listaUtentiVVF = listaUtentiVVF;
 
-    getSearchUtentiVVF(): void {
-        this.typeahead.pipe(
-            distinctUntilChanged(),
-            debounceTime(500)
-        ).subscribe((term) => {
-            this.getUtentiVVF(term);
-        });
+                    if (listaUtentiVVF.length === 1) {
+                        this.f.utente.patchValue(listaUtentiVVF[0].codiceFiscale);
+                    }
+                } else {
+                    this.listaUtentiVVF = null;
+                }
+            })
+        );
     }
 
     getDistaccamenti(): void {
         this.subscription.add(
             this.distaccamenti$.subscribe((distaccamenti: Sede[]) => {
-                this.distaccamenti = distaccamenti;
+                this.distaccamenti = makeCopy(distaccamenti);
+                if (this.distaccamenti?.length) {
+                    const sedeCON = new Sede('00', 'CON', new Coordinate(42.221895, 13.169548), '', '', '', '');
+                    this.distaccamenti.push(sedeCON);
+                }
             })
         );
     }
@@ -149,11 +154,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
     getSediValueChanges(): void {
         this.f.sedi.valueChanges.subscribe((value: any) => {
-            if (value) {
-                this.checkboxState.disabled = false;
-            } else {
-                this.checkboxState.disabled = true;
-            }
+            this.checkboxState.disabled = !value;
         });
     }
 
@@ -161,6 +162,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.submitted = true;
 
         if (!this.formValid) {
+            this.submitted = false;
             return;
         }
 

@@ -57,6 +57,10 @@ import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi } from '../../../../../shared/store/actions/loading/loading.actions';
 import { SetRedirectComposizionePartenza } from '../../actions/form-richiesta/scheda-telefonata.actions';
 import { FiltroZoneEmergenzaState } from '../filterbar/filtro-zone-emergenza.state';
+import { HttpErrorResponse } from '@angular/common/http';
+import { setPageSession } from '../../../../../shared/helper/function-paginazione-session';
+import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
+import { LSNAME } from '../../../../../core/settings/config';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -170,12 +174,13 @@ export class RichiesteState {
                 periodoChiuseChiamate,
                 periodoChiusiInterventi
             };
+            const pageSession = sessionStorage.getItem(LSNAME.pagesSession.pageRichieste);
             const pagination = {
-                page: action.options && action.options.page ? action.options.page : 1,
-                pageSize: richiestePerPagina,
+                page: action.options?.page ? action.options.page : pageSession ? +pageSession : 1,
+                pageSize: richiestePerPagina
             };
-
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
+                setPageSession(AppFeatures.Richieste, pagination.page.toString());
                 const richiesteActive = this.store.selectSnapshot(ViewComponentState.richiesteStatus);
                 const listaRichieste = makeCopy(response.sintesiRichiesta);
                 if (richiestaFissata && listaRichieste.length >= 7) {
@@ -262,7 +267,7 @@ export class RichiesteState {
             const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
 
             if (mezziInServizioActive) {
-                this.store.dispatch(new SetRichiestaById(action.richiesta.codice));
+                dispatch(new SetRichiestaById(action.richiesta.codice));
             }
 
             const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
@@ -337,14 +342,24 @@ export class RichiesteState {
             obj.azioneIntervento = action.mezzoAction.azioneIntervento;
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
-                this.store.dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                setTimeout(() => {
-                    this.store.dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                }, 60000);
+                if (!action.mezzoAction.modificaOrario) {
+                    dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                    setTimeout(() => {
+                        dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                    }, 60000);
+                }
 
                 dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
             },
-            () => dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice))
+            (error: HttpErrorResponse) => {
+                if (error?.error?.message === 'Errore servizio ESRI') {
+                    dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                    setTimeout(() => {
+                        dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
+                    }, 60000);
+                }
+                dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
+            }
         );
     }
 

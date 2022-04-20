@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Geo;
+using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
@@ -57,6 +58,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutte le sedi in un quadrante
         /// </summary>
         [HttpPost("GetSedi")]
+        [ProducesResponseType(typeof(List<SedeMarker>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetSedi([FromBody] AreaMappa filtroCentroMappa)
         {
             try
@@ -70,7 +73,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -80,6 +83,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutte le richieste in un quadrante
         /// </summary>
         [HttpPost("GetRichieste")]
+        [ProducesResponseType(typeof(List<SintesiRichiestaMarker>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetRichieste([FromBody] AreaMappa filtroCentroMappa)
         {
             var codiciSedi = Request.Headers["codiceSede"].ToString().Split(',');
@@ -96,7 +101,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }
@@ -106,6 +111,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutti i mezzi in un quadrante
         /// </summary>
         [HttpPost("GetMezzi")]
+        [ProducesResponseType(typeof(List<MezzoMarker>), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetMezzi(AreaMappa filtroCentroMappa)
         {
             filtroCentroMappa.CodiceSede = new List<string>
@@ -123,7 +130,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains("404"))
                     return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
@@ -136,6 +143,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutti i mezzi in un quadrante
         /// </summary>
         [HttpPost("GetSchedeContatto")]
+        [ProducesResponseType(typeof(SchedeNueMarkerResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetSchedeContatto(AreaMappa filtroCentroMappa)
         {
             filtroCentroMappa.CodiceSede = new List<string>
@@ -153,7 +162,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 return BadRequest(new { message = ex.Message });
             }

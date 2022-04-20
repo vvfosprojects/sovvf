@@ -48,7 +48,6 @@ import { TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { TimeagoVVFFormatter } from './helper/timago-custom-formatter';
 import { SintesiRichiestaComponent } from './components/sintesi-richiesta/sintesi-richiesta.component';
 import { SostituzionePartenzeFineTunoModalComponent } from './modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
-import { InterventiProssimitaModalComponent } from './modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 import { ListaSchedeContattoModalComponent } from './modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
 import { DettaglioSchedaContattoModalComponent } from './modal/dettaglio-scheda-contatto-modal/dettaglio-scheda-contatto-modal.component';
 import { ListaSchedeContattoComponent } from './components/lista-schede-contatto/lista-schede-contatto.component';
@@ -90,6 +89,8 @@ import { VisualizzaDocumentoModalComponent } from './modal/visualizza-documento-
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { UrgenzaSegnalataModalComponent } from './modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
 import { LockedConcorrenzaComponent } from './components/locked-concorrenza/locked-concorrenza.component';
+import { ConcorrenzaService } from '../core/service/concorrenza-service/concorrenza.service';
+import { LockedConcorrenzaService } from '../core/service/concorrenza-service/locked-concorrenza.service';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -142,7 +143,6 @@ const COMPONENTS = [
     SchedaContattoComponent,
     SchedaContattoCollegataComponent,
     SostituzionePartenzeFineTunoModalComponent,
-    InterventiProssimitaModalComponent,
     TriageChiamataModalComponent,
     StepDettaglioTipologiaComponent,
     StepDomandeComponent,
@@ -204,7 +204,9 @@ const MODULES = [
         MODULES
     ],
     providers: [
-        ChiamataService
+        ChiamataService,
+        ConcorrenzaService,
+        LockedConcorrenzaService
     ]
 })
 export class SharedModule {

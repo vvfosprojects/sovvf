@@ -3,10 +3,10 @@ using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ServiziEsterni.OPService
 {
-    public class Squadra
+    public class SquadraOpService
     {
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
+        //[JsonPropertyName("id")]
+        //public string IdSquadra { get; set; }
 
         [JsonPropertyName("code")]
         public string Codice { get; set; }

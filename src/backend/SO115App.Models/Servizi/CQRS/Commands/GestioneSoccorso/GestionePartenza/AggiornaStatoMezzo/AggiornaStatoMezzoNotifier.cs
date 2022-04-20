@@ -21,6 +21,7 @@ using CQRS.Commands.Notifiers;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
 {
@@ -46,9 +47,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         {
             _sender.SendNotification(command);
 
-            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
-            var infoESRI = _mappingESRIMessage.Map(sintesi);
-            _notifyUpDateRichiesta.UpDate(infoESRI);
+            Task.Run(() =>
+            {
+                var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
+                var infoESRI = _mappingESRIMessage.Map(sintesi);
+
+                _notifyUpDateRichiesta.UpDate(infoESRI);
+            });
         }
     }
 }

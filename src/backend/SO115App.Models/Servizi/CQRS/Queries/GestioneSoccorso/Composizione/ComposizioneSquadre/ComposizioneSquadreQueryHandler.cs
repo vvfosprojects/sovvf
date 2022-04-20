@@ -20,7 +20,6 @@
 using CQRS.Queries;
 using Serilog;
 using SO115App.Models.Classi.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using System;
 using System.Collections.Generic;
@@ -33,17 +32,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizioneSquadreQueryHandler : IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult>
     {
-        private readonly ISetComposizioneSquadre _setSquadreDB;
-        private readonly IGetComposizioneSquadreDB _getSquadreDB;
         private readonly IGetComposizioneSquadre _getSquadre;
 
         private const string msgErroreCaricamento = "Errore caricamento elenco squadre";
 
-        public ComposizioneSquadreQueryHandler(IGetComposizioneSquadre getSquadre, ISetComposizioneSquadre set, IGetComposizioneSquadreDB getSquadreDB)
+        public ComposizioneSquadreQueryHandler(IGetComposizioneSquadre getSquadre)
         {
             _getSquadre = getSquadre;
-            _setSquadreDB = set;
-            _getSquadreDB = getSquadreDB;
         }
 
         /// <summary>
@@ -60,20 +55,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             try
             {
                 composizioneSquadre = _getSquadre.Get(query);
-
-                if (composizioneSquadre != null && composizioneSquadre.Count > 0)
-                    _setSquadreDB.Set(composizioneSquadre);
-
-                if (composizioneSquadre == null || composizioneSquadre.Count == 0)
-                    composizioneSquadre = _getSquadreDB.Get();
             }
-            catch
+            catch (Exception ex)
             {
-                if (composizioneSquadre == null || composizioneSquadre.Count == 0)
-                    composizioneSquadre = _getSquadreDB.Get();
+                ex = ex.GetBaseException();
 
-                if (composizioneSquadre == null || composizioneSquadre.Count == 0)
-                    throw new Exception(msgErroreCaricamento);
+                throw new Exception($"{msgErroreCaricamento}: {ex.Message}.\n\n{ex.StackTrace}");
             }
 
             Log.Debug("Fine elaborazione Lista Squadre Composizione Handler");
@@ -82,8 +69,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 DataArray = composizioneSquadre
                     .Skip((query.Filtro.Pagination.Page - 1) * query.Filtro.Pagination.PageSize)
-                    .Take(query.Filtro.Pagination.PageSize)
-                    .ToList(),
+                    .Take(query.Filtro.Pagination.PageSize).ToList(),
                 Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
                 {
                     Page = query.Filtro.Pagination.Page,

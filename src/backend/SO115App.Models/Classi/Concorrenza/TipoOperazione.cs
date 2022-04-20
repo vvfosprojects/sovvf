@@ -4,6 +4,32 @@
     {
         Richiesta,
         Mezzo,
-        Squadra
+        Squadra,
+        ChiusuraChiamata,
+        ChiusuraIntervento,
+        Modifica,
+        Trasferimento,
+        InvioPartenza,
+        Allerta,
+        CambioStatoPartenza,
+        GestisciPartenza,
+        Sganciamento,
+        RegistrazioneSchedaContatto,
+        ModificaPos,
+        EliminaPos,
+        ModificaPianiDiscendenti,
+        EliminaPianiDiscendenti,
+        ModificaDettaglioTipologia,
+        EliminaDettaglioTipologia,
+        ModificaTriage,
+        EliminaTriage,
+        AggiungiRuoloUtente,
+        EliminaRuoloUtente,
+        ModificaRuoloUtente,
+        EliminaUtente,
+        Sostituzione,
+        Fonogramma,
+        EntiIntervenuti,
+        All
     }
 }

@@ -1,4 +1,5 @@
 export interface UtenteVvfInterface {
-    nominativo: string;
-    codFiscale: string;
+    nome: string;
+    cognome: string;
+    codiceFiscale: string;
 }

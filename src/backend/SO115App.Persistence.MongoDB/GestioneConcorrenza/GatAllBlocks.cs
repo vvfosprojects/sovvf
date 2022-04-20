@@ -18,7 +18,7 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
 
         public List<Concorrenza> GetAll(string[] CodiciSede)
         {
-            var lista = _dbContext.ConcorrenzaCollection.Find(c => CodiciSede.Contains(c.CodComando)).ToList();
+            var lista = _dbContext.ConcorrenzaCollection.Find(c => c.Id != null).ToList();
 
             return lista;
         }

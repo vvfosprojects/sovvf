@@ -33,7 +33,6 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         /// <summary>
         ///   Codice del radio trasmittente
         /// </summary>
-        /// 
         [JsonPropertyName("idRadio")]
         public string IdRadio { get; set; }
 
@@ -116,6 +115,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         ///// <summary>
         ///// Indica se un mezzo è in servzio di istituto o meno
         ///// </summary>
-        //public bool Istituto { get; set; }
+        [JsonPropertyName("istituto")]
+        public bool Istituto { get; set; }
     }
 }

@@ -23,6 +23,8 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce tutte le sedi VVF
         /// </summary>
         [HttpGet("GetAllSedi")]
+        [ProducesResponseType(typeof(GetSediResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetAllSedi()
         {
             try
@@ -39,6 +41,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception e)
             {
+                Serilog.Log.Error(e.Message);
+
                 e = e.GetBaseException();
 
                 return BadRequest(new { message = e.Message, stackTrace = e.StackTrace });

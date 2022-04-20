@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { SchedaContatto } from '../../interface/scheda-contatto.interface';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { Tipologia } from '../../model/tipologia.model';
@@ -12,14 +12,12 @@ import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/
 import { PosInterface } from '../../interface/pos.interface';
 import { HttpEventType } from '@angular/common/http';
 import { PosService } from '../../../core/service/pos-service/pos.service';
-import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-triage-summary',
     templateUrl: './triage-summary.component.html',
-    styleUrls: ['./triage-summary.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./triage-summary.component.scss']
 })
 export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -36,6 +34,12 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     @Input() pos: PosInterface[];
     @Input() schedaContatto: SchedaContatto;
     @Input() dettaglioSchedaContatto: string;
+    @Input() idRichiestaModifica: string;
+
+    countInterventiProssimitaFiltered: number;
+    interventiProssimitaFiltered: SintesiRichiesta[];
+    countInterventiStessaViaFiltered: number;
+    interventiStessaViaFiltered: SintesiRichiesta[];
 
     contatoreGeneriMezzo: number;
     generiMezzo: string[];
@@ -73,61 +77,99 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
         if (changes?.schedaContatto?.currentValue) {
             this.schedaContatto = changes?.schedaContatto?.currentValue;
         }
+        if (changes?.countInterventiProssimita?.currentValue) {
+            this.countInterventiProssimitaFiltered = this.countInterventiProssimita;
+            if (this.idRichiestaModifica) {
+                this.filterCountInterventiProssimita();
+            }
+        } else if (!changes?.countInterventiProssimita?.currentValue && changes?.countInterventiProssimita?.previousValue) {
+            this.countInterventiProssimitaFiltered = null;
+        }
+        if (changes?.interventiProssimita?.currentValue) {
+            this.interventiProssimitaFiltered = this.interventiProssimita;
+            if (this.idRichiestaModifica) {
+                this.filterInterventiProssimita();
+            }
+        } else if (!changes?.interventiProssimita?.currentValue && changes?.interventiProssimita?.previousValue) {
+            this.interventiProssimitaFiltered = null;
+        }
+        if (changes?.countInterventiStessaVia?.currentValue) {
+            this.countInterventiStessaViaFiltered = this.countInterventiStessaVia;
+            if (this.idRichiestaModifica) {
+                this.filterCountInterventiStessaVia();
+            }
+        } else if (!changes?.countInterventiStessaVia?.currentValue && changes?.countInterventiStessaVia?.previousValue) {
+            this.countInterventiStessaViaFiltered = null;
+        }
+        if (changes?.interventiStessaVia?.currentValue) {
+            this.interventiStessaViaFiltered = this.interventiStessaVia;
+            if (this.idRichiestaModifica) {
+                this.filterInterventiStessaVia();
+            }
+        } else if (!changes?.interventiStessaVia?.currentValue && changes?.interventiStessaVia?.previousValue) {
+            this.interventiStessaViaFiltered = null;
+        }
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
+    filterCountInterventiProssimita(): void {
+        this.countInterventiProssimitaFiltered = this.countInterventiProssimitaFiltered - this.interventiProssimita.filter((r: SintesiRichiesta) => r.id === this.idRichiestaModifica)?.length;
+    }
+
+    filterInterventiProssimita(): void {
+        this.interventiProssimitaFiltered = this.interventiProssimita.filter((r: SintesiRichiesta) => r.id !== this.idRichiestaModifica);
+    }
+
+    filterCountInterventiStessaVia(): void {
+        this.countInterventiStessaViaFiltered = this.countInterventiStessaViaFiltered - this.interventiStessaVia.filter((r: SintesiRichiesta) => r.id === this.idRichiestaModifica)?.length;
+    }
+
+    filterInterventiStessaVia(): void {
+        this.interventiStessaViaFiltered = this.interventiStessaVia.filter((r: SintesiRichiesta) => r.id !== this.idRichiestaModifica);
+    }
+
     onDownloadPos(pos: PosInterface): void {
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
-                switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + pos.fileName + ')');
-                        break;
-                    case HttpEventType.Response:
-                        const downloadedFile = new Blob([data.body], { type: data.body.type });
-                        const a = document.createElement('a');
-                        a.setAttribute('style', 'display:none;');
-                        document.body.appendChild(a);
-                        a.download = pos.fileName;
-                        a.href = URL.createObjectURL(downloadedFile);
-                        a.target = '_blank';
-                        a.click();
-                        document.body.removeChild(a);
-                        break;
-                }
-            }, () => console.log('Errore Stampa POS'));
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    break;
+                case HttpEventType.Response:
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.download = pos.fileName;
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, () => console.log('Errore Stampa POS'));
     }
 
     onViewPos(pos: PosInterface): void {
-        const codSede = this.store.selectSnapshot(AuthState.currentUser)?.sede?.codice;
-        if (codSede) {
-            this.posService.getPosById(pos.id, codSede).subscribe((data: any) => {
-                switch (data.type) {
-                    case HttpEventType.DownloadProgress:
-                        console.error('Errore nel download del file (' + pos.fileName + ')');
-                        break;
-                    case HttpEventType.Response:
-                        const downloadedFile = new Blob([data.body], { type: data.body.type });
-                        const a = document.createElement('a');
-                        a.setAttribute('style', 'display:none;');
-                        document.body.appendChild(a);
-                        a.href = URL.createObjectURL(downloadedFile);
-                        a.target = '_blank';
-                        a.click();
-                        document.body.removeChild(a);
-                        break;
-                }
-            }, () => console.log('Errore visualizzazione POS'));
-        } else {
-            console.error('CodSede utente non trovato');
-        }
+        this.posService.getPosById(pos.id).subscribe((data: any) => {
+            switch (data.type) {
+                case HttpEventType.DownloadProgress:
+                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    break;
+                case HttpEventType.Response:
+                    const downloadedFile = new Blob([data.body], { type: data.body.type });
+                    const a = document.createElement('a');
+                    a.setAttribute('style', 'display:none;');
+                    document.body.appendChild(a);
+                    a.href = URL.createObjectURL(downloadedFile);
+                    a.target = '_blank';
+                    a.click();
+                    document.body.removeChild(a);
+                    break;
+            }
+        }, () => console.log('Errore visualizzazione POS'));
     }
 
     onShowInfoAggiuntive(event: NgbPanelChangeEvent): void {

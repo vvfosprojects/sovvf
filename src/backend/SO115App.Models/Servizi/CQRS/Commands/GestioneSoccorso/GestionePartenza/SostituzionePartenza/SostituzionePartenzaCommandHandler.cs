@@ -4,6 +4,8 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Gac;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -20,18 +22,26 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
         private readonly IModificaInterventoChiuso _modificaIntervento;
         private readonly IGetTipologieByCodice _getTipologie;
+        private readonly IUpdateStatoPartenze _upDatePartenza;
+        private readonly IGetRichiesta _getRichiestaById;
 
-        public SostituzionePartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpDateRichiestaAssistenza updateRichiesta, IGetMaxCodicePartenza getMaxCodicePartenza, IModificaInterventoChiuso modificaIntervento)
+        public SostituzionePartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpDateRichiestaAssistenza updateRichiesta,
+                                                  IGetMaxCodicePartenza getMaxCodicePartenza, IModificaInterventoChiuso modificaIntervento,
+                                                  IUpdateStatoPartenze upDatePartenza, IGetRichiesta getRichiestaById)
         {
             _updateRichiesta = updateRichiesta;
             _getMaxCodicePartenza = getMaxCodicePartenza;
             _modificaIntervento = modificaIntervento;
             _getTipologie = getTipologie;
+            _upDatePartenza = upDatePartenza;
+            _getRichiestaById = getRichiestaById;
         }
 
         public async void Handle(SostituzionePartenzaCommand command)
         {
             var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.Select(t => t.Codice).First() }).First();
+
+            var richiestaOld = _getRichiestaById.GetByCodice(command.Richiesta.Codice);
 
             var PartenzaMontante = command.Richiesta.Partenze.First(x => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoMontante.Equals(x.Partenza.Mezzo.Codice)) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
             var PartenzaSmontante = command.Richiesta.Partenze.First(x => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoSmontante.Equals(x.Partenza.Mezzo.Codice)) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
@@ -41,9 +51,23 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             PartenzaSmontante.Partenza.Squadre = PartenzaMontante.Partenza.Squadre;
             PartenzaSmontante.Partenza.Terminata = true;
 
+            AggiornaStatoMezzoCommand statoMezzoPartenzaSmontante = new AggiornaStatoMezzoCommand();
+            statoMezzoPartenzaSmontante.CodiciSede = new string[] { PartenzaSmontante.Partenza.Mezzo.Appartenenza };
+            statoMezzoPartenzaSmontante.IdMezzo = PartenzaSmontante.Partenza.Mezzo.Codice;
+            statoMezzoPartenzaSmontante.Richiesta = richiestaOld;
+            statoMezzoPartenzaSmontante.StatoMezzo = Costanti.MezzoRientrato;
+            _upDatePartenza.Update(statoMezzoPartenzaSmontante);
+
             //GESTIONE PARTENZA MONTANTE
             PartenzaMontante.Partenza.Squadre = PartenzaSmontante.Partenza.Squadre;
             PartenzaMontante.Partenza.Terminata = true;
+
+            AggiornaStatoMezzoCommand statoMezzoPartenzaMontante = new AggiornaStatoMezzoCommand();
+            statoMezzoPartenzaMontante.CodiciSede = new string[] { PartenzaMontante.Partenza.Mezzo.Appartenenza };
+            statoMezzoPartenzaMontante.IdMezzo = PartenzaMontante.Partenza.Mezzo.Codice;
+            statoMezzoPartenzaMontante.Richiesta = richiestaOld;
+            statoMezzoPartenzaMontante.StatoMezzo = Costanti.MezzoRientrato;
+            _upDatePartenza.Update(statoMezzoPartenzaMontante);
 
             //GESTIONE NUOVA PARTENZA SMONTANTE
             var PartenzaSmontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
@@ -55,6 +79,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
 
+            AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
+            statoMezzo.CodiciSede = new string[] { PartenzaSmontanteNuova.Partenza.Mezzo.Appartenenza };
+            statoMezzo.IdMezzo = PartenzaSmontanteNuova.CodiceMezzo;
+            statoMezzo.Richiesta = command.Richiesta;
+            statoMezzo.StatoMezzo = Costanti.MezzoInRientro;
+            _upDatePartenza.Update(statoMezzo);
+
             //GESTIONE NUOVA PARTENZA MONTANTE
             var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
             {
@@ -64,6 +95,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             });
 
             new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
+
+            AggiornaStatoMezzoCommand statoMezzoMontante = new AggiornaStatoMezzoCommand();
+            statoMezzoMontante.CodiciSede = new string[] { PartenzaMontanteNuova.Partenza.Mezzo.Appartenenza };
+            statoMezzoMontante.IdMezzo = PartenzaMontanteNuova.CodiceMezzo;
+            statoMezzoMontante.Richiesta = command.Richiesta;
+            statoMezzoMontante.StatoMezzo = Costanti.MezzoSulPosto;
+            _upDatePartenza.Update(statoMezzoMontante);
 
             #region GESTIONE NOTE
 

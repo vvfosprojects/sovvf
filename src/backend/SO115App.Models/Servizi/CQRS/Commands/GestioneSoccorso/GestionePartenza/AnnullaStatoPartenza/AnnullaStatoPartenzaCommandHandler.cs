@@ -34,6 +34,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza
 {
@@ -76,19 +77,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var ultimoMovimento = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().ToList().Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
             var partenza = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().ToList().Find(p => p.CodicePartenza.Equals(command.CodicePartenza));
 
-            if (date >= ultimoMovimento.Istante.AddMinutes(1))
+            if (date >= ultimoMovimento.DataOraInserimento.AddMinutes(1))
                 throw new Exception($"Annullamento non più disponibile per il mezzo {partenza.CodiceMezzo}.");
 
-            string statoMezzoAttuale = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
+            command.StatoMezzo = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
 
-            if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(statoMezzoAttuale))
+            if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(command.StatoMezzo))
             {
                 string nuovoStatoMezzo = null;
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
-                    .Where(e => !(e is AnnullamentoStatoPartenza))
-                    .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza))
-                    .Where(e => e.DataOraInserimento < command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => !(e is AnnullamentoStatoPartenza && e.CodicePartenza.Equals(partenza.CodicePartenza))).Last().DataOraInserimento)
+                    .Where(e => e is not AnnullamentoStatoPartenza)
+                    .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza)).Where(e => e.DataOraInserimento < command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => !(e is AnnullamentoStatoPartenza && e.CodicePartenza.Equals(partenza.CodicePartenza))).Last().DataOraInserimento)
                     .Last();
 
                 switch (eventoPrecedente.TipoEvento)
@@ -110,7 +110,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         break;
                 }
 
-                string note = $"Il cambio stato {statoMezzoAttuale} è stato annullato e il mezzo è tornato nello stato {nuovoStatoMezzo}";
+                string note = $"Il cambio stato {command.StatoMezzo} è stato annullato e il mezzo è tornato nello stato {nuovoStatoMezzo}";
 
                 new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, Costanti.AnnullamentoStatoPartenza, command.CodicePartenza, note);
 
@@ -125,38 +125,41 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.Select(t => t.Codice).First() }).First();
 
                 //SEGNALO LA MODIFICA A GAC
-                var movimento = new ModificaMovimentoGAC()
+                Task.Run(() =>
                 {
-                    targa = command.TargaMezzo,
-                    autistaRientro = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
-                    autistaUscita = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
-                    dataIntervento = command.Richiesta.dataOraInserimento,
-                    dataRientro = date,
-                    dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
-                    idPartenza = command.CodicePartenza,
-                    latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                    longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                    numeroIntervento = command.Richiesta.CodRichiesta,
-                    tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
-                    localita = "",
-                    comune = new ComuneGAC()
+                    var movimento = new ModificaMovimentoGAC()
                     {
-                        codice = "",
-                        descrizione = command.Richiesta.Localita.Citta
-                    },
-                    provincia = new ProvinciaGAC()
-                    {
-                        codice = "",
-                        descrizione = command.Richiesta.Localita.Provincia
-                    },
-                    tipoUscita = new TipoUscita()
-                    {
-                        codice = tipologia.Codice,
-                        descrizione = tipologia.Descrizione
-                    }
-                };
+                        targa = command.TargaMezzo.Split('.')[1],
+                        autistaRientro = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
+                        autistaUscita = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
+                        dataIntervento = command.Richiesta.dataOraInserimento,
+                        dataRientro = date,
+                        dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
+                        idPartenza = command.CodicePartenza,
+                        latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                        longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                        numeroIntervento = command.Richiesta.CodRichiesta,
+                        tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
+                        localita = "",
+                        comune = new ComuneGAC()
+                        {
+                            codice = "",
+                            descrizione = command.Richiesta.Localita.Citta
+                        },
+                        provincia = new ProvinciaGAC()
+                        {
+                            codice = "",
+                            descrizione = command.Richiesta.Localita.Provincia
+                        },
+                        tipoUscita = new TipoUscita()
+                        {
+                            codice = tipologia.Codice,
+                            descrizione = tipologia.Descrizione
+                        }
+                    };
 
-                _modificaGAC.Send(movimento);
+                    _modificaGAC.Send(movimento);
+                });
 
                 #endregion Chiamata GAC
 
@@ -180,6 +183,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 command.Chiamata = _mapper.Map(command.Richiesta);
             }
+            else
+                throw new Exception("Impossibile annullare lo stato");
         }
     }
 }

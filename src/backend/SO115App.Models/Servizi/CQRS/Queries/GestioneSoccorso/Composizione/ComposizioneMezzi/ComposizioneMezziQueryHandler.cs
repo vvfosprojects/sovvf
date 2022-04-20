@@ -24,7 +24,6 @@ using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
 {
@@ -33,18 +32,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class ComposizioneMezziQueryHandler : IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult>
     {
-        private readonly ISetComposizioneMezzi _setMezzi;
-        private readonly IGetComposizioneMezziDB _getMezzi;
-
         private readonly IGetComposizioneMezzi _iGetComposizioneMezzi;
 
         private const string msgErroreCaricamento = "Errore caricamento elenco mezzi";
 
-        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi, ISetComposizioneMezzi setMezzi, IGetComposizioneMezziDB getMezzi)
+        public ComposizioneMezziQueryHandler(IGetComposizioneMezzi iGetComposizioneMezzi)
         {
             _iGetComposizioneMezzi = iGetComposizioneMezzi;
-            _setMezzi = setMezzi;
-            _getMezzi = getMezzi;
         }
 
         /// <summary>
@@ -61,22 +55,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             try
             {
                 composizioneMezzi = _iGetComposizioneMezzi.Get(query);
-
-                if (composizioneMezzi != null && composizioneMezzi.Count > 0)
-                    _setMezzi.Set(composizioneMezzi);
-
-                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
-                    composizioneMezzi = _getMezzi.GetByCodiciSede(query.Filtro?.CodiciDistaccamenti);
             }
             catch (Exception e)
             {
-                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
-                    composizioneMezzi = _getMezzi.GetByCodiciSede(query.Filtro?.CodiciDistaccamenti);
+                e = e.GetBaseException();
 
-                if (composizioneMezzi == null || composizioneMezzi.Count == 0)
-                {
-                    return null;
-                }
+                throw new Exception($"{msgErroreCaricamento}: {e.Message}.\n\n{e.StackTrace}");
             }
 
             Log.Debug("Fine elaborazione Lista Mezzi per Composizione Handler");

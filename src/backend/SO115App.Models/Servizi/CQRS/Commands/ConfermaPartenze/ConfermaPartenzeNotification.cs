@@ -25,18 +25,19 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using System;
+using System.Threading.Tasks;
 
 namespace DomainModel.CQRS.Commands.ConfermaPartenze
 {
     public class ConfermaPartenzeNotification : ICommandNotifier<ConfermaPartenzeCommand>
     {
-        private readonly IDeleteNotification _sender;
+        private readonly INotificationConfermaPartenze _sender;
         private readonly ICallMatrix _callMatrix;
         private readonly INotifyUpDateRichiesta _notifyUpDateRichiesta;
         private readonly IMappingESRIMessage _mappingESRIMessage;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
-        public ConfermaPartenzeNotification(IDeleteNotification sender,
+        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender,
                                             ICallMatrix callMatrix,
                                             INotifyUpDateRichiesta notifyUpDateRichiesta,
                                             IMappingESRIMessage mappingESRIMessage,
@@ -54,20 +55,25 @@ namespace DomainModel.CQRS.Commands.ConfermaPartenze
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
             _sender.SendNotification(command);
 
-            var infoESRI = _mappingESRIMessage.Map(sintesi);
-
-            _notifyUpDateRichiesta.UpDate(infoESRI);
-
-            foreach (var partenza in command.ConfermaPartenze.Partenze)
+            Task.Factory.StartNew(() =>
             {
-                var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.Richiesta.Localita.Indirizzo}. Codice Intervento: {command.Richiesta.CodRichiesta}";
-                var infoMatrix = new MessageMatrix()
+                var infoESRI = _mappingESRIMessage.Map(sintesi);
+                _notifyUpDateRichiesta.UpDate(infoESRI);
+            });
+
+            Task.Factory.StartNew(() =>
+            {
+                Parallel.ForEach(command.ConfermaPartenze.Partenze, partenza =>
                 {
-                    Messaggio = messaggio,
-                    CodSede = command.ConfermaPartenze.CodiceSede.Split('.')[0]
-                };
-                _callMatrix.SendMessage(infoMatrix);
-            }
+                    var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.Richiesta.Localita.Indirizzo}. Codice Intervento: {command.Richiesta.CodRichiesta}";
+                    var infoMatrix = new MessageMatrix()
+                    {
+                        Messaggio = messaggio,
+                        CodSede = command.ConfermaPartenze.CodiceSede.Split('.')[0]
+                    };
+                    _callMatrix.SendMessage(infoMatrix);
+                });
+            });
         }
     }
 }

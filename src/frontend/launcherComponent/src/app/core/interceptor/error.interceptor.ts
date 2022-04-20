@@ -29,9 +29,9 @@ export class ErrorInterceptor implements HttpInterceptor {
                 }
             } else {
                 if (request.url.indexOf('GetCompetenze') !== -1) {
-                    this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore Competenze', 'Il servizio di reperimento competenze non è al momento raggiungibile, si prega di inserirle manualmente', null, null, true));
+                    this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore Competenze', 'Il servizio di reperimento competenze non è al momento raggiungibile, si prega di inserirle manualmente', null, null));
                 } else {
-                    this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', errorMsg, null, null, true));
+                    this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', errorMsg, null, null));
                 }
             }
 

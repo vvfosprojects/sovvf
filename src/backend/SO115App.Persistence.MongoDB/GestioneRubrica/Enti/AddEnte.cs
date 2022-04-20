@@ -1,4 +1,4 @@
-﻿using MongoDB.Driver;
+using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
@@ -12,8 +12,13 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         public void Add(EnteIntervenuto ente)
         {
-            var codice = _dbContext.RubricaCollection.Find(x => true).SortByDescending(c => c.Codice).First().Codice;
-            ente.Codice = codice + 1;
+            var rubricaDocumentsCount = _dbContext.RubricaCollection.Find(x => true).CountDocuments();
+            if (rubricaDocumentsCount > 0) {
+              var codice = _dbContext.RubricaCollection.Find(x => true).SortByDescending(c => c.Codice).First().Codice;
+              ente.Codice = codice + 1;
+            } else {
+              ente.Codice = 1;
+            }
 
             _dbContext.RubricaCollection.InsertOne(ente);
         }

@@ -3,7 +3,7 @@
         <app-filtri-eventi-richiesta [codiceRichiesta]="codiceRichiesta$ | async"
                                      [listaTargaMezzo]="listaTargaMezzo$ | async"
                                      [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
-                                     [initValue]="targheSelezionate$ | async"
+                                     [initValue]="targheSelezionate"
                                      [elencoEventi]="eventiRichiesta$ | async"
                                      (toggleIconeNomeClasseEvento)="toggleIconeNomeClasseEvento()"
                                      (targheSelezionate)="onSelezioneTarga($event)">
@@ -12,11 +12,13 @@
 </div>
 <div class="modal-body">
     <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
-    <div class="mb-3">
-        <app-add-evento-richiesta [codiceRichiesta]="codiceRichiesta$ | async"
-                                  (addEvento)="onAddEvento()">
-        </app-add-evento-richiesta>
-    </div>
+    <ng-container *ngIf="!targheSelezionate?.length">
+        <div class="mb-3">
+            <app-add-evento-richiesta [codiceRichiesta]="codiceRichiesta$ | async"
+                                      (addEvento)="onAddEvento()">
+            </app-add-evento-richiesta>
+        </div>
+    </ng-container>
     <!-- <hr> -->
     <app-lista-eventi-richiesta [elencoEventi]="eventiRichiesta$ | async"
                                 [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"

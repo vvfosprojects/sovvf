@@ -141,8 +141,6 @@ export class ComposizionePartenzaState {
         if (compMode === Composizione.Avanzata) {
             if (action.tipo === 'tipoMezzo') {
                 dispatch(new GetListeComposizioneAvanzata(null, true));
-            } else if (action.tipo === 'turno') {
-                dispatch(new GetListeComposizioneAvanzata(null, false, true));
             } else {
                 dispatch(new GetListeComposizioneAvanzata());
             }

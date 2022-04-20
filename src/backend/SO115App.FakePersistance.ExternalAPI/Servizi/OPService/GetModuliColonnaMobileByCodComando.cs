@@ -37,7 +37,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
 
             var arrayCodiciSede = pinNodi.Select(n => n.Codice).ToArray();
 
-            var lstSquadre = new List<Squadra>();
+            var lstSquadre = new List<SquadraOpService>();
 
             var lstCodiciProv = arrayCodiciSede.Where(s => s.Contains('.')).Select(s => s.Split('.')[0]).Distinct().ToList();
 
@@ -56,7 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
             var ModuliDisponibili = lstSquadre
                 .Select(s => new ModuliColonnaMobile()
                 {
-                    Id = s?.Id,
+                    //Id = s?.IdSquadra,
                     CodComando = s?.Distaccamento,
                     Componenti = s?.Membri?.Select(m => new Models.Classi.Composizione.MembroComposizione()
                     {

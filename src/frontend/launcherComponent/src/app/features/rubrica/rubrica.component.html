@@ -42,13 +42,21 @@
                     </app-risultati-alert>
                 </div>
                 <div *ngIf="vociRubrica?.length" class="col-12">
-                    <app-tabella-rubrica [vociRubrica]="vociRubrica$ | async" [totalItems]="totalItems$ | async"
-                                         [pageSize]="pageSize" [page]="page$ | async" [loading]="loading$ | async"
+                    <ng-container *ngIf="loading$ | async">
+                        <app-partial-loader></app-partial-loader>
+                    </ng-container>
+                    <app-tabella-rubrica [vociRubrica]="vociRubrica$ | async"
+                                         [totalItems]="totalItems$ | async"
+                                         [pageSize]="pageSize"
+                                         [page]="page$ | async"
+                                         [loading]="loading$ | async"
                                          [pageSizes]="pageSizes$ | async"
+                                         [nightMode]="nightMode$ | async"
                                          (editVoceRubrica)="onEditVoceRubrica($event)"
                                          (deleteVoceRubrica)="onDeleteVoceRubrica($event)"
                                          (pageChange)="onPageChange($event)"
-                                         (pageSizeChange)="onPageSizeChange($event)"></app-tabella-rubrica>
+                                         (pageSizeChange)="onPageSizeChange($event)">
+                    </app-tabella-rubrica>
                 </div>
             </div>
         </div>

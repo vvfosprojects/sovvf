@@ -22,6 +22,7 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -134,6 +135,7 @@ namespace SO115App.Persistence.MongoDB
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("notePrivate", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.codiceMezzo", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.nome", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
+                filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.codice", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("tipologie.descrizione", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
 
                 var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
@@ -182,8 +184,8 @@ namespace SO115App.Persistence.MongoDB
             }
 
             //FILTRO ZONE EMERGENZA
-            if (filtro.ZoneEmergenza != null)
-                result = result.Where(r => r.CodZoneEmergenza.Any(z => filtro.ZoneEmergenza.Contains(z))).ToList();
+            //if (filtro.ZoneEmergenza != null)
+            //    result = result.Where(r => r.CodZoneEmergenza.Any(z => filtro.ZoneEmergenza.Contains(z))).ToList();
 
             //FILTRO PERIODO CHIAMATE CHIUSE
             if (filtro.PeriodoChiuseChiamate != null) result = result.Where(r => r.Chiusa && r.CodRichiesta == null).Where(r =>
@@ -247,12 +249,15 @@ namespace SO115App.Persistence.MongoDB
 
             if (filtro.IndirizzoIntervento != null)
             {
-                if (filtro.IndirizzoIntervento.Coordinate != null)
-                    result.AddRange(lstRichieste.Where(o => o.Localita.Coordinate.Latitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Latitudine) && o.Localita.Coordinate.Longitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Longitudine)));
-                else if (filtro.IndirizzoIntervento.Indirizzo != null)
+                //if (filtro.IndirizzoIntervento.Coordinate != null)
+                //    result.AddRange(lstRichieste.Where(o => o.Localita.Coordinate.Latitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Latitudine) && o.Localita.Coordinate.Longitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Longitudine)));
+                //else
+                if (filtro.IndirizzoIntervento.Indirizzo != null)
                 {
                     if (filtro.SoloChiuse)
                         result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && o.Chiusa).ToList();
+                    else
+                        result = lstRichieste.Where(o => o.Localita.Indirizzo.Contains(filtro.IndirizzoIntervento.Indirizzo) && !o.Chiusa).ToList();
                 }
             }
 
@@ -264,13 +269,14 @@ namespace SO115App.Persistence.MongoDB
                 if (filtro.Page > 0 && filtro.PageSize > 0)
                 {
                     result = result.Distinct()
-                    .OrderByDescending(c => c.StatoRichiesta.Equals(Costanti.Chiamata) && c.Partenze.Count == 0)
-                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.Chiamata) && c.Partenze.Count > 0)
-                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaAssegnata))
-                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaPresidiata))
-                    .ThenByDescending(c => c.StatoRichiesta.Equals(Costanti.RichiestaChiusa))
-                    .ThenByDescending(x => x.PrioritaRichiesta)
-                    .ThenByDescending(x => x.IstanteRicezioneRichiesta)
+                    .OrderByDescending(c => c.StatoRichiesta is InAttesa && c.Partenze.Count == 0)
+                    .ThenByDescending(c => c.StatoRichiesta is InAttesa && c.Partenze.Count > 0)
+                    .ThenByDescending(c => c.StatoRichiesta is Assegnata)
+                    .ThenByDescending(c => c.StatoRichiesta is Sospesa)
+                    .ThenByDescending(c => c.StatoRichiesta is Presidiata)
+                    .ThenByDescending(c => c.StatoRichiesta is Chiusa)
+                    //.ThenByDescending(x => x.PrioritaRichiesta)
+                    .ThenBy(x => x.IstanteRicezioneRichiesta)
                     .Skip((filtro.Page - 1) * filtro.PageSize).Take(filtro.PageSize).ToList();
                 }
             }
@@ -291,10 +297,11 @@ namespace SO115App.Persistence.MongoDB
                     .OrderByDescending(c => c.Stato.Equals(Costanti.Chiamata) && c.Partenze.Count == 0)
                     .ThenByDescending(c => c.Stato.Equals(Costanti.Chiamata) && c.Partenze.Count > 0)
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaAssegnata))
+                    .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaSospesa))
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaPresidiata))
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaChiusa))
-                    .ThenByDescending(x => x.PrioritaRichiesta)
-                    .ThenByDescending(x => x.IstanteRicezioneRichiesta)
+                    //.ThenByDescending(x => x.PrioritaRichiesta)
+                    .ThenBy(x => x.IstanteRicezioneRichiesta)
                     .ToList();
         }
 
@@ -311,8 +318,8 @@ namespace SO115App.Persistence.MongoDB
             {
                 sintesi = _mapperSintesi.Map(richiesta);
                 //sintesi.CodEntiIntervenuti = rubrica.Count > 0 ? rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false) : null;
-                sintesi.Competenze = richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
-                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? richiesta.CodSOAllertate.ToArray().MapCompetenze(_getSedi) : null;
+                sintesi.Competenze = richiesta.Competenze;
+                sintesi.SediAllertate = richiesta.CodSOAllertate?.ToArray().MapCompetenze(_getSedi);
             }
 
             return sintesi;

@@ -71,9 +71,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             #endregion connessione al WSSignalR
 
             var SintesiRichiesta = _getSintesiById.GetSintesi(intervento.Chiamata.Codice);
-            intervento.Chiamata = SintesiRichiesta;
+            intervento.sintesiRichiesta = SintesiRichiesta;
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
+            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.sintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
 
             var listaInfoDaInviare = new List<InfoDaInviare>();
 

@@ -9,14 +9,14 @@ import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
 import { ActionRichiestaModalComponent } from '../action-richiesta-modal/action-richiesta-modal.component';
 import { ActionRichiesta, AllertaSede, ModificaStatoFonogramma } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { TrasferimentoChiamataModalComponent } from '../trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
-import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from '../../store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
+import { ClearFormTrasferimentoChiamata } from '../../store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../allerta-sede-modal/allerta-sede-modal.component';
 import { ModificaEntiModalComponent } from '../modifica-enti-modal/modifica-enti-modal.component';
 import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
 import { PatchEntiIntervenutiRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
-import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor, defineChiamataIntervento } from '../../helper/function-richieste';
+import { calcolaActionSuggeritaRichiesta, defineChiamataIntervento, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { EnteInterface } from '../../interface/ente.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
@@ -28,6 +28,8 @@ import { ListaMezziSganciamentoModalComponent } from '../lista-mezzi-sganciament
 import { VisualizzaDocumentoModalComponent } from '../visualizza-documento-modal/visualizza-documento-modal.component';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
+import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -39,12 +41,10 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     utente: Utente;
-
     @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
 
     richiesta: SintesiRichiesta;
-
-    statoRichiestaString: Array<StatoRichiestaActions>;
+    statoRichiestaString: StatoRichiestaActions[];
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
@@ -76,7 +76,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onSganciamentoMezzo(richiesta: SintesiRichiesta): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Sganciamento, this.richiesta.codice)) {
             let sganciamentoMezziModal;
             sganciamentoMezziModal = this.modalService.open(ListaMezziSganciamentoModalComponent, {
                 windowClass: 'xxlModal modal-holder',
@@ -84,12 +84,18 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 centered: true
             });
             sganciamentoMezziModal.componentInstance.richiesta = richiesta;
-            sganciamentoMezziModal.result.then(
-                (result: string) => {
+            const data = {
+                value: this.richiesta.codice,
+                type: TipoConcorrenzaEnum.Sganciamento
+            } as AddConcorrenzaDtoInterface;
+            this.store.dispatch(new AddConcorrenza([data]));
+            sganciamentoMezziModal.result.then((result: string) => {
+                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
                     if (result === 'ok') {
                         this.chiudiModalAzioniSintesi('ok');
                     }
                 }, (err: any) => {
+                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
                     console.error('Modal chiusa senza bottoni. Err ->', err);
                 }
             );
@@ -97,7 +103,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onClick(stato: StatoRichiestaActions): void {
-        if (!this.isLockedConcorrenza()) {
+        if (this.richiesta.stato === StatoRichiesta.Chiamata ? !this.isLockedConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, this.richiesta.codice) : !this.isLockedConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, this.richiesta.codice)) {
             const codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
             let modalConferma;
             const modalOptions = {
@@ -111,8 +117,18 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 case StatoRichiestaActions.Chiusa:
                     if (this.richiesta.stato === StatoRichiesta.Chiamata) {
                         modalOptions.size = 'xl';
+                        const data = {
+                            value: this.richiesta.codice,
+                            type: TipoConcorrenzaEnum.ChiusuraChiamata
+                        } as AddConcorrenzaDtoInterface;
+                        this.store.dispatch(new AddConcorrenza([data]));
                     } else {
                         modalOptions.size = 'lg';
+                        const data = {
+                            value: this.richiesta.codice,
+                            type: TipoConcorrenzaEnum.ChiusuraIntervento
+                        } as AddConcorrenzaDtoInterface;
+                        this.store.dispatch(new AddConcorrenza([data]));
                     }
                     break;
                 case StatoRichiestaActions.Sospesa:
@@ -157,8 +173,13 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 entiIntervenuti: null
             } as RichiestaActionInterface;
 
-            modalConferma.result.then(
-                (val) => {
+            modalConferma.result.then((val) => {
+                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, [this.richiesta.codice]));
+                    } else {
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, [this.richiesta.codice]));
+                    }
+
                     switch (val.esito) {
                         case 'ok':
                             richiestaAction.idRichiesta = this.richiesta.id;
@@ -170,13 +191,19 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                         case 'ko':
                             break;
                     }
+                }, () => {
+                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, [this.richiesta.codice]));
+                    } else {
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, [this.richiesta.codice]));
+                    }
                 }
             );
         }
     }
 
     onAddTrasferimentoChiamata(codiceRichiesta: string): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Trasferimento, this.richiesta.codice)) {
             let addTrasferimentoChiamataModal;
             addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
                 windowClass: 'modal-holder',
@@ -185,18 +212,22 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 size: 'lg'
             });
             addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
-            addTrasferimentoChiamataModal.result.then(
-                (result: { success: boolean }) => {
-                    if (result.success) {
-                        this.addTrasferimentoChiamata();
-                        this.modal.close({ status: 'ko' });
-                    } else if (!result.success) {
-                        this.store.dispatch(new ClearFormTrasferimentoChiamata());
-                        console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
-                    }
-                },
-                (err) => {
-                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
+            const data = {
+                value: this.richiesta.codice,
+                type: TipoConcorrenzaEnum.Trasferimento
+            } as AddConcorrenzaDtoInterface;
+            this.store.dispatch(new AddConcorrenza([data]));
+            addTrasferimentoChiamataModal.result.then((result: string) => {
+                    this.store.dispatch([
+                        new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
+                        new ClearFormTrasferimentoChiamata()
+                    ]);
+                    console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
+                }, (err) => {
+                    this.store.dispatch([
+                        new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
+                        new ClearFormTrasferimentoChiamata()
+                    ]);
                     console.error('Modal chiusa senza bottoni. Err ->', err);
                 }
             );
@@ -204,7 +235,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onAllertaSede(): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Allerta, this.richiesta.codice)) {
             let modalAllertaSede;
             modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
                 windowClass: 'modal-holder',
@@ -214,7 +245,13 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 keyboard: false,
             });
             modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
+            const data = {
+                value: this.richiesta.codice,
+                type: TipoConcorrenzaEnum.Allerta
+            } as AddConcorrenzaDtoInterface;
+            this.store.dispatch(new AddConcorrenza([data]));
             modalAllertaSede.result.then((res: { status: string, result: any }) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice]));
                 switch (res.status) {
                     case 'ok' :
                         this.store.dispatch(new AllertaSede(res.result));
@@ -222,7 +259,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                     case 'ko':
                         break;
                 }
-            });
+            }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice])));
         }
     }
 
@@ -251,7 +288,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onModificaEntiIntervenuti(): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.EntiIntervenuti, this.richiesta.codice)) {
             let modalModificaEntiIntervenuti;
             modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
                 windowClass: 'modal-holder',
@@ -276,7 +313,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     onModificaStatoFonogramma(): void {
-        if (!this.isLockedConcorrenza()) {
+        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Fonogramma, this.richiesta.codice)) {
             let modalModificaStatoFonogramma;
             modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
                 windowClass: 'modal-holder',
@@ -296,12 +333,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                         break;
                 }
             });
-        }
-    }
-
-    addTrasferimentoChiamata(): void {
-        if (!this.isLockedConcorrenza()) {
-            this.store.dispatch(new RequestAddTrasferimentoChiamata());
         }
     }
 
@@ -339,7 +370,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         return defineChiamataIntervento(codice, codiceRichiesta);
     }
 
-    isLockedConcorrenza(): string {
-        return this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Richiesta, [this.richiesta.codice]);
+    isLockedConcorrenza(type: TipoConcorrenzaEnum, value: string): string {
+        return this.lockedConcorrenzaService.getLockedConcorrenza(type, [value]);
     }
 }

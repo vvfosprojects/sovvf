@@ -5,6 +5,7 @@ import { ClockService } from '../../../features/navbar/clock/clock-service/clock
 import { Subscription } from 'rxjs';
 import { NgbTime } from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 import { makeCopy } from '../../helper/function-generiche';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-mezzo-actions-modal',
@@ -27,14 +28,17 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     navigation: 'select';
     outsideDays: 'visible';
 
+    action: string;
+    modificaOrario: boolean;
     codicePartenza: string;
     title: string;
     titleStato: string;
     statoMezzo: string;
+    codiceMezzo: string;
     dataInViaggio: any;
 
     listaEventi: any;
-    ultimoMezzo = false;
+    ultimoMezzo: boolean;
 
     checkbox: { sospesa: boolean, chiusa: boolean, aperta: boolean } = {
         sospesa: true,
@@ -44,6 +48,8 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     azioneIntervento: string;
 
     nowDateInterval: any;
+
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     private subscriptions = new Subscription();
 
@@ -55,7 +61,6 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getClock();
-        this.checkUltimoMezzo();
     }
 
     ngOnDestroy(): void {
@@ -116,7 +121,8 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
                 this.time.minute = d.getMinutes();
                 this.time.second = d.getSeconds();
             } else if (this.dataInViaggio) {
-                this.time.hour = (+this.dataInViaggio.ora) + 1;
+                console.log('this.dataInViaggio', this.dataInViaggio);
+                this.time.hour = (+this.dataInViaggio.ora) + 2;
                 this.time.minute = +this.dataInViaggio.minuti;
                 this.time.second = 0;
                 this.todayDate = {
@@ -198,20 +204,6 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
         return text;
     }
 
-    checkUltimoMezzo(): void {
-        const mezziEventi = [];
-        this.listaEventi.forEach(x => mezziEventi.push(x.codiceMezzo));
-        // Trovo storico mezzi di quella partenza
-        const singleValue = Array.from(new Set(mezziEventi));
-        // Rimuovo mezzi già rientrati
-        const mezziRientrati = [];
-        singleValue.forEach(x => this.listaEventi.filter(y => y.codiceMezzo === x).reduce((a, e) => !a ? e : (new Date(a.ora) > new Date(e.ora) ? a : e)).stato === 'Rientrato' ? mezziRientrati.push(x) : null);
-        // Attivo la checkbox per ultimo mezzo
-        if (singleValue.length - mezziRientrati.length === 1) {
-            this.ultimoMezzo = true;
-        }
-    }
-
     onSubmit(): void {
         this.submitted = true;
 
@@ -229,7 +221,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
             return { oraEvento, dataEvento, azioneIntervento: this.azioneIntervento, codicePartenza: this.codicePartenza };
         } else {
             this.time.second = this.f?.nowDate.value.getSeconds();
-            return { oraEvento: this.time, dataEvento: this.todayDate, azioneIntervento: this.azioneIntervento, codicePartenza: this.codicePartenza };
+            return { oraEvento: this.time, dataEvento: this.todayDate, azioneIntervento: this.azioneIntervento, codicePartenza: this.codicePartenza, modificaOrario: !!this.modificaOrario };
         }
     }
 }

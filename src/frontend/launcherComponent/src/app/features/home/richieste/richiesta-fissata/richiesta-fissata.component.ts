@@ -24,10 +24,11 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     // Permessi
     @Input() disabledModificaRichiesta: boolean;
-    @Input() disabledGestisciRichiesta: boolean;
     @Input() disabledComposizionePartenza: boolean;
+    @Input() disabledModificaStatoMezzo: boolean;
 
     @Input() loadingActionRichiesta: string[];
+    @Input() loadingDettaglioSchedaContatto: string;
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();

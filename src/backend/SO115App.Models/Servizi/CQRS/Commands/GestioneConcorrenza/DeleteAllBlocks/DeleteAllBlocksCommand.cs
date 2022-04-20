@@ -1,5 +1,6 @@
 ﻿using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Concorrenza;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlocks
 {
@@ -12,5 +13,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlo
         public string IdOperatore { get; set; }
         public string CodiceSede { get; set; }
         public Utente utente { get; set; }
+        public List<string> listaSediDaAllertare { get; set; }
     }
 }

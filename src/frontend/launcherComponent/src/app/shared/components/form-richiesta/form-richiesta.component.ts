@@ -12,9 +12,14 @@ import { ClearClipboard } from '../../../features/home/store/actions/form-richie
 import {
     ClearCompetenze,
     ClearCountInterventiProssimita,
+    ClearIdChiamata,
     ClearIdChiamataMarker,
     ClearInterventiProssimita,
+    ClearIstanteRicezioneRichiesta,
     ClearMarkerChiamata,
+    ClearOperatoreChiamata,
+    ClearPrioritaRichiesta,
+    ClearStatoChiamata,
     ReducerSchedaTelefonata,
     SetCompetenze,
     SetCompetenzeSuccess,
@@ -48,9 +53,7 @@ import {
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
 import { TriageSummary } from '../../interface/triage-summary.interface';
 import { ClearTriageSummary, SetSchedaContattoTriageSummary, SetTriageSummary } from '../../store/actions/triage-summary/triage-summary.actions';
-import { getPrioritaTriage } from '../../helper/function-triage';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
-import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
 import { ClearSchedaContattoTelefonata, OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { PosInterface } from '../../interface/pos.interface';
 import { TipoTerreno } from '../../model/tipo-terreno';
@@ -62,14 +65,23 @@ import { ListaTipologicheMezzi } from '../../../features/home/composizione-parte
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { TreeviewItem } from 'ngx-treeview';
 import { ItemTriageData } from '../../interface/item-triage-data.interface';
-import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import { EsriService } from '../../../features/maps/map-service/esri.service';
-import Point from '@arcgis/core/geometry/Point';
 import { SetCentroMappa } from '../../../features/maps/store/actions/centro-mappa.actions';
 import { CentroMappa } from '../../../features/maps/maps-model/centro-mappa.model';
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
+import { AppState } from '../../store/states/app/app.state';
+import { ChiamateMarkersState } from '../../../features/maps/store/states/chiamate-markers.state';
+import { HttpCancelService } from '../../../core/service/common/http-cancel.service';
+import { AuthState } from '../../../features/auth/store/auth.state';
+import { getPrioritaTriage } from '../../helper/function-triage';
+import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
+import { createChiamataMarker } from '../../helper/mappa/chiamata-marker';
+import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
+import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
+import Point from '@arcgis/core/geometry/Point';
 
 @Component({
     selector: 'app-form-richiesta',
@@ -94,8 +106,17 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Select(TriageChiamataModalState.dettagliTipologia) dettagliTipologia$: Observable<DettaglioTipologia[]>;
     dettagliTipologia: DettaglioTipologia[];
 
+    @Select(ChiamateMarkersState.loading) loadingChiamateMarkers$: Observable<boolean>;
+    loadingChiamateMarkers: boolean;
+
+    @Select(SchedaTelefonataState.formValid) formValid$: Observable<boolean>;
+    formValid: boolean;
     @Select(SchedaTelefonataState.loadingDettagliTipologia) loadingDettagliTipologia$: Observable<boolean>;
     loadingDettagliTipologia: boolean;
+    @Select(SchedaTelefonataState.loadingCountInterventiProssimita) loadingCountInterventiProssimita$: Observable<boolean>;
+    loadingCountInterventiProssimita: boolean;
+    @Select(SchedaTelefonataState.loadingInterventiProssimita) loadingInterventiProssimita$: Observable<boolean>;
+    loadingInterventiProssimita: boolean;
 
     @Select(TipologicheMezziState.tipologiche) tipologiche$: Observable<ListaTipologicheMezzi>;
     distaccamenti: TipologicaComposizionePartenza[];
@@ -113,7 +134,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Input() countInterventiChiusiStessoIndirizzo: number;
     @Input() interventiChiusiStessoIndirizzo: SintesiRichiesta[];
     @Input() enti: EnteInterface[];
-    @Input() disabledInviaPartenza = false;
+    @Input() disabledInviaPartenza: boolean;
     @Input() resetChiamata: boolean;
     @Input() loadingSchedaRichiesta: boolean;
     @Input() loadingCompetenze: boolean;
@@ -151,12 +172,17 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     constructor(private formBuilder: FormBuilder,
                 private store: Store,
                 private modalService: NgbModal,
-                private esriService: EsriService) {
+                private esriService: EsriService,
+                private httpCancelService: HttpCancelService) {
         this.store.dispatch(new StartChiamata());
         this.getIdChiamata();
         this.getScorciatoieTelefono();
         this.initForm();
+        this.getFormValid();
+        this.getLoadingChiamateMarkers();
         this.getLoadingDettagliTipologia();
+        this.getLoadingCountInterventiProssimita();
+        this.getLoadingInterventiProssimita();
         this.getDettagliTipologia();
         this.getTipologiche();
         this.getTriage();
@@ -189,7 +215,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 const richiestaModifica = changes.richiestaModifica.currentValue;
                 if (richiestaModifica) {
                     const data = {
-                        type: TipoConcorrenzaEnum.Richiesta,
+                        type: TipoConcorrenzaEnum.Modifica,
                         value: richiestaModifica.codice
                     } as AddConcorrenzaDtoInterface;
                     this.store.dispatch(new AddConcorrenza([data]));
@@ -205,11 +231,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             }
             if (changes.schedaContattoDettaglio?.currentValue) {
                 this.f.noteNue.patchValue(this.schedaContattoDettaglio);
-            }
-            if (changes.competenze?.currentValue) {
-                if (this.f.indirizzo && this.f.latitudine && this.f.longitudine && !this.modifica) {
-                    this.selectCompetenzaAuto();
-                }
             }
             if (changes.loadingCompetenze?.currentValue !== null) {
                 if (this.f) {
@@ -235,7 +256,14 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.clearFormDisconnection();
 
         if (this.modifica) {
-            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Richiesta));
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Modifica, [this.richiestaModifica.codice]));
+            if (this.richiestaModifica.codiceSchedaNue) {
+                this.httpCancelService.cancelPendingRequests();
+            }
+        }
+
+        if (this.f.codSchedaContatto) {
+            this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.RegistrazioneSchedaContatto, [this.f.codSchedaContatto]));
         }
     }
 
@@ -275,7 +303,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     onChangeSchedaContatto(schedaContatto: SchedaContatto): void {
         if (schedaContatto?.codiceScheda) {
-            this.setSchedaContatto(schedaContatto);
+            if (!this.f?.codSchedaContatto?.value) {
+                this.setSchedaContatto(schedaContatto);
+            }
         }
         // Controllo scorciatoia numero da Scheda Contatto
         const telefono = schedaContatto.richiedente.telefono;
@@ -294,7 +324,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new ClearMarkerChiamata(),
             new ClearCompetenze(),
             new ClearCountInterventiProssimita(),
-            new ClearInterventiProssimita()
+            new ClearInterventiProssimita(),
+            new ClearIdChiamata(),
+            new ClearOperatoreChiamata(),
+            new ClearStatoChiamata(),
+            new ClearPrioritaRichiesta(),
+            new ClearIstanteRicezioneRichiesta()
         ]);
 
         if (this.richiestaModifica) {
@@ -312,10 +347,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             id: [null],
             codice: [null],
             codiceRichiesta: [null],
-            operatore: [null],
+            operatore: [null, [Validators.required]],
             codTipologia: [null, [Validators.required]],
             dettaglioTipologia: [null],
-            istanteRicezioneRichiesta: [null],
+            istanteRicezioneRichiesta: [null, [Validators.required]],
             nominativo: [null, [Validators.required]],
             telefono: [null, [Validators.required]], // Inserire se necessario => Validators.pattern('^(\\+?)[0-9]+$')
             indirizzo: [null, [Validators.required]],
@@ -327,9 +362,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             civico: [null],
             competenze: [null],
             codCompetenzaCentrale: [null],
-            codPrimaCompetenza: [{ value: null, disabled: true }],
-            codSecondaCompetenza: [{ value: null, disabled: true }],
-            codTerzaCompetenza: [{ value: null, disabled: true }],
+            codPrimaCompetenza: [null],
+            codSecondaCompetenza: [null],
+            codTerzaCompetenza: [null],
+            codPrimaCompetenzaManuale: [{ value: null, disabled: true }],
+            codSecondaCompetenzaManuale: [{ value: null, disabled: true }],
+            codTerzaCompetenzaManuale: [{ value: null, disabled: true }],
             codSchedaContatto: [{ value: null, disabled: true }],
             piano: [null],
             palazzo: [null],
@@ -348,7 +386,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             descrizione: [null],
             zoneEmergenza: [null],
             prioritaRichiesta: [null, [Validators.required]],
-            stato: [null],
+            stato: [null, [Validators.required]],
             urgenza: [null],
             esercitazione: [null],
             noteNue: [null]
@@ -356,6 +394,10 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     patchForm(): void {
+        let indirizzo = this.richiestaModifica?.localita?.indirizzo;
+        if (this.richiestaModifica?.localita?.provincia) {
+            indirizzo = indirizzo + ', ' + this.richiestaModifica?.localita?.provincia;
+        }
         this.richiestaForm.patchValue({
             id: this.richiestaModifica.id,
             codice: this.richiestaModifica.codice,
@@ -366,7 +408,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             istanteRicezioneRichiesta: this.richiestaModifica.istanteRicezioneRichiesta,
             nominativo: this.richiestaModifica.richiedente.nominativo,
             telefono: this.richiestaModifica.richiedente.telefono,
-            indirizzo: this.richiestaModifica.localita.indirizzo,
+            indirizzo,
             latitudine: this.richiestaModifica.localita.coordinate.latitudine,
             longitudine: this.richiestaModifica.localita.coordinate.longitudine,
             provincia: this.richiestaModifica.localita.provincia,
@@ -398,7 +440,19 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             noteNue: this.richiestaModifica.noteNue
         });
 
-        this.store.dispatch(new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice));
+        this.store.dispatch([
+            new GetDettagliTipologieByCodTipologia(+this.richiestaModifica.tipologie[0].codice),
+            new UpdateFormValue({
+                value: {
+                    stato: this.richiestaModifica.stato,
+                    codPrimaCompetenza: this.richiestaModifica.competenze?.length > 0 ? this.richiestaModifica.competenze[0]?.codice : null,
+                    codSecondaCompetenza: this.richiestaModifica.competenze?.length > 1 ? this.richiestaModifica.competenze[1]?.codice : null,
+                    codTerzaCompetenza: this.richiestaModifica.competenze?.length > 2 ? this.richiestaModifica.competenze[2]?.codice : null,
+                    esercitazione: this.richiestaModifica.esercitazione
+                },
+                path: 'schedaTelefonata.richiestaForm'
+            })
+        ]);
 
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono, true);
         this.pos = this.richiestaModifica?.dettaglioTipologia?.pos;
@@ -428,7 +482,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             clearTriageChiamataModalData(this.store);
         }
         this.pos = null;
-        if (codTipologia && !this.richiestaModifica) {
+        if (codTipologia) {
             // Prendo i dettagli tipologia
             this.store.dispatch(new GetDettagliTipologieByCodTipologia(+codTipologia));
         }
@@ -455,20 +509,46 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    clearTipologieSelezionate(): void {
-        this.f.codTipologia.patchValue(null);
-    }
-
     checkTipologie(): boolean {
         return !!(this.f.codTipologia.value);
+    }
+
+    getFormValid(): void {
+        this.subscription.add(
+            this.formValid$.subscribe((formValid: boolean) => {
+                this.formValid = formValid;
+            })
+        );
+    }
+
+    getLoadingChiamateMarkers(): void {
+        this.subscription.add(
+            this.loadingChiamateMarkers$.subscribe((loading: boolean) => {
+                this.loadingChiamateMarkers = loading;
+            })
+        );
     }
 
     getLoadingDettagliTipologia(): void {
         this.subscription.add(
             this.loadingDettagliTipologia$.subscribe((loading: boolean) => {
-                if (loading) {
-                    this.loadingDettagliTipologia = loading;
-                }
+                this.loadingDettagliTipologia = loading;
+            })
+        );
+    }
+
+    getLoadingCountInterventiProssimita(): void {
+        this.subscription.add(
+            this.loadingCountInterventiProssimita$.subscribe((loading: boolean) => {
+                this.loadingCountInterventiProssimita = loading;
+            })
+        );
+    }
+
+    getLoadingInterventiProssimita(): void {
+        this.subscription.add(
+            this.loadingInterventiProssimita$.subscribe((loading: boolean) => {
+                this.loadingInterventiProssimita = loading;
             })
         );
     }
@@ -563,8 +643,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 if (tipologiche?.distaccamenti?.length) {
                     this.distaccamenti = tipologiche.distaccamenti;
                     this.distaccamentiFiltered = makeCopy(this.distaccamenti);
-                    if (this.f?.codPrimaCompetenza?.disabled) {
-                        this.f.codPrimaCompetenza.enable();
+                    if (this.f?.codPrimaCompetenzaManuale?.disabled) {
+                        this.f.codPrimaCompetenzaManuale.enable();
                     }
                 }
             })
@@ -592,13 +672,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         const lat = roundToDecimal(candidateValue.candidate.location.latitude, 6);
         const lng = roundToDecimal(candidateValue.candidate.location.longitude, 6);
         const coordinate = new Coordinate(lat, lng);
-        this.chiamataMarker = new ChiamataMarker(
-            this.idChiamata,
-            `${this.operatore.nome} ${this.operatore.cognome}`,
-            `${this.operatore.sede.codice}`,
-            new Localita(coordinate ? coordinate : null, indirizzo),
-            null
-        );
+        const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+        const sedeSelezionata = sediSelezionate[0];
+        this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, indirizzo));
 
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(lat);
@@ -615,14 +691,28 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.regione.markAsDirty();
         this.f.civico.markAsDirty();
 
+        this.store.dispatch(new UpdateFormValue({
+            path: 'schedaTelefonata.richiestaForm',
+            value: {
+                provincia: candidateValue.candidateAttributes.Subregion,
+                cap: candidateValue.candidateAttributes.Postal,
+                regione: candidateValue.candidateAttributes.Region,
+                civico: candidateValue.candidateAttributes.AddNum
+            }
+        }));
+
         this.reducerSchedaTelefonata('cerca');
     }
 
-    setIndirizzoFromMappa(lat: number, lon: number, address: string, provincia: string, cap: string, regione: string, civico: string): void {
+    setIndirizzoFromMappa(lat: number, lon: number, indirizzo: string, provincia: string, cap: string, regione: string, civico: string): void {
         const latitudine = roundToDecimal(lat, 6);
         const longitudine = roundToDecimal(lon, 6);
+        const coordinate = new Coordinate(lat, lon);
+        const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+        const sedeSelezionata = sediSelezionate[0];
+        this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, indirizzo));
 
-        this.f.indirizzo.patchValue(address);
+        this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(latitudine);
         this.f.longitudine.patchValue(longitudine);
         this.f.provincia.patchValue(provincia);
@@ -633,14 +723,24 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.longitudine.disable();
         this.f.indirizzo.disable();
 
-        const coordinate = new Coordinate(lat, lon);
-        this.chiamataMarker = new ChiamataMarker(
-            this.idChiamata,
-            `${this.operatore.nome} ${this.operatore.cognome}`,
-            `${this.operatore.sede.codice}`,
-            new Localita(coordinate ? coordinate : null, address),
-            null
-        );
+        const currentUser = this.store.selectSnapshot(AuthState.currentUser);
+        this.store.dispatch(new UpdateFormValue({
+            path: 'schedaTelefonata.richiestaForm',
+            value: {
+                operatore: currentUser,
+                stato: StatoRichiesta.Chiamata,
+                istanteRicezioneRichiesta: new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]),
+                rilevanzaGrave: false,
+                rilevanzaStArCu: false,
+                prioritaRichiesta: 3,
+                urgenza: false,
+                esercitazione: false,
+                provincia,
+                cap,
+                regione,
+                civico
+            }
+        }));
 
         this.reducerSchedaTelefonata('cerca');
     }
@@ -659,6 +759,16 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.cap.patchValue(candidateValue.candidateAttributes.Postal);
         this.f.regione.patchValue(candidateValue.candidateAttributes.Region);
         this.f.civico.patchValue(candidateValue.candidateAttributes.AddNum);
+
+        this.store.dispatch(new UpdateFormValue({
+            path: 'schedaTelefonata.richiestaForm',
+            value: {
+                provincia: candidateValue.candidateAttributes.Subregion,
+                cap: candidateValue.candidateAttributes.Postal,
+                regione: candidateValue.candidateAttributes.Region,
+                civico: candidateValue.candidateAttributes.AddNum
+            }
+        }));
 
         this.store.dispatch([
             new ModificaIndirizzo(nuovoIndirizzo),
@@ -679,6 +789,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.codPrimaCompetenza.patchValue(null);
             this.f.codSecondaCompetenza.patchValue(null);
             this.f.codTerzaCompetenza.patchValue(null);
+            this.f.codPrimaCompetenzaManuale.patchValue(null);
+            this.f.codSecondaCompetenzaManuale.patchValue(null);
+            this.f.codTerzaCompetenzaManuale.patchValue(null);
             this.f.latitudine.patchValue(null);
             this.f.longitudine.patchValue(null);
             this.f.provincia.patchValue(null);
@@ -727,13 +840,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             };
             this.esriService.getLocationToAddress(params).then((response: any) => {
                 if (!this.modifica) {
-                    this.chiamataMarker = new ChiamataMarker(
-                        this.idChiamata,
-                        `${this.operatore.nome} ${this.operatore.cognome}`,
-                        `${this.operatore.sede.codice}`,
-                        new Localita(coordinate ? coordinate : null, indirizzo),
-                        null
-                    );
+                    const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+                    const sedeSelezionata = sediSelezionate[0];
+                    this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, indirizzo));
                     this.store.dispatch(new SetCompetenze(coordinate, indirizzo, this.chiamataMarker));
                 } else {
                     const newCentroMappa = {
@@ -766,99 +875,80 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.codPrimaCompetenza.patchValue(null);
             this.f.codSecondaCompetenza.patchValue(null);
             this.f.codTerzaCompetenza.patchValue(null);
+            this.f.codPrimaCompetenzaManuale.patchValue(null);
+            this.f.codSecondaCompetenzaManuale.patchValue(null);
+            this.f.codTerzaCompetenzaManuale.patchValue(null);
         }
     }
 
-    // TODO: controllare utilizzo effettivo
-    /* onShowInterventiProssimita(): void {
-        let modalInterventiProssimita;
-        modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'xl',
-        });
-        modalInterventiProssimita.componentInstance.listaEnti = this.enti;
-        modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiProssimita;
-        modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiProssimita;
-        modalInterventiProssimita.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        console.log('Test Ok');
-                        break;
-                    case 'ko':
-                        console.log('Azione annullata');
-                        break;
-                }
-                console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
-    } */
-
-    selectCompetenzaAuto(): void {
-        const coordinate = {
-            latitudine: this.f.latitudine?.value,
-            longitudine: this.f.longitudine?.value
-        };
-        const competenzaCentrale = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id.split('.')[1]?.indexOf('1000') !== -1)[0].codSede;
-        if (competenzaCentrale) {
-            const codCompetenze = [competenzaCentrale];
-            this.f.codCompetenzaCentrale.patchValue(competenzaCentrale);
-            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
+    detectCompetenzeFuoriComando(): boolean {
+        let comandoCompetenza: string;
+        const codPrimaCompetenza = this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codPrimaCompetenza;
+        if (codPrimaCompetenza) {
+            comandoCompetenza = codPrimaCompetenza.split('.')[0];
         }
+        const codCompetenzaCentrale = this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codCompetenzaCentrale;
+        if (codCompetenzaCentrale) {
+            comandoCompetenza = codCompetenzaCentrale.split('.')[0];
+        }
+
+        const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+        let comandoSelezionato: string;
+        if (sediSelezionate?.length) {
+            comandoSelezionato = sediSelezionate[0].split('.')[0];
+        }
+        return (comandoCompetenza && comandoSelezionato) && comandoCompetenza !== comandoSelezionato;
     }
 
     onSelectCompetenza(nCompetenza: number, codCompetenza: string): void {
         switch (nCompetenza) {
             case 1:
                 if (codCompetenza) {
-                    if (this.f.codSecondaCompetenza.disabled) {
-                        this.f.codSecondaCompetenza.enable();
+                    if (this.f.codSecondaCompetenzaManuale.disabled) {
+                        this.f.codSecondaCompetenzaManuale.enable();
                     }
                 } else {
-                    if (this.f.codSecondaCompetenza.enabled) {
-                        this.f.codSecondaCompetenza.patchValue(null);
-                        this.f.codSecondaCompetenza.disable();
+                    if (this.f.codSecondaCompetenzaManuale.enabled) {
+                        this.f.codSecondaCompetenzaManuale.patchValue(null);
+                        this.f.codSecondaCompetenzaManuale.disable();
                     }
-                    if (this.f.codTerzaCompetenza.enabled) {
-                        this.f.codTerzaCompetenza.patchValue(null);
-                        this.f.codTerzaCompetenza.disable();
+                    if (this.f.codTerzaCompetenzaManuale.enabled) {
+                        this.f.codTerzaCompetenzaManuale.patchValue(null);
+                        this.f.codTerzaCompetenzaManuale.disable();
                     }
                 }
                 break;
             case 2:
                 if (codCompetenza) {
-                    if (this.f.codTerzaCompetenza.disabled) {
-                        this.f.codTerzaCompetenza.enable();
+                    if (this.f.codTerzaCompetenzaManuale.disabled) {
+                        this.f.codTerzaCompetenzaManuale.enable();
                     }
                 } else {
-                    if (this.f.codTerzaCompetenza.enabled) {
-                        this.f.codTerzaCompetenza.patchValue(null);
-                        this.f.codTerzaCompetenza.disable();
+                    if (this.f.codTerzaCompetenzaManuale.enabled) {
+                        this.f.codTerzaCompetenzaManuale.patchValue(null);
+                        this.f.codTerzaCompetenzaManuale.disable();
                     }
                 }
                 break;
         }
-        this.distaccamentiFiltered = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id !== this.f.codPrimaCompetenza.value && d.id !== this.f.codSecondaCompetenza.value && d.id !== this.f.codTerzaCompetenza.value);
+        this.distaccamentiFiltered = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id !== this.f.codPrimaCompetenzaManuale.value && d.id !== this.f.codSecondaCompetenzaManuale.value && d.id !== this.f.codTerzaCompetenzaManuale.value);
 
         if (codCompetenza) {
             const codCompetenze = [];
-            if (this.f.codPrimaCompetenza?.value) {
-                codCompetenze.push(this.f.codPrimaCompetenza?.value);
+            if (this.f.codPrimaCompetenzaManuale?.value) {
+                codCompetenze.push(this.f.codPrimaCompetenzaManuale?.value);
             }
             if (this.f.codSecondaCompetenza?.value) {
-                codCompetenze.push(this.f.codSecondaCompetenza?.value);
+                codCompetenze.push(this.f.codSecondaCompetenzaManuale?.value);
             }
             if (this.f.codTerzaCompetenza?.value) {
-                codCompetenze.push(this.f.codTerzaCompetenza?.value);
+                codCompetenze.push(this.f.codTerzaCompetenzaManuale?.value);
             }
             const coordinate = {
                 latitudine: this.f.latitudine?.value,
                 longitudine: this.f.longitudine?.value
             };
-            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker));
+            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker, { manualSelect: true }));
         }
     }
 
@@ -899,18 +989,15 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         triageModal.result.then((res: TriageModalResult) => {
             switch (res.type) {
                 case 'success':
-                    console.log('TriageModalResult', res);
                     if (res?.triageSummary?.length) {
                         saveTriageSummary(this.store, res.triageSummary);
                     }
                     break;
                 case 'dismiss':
-                    console.log('TriageModalResult', res);
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
                     break;
                 default:
-                    console.log('TriageModalResult: default');
                     resetPrioritaRichiesta(this.f);
                     clearTriageSummary(this.store);
                     break;
@@ -925,8 +1012,13 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     setSchedaContatto(scheda: SchedaContatto): void {
-        const f = this.f;
+        const data = {
+            type: TipoConcorrenzaEnum.RegistrazioneSchedaContatto,
+            value: scheda.codiceScheda
+        };
+        this.store.dispatch(new AddConcorrenza([data]));
 
+        const f = this.f;
         const latitude = +scheda.localita.coordinateString[0];
         const longitude = +scheda.localita.coordinateString[1];
         const locationPOI = new Point({
@@ -948,20 +1040,29 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             f.cap.patchValue(response.attributes.Postal);
             f.regione.patchValue(response.attributes.Region);
             f.civico.patchValue(response.attributes.AddNum);
+            this.store.dispatch(new UpdateFormValue({
+                path: 'schedaTelefonata.richiestaForm',
+                value: {
+                    provincia: response.attributes.Subregion,
+                    cap: response.attributes.Postal,
+                    regione: response.attributes.Region,
+                    civico: response.attributes.AddNum
+                }
+            }));
+
+            if (!this.richiestaModifica?.richiedente) {
+                f.nominativo.patchValue(scheda.richiedente?.nominativo);
+                f.telefono.patchValue(scheda.richiedente?.telefono);
+            }
+
+            if (!this.richiestaModifica) {
+                const coordinate = new Coordinate(latitude, longitude);
+                const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
+                const sedeSelezionata = sediSelezionate[0];
+                this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo));
+                this.reducerSchedaTelefonata('cerca');
+            }
         });
-
-        if (!this.richiestaModifica?.richiedente) {
-            f.nominativo.patchValue(scheda.richiedente?.nominativo);
-            f.telefono.patchValue(scheda.richiedente?.telefono);
-        }
-
-        if (!this.richiestaModifica) {
-            const coordinate = new Coordinate(latitude, longitude);
-            this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
-                new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo), null
-            );
-            this.reducerSchedaTelefonata('cerca');
-        }
     }
 
     checkInputPattern(event: any, type: string): void {
@@ -1094,16 +1195,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                         this.store.dispatch([
                             new SetFormSubmitted(false),
                             new ClearClipboard(),
+                            new ClearSchedaContattoTelefonata(),
                             new DelChiamataMarker(this.idChiamata)
                         ]);
-                        this.clearTipologieSelezionate();
                         this.reducerSchedaTelefonata('reset');
                         break;
-                    case 'ko':
-                        console.log('Azione annullata');
-                        break;
                 }
-                console.log('Modal chiusa con val ->', val);
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
@@ -1122,7 +1219,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     formIsInvalid(): boolean {
-        return !!(this.richiestaForm.invalid);
+        return !!(this.richiestaForm.invalid) || !this.formValid || this.loadingCompetenze || this.loadingChiamateMarkers || this.loadingCountInterventiProssimita || this.loadingInterventiProssimita;
     }
 
     checkSubmit(): boolean {

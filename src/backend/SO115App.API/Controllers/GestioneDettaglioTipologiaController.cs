@@ -42,6 +42,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce la lista dei dettagli tipoogia di un comando
         /// </summary>
         [HttpPost("Get")]
+        [ProducesResponseType(typeof(DettaglioTipologiaResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get([FromBody] DettaglioTipologiaQuery query)
         {
             try
@@ -53,7 +55,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else
                     return BadRequest(ex);
@@ -64,6 +66,8 @@ namespace SO115App.API.Controllers
         ///   Restituisce la lista dei dettagli tipoogia di una specifica tipologia
         /// </summary>
         [HttpGet("GetByIdTipologia")]
+        [ProducesResponseType(typeof(GetDettagliTipoligiaByIdTipologiaResult), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> GetByIdTipologia(int idTipologia)
         {
             try
@@ -78,7 +82,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else
                     return BadRequest(ex);
@@ -89,6 +93,8 @@ namespace SO115App.API.Controllers
         ///   Aggiunge un dettaglio tipologia associato ad una tipologia
         /// </summary>
         [HttpPost("Add")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Add(TipologiaDettaglio dettaglio)
         {
             try
@@ -106,7 +112,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else
                     return BadRequest(ex);
@@ -117,6 +123,8 @@ namespace SO115App.API.Controllers
         ///   Cancella un dettaglio tipologia associato ad una tipologia
         /// </summary>
         [HttpPost("Delete")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Delete([FromBody] TipologiaDettaglioDelete Dettaglio)
         {
             try
@@ -134,7 +142,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else
                     return BadRequest(ex);
@@ -145,6 +153,8 @@ namespace SO115App.API.Controllers
         ///   Modifica un dettaglio tipologia associato ad una tipologia
         /// </summary>
         [HttpPost("Modify")]
+        //
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Modify(TipologiaDettaglio dettaglio)
         {
             try
@@ -162,7 +172,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                Serilog.Log.Error(ex.Message); if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else
                     return BadRequest(ex);

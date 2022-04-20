@@ -27,9 +27,11 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -45,13 +47,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetUscitaMezzo _setUscitaMezzo;
         private readonly ISetRientroMezzo _setRientroMezzo;
         private readonly IGetTipologieByCodice _getTipologie;
+        private readonly IGetTurno _getTurno;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public UpdateStatoPartenzaExt(ISetStatoOperativoMezzo setStatoOperativoMezzo,
             ISetStatoSquadra setStatoSquadra, IUpDateRichiestaAssistenza upDateRichiesta,
-            ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo, IGetTipologieByCodice getTipologie)
+            ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo, IGetTipologieByCodice getTipologie,
+            IGetTurno getTurno)
         {
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
@@ -61,6 +65,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _setUscitaMezzo = setUscitaMezzo;
 
             _getTipologie = getTipologie;
+
+            _getTurno = getTurno;
         }
 
         /// <summary>
@@ -71,31 +77,22 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public void Update(AggiornaStatoMezzoCommand command)
         {
+            string turnoAttuale = _getTurno.Get().Codice.Substring(0, 1);
+
             _upDateRichiesta.UpDate(command.Richiesta);
 
             var codiceSedeMezzo = command.CodiciSede.First();
 
             if (CheckStatoMezzoCronologicamenteOk(command))
             {
-                _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
-
-                var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
-
-                foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
-                {
-                    foreach (var squadra in partenza.Partenza.Squadre)
-                    {
-                        _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, partenza.Partenza.Turno);
-                    }
-                }
-
                 var partenzaRientro = command.Richiesta.Partenze.Last(p => p.CodiceMezzo.Equals(command.IdMezzo));
+                var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
 
                 if (partenzaRientro.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                 {
                     var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodicePartenza.Equals(partenzaRientro.Partenza.Codice)).Istante;
 
-                    _setRientroMezzo.Set(new RientroGAC()
+                    Task.Run(() => _setRientroMezzo.Set(new RientroGAC()
                     {
                         targa = partenzaRientro.Partenza.Mezzo.Codice.Split('.')[1],
                         tipoMezzo = partenzaRientro.CodiceMezzo.Split('.')[0],
@@ -104,8 +101,20 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         dataIntervento = dataIntervento,
                         dataRientro = dataRientro,
                         autista = partenzaRientro.Partenza.Squadre.First().Membri.First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale
-                    });
+                    }));
                 }
+
+                _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
+
+                
+                    foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo && !c.Partenza.Terminata))
+                    {
+                        foreach (var squadra in partenza.Partenza.Squadre)
+                        {
+                            _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.Richiesta.CodRichiesta, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, turnoAttuale, squadra.Turno);
+                        }
+                    }
+                
             }
         }
 

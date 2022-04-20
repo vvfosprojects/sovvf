@@ -43,7 +43,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
 {
-    public class NotificationConfermaPartenze : IDeleteNotification
+    public class NotificationConfermaPartenze : INotificationConfermaPartenze
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
@@ -183,13 +183,13 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                             });
                         }
 
-                        foreach (var partenza in conferma.ConfermaPartenze.Partenze)
-                        {
-                            var counterCodaChiamate = new CounterNotifica()
-                            {
-                                codDistaccamento = partenza.Mezzo.Distaccamento.Codice,
-                                count = partenza.Squadre.Count
-                            };
+                    Parallel.ForEach(conferma.ConfermaPartenze.Partenze, partenza =>
+                   {
+                       var counterCodaChiamate = new CounterNotifica()
+                       {
+                           codDistaccamento = partenza.Mezzo.Distaccamento.Codice,
+                           count = partenza.Squadre.Count
+                       };
 
                             info.counterCodaChiamate = counterCodaChiamate;
                             //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);

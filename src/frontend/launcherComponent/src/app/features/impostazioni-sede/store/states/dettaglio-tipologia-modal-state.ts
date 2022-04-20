@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { DetttagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
+import { DettagliTipologieService } from '../../../../core/service/dettagli-tipologie/dettagli-tipologie.service';
 import { DeleteDettaglioTipologiaDto, DettaglioTipologiaDto, UpdateDettaglioTipologiaDto } from '../../../../shared/interface/dto/dettagli-tipologie/dettaglio-tipologia-dto.interface';
 import { ClearFormDettaglioTipologia, RequestAddDettaglioTipologia, RequestDeleteDettaglioTipologia, RequestUpdateDettaglioTipologia } from '../actions/dettaglio-tipologia-modal.actions';
 
@@ -46,7 +46,7 @@ export class DettaglioTipologiaModalState {
     }
 
     constructor(private store: Store,
-                private detttagliTipologieService: DetttagliTipologieService) {
+                private detttagliTipologieService: DettagliTipologieService) {
     }
 
     @Action(RequestAddDettaglioTipologia)

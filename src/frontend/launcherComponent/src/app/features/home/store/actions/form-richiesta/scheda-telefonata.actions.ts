@@ -29,7 +29,7 @@ export class SetCompetenze {
 export class SetCompetenzeSuccess {
     static readonly type = '[SchedaTelefonata] Set Competenze Success';
 
-    constructor(public coordinate: Coordinate, public indirizzo: string, public codCompetenze: string[], public markerChiamata?: ChiamataMarker) {
+    constructor(public coordinate: Coordinate, public indirizzo: string, public codCompetenze: string[], public markerChiamata?: ChiamataMarker, public options?: { manualSelect?: boolean }) {
     }
 }
 
@@ -44,6 +44,14 @@ export class SetCountInterventiProssimita {
     }
 }
 
+export class StartLoadingCountInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Start Loading Count Interventi Vicinanze';
+}
+
+export class StopLoadingCountInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Stop Loading Count Interventi Vicinanze';
+}
+
 export class ClearCountInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Clear Count Interventi Vicinanze';
 }
@@ -53,6 +61,14 @@ export class SetInterventiProssimita {
 
     constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze: string[]) {
     }
+}
+
+export class StartLoadingInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Start Loading Interventi Vicinanze';
+}
+
+export class StopLoadingInterventiProssimita {
+    static readonly type = '[SchedaTelefonata] Stop Loading Interventi Vicinanze';
 }
 
 export class ClearInterventiProssimita {
@@ -116,6 +132,26 @@ export class CestinaChiamata {
 
     constructor(public options?: { bypassInitCentroMappa: boolean }) {
     }
+}
+
+export class ClearOperatoreChiamata {
+    static readonly type = '[SchedaTelefonata] Clear operatore chiamata';
+}
+
+export class ClearIdChiamata {
+    static readonly type = '[SchedaTelefonata] Clear id chiamata';
+}
+
+export class ClearStatoChiamata {
+    static readonly type = '[SchedaTelefonata] Clear stato chiamata';
+}
+
+export class ClearPrioritaRichiesta {
+    static readonly type = '[SchedaTelefonata] Clear priorità richiesta';
+}
+
+export class ClearIstanteRicezioneRichiesta {
+    static readonly type = '[SchedaTelefonata] Clear istante ricezione richiesta';
 }
 
 export class ResetChiamata {

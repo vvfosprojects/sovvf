@@ -1,14 +1,15 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PosInterface } from '../../../shared/interface/pos.interface';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { getDettagliTipologieFromListaTipologie, getTipologieFromListaTipologie } from 'src/app/shared/helper/function-pos';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-tabella-pos',
     templateUrl: './tabella-pos.component.html',
-    styleUrls: ['./tabella-pos.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./tabella-pos.component.css']
 })
 export class TabellaPosComponent {
 
@@ -28,7 +29,9 @@ export class TabellaPosComponent {
     @Output() editPos: EventEmitter<PosInterface> = new EventEmitter<PosInterface>();
     @Output() deletePos: EventEmitter<{ idPos: string, descrizionePos: string }> = new EventEmitter<{ idPos: string, descrizionePos: string }>();
 
-    constructor() {
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
+    constructor(private lockedConcorrenzaService: LockedConcorrenzaService) {
     }
 
     onViewPos(pos: PosInterface): void {
@@ -54,4 +57,18 @@ export class TabellaPosComponent {
     getDettagliTipologieFromListaTipologie(pos: PosInterface, dettagliTipologie: DettaglioTipologia[]): DettaglioTipologia[] {
         return getDettagliTipologieFromListaTipologie(pos, dettagliTipologie);
     }
+
+    getTooltipConcorrenzaText(idPos: string): string {
+        const modificaPosLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.ModificaPos, [idPos]);
+        const eliminaPosLocked = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.EliminaPos, [idPos]);
+        const allLocked = modificaPosLocked && eliminaPosLocked;
+        if (allLocked) {
+            return modificaPosLocked;
+        } else if (modificaPosLocked) {
+            return modificaPosLocked;
+        } else if (eliminaPosLocked) {
+            return eliminaPosLocked;
+        }
+    }
+
 }

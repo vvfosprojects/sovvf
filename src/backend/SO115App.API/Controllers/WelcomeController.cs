@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome;
+using SO115App.Models.Classi.Condivise;
 using System;
 using System.Threading.Tasks;
 
@@ -41,7 +42,9 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo di accesso a tutte le informazioni riguardanti il primo caricamento della Home Page
         /// </summary>
-        [HttpGet]
+        [HttpGet("")]
+        [ProducesResponseType(typeof(Welcome), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get()
         {
             var codiceSede = Request.Headers["CodiceSede"].ToString().Split(',');
@@ -60,6 +63,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                Serilog.Log.Error(ex.Message);
+
                 ex = ex.GetBaseException();
 
                 if (ex.Message.Contains("404"))

@@ -50,93 +50,146 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<List<SedeUC>> GetDirezioniProvinciali(string codSede = null)
         {
+            //var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(6));
+
             var baseurl = URLProvvisorio; //_config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
 
             List<SedeUC> result = null;
 
-            if (codSede != null)
-            {
-                var url = new Uri(baseurl + "/GetComandiProvinciali" + "?codSede=" + codSede);
-                _serviceDirezioni.SetCache(url.AbsoluteUri);
-                result = await _serviceDirezioni.GetAsync(url);
-            }
-            else
-            {
-                var url = new Uri(baseurl + "/GetComandiProvinciali");
-                _serviceDirezioni.SetCache(url.AbsoluteUri);
-                result = await _serviceDirezioni.GetAsync(url);
-            }
+            //if (!_memoryCache.TryGetValue("GetComandiProvinciali-" + codSede, out result))
+            //{
+                if (codSede != null)
+                {
+                    var url = new Uri(baseurl + "/GetComandiProvinciali" + "?codSede=" + codSede);
+                    _serviceDirezioni.SetCache(url.AbsoluteUri);
+                    result = await _serviceDirezioni.GetAsync(url);
+                    //_memoryCache.Set("GetComandiProvinciali-" + codSede, result, cacheEntryOptions);
+                }
+                else
+                {
+                    var url = new Uri(baseurl + "/GetComandiProvinciali");
+                    _serviceDirezioni.SetCache(url.AbsoluteUri);
+                    result = await _serviceDirezioni.GetAsync(url);
+                    //_memoryCache.Set("GetComandiProvinciali-" + codSede, result, cacheEntryOptions);
+                }
 
-            return result;
+                return result;
+            //}
+            //else
+            //    return result;
         }
 
         public async Task<List<SedeUC>> GetDirezioniRegionali(string codSede = null)
         {
-            var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
-            var url = new Uri(baseurl + "/GetDirezioniRegionali" + "?codSede=" + codSede);
+            //var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(6));
 
-            _serviceDirezioni.SetCache(url.AbsoluteUri);
+            List<SedeUC> lstSediRegionali = new List<SedeUC>();
 
-            var lstSediRegionali = await _serviceDirezioni.GetAsync(url);
+            //if (!_memoryCache.TryGetValue("GetDirezioniRegionali-" + codSede, out lstSediRegionali))
+            //{
+                var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+                var url = new Uri(baseurl + "/GetDirezioniRegionali" + "?codSede=" + codSede);
 
-            return lstSediRegionali;
+                _serviceDirezioni.SetCache(url.AbsoluteUri);
+
+                lstSediRegionali = await _serviceDirezioni.GetAsync(url);
+                //_memoryCache.Set("GetDirezioniRegionali-" + codSede, lstSediRegionali, cacheEntryOptions);
+                return lstSediRegionali;
+            //}
+            //else
+            //    return lstSediRegionali;
         }
 
         public async Task<List<SedeUC>> GetFigli(string codSede = null)
         {
-            var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
-            var url = new Uri(baseurl + "/GetChildSede" + "?codSede=" + codSede);
 
-            _serviceDirezioni.SetCache(url.AbsoluteUri);
+            //var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(6));
 
-            var lstFigli = await _serviceDirezioni.GetAsync(url);
+            List<SedeUC> lstFigli = new List<SedeUC>();
 
-            return lstFigli.Where(f => f.tipologiaDistaccamento.codice != "14" && f.tipologiaDistaccamento.codice != "9").ToList();
+            //if (!_memoryCache.TryGetValue("GetChildSede-" + codSede, out lstFigli))
+            //{
+                var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+                var url = new Uri(baseurl + "/GetChildSede" + "?codSede=" + codSede);
+
+                _serviceDirezioni.SetCache(url.AbsoluteUri);
+
+                lstFigli = await _serviceDirezioni.GetAsync(url);
+                //_memoryCache.Set("GetChildSede-" + codSede, lstFigli, cacheEntryOptions);
+
+                return lstFigli.Where(f => f.tipologiaDistaccamento.codice != "14" && f.tipologiaDistaccamento.codice != "9").ToList();
+            //}
+            //else
+            //    return lstFigli;
+
         }
 
         public async Task<DistaccamentoUC> GetInfoSede(string codSede)
         {
-            try
-            {
-                var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
-                var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
+            //var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(6));
 
-                _serviceSedi.SetCache(codSede);
+            DistaccamentoUC sede = new DistaccamentoUC();
 
-                var sede = _serviceSedi.GetAsync(url).Result;
+            //if (!_memoryCache.TryGetValue("GetInfoSede-" + codSede, out sede))
+            //{
+                //try
+                //{
+                    var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+                    var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
 
-                if (sede == null)
-                    return get(codSede);
+                    _serviceSedi.SetCache(url.AbsoluteUri);
 
-                return sede;
-            }
-            catch (Exception)
-            {
-                return get(codSede);
-            }
+                    sede = _serviceSedi.GetAsync(url).Result;
+
+                    if (sede == null)
+                        sede = get(codSede);
+
+                    //_memoryCache.Set("GetInfoSede-" + codSede, sede, cacheEntryOptions);
+                    return sede;
+
+                //}
+                //catch (Exception)
+                //{
+                //    sede = get(codSede);
+                //    _memoryCache.Set("GetInfoSede-" + codSede, sede, cacheEntryOptions);
+                //    return sede;
+                //}
+            //}
+            //else
+            //{
+            //    return sede;
+            //}
 
             DistaccamentoUC get(string codSede)
             {
-                var distaccamento = GetAll().Result.FirstOrDefault(s => s.Codice.Equals(codSede));
-
-                if (distaccamento == null)
-                    return null;
-
-                return new DistaccamentoUC()
+                //throw new NotImplementedException();
+                //return null;
+                try
                 {
-                    CodDistaccamento = distaccamento.Codice,
-                    Descrizione = distaccamento.Descrizione,
-                    coordinate = string.Join(", ", distaccamento.CoordinateString),
-                    Indirizzo = distaccamento.Indirizzo
-                };
+                    var distaccamento = GetAllOffLine().Result.FirstOrDefault(s => s.Codice.Equals(codSede));
+
+                    if (distaccamento == null) return null;
+
+                    return new DistaccamentoUC()
+                    {
+                        Id = distaccamento.Codice,
+                        CodDistaccamento = distaccamento.Codice,
+                        Descrizione = distaccamento.Descrizione,
+                        coordinate = distaccamento.CoordinateString != null ? string.Join(", ", distaccamento.CoordinateString) : "0,0",
+                        Indirizzo = distaccamento.Indirizzo != null ? distaccamento.Indirizzo : ""
+                    };
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
 
-        public async Task<List<Sede>> GetAll()
+        public async Task<List<Sede>> GetAllOffLine()
         {
             var result = new List<Sede>();
-
-            var lstSedi = ListaSediAlberata().Result;
+            var lstSedi = _getAllSediAlberate.GetSediAlberate();
 
             result.AddRange(lstSedi.Figli.Select(f => new Sede()
             {
@@ -161,6 +214,70 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Coordinate = ff.Coordinate,
                 Indirizzo = null
             }))));
+
+            return result.Distinct().ToList();
+        }
+
+        public async Task<List<Sede>> GetAll()
+        {
+            var result = new List<Sede>();
+
+            try
+            {
+                var lstSedi = ListaSediAlberata().Result;
+
+                result.AddRange(lstSedi.Figli.Select(f => new Sede()
+                {
+                    Codice = f.Codice,
+                    Descrizione = f.Nome,
+                    Coordinate = f.Coordinate,
+                    Indirizzo = null
+                }));
+
+                result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
+                {
+                    Codice = ff.Codice,
+                    Descrizione = ff.Nome,
+                    Coordinate = ff.Coordinate,
+                    Indirizzo = null
+                })));
+
+                result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
+                {
+                    Codice = ff.Codice,
+                    Descrizione = ff.Nome,
+                    Coordinate = ff.Coordinate,
+                    Indirizzo = null
+                }))));
+            }
+            catch (Exception)
+            {
+                var lstSedi = _getAllSediAlberate.GetSediAlberate();
+
+                result.AddRange(lstSedi.Figli.Select(f => new Sede()
+                {
+                    Codice = f.Codice,
+                    Descrizione = f.Nome,
+                    Coordinate = f.Coordinate,
+                    Indirizzo = null
+                }));
+
+                result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
+                {
+                    Codice = ff.Codice,
+                    Descrizione = ff.Nome,
+                    Coordinate = ff.Coordinate,
+                    Indirizzo = null
+                })));
+
+                result.AddRange(lstSedi.Figli.SelectMany(f => f.Figli.SelectMany(f => f.Figli.Select(ff => new Sede()
+                {
+                    Codice = ff.Codice,
+                    Descrizione = ff.Nome,
+                    Coordinate = ff.Coordinate,
+                    Indirizzo = null
+                }))));
+            }
 
             //result.AddRange(lstSedi.Figli.First().Figli.Select(f => new Sede()
             //{
@@ -196,7 +313,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             if (!_memoryCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
             {
                 //OTTENGO TUTTE LE SEDI, PER OGNI LIVELLO
-
                 try
                 {
                     var lstRegionali = GetDirezioniRegionali().Result;
@@ -211,15 +327,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     var result = new UnitaOperativa(con.Id, con.Descrizione, con.Coordinate);
 
                     //REGIONI
-                    foreach (var regionale in lstRegionali)
+                    await Task.Run(() => Parallel.ForEach(lstRegionali, regionale =>
                     {
                         var info = GetInfoSede(regionale.id).Result;
+                        var unita = new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString())));
 
-                        result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString()))));
-                    };
-
-                    //PROVINCE
-                    foreach (var provinciale in lstProvinciali)
+                        lock ("unita") { result.AddFiglio(unita); }
+                    })).ContinueWith(res => Parallel.ForEach(lstProvinciali, provinciale =>
                     {
                         var info = GetInfoSede(provinciale.id).Result;
 
@@ -227,14 +341,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                         var lstComunali = new List<UnitaOperativa>();
 
-                        foreach (var comune in listaComuni)
+                        //COMUNI
+                        Parallel.ForEach(listaComuni, comune =>
                         {
                             if (comune.coordinate.Trim().Length > 0)
                             {
                                 try
                                 {
                                     var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',')[0].ToString()), Convert.ToDouble(comune.coordinate.Split(',')[1].ToString())));
-                                    lstComunali.Add(unita);
+                                    lock ("comune") { lstComunali.Add(unita); }
                                 }
                                 catch
                                 {
@@ -242,21 +357,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                                     {
                                         comune.coordinate = comune.DmsToDdString(comune.coordinate);
                                         var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',')[0].ToString()), Convert.ToDouble(comune.coordinate.Split(',')[1].ToString())));
-                                        lstComunali.Add(unita);
+                                        lock ("comune") { lstComunali.Add(unita); }
                                     }
                                 }
                             }
                             else
                             {
                                 var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(0, 0));
-                                lstComunali.Add(unita);
+                                lock ("comune") { lstComunali.Add(unita); }
                             }
-                        }
+                        });
+
                         var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
 
                         if (centrale != null)
                         {
-                            lstComunali.Remove(centrale);
+                            lock ("comune") { lstComunali.Remove(centrale); }
 
                             try
                             {
@@ -264,14 +380,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                                 {
                                     var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',')[0].ToString()), Convert.ToDouble(info.coordinate.Split(',')[1].ToString())));
 
-                                    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+                                    lock ("comune") { lstComunali.ForEach(c => unitaComunali.AddFiglio(c)); }
 
-                                    result.Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
+                                    lock ("unita") { result.Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali); }
                                 }
                             }
-                            catch { }
+                            catch (Exception e)
+                            {
+                            }
                         }
-                    };
+                    }));
 
                     ListaSediAlberate = result;
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
