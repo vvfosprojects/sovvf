@@ -47,12 +47,19 @@
         <h6 class="text-danger">* Campi Obbligatori</h6>
     </div>
 </div>
-<div class="modal-footer" style="place-content: space-between;">
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            [disabled]="submitted"
+            (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
     <div class="d-inline-block"
          [ngbTooltip]="tooltipLockedConcorrenza"
          placement="right"
          [disableTooltip]="!(tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [f.codiceRichiesta?.value])">
-        <button type="button" class="btn btn-lg btn-danger btn-no-hover"
+        <button type="button"
+                class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
                 ngbTooltip="Riempi tutti i campi obbligatori"
                 [disableTooltip]="formValid"
                 [disabled]="!formValid || submitted || (tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [f.codiceRichiesta?.value])"
@@ -66,12 +73,6 @@
             </ng-container>
         </button>
     </div>
-    <button type="button"
-            class="btn btn-lg btn-secondary btn-no-hover"
-            [disabled]="submitted"
-            (click)="closeModal('ko')">
-        {{ 'Annulla' | uppercase }}
-    </button>
 </div>
 
 <ng-template #tooltipLockedConcorrenza>
