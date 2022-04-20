@@ -183,21 +183,21 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                             });
                         }
 
-                    Parallel.ForEach(conferma.ConfermaPartenze.Partenze, partenza =>
-                   {
-                       var counterCodaChiamate = new CounterNotifica()
-                       {
-                           codDistaccamento = partenza.Mezzo.Distaccamento.Codice,
-                           count = partenza.Squadre.Count
-                       };
+                        Parallel.ForEach(conferma.ConfermaPartenze.Partenze, partenza =>
+                        {
+                            var counterCodaChiamate = new CounterNotifica()
+                            {
+                                codDistaccamento = partenza.Mezzo.Distaccamento.Codice,
+                                count = partenza.Squadre.Count
+                            };
 
                             info.counterCodaChiamate = counterCodaChiamate;
                             //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
                             //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
-                        }
-                    }
+                        });
 
-                    listaInfoDaSperide.Add(info);
+                        listaInfoDaSperide.Add(info);
+                    }
                 });
 
                 foreach (var info in listaInfoDaSperide)
