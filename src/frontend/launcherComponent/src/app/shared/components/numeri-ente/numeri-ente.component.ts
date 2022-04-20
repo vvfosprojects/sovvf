@@ -10,6 +10,7 @@ import { EnteTelefono } from '../../interface/ente.interface';
 export class NumeriEnteComponent {
 
     @Input() telefoni: EnteTelefono[];
+    @Input() nightMode: boolean;
 
     constructor() {
     }

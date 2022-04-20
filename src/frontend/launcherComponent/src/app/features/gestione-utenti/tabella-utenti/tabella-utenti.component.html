@@ -45,11 +45,18 @@
                             [class.border-bottom]="(i + 1) < utente.ruoli?.length">
                             <div class="clearfix">
                                 <div class="float-left mt-1">
-                                    <i class="far fa-clone mx-3"
-                                       [ngClass]="{'fa-clone': ruolo.ricorsivo, 'fa-square': !ruolo.ricorsivo}"
-                                       [ngbTooltip]="'In profondità'"
-                                       placement="top">
-                                    </i>
+                                    <ng-container *ngIf="ruolo.ricorsivo">
+                                        <i class="fas fa-level-down-alt mx-3"
+                                           [ngbTooltip]="'In profondità'"
+                                           placement="top">
+                                        </i>
+                                    </ng-container>
+                                    <ng-container *ngIf="!ruolo.ricorsivo">
+                                        <i class="fas fa-arrow-right mx-3"
+                                           [ngbTooltip]="'Non in profondità'"
+                                           placement="top">
+                                        </i>
+                                    </ng-container>
                                     <span class="font-weight-bolder mr-1">{{wipeRoleString(ruolo.descrizione)}}</span>
                                     di
                                     <span class="font-weight-bolder ml-1">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>

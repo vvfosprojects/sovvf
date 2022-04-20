@@ -8,6 +8,8 @@ import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interfa
 import { Role, Ruolo } from '../../../shared/model/utente.model';
 import { DistaccamentiState } from '../../../shared/store/states/distaccamenti/distaccamenti.state';
 import { Sede } from '../../../shared/model/sede.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
+import { makeCopy } from '../../../shared/helper/function-generiche';
 
 @Component({
     selector: 'app-gestione-utente-modal',
@@ -58,7 +60,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.addUtenteRuoloForm = this.fb.group({
             utente: [null, Validators.required],
             sedi: [null, Validators.required],
-            ricorsivo: [true],
+            ricorsivo: [true, Validators.required],
             ruolo: [null, Validators.required]
         });
         // Init disabled input
@@ -96,6 +98,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.listaUtentiVVF$.subscribe((listaUtentiVVF: UtenteVvfInterface[]) => {
                 this.addUtenteRuoloForm.reset();
+                this.f.ricorsivo.patchValue(true);
                 if (listaUtentiVVF?.length) {
                     this.listaUtentiVVF = listaUtentiVVF;
 
@@ -112,7 +115,11 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     getDistaccamenti(): void {
         this.subscription.add(
             this.distaccamenti$.subscribe((distaccamenti: Sede[]) => {
-                this.distaccamenti = distaccamenti;
+                this.distaccamenti = makeCopy(distaccamenti);
+                if (this.distaccamenti?.length) {
+                    const sedeCON = new Sede('00', 'CON', new Coordinate(42.221895, 13.169548), '', '', '', '');
+                    this.distaccamenti.push(sedeCON);
+                }
             })
         );
     }

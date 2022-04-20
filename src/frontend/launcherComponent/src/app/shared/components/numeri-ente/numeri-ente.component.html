@@ -35,8 +35,8 @@
             </button>
             <ng-template #tel>
                 <div *ngFor="let tel of telefoni">
-                    <div class="mt-1">
-                    <span class="font-weight-bolder ml-1">
+                    <div class="font-weight-bolder mt-1 ml-1"
+                         [class.text-light]="nightMode">
                         <i *ngIf="tel?.tipo === 'Fax'" class="fas fa-fax pr-2" ngbTooltip="Fax"></i>
                         <i *ngIf="tel?.tipo?.toLowerCase().startsWith('tel')" class="fas fa-phone-alt pr-2"
                            ngbTooltip="Telefono"></i>
@@ -44,7 +44,6 @@
                            href="{{'tel:+39'+ tel?.numero}}">
                             {{ tel?.numero }}
                         </a>
-                    </span>
                     </div>
                 </div>
             </ng-template>
