@@ -53,30 +53,29 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
 
             if (codiceSede.Length > 0)
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede)).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata).ToList();
             else
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata).ToList();
 
-            var ListaSchedeRaggruppate = listaSchedeContatto;
+            //var ListaSchedeRaggruppate = listaSchedeContatto;
 
-            var ListaSchedefiltrata = new List<SchedaContatto>();
+            //var ListaSchedefiltrata = new List<SchedaContatto>();
 
-            Parallel.ForEach(listaSchedeContatto, scheda =>
-            {
-               if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-               {
-                   ListaSchedefiltrata.Add(scheda);
-               }
-               else
-               {
-                   var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
-                   if (!schedaRaggruppata.Collegata)
-                       ListaSchedefiltrata.Add(schedaRaggruppata);
-               }
-            });
+            //Parallel.ForEach(listaSchedeContatto, scheda =>
+            //{
+            //    if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
+            //    {
+            //        ListaSchedefiltrata.Add(scheda);
+            //    }
+            //    else
+            //    {
+            //        var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
+            //        if (!schedaRaggruppata.Collegata)
+            //            ListaSchedefiltrata.Add(schedaRaggruppata);
+            //    }
+            //});
 
-            return ListaSchedefiltrata;
-
+            return listaSchedeContatto;
         }
     }
 }
