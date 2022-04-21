@@ -34,12 +34,14 @@
         </div>
     </form>
 </div>
-<div class="modal-footer" style="place-content: space-between">
-    <button class="btn btn-lg btn-danger btn-no-hover" style="font-weight:600" [disabled]="!eliminaPartenzaForm.valid"
-            (click)="onSubmit()">
-      {{ 'Elimina Partenza' | uppercase }}
-    </button>
-    <button class="btn btn-lg btn-secondary btn-no-hover" style="font-weight:600" (click)="onCancel()">
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="onCancel()">
         {{ 'Annulla' | uppercase }}
+    </button>
+    <button class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+            [disabled]="!eliminaPartenzaForm.valid"
+            (click)="onSubmit()">
+        {{ 'Elimina Partenza' | uppercase }}
     </button>
 </div>

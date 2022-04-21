@@ -108,25 +108,27 @@
     </ng-container>
 </div>
 
-<div class="modal-footer" style="place-content: space-between;">
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button type="button"
+            class="btn btn-secondary btn-no-hover font-weight-bolder"
+            [disabled]="loading"
+            (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
     <ng-container *ngIf="!loading">
         <button type="button"
-                class="btn btn-danger btn-no-hover font-xxlarge"
+                class="btn btn-danger btn-no-hover font-weight-bolder"
                 [disabled]="!valid || checkInvalidTimeSequenze()"
                 (click)="onConferma()">
             {{ 'Salva Modifiche' | uppercase }}
         </button>
     </ng-container>
     <ng-container *ngIf="loading">
-        <button type="button" class="btn btn-success btn-no-hover font-xxlarge"
+        <button type="button"
+                class="btn btn-success btn-no-hover font-weight-bolder"
                 [disabled]="true">
             <i class="fas fa-spin fa-spinner mr-1"></i>
             {{ 'Salvataggio Modifiche' | uppercase }}
         </button>
     </ng-container>
-    <button type="button" class="btn btn-secondary btn-no-hover font-xxlarge"
-            [disabled]="loading"
-            (click)="closeModal('ko')">
-        {{ 'Annulla' | uppercase }}
-    </button>
 </div>

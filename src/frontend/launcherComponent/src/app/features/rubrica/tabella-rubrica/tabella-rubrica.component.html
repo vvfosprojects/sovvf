@@ -39,7 +39,8 @@
                 [class.p-0]="voce?.telefoni?.length"
                 style="width:20%">
                 <ng-container *ngIf="voce?.telefoni?.length">
-                    <app-numeri-ente [telefoni]="voce?.telefoni">
+                    <app-numeri-ente [telefoni]="voce?.telefoni"
+                                     [nightMode]="nightMode">
                     </app-numeri-ente>
                 </ng-container>
                 <ng-container *ngIf="!voce?.telefoni?.length">
@@ -80,10 +81,18 @@
                             Non presente
                         </small>
                     </ng-container>
-                    <i class="mx-3 fas"
-                       [class.fa-level-down-alt]="voce.ricorsivo"
-                       [ngbTooltip]="'In profondità'"
-                       placement="top"></i>
+                    <ng-container *ngIf="voce.ricorsivo">
+                        <i class="mx-3 fas fa-level-down-alt"
+                           [ngbTooltip]="'In profondità'"
+                           placement="left">
+                        </i>
+                    </ng-container>
+                    <ng-container *ngIf="!voce.ricorsivo">
+                        <i class="mx-3 fas fa-arrow-left"
+                           [ngbTooltip]="'Non in profondità'"
+                           placement="left">
+                        </i>
+                    </ng-container>
                 </div>
             </td>
         </tr>

@@ -20,7 +20,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
-import { Utente } from '../../../../../shared/model/utente.model';
+import { Ruolo, Utente } from '../../../../../shared/model/utente.model';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -149,10 +149,16 @@ export class GestioneUtentiState {
                 pageSize: this.store.selectSnapshot(PaginationState.pageSize)
             };
             this.gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
+                    let listaSediPresentiUnique = [];
+                    if (response?.listaSediPresenti?.length) {
+                        listaSediPresentiUnique = [
+                            ...new Map(response.listaSediPresenti.map((ruolo: Ruolo) => [ruolo.codSede, ruolo])).values(),
+                        ];
+                    }
                     dispatch([
                         new SetUtentiGestione(response.dataArray),
                         new PatchPagination(response.pagination),
-                        new SetSediFiltro(response.listaSediPresenti),
+                        new SetSediFiltro(listaSediPresentiUnique),
                         new StopLoadingGestioneUtenti()
                     ]);
                 },

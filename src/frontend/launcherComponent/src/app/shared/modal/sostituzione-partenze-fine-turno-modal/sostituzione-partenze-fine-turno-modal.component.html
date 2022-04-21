@@ -119,11 +119,15 @@
         </div>
     </div>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="closeModal('ko')">
         {{ 'Annulla' | uppercase }}
     </button>
-    <button type="button" class="btn btn-lg btn-danger btn-no-hover" (click)="onConferma()"
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+            (click)="onConferma()"
             [disabled]="disableButtonConferma">
         {{ 'Conferma' | uppercase }}
     </button>

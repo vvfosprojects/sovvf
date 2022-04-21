@@ -29,13 +29,15 @@
         </div>
     </ng-container>
 </div>
-<div class="modal-footer" style="place-content: space-between;">
-    <button type="button" class="btn  btn-lg btn-danger btn-no-hover"
-            style="font-weight:600" (click)="onSubmit('ok')">
-        {{ 'Conferma' | uppercase }}
-    </button>
-    <button type="button" class="btn btn-lg btn-secondary btn-no-hover"
-            style="font-weight:600" (click)="onSubmit('ko')">
+<div class="modal-footer d-flex align-items-center justify-content-end">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="onSubmit('ko')">
         {{ 'Annulla' | uppercase }}
+    </button>
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+            (click)="onSubmit('ok')">
+        {{ 'Conferma' | uppercase }}
     </button>
 </div>

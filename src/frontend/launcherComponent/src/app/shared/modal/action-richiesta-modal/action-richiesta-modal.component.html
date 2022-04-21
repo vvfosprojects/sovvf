@@ -104,14 +104,16 @@
         </div>
     </ng-container>
 </div>
-<div class="modal-footer" style="place-content: space-between;">
-    <button class="btn btn-lg btn-danger text-right btn-no-hover font-weight-bold"
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="close('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
             (click)="close('ok')"
             [disabled]="actionRichiestaForm && !actionRichiestaForm.valid">
         {{ 'Conferma' | uppercase }}
-    </button>
-    <button class="btn btn-lg btn-secondary text-right btn-no-hover font-weight-bold"
-            (click)="close('ko')">
-        {{ 'Annulla' | uppercase }}
     </button>
 </div>

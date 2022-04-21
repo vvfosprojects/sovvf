@@ -60,28 +60,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         {
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
             if (codiceSede.Length > 0)
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede)).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata).ToList();
             else
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata).ToList();
 
-            List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
+            //List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
 
-            var ListaSchedeRaggruppate = listaSchedeContatto;
-            Parallel.ForEach(listaSchedeContatto, scheda =>
-            {
-                if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-                {
-                    ListaSchedefiltrata.Add(scheda);
-                }
-                else
-                {
-                    var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
-                    if (!schedaRaggruppata.Collegata)
-                        ListaSchedefiltrata.Add(schedaRaggruppata);
-                }
-            });
+            //var ListaSchedeRaggruppate = listaSchedeContatto;
+            //Parallel.ForEach(listaSchedeContatto, scheda =>
+            //{
+            //    if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
+            //    {
+            //        ListaSchedefiltrata.Add(scheda);
+            //    }
+            //    else
+            //    {
+            //        var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
+            //        if (!schedaRaggruppata.Collegata)
+            //            ListaSchedefiltrata.Add(schedaRaggruppata);
+            //    }
+            //});
 
-            return ListaSchedefiltrata;
+            return listaSchedeContatto;
         }
 
         /// <summary>
@@ -222,7 +222,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre, string classificazione, string codiceSede)
         {
-            var listaSchedeFiltrate = GetList(codiceSede);
+
+            List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            if (codiceSede.Length > 0)
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata).ToList();
+            else
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata).ToList();
+
+            var listaSchedeFiltrate = listaSchedeContatto;
             if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero, codiceSede);
             if (!string.IsNullOrWhiteSpace(codiceFiscale)) listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.OperatoreChiamata.CodiceFiscale.Equals(codiceFiscale));
             if (gestita.HasValue) listaSchedeFiltrate = listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Gestita.Equals(gestita));
@@ -287,9 +294,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         {
             var listaSchede = new List<SchedaContatto>();
 
+            List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            if (codiciSede.Length > 0)
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiciSede[0]) && !s.Collegata).ToList();
+            else
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata).ToList();
+
             foreach (var sede in codiciSede)
             {
-                listaSchede.AddRange(GetSchede(sede));
+                listaSchede.AddRange(listaSchedeContatto);
             }
 
             var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza) && x.Collegata == false);
