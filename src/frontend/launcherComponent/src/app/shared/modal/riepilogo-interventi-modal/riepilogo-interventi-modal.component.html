@@ -180,14 +180,16 @@
     </div>
 </div>
 
-<div class="modal-footer" style="place-content: space-between;">
-    <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder" aria-label="Close"
-            (click)="chiudiRiepilogoInterventiModal('ok')">
-        {{ 'Stampa' | uppercase }}
-    </button>
-    <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" aria-label="Close"
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
             (click)="chiudiRiepilogoInterventiModal('ko')">
         {{ 'Chiudi' | uppercase }}
+    </button>
+    <button type="button"
+            class="btn btn-lg btn-success btn-no-hover font-weight-bolder"
+            (click)="chiudiRiepilogoInterventiModal('ok')">
+        {{ 'Stampa' | uppercase }}
     </button>
 </div>
 

@@ -157,15 +157,20 @@
         </div>
     </div>
     <div class="alert alert-info text-uppercase font-weight-bold mb-0" role="alert">Il
-        mezzo {{singolaPartenza?.partenza?.mezzo.descrizione}} {{singolaPartenza?.partenza?.mezzo.genere}} sarà annullato
+        mezzo {{singolaPartenza?.partenza?.mezzo.descrizione}} {{singolaPartenza?.partenza?.mezzo.genere}} sarà
+        annullato
         alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}.
     </div>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="closeModal('ko')">
         {{ 'Annulla' | uppercase }}
     </button>
-    <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+            ngbTooltip="Riempi tutti i campi obbligatori"
             [disableTooltip]="formValid"
             [disabled]="!formValid || !idMezzoSelezionato || !idSquadreSelezionate || idSquadreSelezionate?.length <= 0"
             (click)="onConferma()">

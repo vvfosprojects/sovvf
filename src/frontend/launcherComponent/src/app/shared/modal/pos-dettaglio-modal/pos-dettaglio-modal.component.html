@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title font-weight-bold">
-        {{ ('POS ' + titolo + codiceRichiesta ) | uppercase }}
+        {{ ('POS ' + titolo + codiceRichiesta) | uppercase }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onClose()">
@@ -29,8 +29,9 @@
         </div>
     </div>
 </div>
-<div class="modal-footer">
-    <button class="btn btn-lg btn-danger btn-no-hover text-right" style="font-weight:600" (click)="onClose()">
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+            (click)="onClose()">
         {{ 'Chiudi' | uppercase }}
     </button>
 </div>

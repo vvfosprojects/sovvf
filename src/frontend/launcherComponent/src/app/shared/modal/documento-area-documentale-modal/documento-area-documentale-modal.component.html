@@ -79,18 +79,18 @@
         <h6 class="text-danger">* Campi Obbligatori</h6>
     </div>
 </div>
-<div class="modal-footer" style="place-content: space-between;">
+<div class="modal-footer d-flex align-items-center justify-content-between">
     <button type="button"
-            class="btn btn-lg btn-danger btn-no-hover"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="closeModal()">
+        {{ 'Non salvare' | uppercase }}
+    </button>
+    <button type="button"
+            class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
             ngbTooltip="Riempi tutti i campi obbligatori"
             [disableTooltip]="formValid"
             [disabled]="!formValid"
             (click)="onConfirm()">
         {{ 'Salva' | uppercase }}
-    </button>
-    <button type="button"
-            class="btn btn-lg btn-secondary btn-no-hover"
-            (click)="closeModal()">
-        {{ 'Non salvare' | uppercase }}
     </button>
 </div>
