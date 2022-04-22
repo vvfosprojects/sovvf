@@ -450,7 +450,8 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     codPrimaCompetenza: this.richiestaModifica.competenze?.length > 0 ? this.richiestaModifica.competenze[0]?.codice : null,
                     codSecondaCompetenza: this.richiestaModifica.competenze?.length > 1 ? this.richiestaModifica.competenze[1]?.codice : null,
                     codTerzaCompetenza: this.richiestaModifica.competenze?.length > 2 ? this.richiestaModifica.competenze[2]?.codice : null,
-                    esercitazione: this.richiestaModifica.esercitazione
+                    esercitazione: this.richiestaModifica.esercitazione,
+                    prioritaRichiesta: this.richiestaModifica.prioritaRichiesta
                 },
                 path: 'schedaTelefonata.richiestaForm'
             })
