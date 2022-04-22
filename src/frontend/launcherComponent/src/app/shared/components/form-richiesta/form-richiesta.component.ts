@@ -160,12 +160,14 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     @Output() closeChiamataFromMappa: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-    chiamataMarker: ChiamataMarker;
     AzioneChiamataEnum = AzioneChiamataEnum;
     StatoRichiesta = StatoRichiesta;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+
     pos: PosInterface[];
 
     richiestaForm: FormGroup;
+    chiamataMarker: ChiamataMarker;
 
     private subscription = new Subscription();
 
