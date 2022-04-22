@@ -61,6 +61,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
             else
                 lista = result;
 
+            result = result.Where(s => s.DataInserimento > System.DateTime.UtcNow.AddDays(-1)).ToList();
+
             return new GetSchedeFiltrateResult()
             {
                 DataArray = lista.OrderByDescending(s => s.DataInserimento).ToList(),
