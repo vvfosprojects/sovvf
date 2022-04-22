@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza
 {
@@ -33,7 +34,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Notify(AnnullaStatoPartenzaCommand command)
         {
-            _sender.SendNotification(command);
+            Task.Run(() => _sender.SendNotification(command));
         }
     }
 }
