@@ -634,15 +634,20 @@
                                 placement="top">
                             Salva e Chiudi
                         </button>
-                        <button class="btn btn-primary btn-no-hover btn-xlarge btn-modifica"
-                                style="min-width: 100px; width: 400px"
-                                [disabled]="!richiestaModifica?.competenze?.length || richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid()"
-                                [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
-                                (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
-                                ngbTooltip="Invia Partenza"
-                                placement="top">
-                            Salva e Invia Partenza
-                        </button>
+                        <div class="d-inline-block btn-modifica"
+                             style="min-width: 100px; width: 400px"
+                             [ngbTooltip]="tooltipLockedConcorrenza"
+                             placement="right"
+                             [disableTooltip]="!(tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])">
+                            <button class="btn btn-primary btn-no-hover btn-block btn-xlarge"
+                                    [disabled]="!richiestaModifica?.competenze?.length || richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid() || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])"
+                                    [class.cursor-not-allowed]="disabledInviaPartenza || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])"
+                                    (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
+                                    ngbTooltip="Invia Partenza"
+                                    placement="top">
+                                Salva e Invia Partenza
+                            </button>
+                        </div>
                     </ng-template>
                 </div>
             </div>
@@ -677,3 +682,8 @@
         </div>
     </div>
 </div>
+
+<ng-template #tooltipLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice] }}
+</ng-template>
