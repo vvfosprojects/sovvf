@@ -45,11 +45,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Notify(AggiornaStatoMezzoCommand command)
         {
+            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
+
+            command.Chiamata = sintesi;
+
             _sender.SendNotification(command);
 
             Task.Run(() =>
             {
-                var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Richiesta.Codice);
                 var infoESRI = _mappingESRIMessage.Map(sintesi);
 
                 _notifyUpDateRichiesta.UpDate(infoESRI);

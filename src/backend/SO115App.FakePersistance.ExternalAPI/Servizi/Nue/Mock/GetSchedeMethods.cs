@@ -222,7 +222,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre, string classificazione, string codiceSede)
         {
-
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
             if (codiceSede.Length > 0)
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata).ToList();
@@ -300,20 +299,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             else
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata).ToList();
 
-            foreach (var sede in codiciSede)
-            {
-                listaSchede.AddRange(listaSchedeContatto);
-            }
-
-            var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza) && x.Collegata == false);
-            var listaSchedeConoscenza = listaSchede.FindAll(x => x.Classificazione.Equals(Conoscenza));
-            var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Deferibile));
+            var listaSchedeCompetenza = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Competenza));
+            var listaSchedeConoscenza = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Conoscenza));
+            var listaSchedeDifferibile = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Deferibile));
             return new InfoNue
             {
                 TotaleSchede = new ContatoreNue
                 {
-                    ContatoreTutte = listaSchede.Count,
-                    ContatoreDaGestire = listaSchede.FindAll(x => !x.Gestita).Count,
+                    ContatoreTutte = listaSchedeContatto.Count,
+                    ContatoreDaGestire = listaSchedeContatto.FindAll(x => !x.Gestita).Count,
                 },
                 CompetenzaSchede = new ContatoreNue
                 {
