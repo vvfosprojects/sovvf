@@ -2,8 +2,16 @@ export const ESRI_LAYERS_CONFIG = {
     layers: {
         mezzi: 'LOCALIZZAZIONE_MEZZI_VVF_0',
         schedeContatto: {
-            gestite: 'Gestita',
+            gestite: 'SchedeContatto - Gestita',
             nonGestite: 'SchedeContatto - Non Gestita'
+        },
+        schedeContattoTest: {
+            gestite: 'SchedeContatto Test - Gestita',
+            nonGestite: 'SchedeContatto Test - Non Gestita'
+        },
+        schedeContattoDemo: {
+            gestite: 'SchedeContatto Demo - Gestita',
+            nonGestite: 'SchedeContatto Demo - Non Gestita'
         },
         interventi: {
             aperti: 'Interventi - Aperti',
