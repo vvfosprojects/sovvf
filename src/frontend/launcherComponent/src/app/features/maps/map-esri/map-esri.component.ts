@@ -435,14 +435,14 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 case true:
                     setTimeout(() => {
                         this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, true).then();
-                    }, 1500);
+                    }, 2000);
                     break;
                 case false:
                     setTimeout(() => {
                         this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, false).then(() => {
                             this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.gestite, false).then();
                         });
-                    }, 1500);
+                    }, 2000);
                     break;
             }
         }
