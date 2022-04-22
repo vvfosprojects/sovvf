@@ -19,6 +19,7 @@ import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologi
 import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
+import { InsertChiamataTest } from '../store/actions/form-richiesta/scheda-telefonata.actions';
 
 @Component({
     selector: 'app-scheda-richiesta',
