@@ -434,15 +434,31 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             switch (schedeContattoActive) {
                 case true:
                     setTimeout(() => {
-                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, true).then();
-                    }, 2000);
+                        if (environment.productionTest) {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoTest.nonGestite, true).then();
+                        } else if (environment.productionDemo) {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoDemo.nonGestite, true).then();
+                        } else {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, true).then();
+                        }
+                    }, 1500);
                     break;
                 case false:
                     setTimeout(() => {
-                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, false).then(() => {
-                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.gestite, false).then();
-                        });
-                    }, 2000);
+                        if (environment.productionTest) {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoTest.nonGestite, false).then(() => {
+                                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoTest.gestite, false).then();
+                            });
+                        } else if (environment.productionDemo) {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoDemo.nonGestite, false).then(() => {
+                                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoDemo.gestite, false).then();
+                            });
+                        } else {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, false).then(() => {
+                                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.gestite, false).then();
+                            });
+                        }
+                    }, 1500);
                     break;
             }
         }
