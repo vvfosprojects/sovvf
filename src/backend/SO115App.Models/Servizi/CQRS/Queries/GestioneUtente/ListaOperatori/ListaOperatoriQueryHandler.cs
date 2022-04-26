@@ -115,7 +115,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
                 if (filtroSede.Contains(".1000")) // COMANDO
                 {
-                    if (ricorsivo.Value)
+                    if (ricorsivo!= null && ricorsivo.Value)
                     {
                         var lst = lstSediAll.Result
                             .Where(p => p.Codice.Contains($"{filtroSede.Split('.')[0]}.") && !listaSediPresenti.Any(sede => sede.CodSede.Equals(p.Codice)))
@@ -141,7 +141,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 }
                 else if (filtroSede.Equals("00")) // CON
                 {
-                    if (ricorsivo.Value)
+                    if (ricorsivo != null && ricorsivo.Value)
                         listaSediPresenti = lstSediAll.Result.Select(p => new Role("", p.Codice) { DescSede = p.Descrizione }).ToList();
                     else
                         listaSediPresenti = new List<Role> { lstSediAll.Result.Select(p => new Role("", p.Codice) { DescSede = p.Descrizione }).FirstOrDefault(s => s.CodSede.Equals(filtroSede)) };
@@ -157,7 +157,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
                     listaSediPresenti.AddRange(lst);
 
-                    if (ricorsivo.Value) //Aggiungo figli
+                    if (ricorsivo != null && ricorsivo.Value) //Aggiungo figli
                     {
                         foreach (var sede in lst)
                         {
