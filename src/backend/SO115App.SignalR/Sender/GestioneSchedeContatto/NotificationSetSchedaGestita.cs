@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
@@ -34,24 +36,36 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
         private readonly IGetConteggioSchede _getConteggioSchede;
         private readonly IGetSchedeContatto _getSchedeContatto;
+        private readonly IConfiguration _config;
 
         public NotificationSetSchedaGestita(
             IHubContext<NotificationHub> notificationHubContext,
             IGetConteggioSchede getConteggioSchede,
-            IGetSchedeContatto getSchedeContatto)
+            IGetSchedeContatto getSchedeContatto, IConfiguration config)
         {
             _notificationHubContext = notificationHubContext;
             _getConteggioSchede = getConteggioSchede;
             _getSchedeContatto = getSchedeContatto;
+            _config = config;
         }
 
         public async Task SendNotification(SetSchedaGestitaCommand command)
         {
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
             var schedaContattoUpdated = _getSchedeContatto.ListaSchedeContatto(command.CodiceSede).Find(x => x.CodiceScheda.Equals(command.Scheda.CodiceScheda));
             var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede });
 
-            await _notificationHubContext.Clients.All.SendAsync("NotifySetContatoriSchedeContatto", infoNue);
-            await _notificationHubContext.Clients.All.SendAsync("NotifyUpdateSchedaContatto", schedaContattoUpdated);
+            await hubConnection.StartAsync();
+            await hubConnection.InvokeAsync("NotifySetContatoriSchedeContatto", infoNue);
+            await hubConnection.InvokeAsync("NotifyUpdateSchedaContatto", schedaContattoUpdated);
+            await hubConnection.StopAsync();
         }
     }
 }

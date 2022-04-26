@@ -13,10 +13,15 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ListaMezziInServizio;
+using SO115App.Models.Classi.NotificheNavbar;
+using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.RubricaDTO;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.GestioneEntiIntervenuti;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.AddTriage;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.UpDateTriage;
 using System;
 using System.Collections.Generic;
 
@@ -287,5 +292,85 @@ namespace WSSignlR.Hubs
         }
 
         #endregion Partenza
+
+        #region Navbar
+
+        public void NotifyNavBar(Notifica notifica, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyNavBar", notifica);
+        }
+
+        #endregion Navbar
+
+        #region POS
+
+        public void NotifyAddPos(String messaggio, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyAddPos", messaggio);
+        }
+
+        #endregion POS
+
+        #region Utenti
+
+        public void NotifyModificatoRuoloUtente(String idutente, string sede)
+        {
+            Clients.All.SendAsync("NotifyModificatoRuoloUtente", idutente);
+        }
+
+        public void NotifyAddUtente(string sede)
+        {
+            Clients.All.SendAsync("NotifyAddUtente", sede);
+        }
+
+        public void NotifyDeleteUtente(string idUtente)
+        {
+            Clients.All.SendAsync("NotifyDeleteUtente", idUtente);
+        }
+
+        #endregion Utenti
+
+        #region Schede Contatto
+
+        public void NotifyGetContatoriSchedeContatto(InfoNue info)
+        {
+            Clients.All.SendAsync("NotifyGetContatoriSchedeContatto", info);
+        }
+
+        public void NotifySetContatoriSchedeContatto(InfoNue info)
+        {
+            Clients.All.SendAsync("NotifySetContatoriSchedeContatto", info);
+        }
+
+        public void NotifyUpdateSchedaContatto(SchedaContatto info)
+        {
+            Clients.All.SendAsync("NotifyUpdateSchedaContatto", info);
+        }
+
+        public void NotifyRemoveSchedeContatto(string[] listaCodiciSchede)
+        {
+            Clients.All.SendAsync("NotifyRemoveSchedeContatto", listaCodiciSchede);
+        }
+
+        public void NotifyInsertSchedeContatto(List<SchedaContatto> listaSchede)
+        {
+            Clients.All.SendAsync("NotifyInsertSchedeContatto", listaSchede);
+        }
+
+        #endregion Schede Contatto
+
+        #region Triege
+
+        public void NotifyAddTriage(AddTriageCommand messaggio, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyAddTriage", messaggio);
+        }
+
+        public void NotifyUpDateTriage(UpDateTriageCommand messaggio, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyUpDateTriage", messaggio);
+        }
+
+        #endregion Triege
     }
 }

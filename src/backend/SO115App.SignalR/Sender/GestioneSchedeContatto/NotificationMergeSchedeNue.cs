@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
@@ -32,25 +34,36 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IGetConteggioSchede _getConteggioSchede;
+        private readonly IConfiguration _config;
 
         public NotificationMergeSchedeNue(
             IHubContext<NotificationHub> notificationHubContext,
-            IGetConteggioSchede getConteggioSchede)
+            IGetConteggioSchede getConteggioSchede, IConfiguration config)
         {
             _notificationHubContext = notificationHubContext;
             _getConteggioSchede = getConteggioSchede;
+            _config = config;
         }
 
         public async Task SendNotification(MergeSchedeNueCommand command)
         {
-            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede });
-            await _notificationHubContext.Clients.All.SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
-            await _notificationHubContext.Clients.All.SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
+            #region connessione al WSSignalR
 
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
+            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede });
             var elencoCodiciSede = command.schedeSelezionateID.OfType<string>().ToList();
             var codiciSchedecollegate = elencoCodiciSede.Skip(1).ToArray();
 
-            await _notificationHubContext.Clients.All.SendAsync("NotifyRemoveSchedeContatto", codiciSchedecollegate);
+            await hubConnection.StartAsync();
+            await hubConnection.InvokeAsync("NotifyGetContatoriSchedeContatto", infoNue);
+            await hubConnection.InvokeAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
+            await hubConnection.InvokeAsync("NotifyRemoveSchedeContatto", codiciSchedecollegate);
+            await hubConnection.StopAsync();
         }
     }
 }

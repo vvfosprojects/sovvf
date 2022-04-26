@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
@@ -32,24 +34,37 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
     public class NotificationUndoMergeSchedeNue : INotificationUndoMergeSchedeNue
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly IConfiguration _config;
 
-        public NotificationUndoMergeSchedeNue(IHubContext<NotificationHub> notificationHubContext)
+        public NotificationUndoMergeSchedeNue(IHubContext<NotificationHub> notificationHubContext, IConfiguration config)
         {
             _notificationHubContext = notificationHubContext;
+            _config = config;
         }
 
         public async Task SendNotification(UndoMergeSchedeNueCommand command)
         {
+            #region connessione al WSSignalR
+
+            var hubConnection = new HubConnectionBuilder()
+                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+                        .Build();
+
+            #endregion connessione al WSSignalR
+
             var listaSchedeNueNonMergiate = new List<SchedaContatto>();
-            foreach (var schedafiglia in command.SchedaNue.Collegate)
+            Parallel.ForEach(command.SchedaNue.Collegate, schedafiglia =>
             {
                 schedafiglia.Collegata = false;
                 listaSchedeNueNonMergiate.Add(schedafiglia);
-            }
+            });
+
             command.SchedaNue.Collegate = null;
 
-            await _notificationHubContext.Clients.All.SendAsync("NotifyInsertSchedeContatto", listaSchedeNueNonMergiate);
-            await _notificationHubContext.Clients.All.SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
+            await hubConnection.StartAsync();
+            await hubConnection.InvokeAsync("NotifyInsertSchedeContatto", listaSchedeNueNonMergiate);
+            await hubConnection.InvokeAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
+            await hubConnection.StopAsync();
         }
     }
 }
