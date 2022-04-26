@@ -51,6 +51,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+
+                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiciSede, Costanti.Amministratore))
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
