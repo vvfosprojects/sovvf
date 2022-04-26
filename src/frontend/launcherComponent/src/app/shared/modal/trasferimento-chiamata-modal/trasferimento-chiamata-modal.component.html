@@ -11,22 +11,24 @@
     <div class="modal-body height py-4 px-5">
         <form [formGroup]="trasferimentoChiamataForm" ngxsForm="trasferimentoChiamataModal.trasferimentoChiamataForm"
               autocomplete="off">
-            <div class="form-group">
-                <label for="codiceRichesta">
-                    Codice Chiamata da trasferire
-                    <small class="text-danger">*</small>
-                </label>
-                <ng-select
-                        id="codiceRichesta"
-                        formControlName="codiceRichiesta"
-                        [items]="codiciRichiesteTrasferibili$ | async"
-                        [clearable]="false"
-                        placeholder="Seleziona un Codice Chiamata"
-                        [closeOnSelect]="true"
-                        [notFoundText]="'Nessun codice richiesta trovato con i parametri di ricerca'"
-                        (ngModelChange)="onChangeCodiceRichiesta($event)">
-                </ng-select>
-            </div>
+            <ng-container *ngIf="!codRichiesta">
+                <div class="form-group">
+                    <label for="codiceRichesta">
+                        Codice Chiamata da trasferire
+                        <small class="text-danger">*</small>
+                    </label>
+                    <ng-select
+                            id="codiceRichesta"
+                            formControlName="codiceRichiesta"
+                            [items]="codiciRichiesteTrasferibili$ | async"
+                            [clearable]="false"
+                            placeholder="Seleziona un Codice Chiamata"
+                            [closeOnSelect]="true"
+                            [notFoundText]="'Nessun codice richiesta trovato con i parametri di ricerca'"
+                            (ngModelChange)="onChangeCodiceRichiesta($event)">
+                    </ng-select>
+                </div>
+            </ng-container>
             <div class="form-group">
                 <label for="sede">Dove vuoi trasferire la Chiamata?
                     <small class="text-danger">*</small>
