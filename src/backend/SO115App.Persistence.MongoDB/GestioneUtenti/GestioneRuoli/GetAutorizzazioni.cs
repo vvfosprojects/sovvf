@@ -71,9 +71,13 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
                     else                    
                         if (unita.Figli != null)
                         {
-                            if (unita.Figli?.ToList().FindAll(x => x.Codice.Equals(codSedeDaVerificare)).Count > 0)
+                            if (unita.Figli.ToList().FindAll(x => x.Codice.Equals(codSedeDaVerificare)).Count > 0)
+                                return true;
+
+                            if (unita.Figli.ToList().FindAll(x => (bool)(x.Figli?.Any(c=>c.Codice.Equals(codSedeDaVerificare)))).Count > 0)
                                 return true;
                         }
+                    
                 }
 
 
