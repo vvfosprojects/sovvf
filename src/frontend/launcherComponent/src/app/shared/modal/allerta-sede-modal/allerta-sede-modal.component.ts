@@ -39,7 +39,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     motivazione = 'allerta';
     generiMezzoSelezionati: string[] = [];
 
-
     codRichiesta: string;
 
     subscriptions: Subscription = new Subscription();
