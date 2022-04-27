@@ -71,12 +71,12 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         }
 
         if (changes?.loadingMezzi) {
-                this.checkDistaccamenti();
+            this.checkDistaccamenti();
         }
 
         if (changes?.competenze?.currentValue && changes?.filtri?.currentValue) {
-                this.setDistaccamentiDefault();
-                this.checkDistaccamenti();
+            this.setDistaccamentiDefault();
+            this.checkDistaccamenti();
         }
     }
 

@@ -24,9 +24,9 @@
                     <i class="fas fa-users text-{{statoMezzoColor(mezzoInServizio.mezzo.mezzo.stato)}}"></i>
                 </div>
                 <div class="mx-2"
-                     ngbTooltip="{{mezzoInServizio.squadre[0].nome}}"
-                     [disableTooltip]="mezzoInServizio.squadre[0].nome.length <= 6">
-                    {{ mezzoInServizio.squadre[0].nome | truncate: 6}}
+                     ngbTooltip="{{mezzoInServizio.squadre[0].codice}}"
+                     [disableTooltip]="mezzoInServizio.squadre[0].codice.length <= 6">
+                    {{ mezzoInServizio.squadre[0].codice | truncate: 6}}
                 </div>
                 <button class="btn btn-sm btn-no-hover btn-light border ml-1" ngbTooltip="Elenco squadre"
                         (click)="onListaSquadrePartenza(); $event.stopPropagation()">

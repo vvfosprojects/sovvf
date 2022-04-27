@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { GetListaRichieste, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import { ClearRichiestaAzioni, GetListaRichieste, SetRichiestaAzioni, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -57,6 +57,7 @@ import { GetConcorrenza } from '../../shared/store/actions/concorrenza/concorren
 import { UpdateRichiestaSganciamento } from '../../features/home/store/actions/composizione-partenza/richiesta-sganciamento.actions';
 import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { RicercaRubricaState } from '../../features/rubrica/store/states/ricerca-rubrica/ricerca-rubrica.state';
+import { RichiesteState } from '../../features/home/store/states/richieste/richieste.state';
 
 //const HUB_URL = environment.baseUrl + environment.signalRHub;
 const HUB_URL = "https://localhost:44381/SubHub";
@@ -137,6 +138,7 @@ export class SignalRService {
             this.store.dispatch([
                 new UpdateRichiesta(updateRichiesta),
                 new UpdateRichiestaSganciamento(),
+                new SetRichiestaAzioni(updateRichiesta.codice),
                 new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3)
             ]);
         });
@@ -441,6 +443,10 @@ export class SignalRService {
         this.hubNotification.on('NotifyAddTrasferimento', (response: ResponseAddTrasferimentoInterface) => {
             console.log('NotifyAddTrasferimento', response);
             this.store.dispatch(new AddTrasferimentoChiamata());
+            const richiestaAzioni = this.store.selectSnapshot(RichiesteState.richiestaAzioni);
+            if (richiestaAzioni.codice === response.data.codChiamata) {
+                this.store.dispatch(new ClearRichiestaAzioni());
+            }
         });
         this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
             console.log('NotifyDeleteChiamata', idRichiesta);
