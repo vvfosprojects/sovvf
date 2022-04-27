@@ -20,8 +20,12 @@
 
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
+using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.SignalR.Utility;
@@ -74,8 +78,9 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
-                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
+                var info = new InfoDaInviareAnnullaPartenza();
+                //_notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+                //_notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
 
                 Task.Run(() =>
                 {
@@ -117,46 +122,41 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                         CodiciSede = new string[] { sede },
                         IdOperatore = command.IdOperatore
                     };
-                    var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
-                    var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
+
+                    info.listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+                    info.mezzo = info.listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
+
+                    infoDaInviare.Add(info);
+
+                    //var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
+                    //var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
                 });
             });
-        }
-        var listaMezziInServizioQuery = new ListaMezziInServizioQuery
-        {
-            CodiciSede = new string[] { sede },
-            IdOperatore = command.IdOperatore
-        };
-        info.listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
-                info.mezzo = info.listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
 
-                infoDaInviare.Add(info);
-            });
-
-            foreach (var info in infoDaInviare)
+            Parallel.ForEach(infoDaInviare, info =>
             {
-                await hubConnection.StartAsync();
-    await hubConnection.InvokeAsync("ModifyAndNotifySuccessAnnullaPartenza", command, info.codiceSede);
-    await hubConnection.InvokeAsync("ChangeStateSuccess", true, info.codiceSede);
-    await hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.codiceSede);
-    await hubConnection.InvokeAsync("NotifyGetBoxMezzi", info.boxMezzi, info.codiceSede);
-    await hubConnection.InvokeAsync("NotifyGetBoxPersonale", info.boxPersonale, info.codiceSede);
-    await hubConnection.InvokeAsync("NotifyGetListaMezziInServizio", info.listaMezziInServizio, info.codiceSede);
-    await hubConnection.InvokeAsync("NotifyUpdateMezzoInServizio", info.mezzo, info.codiceSede);
-    await hubConnection.StopAsync();
-}
+                hubConnection.StartAsync();
+                hubConnection.InvokeAsync("ModifyAndNotifySuccessAnnullaPartenza", command, info.codiceSede);
+                hubConnection.InvokeAsync("ChangeStateSuccess", true, info.codiceSede);
+                hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.codiceSede);
+                hubConnection.InvokeAsync("NotifyGetBoxMezzi", info.boxMezzi, info.codiceSede);
+                hubConnection.InvokeAsync("NotifyGetBoxPersonale", info.boxPersonale, info.codiceSede);
+                hubConnection.InvokeAsync("NotifyGetListaMezziInServizio", info.listaMezziInServizio, info.codiceSede);
+                hubConnection.InvokeAsync("NotifyUpdateMezzoInServizio", info.mezzo, info.codiceSede);
+                hubConnection.StopAsync();
+            });
         }
     }
 
     internal class InfoDaInviareAnnullaPartenza
-{
-    public string codiceSede { get; set; }
-    public BoxInterventi boxInterventi { get; set; }
-    public BoxMezzi boxMezzi { get; set; }
-    public BoxPersonale boxPersonale { get; set; }
-    public List<MezzoInServizio> listaMezziInServizio { get; set; }
-    public MezzoInServizio mezzo { get; set; }
-}
+    {
+        public string codiceSede { get; set; }
+        public BoxInterventi boxInterventi { get; set; }
+        public BoxMezzi boxMezzi { get; set; }
+        public BoxPersonale boxPersonale { get; set; }
+        public List<MezzoInServizio> listaMezziInServizio { get; set; }
+        public MezzoInServizio mezzo { get; set; }
+    }
 }

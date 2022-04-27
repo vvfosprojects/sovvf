@@ -372,5 +372,24 @@ namespace WSSignlR.Hubs
         }
 
         #endregion Triege
+
+        #region Trasferimento
+
+        public void SaveAndNotifySuccessChiamataTrasferita(SintesiRichiesta sintesi, string sede)
+        {
+            Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamataTrasferita", sintesi);
+        }
+
+        public void NotifyAddTrasferimento(object info, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyAddTrasferimento", info);
+        }
+
+        public void NotifyDeleteChiamata(string idRichiesta, string sede)
+        {
+            Clients.Group(sede).SendAsync("NotifyDeleteChiamata", idRichiesta);
+        }
+
+        #endregion Trasferimento
     }
 }
