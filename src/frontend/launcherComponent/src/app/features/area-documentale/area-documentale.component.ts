@@ -162,7 +162,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
         this.areaDocumentaleService.getDocumentoById(documento.id).subscribe((data: any) => {
             switch (data.type) {
                 case HttpEventType.DownloadProgress:
-                    console.error('Errore nel download del file (' + documento.fileName + ')');
+                    console.warn('Download del file (' + documento.fileName + ')');
                     break;
                 case HttpEventType.Response:
                     const downloadedFile = new Blob([data.body], { type: data.body.type });
@@ -180,20 +180,28 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     }
 
     onViewDocumento(documento: DocumentoInterface): void {
-        this.areaDocumentaleService.getDocumentoById(documento.id).subscribe((data: any) => {
-            switch (data.type) {
-                case HttpEventType.Response:
-                    const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
-                        windowClass: 'xxlModal modal-holder',
-                        backdropClass: 'light-blue-backdrop',
-                        centered: true
-                    });
-                    const downloadedFile = new Blob([data.body], { type: data.body.type });
-                    modalVisualizzaPdf.componentInstance.titolo = documento?.descrizioneDocumento?.toLocaleUpperCase();
-                    modalVisualizzaPdf.componentInstance.blob = downloadedFile;
-                    break;
-            }
-        }, () => console.log('Errore visualizzazione Documento'));
+        const fileNameSplit = documento.fileName.split('.');
+        if (fileNameSplit[fileNameSplit.length - 1] === 'pdf') {
+            this.areaDocumentaleService.getDocumentoById(documento.id).subscribe((data: any) => {
+                switch (data.type) {
+                    case HttpEventType.DownloadProgress:
+                        console.warn('Download del file (' + documento.fileName + ')');
+                        break;
+                    case HttpEventType.Response:
+                        const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
+                            windowClass: 'xxlModal modal-holder',
+                            backdropClass: 'light-blue-backdrop',
+                            centered: true
+                        });
+                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                        modalVisualizzaPdf.componentInstance.titolo = documento?.descrizioneDocumento?.toLocaleUpperCase();
+                        modalVisualizzaPdf.componentInstance.blob = downloadedFile;
+                        break;
+                }
+            }, () => console.log('Errore visualizzazione Documento'));
+        } else {
+            this.onDownloadDocumento(documento);
+        }
     }
 
     onEditDocumento(documento: DocumentoInterface): void {

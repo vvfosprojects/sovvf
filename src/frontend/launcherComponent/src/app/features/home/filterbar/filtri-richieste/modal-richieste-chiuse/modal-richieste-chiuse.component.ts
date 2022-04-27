@@ -16,7 +16,7 @@ export class ModalRichiesteChiuseComponent implements OnInit, OnDestroy {
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
     turnoCalendario: TurnoCalendario;
 
-    prefix: {} = {
+    prefix: { DaA: boolean, Del: boolean, Turno: boolean } = {
         DaA: false,
         Del: true,
         Turno: false,
@@ -32,16 +32,18 @@ export class ModalRichiesteChiuseComponent implements OnInit, OnDestroy {
     fromDate: NgbDate;
     toDate: NgbDate | null = null;
     date: { year: number, month: number };
-    todayDate;
+    todayDate: NgbDate;
     titolo: string;
     periodoChiuse: FiltroChiuseDettaglio;
     disableConferma = false;
 
     private subscriptions: Subscription = new Subscription();
 
-    constructor(private modal: NgbActiveModal, private calendar: NgbCalendar) {
+    constructor(private modal: NgbActiveModal,
+                public calendar: NgbCalendar) {
         this.fromDate = calendar.getToday();
-        this.toDate = calendar.getNext(calendar.getToday(), 'd', 5);
+        this.fromDate.day = this.fromDate.day - 5;
+        this.toDate = calendar.getNext(this.fromDate, 'd', 5);
         this.getTurnoCalendario();
         this.todayDate = calendar.getToday();
     }
@@ -97,9 +99,9 @@ export class ModalRichiesteChiuseComponent implements OnInit, OnDestroy {
         let a;
         da = this.fromDate.day + '/' + this.fromDate.month + '/' + this.fromDate.year;
         a = this.toDate.day + '/' + this.toDate.month + '/' + this.toDate.year;
-        this.periodoChiuseToShow.daA = this.prefix['DaA'] ? da + ' - ' + a : null;
-        this.periodoChiuseToShow.data = this.prefix['Del'] ? this.todayDate.day + '/' + this.todayDate.month + '/' + this.todayDate.year : null;
-        this.periodoChiuseToShow.turno = this.prefix['Turno'] ? this.turnoCalendario.corrente : null;
+        this.periodoChiuseToShow.daA = this.prefix.DaA ? da + ' - ' + a : null;
+        this.periodoChiuseToShow.data = this.prefix.Del ? this.todayDate.day + '/' + this.todayDate.month + '/' + this.todayDate.year : null;
+        this.periodoChiuseToShow.turno = this.prefix.Turno ? this.turnoCalendario.corrente : null;
     }
 
     onCheckFiltro(key: string): void {
@@ -120,10 +122,10 @@ export class ModalRichiesteChiuseComponent implements OnInit, OnDestroy {
                 this.modal.close({
                     status: 'ok',
                     result: {
-                        da: this.prefix['DaA'] ? this.formatDate(this.fromDate, true) : null,
-                        a: this.prefix['DaA'] ? this.formatDate(this.toDate, false, true) : null,
-                        data: this.prefix['Del'] ? this.formatDate(this.todayDate) : null,
-                        turno: this.prefix['Turno'] ? this.turnoCalendario.corrente : null,
+                        da: this.prefix.DaA ? this.formatDate(this.fromDate, true) : null,
+                        a: this.prefix.DaA ? this.formatDate(this.toDate, false, true) : null,
+                        data: this.prefix.Del ? this.formatDate(this.todayDate) : null,
+                        turno: this.prefix.Turno ? this.turnoCalendario.corrente : null,
                     },
                     date: this.periodoChiuseToShow,
                 });
@@ -182,5 +184,9 @@ export class ModalRichiesteChiuseComponent implements OnInit, OnDestroy {
 
     isRange(date: NgbDate): boolean {
         return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
+    }
+
+    isInvalid(date: NgbDate): boolean {
+        return date.after(this.calendar.getToday());
     }
 }
