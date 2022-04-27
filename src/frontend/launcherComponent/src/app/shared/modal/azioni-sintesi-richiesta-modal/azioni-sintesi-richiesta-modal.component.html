@@ -1,186 +1,192 @@
-<div class="modal-header">
-    <h4 class="modal-title font-weight-bold">
-        {{ 'AZIONI ' + defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta).toUpperCase() }} {{richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice}}
-    </h4>
-    <button type="button"
-            class="btn btn-light close"
-            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
-            (click)="chiudiModalAzioniSintesi('ko')">
-        <i class="fas fa-times text-danger"></i>
-    </button>
-</div>
-
-<div class="modal-body">
-    <div class="row">
-        <!-- CHIUDI CHIAMATA/INTERVENTO -->
-        <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Chiusa'"
-             class="col-4"
-             (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">
-            <div class="box-azione"
-                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]) || !(tipoConcorrenzaEnum.ChiusuraIntervento | checkConcorrenzaLocked: [richiesta.codice])"
-                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]) || (tipoConcorrenzaEnum.ChiusuraIntervento | checkConcorrenzaLocked: [richiesta.codice])"
-                 style="height: fit-content">
-                <ng-container *ngIf="tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]">
-                    <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]">
-                    </app-locked-concorrenza>
-                </ng-container>
-                <ng-container
-                        *ngIf="tipoConcorrenzaEnum.ChiusuraIntervento | checkConcorrenzaLocked: [richiesta.codice]">
-                    <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.ChiusuraIntervento | checkConcorrenzaLocked: [richiesta.codice]">
-                    </app-locked-concorrenza>
-                </ng-container>
-                <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
-                    <i class="fas fa-fw fa-forward text-secondary"></i>
-                </div>
-                <div class="mb-1 px-3"
-                     style="height: 30px">
-                    Chiusura {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }}</div>
-                <div class="mb-3 px-3" style="height: 60px; font-weight: 300; "></div>
-            </div>
-        </div>
-        <!-- ALLERTA SEDE -->
-        <div class="col-4 mb-3">
-            <div class="box-azione"
-                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Allerta | checkConcorrenzaLocked: [richiesta.codice])"
-                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Allerta | checkConcorrenzaLocked: [richiesta.codice])"
-                 style="height: fit-content"
-                 (click)="onAllertaSede(); $event.stopPropagation()">
-                <ng-container *ngIf="tipoConcorrenzaEnum.Allerta | checkConcorrenzaLocked: [richiesta.codice]">
-                    <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.Allerta | checkConcorrenzaLocked: [richiesta.codice]">
-                    </app-locked-concorrenza>
-                </ng-container>
-                <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
-                    <i class="fas fa-fw fa-exclamation-triangle text-secondary"></i>
-                </div>
-                <div class="mb-1 px-3" style="height: 30px">Allerta Comando</div>
-                <div class="mb-3 px-3" style="height: 60px; font-weight: 300; ">
-                    Notifica {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }} ad un altro
-                    Comando. (Gestione Condivisa)
-                </div>
-            </div>
-        </div>
-        <!-- TRASFERIMENTO CHIAMATA -->
-        <div *ngIf="!richiesta.codiceRichiesta" class="col-4">
-            <div class="box-azione"
-                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [richiesta.codice])"
-                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [richiesta.codice])"
-                 style="height: fit-content"
-                 (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">
-                <ng-container *ngIf="tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [richiesta.codice]">
-                    <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [richiesta.codice]">
-                    </app-locked-concorrenza>
-                </ng-container>
-                <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
-                    <i class="fas fa-fw fa-paper-plane text-secondary"></i>
-                </div>
-                <div class="mb-1 px-3" style="height: 30px">Trasferimento</div>
-                <div class="mb-3 px-3"
-                     style="height: 60px; font-weight: 300; ">
-                    Trasferisci {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }} ad un altro
-                    Comando.
-                </div>
-            </div>
-        </div>
-        <!-- LISTA EVENTI -->
-        <div class="col-4 mb-3">
-            <div class="box-azione cursor-pointer"
-                 style="height: fit-content"
-                 (click)="visualizzaEventiRichiesta(richiesta.codice)">
-                <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
-                    <i class="fas fa-fw fa-list text-secondary"></i>
-                </div>
-                <div class="mb-1 px-3" style="height: 30px">Lista Eventi</div>
-                <div class="mb-3 px-3" style="height: 60px; font-weight: 300; ">Dettaglio eventi
-                    {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }}.
-                </div>
-            </div>
-        </div>
-        <!-- MODIFICA ENTI INTERVENUTI -->
-        <div *ngIf="richiesta.codiceRichiesta"
-             class="col-4 mb-3">
-            <div class="box-azione"
-                 style="height: fit-content"
-                 (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
-                <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
-                    <i class="fas fa-fw fa-edit text-secondary"></i>
-                </div>
-                <div class="mb-1 px-3" style="height: 30px">Modifica Enti Intervenuti</div>
-                <div class="mb-3 px-3" style="height: 60px; font-weight: 300;"></div>
-            </div>
-        </div>
-        <!-- MODIFICA FONOGRAMMA -->
-        <div *ngIf="richiesta.codiceRichiesta"
-             class="col-4">
-            <div class="box-azione"
-                 style="height: fit-content"
-                 (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
-                <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
-                    <i class="fas fa-fw fa-edit text-secondary"></i>
-                </div>
-                <div class="mb-1 px-3" style="height: 30px">Modifica Fonogramma</div>
-                <div class="mb-3 px-3" style="height: 60px; font-weight: 300;"></div>
-            </div>
-        </div>
-        <!-- SGANCIAMENTO MEZZO -->
-        <div class="col-4 mb-3">
-            <div class="box-azione"
-                 [class.cursor-pointer]="!(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice])"
-                 [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice])"
-                 style="height: fit-content"
-                 (click)="onSganciamentoMezzo(richiesta); $event.stopPropagation()">
-                <ng-container *ngIf="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice]">
-                    <app-locked-concorrenza
-                            [nominativoOperatore]="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice]">
-                    </app-locked-concorrenza>
-                </ng-container>
-                <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
-                    <i class="fas fa-fw fa-truck text-secondary"></i>
-                </div>
-                <div class="mb-1 px-3" style="height: 30px">Sganciamento Mezzo</div>
-                <div class="mb-3 px-3" style="height: 60px; font-weight: 300; ">
-                    Sgancia un mezzo occupato su un altro Intervento.
-                </div>
-            </div>
-        </div>
-        <!-- RIAPRI CHIAMATA -->
-        <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Riaperta'"
-             class="col-4">
-            <div class="box-azione"
-                 style="height: fit-content"
+<ng-container *ngIf="richiesta">
+    <div class="modal-header">
+        <h4 class="modal-title font-weight-bold">
+            {{ 'AZIONI ' + defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta).toUpperCase() }} {{richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice}}
+        </h4>
+        <button type="button"
+                class="btn btn-light close"
+                style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px;"
+                (click)="chiudiModalAzioniSintesi('ko')">
+            <i class="fas fa-times text-danger"></i>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <!-- CHIUDI CHIAMATA/INTERVENTO -->
+            <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Chiusa'"
+                 class="col-4"
                  (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">
-                <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
-                    <i class="fas fa-fw fa-forward text-secondary"></i>
+                <div class="box-azione"
+                     [class.cursor-pointer]="!(tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]) || !(tipoConcorrenzaEnum.ChiusuraIntervento | checkConcorrenzaLocked: [richiesta.codice])"
+                     [class.cursor-not-allowed]="(tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]) || (tipoConcorrenzaEnum.ChiusuraIntervento | checkConcorrenzaLocked: [richiesta.codice])"
+                     style="height: fit-content">
+                    <ng-container
+                            *ngIf="tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]">
+                        <app-locked-concorrenza
+                                [nominativoOperatore]="tipoConcorrenzaEnum.ChiusuraChiamata | checkConcorrenzaLocked: [richiesta.codice]">
+                        </app-locked-concorrenza>
+                    </ng-container>
+                    <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
+                        <i class="fas fa-fw fa-forward text-secondary"></i>
+                    </div>
+                    <div class="mb-1 px-3"
+                         style="height: 30px">
+                        Chiusura {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }}</div>
+                    <div class="mb-3 px-3" style="height: 60px; font-weight: 300; "></div>
                 </div>
-                <div class="mb-1 px-3" style="height: 30px">
-                    Riapri {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }}</div>
-                <div class="mb-3 px-3" style="height: 60px; font-weight: 300;"></div>
             </div>
-        </div>
-        <!-- STAMPA PDF -->
-        <div class="col-4">
-            <div class="box-azione cursor-pointer"
-                 style="height: fit-content"
-                 (click)="onVisualizzaPDF(); $event.stopPropagation()">
-                <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
-                    <i class="fas fa-fw fa-print text-secondary"></i>
+            <!-- ALLERTA SEDE -->
+            <div class="col-4 mb-3">
+                <div class="box-azione"
+                     [class.cursor-pointer]="!(tipoConcorrenzaEnum.Allerta | checkConcorrenzaLocked: [richiesta.codice])"
+                     [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Allerta | checkConcorrenzaLocked: [richiesta.codice])"
+                     style="height: fit-content"
+                     (click)="onAllertaSede(); $event.stopPropagation()">
+                    <ng-container *ngIf="tipoConcorrenzaEnum.Allerta | checkConcorrenzaLocked: [richiesta.codice]">
+                        <app-locked-concorrenza
+                                [nominativoOperatore]="tipoConcorrenzaEnum.Allerta | checkConcorrenzaLocked: [richiesta.codice]">
+                        </app-locked-concorrenza>
+                    </ng-container>
+                    <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
+                        <i class="fas fa-fw fa-exclamation-triangle text-secondary"></i>
+                    </div>
+                    <div class="mb-1 px-3" style="height: 30px">Allerta Comando</div>
+                    <div class="mb-3 px-3" style="height: 60px; font-weight: 300; ">
+                        Notifica {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }} ad un
+                        altro
+                        Comando. (Gestione Condivisa)
+                    </div>
                 </div>
-                <div class="mb-1 px-3" style="height: 30px">
-                    Stampa {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }}</div>
-                <div class="mb-3 px-3" style="height: 60px; font-weight: 300;">
-                    Stampa in formato PDF.
+            </div>
+            <!-- TRASFERIMENTO CHIAMATA -->
+            <div *ngIf="!richiesta.codiceRichiesta" class="col-4">
+                <div class="box-azione"
+                     [class.cursor-pointer]="!(tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [richiesta.codice])"
+                     [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [richiesta.codice])"
+                     style="height: fit-content"
+                     (click)="onAddTrasferimentoChiamata(richiesta?.codice); $event.stopPropagation()">
+                    <ng-container
+                            *ngIf="tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [richiesta.codice]">
+                        <app-locked-concorrenza
+                                [nominativoOperatore]="tipoConcorrenzaEnum.Trasferimento | checkConcorrenzaLocked: [richiesta.codice]">
+                        </app-locked-concorrenza>
+                    </ng-container>
+                    <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
+                        <i class="fas fa-fw fa-paper-plane text-secondary"></i>
+                    </div>
+                    <div class="mb-1 px-3" style="height: 30px">Trasferimento</div>
+                    <div class="mb-3 px-3"
+                         style="height: 60px; font-weight: 300; ">
+                        Trasferisci {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }} ad un
+                        altro
+                        Comando.
+                    </div>
+                </div>
+            </div>
+            <!-- LISTA EVENTI -->
+            <div class="col-4 mb-3">
+                <div class="box-azione cursor-pointer"
+                     style="height: fit-content"
+                     (click)="visualizzaEventiRichiesta(richiesta.codice)">
+                    <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
+                        <i class="fas fa-fw fa-list text-secondary"></i>
+                    </div>
+                    <div class="mb-1 px-3" style="height: 30px">Lista Eventi</div>
+                    <div class="mb-3 px-3" style="height: 60px; font-weight: 300; ">Dettaglio eventi
+                        {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }}.
+                    </div>
+                </div>
+            </div>
+            <!-- MODIFICA ENTI INTERVENUTI -->
+            <div *ngIf="richiesta.codiceRichiesta"
+                 class="col-4 mb-3">
+                <div class="box-azione"
+                     style="height: fit-content"
+                     (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
+                    <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
+                        <i class="fas fa-fw fa-edit text-secondary"></i>
+                    </div>
+                    <div class="mb-1 px-3" style="height: 30px">Modifica Enti Intervenuti</div>
+                    <div class="mb-3 px-3" style="height: 60px; font-weight: 300;"></div>
+                </div>
+            </div>
+            <!-- MODIFICA FONOGRAMMA -->
+            <div *ngIf="richiesta.codiceRichiesta"
+                 class="col-4">
+                <div class="box-azione"
+                     style="height: fit-content"
+                     (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
+                    <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
+                        <i class="fas fa-fw fa-edit text-secondary"></i>
+                    </div>
+                    <div class="mb-1 px-3" style="height: 30px">Modifica Fonogramma</div>
+                    <div class="mb-3 px-3" style="height: 60px; font-weight: 300;"></div>
+                </div>
+            </div>
+            <!-- SGANCIAMENTO MEZZO -->
+            <div class="col-4 mb-3">
+                <div class="box-azione"
+                     [class.cursor-pointer]="!(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice])"
+                     [class.cursor-not-allowed]="(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice])"
+                     style="height: fit-content"
+                     (click)="onSganciamentoMezzo(richiesta); $event.stopPropagation()">
+                    <ng-container *ngIf="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice]">
+                        <app-locked-concorrenza
+                                [nominativoOperatore]="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [richiesta.codice]">
+                        </app-locked-concorrenza>
+                    </ng-container>
+                    <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
+                        <i class="fas fa-fw fa-truck text-secondary"></i>
+                    </div>
+                    <div class="mb-1 px-3" style="height: 30px">Sganciamento Mezzo</div>
+                    <div class="mb-3 px-3" style="height: 60px; font-weight: 300; ">
+                        Sgancia un mezzo occupato su un altro Intervento.
+                    </div>
+                </div>
+            </div>
+            <!-- RIAPRI CHIAMATA -->
+            <div *ngIf="calcolaActionSuggeritaRichiesta(richiesta) === 'Riaperta'"
+                 class="col-4">
+                <div class="box-azione"
+                     style="height: fit-content"
+                     (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta)); $event.stopPropagation()">
+                    <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
+                        <i class="fas fa-fw fa-forward text-secondary"></i>
+                    </div>
+                    <div class="mb-1 px-3" style="height: 30px">
+                        Riapri {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }}</div>
+                    <div class="mb-3 px-3" style="height: 60px; font-weight: 300;"></div>
+                </div>
+            </div>
+            <!-- STAMPA PDF -->
+            <div class="col-4">
+                <div class="box-azione cursor-pointer"
+                     style="height: fit-content"
+                     (click)="onVisualizzaPDF(); $event.stopPropagation()">
+                    <div class="d-inline-block bg-white p-2 mx-3 mt-3 mb-2">
+                        <i class="fas fa-fw fa-print text-secondary"></i>
+                    </div>
+                    <div class="mb-1 px-3" style="height: 30px">
+                        Stampa {{ defineChiamataIntervento(richiesta.codice, richiesta?.codiceRichiesta) }}</div>
+                    <div class="mb-3 px-3" style="height: 60px; font-weight: 300;">
+                        Stampa in formato PDF.
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="modal-footer d-flex align-items-center justify-content-end">
-    <button type="button"
-            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
-            (click)="chiudiModalAzioniSintesi('ko')">
-        {{ 'Chiudi' | uppercase }}
-    </button>
-</div>
+    <div class="modal-footer d-flex align-items-center justify-content-end">
+        <button type="button"
+                class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+                (click)="chiudiModalAzioniSintesi('ko')">
+            {{ 'Chiudi' | uppercase }}
+        </button>
+    </div>
+</ng-container>
+<ng-container *ngIf="!richiesta">
+    <div class="p-3">
+        <div class="alert alert-warning m-0">
+            Caricamento azioni in corso...
+        </div>
+    </div>
+</ng-container>

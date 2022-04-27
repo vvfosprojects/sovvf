@@ -7,7 +7,7 @@ import { AuthState } from '../../../features/auth/store/auth.state';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
 import { ActionRichiestaModalComponent } from '../action-richiesta-modal/action-richiesta-modal.component';
-import { ActionRichiesta, AllertaSede, ModificaStatoFonogramma } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { ActionRichiesta, AllertaSede, ClearRichiestaAzioni, ModificaStatoFonogramma } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { TrasferimentoChiamataModalComponent } from '../trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { ClearFormTrasferimentoChiamata } from '../../store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../allerta-sede-modal/allerta-sede-modal.component';
@@ -16,7 +16,7 @@ import { ModificaFonogrammaModalComponent } from '../modifica-fonogramma-modal/m
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
 import { PatchEntiIntervenutiRichiesta } from '../../../features/home/store/actions/form-richiesta/richiesta-modifica.actions';
-import { calcolaActionSuggeritaRichiesta, defineChiamataIntervento, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function-richieste';
+import { calcolaActionSuggeritaRichiesta, defineChiamataIntervento, statoRichiestaActionsEnumToStringArray } from '../../helper/function-richieste';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { EnteInterface } from '../../interface/ente.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
@@ -30,6 +30,7 @@ import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -42,8 +43,9 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     utente: Utente;
     @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
-
+    @Select(RichiesteState.richiestaAzioni) richiestaAzioni$: Observable<SintesiRichiesta>;
     richiesta: SintesiRichiesta;
+
     statoRichiestaString: StatoRichiestaActions[];
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
@@ -56,11 +58,10 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 private stampaRichiestaService: StampaRichiestaService,
                 private lockedConcorrenzaService: LockedConcorrenzaService) {
         this.getUtente();
+        this.getRichieste();
     }
 
     ngOnInit(): void {
-        const exceptStati = [this.richiesta.stato, StatoRichiestaActions.Riaperta, calcolaActionSuggeritaRichiesta(this.richiesta)];
-        this.statoRichiestaString = statoRichiestaActionsEnumToStringArray(exceptStati);
     }
 
     ngOnDestroy(): void {
@@ -71,6 +72,20 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.user$.subscribe((user: Utente) => {
                 this.utente = user;
+            })
+        );
+    }
+
+    getRichieste(): void {
+        this.subscription.add(
+            this.richiestaAzioni$.subscribe((richiesta: SintesiRichiesta) => {
+                if (richiesta) {
+                    this.richiesta = richiesta;
+                    const exceptStati = [this.richiesta.stato, StatoRichiestaActions.Riaperta, calcolaActionSuggeritaRichiesta(this.richiesta)];
+                    this.statoRichiestaString = statoRichiestaActionsEnumToStringArray(exceptStati);
+                } else {
+                    this.chiudiModalAzioniSintesi('ko');
+                }
             })
         );
     }
@@ -220,6 +235,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             addTrasferimentoChiamataModal.result.then((result: string) => {
                     this.store.dispatch([
                         new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
+                        new ClearRichiestaAzioni(),
                         new ClearFormTrasferimentoChiamata()
                     ]);
                     console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
@@ -351,19 +367,11 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     chiudiModalAzioniSintesi(closeRes: string): void {
-        if (closeRes) {
-            this.modal.close({ status: closeRes });
-        } else {
-            this.modal.close({ status: 'ko' });
-        }
+        this.modal.close({ status: closeRes });
     }
 
     calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta): StatoRichiestaActions {
         return calcolaActionSuggeritaRichiesta(richiesta);
-    }
-
-    statoRichiestaColor(richiesta: SintesiRichiesta): string {
-        return statoRichiestaColor(richiesta.stato);
     }
 
     defineChiamataIntervento(codice: string, codiceRichiesta: string): string {
