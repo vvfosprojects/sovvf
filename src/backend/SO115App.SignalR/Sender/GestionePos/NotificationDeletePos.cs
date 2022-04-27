@@ -1,33 +1,30 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.EditPos;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.DeletePos;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 using SO115App.SignalR.Utility;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestionePos
 {
-    public class NotificationEditPos : INotificationEditPos
+    public class NotificationDeletePos : INotificationDeletePos
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
-        public NotificationEditPos(IHubContext<NotificationHub> notificationHubContext,
+        public NotificationDeletePos(IHubContext<NotificationHub> notificationHubContext,
                                                GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = notificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
         }
 
-        public async Task SendNotification(EditPosCommand command)
+        public async Task SendNotification(DeletePosCommand command)
         {
-            var SediDaNotificare = _getGerarchiaToSend.Get(command.Pos.CodSede);
+            var SediDaNotificare = _getGerarchiaToSend.Get(command.codSede);
 
             await Task.Factory.StartNew(() => Parallel.ForEach(SediDaNotificare, sede =>
             {
-                foreach (var tipologia in command.Pos.ListaTipologie)
-                {
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyPos", $"E' stata inserita la pos {command.Pos.DescrizionePos} ");
-                }
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyPos", $"E' stata eliminata la pos {command.Id} ");
             }));
         }
     }
