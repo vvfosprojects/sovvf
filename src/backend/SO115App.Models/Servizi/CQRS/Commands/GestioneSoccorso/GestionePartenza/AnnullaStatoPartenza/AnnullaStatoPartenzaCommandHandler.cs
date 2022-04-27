@@ -73,50 +73,51 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Handle(AnnullaStatoPartenzaCommand command)
         {
-            var date = DateTime.UtcNow;
-            var ultimoMovimento = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().ToList().Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
-            var partenza = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().ToList().Find(p => p.CodicePartenza.Equals(command.CodicePartenza));
+            var adesso = DateTime.UtcNow;
+            var ultimoMovimento = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => e is not AnnullamentoStatoPartenza).Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
+            var partenza = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Single(p => p.CodicePartenza.Equals(command.CodicePartenza));
 
-            if (date >= ultimoMovimento.DataOraInserimento.AddMinutes(1))
-                throw new Exception($"Annullamento non più disponibile per il mezzo {partenza.CodiceMezzo}.");
+            if (adesso >= ultimoMovimento.DataOraInserimento.AddMinutes(1))
+                throw new Exception($"Annullamento non più disponibile per il mezzo {command.CodicePartenza}.");
 
             command.StatoMezzo = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
 
             if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(command.StatoMezzo))
             {
-                string nuovoStatoMezzo = null;
+                string statoPrecedente = null;
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
                     .Where(e => e is not AnnullamentoStatoPartenza)
-                    .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza)).Where(e => e.DataOraInserimento < command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => !(e is AnnullamentoStatoPartenza && e.CodicePartenza.Equals(partenza.CodicePartenza))).Last().DataOraInserimento)
+                    .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza))
+                    .Where(e => e.DataOraInserimento < ultimoMovimento.DataOraInserimento) //TESTARE QUESTA WHERE VENERDI MATTINA
                     .Last();
 
                 switch (eventoPrecedente.TipoEvento)
                 {
                     case Costanti.ArrivoSulPosto:
-                        nuovoStatoMezzo = Costanti.MezzoSulPosto;
+                        statoPrecedente = Costanti.MezzoSulPosto;
                         break;
 
                     case Costanti.MezzoInRientro:
-                        nuovoStatoMezzo = Costanti.MezzoInRientro;
+                        statoPrecedente = Costanti.MezzoInRientro;
                         break;
 
                     case Costanti.EventoMezzoInRientro:
-                        nuovoStatoMezzo = Costanti.MezzoInRientro;
+                        statoPrecedente = Costanti.MezzoInRientro;
                         break;
 
                     case Costanti.ComposizionePartenza:
-                        nuovoStatoMezzo = Costanti.MezzoInViaggio;
+                        statoPrecedente = Costanti.MezzoInViaggio;
                         break;
                 }
 
-                string note = $"Il cambio stato {command.StatoMezzo} è stato annullato e il mezzo è tornato nello stato {nuovoStatoMezzo}";
+                string note = $"Lo stato {command.StatoMezzo} è stato annullato ed il mezzo {command.TargaMezzo} è tornato nello stato {statoPrecedente}";
 
-                new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, date, command.IdOperatore, Costanti.AnnullamentoStatoPartenza, command.CodicePartenza, note);
+                new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, adesso, command.IdOperatore, Costanti.AnnullamentoStatoPartenza, command.CodicePartenza, note);
 
-                partenza.Partenza.Squadre.ForEach(squadra => squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(nuovoStatoMezzo));
+                partenza.Partenza.Squadre.ForEach(squadra => squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statoPrecedente));
 
-                partenza.Partenza.Mezzo.Stato = nuovoStatoMezzo;
+                partenza.Partenza.Mezzo.Stato = statoPrecedente;
 
                 command.Richiesta.DeleteEvento(ultimoMovimento);
 
@@ -133,7 +134,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         autistaRientro = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
                         autistaUscita = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
                         dataIntervento = command.Richiesta.dataOraInserimento,
-                        dataRientro = date,
+                        dataRientro = adesso,
                         dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
                         idPartenza = command.CodicePartenza,
                         latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
@@ -170,10 +171,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     CodiciSede = command.CodiciSedi,
                     Chiamata = command.Chiamata,
                     CodRichiesta = command.CodiceRichiesta,
-                    DataOraAggiornamento = date,
+                    DataOraAggiornamento = adesso,
                     IdMezzo = command.TargaMezzo,
                     IdUtente = command.IdOperatore,
-                    StatoMezzo = nuovoStatoMezzo,
+                    StatoMezzo = statoPrecedente,
                     AzioneIntervento = "AnnullamentoPartenza"
                 };
 
@@ -184,7 +185,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 command.Chiamata = _mapper.Map(command.Richiesta);
             }
             else
-                throw new Exception("Impossibile annullare lo stato");
+                throw new Exception("Non è possibile annullare lo stato");
         }
     }
 }

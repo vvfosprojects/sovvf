@@ -544,4 +544,5 @@ export class SignalRService {
             );
         }
     }
+
 }

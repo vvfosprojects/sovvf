@@ -81,18 +81,18 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare.AddRange(_getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente));
 
-            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
-            {
-                Filtro = new FiltroRicercaRichiesteAssistenza
-                {
-                    idOperatore = intervento.IdUtente,
-                    PageSize = 99,
-                    IncludiRichiesteChiuse = true
-                },
-                CodiciSede = SediDaNotificare.ToArray()
-            };
+            //var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+            //{
+            //    Filtro = new FiltroRicercaRichiesteAssistenza
+            //    {
+            //        idOperatore = intervento.IdUtente,
+            //        PageSize = 99,
+            //        IncludiRichiesteChiuse = true
+            //    },
+            //    CodiciSede = SediDaNotificare.ToArray()
+            //};
 
-            intervento.Chiamata = _mapperRichiesta.Map(intervento.Richiesta);
+            //intervento.Chiamata = _mapperRichiesta.Map(intervento.Richiesta);
 
             var listaMezziInServizioQuery = new ListaMezziInServizioQuery
             {

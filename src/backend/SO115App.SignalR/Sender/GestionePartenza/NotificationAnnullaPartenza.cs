@@ -20,17 +20,8 @@
 
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Configuration;
-using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.SignalR.Utility;
@@ -83,44 +74,62 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
-                var info = new InfoDaInviareAnnullaPartenza();
+                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
 
-                info.codiceSede = sede;
-
-                var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+                Task.Run(() =>
                 {
-                    Filtro = new FiltroRicercaRichiesteAssistenza
+                    var boxRichiesteQuery = new BoxRichiesteQuery()
                     {
-                        idOperatore = command.IdOperatore,
-                        PageSize = 99
-                    },
-                    CodiciSede = new string[] { sede }
-                };
+                        CodiciSede = new string[] { sede }
+                    };
+                    info.boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                });
 
-                var boxRichiesteQuery = new BoxRichiesteQuery()
+                Task.Run(() =>
                 {
-                    CodiciSede = new string[] { sede }
-                };
-                info.boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                    var boxMezziQuery = new BoxMezziQuery()
+                    {
+                        CodiciSede = new string[] { sede }
+                    };
+                    info.boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+                    //var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+                });
 
-                var boxMezziQuery = new BoxMezziQuery()
+                Task.Run(() =>
                 {
-                    CodiciSede = new string[] { sede }
-                };
-                info.boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+                    var boxPersonaleQuery = new BoxPersonaleQuery()
+                    {
+                        CodiciSede = new string[] { sede }
+                    };
 
-                var boxPersonaleQuery = new BoxPersonaleQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                };
-                info.boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+                    info.boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+                    //var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+                });
 
-                var listaMezziInServizioQuery = new ListaMezziInServizioQuery
+                Task.Run(() =>
                 {
-                    CodiciSede = new string[] { sede },
-                    IdOperatore = command.IdOperatore
-                };
-                info.listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+                    var listaMezziInServizioQuery = new ListaMezziInServizioQuery
+                    {
+                        CodiciSede = new string[] { sede },
+                        IdOperatore = command.IdOperatore
+                    };
+                    var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
+                    var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
+                });
+            });
+        }
+        var listaMezziInServizioQuery = new ListaMezziInServizioQuery
+        {
+            CodiciSede = new string[] { sede },
+            IdOperatore = command.IdOperatore
+        };
+        info.listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
                 info.mezzo = info.listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
 
                 infoDaInviare.Add(info);
@@ -129,25 +138,25 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             foreach (var info in infoDaInviare)
             {
                 await hubConnection.StartAsync();
-                await hubConnection.InvokeAsync("ModifyAndNotifySuccessAnnullaPartenza", command, info.codiceSede);
-                await hubConnection.InvokeAsync("ChangeStateSuccess", true, info.codiceSede);
-                await hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.codiceSede);
-                await hubConnection.InvokeAsync("NotifyGetBoxMezzi", info.boxMezzi, info.codiceSede);
-                await hubConnection.InvokeAsync("NotifyGetBoxPersonale", info.boxPersonale, info.codiceSede);
-                await hubConnection.InvokeAsync("NotifyGetListaMezziInServizio", info.listaMezziInServizio, info.codiceSede);
-                await hubConnection.InvokeAsync("NotifyUpdateMezzoInServizio", info.mezzo, info.codiceSede);
-                await hubConnection.StopAsync();
-            }
+    await hubConnection.InvokeAsync("ModifyAndNotifySuccessAnnullaPartenza", command, info.codiceSede);
+    await hubConnection.InvokeAsync("ChangeStateSuccess", true, info.codiceSede);
+    await hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.codiceSede);
+    await hubConnection.InvokeAsync("NotifyGetBoxMezzi", info.boxMezzi, info.codiceSede);
+    await hubConnection.InvokeAsync("NotifyGetBoxPersonale", info.boxPersonale, info.codiceSede);
+    await hubConnection.InvokeAsync("NotifyGetListaMezziInServizio", info.listaMezziInServizio, info.codiceSede);
+    await hubConnection.InvokeAsync("NotifyUpdateMezzoInServizio", info.mezzo, info.codiceSede);
+    await hubConnection.StopAsync();
+}
         }
     }
 
     internal class InfoDaInviareAnnullaPartenza
-    {
-        public string codiceSede { get; set; }
-        public BoxInterventi boxInterventi { get; set; }
-        public BoxMezzi boxMezzi { get; set; }
-        public BoxPersonale boxPersonale { get; set; }
-        public List<MezzoInServizio> listaMezziInServizio { get; set; }
-        public MezzoInServizio mezzo { get; set; }
-    }
+{
+    public string codiceSede { get; set; }
+    public BoxInterventi boxInterventi { get; set; }
+    public BoxMezzi boxMezzi { get; set; }
+    public BoxPersonale boxPersonale { get; set; }
+    public List<MezzoInServizio> listaMezziInServizio { get; set; }
+    public MezzoInServizio mezzo { get; set; }
+}
 }

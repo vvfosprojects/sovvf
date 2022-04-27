@@ -75,13 +75,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
 
                     #endregion Concorrenza
 
-                    foreach (var ruolo in user.Ruoli)
+                    foreach (var ruoloNew in command.Ruoli)
                     {
-                        foreach (var ruoloNew in command.Ruoli)
-                        {
-                            if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, ruoloNew.CodSede, Costanti.Amministratore))
-                                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                        }
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, ruoloNew.CodSede, Costanti.Amministratore))
+                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                     }
 
                     if (!_checkEsistenzaRuolo.Check(command.Ruoli, command.CodFiscale))

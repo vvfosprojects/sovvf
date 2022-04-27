@@ -18,6 +18,7 @@ import { DettagliTipologieState } from '../../../shared/store/states/dettagli-ti
 import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologia.interface';
 import { TriageSummaryState } from '../../../shared/store/states/triage-summary/triage-summary.state';
 import { TriageSummary } from '../../../shared/interface/triage-summary.interface';
+import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-scheda-richiesta',
@@ -51,6 +52,7 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
 
     // Modifica Richiesta
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
+    richiestaModifica: SintesiRichiesta;
 
     // Dettagli Tipologie
     @Select(DettagliTipologieState.dettagliTipologie) dettagliTipologie$: Observable<DettaglioTipologia[]>;
@@ -59,12 +61,14 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
     @Select(TriageSummaryState.summary) triageSummary$: Observable<TriageSummary[]>;
 
     permessiFeature = PermissionFeatures;
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     private subscription = new Subscription();
 
     constructor() {
         this.getLoadingSchedaRichiesta();
         this.getLoadingCompetenze();
+        this.getRichiestaModifica();
     }
 
     ngOnInit(): void {
@@ -87,6 +91,14 @@ export class SchedaRichiestaComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.loadingCompetenze$.subscribe((loading: boolean) => {
                 this.loadingCompetenze = loading;
+            })
+        );
+    }
+
+    getRichiestaModifica(): void {
+        this.subscription.add(
+            this.richiestaModifica$.subscribe((richiestaModifica: SintesiRichiesta) => {
+                this.richiestaModifica = richiestaModifica;
             })
         );
     }

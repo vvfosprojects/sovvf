@@ -38,20 +38,20 @@
         </div>
     </ng-container>
 </div>
-<div class="modal-footer justify-content-between">
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            (click)="modal.close('ko')">
+        {{ 'annulla' | uppercase }}
+    </button>
     <div class="d-inline-block"
          [ngbTooltip]="tooltipLockedConcorrenza"
          [disableTooltip]="!(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [codMezzoDaSganciare])">
-        <button class="btn btn-lg btn-danger btn-no-hover font-weight-bold"
+        <button class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
                 [disabled]="(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [codMezzoDaSganciare]) || mezzoNotFound"
                 (click)="modal.close('ok')">
             {{ 'conferma sganciamento' | uppercase }}
         </button>
     </div>
-    <button class="btn btn-lg btn-secondary btn-no-hover font-weight-bold"
-            (click)="modal.close('ko')">
-        {{ 'annulla' | uppercase }}
-    </button>
 </div>
 
 <ng-template #tooltipLockedConcorrenza>

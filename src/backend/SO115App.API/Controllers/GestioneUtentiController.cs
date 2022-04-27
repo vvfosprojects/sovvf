@@ -53,7 +53,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di aggiungere un nuovo utente
         /// </summary>
         [HttpPost("AddUtente")]
-        //
+
         [ProducesResponseType(typeof(string), 400)]
         public IActionResult AddUtente([FromBody] AddUtenteCommand command)
         {
@@ -80,7 +80,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che permette di rimuovere utente
         /// </summary>
         [HttpPost("DeleteUtente")]
-        //
+
         [ProducesResponseType(typeof(string), 400)]
         public IActionResult DeleteUtente([FromBody] DeleteUtenteCommand command)
         {
@@ -99,7 +99,7 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message, stackTrace = ex.StackTrace });
             }
         }
-    
+
         /// <summary>
         ///   Metodo che restituisce uno specifico Utente
         /// </summary>
@@ -126,7 +126,7 @@ namespace SO115App.API.Controllers
                     return BadRequest(new { message = ex.Message });
             }
         }
-    
+
         /// <summary>
         ///   Metodo che restituisce la lista degli Utenti
         /// </summary>
@@ -136,6 +136,7 @@ namespace SO115App.API.Controllers
         public IActionResult GetUtenti([FromBody] ListaOperatoriQuery query)
         {
             query.IdUtente = Request.Headers["IdUtente"];
+            query.CodiciSede = Request.Headers["codiceSede"];
 
             try
             {
