@@ -34,6 +34,7 @@ import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { nomeStatiSquadra } from '../../helper/function-composizione';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
+import { ClearRichiestaAzioni, SetRichiestaAzioni } from '../../../features/home/store/actions/richieste/richieste.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -398,7 +399,10 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             } as NgbModalOptions;
         }
         const modal = this.modalService.open(AzioniSintesiRichiestaModalComponent, modalOptions);
-        modal.componentInstance.richiesta = this.richiesta;
+        this.store.dispatch(new SetRichiestaAzioni(this.richiesta.codice));
+        modal.result.then(() => {
+            this.store.dispatch(new ClearRichiestaAzioni());
+        });
     }
 
     getStatoFonogrammaStringByEnum(statoFonogramma: StatoFonogramma): string {
