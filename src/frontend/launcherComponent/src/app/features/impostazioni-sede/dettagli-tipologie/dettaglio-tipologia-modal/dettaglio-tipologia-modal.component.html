@@ -34,21 +34,34 @@
         </div>
     </form>
 </div>
-<div class="modal-footer" style="place-content: space-between">
-    <ng-template [ngIf]="!editDettaglioTipologia">
-        <button class="btn btn-lg btn-success btn-no-hover mr-2" [disabled]="!formValid" (click)="onConfermaEChiudi()">
-            {{ 'Conferma e Chiudi' | uppercase }}
-        </button>
-        <button class="btn btn-lg btn-secondary btn-no-hover" [disabled]="!formValid" (click)="onConfermaERiapri()">
-            {{ 'Conferma e Continua' | uppercase }}
-        </button>
-    </ng-template>
-    <ng-template [ngIf]="editDettaglioTipologia">
-        <button class="btn btn-lg btn-success btn-no-hover mr-2" [disabled]="!formValid" (click)="onConfermaEChiudi()">
-            {{ 'Conferma Modifica' | uppercase }}
-        </button>
-    </ng-template>
-    <button class="btn btn-lg btn-danger btn-no-hover" (click)="closeModal('ko')">
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover"
+            (click)="closeModal('ko')">
         {{ 'Annulla' | uppercase }}
     </button>
+    <ng-container *ngIf="!editDettaglioTipologia">
+        <div class="d-flex align-items-center justify-content-end">
+            <button type="button"
+                    class="btn btn-lg btn-secondary btn-no-hover mr-2"
+                    [disabled]="!formValid"
+                    (click)="onConfermaERiapri()">
+                {{ 'Conferma e Continua' | uppercase }}
+            </button>
+            <button type="button"
+                    class="btn btn-lg btn-success btn-no-hover"
+                    [disabled]="!formValid"
+                    (click)="onConfermaEChiudi()">
+                {{ 'Conferma e Chiudi' | uppercase }}
+            </button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="editDettaglioTipologia">
+        <button type="button"
+                class="btn btn-lg btn-success btn-no-hover"
+                [disabled]="!formValid"
+                (click)="onConfermaEChiudi()">
+            {{ 'Conferma Modifica' | uppercase }}
+        </button>
+    </ng-container>
 </div>

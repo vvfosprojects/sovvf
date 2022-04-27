@@ -101,12 +101,14 @@
     </ng-container>
 </div>
 <ng-container *ngIf="listaUtentiVVF?.length || addRuoloUtente">
-    <div class="modal-footer">
-        <button type="button" class="btn btn-no-hover btn-lg btn-secondary"
+    <div class="modal-footer d-flex align-items-center justify-content-between">
+        <button type="button"
+                class="btn btn-lg btn-secondary btn-no-hover"
                 (click)="closeModal('ko')">
             Annulla
         </button>
-        <button type="button" class="btn btn-no-hover btn-lg btn-danger"
+        <button type="button"
+                class="btn btn-lg btn-danger btn-no-hover"
                 [disabled]="!formValid"
                 (click)="onConferma()">
             Conferma

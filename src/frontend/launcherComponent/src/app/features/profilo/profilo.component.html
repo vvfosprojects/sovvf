@@ -27,6 +27,18 @@
                                 <hr>
                                 <div class="allineamento-list">
                                     <div *ngFor="let ruolo of ruoliUtenteLoggato">
+                                        <ng-container *ngIf="ruolo.ricorsivo">
+                                            <i class="fas fa-level-down-alt mx-3"
+                                               [ngbTooltip]="'In profondità'"
+                                               placement="top">
+                                            </i>
+                                        </ng-container>
+                                        <ng-container *ngIf="!ruolo.ricorsivo">
+                                            <i class="fas fa-arrow-right mx-3"
+                                               [ngbTooltip]="'Non in profondità'"
+                                               placement="top">
+                                            </i>
+                                        </ng-container>
                                         <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
                                         {{ ruolo.descrizione }}
                                     </div>

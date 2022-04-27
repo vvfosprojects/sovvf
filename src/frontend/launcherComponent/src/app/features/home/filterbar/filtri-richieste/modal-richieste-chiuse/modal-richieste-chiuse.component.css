@@ -15,6 +15,9 @@
 .custom-day.faded {
   background-color: rgba(2, 117, 216, 0.5);
 }
+.custom-day.invalid {
+  opacity: .3;
+}
 
 select.custom-select {
   margin: 0.5rem 0.5rem 0 0;
