@@ -1,31 +1,91 @@
-<button *ngIf="!useCheckbox" class="btn btn-block mb-1"
-        [ngClass]="{'btn-outline-primary': !selezionato, 'btn-success': selezionato}"
-        [disabled]="disabled" [debounceTime]="1" appDebounceClick (debounceClick)="onSelezione(filtro)">
-    {{ filtro.descrizione | truncate:70 }}
-</button>
-
-<div *ngIf="useCheckbox" class="d-inline-flex">
-    <app-checkbox
-            [checkboxState]="{id: filtro.categoria, descrizione: filtro.descrizione, status: selezionato, label: filtro.descrizione | truncate:70, disabled: disabled, disableFiltri: disableFiltri}"
-            [debounceTime]="1" appDebounceClick (debounceClick)="onSelezione(filtro)"></app-checkbox>
-  <button *ngIf="filtro.categoria === 'Chiuse'" class="btn btn-sm btn-no-hover btn-secondary ml-3" ngbTooltip="Filtra in dettaglio" placement="right"
-          style="inline-size: max-content; height: max-content; font-size: 15px; width: 50px"
-          (click)="chiusiModal.emit({value: true, richiesta: filtro.descrizione})" [disabled]="!selezionato"><i class="fas fa-calendar"></i></button>
-  <button *ngIf="filtro.name === 'zonaEmergenza'" class="btn btn-sm btn-no-hover btn-secondary ml-3"
-          style="inline-size: max-content; height: max-content; font-size: 15px; width: 50px" ngbTooltip="Filtra in dettaglio" placement="right"
-          (click)="zonaEmergenzaModal.emit(true)" [disabled]="!selezionato"><i class="fas fa-exclamation-triangle"></i></button>
-</div>
-<div *ngIf="filtro.name === 'chiamate' && periodoChiuseChiamate" class="mt-1" style="cursor: default; font-size: 15px; display: grid;">
-  <span *ngIf="periodoChiuseChiamate['data']"><b>Selezione:</b><br>Del {{periodoChiuseChiamate['data']}}</span>
-  <span *ngIf="periodoChiuseChiamate['daA']"><b>Selezione:</b><br>Periodo {{periodoChiuseChiamate['daA']}}</span>
-  <span *ngIf="periodoChiuseChiamate['turno']"><b>Selezione:</b><br>Turno {{periodoChiuseChiamate['turno']}}</span>
-</div>
-<div *ngIf="filtro.name === 'interventi' && periodoChiusiInterventi" class="mt-1" style="cursor: default; font-size: 15px; display: grid;">
-  <span *ngIf="periodoChiusiInterventi['data']"><b>Selezione:</b><br>Del {{periodoChiusiInterventi['data']}}</span>
-  <span *ngIf="periodoChiusiInterventi['daA']"><b>Selezione:</b><br>Periodo {{periodoChiusiInterventi['daA']}}</span>
-  <span *ngIf="periodoChiusiInterventi['turno']"><b>Selezione:</b><br>Turno {{periodoChiusiInterventi['turno']}}</span>
-</div>
-<div *ngIf="listaZoneEmergenzaSelezionate && listaZoneEmergenzaSelezionate.length > 0" class="mt-1" style="cursor: default; font-size: 15px; display: grid;">
-  <b>Selezione:</b>
-  <span *ngFor="let z of listaZoneEmergenzaSelezionate">{{ z }}</span>
-</div>
+<ng-container *ngIf="!useCheckbox">
+    <button class="btn btn-block mb-1"
+            [class.btn-outline-primary]="!selezionato"
+            [class.btn-success]="selezionato"
+            [disabled]="disabled"
+            [debounceTime]="1"
+            appDebounceClick
+            (debounceClick)="onSelezione(filtro)">
+        {{ filtro.descrizione | truncate:70 }}
+    </button>
+</ng-container>
+<ng-container *ngIf="useCheckbox">
+    <div class="d-inline-flex">
+        <app-checkbox
+                [checkboxState]="{id: filtro.categoria, descrizione: filtro.descrizione, status: selezionato, label: filtro.descrizione | truncate:70, disabled: disabled, disableFiltri: disableFiltri}"
+                [debounceTime]="1"
+                appDebounceClick
+                (debounceClick)="onSelezione(filtro)">
+        </app-checkbox>
+        <ng-container *ngIf="filtro.categoria === 'Chiuse'">
+            <button class="btn btn-sm btn-no-hover btn-secondary ml-3"
+                    ngbTooltip="Filtra in dettaglio"
+                    placement="right"
+                    style="inline-size: max-content; height: max-content; font-size: 15px; width: 50px"
+                    [disabled]="!selezionato"
+                    (click)="chiusiModal.emit({value: true, richiesta: filtro.descrizione})">
+                <i class="fas fa-calendar"></i>
+            </button>
+        </ng-container>
+        <ng-container *ngIf="filtro.name === 'zonaEmergenza'">
+            <button class="btn btn-sm btn-no-hover btn-secondary ml-3"
+                    style="inline-size: max-content; height: max-content; font-size: 15px; width: 50px"
+                    ngbTooltip="Filtra in dettaglio"
+                    placement="right"
+                    [disabled]="!selezionato"
+                    (click)="zonaEmergenzaModal.emit(true)">
+                <i class="fas fa-exclamation-triangle"></i>
+            </button>
+        </ng-container>
+    </div>
+</ng-container>
+<ng-container *ngIf="filtro.name === 'chiamate' && periodoChiuseChiamate">
+    <div class="mt-1" style="cursor: default; font-size: 15px; display: grid;">
+        <ng-container *ngIf="periodoChiuseChiamate['data']">
+            <b>Selezione:</b>
+            <div>
+                Del {{periodoChiuseChiamate['data']}}
+            </div>
+        </ng-container>
+        <ng-container *ngIf="periodoChiuseChiamate['daA']">
+            <b>Selezione:</b>
+            <div>
+                Periodo {{periodoChiuseChiamate['daA']}}
+            </div>
+        </ng-container>
+        <ng-container *ngIf="periodoChiuseChiamate['turno']">
+            <b>Selezione:</b>
+            <div>
+                Turno {{periodoChiuseChiamate['turno']}}
+            </div>
+        </ng-container>
+    </div>
+</ng-container>
+<ng-container *ngIf="filtro.name === 'interventi' && periodoChiusiInterventi">
+    <div class="mb-1" style="cursor: default; font-size: 15px; display: grid;">
+        <ng-container *ngIf="periodoChiusiInterventi['data']">
+            <b>Selezione:</b>
+            <div>
+                Del {{periodoChiusiInterventi['data']}}
+            </div>
+        </ng-container>
+        <ng-container *ngIf="periodoChiusiInterventi['daA']">
+            <b>Selezione:</b>
+            <div>
+                Periodo {{periodoChiusiInterventi['daA']}}
+            </div>
+        </ng-container>
+        <ng-container *ngIf="periodoChiusiInterventi['turno']">
+            <b>Selezione:</b>
+            <div>
+                Turno {{periodoChiusiInterventi['turno']}}
+            </div>
+        </ng-container>
+    </div>
+</ng-container>
+<ng-container *ngIf="listaZoneEmergenzaSelezionate?.length > 0">
+    <div class="mt-1" style="cursor: default; font-size: 15px; display: grid;">
+        <b>Selezione:</b>
+        <span *ngFor="let z of listaZoneEmergenzaSelezionate">{{ z }}</span>
+    </div>
+</ng-container>
