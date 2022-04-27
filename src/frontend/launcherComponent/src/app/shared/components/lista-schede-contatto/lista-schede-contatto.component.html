@@ -118,37 +118,40 @@
 <div class="col-12 px-0">
     <div class="clearfix">
         <div class="float-left">
-            <ng-template [ngIf]="!hideRaggruppa">
-                <button *ngIf="statoModalita" class="btn btn-lg mr-3"
-                        [class.btn-outline-danger]="!nightMode"
-                        [class.btn-outline-light]="nightMode"
-                        [disabled]="loading"
-                        (click)="onToggleModalitaMerge()">
-                    <i class="fas fa-undo mr-1"></i>
-                    Annulla
-                </button>
-                <button *ngIf="statoModalita"
-                        class="btn btn-lg mr-3"
-                        [class.btn-outline-success]="(idSelezionatiMerge?.length <= 1 || loading) && !nightMode"
-                        [class.btn-success]="(idSelezionatiMerge?.length > 1 && !loading) && !nightMode"
-                        [class.btn-outline-light]="(idSelezionatiMerge?.length <= 1 || loading) && nightMode"
-                        [class.btn-light]="(idSelezionatiMerge?.length > 1 && !loading) && nightMode"
-                        [class.btn-no-hover]="idSelezionatiMerge.length <= 1 || loading"
-                        [disabled]="idSelezionatiMerge.length <= 1 || loading"
-                        (click)="onSaveMerge()">
-                    <i class="fas fa-save mr-1"></i>
-                    Raggruppa selezionate <span *ngIf="idSelezionatiMerge?.length">({{ idSelezionatiMerge.length }}
-                    )</span>
-                </button>
-                <button *ngIf="!statoModalita"
-                        class="btn btn-lg mr-3"
-                        [class.btn-outline-primary]="!nightMode"
-                        [class.btn-outline-light]="nightMode"
-                        (click)="onToggleModalitaMerge()">
-                    <i class="fas fa-object-group mr-1"></i>
-                    Raggruppa
-                </button>
-            </ng-template>
+            <ng-container *ngIf="!hideRaggruppa">
+                <ng-container *ngIf="statoModalita">
+                    <button class="btn btn-lg mr-3"
+                            [class.btn-outline-danger]="!nightMode"
+                            [class.btn-outline-light]="nightMode"
+                            [disabled]="loading"
+                            (click)="onToggleModalitaMerge()">
+                        <i class="fas fa-undo mr-1"></i>
+                        Annulla
+                    </button>
+                    <button class="btn btn-lg mr-3"
+                            [class.btn-outline-success]="(idSelezionatiMerge?.length <= 1 || loading) && !nightMode"
+                            [class.btn-success]="(idSelezionatiMerge?.length > 1 && !loading) && !nightMode"
+                            [class.btn-outline-light]="(idSelezionatiMerge?.length <= 1 || loading) && nightMode"
+                            [class.btn-light]="(idSelezionatiMerge?.length > 1 && !loading) && nightMode"
+                            [class.btn-no-hover]="idSelezionatiMerge.length <= 1 || loading"
+                            [disabled]="idSelezionatiMerge.length <= 1 || loading"
+                            (click)="onSaveMerge()">
+                        <i class="fas fa-save mr-1"></i>
+                        Raggruppa selezionate
+                        <ng-container *ngIf="idSelezionatiMerge?.length">({{ idSelezionatiMerge.length }})
+                        </ng-container>
+                    </button>
+                </ng-container>
+                <ng-container *ngIf="!statoModalita">
+                    <button class="btn btn-lg mr-3"
+                            [class.btn-outline-primary]="!nightMode"
+                            [class.btn-outline-light]="nightMode"
+                            (click)="onToggleModalitaMerge()">
+                        <i class="fas fa-object-group mr-1"></i>
+                        Raggruppa
+                    </button>
+                </ng-container>
+            </ng-container>
         </div>
         <div class="float-right">
             <ngb-pagination

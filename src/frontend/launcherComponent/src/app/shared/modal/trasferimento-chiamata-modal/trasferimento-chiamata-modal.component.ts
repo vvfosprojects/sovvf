@@ -15,6 +15,7 @@ import { LockedConcorrenzaService } from '../../../core/service/concorrenza-serv
 import { AddTrasferimentoChiamata } from '../../interface/trasferimento-chiamata.interface';
 import { TrasferimentoChiamataService } from '../../../core/service/trasferimento-chiamata/trasferimento-chiamata.service';
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
+import { makeCopy } from '../../helper/function-generiche';
 
 @Component({
     selector: 'app-trasferimento-chiamata-modal',
@@ -67,6 +68,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         } else {
             this.f.codiceRichiesta.disable();
         }
+        this.removeSedeTreeviewSelezionata();
     }
 
     ngOnDestroy(): void {
@@ -147,6 +149,16 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    removeSedeTreeviewSelezionata(): void {
+        const codiceSedeSelezionata = this.vistaSedi[0];
+        const distaccamentiUnique = makeCopy(this.distaccamenti);
+        const codiciDistaccamenti = [];
+        distaccamentiUnique.forEach(x => codiciDistaccamenti.push(x.codice));
+        const indexRemove = codiciDistaccamenti.indexOf(codiceSedeSelezionata);
+        distaccamentiUnique.splice(indexRemove, 1);
+        this.distaccamenti = distaccamentiUnique;
     }
 
     addTrasferimentoChiamata(): void {
