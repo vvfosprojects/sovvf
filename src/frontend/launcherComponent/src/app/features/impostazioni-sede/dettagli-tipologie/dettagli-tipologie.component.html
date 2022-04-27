@@ -20,66 +20,71 @@
                                         (ricercaChange)="onRicercaDettagliTipologie($event)">
         </app-ricerca-dettagli-tipologie>
     </div>
-    <div *ngIf="ricerca" class="col-12 pl-2">
-        <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
-    </div>
-    <div *ngIf="dettagliTipologie?.length" class="col-12 mt-2">
-        <table class="table mt-3 mb-2">
-            <thead>
-            <tr>
-                <th scope="col" style="width:15%">Codice Tipologia</th>
-                <th scope="col" style="width:15%">Sede</th>
-                <th scope="col" style="width:15%">Codice Dettaglio</th>
-                <th scope="col" style="width:30%">Descrizione</th>
-                <th scope="col" style="width:35%">Azioni</th>
-            </tr>
-            </thead>
-            <tbody class="bg-dark-light">
-            <tr *ngFor="let dettaglioTipologia of dettagliTipologie">
-                <th scope="row" class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
-                <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codSede }}</td>
-                <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
-                <td class="align-middle" style="width:30%">{{ dettaglioTipologia.descrizione }}</td>
-                <td style="width:35%">
-                    <div class="d-inline-block mr-2"
-                         [ngbTooltip]="tooltipLockedConcorrenza"
-                         placement="left"
-                         [disableTooltip]="!(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
-                        <button class="btn btn-sm btn-info"
-                                ngbTooltip="Modifica Dettaglio Tipologia"
-                                [disabled]="(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
-                                (click)="onEditDettaglioTipologia(dettaglioTipologia)">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </div>
-                    <div class="d-inline-block"
-                         [ngbTooltip]="tooltipLockedConcorrenza"
-                         placement="left"
-                         [disableTooltip]="!(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
-                        <button class="btn btn-sm btn-danger"
-                                ngbTooltip="Elimina Dettaglio Tipologia"
-                                [disabled]="(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
-                                (click)="onDeleteDettaglioTipologia(dettaglioTipologia)">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </td>
-
-                <ng-template #tooltipLockedConcorrenza>
-                    <i class="fas fa-lock mr-1"></i>
-                    {{ getTooltipConcorrenzaText(dettaglioTipologia) }}
-                </ng-template>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div *ngIf="!dettagliTipologie?.length" class="col-12 mt-2">
-        <div class="alert alert-danger mb-0">
-            <i class="fas fa-exclamation-triangle"></i>
-            Nessun Dettaglio Tipologia presente
+    <ng-container *ngIf="ricerca">
+        <div class="col-12 pl-2">
+            <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="dettagliTipologie?.length">
+        <div class="col-12 mt-2">
+            <table class="table mt-3 mb-2">
+                <thead>
+                <tr>
+                    <th scope="col" style="width:15%">Codice Tipologia</th>
+                    <th scope="col" style="width:15%">Sede</th>
+                    <th scope="col" style="width:15%">Codice Dettaglio</th>
+                    <th scope="col" style="width:30%">Descrizione</th>
+                    <th scope="col" style="width:35%">Azioni</th>
+                </tr>
+                </thead>
+                <tbody class="bg-dark-light">
+                <tr *ngFor="let dettaglioTipologia of dettagliTipologie">
+                    <th scope="row" class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceTipologia }}</th>
+                    <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codSede }}</td>
+                    <td class="align-middle" style="width:15%">{{ dettaglioTipologia.codiceDettaglioTipologia }}</td>
+                    <td class="align-middle" style="width:30%">{{ dettaglioTipologia.descrizione }}</td>
+                    <td style="width:35%">
+                        <div class="d-inline-block mr-2"
+                             [ngbTooltip]="tooltipLockedConcorrenza"
+                             placement="left"
+                             [disableTooltip]="!(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
+                            <button class="btn btn-sm btn-info"
+                                    ngbTooltip="Modifica Dettaglio Tipologia"
+                                    [disabled]="(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
+                                    (click)="onEditDettaglioTipologia(dettaglioTipologia)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                        <div class="d-inline-block"
+                             [ngbTooltip]="tooltipLockedConcorrenza"
+                             placement="left"
+                             [disableTooltip]="!(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
+                            <button class="btn btn-sm btn-danger"
+                                    ngbTooltip="Elimina Dettaglio Tipologia"
+                                    [disabled]="(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
+                                    (click)="onDeleteDettaglioTipologia(dettaglioTipologia)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+
+                    <ng-template #tooltipLockedConcorrenza>
+                        <i class="fas fa-lock mr-1"></i>
+                        {{ getTooltipConcorrenzaText(dettaglioTipologia) }}
+                    </ng-template>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!dettagliTipologie?.length">
+        <div class="col-12 mt-3 mb-2">
+            <div class="alert alert-danger mb-0">
+                <i class="fas fa-exclamation-triangle"></i>
+                Nessun Dettaglio Tipologia presente
+            </div>
+        </div>
+    </ng-container>
     <div class="col-12">
         <div class="clearfix">
             <div class="float-left mt-2">

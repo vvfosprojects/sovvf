@@ -45,7 +45,7 @@ export class DettagliTipologieComponent implements OnDestroy {
                 private store: Store,
                 private ngSelectConfig: NgSelectConfig,
                 private lockedConcorrenzaService: LockedConcorrenzaService) {
-        ngSelectConfig.appendTo = 'body';
+        ngSelectConfig.notFoundText = 'Nessun elemento trovato';
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
         if (pageSizeAttuale === 7) {
             this.store.dispatch(new SetPageSize(10));
