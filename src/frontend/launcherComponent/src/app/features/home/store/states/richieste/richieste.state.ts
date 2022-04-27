@@ -6,14 +6,14 @@ import {
     AddRichiesta,
     AddRichieste,
     AllertaSede,
-    ClearIdChiamataInviaPartenza,
+    ClearIdChiamataInviaPartenza, ClearRichiestaAzioni,
     ClearRichiestaById,
     ClearRichieste,
     EliminaPartenzaRichiesta,
     GetListaRichieste,
     ModificaStatoFonogramma,
     SetIdChiamataInviaPartenza,
-    SetNeedRefresh,
+    SetNeedRefresh, SetRichiestaAzioni,
     SetRichiestaById,
     StartInviaPartenzaFromChiamata,
     StartLoadingActionMezzo,
@@ -65,6 +65,7 @@ import { LSNAME } from '../../../../../core/settings/config';
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
     richiestaById: SintesiRichiesta;
+    richiestaAzioni: SintesiRichiesta;
     chiamataInviaPartenza: string;
     loadingRichieste: boolean;
     loadingActionMezzo: string[];
@@ -77,6 +78,7 @@ export interface RichiesteStateModel {
 export const RichiesteStateDefaults: RichiesteStateModel = {
     richieste: [],
     richiestaById: null,
+    richiestaAzioni: null,
     chiamataInviaPartenza: null,
     loadingRichieste: false,
     loadingEliminaPartenza: false,
@@ -112,6 +114,11 @@ export class RichiesteState {
     @Selector()
     static richiestaById(state: RichiesteStateModel): any {
         return (id: string) => state.richieste.find(x => x.id === id);
+    }
+
+    @Selector()
+    static richiestaAzioni(state: RichiesteStateModel): SintesiRichiesta {
+        return state.richiestaAzioni;
     }
 
     @Selector()
@@ -430,6 +437,22 @@ export class RichiesteState {
     clearRichiestaById({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             richiestaById: RichiesteStateDefaults.richiestaById
+        });
+    }
+
+    @Action(SetRichiestaAzioni)
+    setRichiestaAzioni({ patchState }: StateContext<RichiesteStateModel>, action: SetRichiestaAzioni): void {
+        this.richiesteService.getRichiestaById(action.idRichiesta).subscribe((data: SintesiRichiesta) => {
+            patchState({
+                richiestaAzioni: data
+            });
+        });
+    }
+
+    @Action(ClearRichiestaAzioni)
+    clearRichiestaAzioni({ patchState }: StateContext<RichiesteStateModel>): void {
+        patchState({
+            richiestaAzioni: RichiesteStateDefaults.richiestaAzioni
         });
     }
 
