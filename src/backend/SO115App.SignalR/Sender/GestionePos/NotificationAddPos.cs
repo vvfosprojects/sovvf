@@ -42,7 +42,7 @@ namespace SO115App.SignalR.Sender.GestionePos
                 foreach (var tipologia in command.Pos.ListaTipologie)
                 {
                     hubConnection.StartAsync();
-                    hubConnection.InvokeAsync("NotifyAddPos", $"E' stata inserita la pos {command.Pos.DescrizionePos} ", sede);
+                    hubConnection.InvokeAsync("NotifyPos", $"E' stata inserita la pos {command.Pos.DescrizionePos} ", sede);
                     hubConnection.StopAsync();
                 }
             }));

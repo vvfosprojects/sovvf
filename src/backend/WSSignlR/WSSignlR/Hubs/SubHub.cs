@@ -304,9 +304,9 @@ namespace WSSignlR.Hubs
 
         #region POS
 
-        public void NotifyAddPos(String messaggio, string sede)
+        public void NotifyPos(String messaggio, string sede)
         {
-            Clients.Group(sede).SendAsync("NotifyAddPos", messaggio);
+            Clients.Group(sede).SendAsync("NotifyPos", messaggio);
         }
 
         #endregion POS
