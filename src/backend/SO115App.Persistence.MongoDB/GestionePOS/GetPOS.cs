@@ -2,25 +2,44 @@
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Persistence.MongoDB;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Pos;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.RicercaElencoPOS;
 using SO115App.Models.Servizi.Infrastruttura.GestionePOS;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.Persistence.MongoDB.GestionePOS
 {
     public class GetPOS : IGetPOS
     {
         private readonly DbContext _dbContext;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public GetPOS(DbContext dbContext)
+        public GetPOS(DbContext dbContext, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _dbContext = dbContext;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         public List<PosDAO> Get(GetElencoPOSQuery filtri)
         {
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
+            var pinNodi = new List<PinNodo>();
+            var pinNodiNoDistaccamenti = new List<PinNodo>();
+
+            if (filtri.CodiceSede.Contains("."))
+                filtri.CodiceSede = filtri.CodiceSede.Substring(0, filtri.CodiceSede.IndexOf(".")) + ".1000";
+
+            pinNodi.Add(new PinNodo(filtri.CodiceSede, true));
+            pinNodiNoDistaccamenti.Add(new PinNodo(filtri.CodiceSede, true));
+
+            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
+                pinNodi.Add(new PinNodo(figlio.Codice, true));
+
             var text = filtri.Filters.Search?.ToLower() ?? "";
 
             var Tipologia = new TipologiaPos();
@@ -38,7 +57,12 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
                 }
             }
 
-            var lstPOS = _dbContext.DtoPosCollection.Find(c => c.CodSede.Equals(filtri.CodiceSede)
+            var listaCodici = pinNodi.Select(x => x.Codice).ToList();
+
+            var filtroSediCompetenti = Builders<PosDAO>.Filter
+                .In(p => p.CodSede, listaCodici.Select(uo => uo));
+
+            var lstPOS = _dbContext.DtoPosCollection.Find(c => listaCodici.Contains(c.CodSede)
                 && (c.DescrizionePos.ToLower().Contains(text)))
                 //|| c.ListaTipologie.Contains(Tipologia)))
                 .Project("{fDFile: 0}").ToList();

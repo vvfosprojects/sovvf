@@ -137,6 +137,8 @@ namespace SO115App.CompositionRoot
             #region POS
 
             container.Register<INotificationAddPos, NotificationAddPos>();
+            container.Register<INotificationEditPos, NotificationEditPos>();
+            container.Register<INotificationDeletePos, NotificationDeletePos>();
 
             #endregion POS
 
@@ -171,10 +173,12 @@ namespace SO115App.CompositionRoot
             #endregion Emergenza
 
             #region Concorrenza
+
             container.Register<INotificationDeleteBlock, NotificationDeleteBlock>();
             container.Register<INotificationAddBlock, NotificationAddBlock>();
             container.Register<INotificationDeleteAllBlocks, NotificationDeleteAllBlocks>();
-            #endregion
+
+            #endregion Concorrenza
         }
     }
 }

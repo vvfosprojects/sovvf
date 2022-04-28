@@ -26,5 +26,6 @@ export enum TipoConcorrenzaEnum {
     EliminaUtente,
     Sostituzione,
     Fonogramma,
-    EntiIntervenuti
+    EntiIntervenuti,
+    AnnullaStatoMezzo
 }

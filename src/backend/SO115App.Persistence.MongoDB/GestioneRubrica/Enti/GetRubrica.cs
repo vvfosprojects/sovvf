@@ -5,7 +5,9 @@ using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.SignalR.Utility;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,19 +16,23 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
     public class GetRubrica : IGetRubrica
     {
         private readonly DbContext _dbContext;
+        private readonly GetGerarchiaToSend _getGerarchia;
         private readonly IGetEnteCategorie _getCategorieEnte;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetSedi _getSedi;
 
-        public GetRubrica(DbContext dbContext, IGetEnteCategorie getCategorieEnte, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public GetRubrica(DbContext dbContext, IGetEnteCategorie getCategorieEnte, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetSedi getSedi)
         {
             _dbContext = dbContext;
             _getCategorieEnte = getCategorieEnte;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getSedi = getSedi;
+            _getGerarchia = new GetGerarchiaToSend(_getAlberaturaUnitaOperative);
         }
 
-        private static List<EnteIntervenuto> FiltraByRicorsività(List<PinNodo> listaPin, List<EnteIntervenuto> lstEnti)
+        private static List<EnteIntervenuto> FiltraByRicorsività(List<PinNodo> listaPin, List<EnteIntervenuto> lstEnti, string codSede = null)
         {
-            if (lstEnti.Count > 0)
+            if (lstEnti.Count > 0 && codSede != "00")
                 return lstEnti.Where(c =>
                 {
                     //LOGICA/CONDIZIONI RICORSIVITA'
@@ -41,36 +47,33 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         private List<PinNodo> GetGerarchia(string[] CodSede)
         {
-            var listaPin = new List<PinNodo>();
-            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata().Result;
 
-            foreach (var sede in CodSede)
-            {
-                listaPin.Add(new PinNodo(sede, true));
-                foreach (var figlio in sediAlberate.Result.GetSottoAlbero(listaPin))
-                {
-                    PinNodo fgl = new PinNodo(figlio.Codice, true);
-                    listaPin.Add(fgl);
-                }
-            }
+            var listaPin = CodSede[0] != "00" ?
+                _getGerarchia.Get(CodSede[0]).Select(p => new PinNodo(p, true)).ToList() :
+                _getSedi.GetAll().Result.Select(p => new PinNodo(p.Codice, true)).ToList();
 
             return listaPin;
         }
 
         public List<EnteDTO> Get(string[] CodSede, string TextSearch)
         {
-            var text = TextSearch?.ToLower() ?? "";
-
             var listaPin = GetGerarchia(CodSede);
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
 
-            var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Distinct().Contains(c.CodSede)).ToList();
+            var lstEnti = CodSede[0] != "00" ? 
+                _dbContext.RubricaCollection.Find(c => lstCodiciPin.Distinct().Contains(c.CodSede)).ToList() :
+                _dbContext.RubricaCollection.Find(Builders<EnteIntervenuto>.Filter.Empty).ToList();
 
+
+            //17:02 FATTO!!! TESTARE BENE, ANCORA NON TESTATO UFFICIALMENTE
+
+            var text = TextSearch?.ToLower() ?? "";
             var listaFiltrata =  lstEnti.Where(c => c.Descrizione.ToLower().Contains(text)).ToList();
 
             //GESTIONE RICORSIVITA'
-            var result = FiltraByRicorsività(listaPin, listaFiltrata);
+            var result = FiltraByRicorsività(listaPin, listaFiltrata, CodSede[0]);
 
             //RECUPERO LE CATEGORIE
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
