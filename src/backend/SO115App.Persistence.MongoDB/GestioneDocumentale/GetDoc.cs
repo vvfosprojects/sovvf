@@ -27,6 +27,10 @@ namespace SO115App.Persistence.MongoDB.GestioneDocumentale
         {
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
+
+            if (filtri.CodiceSede.Contains("."))
+                filtri.CodiceSede = filtri.CodiceSede.Substring(0, filtri.CodiceSede.IndexOf(".")) + ".1000";
+
             pinNodi.Add(new PinNodo(filtri.CodiceSede, true));
 
             foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))

@@ -23,12 +23,6 @@
                                    (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
                                    (sgancia)="onSganciamento($event)">
             </app-mezzo-in-servizio>
-            <!-- <div class="float-right">
-                <button class="btn btn-outline-danger btn-no-hover"
-                        (click)="onSganciamento(m.mezzo.mezzo)">
-                    {{ 'info' | uppercase }}
-                </button>
-            </div> -->
         </div>
     </ng-container>
     <ng-container *ngIf="!mezzi?.length && !loadingMezzi">

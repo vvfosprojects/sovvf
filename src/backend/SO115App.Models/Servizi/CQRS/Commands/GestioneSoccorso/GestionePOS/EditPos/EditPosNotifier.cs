@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddInterventoNotifier.cs" company="CNVVF">
+// <copyright file="AddPosNotifier.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,23 +18,22 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
-using System.Threading.Tasks;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.EditPos
 {
-    public class AnnullaStatoPartenzaNotifier : ICommandNotifier<AnnullaStatoPartenzaCommand>
+    public class EditPosNotifier : ICommandNotifier<EditPosCommand>
     {
-        private readonly INotifyAnnullaPartenza _sender;
+        private readonly INotificationEditPos _sender;
 
-        public AnnullaStatoPartenzaNotifier(INotifyAnnullaPartenza sender)
+        public EditPosNotifier(INotificationEditPos sender)
         {
             _sender = sender;
         }
 
-        public void Notify(AnnullaStatoPartenzaCommand command)
+        public void Notify(EditPosCommand command)
         {
-            Task.Run(() => _sender.SendNotification(command));
+            _sender.SendNotification(command);
         }
     }
 }

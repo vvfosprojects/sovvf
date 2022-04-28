@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
 {
@@ -54,12 +55,32 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
 
                 listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
             }
-            foreach (var unita in listaSediAlberate.Result?.GetSottoAlbero(listaPin))
+
+            var listaSediDaVerificare = listaSediAlberate.Result?.GetSottoAlbero(listaPin).ToList().FindAll(s => listaPin.Any(x => x.Codice.Equals(s.Codice)));
+
+            foreach (var unita in listaSediDaVerificare)
             {
-                if (unita?.Codice?.Equals(codSedeDaVerificare) ?? false)
+                var ricorsivo = listaPin.FirstOrDefault(x => x.Codice.Equals(unita.Codice)).Ricorsivo;
+
+                if(ricorsivo)
                 {
-                    return true;
+                    if (unita?.Codice?.Equals(codSedeDaVerificare) ?? false)
+                    {
+                        return true;
+                    }
+                    else                    
+                        if (unita.Figli != null)
+                        {
+                            if (unita.Figli.ToList().FindAll(x => x.Codice.Equals(codSedeDaVerificare)).Count > 0)
+                                return true;
+
+                            if (unita.Figli.ToList().FindAll(x => (bool)(x.Figli?.Any(c=>c.Codice.Equals(codSedeDaVerificare)))).Count > 0)
+                                return true;
+                        }
+                    
                 }
+
+
             }
             return false;
         }

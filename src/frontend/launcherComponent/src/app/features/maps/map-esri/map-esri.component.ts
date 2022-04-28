@@ -300,7 +300,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 this.store.dispatch(new SetCentroMappa({ coordinateCentro, zoom }));
                 richiestaSelezionata.partenze.forEach((p: Partenza, index: number) => {
                     if (index === 0) {
-                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                        setTimeout(() => {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                        }, 1500);
                     }
                     if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
                         let origin: { lat: number, lng: number };
@@ -323,7 +325,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
         } else if (changes?.idRichiestaSelezionata?.currentValue === null && this.map && this.view?.ready) {
             this.store.dispatch(new GetInitCentroMappa());
             this.clearDirection('partenzeRichiestaSelezionata');
-            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+            setTimeout(() => {
+                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+            }, 1500);
             if (!changes?.richiestaComposizione?.currentValue) {
                 this.clearSearchForARIRAndIdranti();
             }
@@ -361,7 +365,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             if (this.richiestaComposizione) {
                 this.richiestaComposizione.partenze.forEach((p: Partenza, index: number) => {
                     if (index === 0) {
-                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                        setTimeout(() => {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                        }, 1500);
                     }
                     if (!p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata) {
                         const origin = { lat: +p.partenza.coordinate.latitudine, lng: +p.partenza.coordinate.longitudine };
@@ -391,15 +397,21 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     const codFiltro = filtro.codice.toLocaleLowerCase().replace(/\s+/g, '');
                     switch (codFiltro) {
                         case 'interventichiusi':
-                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, true).then();
+                            setTimeout(() => {
+                                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, true).then();
+                            }, 1500);
                             break;
                         default:
-                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, false).then();
+                            setTimeout(() => {
+                                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, false).then();
+                            }, 1500);
                             break;
                     }
                 });
             } else {
-                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, false).then();
+                setTimeout(() => {
+                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.interventi.chiusi, false).then();
+                }, 1500);
             }
         }
 
@@ -408,7 +420,9 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const richiesteActive = changes?.richiesteStatus?.currentValue;
             switch (richiesteActive) {
                 case true:
-                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+                    setTimeout(() => {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+                    }, 1500);
                     break;
             }
             this.store.dispatch(new GetInitCentroMappa());
@@ -419,12 +433,32 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const schedeContattoActive = changes?.schedeContattoStatus?.currentValue;
             switch (schedeContattoActive) {
                 case true:
-                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, true).then();
+                    setTimeout(() => {
+                        if (environment.productionTest) {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoTest.nonGestite, true).then();
+                        } else if (environment.productionDemo) {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoDemo.nonGestite, true).then();
+                        } else {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, true).then();
+                        }
+                    }, 1500);
                     break;
                 case false:
-                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, false).then(() => {
-                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.gestite, false).then();
-                    });
+                    setTimeout(() => {
+                        if (environment.productionTest) {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoTest.nonGestite, false).then(() => {
+                                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoTest.gestite, false).then();
+                            });
+                        } else if (environment.productionDemo) {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoDemo.nonGestite, false).then(() => {
+                                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContattoDemo.gestite, false).then();
+                            });
+                        } else {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.nonGestite, false).then(() => {
+                                this.toggleLayer(ESRI_LAYERS_CONFIG.layers.schedeContatto.gestite, false).then();
+                            });
+                        }
+                    }, 1500);
                     break;
             }
         }
@@ -446,10 +480,14 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const composizionePartenzaActive = changes?.composizionePartenzaStatus?.currentValue;
             switch (composizionePartenzaActive) {
                 case true:
-                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    setTimeout(() => {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    }, 1500);
                     break;
                 case false:
-                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+                    setTimeout(() => {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+                    }, 1500);
                     break;
             }
         }
@@ -459,14 +497,20 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             const mezziInServizioActive = changes?.mezziInServizioStatus?.currentValue;
             switch (mezziInServizioActive) {
                 case true:
-                    this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    setTimeout(() => {
+                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                    }, 1500);
                     break;
                 case false:
                     const backupView = this.store.selectSnapshot(ViewComponentState.colorButton)?.backupViewComponent?.view;
                     if (backupView && backupView.mezziInServizio && backupView.mezziInServizio.active) {
-                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                        setTimeout(() => {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, true).then();
+                        }, 1500);
                     } else {
-                        this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+                        setTimeout(() => {
+                            this.toggleLayer(ESRI_LAYERS_CONFIG.layers.mezzi, false).then();
+                        }, 1500);
                     }
                     break;
             }

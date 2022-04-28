@@ -1,27 +1,24 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.InsertPos;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.EditPos;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 using SO115App.SignalR.Utility;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestionePos
 {
-    public class NotificationAddPos : INotificationAddPos
+    public class NotificationEditPos : INotificationEditPos
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
-        public NotificationAddPos(IHubContext<NotificationHub> notificationHubContext,
+        public NotificationEditPos(IHubContext<NotificationHub> notificationHubContext,
                                                GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = notificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
         }
 
-        public async Task SendNotification(AddPosCommand command)
+        public async Task SendNotification(EditPosCommand command)
         {
             var SediDaNotificare = _getGerarchiaToSend.Get(command.Pos.CodSede);
 

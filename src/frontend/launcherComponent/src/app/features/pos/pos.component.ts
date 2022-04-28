@@ -159,7 +159,7 @@ export class PosComponent implements OnInit, OnDestroy {
         this.posService.getPosById(pos.id).subscribe((data: any) => {
             switch (data.type) {
                 case HttpEventType.DownloadProgress:
-                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    console.warn('Download del file (' + pos.fileName + ')');
                     break;
                 case HttpEventType.Response:
                     const downloadedFile = new Blob([data.body], { type: data.body.type });
@@ -177,20 +177,28 @@ export class PosComponent implements OnInit, OnDestroy {
     }
 
     onViewPos(pos: PosInterface): void {
-        this.posService.getPosById(pos.id).subscribe((data: any) => {
-            switch (data.type) {
-                case HttpEventType.Response:
-                    const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
-                        windowClass: 'xxlModal modal-holder',
-                        backdropClass: 'light-blue-backdrop',
-                        centered: true
-                    });
-                    const downloadedFile = new Blob([data.body], { type: data.body.type });
-                    modalVisualizzaPdf.componentInstance.titolo = pos?.descrizionePos?.toLocaleUpperCase();
-                    modalVisualizzaPdf.componentInstance.blob = downloadedFile;
-                    break;
-            }
-        }, () => console.log('Errore visualizzazione POS'));
+        const fileNameSplit = pos.fileName.split('.');
+        if (fileNameSplit[fileNameSplit.length - 1] === 'pdf') {
+            this.posService.getPosById(pos.id).subscribe((data: any) => {
+                switch (data.type) {
+                    case HttpEventType.DownloadProgress:
+                        console.warn('Download del file (' + pos.fileName + ')');
+                        break;
+                    case HttpEventType.Response:
+                        const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
+                            windowClass: 'xxlModal modal-holder',
+                            backdropClass: 'light-blue-backdrop',
+                            centered: true
+                        });
+                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                        modalVisualizzaPdf.componentInstance.titolo = pos?.descrizionePos?.toLocaleUpperCase();
+                        modalVisualizzaPdf.componentInstance.blob = downloadedFile;
+                        break;
+                }
+            }, () => console.log('Errore visualizzazione POS'));
+        } else {
+            this.onDownloadPos(pos);
+        }
     }
 
     onEditPos(pos: PosInterface): void {

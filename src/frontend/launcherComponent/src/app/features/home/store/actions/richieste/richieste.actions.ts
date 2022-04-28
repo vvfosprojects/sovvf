@@ -119,6 +119,17 @@ export class ClearRichiestaById {
     static readonly type = '[Richieste] Clear Richiesta by Id';
 }
 
+export class SetRichiestaAzioni {
+    static readonly type = '[Richieste] Set Richiesta Azioni';
+
+    constructor(public idRichiesta: string) {
+    }
+}
+
+export class ClearRichiestaAzioni {
+    static readonly type = '[Richieste] Clear Richiesta Azioni';
+}
+
 export class VisualizzaListaSquadrePartenza {
     static readonly type = '[Richieste] Visualizza Lista Squadre Partenza';
 

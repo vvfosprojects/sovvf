@@ -7,10 +7,10 @@
         <i class="fas fa-times text-danger"></i>
     </button>
 </div>
-
 <div class="modal-body">
-    <span [class.box-selected]="nessunaZonaSelected" [class.box-locked]="nessunaZonaLocked"
-          class="card row row_text box-zona-emergenza my-3 cursor-pointer"
+    <span class="card row row_text box-zona-emergenza my-3 cursor-pointer"
+          [class.box-selected]="nessunaZonaSelected"
+          [class.box-locked]="nessunaZonaLocked"
           style="margin-left: 15%;">
       <button (click)="onClickNessunaZona()" class="btn-no-style p-2" [disabled]="nessunaZonaLocked">Nessuna zona emergenza</button>
     </span>
@@ -21,14 +21,16 @@
       </span>
     </div>
 </div>
-
-<div class="modal-footer" style="place-content: space-between;">
-    <button type="button" class="btn btn-lg btn-success btn-no-hover font-weight-bolder" aria-label="Close"
-            (click)="chiudiModalFiltriTipologia('ok')" [disabled]="!nessunaZonaLocked && !zoneEmergenzaLocked">
-        {{ 'Applica Filtro' | uppercase }}
-    </button>
-    <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-2" aria-label="Close"
+<div class="modal-footer d-flex align-items-center justify-content-between">
+    <button type="button"
+            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
             (click)="chiudiModalFiltriTipologia('ko')">
         {{ 'Chiudi' | uppercase }}
+    </button>
+    <button type="button"
+            class="btn btn-lg btn-success btn-no-hover font-weight-bolder"
+            [disabled]="!nessunaZonaLocked && !zoneEmergenzaLocked"
+            (click)="chiudiModalFiltriTipologia('ok')">
+        {{ 'Applica Filtro' | uppercase }}
     </button>
 </div>

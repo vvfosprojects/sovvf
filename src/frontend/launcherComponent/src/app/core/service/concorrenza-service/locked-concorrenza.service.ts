@@ -220,6 +220,15 @@ export class LockedConcorrenzaService {
                 // TODO: completare blocks
                 blocks = [];
                 break;
+            case TipoConcorrenzaEnum.AnnullaStatoMezzo:
+                blocks = [
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
+                    TipoConcorrenzaEnum.ChiusuraChiamata,
+                    TipoConcorrenzaEnum.ChiusuraIntervento,
+                    TipoConcorrenzaEnum.GestisciPartenza,
+                    TipoConcorrenzaEnum.Sganciamento
+                ];
+                break;
         }
         concorrenzaFound = concorrenza?.filter((c: ConcorrenzaInterface) => blocks.includes(c.type) && value.includes(c.value) && c.idOperatore !== currentUser.id)[0];
         return concorrenzaFound ? concorrenzaFound.nominativoOperatore : null;
