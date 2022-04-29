@@ -62,8 +62,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Restituisce l'elenco di tutti gli interventi che rispondono ai filtri impostati
         /// </summary>
-        [HttpPost("RiepilogoInterventi")]
-        [ProducesResponseType(typeof(byte?[]), 200)]
+        [HttpPost]
+        [ProducesResponseType(typeof(FileContentResult), 200)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> RiepilogoInterventi([FromBody] FiltriRiepilogoInterventi filtri, [FromQuery] string contentType = "application/pdf")
         {
