@@ -41,37 +41,29 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
 
         public GetSchedeFiltrateResult Handle(GetSchedeFiltrateQuery query)
         {
-            string codiceFiscale = null;
-
             var listaSchedeContatto = new List<SchedaContatto>();
 
-            query.CodiciSede.ToList().ForEach(codice =>
-                listaSchedeContatto.AddRange(_getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, codiceFiscale, query.Filters.RangeVisualizzazione, codice, query.Filters.Classificazione, query.CodiciSede[0])));
+            query.CodiciSede.Distinct().ToList().ForEach(codice =>
+                listaSchedeContatto.AddRange(_getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, null, query.Filters.RangeVisualizzazione, codice, query.Filters.Classificazione, query.CodiciSede[0])));
 
-            var result = listaSchedeContatto.OrderByDescending(x=> x.DataInserimento).ToList();
-
-            var lista = new List<SchedaContatto>();
+            var result = listaSchedeContatto.Where(s => s.DataInserimento > System.DateTime.UtcNow.AddDays(-1)).ToList();
 
             if (query.Pagination.Page != 0)
             {
-                lista = result
+                result = listaSchedeContatto
                     .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
                     .Take(query.Pagination.PageSize).ToList();
             }
-            else
-                lista = result;
-
-            result = result.Where(s => s.DataInserimento > System.DateTime.UtcNow.AddDays(-1)).ToList();
 
             return new GetSchedeFiltrateResult()
             {
-                DataArray = lista.OrderByDescending(s => s.DataInserimento).ToList(),
+                DataArray = result.OrderByDescending(s => s.DataInserimento).ToList(),
 
                 Pagination = new Classi.Condivise.Paginazione()
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = result.Count
+                    TotalItems = listaSchedeContatto.Count
                 }
             };
         }
