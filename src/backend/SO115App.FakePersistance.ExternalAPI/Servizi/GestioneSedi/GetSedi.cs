@@ -175,7 +175,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         public async Task<UnitaOperativa> ListaSediAlberata()
         {
-            UnitaOperativa ListaSediAlberate = null;
+            UnitaOperativa ListaSediAlberate = null;//
 
             if (!_memoryCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
             {
