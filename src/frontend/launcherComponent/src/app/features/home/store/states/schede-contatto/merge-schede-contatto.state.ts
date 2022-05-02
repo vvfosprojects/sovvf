@@ -1,16 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import {
-    AddScheda,
-    AddSchedaId,
-    CheckboxError,
-    ClearMergeSchedeContatto,
-    InitSaveMergeSchedeContatto,
-    RemoveScheda,
-    RemoveSchedaId,
-    SetMergeClassificazione,
-    SetMergeSchedaId,
-    ToggleModalitaMerge
-} from '../../actions/schede-contatto/merge-schede-contatto.actions';
+import { AddScheda, AddSchedaId, CheckboxError, ClearMergeSchedeContatto, InitSaveMergeSchedeContatto, RemoveScheda, RemoveSchedaId, SetMergeClassificazione, SetMergeSchedaId, ToggleModalitaMerge } from '../../actions/schede-contatto/merge-schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { SaveMergeSchedeContatto } from '../../actions/schede-contatto/schede-contatto.actions';
@@ -18,6 +7,9 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { Injectable } from '@angular/core';
 import { SchedaContatto } from '../../../../../shared/interface/scheda-contatto.interface';
+import { AddConcorrenzaDtoInterface } from '../../../../../shared/interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../../../shared/store/actions/concorrenza/concorrenza.actions';
 
 export interface MergeSchedeContattoStateModel {
     statoModalita: boolean;
@@ -63,7 +55,10 @@ export class MergeSchedeContattoState {
     @Action(ToggleModalitaMerge)
     toggleModalitaMerge({ getState, patchState, dispatch }: StateContext<MergeSchedeContattoStateModel>): void {
         if (getState().statoModalita) {
-            dispatch(new ClearMergeSchedeContatto());
+            dispatch([
+                new DeleteConcorrenza(TipoConcorrenzaEnum.RaggruppamentoSchedeContatto),
+                new ClearMergeSchedeContatto()
+            ]);
         } else {
             patchState({
                 statoModalita: true
@@ -77,11 +72,17 @@ export class MergeSchedeContattoState {
         const codiceScheda = scheda.codiceScheda;
         if (getState().schedeSelezionateId.includes(codiceScheda)) {
             dispatch([
+                new DeleteConcorrenza(TipoConcorrenzaEnum.RaggruppamentoSchedeContatto, [scheda.codiceScheda]),
                 new RemoveScheda(scheda),
                 new RemoveSchedaId(codiceScheda)
             ]);
         } else {
+            const data = {
+                type: TipoConcorrenzaEnum.RaggruppamentoSchedeContatto,
+                value: scheda.codiceScheda
+            } as AddConcorrenzaDtoInterface;
             dispatch([
+                new AddConcorrenza([data]),
                 new AddScheda(scheda),
                 new AddSchedaId(codiceScheda)
             ]);
@@ -150,7 +151,8 @@ export class MergeSchedeContattoState {
     }
 
     @Action(ClearMergeSchedeContatto)
-    clearMergeSchedeContatto({ patchState }: StateContext<MergeSchedeContattoStateModel>): void {
+    clearMergeSchedeContatto({ patchState, dispatch }: StateContext<MergeSchedeContattoStateModel>): void {
+        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.RaggruppamentoSchedeContatto));
         patchState(MergeSchedeContattoStateDefaults);
     }
 

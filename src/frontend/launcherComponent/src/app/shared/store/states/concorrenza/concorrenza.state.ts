@@ -67,6 +67,9 @@ export class ConcorrenzaState {
             case TipoConcorrenzaEnum.Squadra:
                 concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && action.value.includes(c.value) && c.idOperatore === currentUser.id);
                 break;
+            case TipoConcorrenzaEnum.RaggruppamentoSchedeContatto:
+                concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && (!action.value || (action.value.includes(c.value))) && c.idOperatore === currentUser.id);
+                break;
             default:
                 concorrenzaToDelete = concorrenza.filter((c: ConcorrenzaInterface) => c.type === type && c.idOperatore === currentUser.id);
                 break;

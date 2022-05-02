@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
+using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
@@ -37,21 +38,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly IGetRichiesta _getRichiestaById;
-        private readonly IGetAllBlocks _getAllBlocks;
         private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
+        private readonly IIsActionFree _isActionFree;
 
         public AnnullaStatoPartenzaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
             IGetRichiesta getRichiestaById,
-            IGetAllBlocks getAllBlocks,
-            IGetSottoSediByCodSede getSottoSediByCodSede)
+            IGetSottoSediByCodSede getSottoSediByCodSede,
+            IIsActionFree isActionFree)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
             _getRichiestaById = getRichiestaById;
-            _getAllBlocks = getAllBlocks;
             _getSottoSediByCodSede = getSottoSediByCodSede;
+            _isActionFree = isActionFree;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AnnullaStatoPartenzaCommand command)
@@ -66,16 +67,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 else
                 {
                     var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Richiesta.CodSOCompetente.Split('.')[0] + ".1000" });
-                    var listaOperazioniBloccate = _getAllBlocks.GetAll(listaSediInteressate.ToArray());
 
-                    var findBlock = listaOperazioniBloccate.FindAll(o => o.Value.Equals(command.Richiesta.Id));
+                    #region CONCORRENZA
 
-                    if (findBlock != null && findBlock.Count > 0)
-                    {
-                        var verificaUtente = findBlock.FindAll(b => b.IdOperatore.Equals(command.Operatore.Id));
-                        if (verificaUtente.Count == 0)
-                            yield return new AuthorizationResult(Costanti.InterventoBloccato);
-                    }
+                    if (!_isActionFree.Check(TipoOperazione.CambioStatoPartenza, command.IdOperatore, listaSediInteressate.ToArray(), command.TargaMezzo))
+                        yield return new AuthorizationResult($"La partenza risulta avere il mezzo o le squadre già utilizzati da un altro operatore.");
+
+                    #endregion
+
 
                     if (command.Richiesta.Chiusa)
                         yield return new AuthorizationResult(Costanti.MezzoErroreCambioStatoRichiestaChiusa);
