@@ -26,18 +26,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
     public class SetSchedaGestitaHandler : ICommandHandler<SetSchedaGestitaCommand>
     {
         private readonly ISetStatoGestioneSchedaContatto _setGestita;
-        private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetUtenteById _getUtente;
 
-        public SetSchedaGestitaHandler(ISetStatoGestioneSchedaContatto setGestita, IGetUtenteById getUtenteById)
+        public SetSchedaGestitaHandler(ISetStatoGestioneSchedaContatto setGestita, IGetUtenteById getUtente)
         {
             _setGestita = setGestita;
-            _getUtenteById = getUtenteById;
+            _getUtente = getUtente;
         }
 
         public void Handle(SetSchedaGestitaCommand command)
         {
-            var codiceFiscaleOperatore = _getUtenteById.GetUtenteByCodice(command.IdUtente).CodiceFiscale;
-            _setGestita.Gestita(command.Scheda.CodiceScheda, command.CodiceSede, codiceFiscaleOperatore, command.Gestita, command.CodIntervento);
+            var operatore = _getUtente.GetUtenteByCodice(command.IdUtente);
+
+            _setGestita.Gestita(command.Scheda.CodiceScheda, command.CodiceSede, operatore.CodiceFiscale, command.Gestita, command.CodIntervento);
         }
     }
 }

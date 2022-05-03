@@ -99,7 +99,7 @@
                 [classificazione]="classificazioneMerge"
                 [disableCreaRichiesta]="(permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede) || (tipoConcorrenzaEnum.RegistrazioneSchedaContatto | checkConcorrenzaLocked: [scheda.codiceScheda]) || scheda.gestita"
                 [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
-                [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                [disableRaggruppamento]="(permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede) || (tipoConcorrenzaEnum.RaggruppamentoSchedeContatto | checkConcorrenzaLocked: [scheda.codiceScheda])"
                 [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
                 (hoverIn)="onHoverIn($event)"
                 (hoverOut)="onHoverOut()"

@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneConcorrenza;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlocks
 {
@@ -33,7 +34,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlo
 
         public void Notify(DeleteAllBlocksCommand command)
         {
-            _sender.SendNotification(command);
+            Task.Factory.StartNew(() =>
+            {
+                _sender.SendNotification(command);
+            });
         }
     }
 }
