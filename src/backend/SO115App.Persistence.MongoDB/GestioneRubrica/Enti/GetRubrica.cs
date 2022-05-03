@@ -50,7 +50,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
         private List<PinNodo> GetGerarchia(string[] CodSede)
         {
             var listaPin = _getSottoSedi.Get(CodSede).Select(p => new PinNodo(p, true)).ToList();
-            listaPin.AddRange(_getRicorsivita.Get(CodSede[0]).Select(p => new PinNodo(p, true)).ToList());
+            //listaPin.AddRange(_getRicorsivita.Get(CodSede[0]).Select(p => new PinNodo(p, true)).ToList());
 
             return listaPin.Distinct().ToList();
         }
