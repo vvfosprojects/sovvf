@@ -43,6 +43,9 @@ namespace SO115App.Persistence.MongoDB.GestioneDB
                 if (!_dbContext.DeleteDB("squadre"))
                     return false;
 
+                if (!_dbContext.DeleteDB("concorrenza"))
+                    return false;
+
                 //if (!_dbContext.DeleteDB("emergenza"))
                 //    return false;
 
