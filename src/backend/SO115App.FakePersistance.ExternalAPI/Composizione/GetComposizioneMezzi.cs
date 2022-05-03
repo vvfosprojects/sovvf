@@ -59,11 +59,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            var lstSedi = _getSedi.GetAll();
+            var lstSedi = _getSedi.GetAll().Result;
 
             //GESTIONE CODICI SEDI
             if (query.CodiciSedi.Contains("00") || query.CodiciSedi.Contains("001"))
-                query.CodiciSedi = lstSedi.Result.Select(s => s.Codice).ToArray();
+                query.CodiciSedi = lstSedi.Select(s => s.Codice).ToArray();
 
             var lstSquadreWS = query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
 
@@ -92,14 +92,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
             }
 
-            #endregion
+            #endregion Gestione turno preaccoppiati
 
-            var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno.Substring(0, 1),query.CodiciSedi.ToList());
+            var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno.Substring(0, 1), query.CodiciSedi.ToList());
 
             List<SquadraOpService> lstSquadrePreaccoppiate = new List<SquadraOpService>();
             if (lstSquadre.Count > 0)
                 lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && !s.spotType.ToUpper().Equals("MODULE")).ToList();
-            
+
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
@@ -130,7 +130,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         lstSquadreInRientro = Task.Run(() => lstStatiSquadre.Where(s => s.StatoSquadra == Costanti.MezzoInRientro && s.CodMezzo.Equals(m.Codice)).Select(s => new SquadraSemplice()
                         {
                             Codice = s.Codice,
-                            Distaccamento = new Sede(lstSedi.Result.FirstOrDefault(sede => sede?.Codice == s.CodiceSede)?.Descrizione),
+                            Distaccamento = new Sede(lstSedi.FirstOrDefault(sede => sede?.Codice == s.CodiceSede)?.Descrizione),
                             Nome = s.Codice,
                             Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(s.StatoSquadra),
                             Membri = lstSquadre.FirstOrDefault(sq => $"{sq.Codice}_{sq.TurnoAttuale}".Equals(s.IdSquadra))?.Membri.Select(m => new Componente()
@@ -189,7 +189,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
                     else
                     {
-                        var sede = lstSedi.Result.FirstOrDefault(s => s.Codice.Equals(mc.Mezzo.Distaccamento.Codice));
+                        var sede = lstSedi.FirstOrDefault(s => s.Codice.Equals(mc.Mezzo.Distaccamento.Codice));
 
                         mc.Mezzo.Coordinate = sede?.Coordinate;
                         mc.Mezzo.CoordinateStrg = sede?.CoordinateString;
