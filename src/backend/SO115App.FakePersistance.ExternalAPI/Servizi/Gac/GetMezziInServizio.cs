@@ -25,6 +25,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -65,7 +66,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var statoMezzi = _getStatoMezzi.Get(CodiciSede);
 
-            var listaMezzoInServizio = new List<MezzoInServizio>();
+            var listaMezzoInServizio = new ConcurrentBag<MezzoInServizio>();
 
             //Parallel.ForEach(mezzi, mezzo =>
             foreach(var mezzo in mezzi)
