@@ -7,6 +7,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,44 +17,42 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
     public class GetRubrica : IGetRubrica
     {
         private readonly DbContext _dbContext;
-        private readonly GetGerarchiaToSend _getGerarchia;
+        private readonly IGetSottoSediByCodSede _getSottoSedi;
+        private readonly GetGerarchiaToSend _getRicorsivita;
         private readonly IGetEnteCategorie _getCategorieEnte;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetSedi _getSedi;
 
-        public GetRubrica(DbContext dbContext, IGetEnteCategorie getCategorieEnte, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetSedi getSedi)
+        public GetRubrica(DbContext dbContext, IGetEnteCategorie getCategorieEnte, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetSedi getSedi, IGetSottoSediByCodSede getSottoSedi)
         {
             _dbContext = dbContext;
             _getCategorieEnte = getCategorieEnte;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getSedi = getSedi;
-            _getGerarchia = new GetGerarchiaToSend(_getAlberaturaUnitaOperative);
+            _getSottoSedi = getSottoSedi;
+            _getRicorsivita = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
         }
 
         private static List<EnteIntervenuto> FiltraByRicorsività(List<PinNodo> listaPin, List<EnteIntervenuto> lstEnti, string codSede = null)
         {
-            if (lstEnti.Count > 0 && codSede != "00")
-                return lstEnti.Where(c =>
-                {
-                    //LOGICA/CONDIZIONI RICORSIVITA'
-                    var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
-                    var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
-
-                    return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
-                }).ToList();
-            else
+            if (lstEnti.Count <= 0 || codSede == "00")
                 return lstEnti;
+
+            return lstEnti.Where(e =>
+            {
+                bool ricorsivo = e.Ricorsivo && listaPin.Select(p => p.Codice).Contains(e.CodSede);
+                bool proprietario = codSede != null && e.CodSede.Equals(codSede);
+
+                return ricorsivo || proprietario;
+            }).ToList();
         }
 
         private List<PinNodo> GetGerarchia(string[] CodSede)
         {
-            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata().Result;
+            var listaPin = _getSottoSedi.Get(CodSede).Select(p => new PinNodo(p, true)).ToList();
+            //listaPin.AddRange(_getRicorsivita.Get(CodSede[0]).Select(p => new PinNodo(p, true)).ToList());
 
-            var listaPin = CodSede[0] != "00" ?
-                _getGerarchia.Get(CodSede[0]).Select(p => new PinNodo(p, true)).ToList() :
-                _getSedi.GetAll().Result.Select(p => new PinNodo(p.Codice, true)).ToList();
-
-            return listaPin;
+            return listaPin.Distinct().ToList();
         }
 
         public List<EnteDTO> Get(string[] CodSede, string TextSearch)
@@ -62,18 +61,13 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
 
-            var lstEnti = CodSede[0] != "00" ? 
-                _dbContext.RubricaCollection.Find(c => lstCodiciPin.Distinct().Contains(c.CodSede)).ToList() :
-                _dbContext.RubricaCollection.Find(Builders<EnteIntervenuto>.Filter.Empty).ToList();
-
-
-            //17:02 FATTO!!! TESTARE BENE, ANCORA NON TESTATO UFFICIALMENTE
+            var lstEnti = _dbContext.RubricaCollection.Find(Builders<EnteIntervenuto>.Filter.Empty).ToList();
 
             var text = TextSearch?.ToLower() ?? "";
-            var listaFiltrata =  lstEnti.Where(c => c.Descrizione.ToLower().Contains(text)).ToList();
+            var lstEntiFiltrati =  lstEnti.Where(c => c.Descrizione.ToLower().Contains(text)).ToList();
 
             //GESTIONE RICORSIVITA'
-            var result = FiltraByRicorsività(listaPin, listaFiltrata, CodSede[0]);
+            var result = FiltraByRicorsività(listaPin, lstEntiFiltrati, CodSede[0]);
 
             //RECUPERO LE CATEGORIE
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();

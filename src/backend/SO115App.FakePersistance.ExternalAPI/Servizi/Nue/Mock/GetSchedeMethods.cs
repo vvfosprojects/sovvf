@@ -59,27 +59,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         public List<SchedaContatto> GetList(string codiceSede)
         {
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            DateTime giornoMassimo = DateTime.Now.AddDays(-2);
+
             if (codiceSede.Length > 0)
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
             else
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata).ToList();
-
-            //List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
-
-            //var ListaSchedeRaggruppate = listaSchedeContatto;
-            //Parallel.ForEach(listaSchedeContatto, scheda =>
-            //{
-            //    if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-            //    {
-            //        ListaSchedefiltrata.Add(scheda);
-            //    }
-            //    else
-            //    {
-            //        var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
-            //        if (!schedaRaggruppata.Collegata)
-            //            ListaSchedefiltrata.Add(schedaRaggruppata);
-            //    }
-            //});
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
 
             return listaSchedeContatto;
         }
@@ -223,10 +208,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre, string classificazione, string codiceSede)
         {
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            DateTime giornoMassimo = DateTime.Now.AddDays(-2);
+
             if (codiceSede.Length > 0)
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
             else
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
 
             var listaSchedeFiltrate = listaSchedeContatto;
             if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero, codiceSede);
@@ -294,10 +281,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             var listaSchede = new List<SchedaContatto>();
 
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+
+            DateTime giornoMassimo = DateTime.Now.AddDays(-2);
+
             if (codiciSede.Length > 0)
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiciSede[0]) && !s.Collegata).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiciSede[0]) && !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
             else
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
 
             var listaSchedeCompetenza = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Competenza));
             var listaSchedeConoscenza = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Conoscenza));

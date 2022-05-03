@@ -20,6 +20,7 @@
 using CQRS.Commands;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using System;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
 {
@@ -34,16 +35,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
 
         public void Handle(AddBlockCommand command)
         {
-            try
+
+            Parallel.ForEach(command.concorrenza, c =>
             {
-                foreach (var c in command.concorrenza)
-                {
-                    _addBlock.Add(c);
-                }
-            }
-            catch (Exception ex)
-            {
-            }
+                _addBlock.Add(c);
+            });
+
         }
     }
 }

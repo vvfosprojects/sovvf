@@ -59,7 +59,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly Turno TurnoPrecedente;
         private readonly Turno TurnoSuccessivo;
 
-        private string codiceTurno; 
+        private string codiceTurno;
 
         public GetComposizioneSquadre(IGetSquadre getSquadre,
             IGetStatoSquadra getStatoSquadre,
@@ -81,7 +81,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneSquadra> Get(ComposizioneSquadreQuery query)
         {
-            var lstSedi = _getSedi.GetAll();
+            var lstSedi = _getSedi.GetAll().Result;
 
             switch (query.Filtro.Turno) //FILTRO PER TURNO
             {
@@ -91,8 +91,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 case null: goto case TurnoRelativo.Attuale;
             }
 
-            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno.Substring(0 ,1),query.CodiciSede.ToList()).ToList());
-            var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Result.Select(s => s.Codice).ToArray()));
+            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno.Substring(0, 1), query.CodiciSede.ToList()).ToList());
+            var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? lstSedi.Select(s => s.Codice).ToArray()));
             var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Result.Where(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).ToList()))?.Result;
 
             List<MezzoDTO> lstMezziPreaccoppiati = null;
@@ -106,7 +106,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     if (query.Filtro.CodiciDistaccamenti != null)
                     {
-                        Parallel.ForEach(query.Filtro.CodiciDistaccamenti?.Select(sede => sede.Split('.')[0]).Distinct() ?? lstSedi.Result.Select(sede => sede.Codice.Split('.')[0]).Distinct(),
+                        Parallel.ForEach(query.Filtro.CodiciDistaccamenti?.Select(sede => sede.Split('.')[0]).Distinct() ?? lstSedi.Select(sede => sede.Codice.Split('.')[0]).Distinct(),
                             codice => workshift.Add(_getSquadre.GetAllByCodiceDistaccamento(codice).Result));
                     }
                     else
@@ -166,7 +166,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         Turno = squadra.TurnoAttuale.ToCharArray()[0],
                         Nome = squadra.Descrizione,
                         DiEmergenza = squadra.Emergenza,
-                        Distaccamento = lstSedi.Result.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione() ?? null,
+                        Distaccamento = lstSedi.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione() ?? null,
                         Membri = MappaMembriOPInSO(squadra.Membri),
                         MezziPreaccoppiati = mezziPreaccoppiati,
                         MezziInRientro = mezziInRientro,

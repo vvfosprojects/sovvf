@@ -64,7 +64,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
             /// </summary>
             pinNodi.AddRange(listaSediAlberate.Result.GetSottoAlbero(pinNodi).Select(figlio => new PinNodo(figlio.Codice, true)));
 
-            var listaMezzi = _getListaMezzi.Get(query.CodiciSede) //FILTRI
+
+
+            var listaMezzi = _getListaMezzi.Get(query.CodiciSede);
+
+            var listaMezziFiltrata = listaMezzi //FILTRI
                 .Where(c =>
                 {
                     if (query.Filters != null && query.Filters.StatiMezzo != null && query.Filters.StatiMezzo.Count() > 0
@@ -100,7 +104,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
 
             var lstStati = _getStatoMezzi.Get(query.CodiciSede);
 
-            var listaMezziConStati = listaMezzi.Select(m =>
+            var listaMezziConStati = listaMezziFiltrata.Select(m =>
             {
                 if (lstStati != null && lstStati.Count != 0)
                 {

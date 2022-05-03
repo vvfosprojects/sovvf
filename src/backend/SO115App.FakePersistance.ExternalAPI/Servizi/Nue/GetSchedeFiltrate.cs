@@ -33,24 +33,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
             var ListaSchede = _getSchedeMethods.GetFiltered(text, gestita, codiceFiscale, rangeOre, classificazione, codiceSede);
-            //var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
-
-            //List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
-
-            //foreach (SchedaContatto scheda in ListaSchede)
-            //{
-            //    if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-            //    {
-            //        ListaSchedefiltrata.Add(scheda);
-            //    }
-            //    else
-            //    {
-            //        var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
-            //        if (!schedaRaggruppata.Collegata)
-            //            ListaSchedefiltrata.Add(schedaRaggruppata);
-            //    }
-            //}
-
             return ListaSchede;
 
             //---------------------------------------------------------------------------------------

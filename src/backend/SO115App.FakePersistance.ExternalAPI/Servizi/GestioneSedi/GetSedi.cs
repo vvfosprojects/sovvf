@@ -146,23 +146,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Indirizzo = null
             }));
 
-            result.AddRange(lstSedi.Figli.First().Figli.Select(f => new Sede()
-            {
-                Codice = f.Codice,
-                Descrizione = f.Nome,
-                Coordinate = f.Coordinate,
-                Indirizzo = null
-            }));
-
-            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
+            result.AddRange(lstSedi.Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
             {
                 Codice = ff.Codice,
                 Descrizione = ff.Nome,
                 Coordinate = ff.Coordinate,
                 Indirizzo = null
-            })));
+            }
+             )));
 
-            result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
+            result.AddRange(lstSedi.Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
             {
                 Codice = fff.Codice,
                 Descrizione = fff.Nome,
@@ -170,12 +163,42 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Indirizzo = null
             }))));
 
+            //result.AddRange(lstSedi.Figli.First().Figli.Select(f => new Sede()
+            //{
+            //    Codice = f.Codice,
+            //    Descrizione = f.Nome,
+            //    Coordinate = f.Coordinate,
+            //    Indirizzo = null
+            //}));
+
+            //result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
+            //{
+            //    Codice = ff.Codice,
+            //    Descrizione = ff.Nome,
+            //    Coordinate = ff.Coordinate,
+            //    Indirizzo = null
+            //})));
+
+            //result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
+            //{
+            //    Codice = fff.Codice,
+            //    Descrizione = fff.Nome,
+            //    Coordinate = fff.Coordinate,
+            //    Indirizzo = null
+            //}))));
+
             return result.Distinct().ToList();
         }
 
         public async Task<UnitaOperativa> ListaSediAlberata()
         {
-            UnitaOperativa ListaSediAlberate = null;
+            UnitaOperativa ListaSediAlberate = null;//
+
+#if DEBUG
+
+            return readOffline();
+
+#endif
 
             if (!_memoryCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
             {
@@ -266,16 +289,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 }
                 catch (Exception e)
                 {
-                    var sedi = _getAllSediAlberate.GetSediAlberate();
-
-                    if (sedi != null)
-                    {
-                        var cacheEntryOptionsBk = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
-                        _memoryCache.Set("ListaSediAlberate", sedi, cacheEntryOptionsBk);
-                        return sedi;
-                    }
-                    else
-                        throw new Exception("Errore costruzione alberatura sedi di servizio.");
+                    return readOffline();
                 }
             }
             else
@@ -285,6 +299,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                 return ListaSediAlberate;
             }
+        }
+
+        private UnitaOperativa readOffline()
+        {
+            var sedi = _getAllSediAlberate.GetSediAlberate();
+
+            if (sedi != null)
+            {
+                var cacheEntryOptionsBk = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
+                _memoryCache.Set("ListaSediAlberate", sedi, cacheEntryOptionsBk);
+                return sedi;
+            }
+            else
+                throw new Exception("Errore costruzione alberatura sedi di servizio.");
         }
 
         public List<Distaccamento> GetListaDistaccamenti(List<PinNodo> listaPin = null)
@@ -350,7 +378,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                     listaSediMarker.Add(sedeMarker);
                 }
-
             });
 
             return listaSediMarker.ToList();
