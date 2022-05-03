@@ -67,7 +67,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var listaMezzoInServizio = new List<MezzoInServizio>();
 
-            Parallel.ForEach(mezzi, mezzo =>
+            //Parallel.ForEach(mezzi, mezzo =>
+            foreach(var mezzo in mezzi)
             {
                 var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
                 mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
@@ -102,7 +103,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 }
 
                 listaMezzoInServizio.Add(mezzoInServizio);
-            });
+            };
 
             var listaFiltrata = listaMezzoInServizio.Where(x => x != null);
 

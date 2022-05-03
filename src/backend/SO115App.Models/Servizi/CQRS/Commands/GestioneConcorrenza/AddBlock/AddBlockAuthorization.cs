@@ -59,21 +59,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
 
             #endregion Concorrenza
 
-            //foreach (var c in command.concorrenza)
-            //{
-            //    c.NominativoOperatore = command.utente.Nome + " " + command.utente.Cognome;
-
-            //    if (_getBlockByValue.Get(c.Value) != null)
-            //    {
-            //        if (c.Type.Equals(TipoOperazione.Richiesta))
-            //            yield return new AuthorizationResult(Costanti.InterventoBloccato);
-            //        if (c.Type.Equals(TipoOperazione.Mezzo))
-            //            yield return new AuthorizationResult(Costanti.MezzoPrenotato);
-            //        if (c.Type.Equals(TipoOperazione.Squadra))
-            //            yield return new AuthorizationResult(Costanti.SquadraPrenotata);
-            //    }
-            //}
-
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (command.utente == null)
