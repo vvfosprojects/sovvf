@@ -49,8 +49,6 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         private List<PinNodo> GetGerarchia(string[] CodSede)
         {
-            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata().Result;
-
             var listaPin = _getSottoSedi.Get(CodSede).Select(p => new PinNodo(p, true)).ToList();
             listaPin.AddRange(_getRicorsivita.Get(CodSede[0]).Select(p => new PinNodo(p, true)).ToList());
 
@@ -63,9 +61,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
 
-            var lstEnti = /*CodSede[0] != "00" ?*/ 
-                //_dbContext.RubricaCollection.Find(c => lstCodiciPin.Distinct().Contains(c.CodSede)).ToList() :
-                _dbContext.RubricaCollection.Find(Builders<EnteIntervenuto>.Filter.Empty).ToList();
+            var lstEnti = _dbContext.RubricaCollection.Find(Builders<EnteIntervenuto>.Filter.Empty).ToList();
 
             var text = TextSearch?.ToLower() ?? "";
             var lstEntiFiltrati =  lstEnti.Where(c => c.Descrizione.ToLower().Contains(text)).ToList();
