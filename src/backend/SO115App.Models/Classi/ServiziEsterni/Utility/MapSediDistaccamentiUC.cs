@@ -49,7 +49,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
         {
             Codice = distaccamento.Codice,
             Coordinate = distaccamento.Coordinate,
-            Descrizione = distaccamento.Descrizione,
+            Descrizione = distaccamento.Descrizione.Contains("COMANDO") ? "CENTRALE" : distaccamento.Descrizione,
             Indirizzo = distaccamento.Indirizzo,
         };
     }
