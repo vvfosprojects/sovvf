@@ -22,7 +22,6 @@ using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,27 +44,22 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
 
             var listaSchedeContatto = new ConcurrentBag<SchedaContatto>();
 
-            Parallel.ForEach(lstSedi, sede => 
+            Parallel.ForEach(lstSedi, sede =>
             {
                 var lstSchedeSede = _getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, null, query.Filters.RangeVisualizzazione, sede, query.Filters.Classificazione, sede);
-                
+
                 lstSchedeSede.ForEach(s => listaSchedeContatto.Add(s));
             });
 
-            var result = listaSchedeContatto.Where(s => s.DataInserimento > System.DateTime.UtcNow.AddDays(-2)).ToList();
+            var result = listaSchedeContatto.OrderByDescending(s => s.DataInserimento).ToList();
 
-            if (query.Pagination.Page != 0)
-            {
-                result = listaSchedeContatto
-                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
-                    .Take(query.Pagination.PageSize).ToList();
-            }
-
-            result = result.OrderByDescending(s => s.DataInserimento).ToList();
+            result = result
+                .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                .Take(query.Pagination.PageSize).ToList();
 
             return new GetSchedeFiltrateResult()
             {
-                DataArray = result.ToList(),
+                DataArray = result,
 
                 Pagination = new Classi.Condivise.Paginazione()
                 {
