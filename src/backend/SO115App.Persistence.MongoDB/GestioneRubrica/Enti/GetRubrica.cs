@@ -50,9 +50,34 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
         private List<PinNodo> GetGerarchia(string[] CodSede)
         {
             var listaPin = _getSottoSedi.Get(CodSede).Select(p => new PinNodo(p, true)).ToList();
-            //listaPin.AddRange(_getRicorsivita.Get(CodSede[0]).Select(p => new PinNodo(p, true)).ToList());
 
-            return listaPin.Distinct().ToList();
+            if (CodSede[0].Contains("."))
+            {
+                int numeroDist = int.Parse(CodSede[0].Split('.')[1]);
+                string provincia = CodSede[0].Split('.')[0].ToString();
+
+                if (numeroDist > 1000)
+                {// DISTACCAMENTO - RM.1002
+                    listaPin = listaPin;
+                }
+                else
+                {// COMANDO - RM.1000
+                    listaPin = listaPin.Where(p => p.Codice.Contains(provincia)).ToList();
+                }
+            }
+            else if (CodSede[0] != "00")
+            {// DIREZIONE REGIONALE - 10
+                listaPin = listaPin.Where(p => p.Codice.Contains(".")).ToList();
+                listaPin.Add(new PinNodo(CodSede[0], true));
+                listaPin.Add(new PinNodo("00", true));
+            }
+            else
+            {// CON - 00
+                listaPin = _getSedi.GetAll().Result.Select(s => new PinNodo(s.Codice, true)).ToList();
+                listaPin.Add(new PinNodo(CodSede[0], true));
+            }
+
+            return listaPin;
         }
 
         public List<EnteDTO> Get(string[] CodSede, string TextSearch)
@@ -60,18 +85,18 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             var listaPin = GetGerarchia(CodSede);
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
-
-            var lstEnti = _dbContext.RubricaCollection.Find(Builders<EnteIntervenuto>.Filter.Empty).ToList();
-
-            var text = TextSearch?.ToLower() ?? "";
-            var lstEntiFiltrati =  lstEnti.Where(c => c.Descrizione.ToLower().Contains(text)).ToList();
+            var lstEnti = _dbContext.RubricaCollection.Find(Builders<EnteIntervenuto>.Filter.In(p => p.CodSede, lstCodiciPin)).ToList();
 
             //GESTIONE RICORSIVITA'
-            var result = FiltraByRicorsività(listaPin, lstEntiFiltrati, CodSede[0]);
+            var lstEntiFiltrati = FiltraByRicorsività(listaPin, lstEnti, CodSede[0]);
 
             //RECUPERO LE CATEGORIE
-            var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
+            var lstCodiciCategorie = lstEntiFiltrati.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
             var lstCategorie = _getCategorieEnte.Get(lstCodiciCategorie);
+
+            //FILTRO RICERCA
+            var text = TextSearch?.ToLower() ?? "";
+            var result = lstEntiFiltrati.Where(c => c.Descrizione.ToLower().Contains(text)).ToList();
 
             //MAPPING E ORDINAMENTO
             return result.Select(c => new EnteDTO()

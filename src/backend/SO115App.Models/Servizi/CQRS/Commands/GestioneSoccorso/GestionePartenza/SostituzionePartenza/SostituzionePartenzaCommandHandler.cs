@@ -74,7 +74,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
                 Mezzo = PartenzaSmontante.Partenza.Mezzo,
-                Squadre = PartenzaMontante.Partenza.Squadre
+                Squadre = PartenzaMontante.Partenza.Squadre,
+                Turno = PartenzaSmontante.Partenza.Turno,
+                Coordinate = PartenzaSmontante.Partenza.Coordinate,
             });
 
             new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
@@ -91,7 +93,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 2).ToString(),
                 Mezzo = PartenzaMontante.Partenza.Mezzo,
-                Squadre = SquadreSwitch
+                Squadre = SquadreSwitch,
+                Turno = PartenzaMontante.Partenza.Turno,
+                Coordinate = PartenzaMontante.Partenza.Coordinate
             });
 
             new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);

@@ -26,11 +26,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
         /// <returns>InfoNue</returns>
         public InfoNue GetConteggio(string[] codiciSede)
         {
-            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
-
             return _getSchedeMethods.GetConteggio(codiciSede);
-
-            //---------------------------------------------------------------------------------------
         }
     }
 }
