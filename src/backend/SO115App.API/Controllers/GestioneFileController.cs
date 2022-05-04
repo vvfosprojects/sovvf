@@ -29,7 +29,7 @@ namespace SO115App.API.Controllers
         ///   Restituisce il PDF del dettaglio di uno specifico intervento
         /// </summary>
         [HttpGet("DettaglioRichiesta")]
-        [ProducesResponseType(typeof(byte[]), 200)]
+        [ProducesResponseType(typeof(FileContentResult), 200)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> DettaglioRichiesta(string codice, string contentType = "application/pdf")
         {

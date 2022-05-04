@@ -22,7 +22,6 @@ using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -54,18 +53,13 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
 
             var result = listaSchedeContatto.ToList();
 
-            if (query.Pagination.Page != 0)
-            {
-                result = listaSchedeContatto
-                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
-                    .Take(query.Pagination.PageSize).ToList();
-            }
-
-            result = result.OrderByDescending(s => s.DataInserimento).ToList();
+            result = result
+                .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                .Take(query.Pagination.PageSize).ToList();
 
             return new GetSchedeFiltrateResult()
             {
-                DataArray = result.ToList(),
+                DataArray = result,
 
                 Pagination = new Classi.Condivise.Paginazione()
                 {
