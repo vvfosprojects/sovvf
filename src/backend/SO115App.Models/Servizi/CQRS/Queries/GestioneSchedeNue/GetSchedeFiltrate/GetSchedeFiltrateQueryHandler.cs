@@ -71,7 +71,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = result.Count
+                    TotalItems = listaSchedeContatto.Count
                 }
             };
         }
