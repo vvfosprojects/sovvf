@@ -126,7 +126,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 {
                     CodDistaccamento = distaccamento.Codice,
                     Descrizione = distaccamento.Descrizione,
-                    coordinate = string.Join(", ", distaccamento.CoordinateString),
+                    coordinate = distaccamento.CoordinateString != null ? string.Join(", ", distaccamento.CoordinateString) : null,
                     Indirizzo = distaccamento.Indirizzo
                 };
             }
@@ -196,7 +196,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
 #if DEBUG
 
-            return readOffline();
+            //return readOffline();
 
 #endif
 
