@@ -73,7 +73,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             }
             else
             {// CON - 00
-                listaPin = null;
+                listaPin = _getSedi.GetAll().Result.Select(s => new PinNodo(s.Codice, true)).ToList();
                 listaPin.Add(new PinNodo(CodSede[0], true));
             }
 
