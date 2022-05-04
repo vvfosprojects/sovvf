@@ -64,6 +64,8 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var SediDaNotificare = _getGerarchiaToSend.Get(sedeComando);
 
+            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+
             Parallel.ForEach(SediDaNotificare, sede =>
             {
                 var boxRichiesteQuery = new BoxRichiesteQuery
