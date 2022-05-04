@@ -81,11 +81,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
 
-                //GAC USCITA/ENTRATA
+                #region GAC uscita/entrata
+
                 if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
                     if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                     {
                         var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodiceMezzo.Equals(partenza.Mezzo.Codice)).Istante;
+
                         _setRientroMezzo.Set(new RientroGAC()
                         {
                             targa = partenza.Mezzo.Codice.Split('.')[1],
@@ -138,8 +140,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 else if (partenza.Mezzo.Appartenenza != null)
                     _setStatoOperativoMezzo.Set(partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
 
+                #endregion
+
                 Parallel.ForEach(partenza.Squadre, squadra =>
                 {
+                    #region OPSERVICE
+
                     //Chiamata OPService per aggiornare lo stato delle Squadre "ALLOCATE" oppure "DEALLOCATE"
                     if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
                     {
@@ -183,11 +189,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         }
                     }
 
+                    #endregion
+
                     if (partenza.Mezzo.Distaccamento.Codice != null)
                         _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice, turnoAttuale, squadra.Turno);
                     else if (partenza.Mezzo.Appartenenza != null)
                         _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{partenza.Turno.Substring(0, 1)}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, turnoAttuale, partenza.Turno.Substring(0, 1));
-                    
                 });
             });
 
