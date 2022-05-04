@@ -19,34 +19,40 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.Models.Classi.NUE;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate
 {
     internal class GetSchedeFiltrateQueryHandler : IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult>
     {
         private readonly IGetSchedeFiltrate _getSchedeFiltrate;
-        //private readonly IGetUtenteById _getUtenteBy;
-        //private readonly IGetSchedeContatto_WSNUE _getSchedeContatto_WSNUE;
+        private readonly IGetSottoSediByCodSede _getSottoSedi;
 
-        public GetSchedeFiltrateQueryHandler(IGetSchedeFiltrate getSchedeFiltrate/*, IGetUtenteById getUtenteBy, IGetSchedeContatto_WSNUE getSchedeContatto_WSNUE*/)
+        public GetSchedeFiltrateQueryHandler(IGetSchedeFiltrate getSchedeFiltrate, IGetSottoSediByCodSede getSottoSedi)
         {
             _getSchedeFiltrate = getSchedeFiltrate;
-            //_getUtenteBy = getUtenteBy;
-            //_getSchedeContatto_WSNUE = getSchedeContatto_WSNUE;
+            _getSottoSedi = getSottoSedi;
         }
 
         public GetSchedeFiltrateResult Handle(GetSchedeFiltrateQuery query)
         {
-            var listaSchedeContatto = new List<SchedaContatto>();
+            var lstSedi = _getSottoSedi.Get(query.CodiciSede);
 
-            query.CodiciSede.Distinct().ToList().ForEach(codice =>
-                listaSchedeContatto.AddRange(_getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, null, query.Filters.RangeVisualizzazione, codice, query.Filters.Classificazione, query.CodiciSede[0])));
+            var listaSchedeContatto = new ConcurrentBag<SchedaContatto>();
 
-            var result = listaSchedeContatto.Where(s => s.DataInserimento > System.DateTime.UtcNow.AddDays(-1)).ToList();
+            Parallel.ForEach(lstSedi, sede => 
+            {
+                var lstSchedeSede = _getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, null, query.Filters.RangeVisualizzazione, sede, query.Filters.Classificazione, sede);
+                
+                lstSchedeSede.ForEach(s => listaSchedeContatto.Add(s));
+            });
+
+            var result = listaSchedeContatto.Where(s => s.DataInserimento > System.DateTime.UtcNow.AddDays(-2)).ToList();
 
             if (query.Pagination.Page != 0)
             {
@@ -55,15 +61,17 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
                     .Take(query.Pagination.PageSize).ToList();
             }
 
+            result = result.OrderByDescending(s => s.DataInserimento).ToList();
+
             return new GetSchedeFiltrateResult()
             {
-                DataArray = result.OrderByDescending(s => s.DataInserimento).ToList(),
+                DataArray = result.ToList(),
 
                 Pagination = new Classi.Condivise.Paginazione()
                 {
                     Page = query.Pagination.Page,
                     PageSize = query.Pagination.PageSize,
-                    TotalItems = listaSchedeContatto.Count
+                    TotalItems = result.Count
                 }
             };
         }

@@ -207,8 +207,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre, string classificazione, string codiceSede)
         {
-            List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
-            DateTime giornoMassimo = DateTime.Now.AddDays(-2);
+            var listaSchedeContatto = new List<SchedaContatto>();
+            var giornoMassimo = DateTime.UtcNow.AddDays(-2);
 
             if (codiceSede.Length > 0)
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
