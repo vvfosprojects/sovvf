@@ -216,9 +216,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
 
             var listaSchedeFiltrate = listaSchedeContatto;
-            if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero, codiceSede);
-            if (!string.IsNullOrWhiteSpace(codiceFiscale)) listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.OperatoreChiamata.CodiceFiscale.Equals(codiceFiscale));
-            if (gestita.HasValue) listaSchedeFiltrate = listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Gestita.Equals(gestita));
+
+            if (!string.IsNullOrWhiteSpace(testolibero)) 
+                listaSchedeFiltrate = GetSchedeContattoFromText(testolibero, codiceSede);
+
+            if (!string.IsNullOrWhiteSpace(codiceFiscale)) 
+                listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.OperatoreChiamata.CodiceFiscale.Equals(codiceFiscale));
+
+            if (gestita == null)
+                gestita = false;
+
+            listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Gestita.Equals(gestita));
+
             if (rangeOre.HasValue)
             {
                 var dataCorrente = DateTime.UtcNow.AddHours(-(double)rangeOre);
