@@ -104,9 +104,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                                 Squadre = lstSquadrePreaccoppiate.Where(s => s.CodiciMezziPreaccoppiati?.Contains(mezzoPreaccoppiato) ?? false).Select(s => new API.Models.Classi.Composizione.Squadra()
                                 {
                                     Codice = s.Codice,
-                                    Nome = s.Descrizione,
-                                    Stato = MappaStatoSquadra(lstStatoSquadre, s.Codice, codiceTurno),
-                                    Membri = MapMembriInComponenti(s.Membri.ToList())
+                                    Nome = s.Codice,
+                                    Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(s.Stato),
+                                    Membri = lstSquadrePreaccoppiate.FirstOrDefault(sq => sq.Codice.Equals(s.Codice))?.Membri.Select(m => new Componente()
+                                    {
+                                        CodiceFiscale = m.CodiceFiscale,
+                                        DescrizioneQualifica = m.Ruolo,
+                                        Nominativo = $"{m.FirstName} {m.LastName}",
+                                        Ruolo = m.Ruolo
+                                    }).ToList(),
                                 }).ToList(),
                                 StatoMezzo = lstStatoMezzi.FirstOrDefault(m => squadraPreaccoppiata.CodiciMezziPreaccoppiati?.Any(c => c.Equals(m.CodiceMezzo)) ?? false)?.StatoOperativo ?? Costanti.MezzoInSede,
 

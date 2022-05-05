@@ -109,7 +109,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 Parallel.ForEach(mezzi.Result, m =>
                 {
-                    List<SquadraSemplice> lstSqPreacc = new List<SquadraSemplice>();
+                    var lstSqPreacc = new List<SquadraSemplice>();
+
                     if (lstSquadrePreaccoppiate.Count > 0)
                     {
                         lstSqPreacc = Task.Run(() => lstSquadrePreaccoppiate?.Where(sq => sq.CodiciMezziPreaccoppiati?.Contains(m.Codice) ?? false)?.Select(sq => new SquadraSemplice()
@@ -117,13 +118,22 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             Codice = sq.Codice,
                             Nome = sq.Descrizione,
                             Distaccamento = new Sede(sq.Distaccamento),
-                            Turno = sq.TurnoAttuale.ToCharArray()[0]
+                            Stato = MappaStatoSquadraDaStatoMezzo.MappaStatoComposizione(lstStatiSquadre.FirstOrDefault(s => $"{sq.Codice}_{sq.TurnoAttuale.Substring(0, 1)}".Equals(s.IdSquadra))?.StatoSquadra ?? Costanti.MezzoInSede),
+                            Turno = sq.TurnoAttuale.ToCharArray()[0],
+                            Membri = sq.Membri.Select(m => new Componente()
+                            {
+                                CodiceFiscale = m.CodiceFiscale,
+                                DescrizioneQualifica = m.qualifications.FirstOrDefault()?.name,
+                                Nominativo = $"{m.LastName} {m.FirstName}",
+                                qualifications = m.qualifications,
+                                Ruolo = m.qualifications.FirstOrDefault()?.name
+                            }).ToList(),
                         }).ToList()).Result;
 
                         m.PreAccoppiato = lstSqPreacc.Count > 0;
                     }
 
-                    List<SquadraSemplice> lstSquadreInRientro = new List<SquadraSemplice>();
+                    var lstSquadreInRientro = new List<SquadraSemplice>();
 
                     if (lstSquadre.Count > 0)
                     {
