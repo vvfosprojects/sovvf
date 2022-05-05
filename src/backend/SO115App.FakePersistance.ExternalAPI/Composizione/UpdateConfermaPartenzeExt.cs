@@ -198,7 +198,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 });
             });
 
-            _updateRichiesta.UpDate(command.Richiesta);
+            _updateRichiesta.UpDate(command.Richiesta); //ERRORE QUI, LE SQUADRE NON VENGONO SALVATE CON IL TURNO NELLA RICHIESTA
 
             var conferma = new ConfermaPartenze()
             {
