@@ -106,6 +106,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                                     Codice = s.Codice,
                                     Nome = s.Codice,
                                     Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(s.Stato),
+                                    Turno = s.TurnoAttuale,
                                     Membri = lstSquadrePreaccoppiate.FirstOrDefault(sq => sq.Codice.Equals(s.Codice))?.Membri.Select(m => new Componente()
                                     {
                                         CodiceFiscale = m.CodiceFiscale,
