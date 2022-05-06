@@ -46,6 +46,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlo
         {
             try
             {
+                var sediDaAllertare = new List<string>();
+                var listaBlocchiSede = _getAllBlocks.GetAll(new string[] { command.CodiceSede });
+                var blocchiInteressati = listaBlocchiSede.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra) && command.IdOperatore.Equals(c.IdOperatore));
+
+                if (blocchiInteressati.Count > 0)
+                {
+                    command.listaSediDaAllertare = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))[0].Value).CodSOAllertate.ToList();
+                }
+
                 _deleteBlock.DeleteAll(command.IdOperatore);
             }
             catch (Exception ex)
