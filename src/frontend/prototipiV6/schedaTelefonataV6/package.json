@@ -28,7 +28,7 @@
     "bootstrap": "^4.1.3",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "ngx-clipboard": "^11.1.9",
     "ngx-google-places-autocomplete": "^2.0.3",
     "node-sass": "^4.10.0",
