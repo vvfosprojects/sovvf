@@ -53,13 +53,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
 
             var result = listaSchedeContatto.OrderByDescending(s => s.DataInserimento).ToList();
 
-            result = result
-                .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
-                .Take(query.Pagination.PageSize).ToList();
-
             return new GetSchedeFiltrateResult()
             {
-                DataArray = result,
+                DataArray = result
+                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                    .Take(query.Pagination.PageSize).ToList(),
 
                 Pagination = new Classi.Condivise.Paginazione()
                 {

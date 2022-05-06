@@ -32,17 +32,8 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
 
         public async Task SendNotification(DeleteAllBlocksCommand command)
         {
-            var sediDaAllertare = new List<string>();
-            var listaBlocchiSede = _getAllBlocks.GetAll(new string[] { command.CodiceSede });
-            var blocchiInteressati = listaBlocchiSede.FindAll(c => c.Type.Equals(TipoOperazione.Richiesta) && command.IdOperatore.Equals(c.IdOperatore));
-
-            if (blocchiInteressati.Count > 0)
-            {
-                command.listaSediDaAllertare = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => c.Type.Equals(TipoOperazione.Richiesta))[0].Value).CodSOAllertate.ToList();
-            }
-
             var SediDaNotificare = new List<string>();
-            if (command.listaSediDaAllertare!=null)
+            if (command.listaSediDaAllertare != null)
                 SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede, command.listaSediDaAllertare.ToArray());
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede);
