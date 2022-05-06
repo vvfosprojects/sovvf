@@ -24,6 +24,17 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
             bool ret = false;
             switch (action)
             {
+                case TipoOperazione.RaggrauppamentoSchedeContatto:
+                    var schedaContatto = listaAzioniBloccateSede.Find(s => s.Value.Equals(codOggettoBloccato)
+                                            && !s.IdOperatore.Equals(idUtente) && (s.Type.Equals(TipoOperazione.RaggrauppamentoSchedeContatto)
+                                            || s.Type.Equals(TipoOperazione.RegistrazioneSchedaContatto)));
+
+                    if (schedaContatto == null) 
+                        ret = true;
+                    else 
+                        ret = false;
+                    break;
+
                 case TipoOperazione.ChiusuraChiamata:
                     var chiamata = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
                                     && !r.IdOperatore.Equals(idUtente)

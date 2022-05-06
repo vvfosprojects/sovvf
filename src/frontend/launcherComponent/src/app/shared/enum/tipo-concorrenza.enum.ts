@@ -24,6 +24,7 @@ export enum TipoConcorrenzaEnum {
     EliminaRuoloUtente,
     ModificaRuoloUtente,
     EliminaUtente,
+    RaggruppamentoSchedeContatto,
     Sostituzione,
     Fonogramma,
     EntiIntervenuti,

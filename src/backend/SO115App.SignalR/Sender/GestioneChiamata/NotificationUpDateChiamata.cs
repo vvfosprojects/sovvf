@@ -77,6 +77,8 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var listaInfoDaInviare = new List<InfoDaInviare>();
 
+            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+
             foreach (var sede in SediDaNotificare)
             {
                 var info = new InfoDaInviare();

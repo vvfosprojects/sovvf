@@ -22,6 +22,7 @@ using Persistence.MongoDB;
 using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,28 +53,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
         {
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
 
+            DateTime giornoMassimo = DateTime.Now.AddDays(-2);
+
             if (codiceSede.Length > 0)
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
             else
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata).ToList();
-
-            //var ListaSchedeRaggruppate = listaSchedeContatto;
-
-            //var ListaSchedefiltrata = new List<SchedaContatto>();
-
-            //Parallel.ForEach(listaSchedeContatto, scheda =>
-            //{
-            //    if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-            //    {
-            //        ListaSchedefiltrata.Add(scheda);
-            //    }
-            //    else
-            //    {
-            //        var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
-            //        if (!schedaRaggruppata.Collegata)
-            //            ListaSchedefiltrata.Add(schedaRaggruppata);
-            //    }
-            //});
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
 
             return listaSchedeContatto;
         }

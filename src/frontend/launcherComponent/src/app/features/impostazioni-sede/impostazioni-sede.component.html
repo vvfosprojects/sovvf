@@ -4,15 +4,21 @@
              [class.col-6]="doubleMonitor">
             <div class="row">
                 <div class="col-12 col-md-9 mx-auto mb-3">
-                    <h1>
-                        <i class="fas fa-building mr-1"></i>
-                        Impostazioni Sede
-                    </h1>
-                    <button class="btn btn-info"
-                            [id]="'btnExpandAll'"
-                            (click)="accordionExpandAll()">
-                        {{ getTesto() }}
-                    </button>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h1>
+                                <i class="fas fa-building mr-1"></i>
+                                Impostazioni Sede
+                            </h1>
+                        </div>
+                        <div>
+                            <button class="btn btn-info"
+                                    [id]="'btnExpandAll'"
+                                    (click)="accordionExpandAll()">
+                                {{ getTesto() }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-12 col-md-9 mx-auto">
                     <ngb-accordion #acc="ngbAccordion">
@@ -30,7 +36,9 @@
                                 </div>
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <app-dettagli-tipologie></app-dettagli-tipologie>
+                                <div style="min-height: 300px">
+                                    <app-dettagli-tipologie></app-dettagli-tipologie>
+                                </div>
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel id="triage">

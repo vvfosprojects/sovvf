@@ -74,7 +74,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
                 Mezzo = PartenzaSmontante.Partenza.Mezzo,
-                Squadre = PartenzaMontante.Partenza.Squadre
+                Squadre = PartenzaMontante.Partenza.Squadre,
+                Turno = PartenzaSmontante.Partenza.Turno,
+                Coordinate = PartenzaSmontante.Partenza.Coordinate,
             });
 
             new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
@@ -91,7 +93,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 2).ToString(),
                 Mezzo = PartenzaMontante.Partenza.Mezzo,
-                Squadre = SquadreSwitch
+                Squadre = SquadreSwitch,
+                Turno = PartenzaMontante.Partenza.Turno,
+                Coordinate = PartenzaMontante.Partenza.Coordinate
             });
 
             new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
@@ -116,7 +120,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 NoteSquadreSmontanti = "Le squadre " + NoteSquadreSmontanti.Substring(0, NoteSquadreSmontanti.Length - 1) + " vengono sostituite ";
             }
-            else NoteSquadreSmontanti = "La squadra " + PartenzaSmontante.Partenza.Squadre[0] + " viene sostituita ";
+            else NoteSquadreSmontanti = "La squadra " + PartenzaSmontante.Partenza.Squadre[0].Nome + " viene sostituita ";
 
             if (PartenzaMontante.Partenza.Squadre.Count() > 1)
             {
@@ -127,7 +131,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 NoteSquadreMontanti = " dalle squadre " + NoteSquadreMontanti.Substring(0, NoteSquadreMontanti.Length - 1);
             }
-            else NoteSquadreMontanti = " dalla squadra " + PartenzaMontante.Partenza.Squadre[0];
+            else NoteSquadreMontanti = " dalla squadra " + PartenzaMontante.Partenza.Squadre[0].Nome;
 
             string Note = NoteSquadreSmontanti + NoteSquadreMontanti + " sul mezzo " + PartenzaSmontante.CodiceMezzo + " tornando in sede con il mezzo " + PartenzaMontante.CodiceMezzo;
 

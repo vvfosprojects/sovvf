@@ -48,11 +48,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
             {
                 var sediDaAllertare = new List<string>();
                 var listaBlocchiSede = _getAllBlocks.GetAll(new string[] { command.CodiceSede });
-                var blocchiInteressati = listaBlocchiSede.FindAll(c => c.Type.Equals(TipoOperazione.Richiesta) && command.ListaIdConcorrenza.Any(x => x.Equals(c.Id)));
+                var blocchiInteressati = listaBlocchiSede.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra));
 
                 if (blocchiInteressati.Count > 0)
                 {
-                    command.listaSediDaAllertare = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => c.Type.Equals(TipoOperazione.Richiesta))[0].Value).CodSOAllertate.ToList();
+                    command.listaSediDaAllertare = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))[0].Value).CodSOAllertate.ToList();
                 }
 
                 foreach (var id in command.ListaIdConcorrenza)

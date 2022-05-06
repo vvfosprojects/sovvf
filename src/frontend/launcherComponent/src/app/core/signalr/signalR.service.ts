@@ -58,6 +58,7 @@ import { UpdateRichiestaSganciamento } from '../../features/home/store/actions/c
 import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { RicercaRubricaState } from '../../features/rubrica/store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { RichiesteState } from '../../features/home/store/states/richieste/richieste.state';
+import { GetPos } from '../../features/pos/store/actions/pos/pos.actions';
 
 //const HUB_URL = environment.baseUrl + environment.signalRHub;
 const HUB_URL = "https://localhost:44381/SubHub";
@@ -490,6 +491,14 @@ export class SignalRService {
         this.hubNotification.on('NotifyConcorrenza', (response: any) => {
             console.log('NotifyConcorrenza', response);
             this.store.dispatch(new GetConcorrenza());
+        });
+
+        /**
+         * POS
+         */
+        this.hubNotification.on('NotifyPos', (response: any) => {
+            console.log('NotifyPos', response);
+            this.store.dispatch(new GetPos());
         });
 
         /**

@@ -32,9 +32,9 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
             var sediAllertate = new List<string>();
             var SediDaNotificare = new List<string>();
 
-            if (command.concorrenza.FindAll(c => c.Type.Equals(TipoOperazione.Richiesta)).Count > 0)
+            if (command.concorrenza.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra)).Count > 0)
             {
-                sintesiRichiesta = _getSintesiById.GetSintesi(command.concorrenza.FindAll(c => c.Type.Equals(TipoOperazione.Richiesta))[0].Value);
+                sintesiRichiesta = _getSintesiById.GetSintesi(command.concorrenza.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))[0].Value);
                 sediAllertate = sintesiRichiesta.CodSOAllertate.ToList();
             }
 
