@@ -59,22 +59,6 @@ export class ImpostazioniSedeComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetTipologie());
     }
 
-    accordionExpandAll(): void {
-        if (this.accordionComponent.activeIds.length === 2) {
-            this.accordionComponent.collapseAll();
-        } else {
-            this.accordionComponent.expandAll();
-        }
-    }
-
-    getTesto(): string {
-        if (this.accordionComponent?.activeIds?.length > 0 && this.accordionComponent?.activeIds?.length === 2) {
-            return 'Chiudi tutto';
-        } else {
-            return 'Espandi tutto';
-        }
-    }
-
     getExpand(id: string): boolean {
         return this.accordionComponent?.activeIds.indexOf(id) !== -1;
     }
