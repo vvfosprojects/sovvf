@@ -1,4 +1,4 @@
-<div class="border rounded px-3 py-2 h-100 font-xxlarge bg-mezzo-in-servizio d-flex align-items-center justify-content-between"
+<div class="row border rounded h-100 font-xxlarge bg-mezzo-in-servizio d-flex align-items-center py-2"
      [class.bg-mezzo-in-servizio-selezionato]="idMezzoInServizioSelezionato === mezzoInServizio.mezzo.mezzo.codice"
      [ngClass]="cardClasses(mezzoInServizio.mezzo.mezzo.stato)"
      style="min-height: 62px"
@@ -8,17 +8,21 @@
     <ng-template [ngIf]="loadingArray.includes(mezzoInServizio.mezzo.mezzo.codice)">
         <app-partial-loader></app-partial-loader>
     </ng-template>
-    <div class="d-flex align-items-center justify-content-between">
-        <!-- Mezzo -->
-        <div class="mr-4">
-            <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo"
-                       [mezzoInServizioPage]="true"
-                       [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
-                       (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
-            </app-mezzo>
-        </div>
-        <!-- Squadra/e sul Mezzo -->
-        <ng-container *ngIf="mezzoInServizio?.squadre?.length">
+    <!-- Mezzo -->
+    <div class="col-3">
+        <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo"
+                   [mezzoInServizioPage]="true"
+                   [actionsAttive]="false"
+                   (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
+        </app-mezzo>
+    </div>
+    <!-- Offset Mezzo in Sede -->
+    <ng-container *ngIf="mezzoInServizio.mezzo.mezzo.stato === StatoMezzo.InSede">
+        <div class="offset-5"></div>
+    </ng-container>
+    <!-- Squadra/e sul Mezzo -->
+    <ng-container *ngIf="mezzoInServizio?.squadre?.length">
+        <div class="col-1">
             <div class="d-flex align-items-center justify-content-end font-weight-bold">
                 <div>
                     <i class="fas fa-users text-{{statoMezzoColor(mezzoInServizio.mezzo.mezzo.stato)}}"></i>
@@ -41,72 +45,74 @@
                     </div>
                 </button>
             </div>
-        </ng-container>
-    </div>
+        </div>
+    </ng-container>
     <!-- Indirizzo -->
     <ng-container *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">
-        <div class="d-flex align-items-center"
-             [ngbTooltip]="mezzoInServizio.mezzo.infoRichiesta.indirizzo"
-             [disableTooltip]="mezzoInServizio.mezzo.infoRichiesta.indirizzo.length < truncateLenghtIndirizzoRichiesta">
-            <div class="mr-2">
-                <i class="fas fa-fw fa-map-marker-alt text-{{statoMezzoColor(mezzoInServizio.mezzo.mezzo.stato)}}"></i>
-            </div>
-            <div>
-                {{ mezzoInServizio.mezzo.infoRichiesta.indirizzo | truncate: truncateLenghtIndirizzoRichiesta }}
+        <div class="col-3">
+            <div class="d-flex align-items-center"
+                 [ngbTooltip]="mezzoInServizio.mezzo.infoRichiesta.indirizzo"
+                 [disableTooltip]="mezzoInServizio.mezzo.infoRichiesta.indirizzo.length < truncateLenghtIndirizzoRichiesta">
+                <div class="mr-2">
+                    <i class="fas fa-fw fa-map-marker-alt text-{{statoMezzoColor(mezzoInServizio.mezzo.mezzo.stato)}}"></i>
+                </div>
+                <div>
+                    {{ mezzoInServizio.mezzo.infoRichiesta.indirizzo | truncate: truncateLenghtIndirizzoRichiesta }}
+                </div>
             </div>
         </div>
     </ng-container>
-    <div class="d-flex align-items-center justify-content-end">
-        <!-- Codice Richiesta -->
-        <ng-container *ngIf="!hideCodRichiesta">
-            <div class="mr-2">
-                <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
-                        class="btn btn-no-hover btn-light font-weight-bold"
-                        (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
-                    <i class="fas fa-hashtag"></i>
-                    {{ mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta }}
-                </button>
+    <!-- Codice Richiesta -->
+    <ng-container *ngIf="!hideCodRichiesta">
+        <div class="col-2">
+            <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
+                    class="btn btn-no-hover btn-light font-weight-bold"
+                    (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
+                <i class="fas fa-hashtag"></i>
+                {{ mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta }}
+            </button>
+        </div>
+    </ng-container>
+    <!-- Tipologia Richiesta  -->
+    <ng-container *ngIf="showTipologiaRichiesta">
+        <div class="col-3">
+            <div [ngbTooltip]="richiesta?.tipologie[0]?.descrizione"
+                 [disableTooltip]="richiesta?.tipologie[0]?.descrizione.length < 23">
+                <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta?.tipologie[0]) }}"></i>
+                {{ richiesta?.tipologie[0]?.descrizione | truncate: 23 }}
             </div>
-        </ng-container>
-        <!-- Tipologia Richiesta  -->
-        <ng-container *ngIf="showTipologiaRichiesta">
-            <div class="mr-2">
-                <div [ngbTooltip]="richiesta?.tipologie[0]?.descrizione"
-                     [disableTooltip]="richiesta?.tipologie[0]?.descrizione.length < 23">
-                    <i class="fa-fw mr-1 {{ methods.coloraIcona(richiesta?.tipologie[0]) }}"></i>
-                    {{ richiesta?.tipologie[0]?.descrizione | truncate: 23 }}
-                </div>
-            </div>
-        </ng-container>
-        <!-- Eventi -->
-        <ng-container *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta">
-            <div class="mr-2">
-                <button class="btn btn-block btn-no-hover btn-light"
-                        [ngbTooltip]="'Visualizza Eventi'"
-                        [disableTooltip]="!hideTextButtonEventi"
-                        (click)="visualizzaEventiRichiesta.emit(mezzoInServizio.mezzo.mezzo)">
-                    <i class="fas fa-list"></i>
-                    <ng-container *ngIf="!hideTextButtonEventi">
-                        Eventi
-                    </ng-container>
-                </button>
-            </div>
-        </ng-container>
-        <!-- Distaccamento -->
-        <ng-container *ngIf="!hideDistaccamento">
+        </div>
+    </ng-container>
+    <!-- Eventi -->
+    <ng-container *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta">
+        <div class="col-1">
+            <button class="btn btn-block btn-no-hover btn-light"
+                    [ngbTooltip]="'Visualizza Eventi'"
+                    [disableTooltip]="!hideTextButtonEventi"
+                    (click)="visualizzaEventiRichiesta.emit(mezzoInServizio.mezzo.mezzo)">
+                <i class="fas fa-list"></i>
+                <ng-container *ngIf="!hideTextButtonEventi">
+                    Eventi
+                </ng-container>
+            </button>
+        </div>
+    </ng-container>
+    <!-- Distaccamento -->
+    <ng-container *ngIf="!hideDistaccamento">
+        <div class="col-2 text-right">
             <div class="badge badge-secondary"
                  [class.mr-2]="showSelectButton">
                 {{ getSedeString(mezzoInServizio.mezzo.mezzo.distaccamento.descrizione) }}
             </div>
-        </ng-container>
-        <!-- Select Button -->
-        <ng-container *ngIf="showSelectButton">
-            <div class="">
-                <button class="btn btn-block btn-light btn-no-hover border-secondary"
-                        (click)="onSelect(mezzoInServizio)">
-                    {{ 'info' | uppercase }}
-                </button>
-            </div>
-        </ng-container>
-    </div>
+        </div>
+    </ng-container>
+    <!-- Select Button -->
+    <ng-container *ngIf="showSelectButton">
+        <div class="col-1">
+            <button class="btn btn-block btn-light btn-no-hover border-secondary"
+                    (click)="onSelect(mezzoInServizio)">
+                {{ 'info' | uppercase }}
+            </button>
+        </div>
+    </ng-container>
 </div>

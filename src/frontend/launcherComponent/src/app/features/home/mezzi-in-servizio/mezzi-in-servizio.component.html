@@ -6,7 +6,7 @@
     </app-risultati-alert>
 </ng-container>
 <div *ngIf="mezziInServizio?.length"
-     class="row">
+     class="row px-3">
     <div class="col-12"
          [ngClass]="heightListaMezzi()">
         <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
