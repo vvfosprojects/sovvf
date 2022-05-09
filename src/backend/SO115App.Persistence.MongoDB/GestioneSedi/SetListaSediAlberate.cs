@@ -18,10 +18,19 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
         {
             var filter = Builders<UnitaOperativa>.Filter.Eq(s => s.Codice, "00");
 
-            if (_dbContext.ListaSediCollection.CountDocuments(filter) > 0)
-                _dbContext.ListaSediCollection.ReplaceOne(filter, unitaOperativa);
-            else
-                _dbContext.ListaSediCollection.InsertOne(unitaOperativa);
+            //NON UTILIZZARE IL REPLACE MANDA IN ERRORE TUTTA L'ALBERATURA E NON FUNIONANANO PIU LE COORDINATE 
+
+            //NON UTILIZZARE IL REPLACE MANDA IN ERRORE TUTTA L'ALBERATURA E NON FUNIONANANO PIU LE COORDINATE 
+
+
+
+            _dbContext.ListaSediCollection.InsertOne(unitaOperativa);
+
+
+
+            //NON UTILIZZARE IL REPLACE MANDA IN ERRORE TUTTA L'ALBERATURA E NON FUNIONANANO PIU LE COORDINATE 
+
+            //NON UTILIZZARE IL REPLACE MANDA IN ERRORE TUTTA L'ALBERATURA E NON FUNIONANANO PIU LE COORDINATE 
         }
     }
 }
