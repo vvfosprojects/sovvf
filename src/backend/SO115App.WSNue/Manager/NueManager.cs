@@ -36,20 +36,45 @@ namespace SO115App.WSNue.Manager
             try
             {
                 var SchedaSO115 = MappaScheda(insertSchedaNueRequest);
-                SchedaSO115.listaEventiWS = new List<Evento>()
+
+                if (database.GetCollection<SchedaContatto>("schedecontatto").CountDocuments(s => s.codiceScheda.Equals(SchedaSO115.codiceScheda)
+                                                                                    && s.enteMittente.Equals(SchedaSO115.enteMittente)
+                                                                                    && s.sedeMittente.Equals(SchedaSO115.sedeMittente)
+                                                                                    && s.provinciaMittente.Equals(SchedaSO115.provinciaMittente)) == 0)
                 {
-                    new Evento()
+                    SchedaSO115.listaEventiWS = new List<Evento>()
                     {
-                        istante = DateTime.Now,
-                        descrizione = "Ricezione scheda NUE"
-                    }
-                };
-                database.GetCollection<SchedaContatto>("schedecontatto").InsertOne(SchedaSO115);
+                        new Evento()
+                        {
+                            istante = DateTime.Now,
+                            descrizione = "Ricezione scheda NUE"
+                        }
+                    };
+                    database.GetCollection<SchedaContatto>("schedecontatto").InsertOne(SchedaSO115);
 
-                SendMessageSO115WEB(SchedaSO115);
-                SendMessageESRI(SchedaSO115);
+                    SendMessageSO115WEB(SchedaSO115);
+                    SendMessageESRI(SchedaSO115);
 
-                return "OK";
+                    return "OK";
+                }
+                else
+                {
+                    LogException exception = new LogException()
+                    {
+                        CodComando = "NUE",
+                        DataOraEsecuzione = DateTime.Now,
+                        IdOperatore = "WSNue",
+                        Content = $"ENTE DESTINATARIO:{insertSchedaNueRequest.enteDestinatario} / ENTE MITTENTE:{insertSchedaNueRequest.enteMittente} / PROVINCIA DESTINATARIO: {insertSchedaNueRequest.provinciaDestinatario} " +
+                                  $"PROVINCIA MITTENTE { insertSchedaNueRequest.provinciaMittente} / SEDE DESTINATARIA: {insertSchedaNueRequest.sedeDestinataria} / SEDE MITTENTE: {insertSchedaNueRequest.sedeMittente} " +
+                                  $"CODICE SCHEDA: {SchedaSO115.codiceScheda}" +
+                                  $"SCHEDA CONTATTO: {insertSchedaNueRequest.schedaContatto}",
+                        Response = "SCHEDA DUPLICATA",
+                        Servizio = "WSNUE"
+                    };
+
+                    database.GetCollection<LogException>("externalApiLog").InsertOne(exception);
+                    return $"Error: SCHEDA DUPLICATA";
+                }
             }
             catch (Exception ex)
             {
@@ -328,6 +353,9 @@ namespace SO115App.WSNue.Manager
 
             SchedaContatto schedaMapped = new SchedaContatto()
             {
+                enteMittente = scheda.enteMittente,
+                sedeMittente = scheda.sedeMittente,
+                provinciaMittente = scheda.provinciaMittente,
                 classificazione = classificazione,
                 classificazioneEvento = SchedaXml.SelectSingleNode("//nue:Classification", namespaces).InnerText,
                 codiceSede = scheda.provinciaDestinatario + ".1000",

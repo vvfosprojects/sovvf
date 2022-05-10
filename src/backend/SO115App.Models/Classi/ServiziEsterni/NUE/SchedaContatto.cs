@@ -31,6 +31,11 @@ namespace SO115App.Models.Classi.NUE
     public class SchedaContatto
     {
         public string id { get; set; }
+        public string EnteMittente { get; set; }
+        public string SedeMittente { get; set; }
+        public string ProvinciaMittente { get; set; }
+
+        public string EnteDestinatario { get; set; }
 
         /// <summary>
         ///   E' il codice della scheda contatto, proveniente dal NUE.
