@@ -139,7 +139,10 @@ namespace SO115App.Persistence.MongoDB
                 filtroFullText |= Builders<RichiestaAssistenza>.Filter.AnyEq("tipologie.descrizione", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"));
 
                 filtroFullText |= (Builders<RichiestaAssistenza>.Filter.AnyEq("listaEventi.partenza.squadre.membri.nominativo", new BsonRegularExpression($"/^.*{filtro.SearchKey}.*$/i"))
-                    & Builders<RichiestaAssistenza>.Filter.Eq("listaEventi.partenza.squadre.membri.descrizioneQualifica", "TEAM_LEADER"));
+                    & (Builders<RichiestaAssistenza>.Filter.Eq("listaEventi.partenza.squadre.membri.descrizioneQualifica", "TEAM_LEADER")
+                    & Builders<RichiestaAssistenza>.Filter.Eq("listaEventi.partenza.terminata", false)
+                    & Builders<RichiestaAssistenza>.Filter.Eq("listaEventi.partenza.sganciata", false)
+                    & Builders<RichiestaAssistenza>.Filter.Eq("listaEventi.partenza.partenzaAnnullata", false)));
 
                 var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
 
