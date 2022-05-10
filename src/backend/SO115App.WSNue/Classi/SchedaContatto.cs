@@ -30,6 +30,10 @@ namespace SO115App.WSNue.Classi.NUE
     /// </summary>
     public class SchedaContatto
     {
+        public string enteMittente { get; set; } = "";
+        public string sedeMittente { get; set; } = "";
+        public string provinciaMittente { get; set; } = "";
+
         /// <summary>
         ///   E' il codice della scheda contatto, proveniente dal NUE.
         /// </summary>
