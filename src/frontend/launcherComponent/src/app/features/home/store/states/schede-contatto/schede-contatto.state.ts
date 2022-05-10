@@ -94,13 +94,13 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     codiceSchedaContattoSelezionata: undefined,
     filtriSchedeContatto: [
         new VoceFiltro('1', Categoria.Gestione, 'Gestita', false),
-        new VoceFiltro('2', Categoria.Gestione, 'Non Gestita', false),
+        new VoceFiltro('2', Categoria.Gestione, 'Non Gestita', false, true),
         new VoceFiltro('3', Categoria.DataRicezione, RangeSchedeContattoEnum.UltimaOra, false),
         new VoceFiltro('4', Categoria.DataRicezione, RangeSchedeContattoEnum.UltimeDueOre, false),
         new VoceFiltro('5', Categoria.DataRicezione, RangeSchedeContattoEnum.UltimoGiorno, false),
     ],
     filtriSelezionati: {
-        gestita: undefined,
+        gestita: false,
         rangeVisualizzazione: RangeSchedeContattoEnum.DaSempre
     }
 };
@@ -409,14 +409,17 @@ export class SchedeContattoState {
     @Action(ReducerSetFiltroSchedeContatto)
     reducerSetFiltroSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: ReducerSetFiltroSchedeContatto): void {
         const state = getState();
-        const filtroGestita = state.filtriSelezionati.gestita;
         const filtroRangeVisualizzazione = state.filtriSelezionati.rangeVisualizzazione;
         switch (action.filtro.codice) {
             case '1':
-                filtroGestita === true ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(true));
+                if (action.filtro.selezionato) {
+                    dispatch(new SetFiltroGestitaSchedeContatto(false));
+                }
                 break;
             case '2':
-                filtroGestita === false ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(false));
+                if (action.filtro.selezionato) {
+                    dispatch(new SetFiltroGestitaSchedeContatto(true));
+                }
                 break;
             case '3':
                 filtroRangeVisualizzazione === RangeSchedeContattoEnum.UltimaOra ? dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.DaSempre)) : dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.UltimaOra));
@@ -482,6 +485,7 @@ export class SchedeContattoState {
         patchState({
             filtriSchedeContatto: _setFiltroSelezionato(filtriSchedeContatto, filtro),
             filtriSelezionati: {
+                ...state.filtriSelezionati,
                 rangeVisualizzazione: action.range
             }
         });
