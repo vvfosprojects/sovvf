@@ -62,6 +62,8 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var SediDaNotificare = _getGerarchiaToSend.Get(intervento.sintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
 
+            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+
             foreach (var sede in SediDaNotificare)
             {
                 var boxRichiesteQuery = new BoxRichiesteQuery()

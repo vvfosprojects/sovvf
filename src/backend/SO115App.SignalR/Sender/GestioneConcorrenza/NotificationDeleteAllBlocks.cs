@@ -32,9 +32,8 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
 
         public async Task SendNotification(DeleteAllBlocksCommand command)
         {
-
             var SediDaNotificare = new List<string>();
-            if (command.listaSediDaAllertare!=null)
+            if (command.listaSediDaAllertare != null)
                 SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede, command.listaSediDaAllertare.ToArray());
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede);

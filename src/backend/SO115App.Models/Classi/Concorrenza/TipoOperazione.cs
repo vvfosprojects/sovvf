@@ -27,6 +27,8 @@
         EliminaRuoloUtente,
         ModificaRuoloUtente,
         EliminaUtente,
+        RaggrauppamentoSchedeContatto,
+
         Sostituzione,
         Fonogramma,
         EntiIntervenuti,

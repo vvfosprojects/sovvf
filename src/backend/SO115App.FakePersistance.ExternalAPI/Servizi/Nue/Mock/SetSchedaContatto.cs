@@ -52,19 +52,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="lista">La lista di schede contatto</param>
         public void Set(SchedaContatto scheda, string codiceSchedaModificata)
         {
-            var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+            var schedaDB = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Eq(s => s.CodiceScheda, codiceSchedaModificata)).SingleOrDefault();
 
-            if (scheda.CodiceScheda.Equals(codiceSchedaModificata))
+            if(schedaDB != null)
             {
-                if (ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
-                {
-                    _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("gestita", scheda.Gestita));
-                    _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("codiceInterventoAssociato", scheda.CodiceInterventoAssociato));
-                }
-                else
-                {
-                    _context.SchedeContattoCollection.InsertOne(scheda);
-                }
+                _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("gestita", scheda.Gestita));
             }
         }
 
@@ -77,25 +69,30 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="gestita">la booleana gestita</param>
         public void SetGestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita, string codiceIntervento)
         {
-            var schedeContatto = _getSchedeContatto.ListaSchedeContatto(codiceSede);
-
-            var schedaContatto = schedeContatto.Find(x => x.CodiceScheda.Equals(codiceScheda));
-
-            if (schedaContatto.OperatoreChiamata != null)
+            try
             {
-                schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
-                schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
-            }
-            else
-            {
-                schedaContatto.OperatoreChiamata = new OperatoreNue();
-                schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
-                schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
-            }
-            schedaContatto.Gestita = gestita;
-            schedaContatto.CodiceInterventoAssociato = codiceIntervento;
+                var schedaContatto = _context.SchedeContattoCollection.Find(x => x.CodiceScheda.Equals(codiceScheda)).SingleOrDefault();
 
-            Set(schedaContatto, codiceScheda);
+                if (schedaContatto.OperatoreChiamata != null)
+                {
+                    schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
+                    schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
+                }
+                else
+                {
+                    schedaContatto.OperatoreChiamata = new OperatoreNue();
+                    schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
+                    schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
+                }
+                schedaContatto.Gestita = gestita;
+                schedaContatto.CodiceInterventoAssociato = codiceIntervento;
+
+                Set(schedaContatto, codiceScheda);
+            }
+            catch (System.InvalidOperationException e)
+            {
+                throw new System.Exception("Impossibile aggiornare lo stato della scheda perchè duplicata nel database.");
+            }
         }
     }
 }

@@ -14,7 +14,10 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             distaccamento.Descrizione,
             distaccamento.Indirizzo,
             distaccamento.Coordinate
-        );
+        )
+        {
+            CoordinateString = !string.IsNullOrEmpty(distaccamento.coordinate) && distaccamento.coordinate.Contains(',') ? distaccamento.coordinate.Split(',') : new string[] { "", "" }
+        };
 
         public static Sede MapSede(this Distaccamento distaccamento) => new Sede
         (            
@@ -22,7 +25,10 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             distaccamento.DescDistaccamento,
             distaccamento.Indirizzo,
             distaccamento.Coordinate
-        );
+        )
+        {
+            CoordinateString = distaccamento.CoordinateString
+        };
 
         public static Distaccamento MapDistaccamento(this DistaccamentoUC distaccamento) => new Distaccamento()
         {
@@ -33,7 +39,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             Coordinate = distaccamento.Coordinate,
             DescDistaccamento = distaccamento.Descrizione,
             Indirizzo = distaccamento.Indirizzo,
-            CoordinateString = !string.IsNullOrEmpty(distaccamento.coordinate) && distaccamento.coordinate.Contains(',') ? distaccamento.coordinate.Split(',') : new string[] { "", "" },
+            CoordinateString = !string.IsNullOrEmpty(distaccamento.coordinate) && distaccamento.coordinate.Contains(',') ? distaccamento.coordinate.Split(',') : new string[] { "", "" }
         };
 
         public static Distaccamento MapDistaccamento(this Sede sede) => new Distaccamento()
@@ -42,6 +48,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             CodSede = sede.Codice,
             Coordinate = sede.Coordinate,
             Indirizzo = sede.Indirizzo,
+            CoordinateString = sede.CoordinateString,
             DescDistaccamento = sede.Descrizione
         };
 
@@ -49,7 +56,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
         {
             Codice = distaccamento.Codice,
             Coordinate = distaccamento.Coordinate,
-            Descrizione = distaccamento.Descrizione,
+            Descrizione = distaccamento.Descrizione.Contains("COMANDO") ? "CENTRALE" : distaccamento.Descrizione,
             Indirizzo = distaccamento.Indirizzo,
         };
     }

@@ -302,6 +302,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 var sede = lstSedi.FirstOrDefault(s => s.Codice.Equals(mezzoDto.CodiceDistaccamento));
 
+                if (sede.Descrizione.Contains("COMANDO"))
+                    sede.Descrizione = "CENTRALE";
+
                 var posizioneMezzo = ListaPosizioneFlotta.FirstOrDefault(p => p.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
 
                 var coordinate = posizioneMezzo == null ? sede.Coordinate : posizioneMezzo.ToCoordinate();

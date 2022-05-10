@@ -406,9 +406,13 @@ export class BoxPartenzaState {
         const state = getState();
         const boxPartenzaList = state.boxPartenzaList;
         boxPartenzaList.forEach((b: BoxPartenza) => {
-            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [b.mezzoComposizione.mezzo.codice]));
-            const codiciSquadre = b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice);
-            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+            if (b.mezzoComposizione) {
+                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [b.mezzoComposizione.mezzo.codice]));
+            }
+            if (b.squadreComposizione) {
+                const codiciSquadre = b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice);
+                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+            }
         });
         dispatch(new ClearDirection());
         patchState({

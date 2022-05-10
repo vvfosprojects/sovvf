@@ -22,13 +22,13 @@ namespace SO115App.Models.Classi.Utility
                     if (i <= 3)
                     {
                         var Distaccamento = serviceSedi.GetInfoSede(codCompetenza).Result;
-                        var info = alberatura.Result.Find(a => a.Codice.Equals(codCompetenza));
+                        //var info = alberatura.Result.Find(a => a.Codice.Equals(codCompetenza));
 
                         var sede = Distaccamento.MapSede();
 
                         if (sede != null)
                         {
-                            sede.Descrizione = info.Descrizione;
+                            sede.Descrizione = Distaccamento.Descrizione;
 
                             listaSedi.Add(sede);
                         }

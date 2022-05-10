@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="DeleteAllBlocksNotification.cs" company="CNVVF">
+// <copyright file="DeletePosNotifier.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,26 +18,22 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneConcorrenza;
-using System.Threading.Tasks;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteAllBlocks
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.DeletePos
 {
-    public class DeleteAllBlocksNotification : ICommandNotifier<DeleteAllBlocksCommand>
+    public class DeletePosNotifier : ICommandNotifier<DeletePosCommand>
     {
-        private readonly INotificationDeleteAllBlocks _sender;
+        private readonly INotificationDeletePos _sender;
 
-        public DeleteAllBlocksNotification(INotificationDeleteAllBlocks sender)
+        public DeletePosNotifier(INotificationDeletePos sender)
         {
             _sender = sender;
         }
 
-        public void Notify(DeleteAllBlocksCommand command)
+        public void Notify(DeletePosCommand command)
         {
-            Task.Factory.StartNew(() =>
-            {
-                _sender.SendNotification(command);
-            });
+            _sender.SendNotification(command);
         }
     }
 }

@@ -208,6 +208,21 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ModificaRuoloUtente
                 ];
                 break;
+            case TipoConcorrenzaEnum.RaggruppamentoSchedeContatto:
+                blocks = [
+                    TipoConcorrenzaEnum.RaggruppamentoSchedeContatto,
+                    TipoConcorrenzaEnum.RegistrazioneSchedaContatto
+                ];
+                break;
+            case TipoConcorrenzaEnum.AnnullaStatoMezzo:
+                blocks = [
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
+                    TipoConcorrenzaEnum.ChiusuraChiamata,
+                    TipoConcorrenzaEnum.ChiusuraIntervento,
+                    TipoConcorrenzaEnum.GestisciPartenza,
+                    TipoConcorrenzaEnum.Sganciamento
+                ];
+                break;
             case TipoConcorrenzaEnum.Sostituzione: // TODO: implementare nel DOM
                 // TODO: completare blocks
                 blocks = [];

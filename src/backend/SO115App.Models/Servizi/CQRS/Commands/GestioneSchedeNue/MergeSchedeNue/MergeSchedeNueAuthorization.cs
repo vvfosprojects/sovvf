@@ -20,8 +20,10 @@
 using CQRS.Authorization;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Security.Principal;
 
@@ -30,18 +32,22 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
     internal class MergeSchedeNueAuthorization
     {
         private readonly IPrincipal _currentUser;
-        private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly IGetUtenteById _getUtenteById;
+        private readonly IIsActionFree _isActionFree;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
 
-        public MergeSchedeNueAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
+        public MergeSchedeNueAuthorization(IPrincipal currentUser, 
             IGetAutorizzazioni getAutorizzazioni,
-            IGetUtenteById getUtenteById)
+            IGetUtenteById getUtenteById,
+            IIsActionFree isActionFree,
+            IGetSottoSediByCodSede getSottoSediByCodSede)
         {
             _currentUser = currentUser;
-            _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
             _getUtenteById = getUtenteById;
+            _isActionFree = isActionFree;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(MergeSchedeNueCommand command)
@@ -54,6 +60,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    #region CONCORRENZA
+
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.CodiceSede });
+                    //TODO AGGIORNARE NUOVO ID SCHEDA NUE (NUOVO ID COMPOSTO)
+                    if (!_isActionFree.Check(Classi.Concorrenza.TipoOperazione.RaggrauppamentoSchedeContatto, command.IdUtente, listaSediInteressate.ToArray(), command.SchedaNue.CodiceSede))
+                        yield return new AuthorizationResult("Scheda in utilizzo da un altro operatore.");
+
+                    #endregion
+
                     foreach (var ruolo in user.Ruoli)
                     {
                         if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.SchedaNue.CodiceSede, Costanti.GestoreChiamate))
