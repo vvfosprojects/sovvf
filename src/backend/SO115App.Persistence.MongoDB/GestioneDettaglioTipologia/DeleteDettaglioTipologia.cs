@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Pos;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDettaglioTipologie;
 using System.Collections.Generic;
@@ -24,15 +25,25 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             var values = new List<int>() { CodDettaglioTipologia };
 
             var listaPos = _dbContext.DtoPosCollection.Find(p => p.ListaTipologie.Any(t => t.CodTipologiaDettaglio.Any(td => td.Equals(CodDettaglioTipologia)))).ToList();
-            var filtro = listaPos.Select(s => s.Id).ToList();
+            var listaIdPos = listaPos.Select(s => s.Id);
 
             foreach (var pos in listaPos)
             {
-                pos.ListaTipologie = pos.ListaTipologie.Where(t => !t.CodTipologiaDettaglio.Contains(CodDettaglioTipologia)).ToList();
-            }
+                var nuovaAssociazione = pos.ListaTipologie.Where(t => !t.CodTipologiaDettaglio.Contains(CodDettaglioTipologia)).ToList();
 
-            _dbContext.DtoPosCollection.DeleteMany(p => filtro.Contains(p.Id));
-            _dbContext.DtoPosCollection.InsertMany(listaPos.AsEnumerable());
+                if(nuovaAssociazione.Count == 0)
+                {
+                    _dbContext.DtoPosCollection.DeleteOne(p => p.Id.Equals(pos.Id));
+                }
+                else
+                {
+                    pos.ListaTipologie = nuovaAssociazione;
+
+                    //UPDATE POS
+                    _dbContext.DtoPosCollection.DeleteOne(p => p.Id.Equals(pos.Id));
+                    _dbContext.DtoPosCollection.InsertOne(pos);
+                }
+            }
 
             //ELIMINO TRIAGE
             _dbContext.TriageCollection.DeleteOne(Builders<Triage>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglioTipologia));
