@@ -646,11 +646,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 if (tipologiche?.distaccamenti?.length) {
                     this.distaccamenti = tipologiche.distaccamenti;
                     this.distaccamentiFiltered = makeCopy(this.distaccamenti);
-                    this.distaccamentiFiltered?.forEach((d: TipologicaComposizionePartenza) => {
-                        if (d.descDistaccamento.toLocaleLowerCase().indexOf('comando') !== -1) {
-                            d.descDistaccamento = 'CENTRALE';
-                        }
-                    });
                     if (this.f?.codPrimaCompetenzaManuale?.disabled) {
                         this.f.codPrimaCompetenzaManuale.enable();
                     }
