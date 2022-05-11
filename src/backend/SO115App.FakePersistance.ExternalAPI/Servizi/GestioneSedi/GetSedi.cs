@@ -196,7 +196,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
 #if DEBUG
 
-            return readOffline();
+            //return readOffline();
 
 #endif
 
