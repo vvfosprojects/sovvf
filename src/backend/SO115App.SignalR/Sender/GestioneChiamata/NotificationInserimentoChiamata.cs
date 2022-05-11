@@ -86,6 +86,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
                     count = 1
                 };
 
+                if (!string.IsNullOrEmpty(command.Intervento.CodNue)) 
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateSchedaContatto", boxInterventi);
+
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", command.sintesi);
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
