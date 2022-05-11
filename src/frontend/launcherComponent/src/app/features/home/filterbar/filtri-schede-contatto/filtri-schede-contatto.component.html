@@ -22,9 +22,9 @@
                         <app-filtro [filtro]="f"
                                     [useCheckbox]="true"
                                     [selezionato]="_isSelezionato(f)"
-                                    [disabled]="disableFilters"
-                                    (filtroSelezionato)="onSelezioneFiltro($event)"
-                                    (filtroDeselezionato)="onSelezioneFiltro($event)"></app-filtro>
+                                    [disabled]="disableFilters || _isSelezionato(f)"
+                                    (filtroSelezionato)="onSelezioneFiltro($event)">
+                        </app-filtro>
                     </ng-container>
                 </div>
                 <h6 class="font-weight-bold">{{ Categoria.DataRicezione }}</h6>
@@ -35,7 +35,8 @@
                                     [selezionato]="_isSelezionato(f)"
                                     [disabled]="disableFilters"
                                     (filtroSelezionato)="onSelezioneFiltro($event)"
-                                    (filtroDeselezionato)="onSelezioneFiltro($event)"></app-filtro>
+                                    (filtroDeselezionato)="onSelezioneFiltro($event)">
+                        </app-filtro>
                     </ng-container>
                 </div>
             </div>
