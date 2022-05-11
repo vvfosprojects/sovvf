@@ -7,7 +7,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
-import { PosInterface } from '../../interface/pos.interface';
+import { PosInterface, TipologiaPos } from '../../interface/pos.interface';
 import { getDettagliTipologieFromListaTipologie, getTipologieFromListaTipologie } from '../../helper/function-pos';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 
@@ -46,7 +46,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.initForm();
         this.getFormValid();
-        this.dettagliTipologieFiltered = this.dettagliTipologie;
     }
 
     ngOnDestroy(): void {
@@ -69,7 +68,9 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
         if (this.editPos) {
             this.updatePosForm(this.pos);
+            this.filterDettagliTipologieByCodTipologie(this.pos.listaTipologie.map((t: TipologiaPos) => t.codTipologia));
         } else {
+            this.dettagliTipologieFiltered = this.dettagliTipologie;
             this.f.tipologieDettagli.disable();
         }
     }
@@ -136,6 +137,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     filterDettagliTipologieByCodTipologie(codTipologie: number[]): void {
         this.dettagliTipologieFiltered = [];
+        console.log('filterDettagliTipologieByCodTipologie codTipologie', codTipologie);
         if (this.dettagliTipologieFiltered) {
             codTipologie.forEach((codTipologia: number) => {
                 this.dettagliTipologie.forEach((dettaglioTipologia: DettaglioTipologia) => {

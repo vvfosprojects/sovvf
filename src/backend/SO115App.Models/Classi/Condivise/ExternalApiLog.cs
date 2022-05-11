@@ -4,6 +4,7 @@ namespace SO115App.Models.Classi.Condivise
 {
     public class ExternalApiLog
     {
+        public string Id { get; set; }
         public DateTime DataOraEsecuzione { get; set; }
         public string Servizio { get; set; }
         public string Content { get; set; }

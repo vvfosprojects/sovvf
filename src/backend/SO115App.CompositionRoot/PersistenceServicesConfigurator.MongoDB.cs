@@ -28,6 +28,7 @@ using SO115App.Persistence.MongoDB.GestioneDettaglioTipologia;
 using SO115App.Persistence.MongoDB.GestioneDocumentale;
 using SO115App.Persistence.MongoDB.GestioneEmergenza;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
+using SO115App.Persistence.MongoDB.GestioneLog;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.GestionePOS;
 using SO115App.Persistence.MongoDB.GestioneSedi;
@@ -49,6 +50,8 @@ namespace SO115App.CompositionRoot
             container.Register<DbContext>(() => new DbContext(connectionString, databaseName), Lifestyle.Singleton);
 
             container.Register<IResetDB, ResetDB>();
+            container.Register<IGetExternalLog, GetLog>();
+
             container.Register<IWatchChangeSchedeNue, DbWatchForChange>();
 
             container.Register<ISetTipologie, SetTipologie>();

@@ -17,11 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Threading.Tasks;
@@ -47,7 +44,7 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
         public async Task SendNotification(SetSchedaGestitaCommand command)
         {
-            var schedaContattoUpdated = _getSchedeContatto.ListaSchedeContatto(command.CodiceSede).Find(x => x.CodiceScheda.Equals(command.Scheda.CodiceScheda));
+            var schedaContattoUpdated = _getSchedeContatto.ListaSchedeContatto(command.CodiceSede).Find(x => x.Gestita.Equals(command.Gestita) && x.CodiceScheda.Equals(command.Scheda.CodiceScheda));
             var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede });
 
             await _notificationHubContext.Clients.All.SendAsync("NotifySetContatoriSchedeContatto", infoNue);
