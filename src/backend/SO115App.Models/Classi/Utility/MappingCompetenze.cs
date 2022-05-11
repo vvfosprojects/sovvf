@@ -1,4 +1,4 @@
-﻿using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System.Collections.Generic;
@@ -21,15 +21,14 @@ namespace SO115App.Models.Classi.Utility
                 {
                     if (i <= 3)
                     {
-                        var Distaccamento = serviceSedi.GetInfoSede(codCompetenza).Result;
-                        //var info = alberatura.Result.Find(a => a.Codice.Equals(codCompetenza));
+                        // var Distaccamento = serviceSedi.GetInfoSede(codCompetenza).Result;
+                        var info = alberatura.Result.Find(a => a.Codice.Equals(codCompetenza));
 
-                        var sede = Distaccamento.MapSede();
+                        var sede = info;
 
                         if (sede != null)
                         {
-                            sede.Descrizione = Distaccamento.Descrizione;
-
+                           // sede.Descrizione = Distaccamento.Descrizione;
                             listaSedi.Add(sede);
                         }
                     }
