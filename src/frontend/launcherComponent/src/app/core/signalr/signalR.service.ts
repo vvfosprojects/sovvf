@@ -289,7 +289,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyUpdateSchedaContatto', (data: SchedaContatto) => {
             console.log('NotifyUpdateSchedaContatto', data);
-            this.store.dispatch(new UpdateSchedaContatto(data));
+            this.store.dispatch(new GetListaSchedeContatto());
         });
         this.hubNotification.on('NotifyRemoveSchedeContatto', (data: string[]) => {
             console.log('NotifyRemoveSchedeContatto', data);
