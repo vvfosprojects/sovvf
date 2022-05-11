@@ -102,7 +102,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
 
                 _serviceSedi.SetCache(codSede);
-        
+
                 var sede = _serviceSedi.GetAsync(url).Result;
 
                 if (sede == null)
