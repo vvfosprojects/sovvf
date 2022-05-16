@@ -74,7 +74,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public void Handle(AnnullaStatoPartenzaCommand command)
         {
             var adesso = DateTime.UtcNow;
-            var ultimoMovimento = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => e is not AnnullamentoStatoPartenza).Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
+            var ultimoMovimento = command.Richiesta.ListaEventi.OfType<AbstractPartenza>().Where(e => e is not AnnullamentoStatoPartenza && e is not Revoca).Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
             var partenza = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Single(p => p.CodicePartenza.Equals(command.CodicePartenza));
 
             if (adesso >= ultimoMovimento.DataOraInserimento.AddMinutes(1))
@@ -87,9 +87,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 string statoPrecedente = null;
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
-                    .Where(e => e is not AnnullamentoStatoPartenza)
+                    .Where(e => e is not AnnullamentoStatoPartenza && e is not Revoca)
                     .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza))
-                    .Where(e => e.DataOraInserimento < ultimoMovimento.DataOraInserimento) //TESTARE QUESTA WHERE VENERDI MATTINA
+                    .Where(e => e.DataOraInserimento < ultimoMovimento.DataOraInserimento) 
                     .Last();
 
                 switch (eventoPrecedente.TipoEvento)
