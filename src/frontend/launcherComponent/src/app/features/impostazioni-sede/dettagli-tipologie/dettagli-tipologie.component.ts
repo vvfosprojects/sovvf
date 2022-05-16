@@ -59,6 +59,7 @@ export class DettagliTipologieComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.onFiltroTipologiaReset();
         this.subscriptions.unsubscribe();
     }
 
@@ -174,6 +175,7 @@ export class DettagliTipologieComponent implements OnDestroy {
     }
 
     onFiltroTipologiaChange(tipologia: { codice: string, descrizione: string }): void {
+        console.log('onFiltroTipologiaChange => tipologia', tipologia);
         if (tipologia) {
             this.store.dispatch(new ReducerSelezioneFiltroTipologia(+tipologia.codice));
         } else {
