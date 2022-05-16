@@ -29,7 +29,7 @@ import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { EntiState } from '../../../shared/store/states/enti/enti.state';
 import { EnteInterface } from '../../../shared/interface/ente.interface';
-import { LoadingState } from '../../../shared/store/states/loading/loading.state';
+import { InfoMezzo, LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
@@ -74,7 +74,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
 
-    @Select(LoadingState.annullaStatoMezzi) annullaStatoMezzi$: Observable<string[]>;
+    @Select(LoadingState.annullaStatoMezzi) annullaStatoMezzi$: Observable<InfoMezzo[]>;
 
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];
