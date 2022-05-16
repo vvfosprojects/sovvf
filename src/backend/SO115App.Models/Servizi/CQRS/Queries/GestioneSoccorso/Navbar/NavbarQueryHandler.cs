@@ -20,6 +20,7 @@
 using CQRS.Queries;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
@@ -75,11 +76,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
 
             var lstSedi = _alberaturaUO.ListaSediAlberata();
 
+            var filtriSchedeContatto = new FiltriContatoriSchedeContatto()
+            {
+                Gestita = false,
+                RangeVisualizzazione = "2"
+            };
+
             var navbars = new Classi.NavBar.Navbar
             {
                 ListaSedi = lstSedi.Result,
                 Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente),
-                infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi),
+                infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodSedi, filtriSchedeContatto),
                 CentroMappaMarker = centroMappaMarker,
                 UserESRI = _configuration.GetSection("ESRI").GetSection("User").Value,
                 PwESRI = _configuration.GetSection("ESRI").GetSection("Password").Value
