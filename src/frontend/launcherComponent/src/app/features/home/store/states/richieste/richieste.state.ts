@@ -365,7 +365,10 @@ export class RichiesteState {
 
         function setAnnullaStatoMezzi(): void {
             if (obj.statoMezzo === StatoMezzo.Rientrato) {
-                dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, StatoMezzo.InRientro));
+                dispatch([
+                    new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, StatoMezzo.SulPosto),
+                    new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, StatoMezzo.InRientro),
+                ]);
             }
             if (!action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
                 dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, obj.statoMezzo));
