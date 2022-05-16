@@ -7,5 +7,5 @@ export interface ContatoriSchedeContatto {
 
 export interface ContatoreSchedeContatto {
   contatoreTutte: number;
-  contatoreDaGestire?: number;
+  contatoreFiltroAttivo?: number;
 }
