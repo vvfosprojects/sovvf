@@ -67,14 +67,14 @@ export class DettaglioTipologiaModalState {
     @Action(RequestUpdateDettaglioTipologia)
     requestUpdateDettaglioTipologia({ getState, dispatch }: StateContext<DettaglioTipologiaModalStateModel>): void {
         const form = getState().dettaglioTipologiaForm.model;
-        const updatedDetttaglioTipologia = {
+        const updatedDettaglioTipologia = {
             id: form.id,
             codiceTipologia: +form.codTipologia,
             descrizione: form.descrizione,
             codiceDettaglioTipologia: +form.codiceDettaglioTipologia
         } as UpdateDettaglioTipologiaDto;
 
-        this.detttagliTipologieService.updateDettaglioTipologia(updatedDetttaglioTipologia).subscribe(() => {
+        this.detttagliTipologieService.updateDettaglioTipologia(updatedDettaglioTipologia).subscribe(() => {
                 dispatch(new ClearFormDettaglioTipologia());
             }, () => dispatch(new ClearFormDettaglioTipologia())
         );
@@ -82,10 +82,11 @@ export class DettaglioTipologiaModalState {
 
     @Action(RequestDeleteDettaglioTipologia)
     requestDeleteDettaglioTipologia({ setState, dispatch }: StateContext<DettaglioTipologiaModalStateModel>, action: RequestDeleteDettaglioTipologia): void {
-        const updatedDetttaglioTipologia = {
+        const deleteDettaglioTipologia = {
+            codTipologia: action.codTipologia,
             codDettaglio: action.codDettaglioTipologia
         } as DeleteDettaglioTipologiaDto;
-        this.detttagliTipologieService.deleteDettagliTipologie(updatedDetttaglioTipologia).subscribe(() => {
+        this.detttagliTipologieService.deleteDettagliTipologie(deleteDettaglioTipologia).subscribe(() => {
         });
     }
 
