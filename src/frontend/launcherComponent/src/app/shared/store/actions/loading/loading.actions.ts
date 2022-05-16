@@ -1,3 +1,4 @@
+import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
 
 export class StartLoading {
     static readonly type = '[Loading] Start';
@@ -18,13 +19,13 @@ export class StopBigLoading {
 export class AddAnnullaStatoMezzi {
     static readonly type = '[Loading] Add Pb Mezzo';
 
-    constructor(public codMezzo: string) {
+    constructor(public codMezzo: string, public stato: StatoMezzo) {
     }
 }
 
 export class RemoveAnnullaStatoMezzi {
     static readonly type = '[Loading] Remove Pb Mezzo';
 
-    constructor(public codMezzo: string) {
+    constructor(public codMezzo: string, public stato: StatoMezzo) {
     }
 }

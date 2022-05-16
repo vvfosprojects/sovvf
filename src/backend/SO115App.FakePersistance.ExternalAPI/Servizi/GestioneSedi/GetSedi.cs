@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
@@ -196,7 +196,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
 #if DEBUG
 
-            //return readOffline();
+            // return readOffline();
 
 #endif
 

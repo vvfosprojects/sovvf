@@ -79,13 +79,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 Coordinate = PartenzaSmontante.Partenza.Coordinate,
             });
 
-            new PartenzaInRientro(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
+            new ArrivoSulPosto(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
 
             AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
             statoMezzo.CodiciSede = new string[] { PartenzaSmontanteNuova.Partenza.Mezzo.Appartenenza };
             statoMezzo.IdMezzo = PartenzaSmontanteNuova.CodiceMezzo;
             statoMezzo.Richiesta = command.Richiesta;
-            statoMezzo.StatoMezzo = Costanti.MezzoInRientro;
+            statoMezzo.StatoMezzo = Costanti.MezzoSulPosto;
             _upDatePartenza.Update(statoMezzo);
 
             //GESTIONE NUOVA PARTENZA MONTANTE

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
@@ -301,9 +301,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             try
             {
                 var sede = lstSedi.FirstOrDefault(s => s.Codice.Equals(mezzoDto.CodiceDistaccamento));
-
-                if (sede.Descrizione.Contains("COMANDO"))
-                    sede.Descrizione = "CENTRALE";
 
                 var posizioneMezzo = ListaPosizioneFlotta.FirstOrDefault(p => p.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
 
