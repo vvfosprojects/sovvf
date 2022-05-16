@@ -151,13 +151,8 @@ export class DettagliTipologieState {
      * Filtri Tipologie
      */
     @Action(ReducerSelezioneFiltroTipologia)
-    reducerSelezioneFiltroTipologia({ getState, dispatch }: StateContext<DettagliTipologieStateModel>, action: ReducerSelezioneFiltroTipologia): void {
-        const filtroTipologiaSelezionato = getState().filtroTipologia;
-        if (!filtroTipologiaSelezionato) {
-            dispatch(new SetFiltroTipologiaSelezionato(action.codTipologia));
-        } else {
-            dispatch(new SetFiltroTipologiaDeselezionato());
-        }
+    reducerSelezioneFiltroTipologia({ dispatch }: StateContext<DettagliTipologieStateModel>, action: ReducerSelezioneFiltroTipologia): void {
+        dispatch(new SetFiltroTipologiaSelezionato(action.codTipologia));
     }
 
     @Action(SetFiltroTipologiaSelezionato)
@@ -172,7 +167,7 @@ export class DettagliTipologieState {
     setFiltroTipologiaDeselezionato({ setState, dispatch }: StateContext<DettagliTipologieStateModel>): void {
         setState(
             patch({
-                filtroTipologia: undefined
+                filtroTipologia: DettagliTipologieStateDefaults.filtroTipologia
             })
         );
         dispatch(new GetDettagliTipologie());
