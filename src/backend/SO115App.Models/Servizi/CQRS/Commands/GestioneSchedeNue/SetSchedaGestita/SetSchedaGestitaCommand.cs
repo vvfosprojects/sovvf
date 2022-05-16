@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita
 {
@@ -25,10 +26,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
     {
         public string IdUtente { get; set; }
         public bool Gestita { get; set; }
-
         public string CodIntervento { get; set; }
         public SchedaContatto Scheda { get; set; }
-
         public string CodiceSede { get; set; }
     }
 }

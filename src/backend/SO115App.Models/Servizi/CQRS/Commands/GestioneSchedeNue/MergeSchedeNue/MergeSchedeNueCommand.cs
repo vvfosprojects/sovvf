@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
 {
