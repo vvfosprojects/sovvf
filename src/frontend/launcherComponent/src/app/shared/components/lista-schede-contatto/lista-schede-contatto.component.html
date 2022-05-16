@@ -5,16 +5,10 @@
     <ngb-tabset [activeId]="tabAttivo" (tabChange)="onSelectTab($event)">
         <ngb-tab [id]="ClassificazioneEnum.Competenza">
             <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipCompetenza" placement="top-left">
+                <div>
                     <i class="fas fa-square text-danger mr-2"></i>
                     <b>Competenza ({{ contatoriSchedeContatto?.competenzaSchede?.contatoreFiltroAttivo }})</b>
                 </div>
-                <ng-template #tipCompetenza>
-                    <div>Tutte: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreTutte }}</div>
-                    <div><b>
-                        Da gestire: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreFiltroAttivo }}
-                    </b></div>
-                </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
                 <app-risultati-alert [items]="!!(schedeContatto?.length)"
@@ -26,15 +20,10 @@
         </ngb-tab>
         <ngb-tab [id]="ClassificazioneEnum.Differibile">
             <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipDifferibile" placement="top-left">
+                <div>
                     <i class="fas fa-square text-secondary mr-2"></i>
                     <b>Differibili ({{ contatoriSchedeContatto?.differibileSchede?.contatoreFiltroAttivo }})</b>
                 </div>
-                <ng-template #tipDifferibile>
-                    <div>Tutte: {{ contatoriSchedeContatto?.differibileSchede?.contatoreTutte }}</div>
-                    <div><b>Da gestire: {{ contatoriSchedeContatto?.differibileSchede?.contatoreFiltroAttivo }}</b>
-                    </div>
-                </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
                 <app-risultati-alert [items]="!!(schedeContatto?.length)"
@@ -46,16 +35,10 @@
         </ngb-tab>
         <ngb-tab [id]="ClassificazioneEnum.Conoscenza">
             <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipConoscenza" placement="top-left">
+                <div>
                     <i class="fas fa-square text-warning mr-2"></i>
                     <b>Conoscenza ({{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreFiltroAttivo }})</b>
                 </div>
-                <ng-template #tipConoscenza>
-                    <div>Tutte: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreTutte }}</div>
-                    <div><b>
-                        Da gestire: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreFiltroAttivo }}
-                    </b></div>
-                </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
                 <app-risultati-alert [items]="!!(schedeContatto?.length)"
@@ -67,14 +50,10 @@
         </ngb-tab>
         <ngb-tab id="Tutte">
             <ng-template ngbTabTitle>
-                <div [ngbTooltip]="tipTutte" placement="top-left">
+                <div>
                     <i class="fas fa-list mr-2"></i>
                     <b>Tutte ({{ contatoriSchedeContatto?.totaleSchede?.contatoreFiltroAttivo }})</b>
                 </div>
-                <ng-template #tipTutte>
-                    <div>Tutte: {{ contatoriSchedeContatto?.totaleSchede?.contatoreTutte }}</div>
-                    <div><b>Da gestire: {{ contatoriSchedeContatto?.totaleSchede?.contatoreFiltroAttivo }}</b></div>
-                </ng-template>
             </ng-template>
             <ng-template ngbTabContent>
                 <app-risultati-alert [items]="!!(schedeContatto?.length)"
