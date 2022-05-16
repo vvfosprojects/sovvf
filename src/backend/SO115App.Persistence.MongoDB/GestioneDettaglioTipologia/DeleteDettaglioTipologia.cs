@@ -18,15 +18,15 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             _dbContext = dbContext;
         }
 
-        public void Delete(int CodDettaglioTipologia)
+        public void Delete(int CodDettaglio, int CodTipologia)
         {
-            var listaPos = _dbContext.DtoPosCollection.Find(p => p.ListaTipologie.Any(t => t.CodTipologiaDettaglio.Contains(CodDettaglioTipologia))).ToList();
+            var listaPos = _dbContext.DtoPosCollection.Find(p => p.ListaTipologie.Any(t => t.CodTipologia.Equals(CodTipologia) && t.CodTipologiaDettaglio.Contains(CodDettaglio))).ToList();
 
             foreach (var pos in listaPos)
             {
                 int dettagliTotCount = pos.ListaTipologie.SelectMany(t => t.CodTipologiaDettaglio).Count();
-                var nuovaListaTipologie = pos.ListaTipologie.Where(t => t.CodTipologiaDettaglio.Contains(CodDettaglioTipologia)).ToList();
-                int dettagliDaEliminareCount = pos.ListaTipologie.SelectMany(t => t.CodTipologiaDettaglio).Where(td => td.Equals(CodDettaglioTipologia)).Count();
+                var nuovaListaTipologie = pos.ListaTipologie.Where(t => t.CodTipologia.Equals(CodTipologia) && t.CodTipologiaDettaglio.Contains(CodDettaglio)).ToList();
+                int dettagliDaEliminareCount = pos.ListaTipologie.Where(t => t.CodTipologia.Equals(CodTipologia) && t.CodTipologiaDettaglio.Contains(CodDettaglio)).SelectMany(t => t.CodTipologiaDettaglio).Where(c => c.Equals(CodDettaglio)).Count();
 
                 //PROCEDO CON L'ELIMINAZIONE DEL DETTAGLIO
                 if(dettagliTotCount == dettagliDaEliminareCount)
@@ -38,7 +38,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
                 {
                     foreach (var tipologia in nuovaListaTipologie)
                     {
-                        tipologia.CodTipologiaDettaglio.Remove(CodDettaglioTipologia);
+                        tipologia.CodTipologiaDettaglio.Remove(CodDettaglio);
                     }
 
                     //UPDATE POS
@@ -48,11 +48,11 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             }
 
             //ELIMINO TRIAGE
-            _dbContext.TriageCollection.DeleteOne(Builders<Triage>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglioTipologia));
-            _dbContext.TriageDataCollection.DeleteOne(Builders<TriageData>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglioTipologia));
+            _dbContext.TriageCollection.DeleteOne(Builders<Triage>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglio));
+            _dbContext.TriageDataCollection.DeleteOne(Builders<TriageData>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglio));
 
             //ELIMINO DETTAGLIO
-            _dbContext.TipologiaDettaglioCollection.DeleteOne(Builders<TipologiaDettaglio>.Filter.Eq(x => x.CodiceDettaglioTipologia, CodDettaglioTipologia));
+            _dbContext.TipologiaDettaglioCollection.DeleteOne(Builders<TipologiaDettaglio>.Filter.Eq(x => x.CodiceTipologia, CodTipologia) & Builders<TipologiaDettaglio>.Filter.Eq(x => x.CodiceDettaglioTipologia, CodDettaglio));
         }
     }
 }

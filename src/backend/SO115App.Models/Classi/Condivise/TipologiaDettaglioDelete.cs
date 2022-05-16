@@ -3,5 +3,6 @@
     public class TipologiaDettaglioDelete
     {
         public int codDettaglio { get; set; }
+        public int codTipologia { get; set; }
     }
 }
