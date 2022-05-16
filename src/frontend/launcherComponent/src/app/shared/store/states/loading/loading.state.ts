@@ -58,11 +58,19 @@ export class LoadingState {
 
     @Action(RemoveAnnullaStatoMezzi)
     removeAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: RemoveAnnullaStatoMezzi): void {
-        setState(
-            patch({
-                annullaStatoMezzi: removeItem<any>(mezzo => mezzo.codMezzo === action.codMezzo && mezzo.stato === action.stato)
-            })
-        );
+        if (action.stato) {
+            setState(
+                patch({
+                    annullaStatoMezzi: removeItem<any>(mezzo => mezzo.codMezzo === action.codMezzo && mezzo.stato === action.stato)
+                })
+            );
+        } else {
+            setState(
+                patch({
+                    annullaStatoMezzi: removeItem<any>(mezzo => mezzo.codMezzo === action.codMezzo)
+                })
+            );
+        }
     }
 
     @Action(StartLoading)

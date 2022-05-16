@@ -44,6 +44,7 @@ import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
 import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
 import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { AddConcorrenza, DeleteConcorrenza } from '../../actions/concorrenza/concorrenza.actions';
+import { RemoveAnnullaStatoMezzi } from '../../actions/loading/loading.actions';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -442,7 +443,10 @@ export class MezziComposizioneState {
                                 idRichiestaDaSganciare: action.sganciamentoObj.idRichiestaDaSganciare,
                                 idMezzoDaSganciare: action.sganciamentoObj.idMezzoDaSganciare
                             };
-                            this.store.dispatch(new ConfirmPartenze(partenzaObj));
+                            this.store.dispatch([
+                                new RemoveAnnullaStatoMezzi(partenzaObj.idMezzoDaSganciare),
+                                new ConfirmPartenze(partenzaObj)
+                            ]);
                             break;
                         case 'ko':
                             return;
