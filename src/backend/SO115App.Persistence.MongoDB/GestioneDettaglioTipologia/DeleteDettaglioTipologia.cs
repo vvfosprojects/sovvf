@@ -20,24 +20,26 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
 
         public void Delete(int CodDettaglioTipologia)
         {
-            _dbContext.TipologiaDettaglioCollection.DeleteOne(Builders<TipologiaDettaglio>.Filter.Eq(x => x.CodiceDettaglioTipologia, CodDettaglioTipologia));
-
-            var values = new List<int>() { CodDettaglioTipologia };
-
-            var listaPos = _dbContext.DtoPosCollection.Find(p => p.ListaTipologie.Any(t => t.CodTipologiaDettaglio.Any(td => td.Equals(CodDettaglioTipologia)))).ToList();
-            var listaIdPos = listaPos.Select(s => s.Id);
+            var listaPos = _dbContext.DtoPosCollection.Find(p => p.ListaTipologie.Any(t => t.CodTipologiaDettaglio.Contains(CodDettaglioTipologia))).ToList();
 
             foreach (var pos in listaPos)
             {
-                var nuovaAssociazione = pos.ListaTipologie.Where(t => !t.CodTipologiaDettaglio.Contains(CodDettaglioTipologia)).ToList();
+                int dettagliTotCount = pos.ListaTipologie.SelectMany(t => t.CodTipologiaDettaglio).Count();
+                var nuovaListaTipologie = pos.ListaTipologie.Where(t => t.CodTipologiaDettaglio.Contains(CodDettaglioTipologia)).ToList();
+                int dettagliDaEliminareCount = pos.ListaTipologie.SelectMany(t => t.CodTipologiaDettaglio).Where(td => td.Equals(CodDettaglioTipologia)).Count();
 
-                if(nuovaAssociazione.Count == 0)
+                //PROCEDO CON L'ELIMINAZIONE DEL DETTAGLIO
+                if(dettagliTotCount == dettagliDaEliminareCount)
                 {
+                    //DELETE POS
                     _dbContext.DtoPosCollection.DeleteOne(p => p.Id.Equals(pos.Id));
                 }
                 else
                 {
-                    pos.ListaTipologie = nuovaAssociazione;
+                    foreach (var tipologia in nuovaListaTipologie)
+                    {
+                        tipologia.CodTipologiaDettaglio.Remove(CodDettaglioTipologia);
+                    }
 
                     //UPDATE POS
                     _dbContext.DtoPosCollection.DeleteOne(p => p.Id.Equals(pos.Id));
@@ -48,6 +50,9 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             //ELIMINO TRIAGE
             _dbContext.TriageCollection.DeleteOne(Builders<Triage>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglioTipologia));
             _dbContext.TriageDataCollection.DeleteOne(Builders<TriageData>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglioTipologia));
+
+            //ELIMINO DETTAGLIO
+            _dbContext.TipologiaDettaglioCollection.DeleteOne(Builders<TipologiaDettaglio>.Filter.Eq(x => x.CodiceDettaglioTipologia, CodDettaglioTipologia));
         }
     }
 }
