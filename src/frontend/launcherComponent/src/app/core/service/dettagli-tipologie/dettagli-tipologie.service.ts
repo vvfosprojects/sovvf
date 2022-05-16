@@ -49,8 +49,8 @@ export class DettagliTipologieService {
         return this.http.post<ResponseInterface>(API_DETTAGLI_TIPOLOGIE + '/Modify', dettaglioTipologia);
     }
 
-    deleteDettagliTipologie(dettaglioTipologia: DeleteDettaglioTipologiaDto): Observable<ResponseInterface> {
-        return this.http.post<ResponseInterface>(API_DETTAGLI_TIPOLOGIE + '/Delete', dettaglioTipologia);
+    deleteDettagliTipologie(deleteDettaglioTipologia: DeleteDettaglioTipologiaDto): Observable<ResponseInterface> {
+        return this.http.post<ResponseInterface>(API_DETTAGLI_TIPOLOGIE + '/Delete', deleteDettaglioTipologia);
     }
 
 }

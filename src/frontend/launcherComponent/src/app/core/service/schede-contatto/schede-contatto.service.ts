@@ -36,8 +36,8 @@ export class SchedeContattoService {
         return this.http.get<SchedaContatto>(`${API_SCHEDE_CONTATTO}/GetByCodiceScheda?Codice=` + codScheda);
     }
 
-    getContatoriSchedeContatto(): Observable<{ infoNue: ContatoriSchedeContatto }> {
-        return this.http.get<{ infoNue: ContatoriSchedeContatto }>(`${API_SCHEDE_CONTATTO}/GetContatoriSchede`);
+    getContatoriSchedeContatto(filters: any): Observable<{ infoNue: ContatoriSchedeContatto }> {
+        return this.http.post<{ infoNue: ContatoriSchedeContatto }>(`${API_SCHEDE_CONTATTO}/GetContatoriSchede`, filters);
     }
 
     mergeSchedeContatto(idSchedeContatto: string[]): Observable<any> {
