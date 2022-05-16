@@ -7,6 +7,7 @@ import { PermissionFeatures } from '../../../../shared/enum/permission-features.
 import { EnteInterface } from '../../../../shared/interface/ente.interface';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.enum';
+import { InfoMezzo } from '../../../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -45,7 +46,7 @@ export class ListaRichiesteComponent implements OnChanges {
     // Night Mode
     @Input() nightMode: boolean;
 
-    @Input() annullaStatoMezzi: string[];
+    @Input() annullaStatoMezzi: InfoMezzo[];
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();

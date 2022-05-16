@@ -23,7 +23,7 @@
                         [class.cursor-not-allowed]="tipoConcorrenzaEnum.AnnullaStatoMezzo | checkConcorrenzaLocked: [partenza.mezzo.codice]"
                         ngbTooltip="Annulla ultimo cambio stato"
                         [disabled]="tipoConcorrenzaEnum.AnnullaStatoMezzo | checkConcorrenzaLocked: [partenza.mezzo.codice]"
-                        (click)="onAnnullaStato(partenza.mezzo.codice)">
+                        (click)="onAnnullaStato(partenza.mezzo.codice, partenza.mezzo.stato)">
                     <i class="fas fa-history px-1"></i>
                 </button>
             </div>
