@@ -14,7 +14,7 @@
                           [inGestione]="inGestione"
                           [idDaSganciare]="idDaSganciare"
                           [index]="'' + index"
-                          [annullaStatoMezzo]="annullaStatoMezzi?.includes(p?.partenza?.mezzo?.codice)"
+                          [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, p?.partenza?.mezzo?.stato)"
                           [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
                           (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre)"
                           (actionMezzo)="onActionMezzo($event)"

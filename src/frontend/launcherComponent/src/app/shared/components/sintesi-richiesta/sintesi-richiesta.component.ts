@@ -35,6 +35,7 @@ import { nomeStatiSquadra } from '../../helper/function-composizione';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { ClearRichiestaAzioni, SetRichiestaAzioni } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { InfoMezzo } from '../../store/states/loading/loading.state';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -68,7 +69,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledComposizionePartenza: boolean;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
-    @Input() annullaStatoMezzi: string[];
+    @Input() annullaStatoMezzi: InfoMezzo[];
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() clickIndirizzo = new EventEmitter<SintesiRichiesta>();
@@ -147,16 +148,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
             const afmAnnullato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Annullato'));
             this.dettaglioSoccorsoAereo = afmAccettato.length > afmAnnullato.length;
         }
-    }
-
-    nightModeStyle(): string {
-        let value = '';
-        if (!this.nightMode) {
-            value = 'cod-int';
-        } else if (this.nightMode) {
-            value = 'moon-cod';
-        }
-        return value;
     }
 
     fissaClick(richiesta: SintesiRichiesta): void {
