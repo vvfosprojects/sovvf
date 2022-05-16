@@ -243,6 +243,7 @@ export class SchedeContattoState {
             page: action.page ? action.page : 1,
             pageSize: boxesVisibili ? 11 : 12
         } as PaginationInterface;
+        dispatch(new GetContatoriSchedeContatto());
         this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
             const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
             const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
