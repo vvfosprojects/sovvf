@@ -291,7 +291,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
 
-            var GiorniFiltrati = Filtri.RangeVisualizzazione != null ? Convert.ToInt32(Filtri.RangeVisualizzazione) : 2;
+            var GiorniFiltrati = Filtri.RangeVisualizzazione != null ? Convert.ToInt32(Filtri.RangeVisualizzazione) : 48;
             DateTime giornoMassimo = DateTime.Now.AddHours(-GiorniFiltrati);
 
             if (codiciSede.Length > 0)

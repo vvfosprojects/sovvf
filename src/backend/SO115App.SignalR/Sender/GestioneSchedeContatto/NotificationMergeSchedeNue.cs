@@ -46,8 +46,7 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
         {
             var filtri = new FiltriContatoriSchedeContatto()
             {
-                Gestita = false,
-                RangeVisualizzazione = "2"
+                Gestita = false
             };
 
             var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede }, filtri);
