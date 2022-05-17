@@ -425,13 +425,19 @@ export class SchedeContattoState {
                 }
                 break;
             case '3':
-                dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.Ultime24));
+                if (!action.filtro.selezionato) {
+                    dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.Ultime24));
+                }
                 break;
             case '4':
-                dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.Ultime48));
+                if (!action.filtro.selezionato) {
+                    dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.Ultime48));
+                }
                 break;
             case '5':
-                dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.Ultimi30));
+                if (!action.filtro.selezionato) {
+                    dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.Ultimi30));
+                }
                 break;
             default:
                 console.error('[Errore Switch] ReducerSetFiltroSchedeContatto');
