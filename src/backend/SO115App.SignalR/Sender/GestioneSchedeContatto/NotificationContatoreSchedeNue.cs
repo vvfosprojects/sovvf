@@ -24,19 +24,19 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
         public async Task SendNotification(string CodSede)
         {
-            #region connessione al WSSignalR
+            //#region connessione al WSSignalR
 
-            var hubConnection = new HubConnectionBuilder()
-                        .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
-                        .Build();
+            //var hubConnection = new HubConnectionBuilder()
+            //            .WithUrl(_config.GetSection("UrlExternalApi").GetSection("WSSignalR").Value)
+            //            .Build();
 
-            #endregion connessione al WSSignalR
+            //#endregion connessione al WSSignalR
 
-            var infoNue = _getConteggioSchede.GetConteggio(new string[] { CodSede });
+            //var infoNue = _getConteggioSchede.GetConteggio(new string[] { CodSede });
 
-            await hubConnection.StartAsync();
-            await hubConnection.InvokeAsync("NotifyGetContatoriSchedeContatto", infoNue);
-            await hubConnection.StopAsync();
+            //await hubConnection.StartAsync();
+            //await hubConnection.InvokeAsync("NotifyGetContatoriSchedeContatto", infoNue);
+            //await hubConnection.StopAsync();
         }
     }
 }
