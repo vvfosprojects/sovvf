@@ -1,5 +1,6 @@
 ﻿using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.Models.Classi.Condivise;
@@ -13,6 +14,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -33,6 +35,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetComposizioneMezzi _setComposizioneMezzi;
 
         private readonly IGetSedi _getSedi;
+        private readonly IGetSottoSediByCodSede _getSottoSedi;
 
         private readonly Turno TurnoAttuale;
         private readonly Turno TurnoPrecedente;
@@ -42,7 +45,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre,
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
             IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi,
-            IGetTurno getTurno)
+            IGetTurno getTurno, IGetSottoSediByCodSede getSottoSedi)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
@@ -51,6 +54,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getStatoSquadre = getStatoSquadre;
             _ordinamento = ordinamento;
             _setComposizioneMezzi = setComposizioneMezzi;
+            _getSottoSedi = getSottoSedi;
 
             TurnoAttuale = getTurno.Get();
             TurnoPrecedente = getTurno.Get(TurnoAttuale.DataOraInizio.AddMinutes(-1));
@@ -60,6 +64,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
             var lstSedi = _getSedi.GetAll().Result;
+            var lstCodiciPin = _getSottoSedi.Get(query.CodiciSedi).ToList();
 
             //GESTIONE CODICI SEDI
             if (query.CodiciSedi.Contains("00") || query.CodiciSedi.Contains("001"))
@@ -67,7 +72,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstSquadreWS = query.CodiciSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede.Split('.')[0]).Result).ToList();
 
-            var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.SquadraOpService>();
+            var lstSquadre = new List<SquadraOpService>();
 
             #region Gestione turno preaccoppiati
 
@@ -94,9 +99,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             #endregion Gestione turno preaccoppiati
 
-            var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno.Substring(0, 1), query.CodiciSedi.ToList());
+            var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno.Substring(0, 1), lstCodiciPin);
 
-            List<SquadraOpService> lstSquadrePreaccoppiate = new List<SquadraOpService>();
+            var lstSquadrePreaccoppiate = new List<SquadraOpService>();
             if (lstSquadre.Count > 0)
                 lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && !s.spotType.ToUpper().Equals("MODULE")).ToList();
 
