@@ -72,8 +72,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var filtriSchedeContatto = new FiltriContatoriSchedeContatto()
             {
-                Gestita = false,
-                RangeVisualizzazione = "2"
+                Gestita = false
             };
 
             var infoNue = new InfoNue();

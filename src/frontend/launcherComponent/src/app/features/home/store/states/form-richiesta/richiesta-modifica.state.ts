@@ -32,6 +32,8 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SetTriageSummary } from '../../../../../shared/store/actions/triage-summary/triage-summary.actions';
 import { Sede } from '../../../../../shared/model/sede.model';
+import { DeleteConcorrenza } from '../../../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
 
 export interface RichiestaModificaStateModel {
     richiestaModifica: SintesiRichiesta;
@@ -254,7 +256,7 @@ export class RichiestaModificaState {
                     new StopLoadingSchedaRichiesta()
                 ]);
             }
-
+            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Modifica, [sintesiRichiesta.codice]));
         }, () => {
             dispatch([
                 new ClearIndirizzo(),

@@ -47,8 +47,7 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
         {
             var filtri = new FiltriContatoriSchedeContatto()
             {
-                Gestita = false,
-                RangeVisualizzazione = "2"
+                Gestita = false
             };
 
             var schedaContattoUpdated = _getSchedeContatto.ListaSchedeContatto(command.CodiceSede).Find(x => x.Gestita.Equals(command.Gestita) && x.CodiceScheda.Equals(command.Scheda.CodiceScheda));
