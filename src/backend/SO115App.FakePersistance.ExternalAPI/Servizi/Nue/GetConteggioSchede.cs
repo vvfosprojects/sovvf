@@ -24,9 +24,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
         /// </summary>
         /// <param name="codiceSede">il codice Sede</param>
         /// <returns>InfoNue</returns>
-        public InfoNue GetConteggio(string[] codiciSede)
+        public InfoNue GetConteggio(string[] codiciSede, FiltriContatoriSchedeContatto filtri)
         {
-            return _getSchedeMethods.GetConteggio(codiciSede);
+            return _getSchedeMethods.GetConteggio(codiciSede, filtri);
         }
     }
 }

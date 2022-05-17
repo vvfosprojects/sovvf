@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="GetSchedeContatto.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -208,7 +208,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre, string classificazione, string codiceSede)
         {
             var listaSchedeContatto = new List<SchedaContatto>();
-            var giornoMassimo = DateTime.UtcNow.AddDays(-2);
+            var giornoMassimo = DateTime.UtcNow.AddHours(-(double)(rangeOre ?? 48.0));
 
             if (codiceSede.Length > 0)
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
@@ -217,10 +217,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 
             var listaSchedeFiltrate = listaSchedeContatto;
 
-            if (!string.IsNullOrWhiteSpace(testolibero)) 
+            if (!string.IsNullOrWhiteSpace(testolibero))
                 listaSchedeFiltrate = GetSchedeContattoFromText(testolibero, codiceSede);
 
-            if (!string.IsNullOrWhiteSpace(codiceFiscale)) 
+            if (!string.IsNullOrWhiteSpace(codiceFiscale))
                 listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.OperatoreChiamata.CodiceFiscale.Equals(codiceFiscale));
 
             if (gestita == null)
@@ -285,43 +285,48 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="codiceSede">il codice sede</param>
         /// ///
         /// <returns>InfoNue</returns>
-        public InfoNue GetConteggio(string[] codiciSede)
+        public InfoNue GetConteggio(string[] codiciSede, FiltriContatoriSchedeContatto Filtri)
         {
             var listaSchede = new List<SchedaContatto>();
 
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
 
-            DateTime giornoMassimo = DateTime.Now.AddDays(-2);
+            var GiorniFiltrati = Filtri.RangeVisualizzazione != null ? Convert.ToInt32(Filtri.RangeVisualizzazione) : 48;
+            DateTime giornoMassimo = DateTime.Now.AddHours(-GiorniFiltrati);
 
             if (codiciSede.Length > 0)
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiciSede[0]) && !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiciSede[0]) && !s.Collegata && s.DataInserimento >= giornoMassimo && s.Gestita.Equals(Filtri.Gestita)).ToList();
             else
-                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
+                listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata && s.DataInserimento >= giornoMassimo && s.Gestita.Equals(Filtri.Gestita)).ToList();
+
+            if (Filtri.Search.Trim().Length > 0)
+                listaSchedeContatto = GetSchedeContattoFromText(Filtri.Search, codiciSede[0]);
 
             var listaSchedeCompetenza = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Competenza));
             var listaSchedeConoscenza = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Conoscenza));
             var listaSchedeDifferibile = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Deferibile));
+
             return new InfoNue
             {
                 TotaleSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeContatto.Count,
-                    ContatoreDaGestire = listaSchedeContatto.FindAll(x => !x.Gestita).Count,
+                    ContatoreFiltroAttivo = listaSchedeContatto.FindAll(x => x.Gestita.Equals(Filtri.Gestita)).Count
                 },
                 CompetenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeCompetenza.Count,
-                    ContatoreDaGestire = listaSchedeCompetenza.FindAll(x => !x.Gestita).Count,
+                    ContatoreFiltroAttivo = listaSchedeCompetenza.FindAll(x => x.Gestita.Equals(Filtri.Gestita)).Count
                 },
                 ConoscenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeConoscenza.Count,
-                    ContatoreDaGestire = listaSchedeConoscenza.FindAll(x => !x.Gestita).Count,
+                    ContatoreFiltroAttivo = listaSchedeConoscenza.FindAll(x => x.Gestita.Equals(Filtri.Gestita)).Count
                 },
                 DifferibileSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeDifferibile.Count,
-                    ContatoreDaGestire = listaSchedeDifferibile.FindAll(x => !x.Gestita).Count,
+                    ContatoreFiltroAttivo = listaSchedeDifferibile.FindAll(x => x.Gestita.Equals(Filtri.Gestita)).Count,
                 }
             };
         }

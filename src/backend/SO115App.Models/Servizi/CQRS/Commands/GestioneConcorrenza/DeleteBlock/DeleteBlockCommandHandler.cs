@@ -48,11 +48,27 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
             {
                 var sediDaAllertare = new List<string>();
                 var listaBlocchiSede = _getAllBlocks.GetAll(new string[] { command.CodiceSede });
-                var blocchiInteressati = listaBlocchiSede.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra));
+                var blocchiInteressati = listaBlocchiSede.FindAll(c => (!c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))
+                                                                                && (c.Type.Equals(TipoOperazione.Richiesta)
+                                                                                || c.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                                                                                || c.Type.Equals(TipoOperazione.ChiusuraIntervento)
+                                                                                || c.Type.Equals(TipoOperazione.Modifica)
+                                                                                || c.Type.Equals(TipoOperazione.Trasferimento)
+                                                                                || c.Type.Equals(TipoOperazione.Allerta)
+                                                                                || c.Type.Equals(TipoOperazione.Fonogramma)
+                                                                                || c.Type.Equals(TipoOperazione.EntiIntervenuti)));
 
                 if (blocchiInteressati.Count > 0)
                 {
-                    command.listaSediDaAllertare = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra) && !c.Type.Equals(TipoOperazione.CambioStatoPartenza))[0].Value).CodSOAllertate.ToList();
+                    command.listaSediDaAllertare = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => (!c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))
+                                                                                && (c.Type.Equals(TipoOperazione.Richiesta)
+                                                                                || c.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                                                                                || c.Type.Equals(TipoOperazione.ChiusuraIntervento)
+                                                                                || c.Type.Equals(TipoOperazione.Modifica)
+                                                                                || c.Type.Equals(TipoOperazione.Trasferimento)
+                                                                                || c.Type.Equals(TipoOperazione.Allerta)
+                                                                                || c.Type.Equals(TipoOperazione.Fonogramma)
+                                                                                || c.Type.Equals(TipoOperazione.EntiIntervenuti)))[0].Value).CodSOAllertate.ToList();
                 }
 
                 foreach (var id in command.ListaIdConcorrenza)

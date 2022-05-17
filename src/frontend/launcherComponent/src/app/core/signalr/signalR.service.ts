@@ -16,7 +16,7 @@ import { InsertChiamataSuccess } from '../../features/home/store/actions/form-ri
 import { UpdateMezzoComposizione } from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { GetListaComposizioneVeloce } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, StopLoadingMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { GetContatoriSchedeContatto, GetListaSchedeContatto, SetContatoriSchedeContatto, SetListaSchedeContatto, UpdateSchedaContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { GetListaSchedeContatto, SetContatoriSchedeContatto, SetListaSchedeContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
@@ -297,10 +297,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyNewSchedaContatto', (data: SchedaContatto) => {
             console.log('NotifyNewSchedaContatto', data);
-            this.store.dispatch([
-                new GetContatoriSchedeContatto(),
-                new GetListaSchedeContatto()
-            ]);
+            this.store.dispatch(new GetListaSchedeContatto());
         });
 
         /**

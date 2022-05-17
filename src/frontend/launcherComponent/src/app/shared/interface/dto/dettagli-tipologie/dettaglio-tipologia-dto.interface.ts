@@ -14,6 +14,7 @@ export interface UpdateDettaglioTipologiaDto {
 }
 
 export interface DeleteDettaglioTipologiaDto {
+    codTipologia: number;
     codDettaglio: number;
 }
 

@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
@@ -44,8 +45,13 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
         public async Task SendNotification(SetSchedaGestitaCommand command)
         {
+            var filtri = new FiltriContatoriSchedeContatto()
+            {
+                Gestita = false
+            };
+
             var schedaContattoUpdated = _getSchedeContatto.ListaSchedeContatto(command.CodiceSede).Find(x => x.Gestita.Equals(command.Gestita) && x.CodiceScheda.Equals(command.Scheda.CodiceScheda));
-            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede });
+            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede }, filtri);
 
             await _notificationHubContext.Clients.All.SendAsync("NotifySetContatoriSchedeContatto", infoNue);
             await _notificationHubContext.Clients.All.SendAsync("NotifyUpdateSchedaContatto", schedaContattoUpdated);

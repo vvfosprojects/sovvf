@@ -17,9 +17,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto
             _getSchedeContatto = getSchedeContatto;
         }
 
-        public InfoNue GetConteggio(string[] codiciSede)
+        public InfoNue GetConteggio(string[] codiciSede, FiltriContatoriSchedeContatto Filtri)
         {
-
             var listaSchede = new List<SchedaContatto>();
 
             foreach (var sede in codiciSede)
@@ -35,22 +34,22 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto
                 TotaleSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchede.Count,
-                    ContatoreDaGestire = listaSchede.FindAll(x => !x.Gestita).Count,
+                    ContatoreFiltroAttivo = listaSchede.FindAll(x => !x.Gestita).Count,
                 },
                 CompetenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeCompetenza.Count,
-                    ContatoreDaGestire = listaSchedeCompetenza.FindAll(x => !x.Gestita).Count,
+                    ContatoreFiltroAttivo = listaSchedeCompetenza.FindAll(x => !x.Gestita).Count,
                 },
                 ConoscenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeConoscenza.Count,
-                    ContatoreDaGestire = listaSchedeConoscenza.FindAll(x => !x.Gestita).Count,
+                    ContatoreFiltroAttivo = listaSchedeConoscenza.FindAll(x => !x.Gestita).Count,
                 },
                 DifferibileSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeDifferibile.Count,
-                    ContatoreDaGestire = listaSchedeDifferibile.FindAll(x => !x.Gestita).Count,
+                    ContatoreFiltroAttivo = listaSchedeDifferibile.FindAll(x => !x.Gestita).Count,
                 }
             };
         }
