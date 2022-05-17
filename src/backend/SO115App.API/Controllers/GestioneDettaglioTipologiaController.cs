@@ -133,7 +133,8 @@ namespace SO115App.API.Controllers
                 {
                     CodiceSede = Request.Headers["codicesede"].ToString().Split(','),
                     idOperatore = Request.Headers["IdUtente"],
-                    CodDettaglioTipologia = Dettaglio.codDettaglio
+                    CodDettaglioTipologia = Dettaglio.codDettaglio,
+                    CodTipologia = Dettaglio.codTipologia
                 };
 
                 _deletehandler.Handle(command);

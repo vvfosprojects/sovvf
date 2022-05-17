@@ -21,6 +21,7 @@ using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
@@ -60,7 +61,7 @@ namespace SO115App.API.Controllers
             _queryhandlerSchede = queryhandlerSchede;
             _queryhandlerContatoriSchede = queryhandlerContatoriSchede;
         }
-    
+
         /// <summary>
         ///   Metodo che restituisce le Schede Contatto
         /// </summary>
@@ -83,18 +84,19 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-    
+
         /// <summary>
         ///   Metodo che restituisce i contatori relativi alle Schede Contatto
         /// </summary>
-        [HttpGet("GetContatoriSchede")]
+        [HttpPost("GetContatoriSchede")]
         [ProducesResponseType(typeof(GetConteggioSchedeResult), 200)]
         [ProducesResponseType(typeof(string), 400)]
-        public async Task<IActionResult> GetContatoriSchede()
+        public async Task<IActionResult> GetContatoriSchede([FromBody] FiltriContatoriSchedeContatto filtri)
         {
             var query = new GetConteggioSchedeQuery()
             {
-                CodiciSede = Request.Headers["codiceSede"].ToArray()
+                CodiciSede = Request.Headers["codiceSede"].ToArray(),
+                Filtri = filtri
             };
 
             try
@@ -108,7 +110,7 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-    
+
         /// <summary>
         ///   Metodo che restituisce una specifica Scheda Contatto
         /// </summary>
@@ -130,12 +132,11 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-    
+
         /// <summary>
         ///   Metodo che gestisce una specifica Scheda Contatto
         /// </summary>
         [HttpPut("SetGestita")]
-        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> SetGestita([FromBody] SetSchedaGestitaCommand command)
         {
@@ -154,12 +155,11 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-    
+
         /// <summary>
         ///   Metodo che permette di raggruppare una lista di Schede Contatto
         /// </summary>
         [HttpPost("MergeSchede")]
-        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> MergeSchede([FromBody] string[] scheda)
         {
@@ -184,12 +184,11 @@ namespace SO115App.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-    
+
         /// <summary>
         ///   Metodo che permettere di eliminare le schede raggruppate ad una specifica Scheda Contatto
         /// </summary>
         [HttpPost("UndoMergeSchede")]
-        //
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> UndoMerge([FromBody] SchedaContatto scheda)
         {

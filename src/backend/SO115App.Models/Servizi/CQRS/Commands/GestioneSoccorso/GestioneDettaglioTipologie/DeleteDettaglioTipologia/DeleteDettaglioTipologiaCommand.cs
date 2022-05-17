@@ -5,5 +5,6 @@
         public string[] CodiceSede { get; set; }
         public string idOperatore { get; set; }
         public int CodDettaglioTipologia { get; set; }
+        public int CodTipologia { get; set; }
     }
 }

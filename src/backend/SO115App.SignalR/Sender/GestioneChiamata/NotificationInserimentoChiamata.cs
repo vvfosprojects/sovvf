@@ -26,7 +26,9 @@ using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.Models.Classi.CodaChiamate;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,21 +43,23 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
 
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IGetConteggioSchede _getConteggioSchede;
 
         public NotificationInserimentoChiamata(IHubContext<NotificationHub> notificationHubContext,
                                                IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
-                                               GetGerarchiaToSend getGerarchiaToSend)
+                                               GetGerarchiaToSend getGerarchiaToSend,
+                                               IGetConteggioSchede getConteggioSchede)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getConteggioSchede = getConteggioSchede;
         }
 
         public async Task SendNotification(AddInterventoCommand command)
         {
-
             var sedeComando = "";
             if (command.sintesi.CodSOCompetente.Contains("."))
                 sedeComando = command.sintesi.CodSOCompetente.Split('.')[0] + ".1000";
@@ -66,34 +70,46 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
-            Parallel.ForEach(SediDaNotificare, sede =>
+            var filtriSchedeContatto = new FiltriContatoriSchedeContatto()
             {
-                var boxRichiesteQuery = new BoxRichiesteQuery
-                {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                Gestita = false,
+                RangeVisualizzazione = "2"
+            };
 
-                var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                {
-                    CodiciSedi = new string[] { sede }
-                };
-                var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+            var infoNue = new InfoNue();
+            if (!string.IsNullOrEmpty(command.Intervento.CodNue))
+                infoNue = _getConteggioSchede.GetConteggio(new string[] { command.sintesi.CodSOCompetente.Split('.')[0] + ".1000" }, filtriSchedeContatto);
 
-                var counterCodaChiamate = new CounterNotifica()
-                {
-                    codDistaccamento = command.sintesi.Competenze[0].Codice,
-                    count = 1
-                };
+            Parallel.ForEach(SediDaNotificare, sede =>
+        {
+            var boxRichiesteQuery = new BoxRichiesteQuery
+            {
+                CodiciSede = new string[] { sede }
+            };
+            var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 
-                if (!string.IsNullOrEmpty(command.Intervento.CodNue)) 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateSchedaContatto", true);
+            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+            {
+                CodiciSedi = new string[] { sede }
+            };
+            var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", command.sintesi);
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counterCodaChiamate);
-            });
+            var counterCodaChiamate = new CounterNotifica()
+            {
+                codDistaccamento = command.sintesi.Competenze[0].Codice,
+                count = 1
+            };
+
+            if (!string.IsNullOrEmpty(command.Intervento.CodNue))
+            {
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateSchedaContatto", true);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySetContatoriSchedeContatto", infoNue);
+            }
+            _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+            _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", command.sintesi);
+            _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
+            _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddChiamateCodaChiamate", counterCodaChiamate);
+        });
         }
     }
 }

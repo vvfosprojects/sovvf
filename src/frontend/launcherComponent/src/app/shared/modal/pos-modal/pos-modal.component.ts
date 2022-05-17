@@ -67,8 +67,8 @@ export class PosModalComponent implements OnInit, OnDestroy {
         });
 
         if (this.editPos) {
-            this.updatePosForm(this.pos);
             this.filterDettagliTipologieByCodTipologie(this.pos.listaTipologie.map((t: TipologiaPos) => t.codTipologia));
+            this.updatePosForm(this.pos);
         } else {
             this.dettagliTipologieFiltered = this.dettagliTipologie;
             this.f.tipologieDettagli.disable();
@@ -88,7 +88,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.posForm.patchValue({
             descrizionePos: editPos.descrizionePos,
             tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
-            tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie),
+            tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologieFiltered).map((dT: DettaglioTipologia) => dT.codiceDettaglioTipologia),
             file: this.posFdFile
         });
 
@@ -96,7 +96,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
             value: {
                 descrizionePos: editPos.descrizionePos,
                 tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
-                tipoglieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie),
+                tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologieFiltered).map((dT: DettaglioTipologia) => dT.codiceDettaglioTipologia),
                 file: this.posFdFile
             },
             path: 'posModal.posForm'
@@ -113,6 +113,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     getDettagliTipologieFromListaTipologie(pos: PosInterface, dettagliTipologie: DettaglioTipologia[]): DettaglioTipologia[] {
+        console.log('[POS-MODAL] getDettagliTipologieFromListaTipologie => function helper', getDettagliTipologieFromListaTipologie(pos, dettagliTipologie));
         return getDettagliTipologieFromListaTipologie(pos, dettagliTipologie);
     }
 
@@ -137,7 +138,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
 
     filterDettagliTipologieByCodTipologie(codTipologie: number[]): void {
         this.dettagliTipologieFiltered = [];
-        console.log('filterDettagliTipologieByCodTipologie codTipologie', codTipologie);
         if (this.dettagliTipologieFiltered) {
             codTipologie.forEach((codTipologia: number) => {
                 this.dettagliTipologie.forEach((dettaglioTipologia: DettaglioTipologia) => {

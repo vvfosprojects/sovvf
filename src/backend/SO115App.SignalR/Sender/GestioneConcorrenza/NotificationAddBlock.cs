@@ -34,8 +34,21 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
 
             if (command.concorrenza.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra)).Count > 0)
             {
-                sintesiRichiesta = _getSintesiById.GetSintesi(command.concorrenza.FindAll(c => !c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))[0].Value);
-                sediAllertate = sintesiRichiesta.CodSOAllertate.ToList();
+                var sintesi = command.concorrenza.FindAll(c => (!c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))
+                                                                                && (c.Type.Equals(TipoOperazione.Richiesta)
+                                                                                || c.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                                                                                || c.Type.Equals(TipoOperazione.ChiusuraIntervento)
+                                                                                || c.Type.Equals(TipoOperazione.Modifica)
+                                                                                || c.Type.Equals(TipoOperazione.Trasferimento)
+                                                                                || c.Type.Equals(TipoOperazione.Allerta)
+                                                                                || c.Type.Equals(TipoOperazione.Fonogramma)
+                                                                                || c.Type.Equals(TipoOperazione.EntiIntervenuti))).ToList();
+
+                if (sintesi.Count > 0)
+                {
+                    sintesiRichiesta = _getSintesiById.GetSintesi(sintesi[0].Value);
+                    sediAllertate = sintesiRichiesta.CodSOAllertate.ToList();
+                }
             }
 
             if (sediAllertate.Count > 0)
