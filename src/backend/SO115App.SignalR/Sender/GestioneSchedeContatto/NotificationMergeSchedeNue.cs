@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
@@ -43,7 +44,12 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
         public async Task SendNotification(MergeSchedeNueCommand command)
         {
-            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede });
+            var filtri = new FiltriContatoriSchedeContatto()
+            {
+                Gestita = false
+            };
+
+            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede }, filtri);
             await _notificationHubContext.Clients.All.SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
             await _notificationHubContext.Clients.All.SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
 

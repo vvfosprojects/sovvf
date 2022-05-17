@@ -18,26 +18,28 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             _dbContext = dbContext;
         }
 
-        public void Delete(int CodDettaglioTipologia)
+        public void Delete(int CodDettaglio, int CodTipologia)
         {
-            _dbContext.TipologiaDettaglioCollection.DeleteOne(Builders<TipologiaDettaglio>.Filter.Eq(x => x.CodiceDettaglioTipologia, CodDettaglioTipologia));
-
-            var values = new List<int>() { CodDettaglioTipologia };
-
-            var listaPos = _dbContext.DtoPosCollection.Find(p => p.ListaTipologie.Any(t => t.CodTipologiaDettaglio.Any(td => td.Equals(CodDettaglioTipologia)))).ToList();
-            var listaIdPos = listaPos.Select(s => s.Id);
+            var listaPos = _dbContext.DtoPosCollection.Find(p => p.ListaTipologie.Any(t => t.CodTipologia.Equals(CodTipologia) && t.CodTipologiaDettaglio.Contains(CodDettaglio))).ToList();
 
             foreach (var pos in listaPos)
             {
-                var nuovaAssociazione = pos.ListaTipologie.Where(t => !t.CodTipologiaDettaglio.Contains(CodDettaglioTipologia)).ToList();
+                int dettagliTotCount = pos.ListaTipologie.SelectMany(t => t.CodTipologiaDettaglio).Count();
+                var nuovaListaTipologie = pos.ListaTipologie.Where(t => t.CodTipologia.Equals(CodTipologia) && t.CodTipologiaDettaglio.Contains(CodDettaglio)).ToList();
+                int dettagliDaEliminareCount = pos.ListaTipologie.Where(t => t.CodTipologia.Equals(CodTipologia) && t.CodTipologiaDettaglio.Contains(CodDettaglio)).SelectMany(t => t.CodTipologiaDettaglio).Where(c => c.Equals(CodDettaglio)).Count();
 
-                if(nuovaAssociazione.Count == 0)
+                //PROCEDO CON L'ELIMINAZIONE DEL DETTAGLIO
+                if(dettagliTotCount == dettagliDaEliminareCount)
                 {
+                    //DELETE POS
                     _dbContext.DtoPosCollection.DeleteOne(p => p.Id.Equals(pos.Id));
                 }
                 else
                 {
-                    pos.ListaTipologie = nuovaAssociazione;
+                    foreach (var tipologia in nuovaListaTipologie)
+                    {
+                        tipologia.CodTipologiaDettaglio.Remove(CodDettaglio);
+                    }
 
                     //UPDATE POS
                     _dbContext.DtoPosCollection.DeleteOne(p => p.Id.Equals(pos.Id));
@@ -46,8 +48,11 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             }
 
             //ELIMINO TRIAGE
-            _dbContext.TriageCollection.DeleteOne(Builders<Triage>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglioTipologia));
-            _dbContext.TriageDataCollection.DeleteOne(Builders<TriageData>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglioTipologia));
+            _dbContext.TriageCollection.DeleteOne(Builders<Triage>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglio));
+            _dbContext.TriageDataCollection.DeleteOne(Builders<TriageData>.Filter.Eq(x => x.CodDettaglioTipologia, CodDettaglio));
+
+            //ELIMINO DETTAGLIO
+            _dbContext.TipologiaDettaglioCollection.DeleteOne(Builders<TipologiaDettaglio>.Filter.Eq(x => x.CodiceTipologia, CodTipologia) & Builders<TipologiaDettaglio>.Filter.Eq(x => x.CodiceDettaglioTipologia, CodDettaglio));
         }
     }
 }

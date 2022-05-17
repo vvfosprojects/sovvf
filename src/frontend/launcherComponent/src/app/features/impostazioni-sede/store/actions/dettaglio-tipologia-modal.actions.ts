@@ -9,7 +9,7 @@ export class RequestUpdateDettaglioTipologia {
 export class RequestDeleteDettaglioTipologia {
     static readonly type = '[DettaglioTipologiaModal] Request Delete Dettaglio Tipologia';
 
-    constructor(public codDettaglioTipologia: number) {
+    constructor(public codTipologia: number, public codDettaglioTipologia: number) {
     }
 }
 

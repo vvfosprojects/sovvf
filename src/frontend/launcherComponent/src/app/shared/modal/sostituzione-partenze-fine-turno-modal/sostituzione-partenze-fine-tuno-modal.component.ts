@@ -9,9 +9,14 @@ import {
     ClearSostituzioneFineTurno,
     SetIdRichiestaSostituzioneFineTurno,
     SetPartenzaMontante,
-    UpdateSostituzione
+    UpdateSostituzione,
+    StartLoadingSostituzioneFineTurno,
+    StopLoadingSostituzioneFineTurno
 } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import { SostituzionePartenzaFineTurnoDto } from '../../interface/dto/partenze/sostituzione-partenza-fine-turno-dto.interface';
+import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
+import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
 
 @Component({
     selector: 'app-sostituzione-partenze-modal',
@@ -28,6 +33,8 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     sostituzioni: SostituzioneInterface[];
     @Select(SostituzionePartenzeFineTurnoModalState.disableButtonConferma) disableButtonConferma$: Observable<boolean>;
     disableButtonConferma: boolean;
+    @Select(SostituzionePartenzeFineTurnoModalState.loading) loading$: Observable<boolean>;
+    loading: boolean;
 
     idRichiesta: string;
     codRichiesta: string;
@@ -36,11 +43,13 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     private subscriptions: Subscription = new Subscription();
 
     constructor(private store: Store,
-                private modal: NgbActiveModal) {
+                private modal: NgbActiveModal,
+                private modificaPartenzaService: ModificaPartenzaService) {
         this.getPartenze();
         this.getPartenzaMontante();
         this.getSostituzioni();
         this.getDisableButtonConferma();
+        this.getLoading();
     }
 
     ngOnInit(): void {
@@ -85,6 +94,14 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
         );
     }
 
+    getLoading(): void {
+        this.subscriptions.add(
+            this.loading$.subscribe((loading: boolean) => {
+                this.loading = loading;
+            })
+        );
+    }
+
     onSelezionePartenza(p: Partenza): void {
         this.store.dispatch(new SetPartenzaMontante(p));
     }
@@ -94,11 +111,11 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     }
 
     getSquadrePartenze(): any[] {
-        return this.partenze.filter((p: Partenza) => p.partenza.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.partenza.mezzo.stato === StatoMezzo.SulPosto).map((p: Partenza) => p.partenza.squadre);
+        return this.partenze?.filter((p: Partenza) => p.partenza.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.partenza.mezzo.stato === StatoMezzo.SulPosto).map((p: Partenza) => p.partenza.squadre);
     }
 
     getPartenzeSostituzione(): Partenza[] {
-        return this.partenze.filter((p: Partenza) => p.partenza.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.partenza.mezzo.stato === StatoMezzo.SulPosto);
+        return this.partenze?.filter((p: Partenza) => p.partenza.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.partenza.mezzo.stato === StatoMezzo.SulPosto);
     }
 
     getSostituzioneBySquadraMontante(squadraMontante: string): SostituzioneInterface {
@@ -124,7 +141,7 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     }
 
     onDeselezioneSquadraSmontate(squadraMontante: string, squadraSmontante: string): void {
-        this.squadraSmontanteCheck = this.squadraSmontanteCheck.filter( x => x !== squadraSmontante);
+        this.squadraSmontanteCheck = this.squadraSmontanteCheck.filter(x => x !== squadraSmontante);
         this.store.dispatch(new UpdateSostituzione(squadraMontante, null, null));
     }
 
@@ -147,8 +164,30 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
             return;
         }
 
-        this.modal.close({
-            status: 'ok'
+        const idRichiesta = this.idRichiesta;
+        const sostituzioni = this.sostituzioni;
+        const obj = {
+            idRichiesta,
+            sostituzioni,
+            dataOraOperazione: new Date()
+        } as SostituzionePartenzaFineTurnoDto;
+        const codMezziSmontanti = sostituzioni.map((s: SostituzioneInterface) => s.codMezzoSmontante);
+        const codMezziMontanti = sostituzioni.map((s: SostituzioneInterface) => s.codMezzoMontante);
+        const codMezziRemoveAnnullaStato = [...codMezziSmontanti, ...codMezziMontanti];
+        this.store.dispatch(new StartLoadingSostituzioneFineTurno());
+        this.modificaPartenzaService.addSostituzioneFineTurno(obj).subscribe(() => {
+            this.store.dispatch([
+                new RemoveAnnullaStatoMezzi(codMezziRemoveAnnullaStato),
+                new ClearSostituzioneFineTurno(),
+                new StopLoadingSostituzioneFineTurno()
+            ]);
+            this.modal.close({ status: 'ok' });
+        }, () => {
+            this.store.dispatch([
+                new ClearSostituzioneFineTurno(),
+                new StopLoadingSostituzioneFineTurno()
+            ]);
+            this.modal.close({ status: 'ko' });
         });
     }
 

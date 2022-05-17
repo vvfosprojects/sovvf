@@ -53,7 +53,7 @@ export class ListaPartenzeComponent {
             const unMinutoFa = new Date();
             unMinutoFa.setMinutes(unMinutoFa.getMinutes() - 1);
             if (!moment(annullaStatoMezzo.istante).isAfter(unMinutoFa)) {
-                this.store.dispatch(new RemoveAnnullaStatoMezzi(codMezzo, statoMezzo));
+                this.store.dispatch(new RemoveAnnullaStatoMezzi([codMezzo], statoMezzo));
             }
             return moment(annullaStatoMezzo.istante).isAfter(unMinutoFa);
         }

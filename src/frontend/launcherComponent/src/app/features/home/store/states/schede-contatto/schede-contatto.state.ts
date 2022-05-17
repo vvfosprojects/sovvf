@@ -95,13 +95,13 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     filtriSchedeContatto: [
         new VoceFiltro('1', Categoria.Gestione, 'Gestita', false),
         new VoceFiltro('2', Categoria.Gestione, 'Non Gestita', false, true),
-        new VoceFiltro('3', Categoria.DataRicezione, RangeSchedeContattoEnum.UltimaOra, false),
-        new VoceFiltro('4', Categoria.DataRicezione, RangeSchedeContattoEnum.UltimeDueOre, false),
-        new VoceFiltro('5', Categoria.DataRicezione, RangeSchedeContattoEnum.UltimoGiorno, false),
+        new VoceFiltro('3', Categoria.DataRicezione, RangeSchedeContattoEnum.Ultime24, false),
+        new VoceFiltro('4', Categoria.DataRicezione, RangeSchedeContattoEnum.Ultime48, false, true),
+        new VoceFiltro('5', Categoria.DataRicezione, RangeSchedeContattoEnum.Ultimi30, false),
     ],
     filtriSelezionati: {
         gestita: false,
-        rangeVisualizzazione: RangeSchedeContattoEnum.DaSempre
+        rangeVisualizzazione: RangeSchedeContattoEnum.Ultime48
     }
 };
 
@@ -194,9 +194,9 @@ export class SchedeContattoState {
     }
 
     @Action(GetContatoriSchedeContatto)
-    getContatoriSchedeContatto({ dispatch }: StateContext<SchedeContattoStateModel>): void {
+    getContatoriSchedeContatto({ dispatch }: StateContext<SchedeContattoStateModel>, action: GetContatoriSchedeContatto): void {
         dispatch(new StartLoadingSchedeContatto());
-        this.schedeContattoService.getContatoriSchedeContatto().subscribe((data: { infoNue: ContatoriSchedeContatto }) => {
+        this.schedeContattoService.getContatoriSchedeContatto(action.filters).subscribe((data: { infoNue: ContatoriSchedeContatto }) => {
             dispatch([
                 new SetContatoriSchedeContatto(data.infoNue),
                 new StopLoadingSchedeContatto()
@@ -219,30 +219,35 @@ export class SchedeContattoState {
         const search = this.store.selectSnapshot(RicercaFilterbarState.ricerca);
         const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
         let rangeVisualizzazione = state.filtriSelezionati.rangeVisualizzazione;
-        if (state.filtriSelezionati.rangeVisualizzazione !== RangeSchedeContattoEnum.DaSempre) {
-            switch (rangeVisualizzazione) {
-                case RangeSchedeContattoEnum.UltimaOra:
-                    rangeVisualizzazione = 1;
-                    break;
-                case RangeSchedeContattoEnum.UltimeDueOre:
-                    rangeVisualizzazione = 2;
-                    break;
-                case RangeSchedeContattoEnum.UltimoGiorno:
-                    rangeVisualizzazione = 24;
-                    break;
-            }
+        switch (rangeVisualizzazione) {
+            case RangeSchedeContattoEnum.Ultime24:
+                rangeVisualizzazione = 24;
+                break;
+            case RangeSchedeContattoEnum.Ultime48:
+                rangeVisualizzazione = 48;
+                break;
+            case RangeSchedeContattoEnum.Ultimi30:
+                rangeVisualizzazione = 1860;
+                break;
         }
         const classificazione = state.tabAttivo;
         const filters = {
             search,
             gestita,
-            rangeVisualizzazione: rangeVisualizzazione !== RangeSchedeContattoEnum.DaSempre ? rangeVisualizzazione : null,
+            rangeVisualizzazione,
             classificazione
         } as FiltersInterface;
         const pagination = {
             page: action.page ? action.page : 1,
             pageSize: boxesVisibili ? 11 : 12
         } as PaginationInterface;
+
+        const filtersContatori = {
+            search,
+            gestita,
+            rangeVisualizzazione
+        } as FiltersInterface;
+        dispatch(new GetContatoriSchedeContatto(filtersContatori));
         this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
             const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
             const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
@@ -408,8 +413,6 @@ export class SchedeContattoState {
 
     @Action(ReducerSetFiltroSchedeContatto)
     reducerSetFiltroSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: ReducerSetFiltroSchedeContatto): void {
-        const state = getState();
-        const filtroRangeVisualizzazione = state.filtriSelezionati.rangeVisualizzazione;
         switch (action.filtro.codice) {
             case '1':
                 if (action.filtro.selezionato) {
@@ -422,13 +425,19 @@ export class SchedeContattoState {
                 }
                 break;
             case '3':
-                filtroRangeVisualizzazione === RangeSchedeContattoEnum.UltimaOra ? dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.DaSempre)) : dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.UltimaOra));
+                if (!action.filtro.selezionato) {
+                    dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.Ultime24));
+                }
                 break;
             case '4':
-                filtroRangeVisualizzazione === RangeSchedeContattoEnum.UltimeDueOre ? dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.DaSempre)) : dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.UltimeDueOre));
+                if (!action.filtro.selezionato) {
+                    dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.Ultime48));
+                }
                 break;
             case '5':
-                filtroRangeVisualizzazione === RangeSchedeContattoEnum.UltimoGiorno ? dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.DaSempre)) : dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.UltimoGiorno));
+                if (!action.filtro.selezionato) {
+                    dispatch(new SetRangeVisualizzazioneSchedeContatto(RangeSchedeContattoEnum.Ultimi30));
+                }
                 break;
             default:
                 console.error('[Errore Switch] ReducerSetFiltroSchedeContatto');

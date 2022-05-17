@@ -7,26 +7,28 @@ import {
     SetListaPartenzeSostituzioneFineTurno,
     SetPartenzaMontante,
     UpdateSostituzione,
-    ConfirmSostituzioni, SetIdRichiestaSostituzioneFineTurno
+    SetIdRichiestaSostituzioneFineTurno,
+    StartLoadingSostituzioneFineTurno,
+    StopLoadingSostituzioneFineTurno
 } from '../../actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 import { Partenza } from '../../../model/partenza.model';
 import { Squadra } from '../../../model/squadra.model';
-import { SostituzionePartenzaFineTurnoDto } from '../../../interface/dto/partenze/sostituzione-partenza-fine-turno-dto.interface';
 import { patch, updateItem } from '@ngxs/store/operators';
-import { ModificaPartenzaService } from '../../../../core/service/modifica-partenza/modifica-partenza.service';
 
 export interface ModificaPartenzeFineTurnoStateModel {
     idRichiesta: string;
     partenze: Partenza[];
     partenzaMontante: Partenza;
     sostituzioni: SostituzioneInterface[];
+    loading: boolean;
 }
 
 export const ModificaPartenzeFineTurnoStateDefaults: ModificaPartenzeFineTurnoStateModel = {
     idRichiesta: undefined,
     partenze: null,
     partenzaMontante: null,
-    sostituzioni: null
+    sostituzioni: null,
+    loading: false
 };
 
 @Injectable()
@@ -35,9 +37,6 @@ export const ModificaPartenzeFineTurnoStateDefaults: ModificaPartenzeFineTurnoSt
     defaults: ModificaPartenzeFineTurnoStateDefaults
 })
 export class SostituzionePartenzeFineTurnoModalState {
-
-    constructor(private modificaPartenzService: ModificaPartenzaService) {
-    }
 
     @Selector()
     static partenze(state: ModificaPartenzeFineTurnoStateModel): Partenza[] {
@@ -57,6 +56,11 @@ export class SostituzionePartenzeFineTurnoModalState {
     @Selector()
     static disableButtonConferma(state: ModificaPartenzeFineTurnoStateModel): boolean {
         return state.sostituzioni.filter((s: SostituzioneInterface) => !s.codMezzoSmontante)?.length > 0;
+    }
+
+    @Selector()
+    static loading(state: ModificaPartenzeFineTurnoStateModel): boolean {
+        return state.loading;
     }
 
     @Action(SetIdRichiestaSostituzioneFineTurno)
@@ -120,23 +124,22 @@ export class SostituzionePartenzeFineTurnoModalState {
         );
     }
 
-    @Action(ConfirmSostituzioni)
-    confirmSostituzioni({ getState, dispatch }: StateContext<ModificaPartenzeFineTurnoStateModel>): void {
-        const state = getState();
-        const idRichiesta = state.idRichiesta;
-        const sostituzioni = state.sostituzioni;
-        const obj = {
-            idRichiesta,
-            sostituzioni,
-            dataOraOperazione: new Date()
-        } as SostituzionePartenzaFineTurnoDto;
-        this.modificaPartenzService.addSostituzioneFineTurno(obj).subscribe(() => {
-            dispatch(new ClearSostituzioneFineTurno());
-        }, () => dispatch(new ClearSostituzioneFineTurno()));
-    }
-
     @Action(ClearSostituzioneFineTurno)
     clearSostituzioneFineTurno({ patchState }: StateContext<ModificaPartenzeFineTurnoStateModel>): void {
         patchState(ModificaPartenzeFineTurnoStateDefaults);
+    }
+
+    @Action(StartLoadingSostituzioneFineTurno)
+    startLoadingSostituzioneFineTurno({ patchState }: StateContext<ModificaPartenzeFineTurnoStateModel>): void {
+        patchState({
+            loading: true
+        });
+    }
+
+    @Action(StopLoadingSostituzioneFineTurno)
+    stopLoadingSostituzioneFineTurno({ patchState }: StateContext<ModificaPartenzeFineTurnoStateModel>): void {
+        patchState({
+            loading: false
+        });
     }
 }

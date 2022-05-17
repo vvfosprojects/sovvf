@@ -14,7 +14,7 @@ import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-moda
 import { DettaglioFonogrammaModalComponent } from '../../modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
-import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
+import { SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { Observable } from 'rxjs';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
@@ -329,7 +329,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         modalSostituzioneFineTurno.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    this.store.dispatch(new ConfirmSostituzioni());
                     break;
                 case 'ko':
                     break;

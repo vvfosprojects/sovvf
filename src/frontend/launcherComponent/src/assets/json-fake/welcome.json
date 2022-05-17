@@ -2343,19 +2343,19 @@
   "infoNue": {
     "totaleSchede": {
       "contatoreTutte": 8,
-      "contatoreDaGestire": 3
+      "contatoreFiltroAttivo": 3
     },
     "competenzaSchede": {
       "contatoreTutte": 3,
-      "contatoreDaGestire": null
+      "contatoreFiltroAttivo": null
     },
     "conoscenzaSchede": {
       "contatoreTutte": 2,
-      "contatoreDaGestire": null
+      "contatoreFiltroAttivo": null
     },
     "differibileSchede": {
       "contatoreTutte": 3,
-      "contatoreDaGestire": 3
+      "contatoreFiltroAttivo": 3
     }
   },
   "tipologie": [

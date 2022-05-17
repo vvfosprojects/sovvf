@@ -16,14 +16,20 @@ export function getTipologieFromListaTipologie(pos: PosInterface, tipologie: Tip
 
 export function getDettagliTipologieFromListaTipologie(pos: PosInterface, dettagliTipologie: DettaglioTipologia[]): DettaglioTipologia[] {
     const dettagliTipologieFromListaTipologie = [];
-    pos?.listaTipologie?.forEach((tipologiaPos: TipologiaPos) => {
-        tipologiaPos?.codTipologiaDettaglio?.forEach((codTipologiaDettaglio: number) => {
-            const dettaglioTipologiaTrovato = dettagliTipologieFromListaTipologie?.filter((dT: DettaglioTipologia) => dT?.codiceDettaglioTipologia === tipologiaPos?.codTipologia)[0];
-            if (!dettaglioTipologiaTrovato) {
-                const dettaglioTipologia = dettagliTipologie?.filter((dT: DettaglioTipologia) => dT?.codiceTipologia === tipologiaPos?.codTipologia && dT?.codiceDettaglioTipologia === codTipologiaDettaglio)[0];
-                dettagliTipologieFromListaTipologie.push(dettaglioTipologia);
-            }
+    const objsToFound = [];
+
+    if (dettagliTipologie?.length) {
+        pos?.listaTipologie?.forEach((tipologiaPos: TipologiaPos) => {
+            tipologiaPos.codTipologiaDettaglio.forEach((codTipologiaDettaglio: number) => {
+                objsToFound.push({ codTipologia: tipologiaPos.codTipologia, codDettaglio: codTipologiaDettaglio });
+            });
         });
-    });
+
+        objsToFound.forEach((objToFound) => {
+            const dettaglioTrovato = dettagliTipologie.filter((dettaglio: DettaglioTipologia) => dettaglio.codiceTipologia === objToFound.codTipologia && dettaglio.codiceDettaglioTipologia === objToFound.codDettaglio)[0];
+            dettagliTipologieFromListaTipologie.push(dettaglioTrovato);
+        });
+    }
+
     return dettagliTipologieFromListaTipologie;
 }

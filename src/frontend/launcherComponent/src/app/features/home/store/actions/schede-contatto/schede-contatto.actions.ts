@@ -6,6 +6,9 @@ import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classi
 
 export class GetContatoriSchedeContatto {
     static readonly type = '[Schede Contatto] Get Contatori Schede Contatto';
+
+    constructor(public filters: any) {
+    }
 }
 
 export class SetContatoriSchedeContatto {
@@ -113,7 +116,7 @@ export class ClearFiltriSchedeContatto {
 }
 
 export class SetFiltroSelezionatoSchedaContatto {
-    static readonly type = '[SchedeContatto] Toggle filtro';
+    static readonly type = '[SchedeContatto] Set Filtro';
 
     constructor(public filtro: VoceFiltro) {
     }
