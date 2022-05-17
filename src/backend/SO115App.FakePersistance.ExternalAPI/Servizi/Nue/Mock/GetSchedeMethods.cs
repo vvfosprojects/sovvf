@@ -291,13 +291,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
 
-            var GiorniFiltrati = Filtri.RangeVisualizzazione != null ? Convert.ToInt32(Filtri.RangeVisualizzazione) : 2;
+            var GiorniFiltrati = Filtri.RangeVisualizzazione != null ? Convert.ToInt32(Filtri.RangeVisualizzazione) : 2;              
             DateTime giornoMassimo = DateTime.Now.AddDays(-GiorniFiltrati);
 
-            if (codiciSede.Length > 0)
+            if (codiciSede.Length > 0) 
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiciSede[0]) && !s.Collegata && s.DataInserimento >= giornoMassimo && s.Gestita.Equals(Filtri.Gestita)).ToList();
             else
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => !s.Collegata && s.DataInserimento >= giornoMassimo && s.Gestita.Equals(Filtri.Gestita)).ToList();
+
+
+            if (Filtri.Search.Trim().Length > 0)
+                listaSchedeContatto = GetSchedeContattoFromText(Filtri.Search, codiciSede[0]);
+
 
             var listaSchedeCompetenza = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Competenza));
             var listaSchedeConoscenza = listaSchedeContatto.FindAll(x => x.Classificazione.Equals(Conoscenza));

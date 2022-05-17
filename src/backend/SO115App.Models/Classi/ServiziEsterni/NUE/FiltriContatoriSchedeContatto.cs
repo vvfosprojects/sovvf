@@ -10,6 +10,8 @@ namespace SO115App.Models.Classi.ServiziEsterni.NUE
     {
         public bool Gestita { get; set; } = false;
 
-        public string RangeVisualizzazione { get; set; } = "2";
+        public string RangeVisualizzazione { get; set; } = "48";
+
+        public string Search { get; set; } = ""
     }
 }
