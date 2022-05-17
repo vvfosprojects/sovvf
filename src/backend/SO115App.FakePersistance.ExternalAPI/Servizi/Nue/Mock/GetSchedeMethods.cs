@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="GetSchedeContatto.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -292,7 +292,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
 
             var GiorniFiltrati = Filtri.RangeVisualizzazione != null ? Convert.ToInt32(Filtri.RangeVisualizzazione) : 2;
-            DateTime giornoMassimo = DateTime.Now.AddDays(-GiorniFiltrati);
+            DateTime giornoMassimo = DateTime.UtcNow.AddHours(-GiorniFiltrati);
 
             if (codiciSede.Length > 0)
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiciSede[0]) && !s.Collegata && s.DataInserimento >= giornoMassimo && s.Gestita.Equals(Filtri.Gestita)).ToList();
