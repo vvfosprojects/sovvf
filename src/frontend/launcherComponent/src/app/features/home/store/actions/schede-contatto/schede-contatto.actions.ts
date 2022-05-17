@@ -116,7 +116,7 @@ export class ClearFiltriSchedeContatto {
 }
 
 export class SetFiltroSelezionatoSchedaContatto {
-    static readonly type = '[SchedeContatto] Toggle filtro';
+    static readonly type = '[SchedeContatto] Set Filtro';
 
     constructor(public filtro: VoceFiltro) {
     }

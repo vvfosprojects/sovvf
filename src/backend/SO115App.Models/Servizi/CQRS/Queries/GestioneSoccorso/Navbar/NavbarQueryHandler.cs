@@ -78,8 +78,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
 
             var filtriSchedeContatto = new FiltriContatoriSchedeContatto()
             {
-                Gestita = false,
-                RangeVisualizzazione = "2"
+                Gestita = false
             };
 
             var navbars = new Classi.NavBar.Navbar

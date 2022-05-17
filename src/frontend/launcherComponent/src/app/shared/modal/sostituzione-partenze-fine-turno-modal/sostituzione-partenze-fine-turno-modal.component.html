@@ -2,7 +2,10 @@
     <h4 class="modal-title font-weight-bold">
         {{ getTitle() | uppercase }}
     </h4>
-    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+    <button type="button"
+            class="btn btn-light close"
+            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            [disabled]="loading"
             (click)="onDismiss()">
         <i class="fas fa-times text-danger"></i>
     </button>
@@ -17,7 +20,9 @@
                         <app-partenza [partenza]="p.partenza"></app-partenza>
                     </div>
                     <div class="col-3">
-                        <button class="btn btn-block btn-primary btn-no-hover" (click)="onSelezionePartenza(p)">
+                        <button class="btn btn-block btn-primary btn-no-hover"
+                                [disabled]="loading"
+                                (click)="onSelezionePartenza(p)">
                             Seleziona
                         </button>
                     </div>
@@ -71,14 +76,15 @@
                                         <ng-template
                                                 [ngIf]="!getSquadraSmontanteBySquadraMontante(s?.nome) || getSquadraSmontanteBySquadraMontante(s?.nome) !== sS?.nome">
                                             <button class="btn btn-primary btn-no-hover"
-                                                    (click)="onSelezioneSquadraSmontate(s?.nome, sS?.nome, p?.partenza?.mezzo?.codice)"
-                                                    [disabled]="(getSostituzioneBySquadraMontante(s.nome)?.squadreSmontanti?.length > 0) || squadraSmontanteCheck.includes(sS?.nome)">
+                                                    [disabled]="(getSostituzioneBySquadraMontante(s.nome)?.squadreSmontanti?.length > 0) || squadraSmontanteCheck.includes(sS?.nome) || loading"
+                                                    (click)="onSelezioneSquadraSmontate(s?.nome, sS?.nome, p?.partenza?.mezzo?.codice)">
                                                 Seleziona
                                             </button>
                                         </ng-template>
                                         <ng-template
                                                 [ngIf]="getSquadraSmontanteBySquadraMontante(s?.nome) && getSquadraSmontanteBySquadraMontante(s?.nome) === sS?.nome">
                                             <button class="btn btn-danger btn-no-hover"
+                                                    [disabled]="loading"
                                                     (click)="onDeselezioneSquadraSmontate(s?.nome, sS?.nome)">
                                                 Deseleziona
                                             </button>
@@ -122,13 +128,20 @@
 <div class="modal-footer d-flex align-items-center justify-content-between">
     <button type="button"
             class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            [disabled]="loading"
             (click)="closeModal('ko')">
         {{ 'Annulla' | uppercase }}
     </button>
     <button type="button"
             class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
             (click)="onConferma()"
-            [disabled]="disableButtonConferma">
-        {{ 'Conferma' | uppercase }}
+            [disabled]="disableButtonConferma || loading">
+        <ng-container *ngIf="!loading">
+            {{ 'Conferma' | uppercase }}
+        </ng-container>
+        <ng-container *ngIf="loading">
+            <i class="fas fa-spinner fa-spin mr-1"></i>
+            {{ 'Sostituzione in corso' | uppercase }}
+        </ng-container>
     </button>
 </div>
