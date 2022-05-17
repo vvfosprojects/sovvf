@@ -194,9 +194,9 @@ export class SchedeContattoState {
     }
 
     @Action(GetContatoriSchedeContatto)
-    getContatoriSchedeContatto({ dispatch }: StateContext<SchedeContattoStateModel>): void {
+    getContatoriSchedeContatto({ dispatch }: StateContext<SchedeContattoStateModel>, action: GetContatoriSchedeContatto): void {
         dispatch(new StartLoadingSchedeContatto());
-        this.schedeContattoService.getContatoriSchedeContatto().subscribe((data: { infoNue: ContatoriSchedeContatto }) => {
+        this.schedeContattoService.getContatoriSchedeContatto(action.filters).subscribe((data: { infoNue: ContatoriSchedeContatto }) => {
             dispatch([
                 new SetContatoriSchedeContatto(data.infoNue),
                 new StopLoadingSchedeContatto()
@@ -243,6 +243,12 @@ export class SchedeContattoState {
             page: action.page ? action.page : 1,
             pageSize: boxesVisibili ? 11 : 12
         } as PaginationInterface;
+
+        const filtersContatori = {
+            gestita,
+            rangeVisualizzazione: rangeVisualizzazione !== RangeSchedeContattoEnum.DaSempre ? rangeVisualizzazione : null
+        } as FiltersInterface;
+        dispatch(new GetContatoriSchedeContatto(filtersContatori));
         this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
             const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
             const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);

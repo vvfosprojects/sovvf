@@ -6,13 +6,14 @@ import { TipologiaPos } from '../../../interface/pos.interface';
 import { Tipologia } from '../../../model/tipologia.model';
 import { DettaglioTipologia } from '../../../interface/dettaglio-tipologia.interface';
 import { GetPos } from '../../../../features/pos/store/actions/pos/pos.actions';
+import { DettagliTipologieState } from '../dettagli-tipologie/dettagli-tipologie.state';
 
 export interface PosModalStateModel {
     posForm: {
         model?: {
             descrizionePos: string;
             tipologie: Tipologia[];
-            tipologieDettagli: DettaglioTipologia[];
+            tipologieDettagli: number[];
         };
         dirty: boolean;
         status: string;
@@ -56,14 +57,23 @@ export class PosModalState {
         const formValue = state.posForm.model;
         const listaTipologiePos = [] as TipologiaPos[];
         const tipologie = formValue.tipologie;
-        const tipologieDettagli = formValue.tipologieDettagli;
+        const codTipologieDettagli = formValue.tipologieDettagli;
+        const dettagliTipologieList = this.store.selectSnapshot(DettagliTipologieState.dettagliTipologie);
+        const tipologieDettagli = [];
         tipologie.forEach((t: Tipologia) => {
+            codTipologieDettagli.forEach((codDettaglio: number) => {
+                const dettaglioFound = dettagliTipologieList.filter((dT: DettaglioTipologia) => dT.codiceDettaglioTipologia === codDettaglio && dT.codiceTipologia === +t.codice)[0];
+                if (dettaglioFound) {
+                    tipologieDettagli.push(dettaglioFound);
+                }
+            });
+
             let tempTipologiaPos = null as TipologiaPos;
             tempTipologiaPos = {
                 codTipologia: +t.codice,
                 codTipologiaDettaglio: []
             };
-            if (tipologieDettagli) {
+            if (tipologieDettagli?.length) {
                 tipologieDettagli.forEach((dT: DettaglioTipologia) => {
                     if (dT.codiceTipologia === +t.codice) {
                         tempTipologiaPos.codTipologiaDettaglio.push(+dT.codiceDettaglioTipologia);
@@ -89,18 +99,29 @@ export class PosModalState {
         const formValue = state.posForm.model;
         const listaTipologiePos = [] as TipologiaPos[];
         const tipologie = formValue.tipologie;
-        const tipologieDettagli = formValue.tipologieDettagli;
+        const codTipologieDettagli = formValue.tipologieDettagli;
+        const dettagliTipologieList = this.store.selectSnapshot(DettagliTipologieState.dettagliTipologie);
+        const tipologieDettagli = [];
         tipologie.forEach((t: Tipologia) => {
+            codTipologieDettagli.forEach((codDettaglio: number) => {
+                const dettaglioFound = dettagliTipologieList.filter((dT: DettaglioTipologia) => dT.codiceDettaglioTipologia === codDettaglio && dT.codiceTipologia === +t.codice)[0];
+                if (dettaglioFound) {
+                    tipologieDettagli.push(dettaglioFound);
+                }
+            });
+
             let tempTipologiaPos = null as TipologiaPos;
             tempTipologiaPos = {
                 codTipologia: +t.codice,
                 codTipologiaDettaglio: []
             };
-            tipologieDettagli.forEach((dT: DettaglioTipologia) => {
-                if (dT.codiceTipologia === +t.codice) {
-                    tempTipologiaPos.codTipologiaDettaglio.push(+dT.codiceDettaglioTipologia);
-                }
-            });
+            if (tipologieDettagli?.length) {
+                tipologieDettagli.forEach((dT: DettaglioTipologia) => {
+                    if (dT.codiceTipologia === +t.codice) {
+                        tempTipologiaPos.codTipologiaDettaglio.push(+dT.codiceDettaglioTipologia);
+                    }
+                });
+            }
             listaTipologiePos.push(tempTipologiaPos);
         });
         let formData = action?.formData;

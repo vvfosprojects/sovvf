@@ -20,9 +20,9 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
         public async Task SendNotification(string CodSede)
         {
-            var infoNue = _getConteggioSchede.GetConteggio(new string[] { CodSede });
+            //var infoNue = _getConteggioSchede.GetConteggio(new string[] { CodSede });
 
-            await _notificationHubContext.Clients.All.SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
+            //await _notificationHubContext.Clients.All.SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
         }
     }
 }
