@@ -12,6 +12,6 @@ namespace SO115App.Models.Classi.ServiziEsterni.NUE
 
         public string RangeVisualizzazione { get; set; } = "48";
 
-        public string Search { get; set; } = ""
+        public string Search { get; set; } = "";
     }
 }

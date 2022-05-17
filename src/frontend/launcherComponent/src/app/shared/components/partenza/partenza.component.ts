@@ -65,7 +65,7 @@ export class PartenzaComponent implements OnInit {
         this.store.dispatch(new StartLoadingActionMezzo(codiceMezzo));
         this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
             this.store.dispatch([
-                new RemoveAnnullaStatoMezzi(codiceMezzo, statoMezzo),
+                new RemoveAnnullaStatoMezzi([codiceMezzo], statoMezzo),
                 new StopLoadingActionMezzo(codiceMezzo)
             ]);
         }, () => {
@@ -75,7 +75,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     checkListaEventiMezzo(): void {
-        this.listaEventiMezzo = this.richiesta.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
+        this.listaEventiMezzo = this.richiesta?.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
         const statiMezzo = [];
         if (this.listaEventiMezzo?.length) {
             this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));

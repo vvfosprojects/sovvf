@@ -26,6 +26,6 @@ export class AddAnnullaStatoMezzi {
 export class RemoveAnnullaStatoMezzi {
     static readonly type = '[Loading] Remove Pb Mezzo';
 
-    constructor(public codMezzo: string, public stato?: StatoMezzo) {
+    constructor(public codMezzi: string[], public stato?: StatoMezzo) {
     }
 }
