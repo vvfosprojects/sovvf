@@ -2,6 +2,6 @@
 {
     public interface IDeleteDettaglioTipologia
     {
-        public void Delete(int CodTipologia);
+        public void Delete(int CodDettaglio, int CodTipologia);
     }
 }

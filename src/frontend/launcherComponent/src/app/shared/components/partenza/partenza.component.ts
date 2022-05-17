@@ -14,6 +14,7 @@ import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 import { StartLoadingActionMezzo, StopLoadingActionMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
+import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-partenza',
@@ -55,7 +56,7 @@ export class PartenzaComponent implements OnInit {
         this.checkListaEventiMezzo();
     }
 
-    onAnnullaStato(codiceMezzo: string): void {
+    onAnnullaStato(codiceMezzo: string, statoMezzo: StatoMezzo): void {
         const obj = {
             codiceRichiesta: this.infoPartenza ? this.infoPartenza.codiceRichiesta : null,
             codicePartenza: this.infoPartenza ? this.infoPartenza.codicePartenza : null,
@@ -64,7 +65,7 @@ export class PartenzaComponent implements OnInit {
         this.store.dispatch(new StartLoadingActionMezzo(codiceMezzo));
         this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
             this.store.dispatch([
-                new RemoveAnnullaStatoMezzi(codiceMezzo),
+                new RemoveAnnullaStatoMezzi(codiceMezzo, statoMezzo),
                 new StopLoadingActionMezzo(codiceMezzo)
             ]);
         }, () => {

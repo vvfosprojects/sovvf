@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetConteggioSchedeQueryHandler.cs" company="CNVVF">
+// <copyright file="ExternalLogResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,28 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede
+using SO115App.Models.Classi.Condivise;
+using System.Collections.Generic;
+
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneExternalLog
 {
-    public class GetConteggioSchedeQueryHandler : IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult>
+    /// <summary>
+    ///   DTO di output
+    /// </summary>
+    public class ExternalLogResult
     {
-        private readonly IGetConteggioSchede _getConteggioSchede;
-
-        public GetConteggioSchedeQueryHandler(IGetConteggioSchede getConteggioSchede)
-        {
-            _getConteggioSchede = getConteggioSchede;
-        }
-
-        public GetConteggioSchedeResult Handle(GetConteggioSchedeQuery query)
-        {
-            var infoNue = _getConteggioSchede.GetConteggio(query.CodiciSede, query.Filtri);
-
-            return new GetConteggioSchedeResult
-            {
-                InfoNue = infoNue
-            };
-        }
+        /// <summary>
+        ///   La sintesi delle richieste di assistenza
+        /// </summary>
+        public List<ExternalApiLog> risultato { get; set; }
     }
 }

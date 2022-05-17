@@ -27,19 +27,28 @@
                             Squadre
                         </div>
                         <div class="float-right w-50">
-                            <label for="ricercaSquadre"
-                                   class="d-none"></label>
-                            <input id="ricercaSquadre"
-                                   class="form-control"
-                                   [ngClass]="{'border-danger': ricercaSquadre?.length}"
-                                   type="search"
-                                   name="ricercaSquadre"
-                                   placeholder="Cerca..."
-                                   [(ngModel)]="ricercaSquadre"
-                                   appDebounceKeyUp
-                                   [debounceTime]="1000"
-                                   (debounceKeyUp)="onSearchSquadre()"
-                                   (search)="onClearSearchSquadre()">
+                            <div class="d-flex align-items-center">
+                                <div class="mr-1">
+                                    <label for="ricercaSquadre"
+                                           class="d-none"></label>
+                                    <input id="ricercaSquadre"
+                                           class="form-control"
+                                           [ngClass]="{'border-danger': ricercaSquadre?.length}"
+                                           type="text"
+                                           name="ricercaSquadre"
+                                           placeholder="Cerca..."
+                                           [(ngModel)]="ricercaSquadre"
+                                           appDebounceKeyUp
+                                           [debounceTime]="1000"
+                                           (debounceKeyUp)="onSearchSquadre()">
+                                </div>
+                                <ng-container *ngIf="ricercaSquadre?.length">
+                                    <button class="btn btn-danger"
+                                            (click)="onClearSearchSquadre()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </ng-container>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -101,19 +110,28 @@
                         </div>
                         <div class="float-right"
                              style="width: 35%">
-                            <label for="ricercaMezzi"
-                                   class="d-none"></label>
-                            <input id="ricercaMezzi"
-                                   class="form-control"
-                                   [ngClass]="{'border-danger': ricercaMezzi?.length}"
-                                   type="search"
-                                   name="ricercaMezzi"
-                                   placeholder="Cerca..."
-                                   [(ngModel)]="ricercaMezzi"
-                                   appDebounceKeyUp
-                                   [debounceTime]="1000"
-                                   (debounceKeyUp)="onSearchMezzi()"
-                                   (search)="onClearSearchMezzi()">
+                            <div class="d-flex align-items-center">
+                                <div class="mr-1">
+                                    <label for="ricercaMezzi"
+                                           class="d-none"></label>
+                                    <input id="ricercaMezzi"
+                                           class="form-control"
+                                           [ngClass]="{'border-danger': ricercaMezzi?.length}"
+                                           type="text"
+                                           name="ricercaMezzi"
+                                           placeholder="Cerca..."
+                                           [(ngModel)]="ricercaMezzi"
+                                           appDebounceKeyUp
+                                           [debounceTime]="1000"
+                                           (debounceKeyUp)="onSearchMezzi()">
+                                </div>
+                                <ng-container *ngIf="ricercaMezzi?.length">
+                                    <button class="btn btn-danger"
+                                            (click)="onClearSearchMezzi()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </ng-container>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body p-0">

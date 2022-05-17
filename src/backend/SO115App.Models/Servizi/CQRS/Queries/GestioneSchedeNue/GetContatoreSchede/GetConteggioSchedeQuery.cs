@@ -18,11 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede
 {
     public class GetConteggioSchedeQuery : IQuery<GetConteggioSchedeResult>
     {
+        public FiltriContatoriSchedeContatto Filtri { get; set; }
         public string[] CodiciSede { get; set; }
     }
 }

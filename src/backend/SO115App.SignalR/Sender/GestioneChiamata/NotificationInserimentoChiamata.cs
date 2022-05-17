@@ -30,7 +30,9 @@ using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.Models.Classi.CodaChiamate;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.SignalR.Utility;
 using System;
 using System.Collections.Generic;
@@ -50,18 +52,22 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IConfiguration _config;
+        private readonly IGetConteggioSchede _getConteggioSchede;
 
         public NotificationInserimentoChiamata(//IHubContext<NotificationHub> notificationHubContext,
                                                IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
                                                GetGerarchiaToSend getGerarchiaToSend,
-                                               IConfiguration config)
+                                               IConfiguration config,
+                                               IGetConteggioSchede getConteggioSchede)
+
         {
             //_notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
             _config = config;
+            _getConteggioSchede = getConteggioSchede;
         }
 
         public async Task SendNotification(AddInterventoCommand command)
@@ -82,6 +88,16 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var SediDaNotificare = _getGerarchiaToSend.Get(sedeComando);
             SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+
+            var filtriSchedeContatto = new FiltriContatoriSchedeContatto()
+            {
+                Gestita = false,
+                RangeVisualizzazione = "2"
+            };
+
+            var infoNue = new InfoNue();
+            if (!string.IsNullOrEmpty(command.Intervento.CodNue))
+                infoNue = _getConteggioSchede.GetConteggio(new string[] { command.sintesi.CodSOCompetente.Split('.')[0] + ".1000" }, filtriSchedeContatto);
 
             try
             {
@@ -119,6 +135,12 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
                 foreach (var info in listaInfoDaSperide)
                 {
                     await hubConnection.StartAsync();
+                    if (!string.IsNullOrEmpty(command.Intervento.CodNue))
+                    {
+                        await hubConnection.InvokeAsync("NotifyUpdateSchedaContatto", true, info.sede);
+                        await hubConnection.InvokeAsync("NotifySetContatoriSchedeContatto", infoNue, info.sede);
+                    }
+
                     await hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.sede);
                     await hubConnection.InvokeAsync("SaveAndNotifySuccessChiamata", command.sintesi, info.sede);
                     await hubConnection.InvokeAsync("NotifyGetRichiestaMarker", info.sintesiRichiestaMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice), info.sede);

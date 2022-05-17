@@ -39,12 +39,9 @@ namespace SO115App.SignalR.Sender.GestionePos
 
             await Task.Factory.StartNew(() => Parallel.ForEach(SediDaNotificare, sede =>
             {
-                foreach (var tipologia in command.Pos.ListaTipologie)
-                {
-                    hubConnection.StartAsync();
-                    hubConnection.InvokeAsync("NotifyPos", $"E' stata inserita la pos {command.Pos.DescrizionePos} ", sede);
-                    hubConnection.StopAsync();
-                }
+                hubConnection.StartAsync();
+                hubConnection.InvokeAsync("NotifyPos", $"E' stata inserita la pos {command.Pos.DescrizionePos} ", sede);
+                hubConnection.StopAsync();
             }));
         }
     }

@@ -7,7 +7,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { PosModalState } from '../../store/states/pos-modal/pos-modal.state';
 import { Tipologia } from '../../model/tipologia.model';
 import { DettaglioTipologia } from '../../interface/dettaglio-tipologia.interface';
-import { PosInterface } from '../../interface/pos.interface';
+import { PosInterface, TipologiaPos } from '../../interface/pos.interface';
 import { getDettagliTipologieFromListaTipologie, getTipologieFromListaTipologie } from '../../helper/function-pos';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 
@@ -46,7 +46,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.initForm();
         this.getFormValid();
-        this.dettagliTipologieFiltered = this.dettagliTipologie;
     }
 
     ngOnDestroy(): void {
@@ -68,8 +67,10 @@ export class PosModalComponent implements OnInit, OnDestroy {
         });
 
         if (this.editPos) {
+            this.filterDettagliTipologieByCodTipologie(this.pos.listaTipologie.map((t: TipologiaPos) => t.codTipologia));
             this.updatePosForm(this.pos);
         } else {
+            this.dettagliTipologieFiltered = this.dettagliTipologie;
             this.f.tipologieDettagli.disable();
         }
     }
@@ -87,7 +88,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
         this.posForm.patchValue({
             descrizionePos: editPos.descrizionePos,
             tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
-            tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie),
+            tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologieFiltered).map((dT: DettaglioTipologia) => dT.codiceDettaglioTipologia),
             file: this.posFdFile
         });
 
@@ -95,7 +96,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
             value: {
                 descrizionePos: editPos.descrizionePos,
                 tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
-                tipoglieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologie),
+                tipologieDettagli: this.getDettagliTipologieFromListaTipologie(editPos, this.dettagliTipologieFiltered).map((dT: DettaglioTipologia) => dT.codiceDettaglioTipologia),
                 file: this.posFdFile
             },
             path: 'posModal.posForm'
@@ -112,6 +113,7 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     getDettagliTipologieFromListaTipologie(pos: PosInterface, dettagliTipologie: DettaglioTipologia[]): DettaglioTipologia[] {
+        console.log('[POS-MODAL] getDettagliTipologieFromListaTipologie => function helper', getDettagliTipologieFromListaTipologie(pos, dettagliTipologie));
         return getDettagliTipologieFromListaTipologie(pos, dettagliTipologie);
     }
 

@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
@@ -55,7 +56,14 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
             #endregion connessione al WSSignalR
 
-            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede });
+            var filtri = new FiltriContatoriSchedeContatto()
+            {
+                Gestita = false,
+                RangeVisualizzazione = "2"
+            };
+
+            var infoNue = _getConteggioSchede.GetConteggio(new string[] { command.CodiceSede }, filtri);
+
             var elencoCodiciSede = command.schedeSelezionateID.OfType<string>().ToList();
             var codiciSchedecollegate = elencoCodiciSede.Skip(1).ToArray();
 

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetConteggioSchedeQueryHandler.cs" company="CNVVF">
+// <copyright file="ExternalLogQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,26 +18,32 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneExternalLog
 {
-    public class GetConteggioSchedeQueryHandler : IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult>
+    public class ExternalLogQueryHandler : IQueryHandler<ExternalLogQuery, ExternalLogResult>
     {
-        private readonly IGetConteggioSchede _getConteggioSchede;
+        private readonly IGetExternalLog _getExternalApiLog;
 
-        public GetConteggioSchedeQueryHandler(IGetConteggioSchede getConteggioSchede)
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        public ExternalLogQueryHandler(IGetExternalLog getExternalApiLog)
         {
-            _getConteggioSchede = getConteggioSchede;
+            this._getExternalApiLog = getExternalApiLog;
         }
 
-        public GetConteggioSchedeResult Handle(GetConteggioSchedeQuery query)
+        /// <summary>
+        ///   Metodo di esecuzione della query
+        /// </summary>
+        /// <param name="query">Il DTO di ingresso della query</param>
+        /// <returns>Il DTO di uscita della query</returns>
+        public ExternalLogResult Handle(ExternalLogQuery query)
         {
-            var infoNue = _getConteggioSchede.GetConteggio(query.CodiciSede, query.Filtri);
-
-            return new GetConteggioSchedeResult
+            return new ExternalLogResult()
             {
-                InfoNue = infoNue
+                risultato = _getExternalApiLog.Get()
             };
         }
     }

@@ -6,14 +6,16 @@ import {
     AddRichiesta,
     AddRichieste,
     AllertaSede,
-    ClearIdChiamataInviaPartenza, ClearRichiestaAzioni,
+    ClearIdChiamataInviaPartenza,
+    ClearRichiestaAzioni,
     ClearRichiestaById,
     ClearRichieste,
     EliminaPartenzaRichiesta,
     GetListaRichieste,
     ModificaStatoFonogramma,
     SetIdChiamataInviaPartenza,
-    SetNeedRefresh, SetRichiestaAzioni,
+    SetNeedRefresh,
+    SetRichiestaAzioni,
     SetRichiestaById,
     StartInviaPartenzaFromChiamata,
     StartLoadingActionMezzo,
@@ -61,6 +63,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { setPageSession } from '../../../../../shared/helper/function-paginazione-session';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { LSNAME } from '../../../../../core/settings/config';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -349,25 +352,28 @@ export class RichiesteState {
             obj.azioneIntervento = action.mezzoAction.azioneIntervento;
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
-                if (!action.mezzoAction.modificaOrario) {
-                    dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                    setTimeout(() => {
-                        dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                    }, 60000);
-                }
-
+                setAnnullaStatoMezzi();
                 dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
             },
             (error: HttpErrorResponse) => {
                 if (error?.error?.message === 'Errore servizio ESRI') {
-                    dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                    setTimeout(() => {
-                        dispatch(new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice));
-                    }, 60000);
+                    setAnnullaStatoMezzi();
                 }
                 dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
             }
         );
+
+        function setAnnullaStatoMezzi(): void {
+            if (obj.statoMezzo === StatoMezzo.Rientrato) {
+                dispatch([
+                    new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, StatoMezzo.SulPosto),
+                    new RemoveAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, StatoMezzo.InRientro),
+                ]);
+            }
+            if (!action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
+                dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, obj.statoMezzo));
+            }
+        }
     }
 
     // TODO: Rimuovere (con relativi riferimenti nei componenti) poichè la funzionalità è stata rimossa

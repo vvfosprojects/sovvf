@@ -59,6 +59,7 @@ export class DettagliTipologieComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.onFiltroTipologiaReset();
         this.subscriptions.unsubscribe();
     }
 
@@ -156,7 +157,7 @@ export class DettagliTipologieComponent implements OnDestroy {
             this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaDettaglioTipologia, [dettaglioTipologia.id]));
             switch (val) {
                 case 'ok':
-                    this.deleteDettaglioTipologia(dettaglioTipologia.codiceDettaglioTipologia);
+                    this.deleteDettaglioTipologia(dettaglioTipologia.codiceTipologia, dettaglioTipologia.codiceDettaglioTipologia);
                     break;
             }
         }, (err) => {
@@ -165,8 +166,8 @@ export class DettagliTipologieComponent implements OnDestroy {
         });
     }
 
-    deleteDettaglioTipologia(codDettaglioTipologia: number): void {
-        this.store.dispatch(new RequestDeleteDettaglioTipologia(codDettaglioTipologia));
+    deleteDettaglioTipologia(codTipologia: number, codDettaglioTipologia: number): void {
+        this.store.dispatch(new RequestDeleteDettaglioTipologia(codTipologia, codDettaglioTipologia));
     }
 
     onRicercaDettagliTipologie(ricerca: string): void {
@@ -174,6 +175,7 @@ export class DettagliTipologieComponent implements OnDestroy {
     }
 
     onFiltroTipologiaChange(tipologia: { codice: string, descrizione: string }): void {
+        console.log('onFiltroTipologiaChange => tipologia', tipologia);
         if (tipologia) {
             this.store.dispatch(new ReducerSelezioneFiltroTipologia(+tipologia.codice));
         } else {

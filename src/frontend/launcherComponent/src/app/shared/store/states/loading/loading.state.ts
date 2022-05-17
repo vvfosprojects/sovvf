@@ -3,10 +3,12 @@ import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi, StartBigLoading, StartLo
 import { Injectable } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { append, patch, removeItem } from '@ngxs/store/operators';
+import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
 
-interface InfoMezzo {
+export interface InfoMezzo {
     codMezzo: string;
     istante: Date;
+    stato: StatoMezzo;
 }
 
 export interface LoadingStateModel {
@@ -32,10 +34,8 @@ export class LoadingState {
     }
 
     @Selector()
-    static annullaStatoMezzi(state: LoadingStateModel): string[] {
-        const listaMezzi = [];
-        state.annullaStatoMezzi.forEach(x => listaMezzi.push(x.codMezzo));
-        return listaMezzi;
+    static annullaStatoMezzi(state: LoadingStateModel): InfoMezzo[] {
+        return state.annullaStatoMezzi;
     }
 
     constructor(private ngxLoader: NgxUiLoaderService) {
@@ -46,7 +46,8 @@ export class LoadingState {
         const data = new Date();
         const obj = {
             codMezzo: action.codMezzo,
-            istante: data
+            istante: data,
+            stato: action.stato
         };
         setState(
             patch({
@@ -57,11 +58,19 @@ export class LoadingState {
 
     @Action(RemoveAnnullaStatoMezzi)
     removeAnnullaStatoMezzi({ patchState, getState, setState }: StateContext<LoadingStateModel>, action: RemoveAnnullaStatoMezzi): void {
-        setState(
-            patch({
-                annullaStatoMezzi: removeItem<any>(mezzo => mezzo.codMezzo === action.codMezzo)
-            })
-        );
+        if (action.stato) {
+            setState(
+                patch({
+                    annullaStatoMezzi: removeItem<any>(mezzo => mezzo.codMezzo === action.codMezzo && mezzo.stato === action.stato)
+                })
+            );
+        } else {
+            setState(
+                patch({
+                    annullaStatoMezzi: removeItem<any>(mezzo => mezzo.codMezzo === action.codMezzo)
+                })
+            );
+        }
     }
 
     @Action(StartLoading)

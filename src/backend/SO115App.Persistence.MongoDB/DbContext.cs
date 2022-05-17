@@ -142,7 +142,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<AllertaSedi>();
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
-            BsonClassMap.RegisterClassMap<ExternalApiLog>();
+
             BsonClassMap.RegisterClassMap<InserimentoEnteIntervenuto>();
             BsonClassMap.RegisterClassMap<STATRI_InivioRichiesta>();
             BsonClassMap.RegisterClassMap<Evento>();
@@ -150,6 +150,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<Esri_Params>();
             BsonClassMap.RegisterClassMap<SquadraOpService>();
 
+            ExternalApiLogMap.Map();
             EmergenzaMap.Map();
             TipologieEmergenzaMap.Map();
             CraMap.Map();
