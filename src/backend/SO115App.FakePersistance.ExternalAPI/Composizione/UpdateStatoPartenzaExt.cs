@@ -106,18 +106,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
-                
-                    foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo && !c.Partenza.Terminata))
+                foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo && !c.Partenza.Terminata))
+                {
+                    foreach (var squadra in partenza.Partenza.Squadre)
                     {
-                        foreach (var squadra in partenza.Partenza.Squadre)
-                        {
-                            if(squadra.Turno!=null)
-                                _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.Richiesta.CodRichiesta, command.StatoMezzo, squadra.Distaccamento.Codice, command.IdMezzo, turnoAttuale, squadra.Turno);
-                            else
-                                _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{partenza.Partenza.Turno.Substring(0, 1)}", command.Richiesta.CodRichiesta, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, turnoAttuale, partenza.Partenza.Turno.Substring(0, 1));
-                        }
+                        if (squadra.Turno != null)
+                            _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.Richiesta.CodRichiesta, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, turnoAttuale, squadra.Turno);
+                        else
+                            _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{partenza.Partenza.Turno.Substring(0, 1)}", command.Richiesta.CodRichiesta, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo, turnoAttuale, partenza.Partenza.Turno.Substring(0, 1));
                     }
-                
+                }
             }
         }
 
