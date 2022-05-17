@@ -32,10 +32,14 @@ export class UpdateSostituzione {
     }
 }
 
-export class ConfirmSostituzioni {
-    static readonly type = '[SostituzioneFineTurno] Confirm Sostituzioni';
-}
-
 export class ClearSostituzioneFineTurno {
     static readonly type = '[SostituzioneFineTurno] Clear Sostituzione Fine Turno';
+}
+
+export class StartLoadingSostituzioneFineTurno {
+    static readonly type = '[SostituzioneFineTurno] Start Loading Sostituzione Fine Turno';
+}
+
+export class StopLoadingSostituzioneFineTurno {
+    static readonly type = '[SostituzioneFineTurno] Stop Loading Sostituzione Fine Turno';
 }
