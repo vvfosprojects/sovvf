@@ -261,6 +261,8 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 keyboard: false,
             });
             modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
+            modalAllertaSede.componentInstance.codSOCompetente = this.richiesta.codSOCompetente;
+            modalAllertaSede.componentInstance.codSOAllertate = this.richiesta.codSOAllertate;
             const data = {
                 value: this.richiesta.codice,
                 type: TipoConcorrenzaEnum.Allerta

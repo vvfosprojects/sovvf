@@ -40,6 +40,8 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     generiMezzoSelezionati: string[] = [];
 
     codRichiesta: string;
+    codSOCompetente: string;
+    codSOAllertate: string[];
 
     subscriptions: Subscription = new Subscription();
 
@@ -121,6 +123,10 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     onClearSedi(): void {
         this.sediSelezionate = [];
+    }
+
+    checkSediSelezionateError(): boolean {
+        return this.sediSelezionate.includes(this.codSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => this.sediSelezionate.includes(codSOAllertata));
     }
 
     onConferma(): void {

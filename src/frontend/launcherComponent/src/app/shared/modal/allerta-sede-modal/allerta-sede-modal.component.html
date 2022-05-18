@@ -77,16 +77,27 @@
         </div>
     </form>
 </div>
-<div class="modal-footer d-flex align-items-center justify-content-between">
-    <button type="button"
-            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
-            (click)="closeModal('ko')">
-        {{ 'Annulla' | uppercase }}
-    </button>
-    <button type="button"
-            class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
-            [disabled]="!formValid"
-            (click)="onConferma()">
-        {{ 'Conferma Allerta' | uppercase }}
-    </button>
+<div class="modal-footer">
+    <ng-container *ngIf="checkSediSelezionateError()">
+        <div class="w-100">
+            <div class="alert alert-danger">
+                Non puoi allertare sedi già allertate in precedenza
+            </div>
+        </div>
+    </ng-container>
+    <div class="w-100">
+        <div class="d-flex align-items-center justify-content-between">
+            <button type="button"
+                    class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+                    (click)="closeModal('ko')">
+                {{ 'Annulla' | uppercase }}
+            </button>
+            <button type="button"
+                    class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+                    [disabled]="!formValid || checkSediSelezionateError()"
+                    (click)="onConferma()">
+                {{ 'Conferma Allerta' | uppercase }}
+            </button>
+        </div>
+    </div>
 </div>
