@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { AddAnnullaStatoMezzi, RemoveAnnullaStatoMezzi, StartBigLoading, StartLoading, StopBigLoading, StopLoading } from '../../actions/loading/loading.actions';
 import { Injectable } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { append, patch } from '@ngxs/store/operators';
+import { append, patch, removeItem } from '@ngxs/store/operators';
 import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
 import { makeCopy } from '../../../helper/function-generiche';
 
@@ -58,14 +58,15 @@ export class LoadingState {
     }
 
     @Action(RemoveAnnullaStatoMezzi)
-    removeAnnullaStatoMezzi({ getState, patchState }: StateContext<LoadingStateModel>, action: RemoveAnnullaStatoMezzi): void {
+    removeAnnullaStatoMezzi({ getState, setState, patchState }: StateContext<LoadingStateModel>, action: RemoveAnnullaStatoMezzi): void {
         const state = getState();
         const annullaStatoMezziCopy = makeCopy(state.annullaStatoMezzi);
         if (action.stato) {
-            const newAnnullaStatoMezzi = annullaStatoMezziCopy.filter((mezzo: InfoMezzo) => !action.codMezzi.includes(mezzo.codMezzo) && mezzo.stato !== action.stato);
-            patchState({
-                annullaStatoMezzi: newAnnullaStatoMezzi
-            });
+            setState(
+                patch({
+                    annullaStatoMezzi: removeItem<InfoMezzo>(mezzo => mezzo.codMezzo === action.codMezzi[0] && mezzo.stato === action.stato)
+                })
+            );
         } else {
             const newAnnullaStatoMezzi = annullaStatoMezziCopy.filter((mezzo: InfoMezzo) => !action.codMezzi.includes(mezzo.codMezzo));
             patchState({
