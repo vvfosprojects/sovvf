@@ -64,6 +64,7 @@ import { setPageSession } from '../../../../../shared/helper/function-paginazion
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { LSNAME } from '../../../../../core/settings/config';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -427,6 +428,15 @@ export class RichiesteState {
             generiMezzi: action.event.generiMezzi,
         };
         this.richiesteService.allertaSede(obj).subscribe(() => {
+            dispatch(new UpdateFormValue({
+                path: 'allertaSede.allertaSedeForm',
+                value: {}
+            }));
+        }, () => {
+            dispatch(new UpdateFormValue({
+                path: 'allertaSede.allertaSedeForm',
+                value: {}
+            }));
         });
     }
 
