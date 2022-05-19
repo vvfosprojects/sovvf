@@ -119,8 +119,8 @@ namespace SO115App.Persistence.File.PDFManagement
                     _gfx.DrawString("Comune", _smallField, XBrushes.Black, 437, y);
                     _gfx.DrawString("TP. Sch.", _smallField, XBrushes.Black, 500, y);
                     _gfx.DrawString("Squadra", _smallField, XBrushes.Black, 540, y);
-                    _gfx.DrawString("Servizio", _smallField, XBrushes.Black, 600, y);
-                    _gfx.DrawString("CapoPartenza", _smallField, XBrushes.Black, 650, y);
+                    _gfx.DrawString("Servizio", _smallField, XBrushes.Black, 580, y);
+                    _gfx.DrawString("CapoPartenza", _smallField, XBrushes.Black, 630, y);
                     _gfx.DrawString("Orari Mezzo", _smallField, XBrushes.Black, 720, y);
 
                     //CREO FOOTER
@@ -175,8 +175,8 @@ namespace SO115App.Persistence.File.PDFManagement
                 {
                     _gfx.DrawString(p.TpSch, _field, XBrushes.Black, 500, y);
                     _gfx.DrawString(p.SiglaSquadra, _field, XBrushes.Black, 540, y);
-                    _gfx.DrawString(p.Servizio ?? "", _field, XBrushes.Black, 600, y);
-                    _gfx.DrawString(p.CapoPartenza ?? "", _field, XBrushes.Black, 650, y);
+                    _gfx.DrawString(p.Servizio ?? "", _field, XBrushes.Black, 580, y);
+                    _gfx.DrawString(p.CapoPartenza ?? "", _field, XBrushes.Black, 630, y);
                     _gfx.DrawString(p.CodMezzo, _smallField, XBrushes.Black, 720, y + 10);
 
                     _gfx.DrawString(p.MezzoInUscita.ToString("HH:mm"), _smallField, XBrushes.Black, 720, y);
