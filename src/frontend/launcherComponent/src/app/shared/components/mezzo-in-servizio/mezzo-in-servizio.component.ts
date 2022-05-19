@@ -7,6 +7,7 @@ import { statoMezzoBorderClass, statoMezzoColor } from '../../helper/function-me
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
 import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
+import { Tipologia } from '../../model/tipologia.model';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -25,7 +26,7 @@ export class MezzoInServizioComponent implements OnChanges {
     @Input() hideCodRichiesta: boolean;
     @Input() hideTextButtonEventi: boolean;
     @Input() hideDistaccamento: boolean;
-    @Input() showTipologiaRichiesta: boolean;
+    @Input() tipologieRichiesta: Tipologia[];
     @Input() showSelectButton: boolean;
 
     @Output() hoverIn: EventEmitter<any> = new EventEmitter<any>();

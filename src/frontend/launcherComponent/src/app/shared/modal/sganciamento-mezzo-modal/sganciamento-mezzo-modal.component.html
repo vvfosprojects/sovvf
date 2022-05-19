@@ -12,23 +12,86 @@
 <div class="modal-body"
      [class.px-0]="richiestaSganciamento && !mezzoNotFound">
     <ng-container *ngIf="richiestaSganciamento && !mezzoNotFound">
-        <app-sintesi-richiesta [richiesta]="richiestaSganciamento"
-                               [fissata]="false"
-                               [fissabile]="false"
-                               [inGestione]="true"
-                               [gestibile]="false"
-                               [modificabile]="false"
-                               [disabledGestisciRichiesta]="true"
-                               [disabledModificaStatoMezzo]="true"
-                               [hideSostituzioneFineTurno]="true"
-                               [hideGestisciPartenza]="true"
-                               [boxAzioni]="false"
-                               [composizionePartenza]="false"
-                               [idDaSganciare]="idDaSganciare"
-                               [borderTop]="false"
-                               [loadingActionMezzo]="loadingActionMezzo$ | async"
-                               (actionMezzo)="onActionMezzo($event)">
-        </app-sintesi-richiesta>
+        <div class="container-fluid font-xlarge">
+            <!-- Informazioni sull'intervento -->
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <h4 class="font-weight-bolder">Il mezzo è attualmente impegnato nell'intervento:</h4>
+                </div>
+                <div class="col-2">
+                    <span class="text-muted">Codice:</span> {{ richiestaSganciamento.codiceRichiesta }}
+                </div>
+                <div class="col-3">
+                    <span class="text-muted">Data:</span> {{ richiestaSganciamento.istanteRicezioneRichiesta | friendlyDateTooltip }}
+                </div>
+                <div class="col-3">
+                    <span class="text-muted">Tipologia:</span> {{ richiestaSganciamento.tipologie[0].descrizione }}
+                </div>
+                <div class="col-3"
+                     [class.text-muted]="!richiestaSganciamento.dettaglioTipologia">
+                    <ng-container *ngIf="richiestaSganciamento.dettaglioTipologia">
+                        <span class="text-muted">Dettaglio Tipologia:</span> {{ richiestaSganciamento.dettaglioTipologia.descrizione }}
+                    </ng-container>
+                    <ng-container *ngIf="!richiestaSganciamento.dettaglioTipologia">
+                        <span class="text-muted">Dettaglio Tipologia:</span>
+                        <span class="text-danger">Nessun dettaglio tipologia</span>
+                    </ng-container>
+                </div>
+                <div class="col-12">
+                    <span class="text-muted">Indirizzo:</span>
+                    {{ richiestaSganciamento.localita.indirizzo }}, {{ richiestaSganciamento.localita.provincia }}
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="col-12 mb-2">
+                    <h4 class="font-weight-bolder">Mezzo da sganciare:</h4>
+                </div>
+                <div class="col-3">
+                    <span class="text-muted">Targa:</span> {{ getPartenzaSganciamento().partenza.mezzo.descrizione }}
+                </div>
+                <div class="col-3">
+                    <span class="text-muted">Genere:</span> {{ getPartenzaSganciamento().partenza.mezzo.genere }}
+                </div>
+                <div class="col-3">
+                    <span class="text-muted">Sede:</span> {{ getPartenzaSganciamento().partenza.mezzo.distaccamento.descrizione }}
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="col-12 mb-2">
+                    <h4 class="font-weight-bolder">Elenco completo di squadre e mezzi impegnati nello stesso
+                        intervento:</h4>
+                </div>
+                <div class="col-12" style="max-height: 200px; overflow-y: auto">
+                    <div *ngFor="let partenzaNoSganciamento of getPartenzeNoSganciamento()"
+                         class="row">
+                        <div class="col-2">
+                            <span class="text-muted">Squadra:</span> {{ partenzaNoSganciamento.partenza.squadre[0].codice }}
+                        </div>
+                        <div class="col-2">
+                            <span class="text-muted">Turno:</span> {{ partenzaNoSganciamento.partenza.squadre[0].turno }}
+                        </div>
+                        <div class="col-2">
+                            <span class="text-muted">Targa:</span> {{ partenzaNoSganciamento.partenza.mezzo.descrizione }}
+                        </div>
+                        <div class="col-2">
+                            <span class="text-muted">Genere:</span> {{ partenzaNoSganciamento.partenza.mezzo.genere }}
+                        </div>
+                        <div class="col-3">
+                            <span class="text-muted">Sede:</span> {{ partenzaNoSganciamento.partenza.mezzo.distaccamento.descrizione }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="!getPartenzeNoSganciamento()?.length">
+                <div class="col-12">
+                    <div class="alert alert-danger">
+                        Nessun mezzo e nessuna squadra impegnati nello stesso intervento
+                    </div>
+                </div>
+            </ng-container>
+        </div>
     </ng-container>
     <ng-container *ngIf="richiestaSganciamento && mezzoNotFound">
         <div class="alert alert-danger m-0">
