@@ -208,8 +208,9 @@
                 <button class="btn btn-primary btn-no-hover"
                         style="width: 50%"
                         (click)="nuovaPartenza()"
-                        [disabled]="disableNuovaPartenza || boxPartenzaList.length > 1"><i
-                        class="fas fa-plus mr-2"></i><span>Aggiungi Altra Partenza</span>
+                        [disabled]="disableNuovaPartenza || (loadingSquadre || loadingMezzi) || boxPartenzaList.length > 1">
+                    <i class="fas fa-plus mr-2"></i>
+                    <span>Aggiungi Altra Partenza</span>
                 </button>
             </div>
             <!-- lista box partenze -->
