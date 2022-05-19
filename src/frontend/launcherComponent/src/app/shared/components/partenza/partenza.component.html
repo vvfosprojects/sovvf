@@ -50,7 +50,7 @@
                         +{{ partenza.squadre.length - 1 }}
                     </div>
                 </button>
-                <ng-template [ngIf]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa">
+                <ng-container *ngIf="!hideGestisciPartenza && inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa">
                     <div [ngbTooltip]="tooltipLockedConcorrenza"
                          [disableTooltip]="!(tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice])">
                         <button class="btn btn-sm btn-info d-inline-block"
@@ -62,7 +62,7 @@
                             <i class="fas fa-cog"></i>
                         </button>
                     </div>
-                </ng-template>
+                </ng-container>
                 <div *ngIf="!partenza.squadre || !partenza.squadre?.length"
                      class="d-inline-block p-2">
                     Nessun squadra
