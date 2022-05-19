@@ -13,6 +13,8 @@ import { SetRichiestaById } from '../../../features/home/store/actions/richieste
 import { SintesiRichiestaModalComponent } from '../sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import { ClearEventiRichiesta, SetFiltroTargaMezzo, SetIdRichiestaEventi } from '../../../features/home/store/actions/eventi-richiesta/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../../../features/home/eventi/eventi-richiesta.component';
+import { makeCopy } from '../../helper/function-generiche';
+import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
 
 @Component({
     selector: 'app-lista-mezzi-sganciamento-modal',
@@ -32,7 +34,8 @@ export class ListaMezziSganciamentoModalComponent implements OnInit, OnDestroy {
 
     constructor(public modalService: NgbModal,
                 public modal: NgbActiveModal,
-                private store: Store) {
+                private store: Store,
+                private richiesteService: SintesiRichiesteService) {
         this.getLoading();
     }
 
@@ -50,6 +53,18 @@ export class ListaMezziSganciamentoModalComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.mezzi$.subscribe((mezzi: MezzoInServizio[]) => {
                 this.mezzi = mezzi?.length ? mezzi.filter((m: MezzoInServizio) => m.mezzo.mezzo.idRichiesta !== this.richiesta.codice) : null;
+                if (this.mezzi?.length) {
+                    const listaMezziSganciamento = makeCopy(this.mezzi);
+                    listaMezziSganciamento.forEach((m: MezzoInServizio) => {
+                        this.richiesteService.getRichiestaById(m.mezzo.infoRichiesta.codiceRichiesta).subscribe((richiesta: SintesiRichiesta) => {
+                            m.mezzo.infoRichiesta = {
+                                ...m.mezzo.infoRichiesta,
+                                tipologie: richiesta.tipologie
+                            };
+                        });
+                    });
+                    this.mezzi = listaMezziSganciamento;
+                }
             })
         );
     }
