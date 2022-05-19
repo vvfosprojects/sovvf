@@ -60,7 +60,6 @@ export class LoadingState {
     @Action(RemoveAnnullaStatoMezzi)
     removeAnnullaStatoMezzi({ getState, setState, patchState }: StateContext<LoadingStateModel>, action: RemoveAnnullaStatoMezzi): void {
         const state = getState();
-        const annullaStatoMezziCopy = makeCopy(state.annullaStatoMezzi);
         if (action.stato) {
             setState(
                 patch({
@@ -68,10 +67,13 @@ export class LoadingState {
                 })
             );
         } else {
-            const newAnnullaStatoMezzi = annullaStatoMezziCopy.filter((mezzo: InfoMezzo) => !action.codMezzi.includes(mezzo.codMezzo));
-            patchState({
-                annullaStatoMezzi: newAnnullaStatoMezzi
-            });
+            if (state.annullaStatoMezzi?.length) {
+                const annullaStatoMezziCopy = makeCopy(state.annullaStatoMezzi);
+                const newAnnullaStatoMezzi = annullaStatoMezziCopy.filter((mezzo: InfoMezzo) => !action.codMezzi.includes(mezzo.codMezzo));
+                patchState({
+                    annullaStatoMezzi: newAnnullaStatoMezzi
+                });
+            }
         }
     }
 
