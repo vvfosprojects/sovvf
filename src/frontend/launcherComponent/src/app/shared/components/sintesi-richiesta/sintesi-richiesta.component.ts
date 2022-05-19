@@ -67,6 +67,8 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledAzioniRichiesta: boolean;
     @Input() disabledModificaStatoMezzo: boolean;
     @Input() disabledComposizionePartenza: boolean;
+    @Input() hideSostituzioneFineTurno: boolean;
+    @Input() hideGestisciPartenza: boolean;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
     @Input() annullaStatoMezzi: InfoMezzo[];
