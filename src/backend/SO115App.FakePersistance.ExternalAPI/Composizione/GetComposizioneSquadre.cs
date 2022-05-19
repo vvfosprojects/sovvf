@@ -154,6 +154,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     var mezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Length > 0 ? lstMezziPreaccoppiati?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new ComposizioneMezzi()
                     {
+                        Id = m.CodiceMezzo,
                         Mezzo = new Mezzo()
                         {
                             Appartenenza = m.CodiceDistaccamento,
