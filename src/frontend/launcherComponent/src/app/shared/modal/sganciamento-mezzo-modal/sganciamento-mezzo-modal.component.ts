@@ -19,6 +19,7 @@ export class SganciamentoMezzoModalComponent implements OnInit, OnDestroy {
 
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string[]>;
     @Select(RichiestaSganciamentoState.richiestaSganciamento) richiestaSganciamento$: Observable<SintesiRichiesta>;
+
     richiestaSganciamento: SintesiRichiesta;
     idDaSganciare: string;
     codMezzoDaSganciare: string;
@@ -52,6 +53,14 @@ export class SganciamentoMezzoModalComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    getPartenzaSganciamento(): Partenza {
+        return this.richiestaSganciamento?.partenze.find((p: Partenza) => p.codiceMezzo === this.codMezzoDaSganciare);
+    }
+
+    getPartenzeNoSganciamento(): Partenza[] {
+        return this.richiestaSganciamento?.partenze.filter((p: Partenza) => p.codiceMezzo !== this.codMezzoDaSganciare && !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata);
     }
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {
