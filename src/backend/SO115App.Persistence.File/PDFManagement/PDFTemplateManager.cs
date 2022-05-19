@@ -88,7 +88,7 @@ namespace SO115App.Persistence.File.PDFManagement
 
             #region metodi
 
-            double altezza(int partenze) => _fieldHeight * partenze;
+            double altezza(int partenze) => partenze <= 2 ? 50 : _fieldHeight * partenze;
 
             void checkNewPage(RiepilogoInterventiModelForm model, double limiter)
             {
