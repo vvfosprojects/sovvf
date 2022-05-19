@@ -26,6 +26,7 @@ export class MezzoInServizioComponent implements OnChanges {
     @Input() hideCodRichiesta: boolean;
     @Input() hideTextButtonEventi: boolean;
     @Input() hideDistaccamento: boolean;
+    @Input() showTipologia: boolean;
     @Input() tipologieRichiesta: Tipologia[];
     @Input() showSelectButton: boolean;
 
