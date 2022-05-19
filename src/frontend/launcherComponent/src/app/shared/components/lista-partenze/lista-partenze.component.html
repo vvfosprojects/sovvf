@@ -16,6 +16,7 @@
                           [index]="'' + index"
                           [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, p?.partenza?.mezzo?.stato)"
                           [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
+                          [hideGestisciPartenza]="hideGestisciPartenza"
                           (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre)"
                           (actionMezzo)="onActionMezzo($event)"
                           (eliminaPartenza)="eliminaPartenza.emit($event)"
@@ -24,7 +25,7 @@
             </app-partenza>
         </div>
     </div>
-    <ng-template [ngIf]="inGestione && sostituzioneFineTurnoActive">
+    <ng-container *ngIf="!hideSostituzioneFineTurno && inGestione && sostituzioneFineTurnoActive">
         <button class="btn btn-sm btn-info"
                 [class.cursor-not-allowed]="disabledModificaStatoMezzo"
                 style="position: absolute; top: -14px; left: -14px"
@@ -33,5 +34,5 @@
                 (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
             <i class="fas fa-sync-alt"></i>
         </button>
-    </ng-template>
+    </ng-container>
 </ng-container>

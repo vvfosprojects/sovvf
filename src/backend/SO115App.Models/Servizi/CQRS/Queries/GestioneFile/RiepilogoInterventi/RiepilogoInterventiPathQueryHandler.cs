@@ -1,6 +1,7 @@
 ﻿using CQRS.Queries;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
@@ -40,13 +41,13 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
         {
-            var distaccamento = _getSedi.GetInfoSede(query.IdSede.First());
+            var distaccamento = _getSedi.GetInfoSede(query.IdSede.First()).Result.MapSede();
 
             var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri).Result;
 
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
 
-            var lstTipologie = _getTipologie.Get(lstInterventi?.SelectMany(i => i.Tipologie.Select(c => c.Codice).ToList()).ToList());
+            var lstTipologie = _getTipologie.Get();
 
             var filename = "Riepilogo_interventi_" + DateTime.UtcNow.ToString("dd/MM/yyyy") + ".pdf";
 
@@ -59,7 +60,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 X = "X: " + i.Localita.Coordinate.Latitudine,
                 Y = "Y: " + i.Localita.Coordinate.Longitudine,
                 Richiedente = i.Richiedente.Nominativo,
-                Tipologie = string.Join(',', lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct))).Select(t => t.Descrizione + '.')),
+                Tipologie = string.Join(',', lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct.Codice))).Select(t => t.Descrizione + '.')),
                 NumeroIntervento = i.CodRichiesta != null ? int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()) : 0,
                 Comune = i?.Localita?.Citta ?? i?.Localita?.Indirizzo,
                 //KmCiv = i?.Localita?.Indirizzo,
@@ -75,7 +76,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 {
                     SiglaSquadra = string.Join(", ", p.Partenza.Squadre.Select(s => s.Codice)),
                     CodMezzo = p.CodiceMezzo,
-                    //CapoPartenza = p.Partenza.Squadre.SelectMany(s => s.Membri.Where(m => m.CapoPartenza).Select(m => m.Nominativo)).FirstOrDefault(),
+                    CapoPartenza = p.Partenza.Squadre.SelectMany(s => s.Membri.Where(m => m.DescrizioneQualifica.ToUpper().Equals("TEAM_LEADER")).Select(m => m.Nominativo?.ToLower())).FirstOrDefault(),
                     MezzoInUscita = p.DataOraInserimento,
                     MezzoSulPosto = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is ArrivoSulPosto)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
                     MezzoInRientro = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaInRientro)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
@@ -87,10 +88,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
 
             var form = new RiepilogoInterventiModelForm()
             {
-                lstRiepiloghi = (query.Filtri?.AltriFiltri?.TipologiaIntervento ?? false) ? lstRiepiloghi.GroupBy(r => r.Tipologie).SelectMany(r => r).ToList() : lstRiepiloghi.ToList(),
+                lstRiepiloghi = (query.Filtri?.AltriFiltri?.TipologiaIntervento ?? false) 
+                    ? lstRiepiloghi.OrderByDescending(r => r.Tipologie).ToList() 
+                    : lstRiepiloghi.ToList(),
                 A = query.Filtri.A,
                 Da = query.Filtri.Da,
-                DescComando = distaccamento.Result.Descrizione,
+                DescComando = distaccamento.Descrizione,
                 TotInterventi = lstInterventi.Count
             };
 
