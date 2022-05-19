@@ -7,6 +7,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -34,6 +35,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private readonly ISetComposizioneMezzi _setComposizioneMezzi;
 
+        private readonly IGetRichiesta _getRichiesta;
+
         private readonly IGetSedi _getSedi;
         private readonly IGetSottoSediByCodSede _getSottoSedi;
 
@@ -45,7 +48,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             IGetStatoMezzi getMezziPrenotati, IGetStatoSquadra getStatoSquadre,
             IGetSquadre getSquadre, IGetMezziUtilizzabili getMezziUtilizzabili,
             IOrdinamentoMezzi ordinamento, ISetComposizioneMezzi setComposizioneMezzi,
-            IGetTurno getTurno, IGetSottoSediByCodSede getSottoSedi)
+            IGetTurno getTurno, IGetSottoSediByCodSede getSottoSedi, IGetRichiesta getRichiesta)
         {
             _getSedi = getSedi;
             _getMezziPrenotati = getMezziPrenotati;
@@ -55,6 +58,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _ordinamento = ordinamento;
             _setComposizioneMezzi = setComposizioneMezzi;
             _getSottoSedi = getSottoSedi;
+            _getRichiesta = getRichiesta;
 
             TurnoAttuale = getTurno.Get();
             TurnoPrecedente = getTurno.Get(TurnoAttuale.DataOraInizio.AddMinutes(-1));
@@ -193,7 +197,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 break;
 
                             case Costanti.MezzoSulPosto:
-                                mc.IndirizzoIntervento = query.Richiesta.Localita.Indirizzo;
+                                mc.IndirizzoIntervento = _getRichiesta.GetByCodice(statoMezzo.CodiceRichiesta).Localita.Indirizzo;
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                                 mc.Km = "0";
                                 break;
