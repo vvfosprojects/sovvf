@@ -74,15 +74,20 @@
         </div>
     </ng-container>
     <!-- Tipologia Richiesta  -->
-    <div class="col-3">
-        <ng-container *ngIf="tipologieRichiesta?.length">
+    <ng-container *ngIf="showTipologia && tipologieRichiesta?.length">
+        <div class="col-3">
             <div [ngbTooltip]="tipologieRichiesta[0]?.descrizione"
                  [disableTooltip]="tipologieRichiesta[0]?.descrizione.length < 23">
                 <i class="fa-fw mr-1 {{ methods.coloraIcona(tipologieRichiesta[0]) }}"></i>
                 {{ tipologieRichiesta[0]?.descrizione | truncate: 23 }}
             </div>
-        </ng-container>
-    </div>
+        </div>
+    </ng-container>
+    <!-- Tipologia Richiesta  -->
+    <ng-container *ngIf="showTipologia && !tipologieRichiesta?.length">
+        <div class="col-3">
+        </div>
+    </ng-container>
     <!-- Eventi -->
     <ng-container *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta">
         <div class="col-1">
