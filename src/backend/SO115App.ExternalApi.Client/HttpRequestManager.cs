@@ -59,6 +59,9 @@ namespace SO115App.ExternalAPI.Client
             Stopwatch stopWatch = new Stopwatch();
             Log.Information($"--------------------------- INIZIO GET ASYNC BEARER {url.AbsoluteUri} --------------------------- {DateTime.Now}");
             Log.Information(url.AbsoluteUri);
+            if (token != null)
+                Log.Information($"Token: {token}");
+
             stopWatch.Start();
 
             if (token != null)
@@ -80,6 +83,8 @@ namespace SO115App.ExternalAPI.Client
             Stopwatch stopWatch = new Stopwatch();
             Log.Information($"--------------------------- INIZIO GET ASYNC BASIC {url.AbsoluteUri} --------------------------- {DateTime.Now}");
             Log.Information(url.AbsoluteUri);
+            Log.Information($"Username: {username}");
+            Log.Information($"Password: {password}");
             stopWatch.Start();
             _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
 
@@ -97,6 +102,17 @@ namespace SO115App.ExternalAPI.Client
             Stopwatch stopWatch = new Stopwatch();
             Log.Information($"--------------------------- INIZIO POST ASYNC {url.AbsoluteUri} --------------------------- {DateTime.Now}");
             Log.Information(url.AbsoluteUri);
+
+            if (content != null)
+                Log.Information($"CONTENT: {content}");
+            else
+                Log.Information($"CONTENT: NULL");
+
+            if (token != null)
+                Log.Information($"CONTENT: {token}");
+            else
+                Log.Information($"TOKEN: NULL");
+
             stopWatch.Start();
 
             content.Headers.ContentType = getMediaType();
@@ -120,6 +136,17 @@ namespace SO115App.ExternalAPI.Client
             Stopwatch stopWatch = new Stopwatch();
             Log.Information($"--------------------------- INIZIO POST ASYNC FORM DATA {url.AbsoluteUri} --------------------------- {DateTime.Now}");
             Log.Information(url.AbsoluteUri);
+
+            if (content != null)
+                Log.Information($"CONTENT: {content}");
+            else
+                Log.Information($"CONTENT: NULL");
+
+            if (token != null)
+                Log.Information($"CONTENT: {token}");
+            else
+                Log.Information($"TOKEN: NULL");
+
             stopWatch.Start();
 
             if (token != null)
