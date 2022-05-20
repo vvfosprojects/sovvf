@@ -159,7 +159,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public async Task<List<MezzoDTO>> GetInfo(List<string> codiciMezzi)
         {
-            if(codiciMezzi == null || codiciMezzi.Count == 0) 
+            if (codiciMezzi == null || codiciMezzi.Count == 0)
                 return null;
 
             var token = _getToken.GeneraToken();
@@ -318,7 +318,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     Appartenenza = mezzoDto.CodiceDistaccamento,
                     Distaccamento = sede,
                     Coordinate = new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0),
-                    Istituto = mezzoDto.Istituto
+                    Istituto = mezzoDto.Istituto,
+                    Sigla = mezzoDto.Sigla,
+                    Modello = mezzoDto.Modello
                 };
             }
             catch (Exception e)
