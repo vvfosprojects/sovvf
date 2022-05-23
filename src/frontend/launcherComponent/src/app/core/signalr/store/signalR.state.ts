@@ -11,8 +11,6 @@ import {
     ClearCodiceSede,
     LogoffUtenteSignalR
 } from './signalR.actions';
-import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../shared/enum/toastr';
 import { SignalRNotification } from '../model/signalr-notification.model';
 import { SignalRService } from '../signalR.service';
 import { difference } from 'lodash';
@@ -71,7 +69,7 @@ export class SignalRState {
     }
 
     @Action(SignalRHubConnesso)
-    signalRConnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>): void {
+    signalRConnesso({ getState, patchState }: StateContext<SignalRStateModel>): void {
         const state = getState();
         const reconnected = state.disconnected ? true : null;
         if (reconnected) {
@@ -100,12 +98,9 @@ export class SignalRState {
     }
 
     @Action(SignalRHubDisconnesso)
-    signalRDisconnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>): void {
+    signalRDisconnesso({ getState, patchState }: StateContext<SignalRStateModel>): void {
         const state = getState();
         const disconnected = state.connected ? true : null;
-        // if (disconnected) {
-        //     dispatch(new ShowToastr(ToastrType.Error, 'signalR', 'Sei disconnesso!', 0, false, true));
-        // }
         patchState({
             connected: SignalRStateDefaults.connected,
             reconnected: false,

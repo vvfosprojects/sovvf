@@ -55,10 +55,6 @@ export class InitSaveMergeSchedeContatto {
     static readonly type = '[Merge Schede Contatto] Init Save Merge Schede Contatto';
 }
 
-export class CheckboxError {
-    static readonly type = '[Merge Schede Contatto] Checkbox Error';
-}
-
 export class ClearMergeSchedeContatto {
     static readonly type = '[Merge Schede Contatto] Clear State';
 }

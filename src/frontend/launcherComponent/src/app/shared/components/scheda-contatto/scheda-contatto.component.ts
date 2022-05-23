@@ -34,7 +34,6 @@ export class SchedaContattoComponent implements OnChanges {
     @Output() setSchedaContattoTelefonata: EventEmitter<SchedaContatto> = new EventEmitter<SchedaContatto>();
     @Output() setSchedaContattoGestita: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() editSelezionata: EventEmitter<CheckboxInterface> = new EventEmitter<CheckboxInterface>();
-    @Output() checkBoxError: EventEmitter<any> = new EventEmitter<any>();
     @Output() collapsed: EventEmitter<string> = new EventEmitter<string>();
     @Output() undoRaggruppamento: EventEmitter<string> = new EventEmitter<string>();
 
@@ -134,12 +133,6 @@ export class SchedaContattoComponent implements OnChanges {
     checkMessage(): string {
         if (this.schedeContattoSelezionate.length > 0) {
             return this.checkDisabled() ? 'Non selezionabile' : 'Selezionabile';
-        }
-    }
-
-    onCheckBoxClick(): void {
-        if (this.checkDisabled()) {
-            this.checkBoxError.emit();
         }
     }
 
