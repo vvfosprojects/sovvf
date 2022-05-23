@@ -24,7 +24,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
-import { CheckboxError, ClearMergeSchedeContatto, InitSaveMergeSchedeContatto, SetMergeSchedaId, ToggleModalitaMerge } from '../store/actions/schede-contatto/merge-schede-contatto.actions';
+import { ClearMergeSchedeContatto, InitSaveMergeSchedeContatto, SetMergeSchedaId, ToggleModalitaMerge } from '../store/actions/schede-contatto/merge-schede-contatto.actions';
 import { CheckboxInterface } from '../../../shared/interface/checkbox.interface';
 import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -209,10 +209,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     onEditSchedaSelezionata($event: CheckboxInterface): void {
         this.store.dispatch(new SetMergeSchedaId($event.object));
-    }
-
-    onCheckboxError(): void {
-        this.store.dispatch(new CheckboxError());
     }
 
     onSaveMerge(): void {

@@ -1,10 +1,8 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { AddScheda, AddSchedaId, CheckboxError, ClearMergeSchedeContatto, InitSaveMergeSchedeContatto, RemoveScheda, RemoveSchedaId, SetMergeClassificazione, SetMergeSchedaId, ToggleModalitaMerge } from '../../actions/schede-contatto/merge-schede-contatto.actions';
+import { AddScheda, AddSchedaId, ClearMergeSchedeContatto, InitSaveMergeSchedeContatto, RemoveScheda, RemoveSchedaId, SetMergeClassificazione, SetMergeSchedaId, ToggleModalitaMerge } from '../../actions/schede-contatto/merge-schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { SaveMergeSchedeContatto } from '../../actions/schede-contatto/schede-contatto.actions';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { Injectable } from '@angular/core';
 import { SchedaContatto } from '../../../../../shared/interface/scheda-contatto.interface';
 import { AddConcorrenzaDtoInterface } from '../../../../../shared/interface/dto/concorrenza/add-concorrenza-dto.interface';
@@ -137,12 +135,6 @@ export class MergeSchedeContattoState {
                 schedeSelezionate: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === payload.codiceScheda)
             })
         );
-    }
-
-    @Action(CheckboxError)
-    checkboxError({ getState, dispatch }: StateContext<MergeSchedeContattoStateModel>): void {
-        const plural = getState().schedeSelezionateId.length > 1 ? 'e' : 'a';
-        dispatch(new ShowToastr(ToastrType.Warning, 'Selezione scheda contatto', `Impossibile unire una scheda con una classificazione differente da quell${plural} già selezionat${plural}`, null, null, true));
     }
 
     @Action(InitSaveMergeSchedeContatto)

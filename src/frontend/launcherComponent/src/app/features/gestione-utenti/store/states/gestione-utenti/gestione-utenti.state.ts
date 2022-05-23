@@ -22,8 +22,6 @@ import { PatchPagination } from '../../../../../shared/store/actions/pagination/
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
 import { Ruolo, Utente } from '../../../../../shared/model/utente.model';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
@@ -199,7 +197,6 @@ export class GestioneUtentiState {
                     patch(
                         insertItem(utente)
                     );
-                    dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
                 }
             }
         );
@@ -232,7 +229,6 @@ export class GestioneUtentiState {
         });
 
         this.gestioneUtenti.addRuoloUtente(obj).subscribe(() => {
-            dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
         });
 
         // Clear data
@@ -266,13 +262,11 @@ export class GestioneUtentiState {
                 listaUtenti: removeItem<Utente>(u => u.id === action.idUtente)
             })
         );
-        dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
     }
 
     @Action(RemoveRuoloUtente)
     removeRuoloUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveRuoloUtente): void {
         this.gestioneUtenti.removeRuoloUtente(action.codFiscale, action.ruolo).subscribe(() => {
-            dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Rimosso', 'Ruolo Utente rimosso con successo.', 3));
         });
     }
 

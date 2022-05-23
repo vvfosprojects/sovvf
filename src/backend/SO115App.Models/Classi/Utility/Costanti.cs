@@ -23,36 +23,36 @@ namespace SO115App.Models.Classi.Utility
     {
         #region CondivisaAuthorization
 
-        public const string UtenteNonAutorizzato = "Utente non autorizzato";
-        public const string DatiMancanti = "Dati Mancanti";
-        public const string MezzoPrenotato = "Il mezzo risulta già prenotato. Non è possibile confermare l'operazione";
-        public const string SquadraPrenotata = "La squadra risulta già prenotata. Non è possibile confermare l'operazione";
-        public const string InterventoBloccato = "L'intervento risulta attualmente in lavorazione da un altro operatore. Non è possibile effettuare operazioni.";
-        public const string CompetenzeNonPresenti = "Non risultano inserite le competenze. Non è possibile inserire l'intervento";
+        public const string UtenteNonAutorizzato = "1* Utente non autorizzato";
+        public const string DatiMancanti = "1* Dati Mancanti";
+        public const string MezzoPrenotato = "1*  Il mezzo risulta già prenotato. Non è possibile confermare l'operazione";
+        public const string SquadraPrenotata = "1* La squadra risulta già prenotata. Non è possibile confermare l'operazione";
+        public const string InterventoBloccato = "1* L'intervento risulta attualmente in lavorazione da un altro operatore. Non è possibile effettuare operazioni.";
+        public const string CompetenzeNonPresenti = "1* Non risultano inserite le competenze. Non è possibile inserire l'intervento";
 
         #endregion CondivisaAuthorization
 
         #region CondivisaValidator
 
-        public const string RuoloUtentePresente = "Ruolo già presente nella sede selezionata. Oppure in una sede gerarchicamente superiore";
-        public const string RichiestaEsistente = "Risulta già presente una richiesta nelle vicinanze di quella che si sta inserendo. Si vuole procedere ugualmente con l'inserimento?";
+        public const string RuoloUtentePresente = "1* Ruolo già presente nella sede selezionata. Oppure in una sede gerarchicamente superiore";
+        public const string RichiestaEsistente = "1* Risulta già presente una richiesta nelle vicinanze di quella che si sta inserendo. Si vuole procedere ugualmente con l'inserimento?";
 
-        public const string PartenzaGiaPresente = "Risulta già una partenza con il mezzo selezionato. Comporre una nuova partenza.";
-        public const string CoordinateErrate = "Le coordinate inserite non risultano corrette. Si prega di reinserirle.";
+        public const string PartenzaGiaPresente = "1* Risulta già una partenza con il mezzo selezionato. Comporre una nuova partenza.";
+        public const string CoordinateErrate = "1* Le coordinate inserite non risultano corrette. Si prega di reinserirle.";
 
-        public const string PresenteNomeNonCognome = "E' presente il nome del richiedente ma non il suo cognome";
-        public const string NominativoNonPresente = "Il nominativo del richiedente non è presente";
+        public const string PresenteNomeNonCognome = "1* E' presente il nome del richiedente ma non il suo cognome";
+        public const string NominativoNonPresente = "1* Il nominativo del richiedente non è presente";
 
         public const string SelezionataPersonaFisica =
-            "Se è presente un nominativo per una persona fisica non può essere presente una ragione sociale";
+            "1* Se è presente un nominativo per una persona fisica non può essere presente una ragione sociale";
 
-        public const string IdOperatoreNonValido = "Id Operatore non valido";
-        public const string IdRichiestaNonValida = "Codice Richiesta non valido";
-        public const string MezzoNonPresente = "Il mezzo non è presente";
-        public const string StatoNonValido = "Lo stato della richiesta non è valido";
+        public const string IdOperatoreNonValido = "1* Id Operatore non valido";
+        public const string IdRichiestaNonValida = "1* Codice Richiesta non valido";
+        public const string MezzoNonPresente = "1* Il mezzo non è presente";
+        public const string StatoNonValido = "1* Lo stato della richiesta non è valido";
 
         public const string AggiuntoUnEventoPrecedenteAlPiuRecente =
-            "Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.";
+            "1* Impossibile aggiungere un evento ad una richiesta che ne ha già uno più recente.";
 
         #endregion CondivisaValidator
 
@@ -65,7 +65,7 @@ namespace SO115App.Models.Classi.Utility
         public const string RichiestaSospesa = "Sospesa";
         public const string RichiestaRiaperta = "Riaperta";
         public const string RichiestaModificata = "Modificata";
-        public const string ErroreRichiestaChiusa = "L'operazione richiesta non più essere eseguita. L'intervento risulta chiuso. Riaprirlo per poter operare. ";
+        public const string ErroreRichiestaChiusa = "1* L'operazione richiesta non più essere eseguita. L'intervento risulta chiuso. Riaprirlo per poter operare. ";
 
         public const string EmergenzaCreazione = "Creata Emergenza";
         public const string EmergenzaModifica = "Modificata Emergenza";
@@ -96,8 +96,8 @@ namespace SO115App.Models.Classi.Utility
         public const string MezzoDisponibile = "DISPONIBILE";
         public const string MezzoOperativoPreaccoppiato = "Operativo Preaccoppiato";
         public const string MezzoAssegnatoPreaccoppiato = "Assegnato Preaccoppiato";
-        public const string MezzoErroreCambioStatoRichiestaChiusa = "Lo stato del mezzo non può essere cambiato in una richiesta chiusa.";
-        public const string MezzoErroreGiaOccupato = "Il mezzo risulta già occupato. Selezionarne un altro.";
+        public const string MezzoErroreCambioStatoRichiestaChiusa = "1* Lo stato del mezzo non può essere cambiato in una richiesta chiusa.";
+        public const string MezzoErroreGiaOccupato = "1* Il mezzo risulta già occupato. Selezionarne un altro.";
 
         #endregion StatiMezzi
 
@@ -154,9 +154,9 @@ namespace SO115App.Models.Classi.Utility
 
         #region POS
 
-        public const string POSFileNonPresente = "Il file non risulta allegato alla richiesta";
-        public const string POSDescrizioneNonPresente = "Non risulta essere presente la descrizione";
-        public const string POSTipologiaNonPresente = "Associare una tipologia alla POS";
+        public const string POSFileNonPresente = "1* Il file non risulta allegato alla richiesta";
+        public const string POSDescrizioneNonPresente = "1* Non risulta essere presente la descrizione";
+        public const string POSTipologiaNonPresente = "1* Associare una tipologia alla POS";
 
         #endregion POS
 

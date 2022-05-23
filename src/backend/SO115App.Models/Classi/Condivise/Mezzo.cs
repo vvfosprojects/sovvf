@@ -115,6 +115,10 @@ namespace SO115App.API.Models.Classi.Condivise
         public List<IstanteCambioStato> IstantiCambiStato { get; set; } = null;
 
         public bool Istituto { get; set; }
+
+        public string Sigla { get; set; }
+
+        public string Modello { get; set; }
     }
 
     public class IstanteCambioStato

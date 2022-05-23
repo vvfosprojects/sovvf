@@ -56,8 +56,6 @@ import { RoutesPath } from '../../../../../shared/enum/routes-path.enum';
 import { Pca } from '../../../interface/pca.interface';
 import { PcaForm } from '../../../interface/pca-form.interface';
 import { ResetForm, UpdateFormValue } from '@ngxs/form-plugin';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { RichiestaModuliZonaEmergenzaForm } from '../../../interface/richiesta-moduli-form.interface';
 import { RichiestaCraZonaEmergenzaForm } from '../../../interface/richiesta-cra-doa-form.interface';
 import { ModuloColonnaMobile } from '../../../interface/modulo-colonna-mobile.interface';
@@ -933,14 +931,10 @@ export class ZoneEmergenzaState {
             dispatch([
                 new GetZoneEmergenza(),
                 new StopLoadingZoneEmergenza(),
-                new ShowToastr(ToastrType.Success, 'Gestione Emergenza', 'Salvataggio avvenuto con successo', 3),
                 new Navigate(['/' + RoutesPath.ZoneEmergenza + '/detail-sedi/' + state.zonaEmergenzaById.id])
             ]);
         }, () => {
-            dispatch([
-                new StopLoadingZoneEmergenza(),
-                new ShowToastr(ToastrType.Error, 'Gestione Emergenza', 'Errore nel salvataggio', 3),
-            ]);
+            dispatch(new StopLoadingZoneEmergenza());
         });
     }
 }
