@@ -34,7 +34,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                     this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore Competenze', 'Il servizio di reperimento competenze non è al momento raggiungibile, si prega di inserirle manualmente', null, null));
                 } else {
                     if (errorMsg?.split(' ')[0] === '1*') {
-                        this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', errorMsg, null, null));
+                        this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', errorMsg.slice(3), null, null));
                     } else {
                         console.error('Errore applicativo del server');
                     }
