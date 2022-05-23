@@ -117,5 +117,11 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         ///// </summary>
         [JsonPropertyName("istituto")]
         public bool Istituto { get; set; }
+
+        [JsonPropertyName("sigla")]
+        public string Sigla { get; set; }
+
+        [JsonPropertyName("modello")]
+        public string Modello { get; set; }
     }
 }

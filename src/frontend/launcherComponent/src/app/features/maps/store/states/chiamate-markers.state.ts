@@ -2,8 +2,6 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { ChiamateMarkerService } from '../../../../core/service/maps-service';
-import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../shared/enum/toastr';
 import { SchedaTelefonataState } from '../../../home/store/states/form-richiesta/scheda-telefonata.state';
 import { ClearIndirizzo } from '../../../home/store/actions/form-richiesta/scheda-telefonata.actions';
 import { GetInitCentroMappa } from '../actions/centro-mappa.actions';
@@ -64,10 +62,7 @@ export class ChiamateMarkersState {
             ]);
         }, error => {
             console.error(error);
-            dispatch([
-                new StopLoadingChiamateMarkers(),
-                new ShowToastr(ToastrType.Error, 'Reperimento delle chiamate fallito', 'Si è verificato un errore, riprova.', 5)
-            ]);
+            dispatch(new StopLoadingChiamateMarkers());
         });
     }
 
@@ -110,10 +105,7 @@ export class ChiamateMarkersState {
                     dispatch(new StopLoadingChiamateMarkers());
                 }, error => {
                     console.error(error);
-                    dispatch([
-                        new StopLoadingChiamateMarkers(),
-                        new ShowToastr(ToastrType.Error, 'Cancellazione della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5)
-                    ]);
+                    dispatch(new StopLoadingChiamateMarkers());
                 });
             }
         }

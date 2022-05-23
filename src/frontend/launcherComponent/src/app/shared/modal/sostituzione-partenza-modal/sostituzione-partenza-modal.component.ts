@@ -1,10 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import {
-    GetListaMezziSquadre,
-    IdRichiestaSostituzione,
-    StartListaComposizioneLoading,
-} from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { GetListaMezziSquadre, IdRichiestaSostituzione, StartListaComposizioneLoading } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
@@ -33,12 +29,7 @@ import {
 } from '../../store/actions/squadre-composizione/squadre-composizione.actions';
 import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
-import {
-    ResetRicercaMezziComposizione,
-    ResetRicercaSquadreComposizione,
-    SetRicercaMezziComposizione,
-    SetRicercaSquadreComposizione
-} from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { ResetRicercaMezziComposizione, ResetRicercaSquadreComposizione, SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Partenza } from '../../model/partenza.model';
@@ -121,6 +112,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         codice: '',
         descrizione: '',
         genere: '',
+        sigla: null,
+        modello: null,
         stato: null,
         appartenenza: null,
         distaccamento: null,
@@ -326,6 +319,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             codice: '',
             descrizione: '',
             genere: '',
+            sigla: null,
+            modello: null,
             stato: null,
             appartenenza: null,
             distaccamento: null,
