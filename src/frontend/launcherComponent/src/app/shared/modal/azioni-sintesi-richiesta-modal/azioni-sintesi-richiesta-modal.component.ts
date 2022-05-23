@@ -272,6 +272,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice]));
                 switch (res.status) {
                     case 'ok' :
+                        console.log('Chiusa finestra di allerta comando => res.result', res.result);
                         this.store.dispatch(new AllertaSede(res.result));
                         break;
                     case 'ko':
