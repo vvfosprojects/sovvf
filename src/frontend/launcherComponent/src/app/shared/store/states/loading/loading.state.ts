@@ -60,14 +60,14 @@ export class LoadingState {
     @Action(RemoveAnnullaStatoMezzi)
     removeAnnullaStatoMezzi({ getState, setState, patchState }: StateContext<LoadingStateModel>, action: RemoveAnnullaStatoMezzi): void {
         const state = getState();
-        if (action.stato) {
-            setState(
-                patch({
-                    annullaStatoMezzi: removeItem<InfoMezzo>(mezzo => mezzo.codMezzo === action.codMezzi[0] && mezzo.stato === action.stato)
-                })
-            );
-        } else {
-            if (state.annullaStatoMezzi?.length) {
+        if (state.annullaStatoMezzi?.length) {
+            if (action.stato) {
+                setState(
+                    patch({
+                        annullaStatoMezzi: removeItem<InfoMezzo>(mezzo => mezzo.codMezzo === action.codMezzi[0] && mezzo.stato === action.stato)
+                    })
+                );
+            } else {
                 const annullaStatoMezziCopy = makeCopy(state.annullaStatoMezzi);
                 const newAnnullaStatoMezzi = annullaStatoMezziCopy.filter((mezzo: InfoMezzo) => !action.codMezzi.includes(mezzo.codMezzo));
                 patchState({
