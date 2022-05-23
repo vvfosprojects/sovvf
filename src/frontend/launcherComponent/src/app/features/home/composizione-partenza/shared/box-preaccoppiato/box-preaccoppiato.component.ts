@@ -167,7 +167,7 @@ export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
         const prefix = 'fa ';
         let icon = 'fa-exclamation-triangle';
         const squadra2 = this.partenzaPreAccopiati.squadre.length ? 'squadra-si' : 'squadra-no';
-        const mezzo2 = this.partenzaPreAccopiati.codiceMezzo && (this.partenzaPreAccopiati.statoMezzo === StatoMezzo.InSede || this.partenzaPreAccopiati.codiceMezzo === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
+        const mezzo2 = this.partenzaPreAccopiati.codiceMezzo && this.partenzaPreAccopiati.statoMezzo === StatoMezzo.InSede ? 'mezzo-si' : 'mezzo-no';
 
         switch (mezzo2 + '|' + squadra2) {
             case 'mezzo-si|squadra-no':
