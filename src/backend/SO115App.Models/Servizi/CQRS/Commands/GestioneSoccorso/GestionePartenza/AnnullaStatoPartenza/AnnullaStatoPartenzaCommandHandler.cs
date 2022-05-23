@@ -78,7 +78,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var partenza = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Single(p => p.CodicePartenza.Equals(command.CodicePartenza));
 
             if (adesso >= ultimoMovimento.DataOraInserimento.AddMinutes(1))
-                throw new Exception($"Annullamento non più disponibile per il mezzo {command.CodicePartenza}.");
+                throw new Exception($"1* Annullamento non più disponibile per il mezzo {command.CodicePartenza}.");
 
             command.StatoMezzo = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
 
@@ -89,7 +89,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
                     .Where(e => e is not AnnullamentoStatoPartenza && e is not Revoca)
                     .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza))
-                    .Where(e => e.DataOraInserimento < ultimoMovimento.DataOraInserimento) 
+                    .Where(e => e.DataOraInserimento < ultimoMovimento.DataOraInserimento)
                     .Last();
 
                 switch (eventoPrecedente.TipoEvento)
@@ -185,7 +185,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 command.Chiamata = _mapper.Map(command.Richiesta);
             }
             else
-                throw new Exception("Non è possibile annullare lo stato");
+                throw new Exception("1* Non è possibile annullare lo stato");
         }
     }
 }

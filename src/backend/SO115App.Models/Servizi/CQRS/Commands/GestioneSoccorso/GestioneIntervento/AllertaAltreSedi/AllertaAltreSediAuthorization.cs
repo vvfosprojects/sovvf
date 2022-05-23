@@ -81,7 +81,7 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
                     var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { Competenze.ToArray()[0].Split('.')[0] + ".1000" });
 
                     if (!_isActionFree.Check(TipoOperazione.Allerta, user.Id, listaSediInteressate.ToArray(), command.Chiamata.Codice))
-                        yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+                        yield return new AuthorizationResult(Costanti.InterventoOccupato);
 
                     #endregion Concorrenza
 

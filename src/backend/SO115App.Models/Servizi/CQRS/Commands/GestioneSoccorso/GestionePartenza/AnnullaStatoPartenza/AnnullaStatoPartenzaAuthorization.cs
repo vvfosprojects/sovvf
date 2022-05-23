@@ -71,10 +71,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     #region CONCORRENZA
 
                     if (!_isActionFree.Check(TipoOperazione.CambioStatoPartenza, command.IdOperatore, listaSediInteressate.ToArray(), command.TargaMezzo))
-                        yield return new AuthorizationResult($"La partenza risulta avere il mezzo o le squadre già utilizzati da un altro operatore.");
+                        yield return new AuthorizationResult(Costanti.MezzoSquadraOccupati);
 
-                    #endregion
-
+                    #endregion CONCORRENZA
 
                     if (command.Richiesta.Chiusa)
                         yield return new AuthorizationResult(Costanti.MezzoErroreCambioStatoRichiestaChiusa);
