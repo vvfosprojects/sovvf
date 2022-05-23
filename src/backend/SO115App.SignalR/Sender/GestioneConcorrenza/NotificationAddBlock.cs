@@ -48,6 +48,7 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
                 {
                     sintesiRichiesta = _getSintesiById.GetSintesi(sintesi[0].Value);
                     sediAllertate = sintesiRichiesta.CodSOAllertate.ToList();
+                    sediAllertate.Add(sintesiRichiesta.CodSOCompetente);
                 }
             }
 
