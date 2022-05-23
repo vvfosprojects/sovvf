@@ -390,6 +390,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
                 size: 'xl',
             } as NgbModalOptions;
         }
+        this.store.dispatch(new ClearRichiestaAzioni());
         const modal = this.modalService.open(AzioniSintesiRichiestaModalComponent, modalOptions);
         this.store.dispatch(new SetRichiestaAzioni(this.richiesta.codice));
         modal.result.then(() => {

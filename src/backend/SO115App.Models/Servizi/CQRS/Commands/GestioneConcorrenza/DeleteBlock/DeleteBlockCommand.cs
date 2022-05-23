@@ -1,4 +1,5 @@
 ﻿using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Concorrenza;
 using System.Collections.Generic;
 
@@ -14,5 +15,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
         public string CodiceSede { get; set; }
         public Utente utente { get; set; }
         public List<string> listaSediDaAllertare { get; set; }
+        public SintesiRichiesta RichiestaSintesi { get; set; }
     }
 }

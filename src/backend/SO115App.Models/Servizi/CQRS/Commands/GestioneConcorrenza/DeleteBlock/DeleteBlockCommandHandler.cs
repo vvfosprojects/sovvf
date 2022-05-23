@@ -18,11 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
@@ -46,7 +46,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
         {
             try
             {
-                var sediDaAllertare = new List<string>();
+                var richiesta = new SintesiRichiesta();
+
                 var listaBlocchiSede = _getAllBlocks.GetAll(new string[] { command.CodiceSede });
                 var blocchiInteressati = listaBlocchiSede.FindAll(c => (!c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))
                                                                                 && (c.Type.Equals(TipoOperazione.Richiesta)
@@ -60,7 +61,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
 
                 if (blocchiInteressati.Count > 0)
                 {
-                    command.listaSediDaAllertare = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => (!c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))
+                    richiesta = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => (!c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))
                                                                                 && (c.Type.Equals(TipoOperazione.Richiesta)
                                                                                 || c.Type.Equals(TipoOperazione.ChiusuraChiamata)
                                                                                 || c.Type.Equals(TipoOperazione.ChiusuraIntervento)
@@ -68,8 +69,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
                                                                                 || c.Type.Equals(TipoOperazione.Trasferimento)
                                                                                 || c.Type.Equals(TipoOperazione.Allerta)
                                                                                 || c.Type.Equals(TipoOperazione.Fonogramma)
-                                                                                || c.Type.Equals(TipoOperazione.EntiIntervenuti)))[0].Value).CodSOAllertate.ToList();
+                                                                                || c.Type.Equals(TipoOperazione.EntiIntervenuti)))[0].Value);
+
                 }
+
+                command.listaSediDaAllertare = richiesta.CodSOAllertate.ToList();
+                command.listaSediDaAllertare.Add(richiesta.CodSOCompetente);
 
                 foreach (var id in command.ListaIdConcorrenza)
                 {
