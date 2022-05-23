@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock;
-using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneConcorrenza;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneConcorrenza
@@ -31,7 +26,6 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
             if (command.listaSediDaAllertare != null)
             {
                 SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede, command.listaSediDaAllertare.ToArray());
-                SediDaNotificare.Add(command.CodiceSede);
             }
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede);
