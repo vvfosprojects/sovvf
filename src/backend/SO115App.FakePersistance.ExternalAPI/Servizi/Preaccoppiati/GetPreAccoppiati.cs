@@ -5,6 +5,7 @@ using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Classi.ServiziEsterni.OPService;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
@@ -59,7 +60,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             var lstProvinceSedi = query.CodiceSede.Select(sede => sede.Split('.')[0]).Distinct();
             var lstSquadreWS = lstProvinceSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede).Result).ToList();
 
-            var lstSquadre = new List<Models.Classi.ServiziEsterni.OPService.SquadraOpService>();
+            var lstSquadre = new List<SquadraOpService>();
 
             var result = new List<PreAccoppiato>();
 
@@ -105,7 +106,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                                 {
                                     Codice = s.Codice,
                                     Nome = s.Codice,
-                                    Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(s.Stato),
+                                    Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(lstStatoSquadre?.FirstOrDefault(ss => ss.IdSquadra.Equals($"{s.Codice}_{s.TurnoAttuale}"))?.StatoSquadra ?? Costanti.MezzoInSede),
                                     Turno = s.TurnoAttuale,
                                     Membri = lstSquadrePreaccoppiate.FirstOrDefault(sq => sq.Codice.Equals(s.Codice))?.Membri.Select(m => new Componente()
                                     {
