@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { RichiestaSganciamentoState } from '../../../features/home/store/states/composizione-partenza/richiesta-sganciamento.state';
-import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
-import { ActionMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 import { Partenza } from '../../model/partenza.model';
 
@@ -29,8 +27,7 @@ export class SganciamentoMezzoModalComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription = new Subscription();
 
-    constructor(public modal: NgbActiveModal,
-                private store: Store) {
+    constructor(public modal: NgbActiveModal) {
     }
 
     ngOnInit(): void {
@@ -56,14 +53,10 @@ export class SganciamentoMezzoModalComponent implements OnInit, OnDestroy {
     }
 
     getPartenzaSganciamento(): Partenza {
-        return this.richiestaSganciamento?.partenze.find((p: Partenza) => p.codiceMezzo === this.codMezzoDaSganciare);
+        return this.richiestaSganciamento?.partenze.find((p: Partenza) => p.codiceMezzo === this.codMezzoDaSganciare && !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata);
     }
 
     getPartenzeNoSganciamento(): Partenza[] {
         return this.richiestaSganciamento?.partenze.filter((p: Partenza) => p.codiceMezzo !== this.codMezzoDaSganciare && !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata);
-    }
-
-    onActionMezzo(actionMezzo: MezzoActionInterface): void {
-        this.store.dispatch(new ActionMezzo(actionMezzo));
     }
 }

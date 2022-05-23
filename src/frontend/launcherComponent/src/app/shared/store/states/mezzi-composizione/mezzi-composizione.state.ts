@@ -358,7 +358,7 @@ export class MezziComposizioneState {
         let partenzaDaSganciare = {} as Partenza;
         this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiesta: SintesiRichiesta) => {
             dispatch(new SetRichiestaSganciamento(richiesta));
-            partenzaDaSganciare = richiesta.partenze?.length ? richiesta.partenze.filter(x => x.partenza.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
+            partenzaDaSganciare = richiesta.partenze?.length ? richiesta.partenze.filter(x => x.partenza.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare && !x.partenza.terminata && !x.partenza.partenzaAnnullata && !x.partenza.sganciata)[0] : null;
             if (richiesta && partenzaDaSganciare) {
                 const partenza = partenzaDaSganciare.partenza;
                 const obj = {
