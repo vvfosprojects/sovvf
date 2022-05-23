@@ -49,7 +49,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTriage.
                     var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.Triage.CodiceSede });
 
                     if (!_isActionFree.Check(TipoOperazione.ModificaTriage, user.Id, listaSediInteressate.ToArray(), command.Triage.Id))
-                        yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+                        yield return new AuthorizationResult(Costanti.InterventoOccupato);
 
                     #endregion Concorrenza
 

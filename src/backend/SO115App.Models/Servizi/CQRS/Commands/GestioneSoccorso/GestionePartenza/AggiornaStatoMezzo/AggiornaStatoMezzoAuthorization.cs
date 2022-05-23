@@ -78,7 +78,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     if (command.Richiesta.CodRichiesta != null)
                         if (!_isActionFree.Check(TipoOperazione.CambioStatoPartenza, user.Id, listaSediInteressate.ToArray(), command.Richiesta.Codice))
-                            yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+                            yield return new AuthorizationResult(Costanti.InterventoOccupato);
 
                     #endregion Concorrenza
 

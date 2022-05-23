@@ -41,10 +41,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
             var sedeDa = listaSedi.Find(s => s.Codice.Equals(command.TrasferimentoChiamata.CodSedeDa)).Descrizione; //_getSedi.GetInfoSede(command.TrasferimentoChiamata.CodSedeDa).Result.Descrizione;
 
             if (!sedeA.ToUpper().Contains("COMANDO"))
-                throw new Exception("Puoi trasferire la chiamata solo verso i comandi");
+                throw new Exception("1* Puoi trasferire la chiamata solo verso i comandi");
 
             if (command.TrasferimentoChiamata.CodSedeA.Equals(command.TrasferimentoChiamata.CodSedeDa))
-                throw new Exception("Si sta provando a trasferire una chiamata allo stesso comando");
+                throw new Exception("1* Si sta provando a trasferire una chiamata allo stesso comando");
 
             var richiesta = _getRichiestaById.GetByCodice(command.TrasferimentoChiamata.CodChiamata);
 

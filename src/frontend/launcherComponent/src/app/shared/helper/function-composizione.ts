@@ -63,6 +63,8 @@ export function mezzoComposizionePreaccoppiatoBusy(stato: StatoMezzo): boolean {
             return true;
         case StatoMezzo.InViaggio:
             return true;
+        case StatoMezzo.InRientro:
+            return true;
         case StatoMezzo.Istituto:
             return true;
         case StatoMezzo.Occupato:

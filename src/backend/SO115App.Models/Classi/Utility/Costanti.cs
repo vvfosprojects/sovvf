@@ -167,5 +167,14 @@ namespace SO115App.Models.Classi.Utility
         public const string ListaPreAccoppiati = "Fake/ListaPreAccoppiati.json";
 
         #endregion FAKE
+
+        #region Concorrenza
+
+        public const string InterventoOccupato = "1* In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita";
+        public const string ChiamataOccupata = "1* In questo momento la chiamata risulta occupata da un altro operatore. L'operazione non può essere eseguita";
+        public const string MezzoSquadraOccupati = "1* La partenza risulta avere il mezzo o le squadre già utilizzati da un altro operatore.";
+        public const string UtenteOccupato = "1* In questo momento l'utente risulta occupato da un altro operatore. L'operazione non può essere eseguita";
+
+        #endregion Concorrenza
     }
 }
