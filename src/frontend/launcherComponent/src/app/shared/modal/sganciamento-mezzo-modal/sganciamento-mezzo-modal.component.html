@@ -27,15 +27,8 @@
                 <div class="col-3">
                     <span class="text-muted">Tipologia:</span> {{ richiestaSganciamento.tipologie[0].descrizione }}
                 </div>
-                <div class="col-3"
-                     [class.text-muted]="!richiestaSganciamento.dettaglioTipologia">
-                    <ng-container *ngIf="richiestaSganciamento.dettaglioTipologia">
-                        <span class="text-muted">Dettaglio Tipologia:</span> {{ richiestaSganciamento.dettaglioTipologia.descrizione }}
-                    </ng-container>
-                    <ng-container *ngIf="!richiestaSganciamento.dettaglioTipologia">
-                        <span class="text-muted">Dettaglio Tipologia:</span>
-                        <span class="text-danger">Nessun dettaglio tipologia</span>
-                    </ng-container>
+                <div class="col-3">
+                    <span class="text-muted">Dettaglio Tipologia:</span> {{ richiestaSganciamento.dettaglioTipologia?.descrizione }}
                 </div>
                 <div class="col-12">
                     <span class="text-muted">Indirizzo:</span>
@@ -47,10 +40,16 @@
                 <div class="col-12 mb-2">
                     <h4 class="font-weight-bolder">Mezzo da sganciare:</h4>
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     <span class="text-muted">Targa:</span> {{ getPartenzaSganciamento().partenza.mezzo.descrizione }}
                 </div>
+                <div class="col-2">
+                    <span class="text-muted">Sigla:</span> {{ getPartenzaSganciamento().partenza.mezzo.sigla }}
+                </div>
                 <div class="col-3">
+                    <span class="text-muted">Modello:</span> {{ getPartenzaSganciamento().partenza.mezzo.modello }}
+                </div>
+                <div class="col-2">
                     <span class="text-muted">Genere:</span> {{ getPartenzaSganciamento().partenza.mezzo.genere }}
                 </div>
                 <div class="col-3">
@@ -69,14 +68,20 @@
                         <div class="col-2">
                             <span class="text-muted">Squadra:</span> {{ partenzaNoSganciamento.partenza.squadre[0].codice }}
                         </div>
-                        <div class="col-2">
+                        <div class="col-1">
                             <span class="text-muted">Turno:</span> {{ partenzaNoSganciamento.partenza.squadre[0].turno }}
+                        </div>
+                        <div class="col-1">
+                            <span class="text-muted">Sigla:</span> {{ partenzaNoSganciamento.partenza.mezzo.sigla }}
+                        </div>
+                        <div class="col-1">
+                            <span class="text-muted">Genere:</span> {{ partenzaNoSganciamento.partenza.mezzo.genere }}
+                        </div>
+                        <div class="col-2">
+                            <span class="text-muted">Modello:</span> {{ partenzaNoSganciamento.partenza.mezzo.modello }}
                         </div>
                         <div class="col-2">
                             <span class="text-muted">Targa:</span> {{ partenzaNoSganciamento.partenza.mezzo.descrizione }}
-                        </div>
-                        <div class="col-2">
-                            <span class="text-muted">Genere:</span> {{ partenzaNoSganciamento.partenza.mezzo.genere }}
                         </div>
                         <div class="col-3">
                             <span class="text-muted">Sede:</span> {{ partenzaNoSganciamento.partenza.mezzo.distaccamento.descrizione }}

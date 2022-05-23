@@ -106,19 +106,17 @@ export class SignalRService {
     }
 
     private registerOnSubscriptionEvents(): void {
-
         /**
-         * Login
+         * Login (avvisa gli altri client che un utente si è collegato alla sua stessa sede)
          */
         this.hubNotification.on('NotifyLogIn', (data: string) => {
             console.log('NotifyLogIn', data);
-            // avvisa gli altri client che un utente si è collegato alla sua stessa sede
-            // this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente collegato:', data, 3, null, true));
         });
+        /**
+         * Logout (avvisa gli altri client che un utente si è scollegato alla sua stessa sede)
+         */
         this.hubNotification.on('NotifyLogOut', (data: string) => {
             console.log('NotifyLogOut', data);
-            // avvisa gli altri client che un utente si è scollegato alla sua stessa sede
-            // this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente disconnesso:', data, 3, null, true));
         });
 
         /**
@@ -137,8 +135,7 @@ export class SignalRService {
             this.store.dispatch([
                 new UpdateRichiesta(updateRichiesta),
                 new UpdateRichiestaSganciamento(),
-                new SetRichiestaAzioni(updateRichiesta.codice),
-                new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3)
+                new SetRichiestaAzioni(updateRichiesta.codice)
             ]);
         });
 
@@ -149,27 +146,23 @@ export class SignalRService {
         this.hubNotification.on('NotifySuccessAFM', (data: any) => {
             console.log('NotifySuccessAFM', data);
             this.store.dispatch([
-                new UpdateRichiesta(data.richiesta),
-                new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM inserita con successo', null, 3)
+                new UpdateRichiesta(data.richiesta)
             ]);
         });
 
         this.hubNotification.on('NotifyErrorAFM', (data: string) => {
             console.log('NotifyErrorAFM:', data);
-            this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
         });
 
         this.hubNotification.on('NotifySuccessAnnullamentoAFM', (data: any) => {
             console.log('NotifySuccessAnnullamentoAFM:', data);
             this.store.dispatch([
-                new UpdateRichiesta(data.richiesta),
-                new ShowToastr(ToastrType.Info, 'Richiesta Soccorso AFM annullata con successo', null, 3)
+                new UpdateRichiesta(data.richiesta)
             ]);
         });
 
         this.hubNotification.on('NotifyErrorAnnullamentoAFM', (data: string) => {
             console.log('NotifyErrorAnnullamentoAFM:', data);
-            this.store.dispatch(new ShowToastr(ToastrType.Error, data, null, 3));
         });
 
         /**
@@ -177,7 +170,6 @@ export class SignalRService {
          */
         this.hubNotification.on('ChangeStateSuccess', (data: boolean) => {
             console.log('ChangeStateSuccess', data);
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Stato Squadra/Mezzi Richiesta', null, 3));
         });
 
         /**
@@ -212,22 +204,19 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetBoxPersonale', (data: BoxPersonale) => {
             console.log('NotifyGetBoxPersonale', data);
             this.store.dispatch([
-                new SetBoxPersonale(data),
-                new ShowToastr(ToastrType.Info, 'Box Personale ricevute da signalR', null, 5)
+                new SetBoxPersonale(data)
             ]);
         });
         this.hubNotification.on('NotifyGetBoxMezzi', (data: BoxMezzi) => {
             console.log('NotifyGetBoxMezzi', data);
             this.store.dispatch([
-                new SetBoxMezzi(data),
-                new ShowToastr(ToastrType.Info, 'Box Mezzi ricevute da signalR', null, 5)
+                new SetBoxMezzi(data)
             ]);
         });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: BoxInterventi) => {
             console.log('NotifyGetBoxInterventi', data);
             this.store.dispatch([
-                new SetBoxRichieste(data),
-                new ShowToastr(ToastrType.Info, 'Box Richieste ricevute da signalR', null, 5)
+                new SetBoxRichieste(data)
             ]);
         });
 
@@ -237,22 +226,19 @@ export class SignalRService {
         this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: { addChiamataInCorso: ChiamataMarker }) => {
             console.log('NotifyChiamataInCorsoMarkerAdd', data);
             this.store.dispatch([
-                new InsertChiamataMarker(data.addChiamataInCorso),
-                new ShowToastr(ToastrType.Info, 'Nuova chiamata in corso sulla mappa', null, 3)
+                new InsertChiamataMarker(data.addChiamataInCorso)
             ]);
         });
         this.hubNotification.on('NotifyChiamataInCorsoMarkerUpdate', (data: { chiamataInCorso: ChiamataMarker }) => {
             console.log('NotifyChiamataInCorsoMarkerUpdate', data);
             this.store.dispatch([
-                new UpdateItemChiamataMarker(data.chiamataInCorso),
-                new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa aggiornata', null, 3)
+                new UpdateItemChiamataMarker(data.chiamataInCorso)
             ]);
         });
         this.hubNotification.on('NotifyChiamataInCorsoMarkerDelete', (id: string) => {
             console.log('NotifyChiamataInCorsoMarkerDelete', id);
             this.store.dispatch([
-                new RemoveChiamataMarker(id),
-                new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa rimossa', null, 3)
+                new RemoveChiamataMarker(id)
             ]);
         });
 
@@ -537,8 +523,8 @@ export class SignalRService {
         if (!SIGNALR_BYPASS) {
             console.warn('addToGroup', notification);
             this.hubNotification.invoke('AddToGroup', notification).then(
-                () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Connessione al gruppo effettuata con successo', null, 3))
-            ).catch(
+                () => {
+                }).catch(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Connessione al gruppo fallita', null, 3))
             );
         }
@@ -548,8 +534,8 @@ export class SignalRService {
         if (!SIGNALR_BYPASS) {
             console.warn('removeToGroup', notification);
             this.hubNotification.invoke('RemoveToGroup', notification).then(
-                () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Disconnessione al gruppo effettuata con successo', null, 3))
-            ).catch(
+                () => {
+                }).catch(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Disconnessione al gruppo fallita', null, 3))
             );
         }

@@ -21,6 +21,14 @@ export class Mezzo {
          */
         public genere: string,
         /**
+         * Sigla del mezzo
+         */
+        public sigla: string,
+        /**
+         * Modello di mezzo
+         */
+        public modello: string,
+        /**
          * Codice dello stato del mezzo (InSede, InViaggio, SulPosto,
          * InRientro, Istituto). Utile a definire il colore del segnale di stato.
          */

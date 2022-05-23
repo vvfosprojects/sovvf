@@ -19,8 +19,6 @@ import {
     UpdateMezzoComposizione
 } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
 import { patch, updateItem } from '@ngxs/store/operators';
-import { ShowToastr } from '../../actions/toastr/toastr.actions';
-import { ToastrType } from '../../../enum/toastr';
 import { AddBoxPartenza, AddMezzoBoxPartenzaSelezionato, UpdateMezzoBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { calcolaTimeout, mezzoComposizioneBusy } from '../../../helper/function-composizione';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
@@ -198,13 +196,7 @@ export class MezziComposizioneState {
                         new AddMezzoBoxPartenzaSelezionato(mezzoComp)
                     ]);
                 }, calcolaTimeout(addBoxPartenza));
-            } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) !== -1) {
-                dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
-            } else if (state.idMezziInPrenotazione.indexOf(mezzoComp.id) !== -1) {
-                dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente', null, null, true));
             }
-        } else {
-            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + action.mezzoComp.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
         }
 
         function getMezzoCompNonPrenotato(store: any, idMezzoComp: string): boolean {
@@ -238,10 +230,6 @@ export class MezziComposizioneState {
                     action.noSelect ? dispatch(new SelectSquadreComposizione(mezzoComp.listaSquadre, true)) : dispatch(new SelectSquadreComposizione(mezzoComp.listaSquadre));
                 }
             }, calcolaTimeout(addBoxPartenza));
-        } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) !== -1) {
-            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
-        } else if (state.idMezziInPrenotazione.indexOf(mezzoComp.id) !== -1) {
-            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente', null, null, true));
         }
 
         function getMezzoCompNonPrenotato(store: any, idMezzoComp: string): boolean {
@@ -275,10 +263,6 @@ export class MezziComposizioneState {
                     dispatch(new SelectSquadreComposizione(mezzoComp.squadrePreaccoppiate, false, true));
                 }
             }, calcolaTimeout(addBoxPartenza));
-        } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) !== -1) {
-            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
-        } else if (state.idMezziInPrenotazione.indexOf(mezzoComp.id) !== -1) {
-            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente', null, null, true));
         }
 
         function getMezzoCompNonPrenotato(store: any, idMezzoComp: string): boolean {

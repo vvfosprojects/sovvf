@@ -1,7 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { GetNewVersion, SetCurrentVersion, SetNewVersion } from '../../actions/nuova-versione/nuova-versione.actions';
-import { ShowToastr } from '../../actions/toastr/toastr.actions';
-import { ToastrType } from '../../../enum/toastr';
 import { VersionInterface } from '../../../interface/version.interface';
 import { Injectable } from '@angular/core';
 import { VersionSoonInterface } from '../../../interface/version-soon.interface';
@@ -53,11 +51,7 @@ export class NewVersionState {
     }
 
     @Action(SetNewVersion)
-    setNewVersion({ getState, patchState, dispatch }: StateContext<NewVersionStateModel>, { newVersion }: SetNewVersion): void {
-        const state = getState();
-        if (state.newVersion && state.newVersion.hash !== newVersion.hash) {
-            dispatch(new ShowToastr(ToastrType.Info, 'Nuova versione disponibile!', 'Premi sul bottone in alto per aggiornare l\'applicazione', 5, true, true));
-        }
+    setNewVersion({ patchState }: StateContext<NewVersionStateModel>, { newVersion }: SetNewVersion): void {
         patchState({ newVersion });
     }
 
