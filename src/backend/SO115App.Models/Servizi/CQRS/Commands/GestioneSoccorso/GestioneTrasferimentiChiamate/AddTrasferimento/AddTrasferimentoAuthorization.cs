@@ -63,7 +63,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
 
                     if (command.Richiesta.CodRichiesta == null)
                         if (!_isActionFree.Check(TipoOperazione.Trasferimento, user.Id, listaSediInteressate.ToArray(), command.Richiesta.Codice))
-                            yield return new AuthorizationResult($"In questo momento la chiamata risulta occupata da un altro operatore. L'operazione non può essere eseguita");
+                            yield return new AuthorizationResult(Costanti.ChiamataOccupata);
 
                     #endregion Concorrenza
 

@@ -74,7 +74,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
                     var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.CodiceSede });
 
                     if (!_isActionFree.Check(TipoOperazione.AggiungiRuoloUtente, userOperatore.Id, listaSediInteressate.ToArray(), command.CodFiscale))
-                        yield return new AuthorizationResult($"In questo momento l'utente risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+                        yield return new AuthorizationResult(Costanti.UtenteOccupato);
 
                     #endregion Concorrenza
 

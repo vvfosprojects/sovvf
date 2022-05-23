@@ -40,7 +40,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
         public IEnumerable<AuthorizationResult> Authorize(AddBlockCommand command)
         {
             command.utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
-            
+
             #region Concorrenza
 
             //Controllo Concorrenza
@@ -49,13 +49,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
             bool isFree = true;
             Parallel.ForEach(command.concorrenza, concorrenza =>
             {
-              concorrenza.NominativoOperatore = command.utente.Nome + " " + command.utente.Cognome;
-              if (!_isActionFree.Check(concorrenza.Type, command.utente.Id, listaSediInteressate.ToArray(), concorrenza.Value))
+                concorrenza.NominativoOperatore = command.utente.Nome + " " + command.utente.Cognome;
+                if (!_isActionFree.Check(concorrenza.Type, command.utente.Id, listaSediInteressate.ToArray(), concorrenza.Value))
                     isFree = false;
             });
 
             if (!isFree)
-                yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+                yield return new AuthorizationResult(Costanti.InterventoOccupato);
 
             #endregion Concorrenza
 

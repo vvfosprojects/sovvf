@@ -80,7 +80,7 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                         });
 
                         if (!isFree)
-                            yield return new AuthorizationResult($"La partenza risulta avere il mezzo o le squadre già utilizzati da un altro operatore.");
+                            yield return new AuthorizationResult(Costanti.MezzoSquadraOccupati);
                     }
                     else
                     {
@@ -97,7 +97,7 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                         });
 
                         if (!isFree)
-                            yield return new AuthorizationResult($"La partenza risulta avere il mezzo o le squadre già utilizzati da un altro operatore.");
+                            yield return new AuthorizationResult(Costanti.MezzoSquadraOccupati);
                     }
 
                     #endregion Concorrenza
