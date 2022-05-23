@@ -22,8 +22,6 @@ import { ClearIdSquadreSelezionate, ClearSelectedSquadreComposizione, SelectSqua
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeID } from '../../../../../shared/helper/function-generiche';
 import produce from 'immer';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearDirection } from '../../../../maps/store/actions/maps-direction.actions';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Injectable } from '@angular/core';
@@ -80,9 +78,6 @@ export class BoxPartenzaState {
         const state = getState();
         if (validateBoxesPartenza(state.boxPartenzaList)) {
             dispatch(new AddBoxPartenza());
-        } else {
-            // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
-            dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Impossibile continuare con la selezione richiesta.', 5));
         }
     }
 
@@ -110,12 +105,7 @@ export class BoxPartenzaState {
                 dispatch(new ClearIdSquadreSelezionate());
                 // seleziono il nuovo box partenza
                 dispatch(new SelectBoxPartenza(id));
-            } else {
-                dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Limite massimo raggiunto.', 5));
             }
-        } else {
-            // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
-            dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Impossibile continuare con la selezione richiesta.', 5));
         }
     }
 

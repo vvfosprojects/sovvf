@@ -46,7 +46,6 @@ export class ListaSchedeContattoComponent {
     @Output() undoMergeSchedaContatto: EventEmitter<any> = new EventEmitter<any>();
     @Output() dettaglioScheda: EventEmitter<any> = new EventEmitter<any>();
     @Output() editSchedaSelezionata: EventEmitter<CheckboxInterface> = new EventEmitter<CheckboxInterface>();
-    @Output() checkboxError: EventEmitter<any> = new EventEmitter<any>();
     @Output() schedaContattoTelefonata: EventEmitter<SchedaContatto> = new EventEmitter<SchedaContatto>();
     @Output() schedaContattoGestita: EventEmitter<any> = new EventEmitter<any>();
     @Output() indietro: EventEmitter<any> = new EventEmitter<any>();
@@ -96,10 +95,6 @@ export class ListaSchedeContattoComponent {
 
     onEditSchedaSelezionata(codiceScheda: CheckboxInterface): void {
         this.editSchedaSelezionata.emit(codiceScheda);
-    }
-
-    onCheckboxError(): void {
-        this.checkboxError.emit();
     }
 
     onSetSchedaContattoTelefonata(scheda: SchedaContatto): void {

@@ -24,7 +24,7 @@ import {
     UndoMergeSchedeContatto
 } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ToggleSchedeContatto } from '../../../features/home/store/actions/view/view.actions';
-import { CheckboxError, ClearMergeSchedeContatto, InitSaveMergeSchedeContatto, SetMergeSchedaId, ToggleModalitaMerge } from '../../../features/home/store/actions/schede-contatto/merge-schede-contatto.actions';
+import { ClearMergeSchedeContatto, InitSaveMergeSchedeContatto, SetMergeSchedaId, ToggleModalitaMerge } from '../../../features/home/store/actions/schede-contatto/merge-schede-contatto.actions';
 import { CheckboxInterface } from '../../interface/checkbox.interface';
 import { NgbActiveModal, NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
@@ -177,10 +177,6 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
 
     onEditSchedaSelezionata($event: CheckboxInterface): void {
         this.store.dispatch(new SetMergeSchedaId($event.object));
-    }
-
-    onCheckboxError(): void {
-        this.store.dispatch(new CheckboxError());
     }
 
     onSaveMerge(): void {

@@ -44,8 +44,6 @@ import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contat
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 import { MergeSchedeContattoState } from './merge-schede-contatto.state';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearMergeSchedeContatto } from '../../actions/schede-contatto/merge-schede-contatto.actions';
 import { DettaglioSchedaContattoModalComponent } from '../../../../../shared/modal/dettaglio-scheda-contatto-modal/dettaglio-scheda-contatto-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -504,10 +502,7 @@ export class SchedeContattoState {
     @Action(SaveMergeSchedeContatto)
     saveMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: SaveMergeSchedeContatto): void {
         this.schedeContattoService.mergeSchedeContatto(action.schedeSelezionateId).subscribe(() => {
-            dispatch([
-                new ClearMergeSchedeContatto(),
-                new ShowToastr(ToastrType.Success, 'Unione schede contatto', 'Unione completata con successo', null, null, true)
-            ]);
+            dispatch(new ClearMergeSchedeContatto());
         });
     }
 
@@ -517,10 +512,7 @@ export class SchedeContattoState {
         const undoMergeSchedaContatto = getState().schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
         this.schedeContattoService.undoMergeSchedeContatto(undoMergeSchedaContatto).subscribe(() => {
             console.log('Undo Merge Schede completata', undoMergeSchedaContatto);
-            dispatch([
-                new ClearMergeSchedeContatto(),
-                new ShowToastr(ToastrType.Success, 'Undo schede contatto', 'Rimozione raggruppamento completato con successo', null, null, true)
-            ]);
+            dispatch(new ClearMergeSchedeContatto());
         });
     }
 

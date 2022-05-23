@@ -46,7 +46,6 @@ import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../
 import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../../../maps/store/actions/chiamate-markers.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
 import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '../../actions/richieste/richieste.actions';
@@ -738,14 +737,6 @@ export class SchedaTelefonataState {
                     new ClearPrioritaRichiesta(),
                     new ClearIstanteRicezioneRichiesta(),
                     new SetIdChiamataInviaPartenza(chiamataResult),
-                    new ShowToastr(
-                        ToastrType.Success,
-                        'Inserimento della chiamata effettuato',
-                        chiamata.descrizione,
-                        5,
-                        null,
-                        true
-                    ),
                     new SetRichiestaComposizione(chiamataResult),
                     new ToggleComposizione(Composizione.Avanzata)
                 ]);
@@ -823,10 +814,6 @@ export class SchedaTelefonataState {
             } else {
                 dispatch(new SetNeedRefresh(true));
             }
-        }
-
-        if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
-            dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
     }
 
