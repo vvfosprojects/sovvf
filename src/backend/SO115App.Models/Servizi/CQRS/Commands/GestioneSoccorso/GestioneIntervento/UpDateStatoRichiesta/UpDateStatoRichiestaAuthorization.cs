@@ -79,10 +79,10 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                     {
                         if (command.Richiesta.CodRichiesta != null)
                             if (!_isActionFree.Check(TipoOperazione.ChiusuraIntervento, user.Id, listaSediInteressate.ToArray(), command.Richiesta.Codice))
-                                yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+                                yield return new AuthorizationResult(Costanti.InterventoOccupato);
                             else
                             if (!_isActionFree.Check(TipoOperazione.ChiusuraChiamata, user.Id, listaSediInteressate.ToArray(), command.Richiesta.Codice))
-                                yield return new AuthorizationResult($"In questo momento la chiamata risulta occupata da un altro operatore. L'operazione non può essere eseguita");
+                                yield return new AuthorizationResult(Costanti.ChiamataOccupata);
                     }
 
                     #endregion Concorrenza
