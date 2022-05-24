@@ -441,6 +441,7 @@ export class ZoneEmergenzaState {
                 null,
                 null,
                 null,
+                null,
                 'RM',
                 'Lazio'
             ),
@@ -530,6 +531,7 @@ export class ZoneEmergenzaState {
                 null,
                 null,
                 null,
+                null,
                 'RM',
                 'Lazio'
             ),
@@ -598,6 +600,7 @@ export class ZoneEmergenzaState {
                 null,
                 null,
                 null,
+                null,
                 zonaEmergenzaValue.localita.provincia,
                 zonaEmergenzaValue.localita.regione
             ),
@@ -648,6 +651,7 @@ export class ZoneEmergenzaState {
                 null,
                 null,
                 null,
+                null,
                 zonaEmergenzaValue.localita.provincia,
                 zonaEmergenzaValue.localita.regione
             ),
@@ -688,6 +692,7 @@ export class ZoneEmergenzaState {
                     longitudine: zonaEmergenzaValue.localita.coordinate.longitudine
                 },
                 zonaEmergenzaValue.localita.indirizzo,
+                null,
                 null,
                 null,
                 null,

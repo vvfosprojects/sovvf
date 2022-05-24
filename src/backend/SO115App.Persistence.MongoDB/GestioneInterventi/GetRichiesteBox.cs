@@ -41,7 +41,6 @@ namespace SO115App.Persistence.MongoDB
 {
     public class GetRichiesteBox : IGetRichiesta,
                                    IGetSintesiRichiestaAssistenzaByCodice,
-                                   IGetRiepilogoInterventi,
                                    IGetListaRichiesteBox
     {
         private readonly DbContext _dbContext;
@@ -290,36 +289,6 @@ namespace SO115App.Persistence.MongoDB
             }
 
             return sintesi;
-        }
-
-        public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri)
-        {
-            //FILTRO I CAMPI CHE ABBIAMO SALVATI SUL DB
-
-            var empty = Builders<RichiestaAssistenza>.Filter.Empty;
-
-            var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
-
-            var distaccamento = filtri?.Distaccamenti == null || filtri?.Distaccamenti?.Count() == 0 ? empty : Builders<RichiestaAssistenza>.Filter.In(r => r.CodSOCompetente, filtri?.Distaccamenti); //OK
-
-            var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno.Substring(0, 1)); //OK
-
-            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno).ToList();
-
-            //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB)
-
-            //fonogramma trasmesso
-            if (filtri.AltriFiltri?.Trasmessi ?? false)
-                result = result.Where(r => r.ListaEventi.OfType<FonogrammaInviato>().Count() > 0).ToList();
-
-            //data
-            result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
-
-            //squadre
-            if (filtri.Squadre?.Count() > 0)
-                result = result.Where(r => r.lstSquadre.Any(sq => filtri.Squadre.Contains(sq))).ToList();
-
-            return result.ToList();
         }
     }
 }

@@ -956,6 +956,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             modalNuovaChiamata.componentInstance.lat = lat;
             modalNuovaChiamata.componentInstance.lon = lon;
             modalNuovaChiamata.componentInstance.address = response.attributes.Match_addr;
+            modalNuovaChiamata.componentInstance.citta = response.attributes.City;
             modalNuovaChiamata.componentInstance.provincia = response.attributes.Subregion;
             modalNuovaChiamata.componentInstance.cap = response.attributes.Postal;
             modalNuovaChiamata.componentInstance.regione = response.attributes.Region;
