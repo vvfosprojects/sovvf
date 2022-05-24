@@ -153,6 +153,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Input() lat: number;
     @Input() lon: number;
     @Input() address: string;
+    @Input() citta: string;
     @Input() provincia: string;
     @Input() cap: string;
     @Input() regione: string;
@@ -194,7 +195,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         if (this.apertoFromMappa) {
-            this.setIndirizzoFromMappa(this.lat, this.lon, this.address, this.provincia, this.cap, this.regione, this.civico);
+            this.setIndirizzoFromMappa(this.lat, this.lon, this.address, this.provincia, this.cap, this.regione, this.civico, this.citta);
         }
         if (this.richiestaModifica && this.richiestaModifica.codiceSchedaNue) {
             this.store.dispatch(new SetSchedaContattoTriageSummary(this.richiestaModifica.codiceSchedaNue));
@@ -358,6 +359,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             indirizzo: [null, [Validators.required]],
             latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            citta: [null],
             provincia: [null, [Validators.required]],
             cap: [null, [Validators.required]],
             regione: [null, [Validators.required]],
@@ -413,6 +415,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             indirizzo,
             latitudine: this.richiestaModifica.localita.coordinate.latitudine,
             longitudine: this.richiestaModifica.localita.coordinate.longitudine,
+            citta: this.richiestaModifica.localita.citta,
             provincia: this.richiestaModifica.localita.provincia,
             cap: this.richiestaModifica.localita.cap,
             regione: this.richiestaModifica.localita.regione,
@@ -688,6 +691,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(lat);
         this.f.longitudine.patchValue(lng);
+        this.f.citta.patchValue(candidateValue.candidateAttributes.City);
         this.f.provincia.patchValue(candidateValue.candidateAttributes.Subregion);
         this.f.cap.patchValue(candidateValue.candidateAttributes.Postal);
         this.f.regione.patchValue(candidateValue.candidateAttributes.Region);
@@ -695,6 +699,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.indirizzo.markAsDirty();
         this.f.latitudine.markAsDirty();
         this.f.longitudine.markAsDirty();
+        this.f.citta.markAsDirty();
         this.f.provincia.markAsDirty();
         this.f.cap.markAsDirty();
         this.f.regione.markAsDirty();
@@ -703,6 +708,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.store.dispatch(new UpdateFormValue({
             path: 'schedaTelefonata.richiestaForm',
             value: {
+                citta: candidateValue.candidateAttributes.City,
                 provincia: candidateValue.candidateAttributes.Subregion,
                 cap: candidateValue.candidateAttributes.Postal,
                 regione: candidateValue.candidateAttributes.Region,
@@ -713,7 +719,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.reducerSchedaTelefonata('cerca');
     }
 
-    setIndirizzoFromMappa(lat: number, lon: number, indirizzo: string, provincia: string, cap: string, regione: string, civico: string): void {
+    setIndirizzoFromMappa(lat: number, lon: number, indirizzo: string, provincia: string, cap: string, regione: string, civico: string, citta?: string): void {
         const latitudine = roundToDecimal(lat, 6);
         const longitudine = roundToDecimal(lon, 6);
         const coordinate = new Coordinate(lat, lon);
@@ -724,6 +730,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(latitudine);
         this.f.longitudine.patchValue(longitudine);
+        this.f.citta.patchValue(citta);
         this.f.provincia.patchValue(provincia);
         this.f.cap.patchValue(cap);
         this.f.regione.patchValue(regione);
@@ -744,6 +751,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 prioritaRichiesta: 3,
                 urgenza: false,
                 esercitazione: false,
+                citta: citta ? citta : null,
                 provincia,
                 cap,
                 regione,
@@ -764,6 +772,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.f.indirizzo.patchValue(indirizzo);
         this.f.latitudine.patchValue(coordinate.latitudine);
         this.f.longitudine.patchValue(coordinate.longitudine);
+        this.f.citta.patchValue(candidateValue.candidateAttributes.City);
         this.f.provincia.patchValue(candidateValue.candidateAttributes.Subregion);
         this.f.cap.patchValue(candidateValue.candidateAttributes.Postal);
         this.f.regione.patchValue(candidateValue.candidateAttributes.Region);
@@ -772,6 +781,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.store.dispatch(new UpdateFormValue({
             path: 'schedaTelefonata.richiestaForm',
             value: {
+                citta: candidateValue.candidateAttributes.City,
                 provincia: candidateValue.candidateAttributes.Subregion,
                 cap: candidateValue.candidateAttributes.Postal,
                 regione: candidateValue.candidateAttributes.Region,
@@ -803,6 +813,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.codTerzaCompetenzaManuale.patchValue(null);
             this.f.latitudine.patchValue(null);
             this.f.longitudine.patchValue(null);
+            this.f.citta.patchValue(null);
             this.f.provincia.patchValue(null);
             this.f.cap.patchValue(null);
             this.f.regione.patchValue(null);
@@ -810,6 +821,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.f.indirizzo.markAsPristine();
             this.f.latitudine.markAsPristine();
             this.f.longitudine.markAsPristine();
+            this.f.citta.markAsPristine();
             this.f.provincia.markAsPristine();
             this.f.cap.markAsPristine();
             this.f.regione.markAsPristine();
@@ -863,6 +875,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                     ]);
                 }
                 this.f.indirizzo.patchValue(response.address);
+                this.f.citta.patchValue(response.attributes.City);
                 this.f.provincia.patchValue(response.attributes.Subregion);
                 this.f.cap.patchValue(response.attributes.Postal);
                 this.f.regione.patchValue(response.attributes.Region);
@@ -870,6 +883,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 this.f.indirizzo.markAsDirty();
                 this.f.latitudine.markAsDirty();
                 this.f.longitudine.markAsDirty();
+                this.f.citta.markAsDirty();
                 this.f.provincia.markAsDirty();
                 this.f.cap.markAsDirty();
                 this.f.regione.markAsDirty();
@@ -1045,6 +1059,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             location: locationPOI
         };
         this.esriService.getLocationToAddress(params).then((response: any) => {
+            f.citta.patchValue(response.attributes.City);
             f.provincia.patchValue(response.attributes.Subregion);
             f.cap.patchValue(response.attributes.Postal);
             f.regione.patchValue(response.attributes.Region);
@@ -1052,6 +1067,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             this.store.dispatch(new UpdateFormValue({
                 path: 'schedaTelefonata.richiestaForm',
                 value: {
+                    citta: response.attributes.City,
                     provincia: response.attributes.Subregion,
                     cap: response.attributes.Postal,
                     regione: response.attributes.Region,
