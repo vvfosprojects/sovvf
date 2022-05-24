@@ -28,8 +28,6 @@ namespace SO115App.API.Models.Classi.Condivise
         {
             this.Coordinate = _coordinate;
             this.Note = Note;
-
-            SplitIndirizzo(Indirizzo);
         }
 
         private Localita()
@@ -63,30 +61,5 @@ namespace SO115App.API.Models.Classi.Condivise
         public string Scala { get; set; }
         public string Note { get; set; }
         public string Piano { get; set; }
-
-        public void SplitIndirizzo(string indirizzo = null)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(indirizzo))
-                    indirizzo = Indirizzo;
-
-                string[] dati = indirizzo.Split(',', System.StringSplitOptions.RemoveEmptyEntries).Select(dato => dato.Trim()).ToArray();
-
-                if (dati.Count() > 1)
-                {
-                    this.Indirizzo = dati.FirstOrDefault() ?? Indirizzo;
-                    this.Citta = dati[2] ?? Citta;
-                    this.Provincia = dati.LastOrDefault() ?? Provincia;
-                }
-                else
-                {
-                    this.Indirizzo = indirizzo;
-                }
-            }
-            catch (System.Exception e)
-            {
-            }
-        }
     }
 }
