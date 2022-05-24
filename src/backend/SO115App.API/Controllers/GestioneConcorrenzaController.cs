@@ -97,7 +97,7 @@ namespace SO115App.API.Controllers
                 var command = new DeleteBlockCommand()
                 {
                     ListaIdConcorrenza = ListaConcorrenze.Select(c => c.Id).ToList(),
-                    CodiceSede = Request.Headers["codiceSede"]
+                    CodiceSede = Request.Headers["codiceSede"],
                 };
 
                 _deleteBlockHandler.Handle(command);
