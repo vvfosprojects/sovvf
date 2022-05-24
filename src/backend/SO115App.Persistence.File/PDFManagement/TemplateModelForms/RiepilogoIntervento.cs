@@ -5,7 +5,7 @@ namespace SO115App.Persistence.File.PDFManagement.TemplateModelForms
 {
     public sealed class RiepilogoIntervento
     {
-        public int NumeroIntervento { get; set; }
+        public string NumeroIntervento { get; set; }
         public char Stato { get; set; }
         public DateTime Data { get; set; }
         public string Turno { get; set; } = "";

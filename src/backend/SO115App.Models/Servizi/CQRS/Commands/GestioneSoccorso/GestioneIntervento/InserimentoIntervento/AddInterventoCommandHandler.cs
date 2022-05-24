@@ -76,8 +76,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var utentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione?.Select(u => u.Nominativo).ToList();
             var utentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico?.Select(u => u.Nominativo).ToList();
 
-            command.Chiamata.Localita.SplitIndirizzo();
-
             //casistica che gestisce la registrazione di una chiamata non di competenza diretta. Es. registro a Milano una chiamata di Torino
             var codSocompetente = "";
             if (command.CodiceSede.Split('.')[0].Equals(command.CodCompetenze.ToList()[0].Split('.')[0]))
