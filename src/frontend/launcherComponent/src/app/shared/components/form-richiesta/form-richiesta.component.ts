@@ -458,6 +458,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         ]);
 
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono, true);
+        Object.keys(this.scorciatoieTelefono).forEach((value: string) => {
+            if (this.richiestaModifica.richiedente.telefono === value) {
+                this.f.telefono.disable();
+                this.f.nominativo.disable();
+            }
+        });
         this.pos = this.richiestaModifica?.dettaglioTipologia?.pos;
 
         function getHaBoschi(richiestaModifica: SintesiRichiesta): number {
