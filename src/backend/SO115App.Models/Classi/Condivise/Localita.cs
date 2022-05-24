@@ -28,6 +28,7 @@ namespace SO115App.API.Models.Classi.Condivise
         {
             this.Coordinate = _coordinate;
             this.Note = Note;
+            this.Indirizzo = Indirizzo;
         }
 
         private Localita()
