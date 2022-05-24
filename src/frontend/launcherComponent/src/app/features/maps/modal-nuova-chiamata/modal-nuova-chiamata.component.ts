@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { Select, Store } from '@ngxs/store';
 import { TipologieState } from '../../../shared/store/states/tipologie/tipologie.state';
@@ -49,6 +49,7 @@ export class ModalNuovaChiamataComponent implements OnDestroy {
     lat: number;
     lon: number;
     address: string;
+    citta: string;
     provincia: string;
     cap: string;
     regione: string;

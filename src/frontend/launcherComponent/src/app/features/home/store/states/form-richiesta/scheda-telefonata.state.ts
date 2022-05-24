@@ -738,6 +738,7 @@ export class SchedaTelefonataState {
                         longitudine: f.longitudine,
                         latitudine: f.latitudine
                     },
+                    citta: f.citta,
                     provincia: f.provincia,
                     cap: f.cap,
                     regione: f.regione,
