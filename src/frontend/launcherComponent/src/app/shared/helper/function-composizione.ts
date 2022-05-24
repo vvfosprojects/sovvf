@@ -50,6 +50,8 @@ export function squadraComposizionePreaccoppiatoBusy(stato: StatoSquadra): boole
             return true;
         case StatoSquadra.InViaggio:
             return true;
+        case StatoSquadra.InRientro:
+            return true;
         default:
             return false;
     }
