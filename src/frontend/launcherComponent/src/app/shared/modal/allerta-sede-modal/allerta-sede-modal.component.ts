@@ -31,7 +31,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     allertaSedeForm: FormGroup;
     submitted: boolean;
-    sediSelezionate: string[] = [];
     checkbox: { conoscenza: boolean, allerta: boolean } = {
         conoscenza: false,
         allerta: true,
@@ -72,7 +71,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.sediSelezionate = [];
         this.subscriptions.unsubscribe();
     }
 
@@ -114,19 +112,9 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.distaccamenti = distaccamentiUnique;
     }
 
-    onPatchSedi(event: Sede[]): void {
-        if (event.length) {
-            event.forEach(x => this.sediSelezionate.push(x.codice));
-        }
-        this.f.sedi.patchValue(event);
-    }
-
-    onClearSedi(): void {
-        this.sediSelezionate = [];
-    }
-
     checkSediSelezionateError(): boolean {
-        return this.sediSelezionate.includes(this.codSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => this.sediSelezionate.includes(codSOAllertata));
+        const sediSelezionate = this.f?.sedi?.value;
+        return sediSelezionate?.includes(this.codSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
     }
 
     onConferma(): void {
