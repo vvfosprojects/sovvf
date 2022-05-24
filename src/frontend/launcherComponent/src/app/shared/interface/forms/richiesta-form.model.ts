@@ -40,6 +40,7 @@ export class RichiestaForm {
     indirizzo: string;
     latitudine: number;
     longitudine: number;
+    citta?: string;
     provincia: string;
     cap: string;
     regione: string;

@@ -114,7 +114,9 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     checkSediSelezionateError(): boolean {
         const sediSelezionate = this.f?.sedi?.value;
-        return sediSelezionate?.includes(this.codSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
+        const siglaComandoSOCompetente = this.codSOCompetente.split('.')?.length === 2 ? this.codSOCompetente.split('.')[0] : null;
+        const siglaComandoSediSelezionate = sediSelezionate?.map((codComando: string) => codComando.split('.')?.length === 2 ? codComando.split('.')[0] : null);
+        return siglaComandoSediSelezionate?.includes(siglaComandoSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
     }
 
     onConferma(): void {
