@@ -25,10 +25,10 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
 
             if (command.listaSediDaAllertare != null)
             {
-                SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede, command.listaSediDaAllertare.ToArray());
+                SediDaNotificare = _getGerarchiaToSend.Get(command.CodSOCompetente, command.listaSediDaAllertare.ToArray());
             }
             else
-                SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede);
+                SediDaNotificare = _getGerarchiaToSend.Get(command.CodSOCompetente);
 
             foreach (var sede in SediDaNotificare)
             {
