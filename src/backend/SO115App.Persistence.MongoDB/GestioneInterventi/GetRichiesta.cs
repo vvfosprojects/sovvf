@@ -34,6 +34,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,12 +49,13 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetRubrica _getRubrica;
         private readonly IGetTurno _getTurno;
         private readonly IGetSedi _getSedi;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
 
         public GetRichiesta(DbContext dbContext,
             IMapperRichiestaSuSintesi mapperSintesi,
             IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC,
             IGetRubrica getRubrica, IGetTurno getTurno,
-            IGetSedi getSedi)
+            IGetSedi getSedi, IGetSottoSediByCodSede getSottoSediByCodSede)
         {
             _dbContext = dbContext;
             _mapperSintesi = mapperSintesi;
@@ -61,6 +63,7 @@ namespace SO115App.Persistence.MongoDB
             _getRubrica = getRubrica;
             _getTurno = getTurno;
             _getSedi = getSedi;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -333,13 +336,14 @@ namespace SO115App.Persistence.MongoDB
 
         public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri)
         {
+            var empty = Builders<RichiestaAssistenza>.Filter.Empty;
+            var dist = filtri.Distaccamenti?.Any() ?? false ? _getSottoSediByCodSede.Get(filtri.Distaccamenti) : null;
+
             //FILTRO I CAMPI CHE ABBIAMO SALVATI SUL DB
 
-            var empty = Builders<RichiestaAssistenza>.Filter.Empty;
+            var distaccamento = dist == null || dist.Count == 0 ? empty : Builders<RichiestaAssistenza>.Filter.In(r => r.CodSOCompetente, dist); //OK
 
             var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
-
-            var distaccamento = filtri?.Distaccamenti == null || filtri?.Distaccamenti?.Count() == 0 ? empty : Builders<RichiestaAssistenza>.Filter.In(r => r.CodSOCompetente, filtri?.Distaccamenti); //OK
 
             var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno.Substring(0, 1)); //OK
 

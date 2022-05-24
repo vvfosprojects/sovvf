@@ -56,7 +56,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 Stato = char.Parse(i.TestoStatoRichiesta),
                 Data = i.dataOraInserimento,
                 Turno = i.TrnInsChiamata.Substring(0, 1),
-                Indirizzo = string.IsNullOrEmpty(i.Localita.Indirizzo) ? "non presente" : i.Localita.Indirizzo,
+                Indirizzo = string.IsNullOrEmpty(i.Localita.Indirizzo) ? "non presente" : i.Localita.Indirizzo.Split(',').First(),
                 X = "X: " + i.Localita.Coordinate.Latitudine,
                 Y = "Y: " + i.Localita.Coordinate.Longitudine,
                 Richiedente = i.Richiedente.Nominativo,
