@@ -135,10 +135,10 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         let indirizzo = this.richiesta?.localita?.indirizzo;
         if (this.richiesta?.localita?.provincia) {
             indirizzo = indirizzo + ', ' + this.richiesta?.localita?.citta;
-            if (this.richiesta?.localita?.citta === this.richiesta?.localita?.provincia) {
+            if (this.richiesta?.localita?.citta !== this.richiesta?.localita?.provincia) {
                 const provinceData = province['default']['province'][0];
                 const codProvincia = provinceData[this.richiesta?.localita?.provincia];
-                indirizzo = indirizzo + '(' + codProvincia + ')';
+                indirizzo = indirizzo + ' (' + codProvincia + ')';
             }
         }
         return indirizzo;
