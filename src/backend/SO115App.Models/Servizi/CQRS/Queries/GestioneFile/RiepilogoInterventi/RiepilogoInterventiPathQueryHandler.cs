@@ -62,7 +62,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 Richiedente = i.Richiedente.Nominativo,
                 Tipologie = string.Join(',', lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct.Codice))).Select(t => t.Descrizione + '.')),
                 NumeroIntervento = i.CodRichiesta?.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimStart('0'),
-                Comune = i.Localita.Citta,
+                Comune = string.IsNullOrEmpty(i.Localita.Citta) ? "non presente" : i.Localita.Citta,
                 KmCiv = i.Localita.Civico,
                 Interno = i.Localita.Interno,
                 Piano = i.Localita.Piano,
@@ -70,7 +70,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
                 CodTipologie = string.Join(',', i.Tipologie),
                 Descrizione = i.Descrizione,
                 Telefono = i.Richiedente.Telefono,
-                ZonaEmergenza = i.CodZoneEmergenza?.Count() > 0 ? "true" : "false",
+                ZonaEmergenza = i.CodZoneEmergenza?.Length > 0 ? "true" : "false",
 
                 lstPartenze = query.Filtri?.AltriFiltri?.SoloInterventi ?? false ? null : i.Partenze?.Select(p => new RiepilogoPartenza()
                 {
