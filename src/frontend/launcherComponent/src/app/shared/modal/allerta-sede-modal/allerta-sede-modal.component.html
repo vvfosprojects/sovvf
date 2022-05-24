@@ -16,19 +16,16 @@
                        id="sede"
                        [items]="distaccamenti"
                        bindLabel="descrizione"
-                       bindValue="id"
+                       bindValue="codice"
                        [clearSearchOnAdd]="true"
                        [closeOnSelect]="false"
                        [hideSelected]="false"
                        [multiple]="true"
-                       [(ngModel)]="sediSelezionate"
-                       [ngModelOptions]="{standalone: true}"
+                       formControlName="sedi"
                        [loading]="!distaccamenti"
-                       (change)="onPatchSedi($event)"
-                       (clear)="onClearSedi()"
                        placeholder="Seleziona Comando">
                 <ng-template ng-option-tmp let-item="item">
-                    <input type="checkbox" [checked]="sediSelezionate && sediSelezionate?.includes(item.codice)"/>
+                    <input type="checkbox" [checked]="f?.sedi?.value?.includes(item.codice)"/>
                     {{ item.descrizione }}
                 </ng-template>
             </ng-select>
