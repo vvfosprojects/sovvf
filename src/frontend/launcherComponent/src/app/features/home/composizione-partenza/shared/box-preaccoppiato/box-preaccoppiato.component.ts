@@ -3,9 +3,7 @@ import { BoxPartenza, BoxPartenzaPreAccoppiati } from '../../interface/box-parte
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from 'src/app/shared/enum/toastr';
-import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy, nomeStatiSquadra } from '../../../../../shared/helper/function-composizione';
+import { checkSquadraOccupata, iconaStatiClass, nomeStatiSquadra } from '../../../../../shared/helper/function-composizione';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Observable, Subscription } from 'rxjs';
@@ -89,10 +87,6 @@ export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
                 } else {
                     this.deselezionato.emit(this.partenzaPreAccopiati);
                 }
-            } else if (mezzoComposizioneBusy(this.partenzaPreAccopiati.statoMezzo)) {
-                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenzaPreAccopiati.statoMezzo + ' ed è impegnato in un\'altra richiesta', null, null, true));
-            } else if (this._checkSquadraOccupata(this.partenzaPreAccopiati.squadre)) {
-                this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Una o più squadre del Preaccopiato risultano impegnate in un\'altra richiesta', null, null, true));
             }
         }
     }
@@ -173,7 +167,7 @@ export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
         const prefix = 'fa ';
         let icon = 'fa-exclamation-triangle';
         const squadra2 = this.partenzaPreAccopiati.squadre.length ? 'squadra-si' : 'squadra-no';
-        const mezzo2 = this.partenzaPreAccopiati.codiceMezzo && (this.partenzaPreAccopiati.statoMezzo === StatoMezzo.InSede || this.partenzaPreAccopiati.codiceMezzo === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
+        const mezzo2 = this.partenzaPreAccopiati.codiceMezzo && this.partenzaPreAccopiati.statoMezzo === StatoMezzo.InSede ? 'mezzo-si' : 'mezzo-no';
 
         switch (mezzo2 + '|' + squadra2) {
             case 'mezzo-si|squadra-no':

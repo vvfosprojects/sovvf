@@ -131,7 +131,6 @@ const COMPONENTS = [
     FiltroComponent,
     TastoCompPartenzaComponent,
     BoxAnteprimaPartenzaComponent,
-    AllertaSedeModalComponent,
     SganciamentoMezzoModalComponent,
     SintesiRichiestaComponent,
     SintesiRichiestaModalComponent,

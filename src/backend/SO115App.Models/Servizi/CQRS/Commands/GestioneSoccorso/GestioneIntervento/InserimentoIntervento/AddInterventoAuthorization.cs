@@ -92,7 +92,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                         var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.CodiceSede });
 
                         if (!_isActionFree.Check(TipoOperazione.RegistrazioneSchedaContatto, user.Id, listaSediInteressate.ToArray(), command.Chiamata.CodiceSchedaNue))
-                            yield return new AuthorizationResult($"In questo momento l'intervento risulta occupato da un altro operatore. L'operazione non può essere eseguita");
+                            yield return new AuthorizationResult(Costanti.InterventoOccupato);
                     }
 
                     #endregion Concorrenza

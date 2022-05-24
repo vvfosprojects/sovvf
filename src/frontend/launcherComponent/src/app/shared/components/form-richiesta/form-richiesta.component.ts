@@ -458,6 +458,12 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         ]);
 
         this.patchScorciatoiaNumero(this.richiestaModifica.richiedente.telefono, true);
+        Object.keys(this.scorciatoieTelefono).forEach((value: string) => {
+            if (this.richiestaModifica.richiedente.telefono === value) {
+                this.f.telefono.disable();
+                this.f.nominativo.disable();
+            }
+        });
         this.pos = this.richiestaModifica?.dettaglioTipologia?.pos;
 
         function getHaBoschi(richiestaModifica: SintesiRichiesta): number {
@@ -886,11 +892,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
     detectCompetenzeFuoriComando(): boolean {
         let comandoCompetenza: string;
-        const codPrimaCompetenza = this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codPrimaCompetenza;
+        const codPrimaCompetenza = this.f?.codPrimaCompetenza ? this.f.codPrimaCompetenza?.value : this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codPrimaCompetenza;
         if (codPrimaCompetenza) {
             comandoCompetenza = codPrimaCompetenza.split('.')[0];
         }
-        const codCompetenzaCentrale = this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codCompetenzaCentrale;
+        const codCompetenzaCentrale = this.f?.codCompetenzaCentrale ? this.f.codCompetenzaCentrale?.value : this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codCompetenzaCentrale;
         if (codCompetenzaCentrale) {
             comandoCompetenza = codCompetenzaCentrale.split('.')[0];
         }

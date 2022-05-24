@@ -261,6 +261,8 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 keyboard: false,
             });
             modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
+            modalAllertaSede.componentInstance.codSOCompetente = this.richiesta.codSOCompetente;
+            modalAllertaSede.componentInstance.codSOAllertate = this.richiesta.codSOAllertate;
             const data = {
                 value: this.richiesta.codice,
                 type: TipoConcorrenzaEnum.Allerta
@@ -270,6 +272,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice]));
                 switch (res.status) {
                     case 'ok' :
+                        console.log('Chiusa finestra di allerta comando => res.result', res.result);
                         this.store.dispatch(new AllertaSede(res.result));
                         break;
                     case 'ko':

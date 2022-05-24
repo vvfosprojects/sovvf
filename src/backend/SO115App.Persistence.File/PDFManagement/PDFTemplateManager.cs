@@ -24,7 +24,7 @@ namespace SO115App.Persistence.File.PDFManagement
         private static readonly XFont _xsmallField = new XFont("Arial", 7.5);
         private static readonly XPen _pen = new XPen(XColors.DarkGray, 0.5);
         private readonly IConfiguration _config;
-        private const int _fieldHeight = 35;
+        private const int _fieldHeight = 25;
         private const double _minY = 100;
         private const string _footer = "Stato dell'Intervento (S): A = Aperto C = Chiuso *Orari: Uscita - Arrivo sul posto - Partenza dal posto - Rientro Sigla mezzo andata e sigla mezzo ritorno N° Int : R = scheda ricevuta da altro comando T = scheda trasmessa ad altro comando Tipo Partenza(TP) M = Manuale I = Importata N = Normale Scheda Annullata = Informazioni barrate";
 
@@ -71,22 +71,24 @@ namespace SO115App.Persistence.File.PDFManagement
 
         private void generaRiepilogoInterventiPDF(RiepilogoInterventiModelForm model)
         {
-            Func<int, double> altezza = partenze => _fieldHeight + 17 * partenze;
-
             if (model.lstRiepiloghi.Count == 0)
                 checkNewPage(model, _y);
 
-            model.lstRiepiloghi.ForEach(async riepilogo =>
+            model.lstRiepiloghi.ForEach(riepilogo =>
             {
-                double h = altezza(riepilogo.lstPartenze?.Count ?? 0);
+                double h = altezza(riepilogo.lstPartenze?.Count ?? 1);
 
                 checkNewPage(model, _y + h);
 
-                CreaRigaTabella(_y, h);
-                PopolaRigaTabella(riepilogo, _y);
+                creaRigaTabella(_y, h);
+                popolaRigaTabella(riepilogo, _y);
 
                 _y += h;
             });
+
+            #region metodi
+
+            double altezza(int partenze) => partenze <= 2 ? (_fieldHeight * 2) : _fieldHeight * partenze;
 
             void checkNewPage(RiepilogoInterventiModelForm model, double limiter)
             {
@@ -117,8 +119,8 @@ namespace SO115App.Persistence.File.PDFManagement
                     _gfx.DrawString("Comune", _smallField, XBrushes.Black, 437, y);
                     _gfx.DrawString("TP. Sch.", _smallField, XBrushes.Black, 500, y);
                     _gfx.DrawString("Squadra", _smallField, XBrushes.Black, 540, y);
-                    _gfx.DrawString("Servizio", _smallField, XBrushes.Black, 600, y);
-                    _gfx.DrawString("CapoPartenza", _smallField, XBrushes.Black, 650, y);
+                    _gfx.DrawString("Servizio", _smallField, XBrushes.Black, 580, y);
+                    _gfx.DrawString("CapoPartenza", _smallField, XBrushes.Black, 630, y);
                     _gfx.DrawString("Orari Mezzo", _smallField, XBrushes.Black, 720, y);
 
                     //CREO FOOTER
@@ -130,7 +132,7 @@ namespace SO115App.Persistence.File.PDFManagement
                 }
             }
 
-            async void CreaRigaTabella(double y, double h)
+            async void creaRigaTabella(double y, double h)
             {
                 _gfx.DrawRectangle(_pen, XBrushes.Transparent, 10, y, 30, h);
                 _gfx.DrawRectangle(_pen, XBrushes.Transparent, 40, y, 15, h);
@@ -143,7 +145,7 @@ namespace SO115App.Persistence.File.PDFManagement
                 _gfx.DrawRectangle(_pen, XBrushes.Transparent, 500, y, 335, h);
             }
 
-            async void PopolaRigaTabella(RiepilogoIntervento riepilogo, double y)
+            async void popolaRigaTabella(RiepilogoIntervento riepilogo, double y)
             {
                 y += 10;
 
@@ -169,12 +171,12 @@ namespace SO115App.Persistence.File.PDFManagement
                 _gfx.DrawRectangle(XBrushes.Transparent, rect);
                 tf.DrawString(riepilogo.Comune, _field, XBrushes.Black, rect, XStringFormats.TopLeft);
 
-                riepilogo.lstPartenze?.ForEach(async p =>
+                riepilogo.lstPartenze?.ForEach(p =>
                 {
                     _gfx.DrawString(p.TpSch, _field, XBrushes.Black, 500, y);
                     _gfx.DrawString(p.SiglaSquadra, _field, XBrushes.Black, 540, y);
-                    _gfx.DrawString(p.Servizio ?? "", _field, XBrushes.Black, 600, y);
-                    _gfx.DrawString(p.CapoPartenza ?? "", _field, XBrushes.Black, 650, y);
+                    _gfx.DrawString(p.Servizio ?? "", _field, XBrushes.Black, 580, y);
+                    _gfx.DrawString(p.CapoPartenza ?? "", _field, XBrushes.Black, 630, y);
                     _gfx.DrawString(p.CodMezzo, _smallField, XBrushes.Black, 720, y + 10);
 
                     _gfx.DrawString(p.MezzoInUscita.ToString("HH:mm"), _smallField, XBrushes.Black, 720, y);
@@ -182,9 +184,11 @@ namespace SO115App.Persistence.File.PDFManagement
                     _gfx.DrawString(p.MezzoInRientro?.ToString("/ HH:mm") ?? "/ --:--", _smallField, XBrushes.Black, 771, y);
                     _gfx.DrawString(p.MezzoRientrato?.ToString("/ HH:mm") ?? "/ --:--", _smallField, XBrushes.Black, 799, y);
 
-                    y += 25;
+                    y += _fieldHeight;
                 });
             }
+
+            #endregion
         }
 
         private void generaDettaglioCihamataPDF(DettaglioChiamataModelForm model)
@@ -256,6 +260,6 @@ namespace SO115App.Persistence.File.PDFManagement
         }
 
         //ELIMIARE
-        private double AlignY(int x) => x;
+        private static double AlignY(int x) => x;
     }
 }

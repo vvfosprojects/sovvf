@@ -67,6 +67,8 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() disabledAzioniRichiesta: boolean;
     @Input() disabledModificaStatoMezzo: boolean;
     @Input() disabledComposizionePartenza: boolean;
+    @Input() hideSostituzioneFineTurno: boolean;
+    @Input() hideGestisciPartenza: boolean;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
     @Input() annullaStatoMezzi: InfoMezzo[];
@@ -388,6 +390,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
                 size: 'xl',
             } as NgbModalOptions;
         }
+        this.store.dispatch(new ClearRichiestaAzioni());
         const modal = this.modalService.open(AzioniSintesiRichiestaModalComponent, modalOptions);
         this.store.dispatch(new SetRichiestaAzioni(this.richiesta.codice));
         modal.result.then(() => {

@@ -5,6 +5,7 @@ import { ClearListaMezziSganciamento, GetListaMezziSganciamento, SetListaMezziSg
 import { ResponseInterface } from '../../../interface/response/response.interface';
 import { MezzoInServizio } from '../../../interface/mezzo-in-servizio.interface';
 import { StatoMezzo } from '../../../enum/stato-mezzo.enum';
+import { makeCopy } from '../../../helper/function-generiche';
 
 export interface SganciamentoMezziStateModel {
     mezzi: MezzoInServizio[];
@@ -48,8 +49,9 @@ export class SganciamentoMezziState {
             pageSize: 30
         };
         this.mezziInServizioService.getMezziInServizio(filters, pagination).subscribe((response: ResponseInterface) => {
+            const listaMezziSganciamento = makeCopy(response.dataArray);
             dispatch([
-                new SetListaMezziSganciamento(response?.dataArray),
+                new SetListaMezziSganciamento(listaMezziSganciamento),
                 new StopLoadingMezziSganciamento()
             ]);
         });

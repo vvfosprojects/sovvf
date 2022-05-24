@@ -27,6 +27,8 @@ export class ListaPartenzeComponent {
     @Input() loadingActionMezzo: string[];
     @Input() annullaStatoMezzi: InfoMezzo[];
     @Input() disabledModificaStatoMezzo: boolean;
+    @Input() hideSostituzioneFineTurno: boolean;
+    @Input() hideGestisciPartenza: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();

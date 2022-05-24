@@ -271,10 +271,12 @@
                                     </a>
                                 </span>
                                 <span class="ml-1">
-                                        <i class="guida fas fa-phone-alt fa-fw mr-1" style="font-size: 145%"
-                                           ngbTooltip="Numero richiedente"></i>
-                                        <a class="font-xxlarge">
-                                          {{ richiesta?.richiedente?.telefono }}</a>
+                                    <i class="guida fas fa-phone-alt fa-fw mr-1"
+                                       style="font-size: 145%"
+                                       ngbTooltip="Numero richiedente"></i>
+                                    <a class="font-xxlarge">
+                                        {{ richiesta?.richiedente?.telefono }}
+                                    </a>
                                 </span>
                             </div>
                         </div>
@@ -344,7 +346,7 @@
                                                 [ngbTooltip]="operatoreRegistrazioneChiamata">
                                                 <i class="guida fas fa-user fa-fw"></i>
                                                 <i class="guida fas fa-phone-alt fa-fw mr-1"></i>
-                                                {{ op?.nome + ' ' + op?.cognome | truncate: 13 }}
+                                                {{ op?.nome + ' ' + op?.cognome | truncate: 11 }}
                                                 <ng-template #operatoreRegistrazioneChiamata>
                                                     <div>
                                                         {{ op?.nome + ' ' + op?.cognome }} ha registrato la chiamata
@@ -360,7 +362,7 @@
                                                 <h4 class="d-inline-block m-0 mr-1"
                                                     [ngbTooltip]="utentePresaInCarico">
                                                     <i class="guida far fa-calendar-check fa-fw mr-1"></i>
-                                                    {{ utentiPresaInCaricoValue?.nominativo | truncate: 13 }}
+                                                    {{ utentiPresaInCaricoValue?.nominativo | truncate: (richiesta?.listaUtentiPresaInCarico?.length > 1 ? 9 : 13) }}
                                                     <ng-template #utentePresaInCarico>
                                                         <div>
                                                             {{ utentiPresaInCaricoValue?.nominativo }} ha preso in
@@ -427,14 +429,15 @@
                                         <ng-container *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate)">
                                             <ng-container
                                                     *ngIf="methods._primaSedeAllertata(richiesta?.sediAllertate) as sediAllertate; else nonAllertata">
-                                                <div class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
-                                                     [disableTooltip]="sediAllertate?.length <= 13" placement="bottom">
+                                                <h4 class="d-inline-block m-0 mr-1"
+                                                    ngbTooltip="{{ sediAllertate }}"
+                                                    [disableTooltip]="richiesta?.codSOAllertate?.length > 1 ? sediAllertate?.length <= 9 : sediAllertate?.length <= 13"
+                                                    placement="bottom">
                                                     <i class="guida fas fa-exclamation-triangle fa-fw mr-1"
-                                                       style="font-size: 110%"
                                                        ngbTooltip="Sedi Allertate"
                                                        placement="right"></i>
-                                                    {{ sediAllertate | truncate: 13 }}
-                                                </div>
+                                                    {{ sediAllertate | truncate: (richiesta?.codSOAllertate?.length > 1 ? 9 : 13) }}
+                                                </h4>
                                             </ng-container>
                                             <ng-container
                                                     *ngIf="richiesta?.codSOAllertate && richiesta?.codSOAllertate?.length > 1">
@@ -485,6 +488,8 @@
                                                                 [loadingActionMezzo]="loadingActionMezzo"
                                                                 [annullaStatoMezzi]="annullaStatoMezzi"
                                                                 [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
+                                                                [hideSostituzioneFineTurno]="hideSostituzioneFineTurno"
+                                                                [hideGestisciPartenza]="hideGestisciPartenza"
                                                                 (actionMezzo)="onActionMezzo($event)"
                                                                 (eliminaPartenza)="onEliminaPartenza($event)"
                                                                 (modificaPartenza)="onModificaPartenza($event)"

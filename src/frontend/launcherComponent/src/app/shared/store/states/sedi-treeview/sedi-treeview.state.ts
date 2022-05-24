@@ -10,10 +10,8 @@ import {
     SetSediNavbarVisible
 } from '../../actions/sedi-treeview/sedi-treeview.actions';
 import { arraysEqual, makeCopy } from '../../../helper/function-generiche';
-import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helper';
 import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';
-import { ToastrType } from '../../../enum/toastr';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno.actions';
 import { Injectable } from '@angular/core';
 import { LSNAME } from '../../../../core/settings/config';
@@ -188,7 +186,6 @@ export class SediTreeviewState {
                 corrente: SediTreeviewStateDefaults.sediNavbarTesto.corrente
             }
         });
-        dispatch(new ShowToastr(ToastrType.Warning, 'Attenzione', 'Selezione della sede annullata', 5));
     }
 
     @Action(SetSediNavbarSelezionate)
