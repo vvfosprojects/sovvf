@@ -43,12 +43,22 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             var richiestaOld = _getRichiestaById.GetByCodice(command.Richiesta.Codice);
 
+            var SquadreOriginariamentePresentiMezzoSmontante = richiestaOld.Partenze.ToList().Find(p => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoSmontante.Equals(p.CodiceMezzo)) && p.Partenza.PartenzaAnnullata == false && p.Partenza.Terminata == false && p.Partenza.Sganciata == false);
+            var SquadreOriginariamentePresentiMezzoMontante = richiestaOld.Partenze.ToList().Find(p => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoMontante.Equals(p.CodiceMezzo)) && p.Partenza.PartenzaAnnullata == false && p.Partenza.Terminata == false && p.Partenza.Sganciata == false);
+
+
+
             var PartenzaMontante = command.Richiesta.Partenze.First(x => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoMontante.Equals(x.Partenza.Mezzo.Codice)) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
             var PartenzaSmontante = command.Richiesta.Partenze.First(x => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoSmontante.Equals(x.Partenza.Mezzo.Codice)) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
             var SquadreSwitch = PartenzaSmontante.Partenza.Squadre;
 
             //GESTIONE PARTENZA SMONTANTE
-            PartenzaSmontante.Partenza.Squadre = PartenzaMontante.Partenza.Squadre;
+
+            var elencoSquadreRimanentiSulMezzoSmontante = SquadreOriginariamentePresentiMezzoSmontante.Partenza.Squadre.FindAll(s => command.sostituzione.Sostituzioni.Any(so => so.SquadreSmontanti.Any(sm => !s.Nome.Equals(sm))));
+            var elencoSquadreNuoveSulMezzoSmontante = SquadreOriginariamentePresentiMezzoMontante.Partenza.Squadre.FindAll(s => command.sostituzione.Sostituzioni.Any(so => so.SquadreMontanti.Any(sm => s.Nome.Equals(sm))));
+            elencoSquadreRimanentiSulMezzoSmontante.AddRange(elencoSquadreNuoveSulMezzoSmontante);
+
+            PartenzaSmontante.Partenza.Squadre = elencoSquadreRimanentiSulMezzoSmontante;
             PartenzaSmontante.Partenza.Terminata = true;
 
             AggiornaStatoMezzoCommand statoMezzoPartenzaSmontante = new AggiornaStatoMezzoCommand();
@@ -59,7 +69,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _upDatePartenza.Update(statoMezzoPartenzaSmontante);
 
             //GESTIONE PARTENZA MONTANTE
-            PartenzaMontante.Partenza.Squadre = PartenzaSmontante.Partenza.Squadre;
+            PartenzaMontante.Partenza.Squadre = PartenzaSmontante.Partenza.Squadre.FindAll(s => command.sostituzione.Sostituzioni.Any(so => so.SquadreSmontanti.Any(sm => sm.Equals(s.Nome)))).ToList();
             PartenzaMontante.Partenza.Terminata = true;
 
             AggiornaStatoMezzoCommand statoMezzoPartenzaMontante = new AggiornaStatoMezzoCommand();
