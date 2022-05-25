@@ -338,15 +338,14 @@ namespace SO115App.Persistence.MongoDB
         {
             var filter = Builders<RichiestaAssistenza>.Filter;
             var empty = filter.Empty;
-            var dist = filtri.Distaccamenti?.Any() ?? false ? _getSottoSediByCodSede.Get(filtri.Distaccamenti) : null;
 
             //FILTRO I CAMPI CHE ABBIAMO SALVATI SUL DB
 
             var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
 
-            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi/* & squadra*/).ToList();
+            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi).ToList();
 
-            //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB)
+            //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB) dopo la query mongo
 
             //fonogramma trasmesso
             if (filtri.AltriFiltri?.Trasmessi ?? false)
@@ -365,11 +364,11 @@ namespace SO115App.Persistence.MongoDB
                 if (filtri.Turni != null && filtri.Turni.Length > 0)
                     turno = filtri.Turni.Contains(s.Turno);
 
-                if (filtri.Distaccamenti != null && filtri.Distaccamenti?.Length > 0 && s.Distaccamento != null)
+                if (filtri.Distaccamenti != null && filtri.Distaccamenti?.Length > 0 /*&& s.Distaccamento != null*/)
                     distaccamento = filtri.Distaccamenti.Any(d => d.Equals(s.Distaccamento.Codice));
 
-                if (s.Distaccamento == null)
-                    distaccamento = false;
+                //if (s.Distaccamento == null)
+                //    distaccamento = false;
 
                 if (filtri.Squadre != null && filtri.Squadre.Length > 0)
                     codice = filtri.Squadre.Contains(s.Codice);
