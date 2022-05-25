@@ -36,6 +36,7 @@ import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { ClearRichiestaAzioni, SetRichiestaAzioni } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { InfoMezzo } from '../../store/states/loading/loading.state';
+import * as province from '../../../../assets/province/province.json';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -133,7 +134,12 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     getIndirizzoFormatted(): string {
         let indirizzo = this.richiesta?.localita?.indirizzo;
         if (this.richiesta?.localita?.provincia) {
-            indirizzo = indirizzo + ', ' + this.richiesta?.localita?.provincia;
+            indirizzo = indirizzo + ', ' + this.richiesta?.localita?.citta;
+            if (this.richiesta?.localita?.citta !== this.richiesta?.localita?.provincia) {
+                const provinceData = province['default']['province'][0];
+                const codProvincia = provinceData[this.richiesta?.localita?.provincia];
+                indirizzo = indirizzo + ' (' + codProvincia + ')';
+            }
         }
         return indirizzo;
     }
