@@ -165,7 +165,7 @@ namespace SO115App.Persistence.File.PDFManagement
                 _gfx.DrawString(riepilogo.X, _xsmallField, XBrushes.Black, x, y + 20);
                 _gfx.DrawString(riepilogo.Y, _xsmallField, XBrushes.Black, x + 50, y + 20);
 
-                _gfx.DrawString(riepilogo.KmCiv ?? "", _field, XBrushes.Black, 400, y);
+                _gfx.DrawString(riepilogo.KmCiv ?? "", _field, XBrushes.Black, 410, y);
                 tf = new XTextFormatter(_gfx);
                 rect = new XRect(445, y - 10, 50, 200);
                 _gfx.DrawRectangle(XBrushes.Transparent, rect);
