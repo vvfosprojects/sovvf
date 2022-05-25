@@ -11,7 +11,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDettagl
 
         public void Handle(ModifyDettaglioTipologiaCommand command)
         {
-            command.DettaglioTipologia.CodSede = command.CodiceSede[0];
+            //command.DettaglioTipologia.CodSede = command.CodiceSede[0];
 
             _modifyDettaglioTipologia.Modify(command.DettaglioTipologia);
         }
