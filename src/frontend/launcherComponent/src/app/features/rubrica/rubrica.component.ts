@@ -18,6 +18,7 @@ import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.state';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
+import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-rubrica',
@@ -41,6 +42,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
 
     RoutesPath = RoutesPath;
+    permissionFeatures = PermissionFeatures;
 
     private subscriptions: Subscription = new Subscription();
 

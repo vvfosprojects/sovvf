@@ -40,7 +40,7 @@ export class PermessiService {
         if (vistaSedi) {
             codSede = vistaSedi[0];
         }
-        if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
+        if (this.ruoli?.length > 0 && this.permessi && featureIndex !== null) {
             if (checkRuoliUtente(this.ruoli, this.permessi, featureIndex)) {
                 return true;
             }
@@ -49,7 +49,7 @@ export class PermessiService {
 
         function checkRuoliUtente(ruoli, permessi, index): boolean {
             let count = 0;
-            ruoli.forEach((ruolo: Ruolo) => {
+            ruoli?.forEach((ruolo: Ruolo) => {
                 if ((!codSede || (codSede === ruolo.codSede)) && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
                     count++;
                 }
@@ -120,8 +120,13 @@ export class PermessiService {
         }
     }
 
-    checkUserPermissionSchedaContatto(feature: PermissionFeatures, codSede: string): boolean {
+    checkPermissionCodSedeAppartenenza(feature: PermissionFeatures, codSede: string): boolean {
         const featureIndex = searchFeatureIndex(this.permessi, feature);
+        const vistaSedi = this.store.selectSnapshot(AppState.vistaSedi);
+        let codSedeVistaSedi: string;
+        if (vistaSedi) {
+            codSedeVistaSedi = vistaSedi[0];
+        }
         if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
             if (checkRuoliUtente(this.ruoli, this.permessi, featureIndex)) {
                 return true;
@@ -132,7 +137,7 @@ export class PermessiService {
         function checkRuoliUtente(ruoli, permessi, index): boolean {
             let count = 0;
             ruoli.forEach((ruolo: Ruolo) => {
-                if (ruolo.codSede === codSede && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
+                if ((!codSedeVistaSedi || (codSedeVistaSedi === ruolo.codSede)) && ruolo.codSede === codSede && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
                     count++;
                 }
             });

@@ -28,6 +28,7 @@ import { ViewportState } from 'src/app/shared/store/states/viewport/viewport.sta
 import { VisualizzaDocumentoModalComponent } from '../../shared/modal/visualizza-documento-modal/visualizza-documento-modal.component';
 import { TipoConcorrenzaEnum } from '../../shared/enum/tipo-concorrenza.enum';
 import { AddConcorrenza, DeleteConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
+import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-pos',
@@ -53,6 +54,8 @@ export class PosComponent implements OnInit, OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
 
     formData: FormData;
+
+    permissionFeatures = PermissionFeatures;
 
     private subscriptions: Subscription = new Subscription();
 
