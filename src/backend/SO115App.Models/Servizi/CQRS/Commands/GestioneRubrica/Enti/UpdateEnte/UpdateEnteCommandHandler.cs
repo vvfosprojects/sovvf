@@ -10,7 +10,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
 
         public void Handle(UpdateEnteCommand command)
         {
-            //command.Ente.CodSede = command.CodiceSede[0];
+            command.Ente.CodSede = command.CodiceSede[0];
 
             _updateEnte.Update(command.Ente);
         }
