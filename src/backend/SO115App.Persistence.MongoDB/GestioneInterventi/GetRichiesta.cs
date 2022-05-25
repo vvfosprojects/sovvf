@@ -356,24 +356,26 @@ namespace SO115App.Persistence.MongoDB
             result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
 
             //filtri squadra
-            if(filtri != null)
-                result = result.Where(r => r.lstPartenze.SelectMany(p => p.Squadre).Any(s =>
-                {
-                    bool turno = true;
-                    bool distaccamento = true;
-                    bool codice = true;
+            if(filtri != null) result = result.Where(r => r.lstPartenze.SelectMany(p => p.Squadre).Any(s =>
+            {
+                bool turno = true;
+                bool distaccamento = true;
+                bool codice = true;
 
-                    if (filtri.Turni != null && filtri.Turni.Length > 0)
-                        turno = filtri.Turni.Contains(s.Turno);
+                if (filtri.Turni != null && filtri.Turni.Length > 0)
+                    turno = filtri.Turni.Contains(s.Turno);
 
-                    //if (filtri.Distaccamenti != null && filtri.Distaccamenti?.Length > 0)
-                    //    distaccamento = filtri.Distaccamenti.Any(d => d.Equals(s.Distaccamento.Codice));
+                if (filtri.Distaccamenti != null && filtri.Distaccamenti?.Length > 0 && s.Distaccamento != null)
+                    distaccamento = filtri.Distaccamenti.Any(d => d.Equals(s.Distaccamento.Codice));
 
-                    if (filtri.Squadre != null && filtri.Squadre.Length > 0)
-                        codice = filtri.Squadre.Contains(s.Codice);
+                if (s.Distaccamento == null)
+                    distaccamento = false;
 
-                    return turno && distaccamento && codice;
-                })).ToList();
+                if (filtri.Squadre != null && filtri.Squadre.Length > 0)
+                    codice = filtri.Squadre.Contains(s.Codice);
+
+                return turno && distaccamento && codice;
+            })).ToList();
 
             return result;
         }
