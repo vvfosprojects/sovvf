@@ -176,7 +176,7 @@ namespace SO115App.Persistence.File.PDFManagement
                     _gfx.DrawString(p.TpSch, _field, XBrushes.Black, 500, y);
                     _gfx.DrawString(p.SiglaSquadra, _field, XBrushes.Black, 540, y);
                     _gfx.DrawString(p.Servizio ?? "", _field, XBrushes.Black, 580, y);
-                    _gfx.DrawString(p.CapoPartenza ?? "", _field, XBrushes.Black, 630, y);
+                    _gfx.DrawString(p.CapoPartenza ?? "", _field, XBrushes.Black, 620, y);
                     _gfx.DrawString(p.CodMezzo, _smallField, XBrushes.Black, 720, y + 10);
 
                     _gfx.DrawString(p.MezzoInUscita.ToString("HH:mm"), _smallField, XBrushes.Black, 720, y);
