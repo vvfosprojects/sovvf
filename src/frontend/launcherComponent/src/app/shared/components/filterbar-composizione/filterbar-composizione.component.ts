@@ -18,6 +18,7 @@ import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/tr
 import { getGeneriMezzoTriageSummary } from '../../helper/function-triage';
 import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
+import { AppState } from '../../store/states/app/app.state';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -106,15 +107,21 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         const distaccamentiDefault = [];
 
         if (this.competenze) {
-            this.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
-            if (distaccamentiDefault?.length) {
-                const distaccamentiIds = this.filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => d.id);
-                if (distaccamentiIds.includes(distaccamentiDefault[0].id)) {
-                    this.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
-                    this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
-                } else {
-                    this.addFiltro([], 'codiceDistaccamento');
+            const vistaSedi = this.store.selectSnapshot(AppState.vistaSedi);
+            const sedeSelezionata = vistaSedi[0];
+            if (sedeSelezionata.indexOf('.') !== -1) {
+                this.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
+                if (distaccamentiDefault?.length) {
+                    const distaccamentiIds = this.filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => d.id);
+                    if (distaccamentiIds.includes(distaccamentiDefault[0].id)) {
+                        this.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
+                        this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+                    } else {
+                        this.addFiltro([], 'codiceDistaccamento');
+                    }
                 }
+            } else {
+                this.addFiltro([], 'codiceDistaccamento');
             }
         }
     }
