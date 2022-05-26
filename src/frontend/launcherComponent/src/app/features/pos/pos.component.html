@@ -13,6 +13,8 @@
                     <div class="row">
                         <div class="col">
                             <button class="btn btn-primary mb-2 font-weight-bold"
+                                    [class.cursor-not-allowed]="permissionFeatures.AggiungiDocumento | checkPermission"
+                                    [disabled]="permissionFeatures.AggiungiDocumento | checkPermission"
                                     (click)="onAddPos()">
                                 <i class="fas fa-plus mr-1"></i>
                                 Aggiungi P.O.S.

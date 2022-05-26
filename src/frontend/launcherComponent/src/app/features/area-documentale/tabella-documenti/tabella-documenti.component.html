@@ -16,7 +16,8 @@
                 <button class="btn btn-sm btn-danger font-weight-bold"
                         ngbTooltip="Rimuovi Documento"
                         placement="bottom"
-                        [disabled]="(tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
+                        [class.cursor-not-allowed]="permissionFeatures.EliminaDocumento | checkPermissionCodSedeAppartenenza: d.codSede"
+                        [disabled]="(permissionFeatures.EliminaDocumento | checkPermissionCodSedeAppartenenza: d.codSede) || (tipoConcorrenzaEnum.EliminaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
                         (click)="onDeleteDocumento(d?.id, d?.descrizioneDocumento, d?.descrizioneCategoria)">
                     <i class="fas fa-trash"></i>
                 </button>
@@ -28,7 +29,8 @@
                 <button class="btn btn-sm btn-info font-weight-bold"
                         ngbTooltip="Modifica Documento"
                         placement="bottom"
-                        [disabled]="(tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
+                        [class.cursor-not-allowed]="permissionFeatures.ModificaDocumento | checkPermissionCodSedeAppartenenza: d.codSede"
+                        [disabled]="(permissionFeatures.ModificaDocumento | checkPermissionCodSedeAppartenenza: d.codSede) || (tipoConcorrenzaEnum.ModificaPianiDiscendenti | checkConcorrenzaLocked: [d.id])"
                         (click)="onEditDocumento(d)">
                     <i class="fas fa-edit"></i>
                 </button>

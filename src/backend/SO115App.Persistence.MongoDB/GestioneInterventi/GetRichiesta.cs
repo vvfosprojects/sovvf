@@ -336,33 +336,47 @@ namespace SO115App.Persistence.MongoDB
 
         public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri)
         {
-            var empty = Builders<RichiestaAssistenza>.Filter.Empty;
-            var dist = filtri.Distaccamenti?.Any() ?? false ? _getSottoSediByCodSede.Get(filtri.Distaccamenti) : null;
+            var filter = Builders<RichiestaAssistenza>.Filter;
+            var empty = filter.Empty;
 
             //FILTRO I CAMPI CHE ABBIAMO SALVATI SUL DB
 
-            var distaccamento = dist == null || dist.Count == 0 ? empty : Builders<RichiestaAssistenza>.Filter.In(r => r.CodSOCompetente, dist); //OK
+            var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
 
-            var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
+            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi).ToList();
 
-            var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno.Substring(0, 1)); //OK
-
-            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno).ToList();
-
-            //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB)
+            //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB) dopo la query mongo
 
             //fonogramma trasmesso
             if (filtri.AltriFiltri?.Trasmessi ?? false)
-                result = result.Where(r => r.ListaEventi.OfType<FonogrammaInviato>().Count() > 0).ToList();
+                result = result.Where(r => r.ListaEventi.OfType<FonogrammaInviato>().Any()).ToList();
 
             //data
             result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
 
-            //squadre
-            if (filtri.Squadre?.Count() > 0)
-                result = result.Where(r => r.lstSquadre.Any(sq => filtri.Squadre.Contains(sq))).ToList();
+            //filtri squadra
+            if(filtri != null) result = result.Where(r => r.lstPartenze.SelectMany(p => p.Squadre).Any(s =>
+            {
+                bool turno = true;
+                bool distaccamento = true;
+                bool codice = true;
 
-            return result.ToList();
+                if (filtri.Turni != null && filtri.Turni.Length > 0)
+                    turno = filtri.Turni.Contains(s.Turno);
+
+                if (filtri.Distaccamenti != null && filtri.Distaccamenti?.Length > 0 /*&& s.Distaccamento != null*/)
+                    distaccamento = filtri.Distaccamenti.Any(d => d.Equals(s.Distaccamento.Codice));
+
+                //if (s.Distaccamento == null)
+                //    distaccamento = false;
+
+                if (filtri.Squadre != null && filtri.Squadre.Length > 0)
+                    codice = filtri.Squadre.Contains(s.Codice);
+
+                return turno && distaccamento && codice;
+            })).ToList();
+
+            return result;
         }
     }
 }

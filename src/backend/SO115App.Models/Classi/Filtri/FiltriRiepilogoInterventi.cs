@@ -6,7 +6,7 @@ namespace SO115App.Models.Classi.Filtri
     {
         public DateTime Da { get; set; }
         public DateTime A { get; set; }
-        public string Turno { get; set; }
+        public string[] Turni { get; set; }
         public string[] Squadre { get; set; }
         public string[] Distaccamenti { get; set; }
 

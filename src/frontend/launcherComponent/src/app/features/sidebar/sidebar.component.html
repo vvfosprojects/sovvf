@@ -27,6 +27,8 @@
         Gestione Utenti
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [class.cursor-not-allowed]="disabledServiziOperativi"
+            [disabled]="disabledServiziOperativi"
             (click)="onOpenOpservice()">
         <i class="fas fa-users mr-1"></i>
         Servizi Operativi
@@ -35,7 +37,9 @@
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [routerLink]="['/' + RoutesPath.DashboardPortale]"
             [class.btn-sidebar-selected]="url === '/dashboard-portale'"
-            [routerLinkActive]="['text-dark']">
+            [routerLinkActive]="['text-dark']"
+            [class.cursor-not-allowed]="disabledDashboardPortale"
+            [disabled]="disabledDashboardPortale">
         <i class="fas fa-columns"></i>
         Dashboard Portale
     </button>
@@ -50,11 +54,15 @@
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
             [class.btn-sidebar-selected]="url === '/area-documentale' || url === '/POS'"
+            [class.cursor-not-allowed]="disabledAreaDocumentale"
+            [disabled]="disabledAreaDocumentale"
             (click)="onShowAzioniAreaDocumentale()">
         <i class="far fa-folder-open mr-1"></i>
         Area Documentale
     </button>
     <button class="btn border-secondary btn-light btn-block btn-no-hover"
+            [class.cursor-not-allowed]="disabledRiepilogoInterventi"
+            [disabled]="disabledRiepilogoInterventi"
             (click)="onRiepilogoInterventi()">
         <i class="fas fa-print"></i>
         Riepilogo Interventi

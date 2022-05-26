@@ -25,6 +25,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { LSNAME } from '../../core/settings/config';
 import { TipoConcorrenzaEnum } from '../../shared/enum/tipo-concorrenza.enum';
 import { AddConcorrenza, DeleteConcorrenza } from '../../shared/store/actions/concorrenza/concorrenza.actions';
+import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-area-documentale',
@@ -50,6 +51,8 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
 
     formData: FormData;
+
+    permissionFeatures = PermissionFeatures;
 
     private subscriptions: Subscription = new Subscription();
 
@@ -222,7 +225,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                     editDocumentoAreaDocumentaleModal.componentInstance.descCategoria = this.descCategoria;
                     editDocumentoAreaDocumentaleModal.componentInstance.editDocumento = true;
                     editDocumentoAreaDocumentaleModal.componentInstance.documento = documento;
-                    editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile =  new Blob([response.body], { type: response.body.type });
+                    editDocumentoAreaDocumentaleModal.componentInstance.documentoFdFile = new Blob([response.body], { type: response.body.type });
                     switch (documento.descrizioneCategoria) {
                         case 'Piani Discendenti':
                             const data = {

@@ -165,7 +165,7 @@ namespace SO115App.Persistence.File.PDFManagement
                 _gfx.DrawString(riepilogo.X, _xsmallField, XBrushes.Black, x, y + 20);
                 _gfx.DrawString(riepilogo.Y, _xsmallField, XBrushes.Black, x + 50, y + 20);
 
-                _gfx.DrawString(riepilogo.KmCiv ?? "", _field, XBrushes.Black, 400, y);
+                _gfx.DrawString(riepilogo.KmCiv ?? "", _field, XBrushes.Black, 410, y);
                 tf = new XTextFormatter(_gfx);
                 rect = new XRect(445, y - 10, 50, 200);
                 _gfx.DrawRectangle(XBrushes.Transparent, rect);
@@ -176,7 +176,7 @@ namespace SO115App.Persistence.File.PDFManagement
                     _gfx.DrawString(p.TpSch, _field, XBrushes.Black, 500, y);
                     _gfx.DrawString(p.SiglaSquadra, _field, XBrushes.Black, 540, y);
                     _gfx.DrawString(p.Servizio ?? "", _field, XBrushes.Black, 580, y);
-                    _gfx.DrawString(p.CapoPartenza ?? "", _field, XBrushes.Black, 630, y);
+                    _gfx.DrawString(p.CapoPartenza ?? "", _field, XBrushes.Black, 620, y);
                     _gfx.DrawString(p.CodMezzo, _smallField, XBrushes.Black, 720, y + 10);
 
                     _gfx.DrawString(p.MezzoInUscita.ToString("HH:mm"), _smallField, XBrushes.Black, 720, y);
