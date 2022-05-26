@@ -20,7 +20,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.MezziInServizio,
-            roles: [Role.GestoreRichieste]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
         },
         {
             feature: PermissionFeatures.ModificaRichiesta,
@@ -76,19 +76,95 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.GestionePos,
-            roles: [Role.Amministratore]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
         },
         {
             feature: PermissionFeatures.Triage,
-            roles: [Role.Amministratore]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
         },
         {
             feature: PermissionFeatures.ZoneEmergenza,
-            roles: [Role.Amministratore]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
         },
         {
             feature: PermissionFeatures.ImpostazioniSede,
-            roles: [Role.Amministratore]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.AggiungiDettaglioTipologia,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.ModificaDettaglioTipologia,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.EliminaDettaglioTipologia,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.AggiungiTriage,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.ModificaTriage,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.EliminaTriage,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.ImportaTriage,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.Rubrica,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.AggiungiVoceRubrica,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.ModificaVoceRubrica,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.EliminaVoceRubrica,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.CodaChiamate,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.DashboardPortale,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.RiepilogoInterventi,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.AreaDocumentale,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.AggiungiDocumento,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.ModificaDocumento,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.EliminaDocumento,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.ServiziOperativi,
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
         }
     ]
 };

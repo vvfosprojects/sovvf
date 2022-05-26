@@ -32,6 +32,7 @@ import { ImpostazioniState } from '../../../shared/store/states/impostazioni/imp
 import { ImportTriageModalComponent } from './import-triage-modal/import-triage-modal.component';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-triage',
@@ -82,6 +83,7 @@ export class TriageComponent implements OnDestroy {
     itemTitleEdit: string;
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+    permissionFeatures = PermissionFeatures;
 
     private subscription = new Subscription();
 

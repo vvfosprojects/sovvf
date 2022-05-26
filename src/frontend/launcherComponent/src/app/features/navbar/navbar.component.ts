@@ -61,6 +61,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() nightMode: boolean;
     @Input() disabledMezziInServizio: boolean;
     @Input() disabledZoneEmergenza: boolean;
+    @Input() disabledRubrica: boolean;
+    @Input() disabledCodaChiamate: boolean;
     @Input() colorButtonView: ViewInterfaceButton;
     @Input() sidebarOpened: boolean;
     @Input() doubleMonitor: boolean;

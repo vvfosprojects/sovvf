@@ -16,6 +16,7 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { AddConcorrenza, DeleteConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-dettagli-tipologie',
@@ -38,6 +39,7 @@ export class DettagliTipologieComponent implements OnDestroy {
     page: number;
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+    permissionFeatures = PermissionFeatures;
 
     private subscriptions: Subscription = new Subscription();
 

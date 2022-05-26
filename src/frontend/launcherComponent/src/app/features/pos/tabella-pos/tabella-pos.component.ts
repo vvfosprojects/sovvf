@@ -5,6 +5,7 @@ import { DettaglioTipologia } from '../../../shared/interface/dettaglio-tipologi
 import { getDettagliTipologieFromListaTipologie, getTipologieFromListaTipologie } from 'src/app/shared/helper/function-pos';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-tabella-pos',
@@ -30,6 +31,7 @@ export class TabellaPosComponent {
     @Output() deletePos: EventEmitter<{ idPos: string, descrizionePos: string }> = new EventEmitter<{ idPos: string, descrizionePos: string }>();
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+    permissionFeatures = PermissionFeatures;
 
     constructor(private lockedConcorrenzaService: LockedConcorrenzaService) {
     }
