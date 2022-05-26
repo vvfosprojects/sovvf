@@ -7,6 +7,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso
 {
     public interface IGetRiepilogoInterventi
     {
-        Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri);
+        Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri, string[] codSede);
     }
 }

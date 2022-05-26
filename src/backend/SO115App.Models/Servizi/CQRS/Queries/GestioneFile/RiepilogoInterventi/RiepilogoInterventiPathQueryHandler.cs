@@ -1,4 +1,5 @@
 ﻿using CQRS.Queries;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
@@ -6,10 +7,12 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using SO115App.Persistence.File.CSVManagement;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -21,6 +24,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
         private readonly IGetRiepilogoInterventi _getRiepilogoInterventi;
         private readonly IGetUtenteById _getUtente;
         private readonly IGetSedi _getSedi;
+        private readonly IGetSottoSediByCodSede _getSottoSedi;
         private readonly IPDFTemplateManager<RiepilogoInterventiModelForm> _pdfManager;
         private readonly ICSVTemplateManager<RiepilogoInterventiModelForm> _csvManager;
 
@@ -29,7 +33,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             IGetUtenteById getUtente,
             IGetTipologieByCodice getTipologie,
             IPDFTemplateManager<RiepilogoInterventiModelForm> pdfManager,
-            ICSVTemplateManager<RiepilogoInterventiModelForm> csvManager)
+            ICSVTemplateManager<RiepilogoInterventiModelForm> csvManager,
+            IGetSottoSediByCodSede getSottoSedi)
         {
             _getSedi = getSedi;
             _getUtente = getUtente;
@@ -37,13 +42,28 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             _pdfManager = pdfManager;
             _getTipologie = getTipologie;
             _csvManager = csvManager;
+            _getSottoSedi = getSottoSedi;
         }
 
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
         {
-            var distaccamento = _getSedi.GetAll().Result.Find(s => s.Codice.Equals(query.IdSede.First()));
+            var sediAll = _getSedi.GetAll().Result;
+            var distaccamento = _getSedi.GetInfoSede(query.IdSede[0]).Result.MapSede();
 
-            var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri).Result;
+            List<RichiestaAssistenza> lstInterventi = null;
+
+            if(query.IdSede[0].Equals("00"))
+            {
+                lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri, sediAll.Select(s => s.Codice).ToArray()).Result;
+
+                //distaccamento = _getSedi.GetInfoSede("00").Result.MapSede();
+            }
+            else
+            {
+                var sottoSedi = _getSottoSedi.Get(query.IdSede).ToArray();
+
+                lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri, sottoSedi).Result;
+            }
 
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
 
