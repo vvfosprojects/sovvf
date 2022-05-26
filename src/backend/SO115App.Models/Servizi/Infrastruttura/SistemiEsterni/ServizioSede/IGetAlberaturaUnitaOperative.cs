@@ -6,5 +6,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede
     public interface IGetAlberaturaUnitaOperative
     {
         Task<UnitaOperativa> ListaSediAlberata();
+
+        string GetCodiceSedePadre(string codiceSede);
     }
 }

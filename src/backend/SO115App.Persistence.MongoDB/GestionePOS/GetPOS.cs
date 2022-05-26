@@ -57,7 +57,13 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
                 }
             }
 
+            //Per la ricorsività cerco se il codice sede ha un padre e. Se sono su Roma cerco il codice della Direzione Lazio per poter vedere le POS create dalla direzione
+            var codiceSedePadre = _getAlberaturaUnitaOperative.GetCodiceSedePadre(filtri.CodiceSede);
+
             var listaCodici = pinNodi.Select(x => x.Codice).ToList();
+
+            if (codiceSedePadre.Trim().Length > 0)
+                listaCodici.Add(codiceSedePadre);
 
             var filtroSediCompetenti = Builders<PosDAO>.Filter
                 .In(p => p.CodSede, listaCodici.Select(uo => uo));
