@@ -34,6 +34,8 @@
                                     ngbTooltip="Visualizza Coda Chiamate"
                                     placement="right"
                                     [class.btn-nav-selected]="(codaChiamateStatus$ | async) && url === '/home'"
+                                    [class.cursor-not-allowed]="disabledCodaChiamate"
+                                    [disabled]="disabledCodaChiamate"
                                     (click)="toggleCodaChiamate()">
                                 <i class="fas fa-phone-alt mr-1"></i>
                                 <i class="fas fa-list"></i>
@@ -81,7 +83,9 @@
                                 ngbTooltip="Visualizza Rubrica"
                                 [routerLink]="['/' + RoutesPath.Rubrica]"
                                 [class.btn-nav-selected]="url === '/rubrica' || url === '/pos'"
-                                [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                                [routerLinkActive]="['btn-light-nav', 'text-dark']"
+                                [class.cursor-not-allowed]="disabledRubrica"
+                                [disabled]="disabledRubrica">
                             <i class="fas fa-address-book"></i>
                         </button>
                         <app-notifiche [listaNotifiche]="listaNotifiche$ | async"

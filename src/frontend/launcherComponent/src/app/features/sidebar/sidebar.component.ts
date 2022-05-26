@@ -22,6 +22,10 @@ export class SidebarComponent {
     @Input() url: string;
     @Input() disabledGestioneUtenti: boolean;
     @Input() disabledImpostazioniSede: boolean;
+    @Input() disabledDashboardPortale: boolean;
+    @Input() disabledRiepilogoInterventi: boolean;
+    @Input() disabledAreaDocumentale: boolean;
+    @Input() disabledServiziOperativi: boolean;
 
     @Output() logout = new EventEmitter();
 

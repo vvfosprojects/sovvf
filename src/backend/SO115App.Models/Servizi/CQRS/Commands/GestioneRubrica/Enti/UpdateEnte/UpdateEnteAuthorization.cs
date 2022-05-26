@@ -34,14 +34,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
                 else
                 {
                     Boolean abilitato = false;
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede[0], Costanti.GestoreChiamate))
-                            abilitato = true;
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede[0], Costanti.GestoreRichieste))
-                            abilitato = true;
-                    }
 
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede[0], Costanti.GestoreChiamate))
+                        abilitato = true;
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede[0], Costanti.GestoreRichieste))
+                        abilitato = true;
+                    
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
