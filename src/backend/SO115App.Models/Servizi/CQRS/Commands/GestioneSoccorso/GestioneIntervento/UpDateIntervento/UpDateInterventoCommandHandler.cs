@@ -114,15 +114,15 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                     utentiPresaInCarico.Add(utente.Nominativo);
 
             //casistica che gestisce la registrazione di una chiamata non di competenza diretta. Es. registro a Milano una chiamata di Torino
-            var codSocompetente = "";
-            if (command.CodiceSede.Split('.')[0].Equals(command.Chiamata.CodCompetenze.ToList()[0].Split('.')[0]))
-                codSocompetente = command.Chiamata.CodCompetenze.ToList()[0];
-            else
-                codSocompetente = command.CodiceSede;
+            //var codSocompetente = "";
+            //if (command.CodiceSede.Split('.')[0].Equals(command.Chiamata.CodCompetenze.ToList()[0].Split('.')[0]))
+            //    codSocompetente = command.Chiamata.CodCompetenze.ToList()[0];
+            //else
+            //    codSocompetente = command.CodiceSede;
 
             richiesta.CodUOCompetenza = command.Chiamata.CodCompetenze.ToArray();
             richiesta.Competenze = command.Chiamata.Competenze;
-            richiesta.CodSOCompetente = codSocompetente;
+            richiesta.CodSOCompetente = command.Chiamata.CodCompetenze[0];
             richiesta.Tipologie = listaCodiciTipologie;
             richiesta.DettaglioTipologia = command.Chiamata.DettaglioTipologia;
             richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza != null ? new string[] { command.Chiamata.ZoneEmergenza } : null;
