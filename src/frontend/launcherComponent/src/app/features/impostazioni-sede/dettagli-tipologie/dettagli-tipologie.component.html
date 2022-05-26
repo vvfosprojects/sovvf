@@ -50,7 +50,8 @@
                              [disableTooltip]="!(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
                             <button class="btn btn-sm btn-info"
                                     ngbTooltip="Modifica Dettaglio Tipologia"
-                                    [disabled]="(tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
+                                    [class.cursor-not-allowed]="permissionFeatures.ModificaDettaglioTipologia | checkPermissionCodSedeAppartenenza: dettaglioTipologia.codSede"
+                                    [disabled]="(permissionFeatures.ModificaDettaglioTipologia | checkPermissionCodSedeAppartenenza: dettaglioTipologia.codSede) || (tipoConcorrenzaEnum.ModificaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
                                     (click)="onEditDettaglioTipologia(dettaglioTipologia)">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -61,7 +62,8 @@
                              [disableTooltip]="!(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])">
                             <button class="btn btn-sm btn-danger"
                                     ngbTooltip="Elimina Dettaglio Tipologia"
-                                    [disabled]="(tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
+                                    [class.cursor-not-allowed]="permissionFeatures.EliminaDettaglioTipologia | checkPermissionCodSedeAppartenenza: dettaglioTipologia.codSede"
+                                    [disabled]="(permissionFeatures.EliminaDettaglioTipologia | checkPermissionCodSedeAppartenenza: dettaglioTipologia.codSede) || (tipoConcorrenzaEnum.EliminaDettaglioTipologia | checkConcorrenzaLocked: [dettaglioTipologia.id])"
                                     (click)="onDeleteDettaglioTipologia(dettaglioTipologia)">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -88,7 +90,10 @@
     <div class="col-12">
         <div class="clearfix">
             <div class="float-left mt-2">
-                <button class="btn btn-lg btn-primary btn-no-hover" (click)="onAddDettaglioTipologia()">
+                <button class="btn btn-lg btn-primary btn-no-hover"
+                        [class.cursor-not-allowed]="permissionFeatures.AggiungiDettaglioTipologia | checkPermission"
+                        [disabled]="permissionFeatures.AggiungiDettaglioTipologia | checkPermission"
+                        (click)="onAddDettaglioTipologia()">
                     <i class="fas fa-plus"></i>
                     Aggiungi Dettaglio
                 </button>

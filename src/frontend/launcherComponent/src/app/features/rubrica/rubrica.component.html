@@ -12,7 +12,10 @@
                 <div class="col-12 mb-2">
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-primary mb-2 font-weight-bold" (click)="onAddVoceRubrica()">
+                            <button class="btn btn-primary mb-2 font-weight-bold"
+                                    [class.cursor-not-allowed]="permissionFeatures.AggiungiVoceRubrica | checkPermission"
+                                    [disabled]="permissionFeatures.AggiungiVoceRubrica | checkPermission"
+                                    (click)="onAddVoceRubrica()">
                                 <i class="fas fa-plus mr-1"></i>
                                 Aggiungi Voce
                             </button>

@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EnteInterface } from 'src/app/shared/interface/ente.interface';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-tabella-rubrica',
     templateUrl: './tabella-rubrica.component.html',
-    styleUrls: ['./tabella-rubrica.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./tabella-rubrica.component.css']
 })
 export class TabellaRubricaComponent {
 
@@ -21,6 +21,8 @@ export class TabellaRubricaComponent {
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() editVoceRubrica: EventEmitter<EnteInterface> = new EventEmitter<EnteInterface>();
     @Output() deleteVoceRubrica: EventEmitter<{ idVoceRubrica: string, descrizioneVoceRubrica: string }> = new EventEmitter<{ idVoceRubrica: string, descrizioneVoceRubrica: string }>();
+
+    permissionFeatures = PermissionFeatures;
 
     constructor() {
     }
