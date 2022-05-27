@@ -23,7 +23,7 @@
                         [class.cursor-not-allowed]="tipoConcorrenzaEnum.AnnullaStatoMezzo | checkConcorrenzaLocked: [partenza.mezzo.codice]"
                         ngbTooltip="Annulla ultimo cambio stato"
                         [disabled]="tipoConcorrenzaEnum.AnnullaStatoMezzo | checkConcorrenzaLocked: [partenza.mezzo.codice]"
-                        (click)="onAnnullaStato(partenza.mezzo.codice, partenza.mezzo.stato)">
+                        (click)="onAnnullaStato(partenza.mezzo.codice, getUltimoStatoMezzo(partenza.mezzo.codice))">
                     <i class="fas fa-history px-1"></i>
                 </button>
             </div>
@@ -50,7 +50,8 @@
                         +{{ partenza.squadre.length - 1 }}
                     </div>
                 </button>
-                <ng-container *ngIf="!hideGestisciPartenza && inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa">
+                <ng-container
+                        *ngIf="!hideGestisciPartenza && inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa">
                     <div [ngbTooltip]="tooltipLockedConcorrenza"
                          [disableTooltip]="!(tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice])">
                         <button class="btn btn-sm btn-info d-inline-block"
