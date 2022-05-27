@@ -165,10 +165,27 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
         }
 
         const idRichiesta = this.idRichiesta;
-        const sostituzioni = this.sostituzioni;
+        const sostituzioni = makeCopy(this.sostituzioni);
+        const sostituzioniMapped = [];
+        sostituzioni?.forEach((s: SostituzioneInterface) => {
+            const mezzoIsInSostituzioniMapped = sostituzioniMapped.filter((sostituzione: any) => sostituzione.codMezzo === s.codMezzoMontante)[0];
+            if (!mezzoIsInSostituzioniMapped) {
+                sostituzioniMapped.push({ codMezzo: s.codMezzoMontante, codSquadre: s.squadreSmontanti });
+            } else {
+                mezzoIsInSostituzioniMapped.codSquadre = [...mezzoIsInSostituzioniMapped.codSquadre, ...s.squadreSmontanti];
+            }
+        });
+        sostituzioni?.forEach((s: SostituzioneInterface) => {
+            const mezzoIsInSostituzioniMapped = sostituzioniMapped.filter((sostituzione: any) => sostituzione.codMezzo === s.codMezzoSmontante)[0];
+            if (!mezzoIsInSostituzioniMapped) {
+                sostituzioniMapped.push({ codMezzo: s.codMezzoSmontante, codSquadre: s.squadreMontanti });
+            } else {
+                mezzoIsInSostituzioniMapped.codSquadre = [...mezzoIsInSostituzioniMapped.codSquadre, ...s.squadreMontanti];
+            }
+        });
         const obj = {
             idRichiesta,
-            sostituzioni,
+            sostituzioni: sostituzioniMapped,
             dataOraOperazione: new Date()
         } as SostituzionePartenzaFineTurnoDto;
         const codMezziSmontanti = sostituzioni.map((s: SostituzioneInterface) => s.codMezzoSmontante);
