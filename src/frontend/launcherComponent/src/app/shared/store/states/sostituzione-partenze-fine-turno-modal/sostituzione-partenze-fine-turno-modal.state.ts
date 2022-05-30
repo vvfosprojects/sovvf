@@ -95,7 +95,7 @@ export class SostituzionePartenzeFineTurnoModalState {
                 codMezzoSmontante: undefined,
                 squadreSmontanti: null,
                 codMezzoMontante: partenzaMontate.partenza.mezzo.codice,
-                squadreMontanti: [s.nome]
+                squadreMontanti: [s.codice]
             };
             sostituzioni.push(sostituzione);
         });
