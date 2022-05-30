@@ -78,7 +78,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             foreach (var sostituzione in command.sostituzione.Sostituzioni)
             {
                 var ElencoSquadre = CheckElencoSquadre(command, partenzeDaSostituire, sostituzione.CodMezzo);
-                
+
                 var NuovaPartenza = new ComposizionePartenze(richiestaOld, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
                 {
                     Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
@@ -104,7 +104,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 SostituzionePartenzaFineTurno sos = new SostituzionePartenzaFineTurno(richiestaOld, sostituzione.CodMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, note);
 
                 _upDatePartenza.Update(AggStatoMezzo);
-
             }
 
             //FASE 6
@@ -113,37 +112,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             //FASE 7
             //Invio a GAC degli aggiornamenti
-            var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.Select(t => t.Codice).First() }).First();
-
-            await Task.Run(() =>
-            {
-                foreach (var composizione in command.Richiesta.Partenze.Where(p => p.Partenza.Terminata == false && p.Partenza.Sganciata == false && p.Partenza.PartenzaAnnullata == false))
-                {
-                    _modificaIntervento.Send(new ModificaMovimentoGAC()
-                    {
-                        targa = composizione.CodiceMezzo.Split('.', StringSplitOptions.RemoveEmptyEntries)[1],
-                        idPartenza = composizione.CodicePartenza,
-                        autistaRientro = composizione.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
-                        autistaUscita = composizione.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
-                        tipoMezzo = composizione.Partenza.Mezzo.Codice.Split('.', StringSplitOptions.RemoveEmptyEntries)[0],
-                        dataRientro = composizione.Istante,
-                        dataUscita = composizione.Istante,
-
-                        comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
-                        localita = command.Richiesta.Localita.Indirizzo,
-                        provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
-                        latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                        longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
-                        dataIntervento = command.Richiesta.dataOraInserimento,
-                        numeroIntervento = command.Richiesta.CodRichiesta,
-                        tipoUscita = new TipoUscita()
-                        {
-                            codice = tipologia.Codice,
-                            descrizione = tipologia.Descrizione
-                        }
-                    });
-                }
-            });
+            command.Richiesta = richiestaOld;
         }
 
         private List<Squadra> CheckElencoSquadre(SostituzionePartenzaCommand command, List<ComposizionePartenze> partenzeDaSostiturie, string CodMezzoDaElaborare)
