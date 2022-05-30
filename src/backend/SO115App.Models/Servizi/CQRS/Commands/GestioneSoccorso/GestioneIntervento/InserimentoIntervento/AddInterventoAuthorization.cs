@@ -63,17 +63,19 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         {
             Log.Information("Inserimento Intervento - Inizio Controlli di Autorizzazione");
 
-            if (command.Chiamata.Competenze == null)
-            {
-                //command.CodCompetenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet().ToArray();
-                yield return new AuthorizationResult(Costanti.CompetenzeNonPresenti);
-            }
-            else
-            {
-                if (command.Chiamata.Competenze.Count > 0)
-                    command.CodCompetenze = command.Chiamata.Competenze.Select(c => c.Codice).ToArray();
-                //else if (command.Chiamata.CodCompetenze.Count > 0)
-            }
+            //if (command.Chiamata.Competenze == null)
+            //{
+            //    //command.CodCompetenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet().ToArray();
+            //    yield return new AuthorizationResult(Costanti.CompetenzeNonPresenti);
+            //}
+            //else
+            //{
+            //    if (command.Chiamata.Competenze.Count > 0)
+            //        command.CodCompetenze = command.Chiamata.Competenze.Select(c => c.Codice).ToArray();
+            //    //else if (command.Chiamata.CodCompetenze.Count > 0)
+            //}
+
+
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 

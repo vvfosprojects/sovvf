@@ -290,7 +290,7 @@ namespace SO115App.Persistence.MongoDB
                 }
             }
 
-            var listaSistesiRichieste = result.Where(richiesta => richiesta.CodUOCompetenza != null).Select(richiesta =>
+            var listaSistesiRichieste = result.Where(richiesta => richiesta.CodSOCompetente != null).Select(richiesta =>
             {
                 var rubrica = new List<EnteDTO>();
                 var sintesi = new SintesiRichiesta();

@@ -68,7 +68,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         {
             Log.Information("Inserimento Intervento - Inizio scrittura internvento");
 
-            //var sedi = _getSedi.GetAll().Result.FindAll(s => command.Chiamata.Competenze);
+            //command.Chiamata.Competenze = null;
+
 
             command.Chiamata.Codice = _generaCodiceRichiesta.GeneraCodiceChiamata(command.CodiceSede, DateTime.UtcNow.Year);
 
@@ -79,11 +80,11 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             command.Chiamata.Localita.SplitIndirizzo();
 
             //casistica che gestisce la registrazione di una chiamata non di competenza diretta. Es. registro a Milano una chiamata di Torino
-            var codSocompetente = "";
-            if (command.CodiceSede.Split('.')[0].Equals(command.CodCompetenze.ToList()[0].Split('.')[0]))
-                codSocompetente = command.CodCompetenze.ToList()[0];
-            else
-                codSocompetente = command.CodiceSede;
+            //var codSocompetente = "";
+            //codSocompetente =
+            //if (command.CodiceSede.Split('.')[0].Equals(command.CodCompetenze.ToList()[0].Split('.')[0]))
+            //    codSocompetente = command.CodCompetenze.ToList()[0];
+            //else
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -99,10 +100,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 UtPresaInCarico = utentiPresaInCarico,
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
-                CodUOCompetenza = command.CodCompetenze.ToArray(),
+                CodUOCompetenza = command.CodCompetenze != null ? command.CodCompetenze.ToArray() : null,
                 Competenze = command.Chiamata.Competenze,
                 CodOperatore = command.CodUtente,
-                CodSOCompetente = codSocompetente,
+                CodSOCompetente = command.CodiceSede,
                 CodEntiIntervenuti = command.Chiamata.listaEnti?.Select(c => c).ToList(),
                 DettaglioTipologia = command.Chiamata.DettaglioTipologia,
                 TriageSummary = command.Chiamata.TriageSummary,
