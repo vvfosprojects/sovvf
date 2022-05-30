@@ -805,6 +805,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 new ClearMarkerChiamata(),
                 new ClearIdChiamataMarker()
             ]);
+            this.f.codCompetenzaCentrale.patchValue(null);
             this.f.codPrimaCompetenza.patchValue(null);
             this.f.codSecondaCompetenza.patchValue(null);
             this.f.codTerzaCompetenza.patchValue(null);
@@ -895,6 +896,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 new ClearCountInterventiProssimita(),
                 new ClearInterventiProssimita()
             ]);
+            this.f.codCompetenzaCentrale.patchValue(null);
             this.f.codPrimaCompetenza.patchValue(null);
             this.f.codSecondaCompetenza.patchValue(null);
             this.f.codTerzaCompetenza.patchValue(null);

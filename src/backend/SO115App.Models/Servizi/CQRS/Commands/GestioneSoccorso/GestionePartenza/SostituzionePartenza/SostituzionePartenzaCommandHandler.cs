@@ -9,6 +9,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.Ag
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IGetTipologieByCodice _getTipologie;
         private readonly IUpdateStatoPartenze _upDatePartenza;
         private readonly IGetRichiesta _getRichiestaById;
+        private readonly IGetTurno _getTurno;
 
         public SostituzionePartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpDateRichiestaAssistenza updateRichiesta,
                                                   IGetMaxCodicePartenza getMaxCodicePartenza, IModificaInterventoChiuso modificaIntervento,
-                                                  IUpdateStatoPartenze upDatePartenza, IGetRichiesta getRichiestaById)
+                                                  IUpdateStatoPartenze upDatePartenza, IGetRichiesta getRichiestaById, IGetTurno getTurno)
         {
             _updateRichiesta = updateRichiesta;
             _getMaxCodicePartenza = getMaxCodicePartenza;
@@ -35,156 +37,109 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _getTipologie = getTipologie;
             _upDatePartenza = upDatePartenza;
             _getRichiestaById = getRichiestaById;
+            _getTurno = getTurno;
         }
 
         public async void Handle(SostituzionePartenzaCommand command)
         {
-            var ElencoSquadreSmontanti = command.sostituzione.Sostituzioni.Select(s => s.SquadreSmontanti).ToList();
-            var ElencoSquadreMontanti = command.sostituzione.Sostituzioni.Select(s => s.SquadreMontanti).ToList();
-
-
-
-            var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.Select(t => t.Codice).First() }).First();
-
             var richiestaOld = _getRichiestaById.GetByCodice(command.Richiesta.Codice);
 
-            var SquadreOriginariamentePresentiMezzoSmontante = richiestaOld.Partenze.ToList().Find(p => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoSmontante.Equals(p.CodiceMezzo)) && p.Partenza.PartenzaAnnullata == false && p.Partenza.Terminata == false && p.Partenza.Sganciata == false);
-            var SquadreOriginariamentePresentiMezzoMontante = richiestaOld.Partenze.ToList().Find(p => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoMontante.Equals(p.CodiceMezzo)) && p.Partenza.PartenzaAnnullata == false && p.Partenza.Terminata == false && p.Partenza.Sganciata == false);
+            //FASE 1
+            //Reperimento Partenze aperte sull'intervento
+            var partenzeAperteIntervento = richiestaOld.Partenze.ToList().FindAll(p => p.Partenza.PartenzaAnnullata == false && p.Partenza.Terminata == false && p.Partenza.Sganciata == false);
 
-            var PartenzaMontante = command.Richiesta.Partenze.First(x => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoMontante.Equals(x.Partenza.Mezzo.Codice)) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
-            var PartenzaSmontante = command.Richiesta.Partenze.First(x => command.sostituzione.Sostituzioni.Any(s => s.CodMezzoSmontante.Equals(x.Partenza.Mezzo.Codice)) && x.Partenza.PartenzaAnnullata == false && x.Partenza.Terminata == false && x.Partenza.Sganciata == false);
-            var SquadreSwitch = PartenzaSmontante.Partenza.Squadre;
+            //FASE 2
+            //Elenco Partenze interessate dalla sostituzione
+            var partenzeDaSostituire = partenzeAperteIntervento.FindAll(p => command.sostituzione.Sostituzioni.Any(s => s.CodMezzo.Equals(p.CodiceMezzo)));
 
-            //GESTIONE PARTENZA SMONTANTE
-
-            var elencoSquadreRimanentiSulMezzoSmontante = SquadreOriginariamentePresentiMezzoSmontante.Partenza.Squadre.FindAll(s => !ElencoSquadreSmontanti.Any(ss => ss.Any(sm => sm.Equals(s.Nome))));
-            var elencoSquadreNuoveSulMezzoSmontante = SquadreOriginariamentePresentiMezzoMontante.Partenza.Squadre.FindAll(s => ElencoSquadreMontanti.Any(ss => ss.Any(sm => sm.Equals(s.Nome))));
-            elencoSquadreRimanentiSulMezzoSmontante.AddRange(elencoSquadreNuoveSulMezzoSmontante);
-
-            PartenzaSmontante.Partenza.Squadre = elencoSquadreRimanentiSulMezzoSmontante;
-            PartenzaSmontante.Partenza.Terminata = true;
-
-            AggiornaStatoMezzoCommand statoMezzoPartenzaSmontante = new AggiornaStatoMezzoCommand();
-            statoMezzoPartenzaSmontante.CodiciSede = new string[] { PartenzaSmontante.Partenza.Mezzo.Appartenenza };
-            statoMezzoPartenzaSmontante.IdMezzo = PartenzaSmontante.Partenza.Mezzo.Codice;
-            statoMezzoPartenzaSmontante.Richiesta = richiestaOld;
-            statoMezzoPartenzaSmontante.StatoMezzo = Costanti.MezzoRientrato;
-            _upDatePartenza.Update(statoMezzoPartenzaSmontante);
-
-            //GESTIONE PARTENZA MONTANTE
-            var elencoSquadreRimanentiSulMezzoMontante = SquadreOriginariamentePresentiMezzoMontante.Partenza.Squadre.FindAll(s => !ElencoSquadreMontanti.Any(ss => ss.Any(sm => sm.Equals(s.Nome))));
-            var elencoSquadreNuoveSulMezzoMontante = SquadreOriginariamentePresentiMezzoSmontante.Partenza.Squadre.FindAll(s => ElencoSquadreSmontanti.Any(ss => ss.Any(sm => sm.Equals(s.Nome))));
-            elencoSquadreRimanentiSulMezzoMontante.AddRange(elencoSquadreNuoveSulMezzoMontante);
-
-            PartenzaMontante.Partenza.Squadre = elencoSquadreRimanentiSulMezzoMontante; //PartenzaSmontante.Partenza.Squadre.FindAll(s => command.sostituzione.Sostituzioni.Any(so => so.SquadreSmontanti.Any(sm => sm.Equals(s.Nome)))).ToList();
-            PartenzaMontante.Partenza.Terminata = true;
-
-            AggiornaStatoMezzoCommand statoMezzoPartenzaMontante = new AggiornaStatoMezzoCommand();
-            statoMezzoPartenzaMontante.CodiciSede = new string[] { PartenzaMontante.Partenza.Mezzo.Appartenenza };
-            statoMezzoPartenzaMontante.IdMezzo = PartenzaMontante.Partenza.Mezzo.Codice;
-            statoMezzoPartenzaMontante.Richiesta = richiestaOld;
-            statoMezzoPartenzaMontante.StatoMezzo = Costanti.MezzoRientrato;
-            _upDatePartenza.Update(statoMezzoPartenzaMontante);
-
-            //GESTIONE NUOVA PARTENZA SMONTANTE
-            var PartenzaSmontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
+            //FASE 3
+            //Chiusura Vecchie Partenze
+            foreach (var partenza in partenzeAperteIntervento)
             {
-                Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
-                Mezzo = PartenzaSmontante.Partenza.Mezzo,
-                Squadre = PartenzaSmontante.Partenza.Squadre,
-                Turno = PartenzaSmontante.Partenza.Turno,
-                Coordinate = PartenzaSmontante.Partenza.Coordinate,
-            });
+                richiestaOld.Partenze.ToList().Find(p => p.Partenza.PartenzaAnnullata == false
+                                                            && p.Partenza.Terminata == false
+                                                            && p.Partenza.Sganciata == false
+                                                            && p.CodiceMezzo.Equals(partenza.CodiceMezzo)).Partenza.Terminata = true;
 
-            new ArrivoSulPosto(command.Richiesta, PartenzaSmontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaSmontanteNuova.CodicePartenza);
-
-            AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
-            statoMezzo.CodiciSede = new string[] { PartenzaSmontanteNuova.Partenza.Mezzo.Appartenenza };
-            statoMezzo.IdMezzo = PartenzaSmontanteNuova.CodiceMezzo;
-            statoMezzo.Richiesta = command.Richiesta;
-            statoMezzo.StatoMezzo = Costanti.MezzoSulPosto;
-            _upDatePartenza.Update(statoMezzo);
-
-            //GESTIONE NUOVA PARTENZA MONTANTE
-            var PartenzaMontanteNuova = new ComposizionePartenze(command.Richiesta, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
-            {
-                Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 2).ToString(),
-                Mezzo = PartenzaMontante.Partenza.Mezzo,
-                Squadre = PartenzaMontante.Partenza.Squadre,
-                Turno = PartenzaMontante.Partenza.Turno,
-                Coordinate = PartenzaMontante.Partenza.Coordinate
-            });
-
-            new ArrivoSulPosto(command.Richiesta, PartenzaMontante.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, PartenzaMontanteNuova.CodicePartenza);
-
-            AggiornaStatoMezzoCommand statoMezzoMontante = new AggiornaStatoMezzoCommand();
-            statoMezzoMontante.CodiciSede = new string[] { PartenzaMontanteNuova.Partenza.Mezzo.Appartenenza };
-            statoMezzoMontante.IdMezzo = PartenzaMontanteNuova.CodiceMezzo;
-            statoMezzoMontante.Richiesta = command.Richiesta;
-            statoMezzoMontante.StatoMezzo = Costanti.MezzoSulPosto;
-            _upDatePartenza.Update(statoMezzoMontante);
-
-            #region GESTIONE NOTE
-
-            string NoteSquadreSmontanti = "";
-            string NoteSquadreMontanti = "";
-            if (PartenzaSmontante.Partenza.Squadre.Count() > 1)
-            {
-                foreach (var squadra in PartenzaSmontante.Partenza.Squadre)
+                partenza.Partenza.Terminata = true;
+                AggiornaStatoMezzoCommand statoMezzoPartenza = new AggiornaStatoMezzoCommand()
                 {
-                    NoteSquadreSmontanti = NoteSquadreSmontanti + squadra.Nome + ",";
-                }
+                    CodiciSede = new string[] { partenza.Partenza.Mezzo.Appartenenza },
+                    IdMezzo = partenza.CodiceMezzo,
+                    Richiesta = richiestaOld,
+                    StatoMezzo = Costanti.MezzoRientrato
+                };
 
-                NoteSquadreSmontanti = "Le squadre " + NoteSquadreSmontanti.Substring(0, NoteSquadreSmontanti.Length - 1) + " vengono sostituite ";
-            }
-            else NoteSquadreSmontanti = "La squadra " + PartenzaSmontante.Partenza.Squadre[0].Nome + " viene sostituita ";
+                _upDatePartenza.Update(statoMezzoPartenza);
+            };
 
-            if (PartenzaMontante.Partenza.Squadre.Count() > 1)
+            //FASE 4
+            //Creazione nuove partenze
+            foreach (var sostituzione in command.sostituzione.Sostituzioni)
             {
-                foreach (var squadra in PartenzaMontante.Partenza.Squadre)
+                var ElencoSquadre = CheckElencoSquadre(command, partenzeDaSostituire, sostituzione.CodMezzo);
+
+                var NuovaPartenza = new ComposizionePartenze(richiestaOld, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
                 {
-                    NoteSquadreMontanti = NoteSquadreMontanti + squadra + ",";
-                }
-
-                NoteSquadreMontanti = " dalle squadre " + NoteSquadreMontanti.Substring(0, NoteSquadreMontanti.Length - 1);
-            }
-            else NoteSquadreMontanti = " dalla squadra " + PartenzaMontante.Partenza.Squadre[0].Nome;
-
-            string Note = NoteSquadreSmontanti + NoteSquadreMontanti + " sul mezzo " + PartenzaSmontante.CodiceMezzo + " tornando in sede con il mezzo " + PartenzaMontante.CodiceMezzo;
-
-            #endregion GESTIONE NOTE
-
-            new SostituzionePartenzaFineTurno(command.Richiesta, PartenzaSmontante.CodiceMezzo, command.sostituzione.DataOraOperazione, command.sostituzione.idOperatore, Note);
-
-            //TODO finire la where con codici partenze o mezzi
-            foreach (var composizione in command.Richiesta.Partenze.Where(p => p.Partenza.Terminata == false && p.Partenza.Sganciata == false && p.Partenza.PartenzaAnnullata == false))
-            {
-                _modificaIntervento.Send(new ModificaMovimentoGAC()
-                {
-                    targa = composizione.CodiceMezzo.Split('.', StringSplitOptions.RemoveEmptyEntries)[1],
-                    idPartenza = composizione.CodicePartenza,
-                    autistaRientro = composizione.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
-                    autistaUscita = composizione.Partenza.Squadre.SelectMany(s => s.Membri).First(m => m.DescrizioneQualifica == "DRIVER").CodiceFiscale,
-                    tipoMezzo = composizione.Partenza.Mezzo.Codice.Split('.', StringSplitOptions.RemoveEmptyEntries)[0],
-                    dataRientro = composizione.Istante,
-                    dataUscita = composizione.Istante,
-
-                    comune = new ComuneGAC() { codice = "", descrizione = command.Richiesta.Localita.Citta },
-                    localita = command.Richiesta.Localita.Indirizzo,
-                    provincia = new ProvinciaGAC() { codice = "", descrizione = command.Richiesta.Localita.Provincia ?? "" },
-                    latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                    longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
-                    dataIntervento = command.Richiesta.dataOraInserimento,
-                    numeroIntervento = command.Richiesta.CodRichiesta,
-                    tipoUscita = new TipoUscita()
-                    {
-                        codice = tipologia.Codice,
-                        descrizione = tipologia.Descrizione
-                    }
+                    Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
+                    Mezzo = partenzeDaSostituire.Select(m => m.Partenza.Mezzo).Where(m => m.Codice.Equals(sostituzione.CodMezzo)).FirstOrDefault(),
+                    Squadre = ElencoSquadre,
+                    Turno = _getTurno.Get().Codice,
+                    Coordinate = richiestaOld.Localita.Coordinate.ToCoordinateString(),
                 });
+
+                new ArrivoSulPosto(richiestaOld, NuovaPartenza.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, NuovaPartenza.CodicePartenza);
+
+                AggiornaStatoMezzoCommand AggStatoMezzo = new AggiornaStatoMezzoCommand()
+                {
+                    CodiciSede = new string[] { NuovaPartenza.Partenza.Mezzo.Appartenenza },
+                    IdMezzo = sostituzione.CodMezzo,
+                    Richiesta = richiestaOld,
+                    StatoMezzo = Costanti.MezzoSulPosto,
+                };
+
+                //FASE 5
+                //Creazione Note e Evento SostituzionePartenzaFineTurno
+                string note = $"Nel mezzo {sostituzione.CodMezzo} ora si trovano le squadre {String.Join(",", ElencoSquadre.Select(s => s.Nome))}";
+                SostituzionePartenzaFineTurno sos = new SostituzionePartenzaFineTurno(richiestaOld, sostituzione.CodMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, note);
+
+                _upDatePartenza.Update(AggStatoMezzo);
             }
 
-            _updateRichiesta.UpDate(command.Richiesta);
+            //FASE 6
+            //Update Richiesta
+            //_updateRichiesta.UpDate(command.Richiesta);
+
+            //FASE 7
+            //Invio a GAC degli aggiornamenti
+            command.Richiesta = richiestaOld;
+        }
+
+        private List<Squadra> CheckElencoSquadre(SostituzionePartenzaCommand command, List<ComposizionePartenze> partenzeDaSostiturie, string CodMezzoDaElaborare)
+        {
+            List<Squadra> NuoveSquadreNellaPartenza = new List<Squadra>();
+            var elencoVecchieSquadre = partenzeDaSostiturie.Find(p => p.CodiceMezzo.Equals(CodMezzoDaElaborare)).Partenza.Squadre;
+            var elencoNuoveSquadre = command.sostituzione.Sostituzioni.Find(s => s.CodMezzo.Equals(CodMezzoDaElaborare)).CodSquadre;
+            var elencoNuoveSquadreDaInserireNelMezzo = partenzeDaSostiturie.Select(p => p.Partenza.Squadre).Where(s => s.Any(s => elencoNuoveSquadre.Any(ens => ens.Contains(s.Nome))));
+
+            foreach (var listaSquadre in elencoNuoveSquadreDaInserireNelMezzo)
+            {
+                foreach (var squadra in listaSquadre)
+                {
+                    if (elencoNuoveSquadre.Contains(squadra.Codice))
+                        NuoveSquadreNellaPartenza.Add(squadra);
+                }
+            }
+
+            var elencoSquadrePresentiNelleSostituzioni = new List<String>();
+            foreach (var sostituzione in command.sostituzione.Sostituzioni)
+                elencoSquadrePresentiNelleSostituzioni.AddRange(sostituzione.CodSquadre);
+
+            //Verifico se ci sono squadre nella vecchia partenza non incluse nella sostituzione
+            foreach (var squadra in elencoVecchieSquadre.Where(s => !elencoSquadrePresentiNelleSostituzioni.Contains(s.Nome)))
+                NuoveSquadreNellaPartenza.Add(squadra);
+
+            return NuoveSquadreNellaPartenza;
         }
     }
 }

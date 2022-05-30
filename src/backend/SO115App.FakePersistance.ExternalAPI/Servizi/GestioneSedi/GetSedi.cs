@@ -240,7 +240,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                             {
                                 try
                                 {
-                                    var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.',',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ','))));
+                                    var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ','))));
                                     lstComunali.Add(unita);
                                 }
                                 catch
@@ -417,6 +417,50 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 return GetInfoSede(codiceSede).Result.coordinate.Split(',');
             else
                 return null;
+        }
+
+        public string GetCodiceSedePadre(string codiceSede)
+        {
+            if (!codiceSede.Equals("00"))
+            {
+                var SediAlberate = ListaSediAlberata().Result;
+                var pin = new PinNodo(codiceSede);
+                var pinNodi = new List<PinNodo>();
+                pinNodi.Add(pin);
+                var UnitaOperativaAnagrafica = SediAlberate.GetSottoAlbero(pinNodi);
+                List<string> ListaCodiciSediInteressate = new List<string>();
+
+                UnitaOperativa unitaperativa = new UnitaOperativa(codiceSede, UnitaOperativaAnagrafica.ToList()[0].Nome)
+                {
+                    Figli = UnitaOperativaAnagrafica.ToList()[0].Figli
+                };
+
+                var codicePadre = "";
+
+                Parallel.ForEach(SediAlberate.Figli, sede =>
+                {
+                    if (sede.Equals(unitaperativa))
+                    {
+                        codicePadre = "00";
+                    }
+                    else
+                    {
+                        foreach (var comune in sede.Figli)
+                        {
+                            if (comune.Equals(unitaperativa))
+                            {
+                                codicePadre = sede.Codice;
+                            }
+                        }
+                    }
+                });
+
+                return codicePadre;
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 }

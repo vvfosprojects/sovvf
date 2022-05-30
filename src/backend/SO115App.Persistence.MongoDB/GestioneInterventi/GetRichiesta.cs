@@ -334,16 +334,16 @@ namespace SO115App.Persistence.MongoDB
             return sintesi;
         }
 
-        public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri)
+        public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri, string[] codSede)
         {
             var filter = Builders<RichiestaAssistenza>.Filter;
-            var empty = filter.Empty;
+            var empty = filter.In(richiesta => richiesta.CodSOCompetente, codSede);
 
             //FILTRO I CAMPI CHE ABBIAMO SALVATI SUL DB
 
             var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
 
-            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi).ToList();
+            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & empty).ToList();
 
             //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB) dopo la query mongo
 

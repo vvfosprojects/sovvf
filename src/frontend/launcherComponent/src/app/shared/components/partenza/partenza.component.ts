@@ -57,6 +57,14 @@ export class PartenzaComponent implements OnInit {
         this.checkListaEventiMezzo();
     }
 
+    getUltimoStatoMezzo(codMezzo: string): StatoMezzo {
+        const eventoCodMezzo = this.richiesta.eventi.filter((evento: EventoMezzo) => evento.codiceMezzo === codMezzo);
+        if (eventoCodMezzo) {
+            const eventoUltimoStatoMezzo = eventoCodMezzo[eventoCodMezzo?.length - 1];
+            return eventoUltimoStatoMezzo.stato;
+        }
+    }
+
     onAnnullaStato(codiceMezzo: string, statoMezzo: StatoMezzo): void {
         const obj = {
             codiceRichiesta: this.infoPartenza ? this.infoPartenza.codiceRichiesta : null,

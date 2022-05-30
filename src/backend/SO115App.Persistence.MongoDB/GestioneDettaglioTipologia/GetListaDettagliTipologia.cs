@@ -38,6 +38,10 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             var listaPin = GetGerarchia(query.IdSede);
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
+            var codiceSedePadre = _getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
+            lstCodiciPin.Add(codiceSedePadre);
+            
+            
             var lstEnti = new List<TipologiaDettaglio>();
 
             if (CodTipologia != 0 && CodTipologia != null)
@@ -48,7 +52,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
                 && (c.Descrizione.ToLower().Contains(text))).ToList();
 
             //GESTIONE RICORSIVITA'
-            var result = FiltraByRicorsività(listaPin, lstEnti);
+            var result = lstEnti; //FiltraByRicorsività(listaPin, lstEnti);
 
             //MAPPING E ORDINAMENTO
             return result.Select(c => new TipologiaDettaglio()
@@ -87,10 +91,21 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
                 return lstTipologie.Where(c =>
                 {
                     //LOGICA/CONDIZIONI RICORSIVITA'
-                    var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
-                    var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
+                    if (c.CodSede.Contains("."))
+                    {
+                        var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
+                        var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
 
-                    return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
+                        return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
+                    }
+                    else
+                    {
+                        var padre = listaPin.Find(x => x.Codice == c.CodSede);
+                        var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
+
+                        return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
+                    }
+
                 }).ToList();
             else
                 return lstTipologie;

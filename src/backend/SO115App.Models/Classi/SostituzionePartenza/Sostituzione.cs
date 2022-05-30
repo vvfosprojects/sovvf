@@ -2,9 +2,7 @@
 {
     public class Sostituzione
     {
-        public string CodMezzoSmontante { get; set; }
-        public string[] SquadreSmontanti { get; set; }
-        public string CodMezzoMontante { get; set; }
-        public string[] SquadreMontanti { get; set; }
+        public string CodMezzo { get; set; }
+        public string[] CodSquadre { get; set; }
     }
 }
