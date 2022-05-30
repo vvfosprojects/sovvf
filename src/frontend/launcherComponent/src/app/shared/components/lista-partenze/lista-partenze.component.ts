@@ -11,6 +11,7 @@ import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { InfoMezzo } from '../../store/states/loading/loading.state';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
+import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import * as moment from 'moment';
 
 @Component({
@@ -47,6 +48,14 @@ export class ListaPartenzeComponent {
 
     checkNumeroPartenzeAttive(partenze: Partenza[]): number {
         return checkNumeroPartenzeAttive(partenze);
+    }
+
+    getUltimoStatoMezzo(codMezzo: string): StatoMezzo {
+        const eventoCodMezzo = this.richiesta.eventi.filter((evento: EventoMezzo) => evento.codiceMezzo === codMezzo);
+        if (eventoCodMezzo) {
+            const eventoUltimoStatoMezzo = eventoCodMezzo[eventoCodMezzo?.length - 1];
+            return eventoUltimoStatoMezzo.stato;
+        }
     }
 
     checkAnnullaStatoMezzo(codMezzo: string, statoMezzo: StatoMezzo): boolean {

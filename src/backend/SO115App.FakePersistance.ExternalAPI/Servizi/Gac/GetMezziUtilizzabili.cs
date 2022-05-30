@@ -85,7 +85,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var lstMezziDto = new ConcurrentQueue<MezzoDTO>();
 
-            var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
+            var lstSediQueryString = "";
+
+            if (!sedi.Contains("00"))
+                lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
+            else
+                lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
+
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
 
             try
