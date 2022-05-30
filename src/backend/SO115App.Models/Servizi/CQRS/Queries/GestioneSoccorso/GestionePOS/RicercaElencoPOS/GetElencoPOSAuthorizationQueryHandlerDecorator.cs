@@ -53,8 +53,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestionePOS.Rice
                 else
                 {
                     if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreRichieste)
-                        || !_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreChiamate)
-                        || !_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.Amministratore))
+                        && !_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreChiamate)
+                        && !_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.Amministratore))
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }

@@ -448,7 +448,7 @@ export class SchedaTelefonataState {
             } else if (codCompetenze?.length === 3) {
                 dispatch(new UpdateFormValue({
                     value: {
-                        codCompetenzaCentrale: getState().richiestaForm.model?.codCompetenzaCentrale,
+                        codCompetenzaCentrale: null,
                         codPrimaCompetenza: codCompetenze[0],
                         codSecondaCompetenza: codCompetenze[1],
                         codTerzaCompetenza: codCompetenze[2]
