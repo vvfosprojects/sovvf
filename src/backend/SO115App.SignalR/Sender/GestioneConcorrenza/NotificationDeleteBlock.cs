@@ -21,14 +21,10 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
 
         public async Task SendNotification(DeleteBlockCommand command)
         {
-            var SediDaNotificare = new List<string>();
+            var sediAllertate = command.listaSediDaAllertare;
+            sediAllertate.Add(command.CodSOCompetente);
 
-            if (command.listaSediDaAllertare != null)
-            {
-                SediDaNotificare = _getGerarchiaToSend.Get(command.CodSOCompetente, command.listaSediDaAllertare.ToArray());
-            }
-            else
-                SediDaNotificare = _getGerarchiaToSend.Get(command.CodSOCompetente);
+            var SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede, sediAllertate.ToArray());
 
             foreach (var sede in SediDaNotificare)
             {
