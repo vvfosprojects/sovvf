@@ -120,13 +120,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             List<Squadra> NuoveSquadreNellaPartenza = new List<Squadra>();
             var elencoVecchieSquadre = partenzeDaSostiturie.Find(p => p.CodiceMezzo.Equals(CodMezzoDaElaborare)).Partenza.Squadre;
             var elencoNuoveSquadre = command.sostituzione.Sostituzioni.Find(s => s.CodMezzo.Equals(CodMezzoDaElaborare)).CodSquadre;
-            var elencoNuoveSquadreDaInserireNelMezzo = partenzeDaSostiturie.Select(p => p.Partenza.Squadre).Where(s => s.Any(s => elencoNuoveSquadre.Any(ens => ens.Contains(s.Nome))));
+            var elencoNuoveSquadreDaInserireNelMezzo = partenzeDaSostiturie.Select(p => p.Partenza.Squadre).Where(s => s.Any(s => elencoNuoveSquadre.Any(ens => ens.Contains(s.Codice))));
 
             foreach (var listaSquadre in elencoNuoveSquadreDaInserireNelMezzo)
             {
                 foreach (var squadra in listaSquadre)
                 {
-                    if (elencoNuoveSquadre.Contains(squadra.Nome))
+                    if (elencoNuoveSquadre.Contains(squadra.Codice))
                         NuoveSquadreNellaPartenza.Add(squadra);
                 }
             }
@@ -136,7 +136,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 elencoSquadrePresentiNelleSostituzioni.AddRange(sostituzione.CodSquadre);
 
             //Verifico se ci sono squadre nella vecchia partenza non incluse nella sostituzione
-            foreach (var squadra in elencoVecchieSquadre.Where(s => !elencoSquadrePresentiNelleSostituzioni.Contains(s.Nome)))
+            foreach (var squadra in elencoVecchieSquadre.Where(s => !elencoSquadrePresentiNelleSostituzioni.Contains(s.Codice)))
                 NuoveSquadreNellaPartenza.Add(squadra);
 
             return NuoveSquadreNellaPartenza;
