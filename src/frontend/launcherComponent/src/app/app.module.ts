@@ -151,12 +151,12 @@ import { HttpCancelService } from './core/service/common/http-cancel.service';
                 GestisciSchedaContattoModalState,
                 ConcorrenzaState
             ],
-            // { developmentMode: !environment.production }
+            { developmentMode: !environment.production }
         ),
         NgxsRouterPluginModule.forRoot(),
         NgxsReduxDevtoolsPluginModule.forRoot({
             name: 'SO115 - NGXS',
-            // disabled: environment.production,
+            disabled: environment.production,
         }),
         NgxsFormPluginModule.forRoot()
     ],
