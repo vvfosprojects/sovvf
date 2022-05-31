@@ -246,6 +246,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 return lstMezzi.Result //ORDINAMENTO
                 .OrderByDescending(mezzo => mezzo.IndiceOrdinamento)
+                .OrderBy(mezzo => mezzo.Mezzo.Distaccamento?.Codice)
                 .OrderBy(mezzo => !mezzo.SquadrePreaccoppiate.Select(s => s.Codice).Contains(query.Filtro?.CodSquadraSelezionata))
                 .OrderBy(mezzo => !query?.Filtro?.CodMezzoSelezionato?.Equals(mezzo.Mezzo.Codice) ?? false)
                 .OrderBy(mezzo => !query?.Filtro?.CodDistaccamentoSelezionato?.Equals(mezzo.Mezzo.Codice) ?? false)
@@ -254,7 +255,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoSulPosto))
                 .OrderBy(mezzo => mezzo.Mezzo.Stato.Equals(Costanti.MezzoOccupato))
-                .ThenByDescending(mezzo => query.Richiesta.Competenze[0]?.Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) ?? false)
+                .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 1 ? query.Richiesta.Competenze[0].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
                 .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 1 ? query.Richiesta.Competenze[1].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
                 .ThenByDescending(mezzo => query.Richiesta.Competenze.Count > 2 ? query.Richiesta.Competenze[2].Codice.Equals(mezzo.Mezzo.Distaccamento.Codice) : false)
                 //.ThenBy(mezzo => mezzo.Mezzo.Distaccamento?.Codice)
