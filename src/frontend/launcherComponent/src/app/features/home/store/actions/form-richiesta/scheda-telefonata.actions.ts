@@ -14,7 +14,7 @@ export class ReducerSchedaTelefonata {
 export class MarkerChiamata {
     static readonly type = '[SchedaTelefonata] Set chiamata Marker';
 
-    constructor(public marker: ChiamataMarker, public codCompetenze: string[]) {
+    constructor(public marker: ChiamataMarker, public codCompetenze?: string[]) {
     }
 }
 
