@@ -360,22 +360,17 @@ export class SchedaTelefonataState {
         const formValue = state.richiestaForm.model;
         dispatch(new StartLoadingCompetenze());
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
-            if (res?.dataArray) {
-                const competenze = res.dataArray as Sede[];
-                const codCompetenze = competenze.map((c: Sede) => {
-                    return c.codice;
-                });
-                dispatch(new SetCompetenzeSuccess(action.coordinate, action.indirizzo, codCompetenze, action.markerChiamata));
-                patchState({
-                    competenze
-                });
-            } else {
-                patchState({
-                    competenze: []
-                });
-            }
+            const competenze = res.dataArray as Sede[];
+            const codCompetenze = competenze.map((c: Sede) => {
+                return c.codice;
+            });
+            dispatch(new SetCompetenzeSuccess(action.coordinate, action.indirizzo, codCompetenze, action.markerChiamata));
+            patchState({
+                competenze: competenze?.length ? competenze : []
+            });
         }, () => {
             dispatch(new StopLoadingCompetenze());
+            dispatch(new SetCompetenzeSuccess(action.coordinate, action.indirizzo, null, action.markerChiamata));
             patchState({
                 competenze: []
             });
