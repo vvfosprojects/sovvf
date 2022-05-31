@@ -27,10 +27,13 @@
             </td>
             <td>
                 <div *ngFor="let c of s.membri">
-                    <div class="badge badge-secondary mr-2 cursor-pointer" [ngbTooltip]="c.descrizioneQualifica"
-                         [disableTooltip]="c.descrizioneQualifica.length < 30">
-                        {{ c.descrizioneQualifica | truncate: 30 }}
-                    </div>
+                    <ng-container *ngIf="c?.descrizioneQualifica">
+                        <div class="badge badge-secondary mr-2 cursor-pointer"
+                             [ngbTooltip]="c.descrizioneQualifica"
+                             [disableTooltip]="c.descrizioneQualifica.length < 30">
+                            {{ c.descrizioneQualifica | truncate: 30 }}
+                        </div>
+                    </ng-container>
                     <div class="d-inline-block cursor-pointer" style="vertical-align: text-top;"
                          ngbTooltip="{{c.codiceFiscale}}"
                          [disableTooltip]="!c.codiceFiscale || !c.codiceFiscale?.length">
