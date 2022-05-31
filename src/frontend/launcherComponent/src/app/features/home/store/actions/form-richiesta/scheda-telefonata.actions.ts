@@ -1,6 +1,5 @@
 import { SchedaTelefonataInterface } from '../../../../../shared/interface/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../../../maps/maps-model/chiamata-marker.model';
-import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { RichiestaForm } from '../../../../../shared/interface/forms/richiesta-form.model';
@@ -29,7 +28,7 @@ export class SetCompetenze {
 export class SetCompetenzeSuccess {
     static readonly type = '[SchedaTelefonata] Set Competenze Success';
 
-    constructor(public coordinate: Coordinate, public indirizzo: string, public codCompetenze: string[], public markerChiamata?: ChiamataMarker, public options?: { manualSelect?: boolean }) {
+    constructor(public coordinate: Coordinate, public indirizzo: string, public codCompetenze?: string[], public markerChiamata?: ChiamataMarker) {
     }
 }
 
@@ -40,7 +39,7 @@ export class ClearCompetenze {
 export class SetCountInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Set Count Interventi Vicinanze';
 
-    constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze: string[]) {
+    constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze?: string[]) {
     }
 }
 
@@ -59,7 +58,7 @@ export class ClearCountInterventiProssimita {
 export class SetInterventiProssimita {
     static readonly type = '[SchedaTelefonata] Set Interventi Vicinanze';
 
-    constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze: string[]) {
+    constructor(public indirizzo: string, public coordinate: Coordinate, public codCompetenze?: string[]) {
     }
 }
 
@@ -111,7 +110,7 @@ export class InsertChiamata {
 export class InsertChiamataSuccess {
     static readonly type = '[SchedaTelefonata] Insert chiamata success';
 
-    constructor(public nuovaRichiesta: SintesiRichiesta, public options?: { trasferimento?: boolean }) {
+    constructor(public options?: { trasferimento?: boolean }) {
     }
 }
 

@@ -22,7 +22,6 @@ import {
     ClearStatoChiamata,
     ReducerSchedaTelefonata,
     SetCompetenze,
-    SetCompetenzeSuccess,
     SetFormSubmitted,
     SetRedirectComposizionePartenza,
     StartChiamata,
@@ -365,13 +364,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             regione: [null, [Validators.required]],
             civico: [null],
             competenze: [null],
-            codCompetenzaCentrale: [null],
-            codPrimaCompetenza: [null],
-            codSecondaCompetenza: [null],
-            codTerzaCompetenza: [null],
-            codPrimaCompetenzaManuale: [{ value: null, disabled: true }],
-            codSecondaCompetenzaManuale: [{ value: null, disabled: true }],
-            codTerzaCompetenzaManuale: [{ value: null, disabled: true }],
             codSchedaContatto: [{ value: null, disabled: true }],
             piano: [null],
             palazzo: [null],
@@ -450,9 +442,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
             new UpdateFormValue({
                 value: {
                     stato: this.richiestaModifica.stato,
-                    codPrimaCompetenza: this.richiestaModifica.competenze?.length > 0 ? this.richiestaModifica.competenze[0]?.codice : null,
-                    codSecondaCompetenza: this.richiestaModifica.competenze?.length > 1 ? this.richiestaModifica.competenze[1]?.codice : null,
-                    codTerzaCompetenza: this.richiestaModifica.competenze?.length > 2 ? this.richiestaModifica.competenze[2]?.codice : null,
+                    competenze: this.richiestaModifica.competenze,
                     esercitazione: this.richiestaModifica.esercitazione,
                     prioritaRichiesta: this.richiestaModifica.prioritaRichiesta
                 },
@@ -805,13 +795,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 new ClearMarkerChiamata(),
                 new ClearIdChiamataMarker()
             ]);
-            this.f.codCompetenzaCentrale.patchValue(null);
-            this.f.codPrimaCompetenza.patchValue(null);
-            this.f.codSecondaCompetenza.patchValue(null);
-            this.f.codTerzaCompetenza.patchValue(null);
-            this.f.codPrimaCompetenzaManuale.patchValue(null);
-            this.f.codSecondaCompetenzaManuale.patchValue(null);
-            this.f.codTerzaCompetenzaManuale.patchValue(null);
             this.f.latitudine.patchValue(null);
             this.f.longitudine.patchValue(null);
             this.f.citta.patchValue(null);
@@ -896,84 +879,6 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 new ClearCountInterventiProssimita(),
                 new ClearInterventiProssimita()
             ]);
-            this.f.codCompetenzaCentrale.patchValue(null);
-            this.f.codPrimaCompetenza.patchValue(null);
-            this.f.codSecondaCompetenza.patchValue(null);
-            this.f.codTerzaCompetenza.patchValue(null);
-            this.f.codPrimaCompetenzaManuale.patchValue(null);
-            this.f.codSecondaCompetenzaManuale.patchValue(null);
-            this.f.codTerzaCompetenzaManuale.patchValue(null);
-        }
-    }
-
-    detectCompetenzeFuoriComando(): boolean {
-        let comandoCompetenza: string;
-        const codPrimaCompetenza = this.f?.codPrimaCompetenza ? this.f.codPrimaCompetenza?.value : this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codPrimaCompetenza;
-        if (codPrimaCompetenza) {
-            comandoCompetenza = codPrimaCompetenza.split('.')[0];
-        }
-        const codCompetenzaCentrale = this.f?.codCompetenzaCentrale ? this.f.codCompetenzaCentrale?.value : this.store.selectSnapshot(SchedaTelefonataState.formValue)?.codCompetenzaCentrale;
-        if (codCompetenzaCentrale) {
-            comandoCompetenza = codCompetenzaCentrale.split('.')[0];
-        }
-
-        const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
-        let comandoSelezionato: string;
-        if (sediSelezionate?.length) {
-            comandoSelezionato = sediSelezionate[0].split('.')[0];
-        }
-        return (comandoCompetenza && comandoSelezionato) && comandoCompetenza !== comandoSelezionato;
-    }
-
-    onSelectCompetenza(nCompetenza: number, codCompetenza: string): void {
-        switch (nCompetenza) {
-            case 1:
-                if (codCompetenza) {
-                    if (this.f.codSecondaCompetenzaManuale.disabled) {
-                        this.f.codSecondaCompetenzaManuale.enable();
-                    }
-                } else {
-                    if (this.f.codSecondaCompetenzaManuale.enabled) {
-                        this.f.codSecondaCompetenzaManuale.patchValue(null);
-                        this.f.codSecondaCompetenzaManuale.disable();
-                    }
-                    if (this.f.codTerzaCompetenzaManuale.enabled) {
-                        this.f.codTerzaCompetenzaManuale.patchValue(null);
-                        this.f.codTerzaCompetenzaManuale.disable();
-                    }
-                }
-                break;
-            case 2:
-                if (codCompetenza) {
-                    if (this.f.codTerzaCompetenzaManuale.disabled) {
-                        this.f.codTerzaCompetenzaManuale.enable();
-                    }
-                } else {
-                    if (this.f.codTerzaCompetenzaManuale.enabled) {
-                        this.f.codTerzaCompetenzaManuale.patchValue(null);
-                        this.f.codTerzaCompetenzaManuale.disable();
-                    }
-                }
-                break;
-        }
-        this.distaccamentiFiltered = this.distaccamenti.filter((d: TipologicaComposizionePartenza) => d.id !== this.f.codPrimaCompetenzaManuale.value && d.id !== this.f.codSecondaCompetenzaManuale.value && d.id !== this.f.codTerzaCompetenzaManuale.value);
-
-        if (codCompetenza) {
-            const codCompetenze = [];
-            if (this.f.codPrimaCompetenzaManuale?.value) {
-                codCompetenze.push(this.f.codPrimaCompetenzaManuale?.value);
-            }
-            if (this.f.codSecondaCompetenza?.value) {
-                codCompetenze.push(this.f.codSecondaCompetenzaManuale?.value);
-            }
-            if (this.f.codTerzaCompetenza?.value) {
-                codCompetenze.push(this.f.codTerzaCompetenzaManuale?.value);
-            }
-            const coordinate = {
-                latitudine: this.f.latitudine?.value,
-                longitudine: this.f.longitudine?.value
-            };
-            this.store.dispatch(new SetCompetenzeSuccess(coordinate, this.f.indirizzo.value, codCompetenze, this.chiamataMarker, { manualSelect: true }));
         }
     }
 
