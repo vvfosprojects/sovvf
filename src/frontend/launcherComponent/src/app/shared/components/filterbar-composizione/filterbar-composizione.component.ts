@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -25,7 +25,7 @@ import { AppState } from '../../store/states/app/app.state';
     templateUrl: './filterbar-composizione.component.html',
     styleUrls: ['./filterbar-composizione.component.css']
 })
-export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnInit {
+export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
@@ -61,9 +61,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         dropdownConfig.placement = 'right';
         this.getRichiestaComposizione();
         this.getViewState();
-    }
-
-    ngOnInit(): void {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
