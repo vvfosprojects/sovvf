@@ -42,7 +42,8 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Modifica,
                     TipoConcorrenzaEnum.InvioPartenza,
                     TipoConcorrenzaEnum.Allerta,
-                    TipoConcorrenzaEnum.CambioStatoPartenza
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
+                    TipoConcorrenzaEnum.GestisciPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.ChiusuraIntervento:
@@ -54,7 +55,8 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Modifica,
                     TipoConcorrenzaEnum.InvioPartenza,
                     TipoConcorrenzaEnum.Allerta,
-                    TipoConcorrenzaEnum.CambioStatoPartenza
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
+                    TipoConcorrenzaEnum.GestisciPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.Modifica:
