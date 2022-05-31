@@ -90,7 +90,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             var result = listaMezziInServizio.Result;
             var sintesi = Task.Factory.StartNew(() => _mapperSintesi.Map(conferma.Richiesta)).ContinueWith(sintesi =>
             {
-                sintesi.Result.Competenze = conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
+                sintesi.Result.Competenze = conferma.Richiesta.CodUOCompetenza != null ? conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi) : null;
                 conferma.ConfermaPartenze.Chiamata = sintesi.Result;
                 sintesi.Result.Motivazione = sintesi.Result.Descrizione;
 
@@ -152,7 +152,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                         Task.Factory.StartNew(() =>
                         {
                             var sintesiSganciata = _mapperSintesi.Map(conferma.RichiestaDaSganciare);
-                            sintesiSganciata.Competenze = conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
+                            sintesiSganciata.Competenze = conferma.Richiesta.CodUOCompetenza != null ? conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi) : null;
                             conferma.ConfermaPartenze.Chiamata = sintesiSganciata;
                             _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
                         });
