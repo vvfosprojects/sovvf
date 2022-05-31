@@ -223,16 +223,16 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Sganciamento
                 ];
                 break;
-            case TipoConcorrenzaEnum.Sostituzione: // TODO: implementare nel DOM
-                // TODO: completare blocks
+            case TipoConcorrenzaEnum.Sostituzione: // TODO: implementare nel DOM (requisiti mancanti)
+                // TODO: completare blocks (requisiti mancanti)
                 blocks = [];
                 break;
-            case TipoConcorrenzaEnum.Fonogramma: // TODO: implementare nel DOM
-                // TODO: completare blocks
+            case TipoConcorrenzaEnum.Fonogramma: // TODO: implementare nel DOM (requisiti mancanti)
+                // TODO: completare blocks (requisiti mancanti)
                 blocks = [];
                 break;
-            case TipoConcorrenzaEnum.EntiIntervenuti: // TODO: implementare nel DOM
-                // TODO: completare blocks
+            case TipoConcorrenzaEnum.EntiIntervenuti: // TODO: implementare nel DOM (requisiti mancanti)
+                // TODO: completare blocks (requisiti mancanti)
                 blocks = [];
                 break;
         }
