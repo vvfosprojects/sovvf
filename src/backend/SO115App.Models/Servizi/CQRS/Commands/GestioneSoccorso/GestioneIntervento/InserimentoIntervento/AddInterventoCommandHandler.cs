@@ -19,17 +19,12 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands;
 using Serilog;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.ServiziEsterni.Utility;
-using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
@@ -47,29 +42,23 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly IGetTurno _getTurno;
         private readonly ISetStatoGestioneSchedaContatto _setStatoGestioneSchedaContatto;
         private readonly IGetUtenteById _getUtenteById;
-        private readonly IGetSedi _getSedi;
 
         public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza,
                                            IGeneraCodiceRichiesta generaCodiceRichiesta,
                                            IGetTurno getTurno,
                                            ISetStatoGestioneSchedaContatto setStatoGestioneSchedaContatto,
-                                           IGetUtenteById getUtenteById,
-                                           IGetSedi getSedi)
+                                           IGetUtenteById getUtenteById)
         {
             _saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
             _getTurno = getTurno;
             _setStatoGestioneSchedaContatto = setStatoGestioneSchedaContatto;
             _getUtenteById = getUtenteById;
-            _getSedi = getSedi;
         }
 
         public void Handle(AddInterventoCommand command)
         {
             Log.Information("Inserimento Intervento - Inizio scrittura internvento");
-
-            //command.Chiamata.Competenze = null;
-
 
             command.Chiamata.Codice = _generaCodiceRichiesta.GeneraCodiceChiamata(command.CodiceSede, DateTime.UtcNow.Year);
 
@@ -78,14 +67,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var utentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico?.Select(u => u.Nominativo).ToList();
 
             command.Chiamata.Localita.SplitIndirizzo();
-
-            //casistica che gestisce la registrazione di una chiamata non di competenza diretta. Es. registro a Milano una chiamata di Torino
-            //var codSocompetente = "";
-            //codSocompetente =
-            //if (command.CodiceSede.Split('.')[0].Equals(command.CodCompetenze.ToList()[0].Split('.')[0]))
-            //    codSocompetente = command.CodCompetenze.ToList()[0];
-            //else
-
             var richiesta = new RichiestaAssistenza()
             {
                 Tipologie = command.Chiamata.Tipologie,
