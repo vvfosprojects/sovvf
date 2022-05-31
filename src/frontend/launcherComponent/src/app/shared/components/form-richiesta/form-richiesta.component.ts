@@ -79,6 +79,7 @@ import { getPrioritaTriage } from '../../helper/function-triage';
 import { makeCopy, roundToDecimal } from '../../helper/function-generiche';
 import { createChiamataMarker } from '../../helper/mappa/chiamata-marker';
 import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
+import { RichiestaModificaState } from '../../../features/home/store/states/form-richiesta/richiesta-modifica.state';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
 
@@ -120,6 +121,9 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
     @Select(TipologicheMezziState.tipologiche) tipologiche$: Observable<ListaTipologicheMezzi>;
     distaccamenti: TipologicaComposizionePartenza[];
     distaccamentiFiltered: TipologicaComposizionePartenza[];
+
+    @Select(RichiestaModificaState.modificaIndirizzo) indirizzoModificato$: Observable<boolean>;
+    indirizzoModificato: boolean;
 
     @Input() submitted: boolean;
 
@@ -190,6 +194,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.getTriage();
         this.getTriageData();
         this.getLoadingTriageChiamata();
+        this.getIndirizzoModificato();
     }
 
     ngOnInit(): void {
@@ -559,6 +564,14 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         this.subscription.add(
             this.loadingTriageChiamata$.subscribe((loadingTriageChiamata: boolean) => {
                 this.loadingTriageChiamata = loadingTriageChiamata;
+            })
+        );
+    }
+
+    getIndirizzoModificato(): void {
+        this.subscription.add(
+            this.indirizzoModificato$.subscribe((indirizzoModificato: boolean) => {
+                this.indirizzoModificato = indirizzoModificato;
             })
         );
     }

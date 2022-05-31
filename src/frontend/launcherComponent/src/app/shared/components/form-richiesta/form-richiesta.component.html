@@ -215,7 +215,7 @@
                     </ng-template>
                     <!-- COMPETENZE RICHIESTA -->
                     <ng-template
-                            [ngIf]="!loadingCompetenze && !competenze?.length && richiestaModifica?.competenze?.length">
+                            [ngIf]="!loadingCompetenze && (!indirizzoModificato && richiestaModifica?.competenze?.length)">
                         <div class="font-xxlarge">
                             <app-competenza *ngFor="let c of richiestaModifica?.competenze; let i = index"
                                             [competenza]="c" [i]="i">
@@ -224,7 +224,7 @@
                     </ng-template>
                     <!-- COMPETENZE NON PRESENTI -->
                     <ng-container
-                            *ngIf="f?.provincia?.value && !loadingCompetenze && !competenze?.length && !richiestaModifica?.competenze?.length">
+                            *ngIf="f?.provincia?.value && !loadingCompetenze && !competenze?.length && (indirizzoModificato || (!indirizzoModificato && !richiestaModifica?.competenze?.length))">
                         Competenze non presenti
                     </ng-container>
                 </div>
@@ -579,7 +579,7 @@
                             Annulla Modifiche
                         </button>
                         <button class="btn btn-success btn-no-hover btn-xlarge btn-modifica"
-                                [disabled]="!richiestaModifica?.competenze?.length || formIsInvalid()"
+                                [disabled]="formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
                                 ngbTooltip="Conferma Modifica"
                                 placement="top">
@@ -591,7 +591,7 @@
                              placement="right"
                              [disableTooltip]="!(tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])">
                             <button class="btn btn-primary btn-no-hover btn-block btn-xlarge"
-                                    [disabled]="!richiestaModifica?.competenze?.length || richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid() || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])"
+                                    [disabled]="richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid() || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])"
                                     [class.cursor-not-allowed]="disabledInviaPartenza || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])"
                                     (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                     ngbTooltip="Invia Partenza"

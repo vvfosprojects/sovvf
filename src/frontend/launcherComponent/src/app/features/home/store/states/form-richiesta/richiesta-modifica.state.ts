@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
-import { GetInitCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import produce from 'immer';
 import {
     ChiudiRichiestaModifica,
@@ -66,6 +65,11 @@ export class RichiestaModificaState {
     @Selector()
     static successModifica(state: RichiestaModificaStateModel): boolean {
         return state.successModifica;
+    }
+
+    @Selector()
+    static modificaIndirizzo(state: RichiestaModificaStateModel): boolean {
+        return state.modificaIndirizzo;
     }
 
     @Action(SetRichiestaModifica)
@@ -241,8 +245,6 @@ export class RichiestaModificaState {
             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Modifica, [sintesiRichiesta.codice]));
         }, () => {
             dispatch([
-                new ClearIndirizzo(),
-                new GetInitCentroMappa(),
                 new StopLoadingSchedaRichiesta()
             ]);
         });
