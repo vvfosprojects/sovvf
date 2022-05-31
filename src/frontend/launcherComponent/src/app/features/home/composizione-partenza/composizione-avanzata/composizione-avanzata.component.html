@@ -8,7 +8,7 @@
             <div class="col-12 px-0">
                 <app-filterbar-composizione [filtri]="filtri"
                                             [nightMode]="nightMode"
-                                            [competenze]="richiesta?.competenze"
+                                            [competenze]="richiesta?.competenze ? richiesta?.competenze : []"
                                             [disableComposizioneMode]="loadingMezzi || loadingSquadre"
                                             [composizionePartenza]="true"
                                             [loadingSquadre]="loadingSquadre"

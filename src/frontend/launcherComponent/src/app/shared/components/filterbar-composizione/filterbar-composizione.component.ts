@@ -27,6 +27,12 @@ import { AppState } from '../../store/states/app/app.state';
 })
 export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnInit {
 
+    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    @Select(ComposizionePartenzaState.loadingMezzi) loadingMezzi$: Observable<boolean>;
+    @Select(ComposizionePartenzaState.loadingSquadre) loadingSquadre$: Observable<boolean>;
+
     @Input() filtri: ListaTipologicheMezzi;
     @Input() disableComposizioneMode: boolean;
     @Input() nascondiTornaIndietro: boolean;
@@ -38,12 +44,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     @Input() loadingSquadre: boolean;
     @Input() loadingMezzi: boolean;
     @Input() triageSummary: TriageSummary[];
-
-    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
-    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
-    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
-    @Select(ComposizionePartenzaState.loadingMezzi) loadingMezzi$: Observable<boolean>;
-    @Select(ComposizionePartenzaState.loadingSquadre) loadingSquadre$: Observable<boolean>;
 
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
@@ -75,7 +75,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             this.checkDistaccamenti();
         }
 
-        if (changes?.competenze?.currentValue && changes?.filtri?.currentValue) {
+        if (((changes?.competenze?.currentValue && changes?.competenze?.currentValue !== []) || changes?.competenze?.currentValue === []) && changes?.filtri?.currentValue) {
             this.setDistaccamentiDefault();
             this.checkDistaccamenti();
         }
@@ -106,7 +106,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         this.distaccamentiSelezionati = [];
         const distaccamentiDefault = [];
 
-        if (this.competenze) {
+        if (this.competenze?.length) {
             const vistaSedi = this.store.selectSnapshot(AppState.vistaSedi);
             const sedeSelezionata = vistaSedi[0];
             if (sedeSelezionata.indexOf('.') !== -1) {
@@ -123,6 +123,8 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             } else {
                 this.addFiltro([], 'codiceDistaccamento');
             }
+        } else {
+            this.addFiltro([], 'codiceDistaccamento');
         }
     }
 
