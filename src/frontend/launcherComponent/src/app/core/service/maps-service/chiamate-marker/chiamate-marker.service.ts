@@ -17,7 +17,7 @@ export class ChiamateMarkerService {
         return this.http.get(API_MARKER_CHIAMATE);
     }
 
-    setChiamataInCorso(marker: ChiamataMarker, codCompetenze: string[]): Observable<any> {
+    setChiamataInCorso(marker: ChiamataMarker, codCompetenze?: string[]): Observable<any> {
         marker.competenze = codCompetenze;
         return this.http.post<any>(API_MARKER_CHIAMATE + '/Add', marker);
     }
@@ -26,7 +26,7 @@ export class ChiamateMarkerService {
         return this.http.post<any>(API_MARKER_CHIAMATE + '/Delete', marker);
     }
 
-    updateChiamataInCorso(marker: ChiamataMarker, codCompetenze: string[]): Observable<any> {
+    updateChiamataInCorso(marker: ChiamataMarker, codCompetenze?: string[]): Observable<any> {
         marker.competenze = codCompetenze;
         return this.http.post<any>(API_MARKER_CHIAMATE + '/Update', marker);
     }
