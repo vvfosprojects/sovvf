@@ -63,6 +63,7 @@ namespace SO115App.SignalR.Utility
                 case TipoOperazione.EliminaRuoloUtente: goto case TipoOperazione.EliminaUtente;
 
                 //richiesta
+                case TipoOperazione.ChiusuraChiamata: goto case TipoOperazione.Richiesta;
                 case TipoOperazione.ChiusuraIntervento: goto case TipoOperazione.Richiesta;
                 case TipoOperazione.Modifica: goto case TipoOperazione.Richiesta;
                 case TipoOperazione.Trasferimento: goto case TipoOperazione.Richiesta;
