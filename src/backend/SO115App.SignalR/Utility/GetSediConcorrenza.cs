@@ -74,6 +74,7 @@ namespace SO115App.SignalR.Utility
                 case TipoOperazione.EntiIntervenuti: goto case TipoOperazione.Richiesta;
 
                 //mezzo
+                case TipoOperazione.CambioStatoPartenza: goto case TipoOperazione.Mezzo;
                 case TipoOperazione.GestisciPartenza: goto case TipoOperazione.Mezzo;
 
                 #endregion
