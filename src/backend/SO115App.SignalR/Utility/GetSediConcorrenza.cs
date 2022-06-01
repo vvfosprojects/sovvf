@@ -51,7 +51,7 @@ namespace SO115App.SignalR.Utility
                     lstSedi.AddRange(getSedeMezzo(value, codSede)); break;
 
                 case TipoOperazione.Squadra:
-                    lstSedi.Add(getSedeSquadra(value, _getTurno.Get().Codice.Substring(0, 1), codSede)); break;
+                    lstSedi.AddRange(getSedeSquadra(value, _getTurno.Get().Codice.Substring(0, 1), codSede)); break;
 
                 case TipoOperazione.Richiesta:
                     lstSedi.AddRange(getSedeRichiesta(value)); break;
@@ -109,29 +109,36 @@ namespace SO115App.SignalR.Utility
             return codiciSede.ToArray();
         }
 
-        private string getSedeSquadra(string value, string turno, string codSede)
+        private string[] getSedeSquadra(string value, string turno, string codSede)
         {
             var lstSquadre = _getSquadra.Get(turno);
             var squadra = lstSquadre.FirstOrDefault(s => s.IdSquadra.Equals($"{value}_{turno}"));
 
-            string codiceSede;
+            var codiciSede = new List<string> { };
 
             if (squadra == null)
             {
-                var codiciSede = _getSottoSedi.Get(new string[] { codSede }).Where(s => s.Contains('.')).Select(s => s.Split('.')[0]).Distinct();
+                codiciSede = _getSottoSedi.Get(new string[] { codSede }).Where(s => s.Contains('.')).Select(s => s.Split('.')[0]).Distinct().ToList();
 
                 var squadre = codiciSede.SelectMany(s => _getSquadre.GetAllByCodiceDistaccamento(s).Result.Squadre);
 
                 var ss = squadre.FirstOrDefault(s => s.Codice.Contains(value) && s.TurnoAttuale.Contains(turno));
 
-                codiceSede = ss.Distaccamento;
+                codiciSede.Add(ss.Distaccamento);
             }
             else
             {
-                codiceSede = squadra.CodiceSede;
+                var sq = _getSquadra.Get(turno).Find(sq => sq.IdSquadra.Equals($"{value}_{turno}"));
+
+                var richiesta = _getRichiesta.GetByCodiceRichiesta(sq.IdRichiesta);
+
+                codiciSede.Add(richiesta.CodSOCompetente);
+
+                if (richiesta.CodSOAllertate != null && richiesta.CodSOAllertate.Count > 0)
+                    codiciSede.AddRange(richiesta.CodSOAllertate);
             }
 
-            return codiceSede;
+            return codiciSede.ToArray();
         }
 
         private string[] getSedeRichiesta(string value)

@@ -51,16 +51,25 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
 
         public void Handle(DeleteBlockCommand command)
         {
-            var lstConcorrenza = new List<Concorrenza>();
-
-            foreach (var id in command.ListaIdConcorrenza)
+            try
             {
-                lstConcorrenza.Add(_getBlock.GetById(id));
+                var lstConcorrenza = new List<Concorrenza>();
 
-                _deleteBlock.Delete(id);
+                foreach (var id in command.ListaIdConcorrenza)
+                {
+                    lstConcorrenza.Add(_getBlock.GetById(id));
+
+                    _deleteBlock.Delete(id);
+                }
+
+                command.ListaConcorrenza = lstConcorrenza;
+
             }
+            catch (Exception)
+            {
 
-            command.ListaConcorrenza = lstConcorrenza;
+                throw;
+            }
         }
     }
 }
