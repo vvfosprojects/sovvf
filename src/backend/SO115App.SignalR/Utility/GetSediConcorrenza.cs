@@ -92,10 +92,13 @@ namespace SO115App.SignalR.Utility
 
             var mezzo = lstMezzi.FirstOrDefault(m => m.CodiceMezzo.Equals(value));
 
-            var codiciSede = new List<string> { mezzo?.CodiceSede };
+            var codiciSede = new List<string> { };
 
-            if (codiciSede == null)
+            if (codiciSede == null || codiciSede.Count == 0)
+            {
                 codiciSede = new List<string> { _getMezzi.GetInfo(new List<string> { value }).Result.Find(m => m.CodiceMezzo.Contains(value)).CodiceDistaccamento };
+                codiciSede.Add(mezzo?.CodiceSede);
+            }
             else
             {
                 var richiesta = _getRichiesta.GetByCodice(mezzo.CodiceRichiesta);
@@ -106,7 +109,7 @@ namespace SO115App.SignalR.Utility
                     codiciSede.AddRange(richiesta.CodSOAllertate);
             }
 
-            return codiciSede.ToArray();
+            return codiciSede.Distinct().ToArray();
         }
 
         private string[] getSedeSquadra(string value, string turno, string codSede)
@@ -138,7 +141,7 @@ namespace SO115App.SignalR.Utility
                     codiciSede.AddRange(richiesta.CodSOAllertate);
             }
 
-            return codiciSede.ToArray();
+            return codiciSede.Distinct().ToArray();
         }
 
         private string[] getSedeRichiesta(string value)
@@ -156,7 +159,7 @@ namespace SO115App.SignalR.Utility
             if (richiesta.CodSOAllertate != null)
                 result.AddRange(richiesta.CodSOAllertate?.ToList());
 
-            return result.ToArray();
+            return result.Distinct().ToArray();
         }
     }
 }
