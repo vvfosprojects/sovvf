@@ -8,6 +8,7 @@ import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
 import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { Tipologia } from '../../model/tipologia.model';
+import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -39,10 +40,11 @@ export class MezzoInServizioComponent implements OnChanges {
     @Output() actionMezzo: EventEmitter<any> = new EventEmitter<any>();
 
     StatoMezzo = StatoMezzo;
-    mostraIndicatori = false;
-    loadingArray: any[] = [];
+    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
     methods = new HelperSintesiRichiesta();
+
+    loadingArray: any[] = [];
 
     constructor(private store: Store) {
     }

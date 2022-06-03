@@ -42,7 +42,8 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Modifica,
                     TipoConcorrenzaEnum.InvioPartenza,
                     TipoConcorrenzaEnum.Allerta,
-                    TipoConcorrenzaEnum.CambioStatoPartenza
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
+                    TipoConcorrenzaEnum.GestisciPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.ChiusuraIntervento:
@@ -54,7 +55,8 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Modifica,
                     TipoConcorrenzaEnum.InvioPartenza,
                     TipoConcorrenzaEnum.Allerta,
-                    TipoConcorrenzaEnum.CambioStatoPartenza
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
+                    TipoConcorrenzaEnum.GestisciPartenza
                 ];
                 break;
             case TipoConcorrenzaEnum.Modifica:
@@ -118,6 +120,8 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.InvioPartenza,
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
+                    TipoConcorrenzaEnum.GestisciPartenza,
                     TipoConcorrenzaEnum.Trasferimento
                 ];
                 break;
@@ -223,16 +227,16 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.Sganciamento
                 ];
                 break;
-            case TipoConcorrenzaEnum.Sostituzione: // TODO: implementare nel DOM
-                // TODO: completare blocks
+            case TipoConcorrenzaEnum.Sostituzione: // TODO: implementare nel DOM (requisiti mancanti)
+                // TODO: completare blocks (requisiti mancanti)
                 blocks = [];
                 break;
-            case TipoConcorrenzaEnum.Fonogramma: // TODO: implementare nel DOM
-                // TODO: completare blocks
+            case TipoConcorrenzaEnum.Fonogramma: // TODO: implementare nel DOM (requisiti mancanti)
+                // TODO: completare blocks (requisiti mancanti)
                 blocks = [];
                 break;
-            case TipoConcorrenzaEnum.EntiIntervenuti: // TODO: implementare nel DOM
-                // TODO: completare blocks
+            case TipoConcorrenzaEnum.EntiIntervenuti: // TODO: implementare nel DOM (requisiti mancanti)
+                // TODO: completare blocks (requisiti mancanti)
                 blocks = [];
                 break;
         }

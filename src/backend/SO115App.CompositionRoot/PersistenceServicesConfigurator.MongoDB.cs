@@ -20,6 +20,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneTriage;
 using SO115App.Models.Servizi.Infrastruttura.GestioneZoneEmergenza;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneComposizioneMezzi;
 using SO115App.Persistence.MongoDB.GestioneConcorrenza;
@@ -35,6 +36,7 @@ using SO115App.Persistence.MongoDB.GestioneSedi;
 using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
 using SO115App.Persistence.MongoDB.GestioneTriage;
 using SO115App.Persistence.MongoDB.GestioneZoneEmergenza;
+using SO115App.SignalR.Utility;
 using GetComposizioneMezzi = SO115App.Persistence.MongoDB.GestioneComposizioneMezzi.GetComposizioneMezzi;
 using GetComposizioneSquadre = SO115App.Persistence.MongoDB.GestioneComposizioneMezzi.GetComposizioneSquadre;
 
@@ -59,6 +61,8 @@ namespace SO115App.CompositionRoot
             container.Register<ICheckCongruitaPartenze, CheckCongruitaPartenze>();
 
             container.Register<IMapperRichiestaSuSintesi, MapperRichiestaAssistenzaSuSintesi>();
+
+            container.Register<IGetSediConcorrenza, GetSediConcorrenza>();
 
             #region Gestione richiesta di assistenza
 
