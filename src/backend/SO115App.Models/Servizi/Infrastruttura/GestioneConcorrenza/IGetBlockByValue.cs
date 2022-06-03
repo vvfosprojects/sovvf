@@ -10,5 +10,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza
     public interface IGetBlockByValue
     {
         public Concorrenza Get(string value);
+        public Concorrenza GetById(string id);
     }
 }

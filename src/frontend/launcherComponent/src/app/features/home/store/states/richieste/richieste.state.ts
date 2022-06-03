@@ -373,6 +373,8 @@ export class RichiesteState {
             }
             if (!action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
                 dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, obj.statoMezzo));
+            } else if (action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
+                dispatch(new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice]));
             }
         }
     }

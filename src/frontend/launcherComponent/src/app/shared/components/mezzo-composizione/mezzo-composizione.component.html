@@ -3,9 +3,10 @@
     (mouseenter)="onHoverIn()"
     (mouseleave)="onHoverOut()"
     (click)="onClick()">
-    <ng-container *ngIf="(tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [mezzoComp.mezzo.codice])">
+    <ng-container
+            *ngIf="(tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [mezzoComp.mezzo.codice]) || (tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoComp.mezzo.codice])">
         <app-locked-concorrenza
-                [nominativoOperatore]="tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [mezzoComp.mezzo.codice]">
+                [nominativoOperatore]="(tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [mezzoComp.mezzo.codice]) ? (tipoConcorrenzaEnum.Mezzo | checkConcorrenzaLocked: [mezzoComp.mezzo.codice]) : (tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoComp.mezzo.codice])">
         </app-locked-concorrenza>
     </ng-container>
     <div class="d-flex align-items-center justify-content-between px-2">
