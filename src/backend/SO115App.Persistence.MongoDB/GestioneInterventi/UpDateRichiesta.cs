@@ -36,7 +36,9 @@ namespace SO115App.Persistence.MongoDB
         public void UpDate(RichiestaAssistenza richiestaAssistenza)
         {
             var filter = Builders<RichiestaAssistenza>.Filter.Eq(s => s.Codice, richiestaAssistenza.Codice);
-            _dbContext.RichiestaAssistenzaCollection.ReplaceOne(filter, richiestaAssistenza);
+            _dbContext.RichiestaAssistenzaCollection.DeleteOne(filter);
+
+            _dbContext.RichiestaAssistenzaCollection.InsertOne(richiestaAssistenza);
         }
     }
 }
