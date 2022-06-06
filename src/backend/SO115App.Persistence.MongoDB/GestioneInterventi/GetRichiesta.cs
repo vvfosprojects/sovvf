@@ -323,7 +323,7 @@ namespace SO115App.Persistence.MongoDB
             if (richiesta.CodEntiIntervenuti != null)
                 rubrica = _getRubrica.GetBylstCodici(richiesta.CodEntiIntervenuti.Select(c => c).ToArray());
 
-            if (richiesta.CodUOCompetenza != null)
+            if (richiesta.CodSOCompetente.Trim().Length > 0)
             {
                 sintesi = _mapperSintesi.Map(richiesta);
                 //sintesi.CodEntiIntervenuti = rubrica.Count > 0 ? rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false) : null;
