@@ -361,7 +361,7 @@ export class SchedaTelefonataState {
         dispatch(new StartLoadingCompetenze());
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
             const competenze = res.dataArray as Sede[];
-            const codCompetenze = competenze.map((c: Sede) => {
+            const codCompetenze = competenze?.map((c: Sede) => {
                 return c.codice;
             });
             dispatch(new SetCompetenzeSuccess(action.coordinate, action.indirizzo, codCompetenze, action.markerChiamata));
