@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DettaglioPartenza } from '../../model/partenza.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { statoMezzoColor } from '../../helper/function-mezzo';
@@ -9,8 +9,7 @@ import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composi
 @Component({
     selector: 'app-box-anteprima-partenza',
     templateUrl: './box-anteprima-partenza.component.html',
-    styleUrls: ['./box-anteprima-partenza.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./box-anteprima-partenza.component.css']
 })
 export class BoxAnteprimaPartenzaComponent {
 
@@ -28,7 +27,6 @@ export class BoxAnteprimaPartenzaComponent {
     @Output() modificaPartenza: EventEmitter<any> = new EventEmitter<any>();
     @Output() annullaPartenza: EventEmitter<any> = new EventEmitter<any>();
 
-
     constructor() {
     }
 
@@ -39,23 +37,8 @@ export class BoxAnteprimaPartenzaComponent {
         this.listaSquadrePartenza.emit();
     }
 
-    onModificaPartenza(event: any): void {
-        if (event) {
-            event.stopPropagation();
-        }
-        this.modificaPartenza.emit();
-    }
-
     statoMezzoColor(stato: StatoMezzo): string {
         return statoMezzoColor(stato);
-    }
-
-    onDismissPartenza(event: any): void {
-        if (event) {
-            event.stopPropagation();
-        }
-        this.annullaPartenza.emit();
-        this.nuoveSquadre = [];
     }
 
     _iconaStatiClass(statoMezzo: any): string {
