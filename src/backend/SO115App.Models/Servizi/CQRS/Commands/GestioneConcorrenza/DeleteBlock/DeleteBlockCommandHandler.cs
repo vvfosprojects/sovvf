@@ -18,11 +18,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Concorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,59 +33,42 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
         private readonly IDeleteBlock _deleteBlock;
         private readonly IGetAllBlocks _getAllBlocks;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
+        private readonly IGetSediConcorrenza _getSediConcorrenza;
+        private readonly IGetBlockByValue _getBlock;
 
         public DeleteBlockCommandHandler(IDeleteBlock deleteBlock,
                                        IGetAllBlocks getAllBlocks,
-                                       IGetSintesiRichiestaAssistenzaByCodice getSintesiById)
+                                       IGetSintesiRichiestaAssistenzaByCodice getSintesiById,
+                                       IGetSediConcorrenza getSediConcorrenza,
+                                       IGetBlockByValue getBlock)
         {
             _deleteBlock = deleteBlock;
             _getAllBlocks = getAllBlocks;
             _getSintesiById = getSintesiById;
+            _getSediConcorrenza = getSediConcorrenza;
+            _getBlock = getBlock;
         }
 
         public void Handle(DeleteBlockCommand command)
         {
             try
             {
-                var listaBlocchiSede = _getAllBlocks.GetAll(new string[] { command.CodiceSede });
-
-                var blocchiInteressati = listaBlocchiSede.FindAll(c => (!c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))
-                                                                                && (c.Type.Equals(TipoOperazione.Richiesta)
-                                                                                || c.Type.Equals(TipoOperazione.ChiusuraChiamata)
-                                                                                || c.Type.Equals(TipoOperazione.ChiusuraIntervento)
-                                                                                || c.Type.Equals(TipoOperazione.Modifica)
-                                                                                || c.Type.Equals(TipoOperazione.Trasferimento)
-                                                                                || c.Type.Equals(TipoOperazione.Allerta)
-                                                                                || c.Type.Equals(TipoOperazione.Fonogramma)
-                                                                                || c.Type.Equals(TipoOperazione.InvioPartenza)
-                                                                                || c.Type.Equals(TipoOperazione.EntiIntervenuti)));
-
-                if (blocchiInteressati.Count > 0)
-                {
-                    var sintesi = _getSintesiById.GetSintesi(blocchiInteressati.FindAll(c => (!c.Type.Equals(TipoOperazione.Mezzo) && !c.Type.Equals(TipoOperazione.Squadra))
-                                                                                && (c.Type.Equals(TipoOperazione.Richiesta)
-                                                                                || c.Type.Equals(TipoOperazione.ChiusuraChiamata)
-                                                                                || c.Type.Equals(TipoOperazione.ChiusuraIntervento)
-                                                                                || c.Type.Equals(TipoOperazione.Modifica)
-                                                                                || c.Type.Equals(TipoOperazione.Trasferimento)
-                                                                                || c.Type.Equals(TipoOperazione.Allerta)
-                                                                                || c.Type.Equals(TipoOperazione.Fonogramma)
-                                                                                || c.Type.Equals(TipoOperazione.InvioPartenza)
-                                                                                || c.Type.Equals(TipoOperazione.EntiIntervenuti)))[0].Value);
-
-                    command.listaSediDaAllertare = sintesi.CodSOAllertate.ToList();
-
-                    command.CodSOCompetente = sintesi.CodSOCompetente;
-
-                }
+                var lstConcorrenza = new List<Concorrenza>();
 
                 foreach (var id in command.ListaIdConcorrenza)
                 {
+                    lstConcorrenza.Add(_getBlock.GetById(id));
+
                     _deleteBlock.Delete(id);
                 }
+
+                command.ListaConcorrenza = lstConcorrenza;
+
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+
+                throw;
             }
         }
     }

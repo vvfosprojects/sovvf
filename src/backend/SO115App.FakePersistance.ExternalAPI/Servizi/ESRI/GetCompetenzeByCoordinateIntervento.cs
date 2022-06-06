@@ -29,7 +29,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             _configuration = configuration;
         }
 
-        string[] IGetCompetenzeByCoordinateIntervento.GetCompetenzeByCoordinateIntervento(Coordinate coordinate)
+        string[] IGetCompetenzeByCoordinateIntervento.GetCompetenzeByCoordinateIntervento(Coordinate coordinate, String codiceSede)
         {
             string[] competenze = new string[3];
             string token = _getToken_ESRI.Get();
@@ -42,6 +42,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             Dictionary<string, string> postData = new Dictionary<string, string>();
             postData.Add("point", JsonConvert.SerializeObject(coord));
+            postData.Add("cod_sede", codiceSede);
             postData.Add("token", token);
             postData.Add("f", "json");
 
@@ -53,7 +54,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
                     String.Format("\"{0}\"", keyValuePair.Key));
             }
 
-            var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/execute");
+            //var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/execute");
+
+            var url = new Uri("https://gis.dipvvf.it/server/rest/services/Rank_Competenze/GPServer/RankCompetenze/execute");
 
             var response = _getCompetenze.PostAsyncFormData(url, multipartFormDataContent).Result;
 
@@ -61,13 +64,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             {
                 var codCom = response.results.Find(x => x.paramName.Equals("cod_com")).value;
 
-                competenze[0] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("rank_1")).value}";
+                if (!codCom.Equals("Null"))
+                {
+                    competenze[0] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("cod_dist1")).value}";
 
-                if (response.results.Find(x => x.paramName.Equals("rank_2")) != null)
-                    competenze[1] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("rank_2")).value}";
+                    if (response.results.Find(x => x.paramName.Equals("cod_dist2")) != null)
+                        competenze[1] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("cod_dist2")).value}";
 
-                if (response.results.Find(x => x.paramName.Equals("rank_3")) != null && Convert.ToInt32(response.results.Find(x => x.paramName.Equals("rank_3")).value) > 0)
-                    competenze[2] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("rank_3")).value}";
+                    if (response.results.Find(x => x.paramName.Equals("cod_dist3")) != null && Convert.ToInt32(response.results.Find(x => x.paramName.Equals("cod_dist3")).value) > 0)
+                        competenze[2] = $"{codCom}.{response.results.Find(x => x.paramName.Equals("cod_dist3")).value}";
+                }
             }
             else
             {

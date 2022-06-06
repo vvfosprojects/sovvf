@@ -36,7 +36,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             #region AFM Servizio
 
             //COMPONGO IL MODELLO PER AFM
-            var codiceDistaccamentoCompetenza = _getComeptenze.GetCompetenzeByCoordinateIntervento(new Coordinate((double)command.RichiestaSoccorsoAereo.lat, (double)command.RichiestaSoccorsoAereo.lng))[0];
+            var codiceDistaccamentoCompetenza = _getComeptenze.GetCompetenzeByCoordinateIntervento(new Coordinate((double)command.RichiestaSoccorsoAereo.lat, (double)command.RichiestaSoccorsoAereo.lng), command.CodiciSede[0].Split('.')[0])[0];
             var distaccamentoCompetenza = _getDistaccamento.Get(codiceDistaccamentoCompetenza);
 
             command.RichiestaSoccorsoAereo.datetime = date;
@@ -62,7 +62,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
                 azione = "Aggiornamento motivazione ";
             }
 
-            #endregion
+            #endregion AFM Servizio
 
             command.ResponseAFM = responseAFM;
 
