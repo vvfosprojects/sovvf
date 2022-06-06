@@ -20,7 +20,7 @@ import { SetRichiestaComposizione } from '../store/actions/composizione-partenza
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo, ClearRichieste, EliminaPartenzaRichiesta, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ClearRichieste, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
@@ -68,7 +68,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiesteState.needRefresh) needRefresh$: Observable<boolean>;
     @Select(RichiesteState.loadingActionRichiesta) loadingActionRichiesta$: Observable<string[]>;
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string[]>;
-    @Select(RichiesteState.loadingEliminaPartenza) loadingEliminaPartenza$: Observable<boolean>;
 
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -300,9 +299,5 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {
         this.store.dispatch(new ActionMezzo(actionMezzo));
-    }
-
-    onEliminaPartenza(event: { targaMezzo: string, idRichiesta: string, modalResult: any }): void {
-        this.store.dispatch(new EliminaPartenzaRichiesta(event.targaMezzo, event.idRichiesta, event.modalResult));
     }
 }

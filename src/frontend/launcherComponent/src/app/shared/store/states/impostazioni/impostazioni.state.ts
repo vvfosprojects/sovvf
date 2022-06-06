@@ -45,18 +45,18 @@ export const impostazioniStateDefaults: ImpostazioniStateModel = {
                 }
             ]
         },
-      {
-        tipo: TipoImpostazione.ModalitaNotte,
-        icona: 'fa-moon',
-        opzioni: [
-          {
-            label: 'Attiva modalità notte',
-            singleValue: {
-              value: false
-            }
-          }
-        ]
-      },
+        {
+            tipo: TipoImpostazione.ModalitaNotte,
+            icona: 'fa-moon',
+            opzioni: [
+                {
+                    label: 'Attiva modalità notte',
+                    singleValue: {
+                        value: false
+                    }
+                }
+            ]
+        },
     ]
 };
 
@@ -75,7 +75,7 @@ export class ImpostazioniState {
 
     @Selector()
     static ModalitaNotte(state: ImpostazioniStateModel): boolean {
-      return state.listaImpostazioni[2].opzioni[0].singleValue.value;
+        return state.listaImpostazioni[2].opzioni[0].singleValue.value;
     }
 
     @Selector()
@@ -100,7 +100,9 @@ export class ImpostazioniState {
 
     @Action(PatchImpostazioni)
     patchImpostazioni({ getState, setState }: StateContext<ImpostazioniStateModel>, action: PatchImpostazioni): void {
-        action.impostazione.tipo === 'Lista Eventi Chiamate / Interventi' ? action.impostazione.tipo = 'Lista Eventi Richiesta' as any : null;
+        if (action.impostazione.tipo === 'Lista Eventi Chiamate / Interventi') {
+            action.impostazione.tipo = 'Lista Eventi Richiesta' as any;
+        }
 
         setState(
             patch({

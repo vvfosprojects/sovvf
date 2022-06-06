@@ -20,7 +20,7 @@ import { SchedeContattoState } from '../store/states/schede-contatto/schede-cont
 import { Observable, Subscription } from 'rxjs';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { ToggleChiamata, ToggleSchedeContatto } from '../store/actions/view/view.actions';
-import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
@@ -237,7 +237,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetListaSchedeContatto(page));
     }
 
-    onSelectTab($event: NgbTabChangeEvent): void {
+    onSelectTab($event: NgbNavChangeEvent): void {
         const classificazione = $event.nextId as ClassificazioneSchedaContatto;
         this.store.dispatch(new SetTabAttivo(classificazione));
     }

@@ -31,7 +31,6 @@ export class GestioneUtentiService {
         return this.http.post<UtenteVvfInterface[]>(API_URL_PERSONALE_VVF, searchUtenteVVF);
     }
 
-    // Todo aggiungere un map e tornare Utente
     getUtente(id: string): Observable<{ detUtente: Utente }> {
         return this.http.get<{ detUtente: Utente }>(API_URL + '/GetUtente?id=' + id);
     }
