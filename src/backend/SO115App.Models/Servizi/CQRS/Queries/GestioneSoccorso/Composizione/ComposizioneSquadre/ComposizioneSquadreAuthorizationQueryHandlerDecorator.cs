@@ -51,7 +51,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
             var richiesta = _getRichiestaAssistenzaById.GetByCodice(query.Filtro.CodiceChiamata);
-            query.Filtro.CodiciCompetenze = richiesta.Competenze.Select(c => c.Codice).ToArray();
+            query.Filtro.CodiciCompetenze = query.Filtro.CodiciDistaccamenti;// richiesta.Competenze.Select(c => c.Codice).ToArray();
 
             if (this._currentUser.Identity.IsAuthenticated)
             {
@@ -64,10 +64,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
                         abilitato = true;
 
-                    foreach (var competenza in richiesta.CodUOCompetenza)
+                    if (richiesta.CodUOCompetenza != null)
                     {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                            abilitato = true;
+                        foreach (var competenza in richiesta.CodUOCompetenza)
+                        {
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                                abilitato = true;
+                        }
                     }
 
                     if (richiesta.CodSOAllertate != null)
