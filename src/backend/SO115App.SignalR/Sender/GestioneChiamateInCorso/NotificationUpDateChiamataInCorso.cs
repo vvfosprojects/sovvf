@@ -41,9 +41,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 
         public async Task SendNotification(UpDateChiamataInCorsoMarkerCommand chiamata)
         {
-            var Competenze = chiamata.Competenze;
-
-            var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
+            var SediDaNotificare = _getGerarchiaToSend.Get(chiamata.ChiamataInCorso.CodiceSedeOperatore);
 
             foreach (var sede in SediDaNotificare)
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerUpdate", chiamata);

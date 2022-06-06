@@ -6,7 +6,7 @@
         <!-- Filterbar -->
         <app-filterbar-composizione [filtri]="filtri"
                                     [nightMode]="nightMode"
-                                    [competenze]="richiesta?.competenze"
+                                    [competenze]="richiesta?.competenze ? richiesta?.competenze : []"
                                     [disableComposizioneMode]="loadingPreaccoppiati"
                                     [composizionePartenza]="true"
                                     [triageSummary]="triageSummary">

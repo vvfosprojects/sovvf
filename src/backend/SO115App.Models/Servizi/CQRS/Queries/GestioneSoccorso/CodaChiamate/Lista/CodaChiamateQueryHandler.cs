@@ -1,4 +1,4 @@
-﻿//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 // <copyright file="CodaChiamateQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
@@ -104,7 +104,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                     {
                         codDistaccamento = unita.Codice,
                         descDistaccamento = unita.Nome,
-                        numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
+                        numRichieste = listaSintesi.Count > 0 ? listaSintesi.FindAll(x => x.CodUOCompetenza.Length > 0 && x.CodUOCompetenza[0].Equals(unita.Codice) && (x.Stato.Equals("Chiamata") || x.Sospesa)).Count() : 0,
                         squadreLibere = listaSquadre != null ? listaSquadre.Count() - statoSquadre.Count : 0,
                         squadreOccupate = statoSquadre.Count
                     };

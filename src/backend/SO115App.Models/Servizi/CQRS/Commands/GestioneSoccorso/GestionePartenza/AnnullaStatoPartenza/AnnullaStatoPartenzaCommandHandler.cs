@@ -63,7 +63,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 string statoPrecedente = null;
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
-                    .Where(e => e is not AnnullamentoStatoPartenza && e is not Revoca)
+                    .Where(e => e is not AnnullamentoStatoPartenza && e is not Revoca && e is not AggiornamentoOrarioStato)
                     .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza))
                     .Where(e => e.DataOraInserimento < ultimoMovimento.DataOraInserimento)
                     .Last();

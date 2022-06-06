@@ -26,7 +26,6 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
@@ -47,17 +46,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetMaxCodicePartenza _getMaxCodicePartenza;
         private readonly IGetTurno _getTurno;
-
-        private readonly ISetUscitaMezzo _setUscitaMezzo;
-
         private readonly ISendSTATRIItem _sendNewItemSTATRI;
         private readonly ICheckCongruitaPartenze _checkCongruita;
 
         public ConfermaPartenzeCommandHandler(IUpdateConfermaPartenze updateConfermaPartenze, IGetRichiesta getRichiestaById,
             IGeneraCodiceRichiesta generaCodiceRichiesta, IUpDateRichiestaAssistenza updateRichiestaAssistenza,
             IGetStatoMezzi getStatoMezzi, IGetMaxCodicePartenza getMaxCodicePartenza,
-            ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita, IGetTurno getTurno,
-            ISetUscitaMezzo setUscitaMezzo)
+            ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita, IGetTurno getTurno)
         {
             _updateConfermaPartenze = updateConfermaPartenze;
             _getRichiestaById = getRichiestaById;
@@ -68,7 +63,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _sendNewItemSTATRI = sendNewItemSTATRI;
             _checkCongruita = checkCongruita;
             _getTurno = getTurno;
-            _setUscitaMezzo = setUscitaMezzo;
         }
 
         public void Handle(ConfermaPartenzeCommand command)
@@ -263,10 +257,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                     _updateRichiestaAssistenza.UpDate(richiestaDaTerminare);
 
-                    //_setUscitaMezzo.Set(new SO115App.Models.Classi.ServiziEsterni.Gac.UscitaGAC
-                    //{
-                    //    ///
-                    //});
                 }
             }
 

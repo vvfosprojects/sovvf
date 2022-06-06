@@ -211,13 +211,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 return lstSquadre.Result
                     .OrderBy(squadra => (!query?.Filtro?.CodSquadraSelezionata?.Equals(squadra.Codice)) ?? false)
+                    .OrderBy(squadra => squadra.Distaccamento.Codice)
                     .OrderBy(squadra => (!query?.Filtro?.CodDistaccamentoSelezionato?.Equals(squadra.Codice)) ?? false)
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInSede))
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInRientro))
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoInViaggio))
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoSulPosto))
                     .OrderBy(squadra => Enum.GetName(typeof(StatoSquadraComposizione), squadra.Stato).Equals(Costanti.MezzoOccupato))
-                    .ThenByDescending(squadra => query.Filtro.CodiciCompetenze?[0].Equals(squadra.Distaccamento?.Codice) ?? false)
+                    .ThenByDescending(squadra => query.Filtro.CodiciCompetenze?.Length > 1 ? query.Filtro?.CodiciCompetenze[0].Equals(squadra.Distaccamento?.Codice) : false)
                     .ThenByDescending(squadra => query.Filtro.CodiciCompetenze?.Length > 1 ? query.Filtro?.CodiciCompetenze[1].Equals(squadra.Distaccamento?.Codice) : false)
                     .ThenByDescending(squadra => query.Filtro.CodiciCompetenze?.Length > 2 ? query.Filtro?.CodiciCompetenze[2].Equals(squadra.Distaccamento?.Codice) : false);
             });
