@@ -64,7 +64,10 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
-            foreach (var sede in SediDaNotificare)
+            if(intervento.sintesiRichiesta.CodSediPartenze!=null)
+                SediDaNotificare.AddRange(intervento.sintesiRichiesta.CodSediPartenze);
+
+            foreach (var sede in SediDaNotificare.Distinct())
             {
                 var boxRichiesteQuery = new BoxRichiesteQuery()
                 {

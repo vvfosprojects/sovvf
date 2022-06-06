@@ -64,7 +64,10 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente);
 
-            foreach (var sede in SediDaNotificare)
+            if(intervento.Chiamata.CodSediPartenze!=null)
+                SediDaNotificare.AddRange(intervento.Chiamata.CodSediPartenze);
+
+            foreach (var sede in SediDaNotificare.Distinct())
             {
                 var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
                 {

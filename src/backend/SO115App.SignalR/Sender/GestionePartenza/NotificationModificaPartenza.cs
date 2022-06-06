@@ -48,6 +48,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente);
 
+            SediDaNotificare.AddRange(command.Richiesta.CodSediPartenze);
+
             var confermaPartenza = new ConfermaPartenze()
             {
                 CodiceSede = command.CodSede.First(),
@@ -58,7 +60,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 richiesta = command.Richiesta
             };
 
-            Parallel.ForEach(SediDaNotificare, sede =>
+            Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
                 var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery() { CodiciSede = new string[] { sede } }).BoxRichieste;
                 var boxMezzi = _boxMezziHandler.Handle(new BoxMezziQuery() { CodiciSede = new string[] { sede } }).BoxMezzi;

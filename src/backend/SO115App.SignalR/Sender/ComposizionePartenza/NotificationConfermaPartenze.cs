@@ -82,6 +82,8 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(conferma.Richiesta.CodSOCompetente);
 
+            SediDaNotificare.AddRange(conferma.Richiesta.CodSediPartenze);
+
             //Sedi dei mezzi in partenza che dovranno ricevere la notifica
             //SediDaNotificare.AddRange(conferma.ConfermaPartenze.Partenze.Select(c => c.Mezzo.Distaccamento.Codice));
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
