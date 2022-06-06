@@ -225,7 +225,7 @@
                     <!-- COMPETENZE NON PRESENTI -->
                     <ng-container
                             *ngIf="f?.provincia?.value && !loadingCompetenze && !competenze?.length && (indirizzoModificato || (!indirizzoModificato && !richiestaModifica?.competenze?.length))">
-                        Competenze non presenti
+                        <h5 class="text-danger mt-2 mb-0">Competenze non presenti</h5>
                     </ng-container>
                 </div>
             </div>

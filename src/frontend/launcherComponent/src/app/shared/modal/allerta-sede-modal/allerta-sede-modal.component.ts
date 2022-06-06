@@ -97,7 +97,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     getGenereMezzo(): void {
         this.subscriptions.add(
             this.filtri$.subscribe((filtri: ListaTipologicheMezzi) => {
-                this.generiMezzi = filtri.generiMezzi;
+                this.generiMezzi = filtri?.generiMezzi;
             })
         );
     }
@@ -114,7 +114,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     checkSediSelezionateError(): boolean {
         const sediSelezionate = this.f?.sedi?.value;
-        const siglaComandoSOCompetente = this.codSOCompetente.split('.')?.length === 2 ? this.codSOCompetente.split('.')[0] : null;
+        const siglaComandoSOCompetente = this.codSOCompetente?.split('.')?.length === 2 ? this.codSOCompetente.split('.')[0] : null;
         const siglaComandoSediSelezionate = sediSelezionate?.map((codComando: string) => codComando.split('.')?.length === 2 ? codComando.split('.')[0] : null);
         return siglaComandoSediSelezionate?.includes(siglaComandoSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
     }
