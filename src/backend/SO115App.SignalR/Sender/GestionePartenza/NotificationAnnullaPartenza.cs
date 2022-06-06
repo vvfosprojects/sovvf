@@ -63,7 +63,9 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente);
 
-            Parallel.ForEach(SediDaNotificare, sede =>
+            SediDaNotificare.AddRange(command.Richiesta.CodSediPartenze);
+
+            Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
                 _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
