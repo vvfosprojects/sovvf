@@ -107,11 +107,12 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                     if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreRichieste))
                         abilitato = true;
 
-                    foreach (var competenza in command.Richiesta.CodUOCompetenza)
-                    {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, competenza, Costanti.GestoreRichieste))
-                            abilitato = true;
-                    }
+                    if(command.Richiesta.CodUOCompetenza!=null)
+                        foreach (var competenza in command.Richiesta.CodUOCompetenza)
+                        {
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, competenza, Costanti.GestoreRichieste))
+                                abilitato = true;
+                        }
 
                     if (command.Richiesta.CodSOAllertate != null)
                     {
