@@ -92,7 +92,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
     }
 
     getCodMezziByPartenzeAttiveRichiesta(): string[] {
-        const partenzeAttiveRichiesta = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata);
+        const partenzeAttiveRichiesta = this.richiesta.partenze?.filter((p: Partenza) => !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata);
         let codMezzi = [];
         if (partenzeAttiveRichiesta) {
             codMezzi = partenzeAttiveRichiesta.map((p: Partenza) => p.partenza.mezzo.codice);
