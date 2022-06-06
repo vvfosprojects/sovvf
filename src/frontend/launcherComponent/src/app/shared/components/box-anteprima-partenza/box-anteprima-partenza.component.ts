@@ -24,7 +24,6 @@ export class BoxAnteprimaPartenzaComponent {
     @Input() nuoveSquadre: Squadra[];
 
     @Output() listaSquadrePartenza: EventEmitter<any> = new EventEmitter<any>();
-    @Output() modificaPartenza: EventEmitter<any> = new EventEmitter<any>();
     @Output() annullaPartenza: EventEmitter<any> = new EventEmitter<any>();
 
     constructor() {
