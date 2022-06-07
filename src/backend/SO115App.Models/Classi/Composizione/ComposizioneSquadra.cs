@@ -8,6 +8,8 @@ namespace SO115App.Models.Classi.Composizione
     public class ComposizioneSquadra
     {
         public string Id { get; set; }
+
+        public string IdSquadra { get; set; }
         public string Codice { get; set; }
         public string Nome { get; set; }
         public char Turno { get; set; }

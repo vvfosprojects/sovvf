@@ -106,13 +106,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var filtroCodiciSede = CodiciSede.SelectMany(sede =>
             {
-                if (sede.Contains('.')) 
+                if (sede.Contains('.'))
                     return new List<string> { sede.Split('.')[0] }; // distaccamento
-                else 
+                else
                     return _getSottoSedi.Get(new string[] { sede }).Select(s => s.Split('.')[0]); // con e direzione regionale
             }).Distinct().ToList();
 
-            #endregion
+            #endregion GESTIONE CODICE SEDE
 
             var lstSedi = _getSedi.GetAll().Result;
 
@@ -135,7 +135,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 var result = new ConcurrentBag<SquadraOpService>();
                 var workshift = new ConcurrentBag<WorkShift>();
 
-                Parallel.ForEach(filtroCodiciSede, 
+                Parallel.ForEach(filtroCodiciSede,
                     codice => workshift.Add(_getSquadre.GetAllByCodiceDistaccamento(codice).Result));
 
                 switch (query.Filtro.Turno) //FILTRO PER TURNO
@@ -186,6 +186,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     lstSquadre.Add(new ComposizioneSquadra()
                     {
+                        IdSquadra = squadra.spotId,
                         Stato = MappaStato(lstStatiSquadre.Find(statosquadra => statosquadra.IdSquadra.Equals($"{squadra.Codice}_{codiceTurno}"))?.StatoSquadra ?? Costanti.MezzoInSede),
                         Codice = squadra.Codice,
                         Turno = squadra.TurnoAttuale.ToCharArray()[0],
