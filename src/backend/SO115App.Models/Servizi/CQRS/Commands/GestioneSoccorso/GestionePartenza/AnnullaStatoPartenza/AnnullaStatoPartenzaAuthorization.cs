@@ -80,7 +80,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     bool abilitato = false;
 
-                    if(command.Richiesta.CodUOCompetenza!=null)
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Operatore.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                        abilitato = true;
+
+                    if (command.Richiesta.CodUOCompetenza!=null)
                         foreach (var competenza in command.Richiesta.CodUOCompetenza)
                         {
                             if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Operatore.Ruoli, competenza, Costanti.GestoreRichieste))
