@@ -36,7 +36,7 @@
                             tabindex="0"
                             style="cursor:pointer; vertical-align: baseline"
                             placement="top"
-                            [disabled]="disableBtnFeature || loadingSquadre || itemSelezionato || (boxPartenzaList[1]?.squadreComposizione?.length || boxPartenzaList[1]?.mezzoComposizione)"
+                            [disabled]="disableBtnFeature || loadingSquadre || itemSelezionato || boxPartenzaList[boxPartenzaList?.length - 1]?.squadreComposizione?.length || boxPartenzaList[boxPartenzaList?.length - 1]?.mezzoComposizione"
                             (click)="onClick(false, true); $event.stopPropagation()">
                         <div class="d-inline-block ml-2"
                              style="font-weight: 500">

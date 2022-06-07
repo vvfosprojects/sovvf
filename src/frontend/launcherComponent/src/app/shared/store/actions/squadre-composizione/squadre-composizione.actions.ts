@@ -98,9 +98,6 @@ export class HoverInSquadraComposizione {
 
 export class HoverOutSquadraComposizione {
     static readonly type = '[SquadreComposizione] Hover Out Squadra Composizione';
-
-    constructor(public idSquadraComp: string) {
-    }
 }
 
 export class ClearSquadraComposizione {
