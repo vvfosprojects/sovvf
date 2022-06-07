@@ -30,6 +30,9 @@ import { GetListeComposizioneAvanzata } from '../../../../features/home/store/ac
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
+import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
+import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
+import { AddConcorrenza } from '../../actions/concorrenza/concorrenza.actions';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -201,6 +204,11 @@ export class SquadreComposizioneState {
 
         if (!noAddBox) {
             dispatch(new AddBoxesPartenzaPreAccoppiato(squadraComp));
+            const data = {
+                type: TipoConcorrenzaEnum.Squadra,
+                value: squadraComp.codice
+            } as AddConcorrenzaDtoInterface;
+            dispatch(new AddConcorrenza([data]));
         }
     }
 
@@ -332,7 +340,7 @@ export class SquadreComposizioneState {
     }
 
     @Action(HoverOutSquadraComposizione)
-    hoverOutSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverOutSquadraComposizione): void {
+    hoverOutSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>): void {
         const state = getState();
         patchState({
             ...state,
