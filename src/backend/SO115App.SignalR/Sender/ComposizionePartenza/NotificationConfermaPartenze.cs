@@ -43,7 +43,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetSedi _getSedi;
-
+        private readonly GetSediPartenze _getSediPartenze;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiestehandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
@@ -59,7 +59,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             IMapperRichiestaSuSintesi mapperSintesi,
             GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetMezziInServizio getListaMezzi,
-            IGetSedi getSedi)
+            IGetSedi getSedi, GetSediPartenze getSediPartenze)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getListaMezzi = getListaMezzi;
@@ -71,6 +71,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _mapperSintesi = mapperSintesi;
             _getDistaccamentoUC = getDistaccamentoUC;
             _getSedi = getSedi;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
@@ -82,7 +83,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(conferma.Richiesta.CodSOCompetente);
 
-            SediDaNotificare.AddRange(conferma.Richiesta.CodSediPartenze);
+            SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(conferma.Richiesta));
 
             //Sedi dei mezzi in partenza che dovranno ricevere la notifica
             //SediDaNotificare.AddRange(conferma.ConfermaPartenze.Partenze.Select(c => c.Mezzo.Distaccamento.Codice));
@@ -111,7 +112,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     {
                         foreach (var partenze in conferma.ConfermaPartenze.Partenze)
                         {
-                           
                             _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
                         }
                     });
