@@ -19,7 +19,6 @@
                                     [inSostituzione]="inSostituzione"
                                     [testoModifica]="'Sostitusci Mezzo/Squadra'"
                                     [nonModificabile]="nonModificabile"
-                                    (modificaPartenza)="openSostituzioneModal()"
                                     (listaSquadrePartenza)="onListaSquadrePartenza()">
         </app-box-anteprima-partenza>
         <ng-container *ngIf="dateSync">
@@ -81,11 +80,6 @@
             </div>
         </ng-container>
     </form>
-    <ng-container *ngIf="!hideBox">
-        <div class="alert alert-danger text-uppercase font-weight-bold" role="alert">
-            Modifiche non salvate
-        </div>
-    </ng-container>
 </div>
 
 <div class="modal-footer d-flex align-items-center justify-content-between">
