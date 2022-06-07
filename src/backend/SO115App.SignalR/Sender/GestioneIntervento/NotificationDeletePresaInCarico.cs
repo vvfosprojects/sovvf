@@ -42,18 +42,21 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly GetSediPartenze _getSediPartenze;
 
         public NotificationDeletePresaInCarico(IHubContext<NotificationHub> notificationHubContext,
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
-                                          GetGerarchiaToSend getGerarchiaToSend)
+                                          GetGerarchiaToSend getGerarchiaToSend,
+                                          GetSediPartenze getSediPartenze)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(RimozionePresaInCaricoCommand intervento)
@@ -64,8 +67,10 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente);
 
-            if(intervento.Chiamata.CodSediPartenze!=null)
-                SediDaNotificare.AddRange(intervento.Chiamata.CodSediPartenze);
+            var listaSediPartenze = _getSediPartenze.GetFromSintesi(intervento.Chiamata);
+
+            if (listaSediPartenze != null)
+                SediDaNotificare.AddRange(listaSediPartenze);
 
             foreach (var sede in SediDaNotificare.Distinct())
             {

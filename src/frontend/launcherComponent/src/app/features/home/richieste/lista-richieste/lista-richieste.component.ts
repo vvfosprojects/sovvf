@@ -32,7 +32,6 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() loadingActionRichiesta: string[] = [];
     @Input() loadingActionMezzo: string[] = [];
     @Input() loadingProgressBarMezzo: string[] = [];
-    @Input() loadingEliminaPartenza: boolean;
     @Input() loadingDettaglioSchedaContatto: string;
 
     // Paginazione
@@ -60,7 +59,6 @@ export class ListaRichiesteComponent implements OnChanges {
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
-    @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
 
     methods = new HelperSintesiRichiesta();
     scrolling = false;

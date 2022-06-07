@@ -29,14 +29,9 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
 
         public List<TipologiaDettaglio> Get(GetDettagliTipoligiaByIdTipologiaQuery query)
         {
-            var CodTipologia = query.CodiceTipologia;
-
             var listaPin = GetGerarchia(query.IdSede);
-
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
-            var lstEnti = new List<TipologiaDettaglio>();
-
-            lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede) && c.CodiceTipologia.Equals(CodTipologia)).ToList();
+            var lstEnti = _dbContext.TipologiaDettaglioCollection.Find(c => lstCodiciPin.Contains(c.CodSede) && c.CodiceTipologia.Equals(query.CodiceTipologia)).ToList();
 
             //GESTIONE RICORSIVITA'
             var result = FiltraByRicorsività(listaPin, lstEnti);
@@ -96,17 +91,17 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
 
         private static List<TipologiaDettaglio> FiltraByRicorsività(List<PinNodo> listaPin, List<TipologiaDettaglio> lstTipologie)
         {
-            if (lstTipologie.Count > 0)
-                return lstTipologie.Where(c =>
-                {
-                    //LOGICA/CONDIZIONI RICORSIVITA'
-                    var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
-                    var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
+            return lstTipologie.Where(c =>
+            {
+                //LOGICA/CONDIZIONI RICORSIVITA'
+                if (c.CodSede == "00")
+                    return true;
 
-                    return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
-                }).ToList();
-            else
-                return lstTipologie;
+                var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
+                var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
+
+                return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
+            }).ToList();
         }
     }
 }

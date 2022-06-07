@@ -39,13 +39,15 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
         private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _listaMezziInServizioHandler;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly GetSediPartenze _getSediPartenze;
 
         public NotificationAnnullaPartenza(IHubContext<NotificationHub> notificationHubContext,
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                           IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
                                           IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
-                                          GetGerarchiaToSend getGerarchiaToSend)
+                                          GetGerarchiaToSend getGerarchiaToSend,
+                                          GetSediPartenze getSediPartenze)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -53,6 +55,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _boxPersonaleHandler = boxPersonaleHandler;
             _listaMezziInServizioHandler = listaMezziInServizioHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(AnnullaStatoPartenzaCommand command)
@@ -63,7 +66,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente);
 
-            SediDaNotificare.AddRange(command.Richiesta.CodSediPartenze);
+            SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(command.Richiesta));
 
             Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {

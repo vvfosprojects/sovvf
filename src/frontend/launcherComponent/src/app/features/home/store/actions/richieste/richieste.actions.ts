@@ -78,15 +78,6 @@ export class ActionMezzo {
     }
 }
 
-export class EliminaPartenzaRichiesta {
-    static readonly type = '[Richieste] Elimina Partenza';
-
-    constructor(public targaMezzo: string,
-                public idRichiesta: string,
-                public motivazione: { codMotivazione: string, testoMotivazione?: string, codRichiestaSubentrata?: string }) {
-    }
-}
-
 export class ActionRichiesta {
     static readonly type = '[Richieste] Action Richiesta';
 
@@ -157,14 +148,6 @@ export class StopLoadingActionMezzo {
 
     constructor(public idMezzo: string) {
     }
-}
-
-export class StartLoadingEliminaPartenza {
-    static readonly type = '[Richieste] Start Loading Elimina Partenza';
-}
-
-export class StopLoadingEliminaPartenza {
-    static readonly type = '[Richieste] Stop Loading Elimina Partenza';
 }
 
 export class StartLoadingActionRichiesta {

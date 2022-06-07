@@ -41,18 +41,21 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly GetSediPartenze _getSediPartenze;
 
         public NotificationUpDateChiamata(IHubContext<NotificationHub> notificationHubContext,
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
                                           IGetSintesiRichiestaAssistenzaByCodice getSintesiById,
-                                          GetGerarchiaToSend getGerarchiaToSend)
+                                          GetGerarchiaToSend getGerarchiaToSend,
+                                          GetSediPartenze getSediPartenze)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _getSintesiById = getSintesiById;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(UpDateInterventoCommand intervento)
@@ -60,12 +63,12 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             var SintesiRichiesta = _getSintesiById.GetSintesi(intervento.Chiamata.Codice);
             intervento.sintesiRichiesta = SintesiRichiesta;
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.sintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
+            var SediDaNotificare = _getGerarchiaToSend.Get(SintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
 
             SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
-            if(intervento.sintesiRichiesta.CodSediPartenze!=null)
-                SediDaNotificare.AddRange(intervento.sintesiRichiesta.CodSediPartenze);
+            if(SintesiRichiesta.CodSediPartenze!=null)
+                SediDaNotificare.AddRange(SintesiRichiesta.CodSediPartenze);
 
             foreach (var sede in SediDaNotificare.Distinct())
             {

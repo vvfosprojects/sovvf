@@ -32,7 +32,6 @@ export class ListaPartenzeComponent {
     @Input() hideGestisciPartenza: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
-    @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
     @Output() sostituzioneFineTurno: EventEmitter<any> = new EventEmitter<any>();
@@ -69,6 +68,11 @@ export class ListaPartenzeComponent {
             return moment(annullaStatoMezzo.istante).isAfter(unMinutoFa);
         }
         return false;
+    }
+
+    getSostituzioneFineTurnoVisible(): boolean {
+        // tslint:disable-next-line:max-line-length
+        return !this.hideSostituzioneFineTurno && this.inGestione && this.sostituzioneFineTurnoActive && !this.richiesta.partenze?.some((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.terminata && !p.partenza.sganciata && this.loadingActionMezzo?.includes(p.partenza.mezzo.codice));
     }
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {

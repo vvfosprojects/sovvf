@@ -42,6 +42,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IMapperRichiestaSuSintesi _mapperRichiesta;
+        private readonly GetSediPartenze _getSediPartenze;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
@@ -55,7 +56,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                                           IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
                                           GetGerarchiaToSend getGerarchiaToSend,
-                                          IMapperRichiestaSuSintesi mapperRichiesta)
+                                          IMapperRichiestaSuSintesi mapperRichiesta,
+                                          GetSediPartenze getSediPartenze)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -64,6 +66,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _listaMezziInServizioHandler = listaMezziInServizioHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
             _mapperRichiesta = mapperRichiesta;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
@@ -74,7 +77,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare.AddRange(_getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente));
 
-            SediDaNotificare.AddRange(intervento.Richiesta.CodSediPartenze);
+            SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(intervento.Richiesta));
 
             var listaMezziInServizioQuery = new ListaMezziInServizioQuery
             {

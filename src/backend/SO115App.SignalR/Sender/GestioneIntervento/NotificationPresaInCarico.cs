@@ -42,12 +42,14 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly GetSediPartenze _getSediPartenze;
 
         public NotificationPresaInCarico(IHubContext<NotificationHub> notificationHubContext,
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
-                                          GetGerarchiaToSend getGerarchiaToSend)
+                                          GetGerarchiaToSend getGerarchiaToSend,
+                                          GetSediPartenze getSediPartenze)
 
         {
             _notificationHubContext = notificationHubContext;
@@ -55,6 +57,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(PresaInCaricoCommand intervento)
@@ -64,7 +67,13 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente, intervento.Chiamata.CodSOAllertate.ToArray());
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente);
-            foreach (var sede in SediDaNotificare)
+
+            var listaSediPartenze = _getSediPartenze.GetFromSintesi(intervento.Chiamata);
+
+            if (listaSediPartenze != null)
+                SediDaNotificare.AddRange(listaSediPartenze);
+
+            foreach (var sede in SediDaNotificare.Distinct())
             {
                 var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
                 {
