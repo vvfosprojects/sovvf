@@ -10,7 +10,6 @@ import { StatoFonogramma } from '../../enum/stato-fonogramma.enum';
 import { Select, Store } from '@ngxs/store';
 import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 import { ListaEntiComponent } from '../lista-enti/lista-enti.component';
-import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { DettaglioFonogrammaModalComponent } from '../../modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
@@ -60,7 +59,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() idDaSganciare: string;
     @Input() disableTooltips: boolean;
     @Input() disableFissaInAlto: boolean;
-    @Input() loadingEliminaPartenza: boolean;
     @Input() loadingActionMezzo: string[];
     @Input() loadingDettaglioSchedaContatto: string;
     @Input() disabledModificaRichiesta: boolean;
@@ -78,7 +76,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Output() clickIndirizzo = new EventEmitter<SintesiRichiesta>();
     @Output() fissaInAlto = new EventEmitter<SintesiRichiesta>();
     @Output() nuovaPartenza = new EventEmitter<SintesiRichiesta>();
-    @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() deseleziona = new EventEmitter<boolean>();
@@ -245,26 +242,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
         mezzoAction.codRichiesta = this.richiesta.codice;
         this.actionMezzo.emit(mezzoAction);
-    }
-
-    onEliminaPartenza(targaMezzo: string): void {
-        let modal;
-        modal = this.modalService.open(EliminaPartenzaModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
-        modal.componentInstance.targaMezzo = targaMezzo;
-        modal.componentInstance.idRichiesta = this.richiesta.id;
-        modal.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    this.eliminaPartenza.emit({ targaMezzo, idRichiesta: this.richiesta.id, modalResult: res.result });
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
     }
 
     onModificaPartenza(index: string): void {

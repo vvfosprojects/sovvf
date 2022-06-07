@@ -3,18 +3,14 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Store, Select } from '@ngxs/store';
 import { NgbActiveModal, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, Observable } from 'rxjs';
-import { UpdateFormValue } from '@ngxs/form-plugin';
 import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
 import { Partenza } from '../../model/partenza.model';
-import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-partenza.interface';
 import { makeCopy } from '../../helper/function-generiche';
 import { ModificaPartenzaDto } from '../../interface/dto/partenze/modifica-partenza-dto.interface';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
-import { Mezzo } from '../../model/mezzo.model';
-import { Squadra } from '../../model/squadra.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { NgbTime } from '@ng-bootstrap/ng-bootstrap/timepicker/ngb-time';
 import { ClockService } from '../../../features/navbar/clock/clock-service/clock.service';
@@ -39,13 +35,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     richiesta: SintesiRichiesta;
     codRichiesta: string;
     time = { hour: 13, minute: 30, second: 30 };
-    timeAnnullamento = { hour: 13, minute: 30 };
     sequenze: SequenzaValoriSelezionati[] = [];
     inSostituzione = false;
-    hideBox = true;
-    boxSostitutivo = false;
-    nuovoMezzo: Mezzo;
-    nuoveSquadre: Squadra[];
     nonModificabile = false;
     statiMezzo: any[] = [
         { name: 'In Viaggio' },
@@ -196,7 +187,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             stato: statoResult,
             time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() },
             select,
-            codMezzo: this.inSostituzione ? this.nuovoMezzo : this.f.mezzo.value
+            codMezzo: this.f.mezzo.value
         });
     }
 
@@ -209,83 +200,10 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    annullaPartenza(): void {
-        this.hideBox = true;
-        this.nonModificabile = false;
-        this.inSostituzione = false;
-        this.store.dispatch(new UpdateFormValue({
-            value: {
-                annullamento: false,
-                codMezzoDaAnnullare: null,
-                codSquadreDaAnnullare: null,
-                motivazioneAnnullamento: null,
-                mezzo: this.singolaPartenza.partenza.mezzo,
-                squadre: this.singolaPartenza.partenza.squadre,
-                sequenzaStati: [],
-                dataAnnullamento: null,
-            },
-            path: 'modificaPartenzaModal.modificaPartenzaForm'
-        }));
-        this.sequenze = [];
-        this.sequenzeValid = true;
-        this.valid = false;
-    }
-
-    openSostituzioneModal(): void {
-        let sostituzioneModal;
-        sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
-            windowClass: 'modal-holder',
-            size: 'lg',
-            centered: true,
-            backdrop: 'static',
-            keyboard: false,
-        });
-        sostituzioneModal.componentInstance.idRichiesta = this.richiesta.id;
-        sostituzioneModal.componentInstance.richiesta = this.richiesta;
-        sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
-        sostituzioneModal.componentInstance.partenza = this.singolaPartenza;
-        sostituzioneModal.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    const nuovaPartenza = res.result;
-                    this.valid = true;
-                    this.inSostituzione = true;
-                    this.hideBox = false;
-                    this.boxSostitutivo = true;
-                    this.nonModificabile = true;
-                    this.timeAnnullamento = nuovaPartenza.time;
-                    if (nuovaPartenza.mezzo && nuovaPartenza.squadre && nuovaPartenza.squadre.length > 0) {
-                        this.f.annullamento.patchValue(true);
-                        this.f.mezzo.patchValue(nuovaPartenza.mezzo);
-                        this.nuovoMezzo = nuovaPartenza.mezzo.mezzo;
-                        this.nuoveSquadre = nuovaPartenza.squadre.map(x => x);
-                        this.f.squadre.patchValue(nuovaPartenza.squadre.map(x => x));
-                        this.f.motivazioneAnnullamento.patchValue(nuovaPartenza.motivazioneAnnullamento);
-                        this.f.codMezzoDaAnnullare.patchValue(this.singolaPartenza.partenza.mezzo.codice);
-                        this.f.codSquadreDaAnnullare.patchValue(this.singolaPartenza.partenza.squadre.map(x => x.id));
-                        this.f.dataAnnullamento.patchValue(nuovaPartenza.dataAnnullamento);
-                    }
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
-    }
-
     onListaSquadrePartenza(): void {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.singolaPartenza.partenza.id;
         listaSquadre.squadre = this.singolaPartenza.partenza.squadre;
-        this.store.dispatch(new VisualizzaListaSquadrePartenza(this.singolaPartenza.partenza.mezzo.codice, listaSquadre));
-    }
-
-    onListaSquadrePartenzaSostitutiva(): void {
-        const listaSquadre = {
-            idPartenza: '',
-            squadre: [],
-        };
-        listaSquadre.idPartenza = this.singolaPartenza.partenza.id;
-        listaSquadre.squadre = this.nuoveSquadre;
         this.store.dispatch(new VisualizzaListaSquadrePartenza(this.singolaPartenza.partenza.mezzo.codice, listaSquadre));
     }
 

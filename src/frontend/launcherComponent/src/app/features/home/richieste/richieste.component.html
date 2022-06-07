@@ -18,8 +18,7 @@
                            (defissa)="onDefissa()"
                            (modificaRichiesta)="onModificaRichiesta($event)"
                            (gestioneRichiesta)="onGestioneRichiesta($event)"
-                           (actionMezzo)="onActionMezzo($event)"
-                           (eliminaPartenza)="onEliminaPartenza($event)">
+                           (actionMezzo)="onActionMezzo($event)">
     </app-richiesta-fissata>
 </ng-template>
 
@@ -50,7 +49,6 @@
                          [loadingActionRichiesta]="loadingActionRichiesta$ | async"
                          [loadingActionMezzo]="loadingActionMezzo$ | async"
                          [annullaStatoMezzi]="annullaStatoMezzi$ | async"
-                         [loadingEliminaPartenza]="loadingEliminaPartenza$ | async"
                          [loadingDettaglioSchedaContatto]="loadingDettaglioSchedaContatto$ | async"
                          [listaEnti]="enti$ | async"
                          (statoPartenza)="toggleComposizione()"
@@ -64,7 +62,6 @@
                          (refresh)="onRefreshRichieste()"
                          (modificaRichiesta)="onModificaRichiesta($event)"
                          (gestioneRichiesta)="onGestioneRichiesta($event)"
-                         (actionMezzo)="onActionMezzo($event)"
-                         (eliminaPartenza)="onEliminaPartenza($event)">
+                         (actionMezzo)="onActionMezzo($event)">
     </app-lista-richieste>
 </ng-template>

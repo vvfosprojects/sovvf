@@ -37,7 +37,6 @@ export class PartenzaComponent implements OnInit {
 
     @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
-    @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
 
