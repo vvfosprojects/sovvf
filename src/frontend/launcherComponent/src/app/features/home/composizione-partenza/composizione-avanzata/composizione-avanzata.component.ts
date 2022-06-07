@@ -369,7 +369,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     squadraHoverOut(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.codice));
+        this.store.dispatch(new HoverOutSquadraComposizione());
     }
 
     onSearchSquadre(): void {
