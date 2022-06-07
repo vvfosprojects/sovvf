@@ -95,7 +95,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             {
                 //LOGICA/CONDIZIONI RICORSIVITA'
                 if (c.CodSede == "00")
-                    return c.Ricorsivo;
+                    return true;
 
                 var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
                 var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
