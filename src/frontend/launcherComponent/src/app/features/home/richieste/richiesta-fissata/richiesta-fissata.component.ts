@@ -37,7 +37,6 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() outEspanso = new EventEmitter<boolean>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
-    @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
     @Output() clickIndirizzo = new EventEmitter<{ idRichiesta: string, coordinate: Coordinate }>();
     @Output() selezione = new EventEmitter<{ idRichiesta: string, coordinate: Coordinate }>();
