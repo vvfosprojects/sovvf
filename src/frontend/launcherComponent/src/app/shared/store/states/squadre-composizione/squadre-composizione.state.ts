@@ -71,10 +71,10 @@ export class SquadreComposizioneState {
     static squadreSelezionate(state: SquadreComposizioneStateStateModel): SquadraComposizione[] {
         const squadreSelez = [];
         state.allSquadreComposione.forEach((s: SquadraComposizione) => {
-            state.idSquadreSelezionate.forEach((idS: string) => {
-                if (s.codice === idS) {
+            state.idSquadreSelezionate.forEach((id: string) => {
+                if (s.idSquadra === id) {
                     let duplicate = false;
-                    squadreSelez.forEach(x => x.id === s.codice ? duplicate = true : null);
+                    squadreSelez.forEach(x => x.id === s.idSquadra ? duplicate = true : null);
                     if (!duplicate) {
                         squadreSelez.push(s);
                     }
@@ -162,8 +162,8 @@ export class SquadreComposizioneState {
 
         setState(
             patch({
-                idSquadreComposizioneSelezionate: append([squadraComp.codice]),
-                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.codice) ? append([squadra.codice]) : state.idSquadreSelezionate,
+                idSquadreComposizioneSelezionate: append([squadraComp.idSquadra]),
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.idSquadra) ? append([squadra.idSquadra]) : state.idSquadreSelezionate,
             })
         );
         if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.includes(squadraComp)) {
@@ -179,8 +179,8 @@ export class SquadreComposizioneState {
         const noAddBox = action.noAddBox;
         setState(
             patch({
-                idSquadreComposizioneSelezionate: [squadraComp.codice],
-                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.codice) ? append([squadra.codice]) : state.idSquadreSelezionate,
+                idSquadreComposizioneSelezionate: [squadraComp.idSquadra],
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.idSquadra) ? append([squadra.idSquadra]) : state.idSquadreSelezionate,
             })
         );
         if (!noAddBox) {
@@ -197,8 +197,8 @@ export class SquadreComposizioneState {
 
         setState(
             patch({
-                idSquadreComposizioneSelezionate: append([squadraComp.codice]),
-                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.codice) ? append([squadra.codice]) : state.idSquadreSelezionate,
+                idSquadreComposizioneSelezionate: append([squadraComp.idSquadra]),
+                idSquadreSelezionate: !state.idSquadreSelezionate.includes(squadra.idSquadra) ? append([squadra.idSquadra]) : state.idSquadreSelezionate,
             })
         );
 
@@ -206,7 +206,7 @@ export class SquadreComposizioneState {
             dispatch(new AddBoxesPartenzaPreAccoppiato(squadraComp));
             const data = {
                 type: TipoConcorrenzaEnum.Squadra,
-                value: squadraComp.codice
+                value: squadraComp.idSquadra
             } as AddConcorrenzaDtoInterface;
             dispatch(new AddConcorrenza([data]));
         }
@@ -229,8 +229,8 @@ export class SquadreComposizioneState {
             if (action.preAccoppiato) {
                 setState(
                     patch({
-                        idSquadreComposizioneSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
-                        idSquadreSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice),
+                        idSquadreComposizioneSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.idSquadra),
+                        idSquadreSelezionate: action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.idSquadra),
                     })
                 );
                 if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
@@ -240,8 +240,8 @@ export class SquadreComposizioneState {
             } else {
                 setState(
                     patch({
-                        idSquadreComposizioneSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)),
-                        idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.codice)) : state.idSquadreSelezionate,
+                        idSquadreComposizioneSelezionate: append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.idSquadra)),
+                        idSquadreSelezionate: !action.noSelect ? append(action.squadreComp.map((squadraComp: SquadraComposizione) => squadraComp.idSquadra)) : state.idSquadreSelezionate,
                     })
                 );
                 if (!action.noSelect && (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.filter((squadraComp: SquadraComposizione) => action.squadreComp.includes(squadraComp)).length)) {
@@ -268,8 +268,8 @@ export class SquadreComposizioneState {
         }
         setState(
             patch({
-                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.codice),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.codice)
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.idSquadra),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.idSquadra)
             })
         );
     }
@@ -291,8 +291,8 @@ export class SquadreComposizioneState {
         }
         setState(
             patch({
-                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.codice),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.codice)
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.idSquadra),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.idSquadra)
             })
         );
     }
@@ -315,8 +315,8 @@ export class SquadreComposizioneState {
         }
         setState(
             patch({
-                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.codice),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.codice)
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.idSquadra),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.idSquadra)
             })
         );
     }
