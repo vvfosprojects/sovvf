@@ -91,13 +91,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             if (string.IsNullOrEmpty(query.Filtro.CodDistaccamentoSelezionato))
             {
                 if (query.Filtro.CodiciDistaccamenti != null && query.Filtro.CodiciDistaccamenti.Length > 0)
-                {
-                    CodiciSede = query.Filtro.CodiciDistaccamenti.ToList()/*.Select(sede => sede.Split('.')[0]).Distinct().ToArray()*/;
-                }
+                    CodiciSede = query.Filtro.CodiciDistaccamenti.ToList();
                 else
-                {
-                    CodiciSede = query.CodiciSede.ToList()/*[0].Split('.')[0]*/;
-                }
+                    CodiciSede = query.CodiciSede.ToList();
             }
             else
             {
@@ -124,7 +120,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 case null: goto case TurnoRelativo.Attuale;
             }
 
-            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno.Substring(0, 1), filtroCodiciSede).ToList()).Result;
+            var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno.Substring(0, 1), _getSottoSedi.Get(CodiciSede.ToArray()).ToList()).ToList()).Result;
             var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? filtroCodiciSede.ToArray())).Result;
             var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Where(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).ToList()))?.Result;
 
