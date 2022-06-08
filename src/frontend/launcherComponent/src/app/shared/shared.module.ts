@@ -15,7 +15,6 @@ import { RisultatiRicercaComponent } from './components/risultati-ricerca/risult
 import { TrasferimentoChiamataModalComponent } from './modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { AllertaSedeModalComponent } from './modal/allerta-sede-modal/allerta-sede-modal.component';
 import { ModificaPartenzaModalComponent } from './modal/modifica-partenza-modal/modifica-partenza-modal.component';
-import { SostituzionePartenzaModalComponent } from './modal/sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { MezzoComposizioneComponent } from './components/mezzo-composizione/mezzo-composizione.component';
 import { SquadraComposizioneComponent } from './components/squadra-composizione/squadra-composizione.component';
 import { FilterbarComposizioneComponent } from './components/filterbar-composizione/filterbar-composizione.component';
@@ -124,7 +123,6 @@ const COMPONENTS = [
     NotificheComponent,
     AllertaSedeModalComponent,
     ModificaPartenzaModalComponent,
-    SostituzionePartenzaModalComponent,
     MezzoComposizioneComponent,
     SquadraComposizioneComponent,
     FilterbarComposizioneComponent,

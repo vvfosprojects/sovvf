@@ -230,9 +230,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     checkDoubleDividi(box: BoxPartenza): boolean {
         if (box.squadreComposizione?.length === 1) {
-            const codiceSquadra = box.squadreComposizione[0].codice;
+            const idSquadra = box.squadreComposizione[0].idSquadra;
             const boxPartenze = this.boxPartenzaList.slice().reverse() as BoxPartenza[];
-            const boxPartenzeSquadra: BoxPartenza[] = boxPartenze.filter((boxPartenza: BoxPartenza) => boxPartenza.squadreComposizione?.length === 1 && boxPartenza.squadreComposizione[0].codice === codiceSquadra);
+            const boxPartenzeSquadra: BoxPartenza[] = boxPartenze.filter((boxPartenza: BoxPartenza) => boxPartenza.squadreComposizione?.length === 1 && boxPartenza.squadreComposizione[0].idSquadra === idSquadra);
             return boxPartenzeSquadra?.length > 1 && boxPartenzeSquadra.reverse().findIndex((boxPartenza: BoxPartenza) => boxPartenza === box) === 0;
         } else {
             return false;
@@ -351,25 +351,25 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.idSquadra));
     }
 
     squadraDeselezionataInRientro(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizioneInRientro(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.idSquadra));
     }
 
     squadraDeselezionataPreAccoppiati(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizionePreAccoppiati(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.idSquadra));
     }
 
     squadraHoverIn(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.codice));
+        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.idSquadra));
     }
 
     squadraHoverOut(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.codice));
+        this.store.dispatch(new HoverOutSquadraComposizione());
     }
 
     onSearchSquadre(): void {

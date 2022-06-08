@@ -480,7 +480,6 @@
                                     <div class="col-8 px-0 border border-lista-partenze"
                                          style="height: fit-content">
                                         <div class="scroll-y max-height-richiesta">
-                                            <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
                                             <app-lista-partenze [richiesta]="richiesta"
                                                                 [inGestione]="inGestione"
                                                                 [idDaSganciare]="idDaSganciare"
@@ -491,7 +490,6 @@
                                                                 [hideSostituzioneFineTurno]="hideSostituzioneFineTurno"
                                                                 [hideGestisciPartenza]="hideGestisciPartenza"
                                                                 (actionMezzo)="onActionMezzo($event)"
-                                                                (eliminaPartenza)="onEliminaPartenza($event)"
                                                                 (modificaPartenza)="onModificaPartenza($event)"
                                                                 (sostituzioneFineTurno)="onSostituzioneFineTurno(richiesta.partenze)"
                                                                 (selezioneMezzo)="onSelezioneMezzoPartenza($event)">

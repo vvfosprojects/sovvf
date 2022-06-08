@@ -66,7 +66,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             else
                 sedeComando = command.sintesi.CodSOCompetente;
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(sedeComando);
+            var SediDaNotificare = _getGerarchiaToSend.Get(sedeComando, command.sintesi.CodUOCompetenza);
 
             SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
