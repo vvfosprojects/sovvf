@@ -50,7 +50,7 @@ export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
     StatoMezzo = StatoMezzo;
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
-    codiciSquadre: string[];
+    idSquadre: string[];
 
     private subscription = new Subscription();
 
@@ -63,7 +63,7 @@ export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.partenzaPreAccopiati?.currentValue) {
             const partenzaPreAccopiati = changes?.partenzaPreAccopiati?.currentValue;
-            this.codiciSquadre = partenzaPreAccopiati.squadre.map((sC: SquadraComposizione) => sC.codice);
+            this.idSquadre = partenzaPreAccopiati.squadre.map((sC: SquadraComposizione) => sC.idSquadra);
         }
     }
 
@@ -80,7 +80,7 @@ export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
     }
 
     onClick(): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Mezzo, [this.partenzaPreAccopiati.codiceMezzo]) && !this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, this.codiciSquadre)) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Mezzo, [this.partenzaPreAccopiati.codiceMezzo]) && !this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, this.idSquadre)) {
             if (!this.itemOccupato) {
                 if (!this.itemSelezionato) {
                     this.selezionato.emit(this.partenzaPreAccopiati);
@@ -223,7 +223,7 @@ export class BoxPreaccoppiatoComponent implements OnChanges, OnDestroy {
 
     isLockedConcorrenza(): string {
         const isLockedMezzo = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Mezzo, [this.partenzaPreAccopiati.codiceMezzo]);
-        const isLockedSquadra = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, this.codiciSquadre);
+        const isLockedSquadra = this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, this.idSquadre);
 
         if (isLockedMezzo && isLockedSquadra) {
             return isLockedMezzo;

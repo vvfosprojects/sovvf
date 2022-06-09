@@ -149,8 +149,8 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
             if (this.idPreAccoppiatiSelezionati.includes(p.id)) {
                 console.log('remove mezzo', p.codiceMezzo);
                 this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.codiceMezzo]));
-                const codiciSquadre = p.squadre.map((sC: SquadraComposizione) => sC.codice);
-                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+                const idSquadre = p.squadre.map((sC: SquadraComposizione) => sC.idSquadra);
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));
             }
         });
         this.store.dispatch([

@@ -9,6 +9,10 @@ export class Squadra {
          */
         public id: string,
         /**
+         * Id della squadra
+         */
+        public idSquadra: string,
+        /**
          * Codice della squadra
          */
         public codice: string,
