@@ -27,6 +27,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.OPService;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,15 +55,17 @@ namespace SO115App.ExternalAPI.Fake.Box
         {
             var listaCodiciSedeConSottoSedi = _getSottoSediByCodSede.Get(codiciSede).Distinct().ToList();
 
-            var lstCodici = listaCodiciSedeConSottoSedi.Where(c => c.Contains('.')).Select(cod => cod.Split('.')[0]).Distinct();
+            var lstCodici = listaCodiciSedeConSottoSedi.Where(c => c.Contains('.')).Select(cod => cod.Split('.')[0]).Distinct().ToList();
 
             var workshift = new List<WorkShift>();
 
-            Parallel.ForEach(lstCodici, codice => workshift.Add(_getSquadre.GetAllByCodiceDistaccamento(codice).Result));
+            Parallel.ForEach(lstCodici, codice =>
+            {
+                var w = _getSquadre.GetAllByCodiceDistaccamento(codice).Result;
 
-            workshift.RemoveAll(w => w == null);
-
-            var box = workshift.SelectMany(w => w.Squadre).Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT")).ToList();
+                if(w != null)
+                    workshift.Add(w);
+            });
 
             var statoSquadre = _getStatoSquadra.Get(_getTurno.Get().Codice.Substring(0, 1), listaCodiciSedeConSottoSedi);
 
@@ -70,21 +73,21 @@ namespace SO115App.ExternalAPI.Fake.Box
             {
                 Funzionari = new ConteggioFunzionari
                 {
-                    Current = workshift.SelectMany(w => w.Attuale?.Funzionari?.Select(m => new Componente
+                    Current = workshift.SelectMany(w => w?.Attuale?.Funzionari?.Select(m => new Componente
                     {
                         CodiceFiscale = m.CodiceFiscale,
                         DescrizioneQualifica = m.Ruolo,
                         Nominativo = $"{m.Nome} {m.Cognome}",
                         Ruolo = m.Ruolo
                     }))?.ToList(),
-                    Next = workshift.SelectMany(w => w.Successivo?.Funzionari?.Select(m => new Componente
+                    Next = workshift.SelectMany(w => w?.Successivo?.Funzionari?.Select(m => new Componente
                     {
                         CodiceFiscale = m.CodiceFiscale,
                         DescrizioneQualifica = m.Ruolo,
                         Nominativo = $"{m.Nome} {m.Cognome}",
                         Ruolo = m.Ruolo
                     }))?.ToList(),
-                    Previous = workshift.SelectMany(w => w.Precedente?.Funzionari?.Select(m => new Componente
+                    Previous = workshift.SelectMany(w => w?.Precedente?.Funzionari?.Select(m => new Componente
                     {
                         CodiceFiscale = m.CodiceFiscale,
                         DescrizioneQualifica = m.Ruolo,
@@ -94,18 +97,18 @@ namespace SO115App.ExternalAPI.Fake.Box
                 },
                 PersonaleTotale = new ConteggioPersonale
                 {
-                    Current = workshift.Select(w => w?.Attuale?.Squadre?.Where(s => s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
-                    Next = workshift.Select(w => w?.Successivo?.Squadre?.Where(s => s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
-                    Previous = workshift.Select(w => w?.Precedente?.Squadre?.Where(s => s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Count()).Sum() ?? 0).Sum(),
+                    Current = workshift.Select(w => w?.Attuale?.Squadre?.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Length).Sum() ?? 0).Sum(),
+                    Next = workshift.Select(w => w?.Successivo?.Squadre?.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Length).Sum() ?? 0).Sum(),
+                    Previous = workshift.Select(w => w?.Precedente?.Squadre?.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Length).Sum() ?? 0).Sum(),
                 },
                 SquadreServizio =  new ConteggioPersonale
                 {
-                    Current = workshift.SelectMany(w => w?.Attuale?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
-                    Next = workshift.SelectMany(w => w?.Successivo?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count(),
-                    Previous = workshift.SelectMany(w => w?.Precedente?.Squadre.Where(s => s.spotType.Equals("WORKSHIFT"))).Count()
+                    Current = workshift.SelectMany(w => w?.Attuale?.Squadre.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT"))).Count(),
+                    Next = workshift.SelectMany(w => w?.Successivo?.Squadre.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT"))).Count(),
+                    Previous = workshift.SelectMany(w => w?.Precedente?.Squadre.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT"))).Count()
                 },
                 SquadreAssegnate = statoSquadre.Count - statoSquadre.Where(s => s.StatoSquadra.Equals(Costanti.MezzoInRientro)).Count(),
-                workShift = workshift
+                workShift = workshift.ToList()
             };
 
             return result;
