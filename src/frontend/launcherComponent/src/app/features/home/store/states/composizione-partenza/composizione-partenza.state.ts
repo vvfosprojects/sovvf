@@ -204,8 +204,8 @@ export class ComposizionePartenzaState {
             action.partenze.partenze.forEach((p: Partenza) => {
                 console.log('remove mezzo', p.mezzo.codice);
                 dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.mezzo.codice]));
-                const codiciSquadre = p.squadre.map((s: Squadra) => s.codice);
-                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+                const idSquadre = p.squadre.map((s: Squadra) => s.idSquadra);
+                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));
             });
             if (state.composizioneMode === Composizione.Avanzata) {
                 dispatch([

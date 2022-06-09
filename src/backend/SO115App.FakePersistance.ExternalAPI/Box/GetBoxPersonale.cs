@@ -52,11 +52,6 @@ namespace SO115App.ExternalAPI.Fake.Box
 
         public BoxPersonale Get(string[] codiciSede)
         {
-            if (codiciSede.Any(s => s == "00" || s == "001"))
-            {
-                codiciSede = _sedi.GetAll().Result.Select(s => s.Codice).ToArray();
-            }
-
             var listaCodiciSedeConSottoSedi = _getSottoSediByCodSede.Get(codiciSede).Distinct().ToList();
 
             var lstCodici = listaCodiciSedeConSottoSedi.Where(c => c.Contains('.')).Select(cod => cod.Split('.')[0]).Distinct();
