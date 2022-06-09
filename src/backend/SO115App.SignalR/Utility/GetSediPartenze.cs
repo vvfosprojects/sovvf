@@ -12,7 +12,7 @@ namespace SO115App.SignalR.Utility
         {
             var lista = richiesta.ListaEventi.OfType<ComposizionePartenze>().ToList();
 
-            return lista.FindAll(p => !p.Partenza.PartenzaAnnullata && !p.Partenza.Terminata && !p.Partenza.Sganciata)
+            return lista.FindAll(p => !p.Partenza.PartenzaAnnullata)
                                 .Select(p => p.Partenza.Mezzo.Distaccamento.Codice).ToList();
         }
 
@@ -20,7 +20,7 @@ namespace SO115App.SignalR.Utility
         {
             var lista = richiesta.Eventi.OfType<ComposizionePartenze>().ToList();
 
-            return lista.FindAll(p => !p.Partenza.PartenzaAnnullata && !p.Partenza.Terminata && !p.Partenza.Sganciata)
+            return lista.FindAll(p => !p.Partenza.PartenzaAnnullata)
                                 .Select(p => p.Partenza.Mezzo.Distaccamento.Codice).ToList();
         }
     }

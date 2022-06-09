@@ -21,7 +21,6 @@
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
@@ -86,7 +85,8 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(conferma.Richiesta));
 
             //Sedi dei mezzi in partenza che dovranno ricevere la notifica
-            //SediDaNotificare.AddRange(conferma.ConfermaPartenze.Partenze.Select(c => c.Mezzo.Distaccamento.Codice));
+            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
 
             var listaMezziInServizio = Task.Factory.StartNew(() => _getListaMezzi.Get(SediDaNotificare.ToArray()));

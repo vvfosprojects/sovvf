@@ -78,6 +78,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 SediDaNotificare.AddRange(_getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente));
 
             SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(intervento.Richiesta));
+            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
             var listaMezziInServizioQuery = new ListaMezziInServizioQuery
             {

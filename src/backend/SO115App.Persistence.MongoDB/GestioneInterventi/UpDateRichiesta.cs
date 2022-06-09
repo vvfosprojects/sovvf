@@ -39,7 +39,7 @@ namespace SO115App.Persistence.MongoDB
         {
             var lista = richiestaAssistenza.ListaEventi.OfType<ComposizionePartenze>().ToList();
 
-            richiestaAssistenza.CodSediPartenze = lista.FindAll(p => !p.Partenza.PartenzaAnnullata && !p.Partenza.Terminata && !p.Partenza.Sganciata)
+            richiestaAssistenza.CodSediPartenze = lista.FindAll(p => !p.Partenza.PartenzaAnnullata)
                                 .Select(p => p.Partenza.Mezzo.Distaccamento.Codice).ToArray();
 
             var filter = Builders<RichiestaAssistenza>.Filter.Eq(s => s.Codice, richiestaAssistenza.Codice);
