@@ -37,7 +37,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente);
 
-            if(sintesi.CodSediPartenze!=null)
+            if (sintesi.CodSediPartenze != null)
                 SediDaNotificare.AddRange(sintesi.CodSediPartenze);
 
             command.Chiamata = sintesi;
@@ -59,7 +59,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                         {
                             Titolo = "Allerta Emergenza",
                             Descrizione = $"Sono state allertate le sedi: {String.Join(',', command.CodSediAllertate)}",
-                            Tipo = TipoNotifica.AllertaEmergenza,
                             Data = DateTime.Now
                         });
                     }
@@ -69,7 +68,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                         {
                             Titolo = "Allerta Emergenza",
                             Descrizione = $"E' stata allertata la sede: {command.CodSediAllertate[0]}",
-                            Tipo = TipoNotifica.AllertaEmergenza,
                             Data = DateTime.Now
                         });
                     }
@@ -80,10 +78,9 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                     await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new Notifica()
                     {
                         Titolo = "Allerta Emergenza",
-                        Descrizione = $"La sede {command.CodiceSede} ha allertato {String.Join(',',command.CodSediAllertate)} per l'intervento {codiceSintesi}",
-                        Tipo = TipoNotifica.AllertaEmergenza,
+                        Descrizione = $"La sede {command.CodiceSede} ha allertato {String.Join(',', command.CodSediAllertate)} per l'intervento {codiceSintesi}",
                         Data = DateTime.Now
-                    });                    
+                    });
                 }
 
                 #endregion Notifica Navbar
