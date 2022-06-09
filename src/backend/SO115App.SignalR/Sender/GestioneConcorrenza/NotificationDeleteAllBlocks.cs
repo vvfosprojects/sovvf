@@ -38,7 +38,9 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede);
 
-            foreach (var sede in SediDaNotificare)
+            SediDaNotificare.Add("00");
+
+            foreach (var sede in SediDaNotificare.Distinct())
             {
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyConcorrenza", command);
             }

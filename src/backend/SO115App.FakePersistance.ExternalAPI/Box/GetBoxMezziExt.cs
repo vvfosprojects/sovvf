@@ -22,6 +22,7 @@ using SO115App.API.Models.Classi.Boxes;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,11 +36,13 @@ namespace SO115App.ExternalAPI.Fake.Box
     public class GetBoxMezziExt : IGetBoxMezzi
     {
         private readonly IGetMezziUtilizzabiliPerBox _getMezziUtilizzabili;
+        private readonly IGetSottoSediByCodSede _getSottoSedi;
         //private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public GetBoxMezziExt(IGetMezziUtilizzabiliPerBox getMezziUtilizzabili/*, IGetStatoMezzi getStatoMezzi*/)
+        public GetBoxMezziExt(IGetMezziUtilizzabiliPerBox getMezziUtilizzabili, IGetSottoSediByCodSede getSottoSedi/*, IGetStatoMezzi getStatoMezzi*/)
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
+            _getSottoSedi = getSottoSedi;
             //_getStatoMezzi = getStatoMezzi;
         }
 
@@ -53,11 +56,16 @@ namespace SO115App.ExternalAPI.Fake.Box
         {
             var listaMezzi = new Dictionary<string, string>();
 
+            var lstCodiciSede = _getSottoSedi.Get(codiciSede).Distinct().ToArray();
+
             try
             {
-                listaMezzi = _getMezziUtilizzabili.Get(codiciSede).Result;
+                listaMezzi = _getMezziUtilizzabili.Get(lstCodiciSede.Where(s => s.Contains('.')).ToArray()).Result;
             }
-            catch (System.Exception) { }
+            catch (System.Exception e) 
+            { 
+
+            }
 
             var mezzi = new BoxMezzi()
             {
@@ -65,8 +73,7 @@ namespace SO115App.ExternalAPI.Fake.Box
                 InViaggio = listaMezzi?.Where(x => x.Value == Costanti.MezzoInViaggio).Count() ?? 0,
                 InRientro = listaMezzi?.Where(x => x.Value == Costanti.MezzoInRientro).Count() ?? 0,
                 SulPosto = listaMezzi?.Where(x => x.Value == Costanti.MezzoSulPosto).Count() ?? 0,
-                Istituto = Convert.ToInt32(listaMezzi?.Where(x => x.Key == Costanti.MezzoIstituto).First().Value),
-                //InServizio = mezzi.InSede + mezzi.InRientro + mezzi.SulPosto + mezzi.Istituto + mezzi.InViaggio
+                Istituto = Convert.ToInt32(listaMezzi?.Where(x => x.Key == Costanti.MezzoIstituto).First().Value)
             };
 
             return mezzi;
