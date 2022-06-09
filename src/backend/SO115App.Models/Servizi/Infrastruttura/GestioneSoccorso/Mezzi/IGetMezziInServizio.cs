@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Classi.ListaMezziInServizio;
 using System.Collections.Generic;
 
@@ -35,5 +36,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
         /// <param name="codiceSede">Codice della sede di appartenenza</param>
         /// <returns>L'anagrafica del mezzo</returns>
         List<MezzoInServizio> Get(string[] codiceSede);
+
+        List<MezzoInServizio> MapPartenzeInMezziInServizio(RichiestaAssistenza richiestaAssistenza, string[] CodiciSede);
     }
 }

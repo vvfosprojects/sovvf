@@ -56,21 +56,28 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             //Chiusura Vecchie Partenze
             foreach (var partenza in partenzeAperteIntervento)
             {
-                richiestaOld.Partenze.ToList().Find(p => p.Partenza.PartenzaAnnullata == false
+                //Chiudo solo le partenze da sostituire. Le partenze non interessate dalla sostituzione non verranno lavorate
+                if (partenzeDaSostituire.Contains(partenza))
+                {
+                    richiestaOld.Partenze.ToList().Find(p => p.Partenza.PartenzaAnnullata == false
                                                             && p.Partenza.Terminata == false
                                                             && p.Partenza.Sganciata == false
                                                             && p.CodiceMezzo.Equals(partenza.CodiceMezzo)).Partenza.Terminata = true;
 
-                partenza.Partenza.Terminata = true;
-                AggiornaStatoMezzoCommand statoMezzoPartenza = new AggiornaStatoMezzoCommand()
-                {
-                    CodiciSede = new string[] { partenza.Partenza.Mezzo.Appartenenza },
-                    IdMezzo = partenza.CodiceMezzo,
-                    Richiesta = richiestaOld,
-                    StatoMezzo = Costanti.MezzoRientrato
-                };
 
-                _upDatePartenza.Update(statoMezzoPartenza);
+
+                    partenza.Partenza.Terminata = true;
+
+                    AggiornaStatoMezzoCommand statoMezzoPartenza = new AggiornaStatoMezzoCommand()
+                    {
+                        CodiciSede = new string[] { partenza.Partenza.Mezzo.Appartenenza },
+                        IdMezzo = partenza.CodiceMezzo,
+                        Richiesta = richiestaOld,
+                        StatoMezzo = Costanti.MezzoRientrato
+                    };
+
+                    _upDatePartenza.Update(statoMezzoPartenza);
+                }
             };
 
             //FASE 4
