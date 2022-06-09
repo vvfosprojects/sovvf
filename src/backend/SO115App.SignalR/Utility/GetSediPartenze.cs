@@ -12,16 +12,24 @@ namespace SO115App.SignalR.Utility
         {
             var lista = richiesta.ListaEventi.OfType<ComposizionePartenze>().ToList();
 
-            return lista.FindAll(p => !p.Partenza.PartenzaAnnullata)
+            var listaDaInviare = lista.FindAll(p => !p.Partenza.PartenzaAnnullata)
                                 .Select(p => p.Partenza.Mezzo.Distaccamento.Codice).ToList();
+
+
+
+            return listaDaInviare.FindAll(x=> x!=null).ToList();
         }
 
         public List<string> GetFromSintesi(SintesiRichiesta richiesta)
         {
             var lista = richiesta.Eventi.OfType<ComposizionePartenze>().ToList();
 
-            return lista.FindAll(p => !p.Partenza.PartenzaAnnullata)
+            var listaDaInviare = lista.FindAll(p => !p.Partenza.PartenzaAnnullata)
                                 .Select(p => p.Partenza.Mezzo.Distaccamento.Codice).ToList();
+
+
+
+            return listaDaInviare.FindAll(x => x != null).ToList();
         }
     }
 }

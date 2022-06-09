@@ -27,6 +27,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
@@ -43,6 +44,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IMapperRichiestaSuSintesi _mapperRichiesta;
         private readonly GetSediPartenze _getSediPartenze;
+        private readonly IGetMezziInServizio _getListaMezzi;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
@@ -57,7 +59,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                                           IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
                                           GetGerarchiaToSend getGerarchiaToSend,
                                           IMapperRichiestaSuSintesi mapperRichiesta,
-                                          GetSediPartenze getSediPartenze)
+                                          GetSediPartenze getSediPartenze,
+                                          IGetMezziInServizio getListaMezzi)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -67,6 +70,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _getGerarchiaToSend = getGerarchiaToSend;
             _mapperRichiesta = mapperRichiesta;
             _getSediPartenze = getSediPartenze;
+            _getListaMezzi = getListaMezzi;
         }
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
@@ -85,7 +89,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 CodiciSede = intervento.CodiciSede,
                 IdOperatore = intervento.IdUtente
             };
-            var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+
+            var listaMezziInServizio = _getListaMezzi.MapPartenzeInMezziInServizio(intervento.Richiesta, SediDaNotificare.ToArray());
+
+            //var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
             var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo));
 
             foreach (var sede in listaMezziInServizioQuery.CodiciSede)
