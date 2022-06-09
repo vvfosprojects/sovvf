@@ -41,6 +41,8 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 SediDaNotificare.AddRange(sintesi.CodSediPartenze);
 
             command.Chiamata = sintesi;
+
+            var codiceSintesiDaNotificare = sintesi.CodiceRichiesta != null ? sintesi.CodiceRichiesta : sintesi.Codice;
             //Invio la notifica alle competenze della richiesta
             foreach (var sede in SediDaNotificare.Distinct())
             {
@@ -57,8 +59,8 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                     {
                         await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new Notifica()
                         {
-                            Titolo = "Allerta Emergenza",
-                            Descrizione = $"Sono state allertate le sedi: {String.Join(',', command.CodSediAllertate)}",
+                            Titolo = "Allerta altra Sede",
+                            Descrizione = $"Sono state allertate le sedi: {String.Join(',', command.CodSediAllertate)} per l'ìntervento {codiceSintesiDaNotificare}",
                             Data = DateTime.Now
                         });
                     }
@@ -66,19 +68,19 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                     {
                         await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new Notifica()
                         {
-                            Titolo = "Allerta Emergenza",
-                            Descrizione = $"E' stata allertata la sede: {command.CodSediAllertate[0]}",
+                            Titolo = "AAllerta altra Sede",
+                            Descrizione = $"E' stata allertata la sede: {command.CodSediAllertate[0]}  per l'ìntervento {codiceSintesiDaNotificare}",
                             Data = DateTime.Now
                         });
                     }
                 }
                 else
                 {
-                    var codiceSintesi = sintesi.CodiceRichiesta != null ? sintesi.CodiceRichiesta : sintesi.Codice;
                     await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new Notifica()
                     {
                         Titolo = "Allerta Emergenza",
                         Descrizione = $"La sede {command.CodiceSede} ha allertato {String.Join(',', command.CodSediAllertate)} per l'intervento {codiceSintesi}",
+                        Tipo = TipoNotifica.AllertaEmergenza,
                         Data = DateTime.Now
                     });
                 }
