@@ -67,6 +67,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente);
 
             SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(command.Richiesta));
+            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
             Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
@@ -96,9 +97,9 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 Task.Run(() =>
                 {
                     var boxPersonaleQuery = new BoxPersonaleQuery()
-                        {
-                            CodiciSede = new string[] { sede }
-                        };
+                    {
+                        CodiciSede = new string[] { sede }
+                    };
                     var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
                 });
@@ -106,10 +107,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 Task.Run(() =>
                 {
                     var listaMezziInServizioQuery = new ListaMezziInServizioQuery
-                            {
-                                CodiciSede = new string[] { sede },
-                                IdOperatore = command.IdOperatore
-                            };
+                    {
+                        CodiciSede = new string[] { sede },
+                        IdOperatore = command.IdOperatore
+                    };
                     var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
                     var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
