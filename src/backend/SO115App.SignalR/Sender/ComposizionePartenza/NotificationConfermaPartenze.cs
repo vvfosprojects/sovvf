@@ -86,8 +86,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
 
-            var listaMezziInServizio = Task.Factory.StartNew(() => _getListaMezzi.Get(SediDaNotificare.ToArray()));
-            var result = listaMezziInServizio.Result;
+            var listaMezziInServizio = _getListaMezzi.MapPartenzeInMezziInServizio(conferma.Richiesta, SediDaNotificare.ToArray());
+            var result = listaMezziInServizio;
+
             var sintesi = Task.Factory.StartNew(() => _mapperSintesi.Map(conferma.Richiesta)).ContinueWith(sintesi =>
             {
                 sintesi.Result.Competenze = conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
