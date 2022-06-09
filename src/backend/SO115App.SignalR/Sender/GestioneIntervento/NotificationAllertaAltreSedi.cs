@@ -80,7 +80,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                     {
                         Titolo = "Allerta Emergenza",
                         Descrizione = $"La sede {command.CodiceSede} ha allertato {String.Join(',', command.CodSediAllertate)} per l'intervento {codiceSintesi}",
-                        Tipo = TipoNotifica.AllertaEmergenza,
                         Data = DateTime.Now
                     });
                 }
