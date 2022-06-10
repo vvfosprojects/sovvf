@@ -4,6 +4,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneConcorrenza
@@ -34,7 +35,9 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
 
             var SediDaNotificare = _getGerarchiaToSend.Get(command.CodComando, SediDaAllertare.ToArray());
 
-            foreach (var sede in SediDaNotificare)
+            SediDaNotificare.Add("00");
+
+            foreach (var sede in SediDaNotificare.Distinct())
             {
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyConcorrenza", command.concorrenza);
             }

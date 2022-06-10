@@ -56,7 +56,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
 
             //var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/execute");
 
-            var url = new Uri("https://gis.dipvvf.it/server/rest/services/Rank_Competenze/GPServer/RankCompetenze/execute");
+            var url = new Uri("https://gis.dipvvf.it/server/rest/services/RankCompetenze/GPServer/Rank%20Competenze/execute");
+                               
 
             var response = _getCompetenze.PostAsyncFormData(url, multipartFormDataContent).Result;
 
