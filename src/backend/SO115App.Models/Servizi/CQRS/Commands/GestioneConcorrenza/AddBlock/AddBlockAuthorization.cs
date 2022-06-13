@@ -73,6 +73,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.AddBlock
                     if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.CodComando, Costanti.GestoreChiamate))
                         abilitato = true;
 
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.CodComando, Costanti.Amministratore))
+                        abilitato = true;
+
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
