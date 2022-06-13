@@ -85,7 +85,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     }
 
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, [this.squadraComposizione.codice])) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, [this.squadraComposizione.idSquadra])) {
             if (!this.loadingMezzi) {
                 if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
                     if (!this.itemSelezionato) {
