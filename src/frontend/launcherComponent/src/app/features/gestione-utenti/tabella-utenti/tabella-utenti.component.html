@@ -67,7 +67,7 @@
                                          placement="left"
                                          [disableTooltip]="!(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])">
                                         <button class="btn btn-danger btn-sm"
-                                                [disabled]="(tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
+                                                [disabled]="utente?.ruoli?.length <= 1 || (tipoConcorrenzaEnum.EliminaRuoloUtente | checkConcorrenzaLocked: [utente.codiceFiscale])"
                                                 (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
                                             <i class="fas fa-sm fa-sm fa-trash"></i>
                                         </button>
