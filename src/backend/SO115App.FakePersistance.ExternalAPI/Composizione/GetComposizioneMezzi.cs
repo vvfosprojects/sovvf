@@ -163,18 +163,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         }).ToList()).Result;
                     }
 
-                    m.IdRichiesta = statiOperativiMezzi.FirstOrDefault(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
-
-                    Coordinate coordinateMezzo = null;
-
-                    if (m.CoordinateStrg != null)
-                    {
-                        if (m.CoordinateStrg[0] == null)
-                            coordinateMezzo = new Coordinate(m.Distaccamento.Coordinate.Latitudine, m.Distaccamento.Coordinate.Longitudine);
-                        else
-                            coordinateMezzo = new Coordinate(Convert.ToDouble(m.CoordinateStrg[0]), Convert.ToDouble(m.CoordinateStrg[1]));
-                    }
-
                     var mc = new ComposizioneMezzi()
                     {
                         Id = m.Codice,
@@ -213,6 +201,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         mc.Mezzo.Coordinate = sede?.Coordinate;
                         mc.Mezzo.CoordinateStrg = sede?.CoordinateString;
                     }
+
+                    m.IdRichiesta = statiOperativiMezzi.FirstOrDefault(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
+                    m.CoordinateStrg = m.Distaccamento?.CoordinateString;
 
                     lstMezzi.Add(mc);
                 });
