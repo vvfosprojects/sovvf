@@ -22,13 +22,6 @@ export class RichiestaForm {
     nominativo: string;
     telefono: string;
     competenze: Sede[];
-    codCompetenzaCentrale?: string;
-    codPrimaCompetenza?: string;
-    codSecondaCompetenza?: string;
-    codTerzaCompetenza?: string;
-    codPrimaCompetenzaManuale?: string;
-    codSecondaCompetenzaManuale?: string;
-    codTerzaCompetenzaManuale?: string;
     complessita: Complessita;
     istantePresaInCarico: Date;
     istantePrimaAssegnazione: Date;
@@ -85,11 +78,6 @@ export class RichiestaForm {
         this.dettaglioTipologia = null;
         this.nominativo = null;
         this.telefono = null;
-        this.competenze = null;
-        this.codCompetenzaCentrale = null;
-        this.codPrimaCompetenza = null;
-        this.codSecondaCompetenza = null;
-        this.codTerzaCompetenza = null;
         this.complessita = null;
         this.istantePresaInCarico = null;
         this.istantePrimaAssegnazione = null;

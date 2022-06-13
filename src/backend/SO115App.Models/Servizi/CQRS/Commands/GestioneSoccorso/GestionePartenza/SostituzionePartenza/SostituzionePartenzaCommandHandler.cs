@@ -58,7 +58,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 //Chiudo solo le partenze da sostituire. Le partenze non interessate dalla sostituzione non verranno lavorate
                 if (partenzeDaSostituire.Contains(partenza))
-                {
+                { 
                     richiestaOld.Partenze.ToList().Find(p => p.Partenza.PartenzaAnnullata == false
                                                             && p.Partenza.Terminata == false
                                                             && p.Partenza.Sganciata == false

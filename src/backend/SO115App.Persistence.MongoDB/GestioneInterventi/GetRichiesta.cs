@@ -114,12 +114,13 @@ namespace SO115App.Persistence.MongoDB
                 listaCodSedi.Add(sede.Codice);
             }
 
-            var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi);
+            var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi.ToHashSet());
+            var filtriSediPartenze = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSediPartenze, listaCodSedi.ToHashSet());
 
             var lstRichieste = new List<RichiestaAssistenza>();
             if (filtro.SearchKey == null || filtro.SearchKey.Length == 0)
             {
-                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate).ToList();
+                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate | filtriSediPartenze).ToList();
             }
             else
             {
@@ -153,7 +154,7 @@ namespace SO115App.Persistence.MongoDB
                 indexes.Add(indexWildcardTextSearch);
 
                 _dbContext.RichiestaAssistenzaCollection.Indexes.CreateMany(indexes);
-                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText & (filtroSediCompetenti | filtriSediAllertate)).ToList();
+                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText & (filtroSediCompetenti | filtriSediAllertate | filtriSediPartenze)).ToList();
             }
 
             if (filtro == null)
@@ -290,7 +291,7 @@ namespace SO115App.Persistence.MongoDB
                 }
             }
 
-            var listaSistesiRichieste = result.Where(richiesta => richiesta.CodUOCompetenza != null).Select(richiesta =>
+            var listaSistesiRichieste = result.Where(richiesta => richiesta.CodSOCompetente != null).Select(richiesta =>
             {
                 var rubrica = new List<EnteDTO>();
                 var sintesi = new SintesiRichiesta();
@@ -323,7 +324,7 @@ namespace SO115App.Persistence.MongoDB
             if (richiesta.CodEntiIntervenuti != null)
                 rubrica = _getRubrica.GetBylstCodici(richiesta.CodEntiIntervenuti.Select(c => c).ToArray());
 
-            if (richiesta.CodUOCompetenza != null)
+            if (richiesta.CodSOCompetente.Trim().Length > 0)
             {
                 sintesi = _mapperSintesi.Map(richiesta);
                 //sintesi.CodEntiIntervenuti = rubrica.Count > 0 ? rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false) : null;
@@ -355,26 +356,26 @@ namespace SO115App.Persistence.MongoDB
             result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
 
             //filtri squadra
-            if(filtri != null) result = result.Where(r => r.lstPartenze.SelectMany(p => p.Squadre).Any(s =>
-            {
-                bool turno = true;
-                bool distaccamento = true;
-                bool codice = true;
+            if (filtri != null) result = result.Where(r => r.lstPartenze.SelectMany(p => p.Squadre).Any(s =>
+             {
+                 bool turno = true;
+                 bool distaccamento = true;
+                 bool codice = true;
 
-                if (filtri.Turni != null && filtri.Turni.Length > 0)
-                    turno = filtri.Turni.Contains(s.Turno);
+                 if (filtri.Turni != null && filtri.Turni.Length > 0)
+                     turno = filtri.Turni.Contains(s.Turno);
 
-                if (filtri.Distaccamenti != null && filtri.Distaccamenti?.Length > 0 /*&& s.Distaccamento != null*/)
-                    distaccamento = filtri.Distaccamenti.Any(d => d.Equals(s.Distaccamento.Codice));
+                 if (filtri.Distaccamenti != null && filtri.Distaccamenti?.Length > 0 /*&& s.Distaccamento != null*/)
+                     distaccamento = filtri.Distaccamenti.Any(d => d.Equals(s.Distaccamento.Codice));
 
-                //if (s.Distaccamento == null)
-                //    distaccamento = false;
+                 //if (s.Distaccamento == null)
+                 //    distaccamento = false;
 
-                if (filtri.Squadre != null && filtri.Squadre.Length > 0)
-                    codice = filtri.Squadre.Contains(s.Codice);
+                 if (filtri.Squadre != null && filtri.Squadre.Length > 0)
+                     codice = filtri.Squadre.Contains(s.Codice);
 
-                return turno && distaccamento && codice;
-            })).ToList();
+                 return turno && distaccamento && codice;
+             })).ToList();
 
             return result;
         }

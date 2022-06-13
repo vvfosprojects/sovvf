@@ -44,7 +44,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IGetMezziInServizio _getListaMezzi;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
-
+        private readonly GetSediPartenze _getSediPartenze;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
@@ -54,6 +54,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                                           IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
                                           IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           GetGerarchiaToSend getGerarchiaToSend,
+                                          GetSediPartenze getSediPartenze,
                                           IGetMezziInServizio getListaMezzi)
         {
             _notificationHubContext = notificationHubContext;
@@ -61,6 +62,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getSediPartenze = getSediPartenze;
             _getListaMezzi = getListaMezzi;
         }
 
@@ -72,6 +74,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare.AddRange(_getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente));
 
+            SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(intervento.Richiesta));
             SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
             var listaMezziInServizio = _getListaMezzi.MapPartenzeInMezziInServizio(intervento.Richiesta, SediDaNotificare.ToArray());

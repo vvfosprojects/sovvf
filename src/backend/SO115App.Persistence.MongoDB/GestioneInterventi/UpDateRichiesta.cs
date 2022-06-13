@@ -20,7 +20,9 @@
 using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using System.Linq;
 
 namespace SO115App.Persistence.MongoDB
 {
@@ -35,6 +37,12 @@ namespace SO115App.Persistence.MongoDB
 
         public void UpDate(RichiestaAssistenza richiestaAssistenza)
         {
+            var lista = richiestaAssistenza.ListaEventi.OfType<ComposizionePartenze>().ToList();
+            var listaDaInviare = lista.FindAll(p => !p.Partenza.PartenzaAnnullata)
+                    .Select(p => p.Partenza.Mezzo.Distaccamento.Codice).ToList();
+
+            richiestaAssistenza.CodSediPartenze = listaDaInviare.FindAll(x => x != null).ToArray();
+
             var filter = Builders<RichiestaAssistenza>.Filter.Eq(s => s.Codice, richiestaAssistenza.Codice);
             _dbContext.RichiestaAssistenzaCollection.DeleteOne(filter);
 

@@ -37,12 +37,14 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente);
 
+            if (sintesi.CodSediPartenze != null)
+                SediDaNotificare.AddRange(sintesi.CodSediPartenze);
+
             command.Chiamata = sintesi;
-            //Invio la notifica alle competenze della richiesta
 
             var codiceSintesiDaNotificare = sintesi.CodiceRichiesta != null ? sintesi.CodiceRichiesta : sintesi.Codice;
-
-            foreach (var sede in SediDaNotificare)
+            //Invio la notifica alle competenze della richiesta
+            foreach (var sede in SediDaNotificare.Distinct())
             {
                 if (!sede.Equals(sintesi.CodSOCompetente))
                     await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAllertaAltreSedi", sintesi);
@@ -76,7 +78,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 {
                     await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new Notifica()
                     {
-                        Titolo = "Allerta altra Sede",
+                        Titolo = "Allerta Emergenza",
                         Descrizione = $"La sede {command.CodiceSede} ha allertato {String.Join(',', command.CodSediAllertate)} per l'intervento {codiceSintesiDaNotificare}",
                         Data = DateTime.Now
                     });
