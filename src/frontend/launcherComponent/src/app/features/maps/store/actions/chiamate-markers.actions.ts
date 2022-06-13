@@ -14,14 +14,14 @@ export class SetChiamateMarkers {
 export class SetChiamataMarker {
     static readonly type = '[Chiamate Marker] Set Chiamata Marker API';
 
-    constructor(public chiamataMarker: ChiamataMarker, public codCompetenze: string[]) {
+    constructor(public chiamataMarker: ChiamataMarker, public codCompetenze?: string[]) {
     }
 }
 
 export class UpdateChiamataMarker {
     static readonly type = '[Chiamate Marker] Update Chiamata Marker API';
 
-    constructor(public chiamataMarker: ChiamataMarker, public codCompetenze: string[]) {
+    constructor(public chiamataMarker: ChiamataMarker, public codCompetenze?: string[]) {
     }
 }
 

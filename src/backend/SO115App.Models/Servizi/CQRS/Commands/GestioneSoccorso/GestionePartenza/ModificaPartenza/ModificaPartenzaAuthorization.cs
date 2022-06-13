@@ -38,11 +38,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         yield return new AuthorizationResult(Costanti.MezzoErroreCambioStatoRichiestaChiusa);
 
                     bool abilitato = false;
-                    foreach (var competenza in command.Richiesta.CodUOCompetenza)
-                    {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                            abilitato = true;
-                    }
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                        abilitato = true;
+
+
+                    if (command.Richiesta.CodUOCompetenza!=null)
+                        foreach (var competenza in command.Richiesta.CodUOCompetenza)
+                        {
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                                abilitato = true;
+                        }
 
                     if (command.Richiesta.CodSOAllertate != null)
                     {

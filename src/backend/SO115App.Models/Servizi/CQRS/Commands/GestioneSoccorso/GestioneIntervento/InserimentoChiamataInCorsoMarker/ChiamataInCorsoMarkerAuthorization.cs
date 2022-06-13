@@ -63,7 +63,7 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
         {
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
-            var Competenze = command.Competenze;
+            var Competenze = command.Competenze != null ? command.Competenze : new string[1] { command.AddChiamataInCorso.CodiceSedeOperatore };
 
             if (_currentUser.Identity.IsAuthenticated)
             {

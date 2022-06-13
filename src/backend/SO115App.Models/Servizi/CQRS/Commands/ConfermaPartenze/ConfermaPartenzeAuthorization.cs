@@ -103,11 +103,16 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                     #endregion Concorrenza
 
                     bool abilitato = false;
-                    foreach (var competenza in command.Richiesta.CodUOCompetenza)
-                    {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, competenza, Costanti.GestoreRichieste))
-                            abilitato = true;
-                    }
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                        abilitato = true;
+
+                    if(command.Richiesta.CodUOCompetenza!=null)
+                        foreach (var competenza in command.Richiesta.CodUOCompetenza)
+                        {
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, competenza, Costanti.GestoreRichieste))
+                                abilitato = true;
+                        }
 
                     if (command.Richiesta.CodSOAllertate != null)
                     {

@@ -74,6 +74,9 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             var SediDaNotificare = new List<string>();
             SediDaNotificare = _getGerarchiaToSend.Get(Richiesta.CodSOCompetente);
 
+            if (Richiesta.CodSediPartenze != null)
+                SediDaNotificare.AddRange(Richiesta.CodSediPartenze);
+
             const bool notificaChangeState = true;
 
             //AGGIORNO LE SEDI PRINCIPALI

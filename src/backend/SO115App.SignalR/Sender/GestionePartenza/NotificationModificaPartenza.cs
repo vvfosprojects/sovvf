@@ -19,6 +19,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
+        private readonly GetSediPartenze _getSediPartenze;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
@@ -30,10 +31,12 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
-            IMapperRichiestaSuSintesi mapperSintesi)
+            IMapperRichiestaSuSintesi mapperSintesi,
+            GetSediPartenze getSediPartenze)
         {
             _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
             _mapperSintesi = mapperSintesi;
+            _getSediPartenze = getSediPartenze;
             _notificationHubContext = notificationHubContext;
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
@@ -48,6 +51,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente);
 
+            SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(command.Richiesta));
+
             var confermaPartenza = new ConfermaPartenze()
             {
                 CodiceSede = command.CodSede.First(),
@@ -58,7 +63,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 richiesta = command.Richiesta
             };
 
-            Parallel.ForEach(SediDaNotificare, sede =>
+            Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
                 var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery() { CodiciSede = new string[] { sede } }).BoxRichieste;
                 var boxMezzi = _boxMezziHandler.Handle(new BoxMezziQuery() { CodiciSede = new string[] { sede } }).BoxMezzi;
