@@ -141,7 +141,7 @@ export class ComposizioneVeloceState {
                 console.log('select squadra preaccoppiato', sC.codice);
                 const dataSquadra = {
                     type: TipoConcorrenzaEnum.Squadra,
-                    value: sC.codice
+                    value: sC.idSquadra
                 } as AddConcorrenzaDtoInterface;
                 dataSquadraList.push(dataSquadra);
             });
@@ -166,8 +166,8 @@ export class ComposizioneVeloceState {
     unselectPreAccoppiatoComposizione({ setState, dispatch }: StateContext<ComposizioneVeloceStateModel>, action: UnselectPreAccoppiatoComposizione): void {
         const preAccoppiato = action.preAcc;
         if (preAccoppiato) {
-            const codiciSquadre = preAccoppiato.squadre.map((sC: SquadraComposizione) => sC.codice);
-            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+            const idSquadre = preAccoppiato.squadre.map((sC: SquadraComposizione) => sC.idSquadra);
+            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));
             console.log('remove mezzo preaccoppiato', preAccoppiato.codiceMezzo);
             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [preAccoppiato.codiceMezzo]));
 

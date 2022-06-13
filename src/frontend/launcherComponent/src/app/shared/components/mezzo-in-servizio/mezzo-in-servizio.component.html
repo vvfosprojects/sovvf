@@ -114,10 +114,21 @@
     <!-- Select Button -->
     <ng-container *ngIf="showSelectButton">
         <div class="col-1">
-            <button class="btn btn-block btn-light btn-no-hover border-secondary"
-                    (click)="onSelect(mezzoInServizio)">
-                {{ 'info' | uppercase }}
-            </button>
+            <div class="d-inline-block"
+                 [ngbTooltip]="tooltipLockedConcorrenza"
+                 [disableTooltip]="!(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice])">
+                <button class="btn btn-block btn-light btn-no-hover border-secondary"
+                        [class.cursor-not-allowed]="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice]"
+                        [disabled]="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice]"
+                        (click)="onSelect(mezzoInServizio)">
+                    {{ 'info' | uppercase }}
+                </button>
+            </div>
         </div>
     </ng-container>
 </div>
+
+<ng-template #tooltipLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice] }}
+</ng-template>

@@ -20,5 +20,10 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
         {
             return _dbContext.ConcorrenzaCollection.Find(c => c.Value.Equals(value)).FirstOrDefault();
         }
+
+        public Concorrenza GetById(string id)
+        {
+            return _dbContext.ConcorrenzaCollection.Find(c => c.Id.Equals(id)).FirstOrDefault();
+        }
     }
 }

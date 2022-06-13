@@ -114,18 +114,9 @@
             (click)="modal.close('ko')">
         {{ 'annulla' | uppercase }}
     </button>
-    <div class="d-inline-block"
-         [ngbTooltip]="tooltipLockedConcorrenza"
-         [disableTooltip]="!(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [codMezzoDaSganciare])">
-        <button class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
-                [disabled]="(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [codMezzoDaSganciare]) || mezzoNotFound"
-                (click)="modal.close('ok')">
-            {{ 'conferma sganciamento' | uppercase }}
-        </button>
-    </div>
+    <button class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+            [disabled]="mezzoNotFound"
+            (click)="modal.close('ok')">
+        {{ 'conferma sganciamento' | uppercase }}
+    </button>
 </div>
-
-<ng-template #tooltipLockedConcorrenza>
-    <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [codMezzoDaSganciare] }}
-</ng-template>

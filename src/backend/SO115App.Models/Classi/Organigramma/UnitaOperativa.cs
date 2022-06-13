@@ -66,7 +66,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </summary>
         public string Nome
         {
-            get => _nome/*.Replace("Comando VV.F.", "Centrale").Replace("COMANDO VV.F.", "CENTRALE")*/;
+            get => _nome.ToUpper().Replace("DIPARTIMENTO C.N.VV.F", "CON").Trim('.');
             set => _nome = value;
         }
 

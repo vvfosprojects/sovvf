@@ -31,6 +31,7 @@ import { LockedConcorrenzaService } from '../../../core/service/concorrenza-serv
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
+import { Partenza } from '../../model/partenza.model';
 
 @Component({
     selector: 'app-azioni-sintesi-richiesta-modal',
@@ -88,6 +89,15 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    getCodMezziByPartenzeAttiveRichiesta(): string[] {
+        const partenzeAttiveRichiesta = this.richiesta.partenze?.filter((p: Partenza) => !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata);
+        let codMezzi = [];
+        if (partenzeAttiveRichiesta) {
+            codMezzi = partenzeAttiveRichiesta.map((p: Partenza) => p.partenza.mezzo.codice);
+        }
+        return codMezzi;
     }
 
     onSganciamentoMezzo(richiesta: SintesiRichiesta): void {

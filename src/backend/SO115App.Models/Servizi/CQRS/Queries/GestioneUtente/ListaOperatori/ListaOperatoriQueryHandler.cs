@@ -109,13 +109,13 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             //ORDINO PER CON PERCHE' IL CON HA IL BREAK NEL CICLO, QUINDI VIENE EFFETTUATO UN SINGOLO CICLO E QUINDI UN SINGOLO INSERIMENTO (TUTTE LE SEDI)
             var filtriSedi = query.Utente.Ruoli.Select(r => r.CodSede).Distinct().OrderByDescending(s => s == "00").ThenBy(s => s);
 
-            foreach (var filtroSede in filtriSedi)
+            foreach (var filtroSede in listaCodiciSedeRuoloAdmin)
             {
                 var ricorsivo = query.Utente.Ruoli.FirstOrDefault(s => s.CodSede.Equals(filtroSede) && s.Descrizione.Equals("Amministratore"))?.Ricorsivo;
 
                 if (filtroSede.Contains(".1000")) // COMANDO
                 {
-                    if (ricorsivo!= null && ricorsivo.Value)
+                    if (ricorsivo != null && ricorsivo.Value)
                     {
                         var lst = lstSediAll.Result
                             .Where(p => p.Codice.Contains($"{filtroSede.Split('.')[0]}.") && !listaSediPresenti.Any(sede => sede.CodSede.Equals(p.Codice)))
@@ -151,7 +151,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 else // DIREZIONE REGIONALE
                 {
                     var lst = lstSediAll.Result
-                            .Where(s =>s.Codice.Equals(filtroSede) && !s.Codice.Contains('.') && !s.Codice.Contains("00"))
+                            .Where(s => s.Codice.Equals(filtroSede) && !s.Codice.Contains('.') && !s.Codice.Contains("00"))
                             .Select(s => new Role("", s.Codice) { DescSede = s.Descrizione })
                             .ToList();
 

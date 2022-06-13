@@ -56,21 +56,28 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             //Chiusura Vecchie Partenze
             foreach (var partenza in partenzeAperteIntervento)
             {
-                richiestaOld.Partenze.ToList().Find(p => p.Partenza.PartenzaAnnullata == false
+                //Chiudo solo le partenze da sostituire. Le partenze non interessate dalla sostituzione non verranno lavorate
+                if (partenzeDaSostituire.Contains(partenza))
+                {
+                    richiestaOld.Partenze.ToList().Find(p => p.Partenza.PartenzaAnnullata == false
                                                             && p.Partenza.Terminata == false
                                                             && p.Partenza.Sganciata == false
                                                             && p.CodiceMezzo.Equals(partenza.CodiceMezzo)).Partenza.Terminata = true;
 
-                partenza.Partenza.Terminata = true;
-                AggiornaStatoMezzoCommand statoMezzoPartenza = new AggiornaStatoMezzoCommand()
-                {
-                    CodiciSede = new string[] { partenza.Partenza.Mezzo.Appartenenza },
-                    IdMezzo = partenza.CodiceMezzo,
-                    Richiesta = richiestaOld,
-                    StatoMezzo = Costanti.MezzoRientrato
-                };
 
-                _upDatePartenza.Update(statoMezzoPartenza);
+
+                    partenza.Partenza.Terminata = true;
+
+                    AggiornaStatoMezzoCommand statoMezzoPartenza = new AggiornaStatoMezzoCommand()
+                    {
+                        CodiciSede = new string[] { partenza.Partenza.Mezzo.Appartenenza },
+                        IdMezzo = partenza.CodiceMezzo,
+                        Richiesta = richiestaOld,
+                        StatoMezzo = Costanti.MezzoRientrato
+                    };
+
+                    _upDatePartenza.Update(statoMezzoPartenza);
+                }
             };
 
             //FASE 4
@@ -100,7 +107,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 //FASE 5
                 //Creazione Note e Evento SostituzionePartenzaFineTurno
-                string note = $"Nel mezzo {sostituzione.CodMezzo} ora si trovano le squadre {String.Join(",", ElencoSquadre.Select(s => s.Nome))}";
+                string note = $"Nel mezzo {sostituzione.CodMezzo} ora si trovano le squadre {String.Join(",", ElencoSquadre.Select(s => s.Codice))}";
                 SostituzionePartenzaFineTurno sos = new SostituzionePartenzaFineTurno(richiestaOld, sostituzione.CodMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, note);
 
                 _upDatePartenza.Update(AggStatoMezzo);
@@ -120,7 +127,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             List<Squadra> NuoveSquadreNellaPartenza = new List<Squadra>();
             var elencoVecchieSquadre = partenzeDaSostiturie.Find(p => p.CodiceMezzo.Equals(CodMezzoDaElaborare)).Partenza.Squadre;
             var elencoNuoveSquadre = command.sostituzione.Sostituzioni.Find(s => s.CodMezzo.Equals(CodMezzoDaElaborare)).CodSquadre;
-            var elencoNuoveSquadreDaInserireNelMezzo = partenzeDaSostiturie.Select(p => p.Partenza.Squadre).Where(s => s.Any(s => elencoNuoveSquadre.Any(ens => ens.Contains(s.Nome))));
+            var elencoNuoveSquadreDaInserireNelMezzo = partenzeDaSostiturie.Select(p => p.Partenza.Squadre).Where(s => s.Any(s => elencoNuoveSquadre.Any(ens => ens.Contains(s.Codice))));
 
             foreach (var listaSquadre in elencoNuoveSquadreDaInserireNelMezzo)
             {
@@ -136,7 +143,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 elencoSquadrePresentiNelleSostituzioni.AddRange(sostituzione.CodSquadre);
 
             //Verifico se ci sono squadre nella vecchia partenza non incluse nella sostituzione
-            foreach (var squadra in elencoVecchieSquadre.Where(s => !elencoSquadrePresentiNelleSostituzioni.Contains(s.Nome)))
+            foreach (var squadra in elencoVecchieSquadre.Where(s => !elencoSquadrePresentiNelleSostituzioni.Contains(s.Codice)))
                 NuoveSquadreNellaPartenza.Add(squadra);
 
             return NuoveSquadreNellaPartenza;

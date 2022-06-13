@@ -20,21 +20,13 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
-using SO115App.Models.Classi.Gac;
-using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
-using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaStatoPartenza
 {
@@ -43,32 +35,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private readonly IGetStatoMezzi _getStatoMezzi;
 
-        private readonly ISetStatoOperativoMezzo _setStatoMezzo;
-        private readonly ISetStatoSquadra _setStatoSquadra;
-
         private readonly IMapperRichiestaSuSintesi _mapper;
         private readonly IGetRichiesta _getRichiesta;
 
-        private readonly ISendSTATRIItem _statri;
-        private readonly ICheckCongruitaPartenze _check;
-
-        private readonly IGetTipologieByCodice _getTipologie;
-        private readonly IModificaInterventoChiuso _modificaGAC;
-
-        public AnnullaStatoPartenzaCommandHandler(IGetRichiesta getRichiesta, IGetTipologieByCodice getTipologie, IUpdateStatoPartenze updateStatoPartenze, IMapperRichiestaSuSintesi mapper,
-                                             IGetStatoMezzi getStatoMezzi, ISendSTATRIItem statri, ICheckCongruitaPartenze check,
-                                             IModificaInterventoChiuso modificaGAC, ISetStatoOperativoMezzo setStatoMezzo, ISetStatoSquadra setStatoSquadra)
+        public AnnullaStatoPartenzaCommandHandler(IGetRichiesta getRichiesta, IUpdateStatoPartenze updateStatoPartenze, IMapperRichiestaSuSintesi mapper,
+                                             IGetStatoMezzi getStatoMezzi)
         {
             _getRichiesta = getRichiesta;
-            _setStatoMezzo = setStatoMezzo;
-            _setStatoSquadra = setStatoSquadra;
             _updateStatoPartenze = updateStatoPartenze;
             _getStatoMezzi = getStatoMezzi;
-            _statri = statri;
-            _check = check;
             _mapper = mapper;
-            _getTipologie = getTipologie;
-            _modificaGAC = modificaGAC;
         }
 
         public void Handle(AnnullaStatoPartenzaCommand command)
@@ -87,7 +63,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 string statoPrecedente = null;
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
-                    .Where(e => e is not AnnullamentoStatoPartenza && e is not Revoca)
+                    .Where(e => e is not AnnullamentoStatoPartenza && e is not Revoca && e is not AggiornamentoOrarioStato)
                     .Where(e => e.CodicePartenza.Equals(partenza.CodicePartenza))
                     .Where(e => e.DataOraInserimento < ultimoMovimento.DataOraInserimento)
                     .Last();
@@ -120,49 +96,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 partenza.Partenza.Mezzo.Stato = statoPrecedente;
 
                 command.Richiesta.DeleteEvento(ultimoMovimento);
-
-                #region Chiamata GAC
-
-                var tipologia = _getTipologie.Get(new List<string> { command.Richiesta.Tipologie.Select(t => t.Codice).First() }).First();
-
-                //SEGNALO LA MODIFICA A GAC
-                Task.Run(() =>
-                {
-                    var movimento = new ModificaMovimentoGAC()
-                    {
-                        targa = command.TargaMezzo.Split('.')[1],
-                        autistaRientro = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
-                        autistaUscita = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
-                        dataIntervento = command.Richiesta.dataOraInserimento,
-                        dataRientro = adesso,
-                        dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
-                        idPartenza = command.CodicePartenza,
-                        latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                        longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                        numeroIntervento = command.Richiesta.CodRichiesta,
-                        tipoMezzo = partenza.Partenza.Mezzo.Codice.Split('.')[0],
-                        localita = "",
-                        comune = new ComuneGAC()
-                        {
-                            codice = "",
-                            descrizione = command.Richiesta.Localita.Citta
-                        },
-                        provincia = new ProvinciaGAC()
-                        {
-                            codice = "",
-                            descrizione = command.Richiesta.Localita.Provincia
-                        },
-                        tipoUscita = new TipoUscita()
-                        {
-                            codice = tipologia.Codice,
-                            descrizione = tipologia.Descrizione
-                        }
-                    };
-
-                    _modificaGAC.Send(movimento);
-                });
-
-                #endregion Chiamata GAC
 
                 //AGGIORNO STATO MEZZO E RICHIESTA
                 var commandStatoMezzo = new AggiornaStatoMezzoCommand()

@@ -50,11 +50,12 @@ export class ConcorrenzaState {
     @Action(AddConcorrenza)
     addConcorrenza({ patchState, dispatch }: StateContext<ConcorrenzaStateModel>, action: AddConcorrenza): void {
         this.concorrenzaService.add(action.data).subscribe(() => {
+            dispatch(new GetConcorrenza());
         });
     }
 
     @Action(DeleteConcorrenza)
-    deleteConcorrenza({ getState }: StateContext<ConcorrenzaStateModel>, action: DeleteConcorrenza): void {
+    deleteConcorrenza({ getState, dispatch }: StateContext<ConcorrenzaStateModel>, action: DeleteConcorrenza): void {
         const state = getState();
         const type = action.type;
         const concorrenza = state.concorrenza;
@@ -79,6 +80,7 @@ export class ConcorrenzaState {
         }) as DeleteConcorrenzaDtoInterface[];
         if (concorrenzaToDelete) {
             this.concorrenzaService.delete(concorrenzaToDeleteIds).subscribe(() => {
+                dispatch(new GetConcorrenza());
             });
         }
     }

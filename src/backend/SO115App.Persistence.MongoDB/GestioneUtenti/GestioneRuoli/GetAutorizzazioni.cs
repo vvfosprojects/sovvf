@@ -62,25 +62,25 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
             {
                 var ricorsivo = listaPin.FirstOrDefault(x => x.Codice.Equals(unita.Codice)).Ricorsivo;
 
-                if(ricorsivo)
+                if (ricorsivo)
                 {
                     if (unita?.Codice?.Equals(codSedeDaVerificare) ?? false)
                     {
                         return true;
                     }
-                    else                    
+                    else
                         if (unita.Figli != null)
-                        {
-                            if (unita.Figli.ToList().FindAll(x => x.Codice.Equals(codSedeDaVerificare)).Count > 0)
-                                return true;
+                    {
+                        if (unita.Figli.ToList().FindAll(x => x.Codice.Equals(codSedeDaVerificare)).Count > 0)
+                            return true;
 
-                            if (unita.Figli.ToList().FindAll(x => (bool)(x.Figli?.Any(c=>c.Codice.Equals(codSedeDaVerificare)))).Count > 0)
-                                return true;
-                        }
-                    
+                        if (unita.Figli.ToList().FindAll(x => (bool)(x.Figli?.Any(c => c.Codice.Equals(codSedeDaVerificare)))).Count > 0)
+                            return true;
+
+                        if (unita.Figli.ToList().FindAll(x => (bool)(x.Figli?.Any(c => (bool)c.Figli?.Any(f => f.Codice.Equals(codSedeDaVerificare))))).Count > 0)
+                            return true;
+                    }
                 }
-
-
             }
             return false;
         }

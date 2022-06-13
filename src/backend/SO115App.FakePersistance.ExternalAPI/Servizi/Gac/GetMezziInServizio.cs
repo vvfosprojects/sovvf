@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Marker;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Classi.Utility;
@@ -69,7 +70,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var listaMezzoInServizio = new ConcurrentBag<MezzoInServizio>();
 
             //Parallel.ForEach(mezzi, mezzo =>
-            foreach(var mezzo in mezzi)
+            foreach (var mezzo in mezzi)
             {
                 var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
                 mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
@@ -105,6 +106,44 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
                 listaMezzoInServizio.Add(mezzoInServizio);
             };
+
+            var listaFiltrata = listaMezzoInServizio.Where(x => x != null);
+
+            return listaFiltrata
+                .OrderBy(c => c.Mezzo.Mezzo.Stato == Costanti.MezzoInSede).ToList();
+        }
+
+        public List<MezzoInServizio> MapPartenzeInMezziInServizio(RichiestaAssistenza richiestaAssistenza, string[] CodiciSede)
+        {
+            var listaMezzoInServizio = new ConcurrentBag<MezzoInServizio>();
+
+            var Partenze = richiestaAssistenza.Partenze;
+            var statoMezzi = _getStatoMezzi.Get(CodiciSede);
+
+            foreach (var partenza in Partenze)
+            {
+                var mezzo = partenza.Partenza.Mezzo;
+                var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
+                mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
+                mezzo.IdRichiesta = statoOperativoMezzi?.CodiceRichiesta;
+                var mezzoMarker = new MezzoMarker()
+                {
+                    Mezzo = mezzo,
+                    InfoRichiesta = new InfoRichiesta()
+                    {
+                        CodiceRichiesta = richiestaAssistenza.CodRichiesta,
+                        Indirizzo = richiestaAssistenza.Localita.Indirizzo,
+                        SchedaContatto = richiestaAssistenza.CodNue
+                    }
+                };
+                var mezzoInServizio = new MezzoInServizio()
+                {
+                    Mezzo = mezzoMarker,
+                    Squadre = partenza.Partenza.Squadre,
+                };
+
+                listaMezzoInServizio.Add(mezzoInServizio);
+            }
 
             var listaFiltrata = listaMezzoInServizio.Where(x => x != null);
 
