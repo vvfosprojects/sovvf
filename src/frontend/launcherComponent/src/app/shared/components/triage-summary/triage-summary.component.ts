@@ -12,7 +12,8 @@ import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/
 import { PosInterface } from '../../interface/pos.interface';
 import { HttpEventType } from '@angular/common/http';
 import { PosService } from '../../../core/service/pos-service/pos.service';
-import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { VisualizzaDocumentoModalComponent } from '../../modal/visualizza-documento-modal/visualizza-documento-modal.component';
 
 @Component({
     selector: 'app-triage-summary',
@@ -52,13 +53,14 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
         noteNue: false,
         interventiInProssimita: false,
         interventiStessaVia: false,
-        interventiChiusiStessoIndirizzo: false,
+        interventiChiusiStessoIndirizzo: false
     };
 
     private subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
-                private posService: PosService) {
+                private posService: PosService,
+                private modalService: NgbModal) {
     }
 
     ngOnInit(): void {
@@ -135,7 +137,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
         this.posService.getPosById(pos.id).subscribe((data: any) => {
             switch (data.type) {
                 case HttpEventType.DownloadProgress:
-                    console.error('Errore nel download del file (' + pos.fileName + ')');
+                    console.warn('Download del file (' + pos.fileName + ')');
                     break;
                 case HttpEventType.Response:
                     const downloadedFile = new Blob([data.body], { type: data.body.type });
@@ -153,23 +155,28 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     onViewPos(pos: PosInterface): void {
-        this.posService.getPosById(pos.id).subscribe((data: any) => {
-            switch (data.type) {
-                case HttpEventType.DownloadProgress:
-                    console.error('Errore nel download del file (' + pos.fileName + ')');
-                    break;
-                case HttpEventType.Response:
-                    const downloadedFile = new Blob([data.body], { type: data.body.type });
-                    const a = document.createElement('a');
-                    a.setAttribute('style', 'display:none;');
-                    document.body.appendChild(a);
-                    a.href = URL.createObjectURL(downloadedFile);
-                    a.target = '_blank';
-                    a.click();
-                    document.body.removeChild(a);
-                    break;
-            }
-        }, () => console.log('Errore visualizzazione POS'));
+        const fileNameSplit = pos.fileName.split('.');
+        if (fileNameSplit[fileNameSplit.length - 1] === 'pdf') {
+            this.posService.getPosById(pos.id).subscribe((data: any) => {
+                switch (data.type) {
+                    case HttpEventType.DownloadProgress:
+                        console.warn('Download del file (' + pos.fileName + ')');
+                        break;
+                    case HttpEventType.Response:
+                        const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
+                            windowClass: 'xxlModal modal-holder',
+                            backdropClass: 'light-blue-backdrop',
+                            centered: true
+                        });
+                        const downloadedFile = new Blob([data.body], { type: data.body.type });
+                        modalVisualizzaPdf.componentInstance.titolo = pos?.descrizionePos?.toLocaleUpperCase();
+                        modalVisualizzaPdf.componentInstance.blob = downloadedFile;
+                        break;
+                }
+            }, () => console.log('Errore visualizzazione POS'));
+        } else {
+            this.onDownloadPos(pos);
+        }
     }
 
     onShowInfoAggiuntive(event: NgbPanelChangeEvent): void {
