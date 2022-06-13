@@ -384,12 +384,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public ESRI Esri_Param { get; set; }
 
         /// <summary>
-        ///   Questo parametro viene usato per il calcolo della distanza tra un intervento ed un altro
-        ///   GetInterventiInProssimita.cs
+        ///   Questo parametro viene usato per il calcolo della distanza tra un intervento ed un
+        ///   altro GetInterventiInProssimita.cs
         /// </summary>
         public double Distance { get; set; }
 
         public string NoteNue { get; set; }
 
+        /// <summary>
+        ///   Lista delle Competenze in base alle sedi delle partenze presenti
+        /// </summary>
+        public string[] CodSediPartenze { get; set; }
     }
 }

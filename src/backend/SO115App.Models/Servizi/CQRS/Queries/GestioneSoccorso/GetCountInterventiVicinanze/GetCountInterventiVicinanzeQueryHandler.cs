@@ -25,16 +25,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
 
         public GetCountInterventiVicinanzeResult Handle(GetCountInterventiVicinanzeQuery query)
         {
-            var competenze = query.Competenze;
+            var competenze = query.Competenze != null ? query.Competenze : query.CodiciSede;
 
             var lstPinNodo = competenze.Select(c => new PinNodo(c, true)).ToHashSet();
 
             var interventiInProssimita = _getInterventiInProssimita.Get(query.Coordinate, lstPinNodo);
-
-            //var result = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
-            //{
-            //    UnitaOperative = lstPinNodo
-            //});
 
             var resultStessaVia = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
             {

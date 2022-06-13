@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -25,7 +25,13 @@ import { AppState } from '../../store/states/app/app.state';
     templateUrl: './filterbar-composizione.component.html',
     styleUrls: ['./filterbar-composizione.component.css']
 })
-export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnInit {
+export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
+
+    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    @Select(ComposizionePartenzaState.loadingMezzi) loadingMezzi$: Observable<boolean>;
+    @Select(ComposizionePartenzaState.loadingSquadre) loadingSquadre$: Observable<boolean>;
 
     @Input() filtri: ListaTipologicheMezzi;
     @Input() disableComposizioneMode: boolean;
@@ -38,12 +44,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     @Input() loadingSquadre: boolean;
     @Input() loadingMezzi: boolean;
     @Input() triageSummary: TriageSummary[];
-
-    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
-    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
-    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
-    @Select(ComposizionePartenzaState.loadingMezzi) loadingMezzi$: Observable<boolean>;
-    @Select(ComposizionePartenzaState.loadingSquadre) loadingSquadre$: Observable<boolean>;
 
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
@@ -63,9 +63,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         this.getViewState();
     }
 
-    ngOnInit(): void {
-    }
-
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.triageSummary?.currentValue && !changes?.triageSummary?.previousValue && !changes?.generiMezzoSelezionato?.currentValue?.length) {
             this.setGenereMezzoTriage();
@@ -75,7 +72,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             this.checkDistaccamenti();
         }
 
-        if (changes?.competenze?.currentValue && changes?.filtri?.currentValue) {
+        if (((changes?.competenze?.currentValue && changes?.competenze?.currentValue !== []) || changes?.competenze?.currentValue === []) && changes?.filtri?.currentValue) {
             this.setDistaccamentiDefault();
             this.checkDistaccamenti();
         }
@@ -106,7 +103,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         this.distaccamentiSelezionati = [];
         const distaccamentiDefault = [];
 
-        if (this.competenze) {
+        if (this.competenze?.length) {
             const vistaSedi = this.store.selectSnapshot(AppState.vistaSedi);
             const sedeSelezionata = vistaSedi[0];
             if (sedeSelezionata.indexOf('.') !== -1) {
@@ -123,6 +120,8 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             } else {
                 this.addFiltro([], 'codiceDistaccamento');
             }
+        } else {
+            this.addFiltro([], 'codiceDistaccamento');
         }
     }
 

@@ -95,7 +95,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var counterCodaChiamate = new CounterNotifica()
             {
-                codDistaccamento = command.sintesi.Competenze[0].Codice,
+                codDistaccamento = command.sintesi.Competenze != null && command.sintesi.Competenze.Count > 0 ? command.sintesi.Competenze[0].Codice : command.sintesi.CodSOCompetente,
                 count = 1
             };
 

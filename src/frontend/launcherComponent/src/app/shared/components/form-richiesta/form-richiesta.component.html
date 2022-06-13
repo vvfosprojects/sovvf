@@ -213,71 +213,20 @@
                             </app-competenza>
                         </div>
                     </ng-template>
-                    <!-- INPUT COMPETENZE -->
-                    <ng-template
-                            [ngIf]="!loadingCompetenze && competenze?.length === 0 && !modifica && !detectCompetenzeFuoriComando()">
-                        <div class="form-group d-none">
-                            <label for="codCompetenzaCentrale">Competenza Centrale</label>
-                            <input id="codCompetenzaCentrale"
-                                   formControlName="codCompetenzaCentrale">
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="competenza_1"
-                                   class="d-none">Competenza 1</label>
-                            <ng-select id="competenza_1"
-                                       [items]="distaccamentiFiltered"
-                                       bindLabel="descDistaccamento"
-                                       bindValue="id"
-                                       placeholder="Seleziona 1ᵃ Competenza"
-                                       formControlName="codPrimaCompetenzaManuale"
-                                       [searchable]="!f.codPrimaCompetenzaManuale.value"
-                                       [notFoundText]="'Nessun risultato'"
-                                       (ngModelChange)="onSelectCompetenza(1, $event)">
-                            </ng-select>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="competenza_2"
-                                   class="d-none">Competenza 2</label>
-                            <ng-select id="competenza_2"
-                                       [items]="distaccamentiFiltered"
-                                       bindLabel="descDistaccamento"
-                                       bindValue="id"
-                                       placeholder="Seleziona 2ᵃ Competenza"
-                                       formControlName="codSecondaCompetenzaManuale"
-                                       [searchable]="!f.codSecondaCompetenzaManuale.value"
-                                       [notFoundText]="'Nessun risultato'"
-                                       (ngModelChange)="onSelectCompetenza(2, $event)">
-                            </ng-select>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="competenza_3"
-                                   class="d-none">Competenza 3</label>
-                            <ng-select id="competenza_3"
-                                       [items]="distaccamentiFiltered"
-                                       bindLabel="descDistaccamento"
-                                       bindValue="id"
-                                       placeholder="Seleziona 3ᵃ Competenza"
-                                       formControlName="codTerzaCompetenzaManuale"
-                                       [searchable]="!f.codTerzaCompetenzaManuale.value"
-                                       [notFoundText]="'Nessun risultato'"
-                                       (ngModelChange)="onSelectCompetenza(3, $event)">
-                            </ng-select>
-                        </div>
-                    </ng-template>
                     <!-- COMPETENZE RICHIESTA -->
                     <ng-template
-                            [ngIf]="!loadingCompetenze && !competenze?.length && richiestaModifica?.competenze?.length">
+                            [ngIf]="!loadingCompetenze && (!indirizzoModificato && richiestaModifica?.competenze?.length)">
                         <div class="font-xxlarge">
                             <app-competenza *ngFor="let c of richiestaModifica?.competenze; let i = index"
                                             [competenza]="c" [i]="i">
                             </app-competenza>
                         </div>
                     </ng-template>
-                    <!-- COMPETENZE ALTRO COMANDO -->
-                    <ng-container *ngIf="!loadingCompetenze && detectCompetenzeFuoriComando(); else nascondiTesto">
-                        <h6 class="text-danger font-weight-bold mt-2 mb-0">Competenza di altro comando</h6>
+                    <!-- COMPETENZE NON PRESENTI -->
+                    <ng-container
+                            *ngIf="f?.provincia?.value && !loadingCompetenze && !competenze?.length && (indirizzoModificato || (!indirizzoModificato && !richiestaModifica?.competenze?.length))">
+                        <h5 class="text-danger mt-2 mb-0">Competenze non presenti</h5>
                     </ng-container>
-                    <ng-template #nascondiTesto></ng-template>
                 </div>
             </div>
             <!-- RICHIEDENTE -->
@@ -575,16 +524,17 @@
                  [class.py-3]="apertoFromMappa">
                 <div class="row-creazione">
                     <ng-template [ngIf]="!modifica">
-                        <button class="btn btn-primary btn-no-hover btn-xlarge" style="width: 25%"
-                                [disabled]="(!competenze?.length && (!f.codPrimaCompetenzaManuale.value && !f.codSecondaCompetenzaManuale.value && !f.codTerzaCompetenzaManuale.value && !f.codCompetenzaCentrale.value)) || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || disabledInviaPartenza || formIsInvalid()"
-                                [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
+                        <button class="btn btn-primary btn-no-hover btn-xlarge"
+                                [class.cursor-not-allowed]="disabledInviaPartenza"
+                                style="width: 25%"
+                                [disabled]="disabledInviaPartenza || formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                 ngbTooltip="Invia Partenza"
                                 placement="top">
                             Conferma e Invia Partenza
                         </button>
                         <button class="btn btn-danger btn-no-hover btn-xlarge btn-creazione"
-                                [disabled]="(!competenze?.length && (!f.codPrimaCompetenzaManuale.value && !f.codSecondaCompetenzaManuale.value && !f.codTerzaCompetenzaManuale.value && !f.codCompetenzaCentrale.value)) || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
+                                [disabled]="formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)"
                                 ngbTooltip="Metti In Coda"
                                 placement="top">
@@ -599,7 +549,7 @@
                         <ng-container *ngIf="!apertoFromMappa">
                             <button class="btn btn-outline-secondary btn-no-hover btn-xlarge btn-creazione"
                                     type="button"
-                                    [disabled]="(!competenze?.length && (!f.codPrimaCompetenzaManuale.value && !f.codSecondaCompetenzaManuale.value && !f.codTerzaCompetenzaManuale.value && !f.codCompetenzaCentrale.value)) || (!competenze?.length && (!f.codPrimaCompetenza.value && !f.codSecondaCompetenza.value && !f.codTerzaCompetenza.value && !f.codCompetenzaCentrale.value)) || formIsInvalid()"
+                                    [disabled]="formIsInvalid()"
                                     (click)="onInAttesa()">
                                 <i class="fas fa-pause mr-1"></i>
                                 In Attesa
@@ -629,7 +579,7 @@
                             Annulla Modifiche
                         </button>
                         <button class="btn btn-success btn-no-hover btn-xlarge btn-modifica"
-                                [disabled]="!richiestaModifica?.competenze?.length || formIsInvalid()"
+                                [disabled]="formIsInvalid()"
                                 (click)="impostaAzioneChiamata(AzioneChiamataEnum.Modifica)"
                                 ngbTooltip="Conferma Modifica"
                                 placement="top">
@@ -641,7 +591,7 @@
                              placement="right"
                              [disableTooltip]="!(tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])">
                             <button class="btn btn-primary btn-no-hover btn-block btn-xlarge"
-                                    [disabled]="!richiestaModifica?.competenze?.length || richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid() || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])"
+                                    [disabled]="richiestaModifica?.stato === StatoRichiesta.Chiusa || disabledInviaPartenza || formIsInvalid() || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])"
                                     [class.cursor-not-allowed]="disabledInviaPartenza || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaModifica.codice])"
                                     (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                                     ngbTooltip="Invia Partenza"

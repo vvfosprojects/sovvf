@@ -97,7 +97,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     getGenereMezzo(): void {
         this.subscriptions.add(
             this.filtri$.subscribe((filtri: ListaTipologicheMezzi) => {
-                this.generiMezzi = filtri.generiMezzi;
+                this.generiMezzi = filtri?.generiMezzi;
             })
         );
     }

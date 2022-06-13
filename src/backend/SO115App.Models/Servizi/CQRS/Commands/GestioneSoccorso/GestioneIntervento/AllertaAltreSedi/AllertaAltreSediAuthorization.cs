@@ -63,7 +63,7 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         public IEnumerable<AuthorizationResult> Authorize(AllertaAltreSediCommand command)
         {
             var richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
-            var Competenze = richiesta.Competenze.Select(c => c.Codice).ToArray();
+            //var Competenze = richiesta.Competenze.Select(c => c.Codice).ToArray();
             command.Chiamata = _map.Map(richiesta);
 
             var username = this._currentUser.Identity.Name;
@@ -78,7 +78,7 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
                     #region Concorrenza
 
                     //Controllo Concorrenza
-                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { Competenze.ToArray()[0].Split('.')[0] + ".1000" });
+                    var listaSediInteressate = _getSottoSediByCodSede.Get(new string[1] { command.CodiceSede });
 
                     if (!_isActionFree.Check(TipoOperazione.Allerta, user.Id, listaSediInteressate.ToArray(), command.Chiamata.Codice))
                         yield return new AuthorizationResult(Costanti.InterventoOccupato);
@@ -86,16 +86,12 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
                     #endregion Concorrenza
 
                     Boolean abilitato = false;
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        foreach (var competenza in richiesta.CodUOCompetenza)
-                        {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
-                                abilitato = true;
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
-                        }
-                    }
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
+                        abilitato = true;
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreRichieste))
+                        abilitato = true;
+                                       
 
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

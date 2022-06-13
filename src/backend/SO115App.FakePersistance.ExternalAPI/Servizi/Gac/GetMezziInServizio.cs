@@ -113,12 +113,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 .OrderBy(c => c.Mezzo.Mezzo.Stato == Costanti.MezzoInSede).ToList();
         }
 
+
         public List<MezzoInServizio> MapPartenzeInMezziInServizio(RichiestaAssistenza richiestaAssistenza, string[] CodiciSede)
         {
             var listaMezzoInServizio = new ConcurrentBag<MezzoInServizio>();
 
             var Partenze = richiestaAssistenza.Partenze;
             var statoMezzi = _getStatoMezzi.Get(CodiciSede);
+
 
             foreach (var partenza in Partenze)
             {
@@ -139,11 +141,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 var mezzoInServizio = new MezzoInServizio()
                 {
                     Mezzo = mezzoMarker,
-                    Squadre = partenza.Partenza.Squadre,
+                    Squadre = partenza.Partenza.Squadre,                    
                 };
 
                 listaMezzoInServizio.Add(mezzoInServizio);
             }
+
 
             var listaFiltrata = listaMezzoInServizio.Where(x => x != null);
 

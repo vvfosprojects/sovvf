@@ -365,64 +365,21 @@ export class SchedaTelefonataState {
         const formValue = state.richiestaForm.model;
         dispatch(new StartLoadingCompetenze());
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
-            if (res?.dataArray) {
-                const competenze = res.dataArray as Sede[];
-                const codCompetenze = competenze.map((c: Sede) => {
-                    return c.codice;
-                });
-                dispatch(new SetCompetenzeSuccess(action.coordinate, action.indirizzo, codCompetenze, action.markerChiamata));
-                patchState({
-                    competenze
-                });
-            } else {
-                const distaccamenti = this.store.selectSnapshot(TipologicheMezziState.tipologiche)?.distaccamenti;
-                const indirizzo = formValue.indirizzo;
-                const provincia = formValue.provincia;
-                const latitudine = action.coordinate.latitudine;
-                const longitudine = action.coordinate.longitudine;
-                const markerChiamata = action.markerChiamata;
-                selectCompetenzaAuto(distaccamenti, indirizzo, provincia, latitudine, longitudine, markerChiamata);
-                dispatch([
-                    new ClearCompetenze(),
-                    new StopLoadingCompetenze()
-                ]);
-                patchState({
-                    competenze: []
-                });
-            }
+            const competenze = res.dataArray as Sede[];
+            const codCompetenze = competenze?.map((c: Sede) => {
+                return c.codice;
+            });
+            dispatch(new SetCompetenzeSuccess(action.coordinate, action.indirizzo, codCompetenze, action.markerChiamata));
+            patchState({
+                competenze: competenze?.length ? competenze : []
+            });
         }, () => {
-            const distaccamenti = this.store.selectSnapshot(TipologicheMezziState.tipologiche)?.distaccamenti;
-            const indirizzo = formValue.indirizzo;
-            const provincia = formValue.provincia;
-            const latitudine = action.coordinate.latitudine;
-            const longitudine = action.coordinate.longitudine;
-            const markerChiamata = action.markerChiamata;
-            selectCompetenzaAuto(distaccamenti, indirizzo, provincia, latitudine, longitudine, markerChiamata);
             dispatch(new StopLoadingCompetenze());
+            dispatch(new SetCompetenzeSuccess(action.coordinate, action.indirizzo, null, action.markerChiamata));
             patchState({
                 competenze: []
             });
         });
-
-        function selectCompetenzaAuto(distaccamenti: TipologicaComposizionePartenza[], indirizzo: string, provincia: string, latitudine: number, longitudine: number, chiamataMarker: ChiamataMarker): void {
-            const coordinate = {
-                latitudine,
-                longitudine
-            };
-            const province = data['default']['province'][0];
-            const codProvincia = province[provincia];
-            const competenzaCentrale = codProvincia + '.1000';
-            if (competenzaCentrale) {
-                const codCompetenze = [competenzaCentrale];
-                dispatch(new UpdateFormValue({
-                    value: {
-                        codCompetenzaCentrale: competenzaCentrale
-                    },
-                    path: 'schedaTelefonata.richiestaForm'
-                }));
-                dispatch(new SetCompetenzeSuccess(coordinate, indirizzo, codCompetenze, chiamataMarker));
-            }
-        }
     }
 
     @Action(SetCompetenzeSuccess)
@@ -432,31 +389,6 @@ export class SchedaTelefonataState {
             new SetInterventiProssimita(action.indirizzo, action.coordinate, action.codCompetenze),
             new StopLoadingCompetenze()
         ]);
-
-        if (!action.options?.manualSelect) {
-            const codCompetenze = action.codCompetenze;
-            if (codCompetenze?.length === 1) {
-                dispatch(new UpdateFormValue({
-                    value: {
-                        codCompetenzaCentrale: codCompetenze[0],
-                        codPrimaCompetenza: null,
-                        codSecondaCompetenza: null,
-                        codTerzaCompetenza: null
-                    },
-                    path: 'schedaTelefonata.richiestaForm'
-                }));
-            } else if (codCompetenze?.length === 3) {
-                dispatch(new UpdateFormValue({
-                    value: {
-                        codCompetenzaCentrale: null,
-                        codPrimaCompetenza: codCompetenze[0],
-                        codSecondaCompetenza: codCompetenze[1],
-                        codTerzaCompetenza: codCompetenze[2]
-                    },
-                    path: 'schedaTelefonata.richiestaForm'
-                }));
-            }
-        }
 
         if (action.markerChiamata) {
             dispatch(new MarkerChiamata(action.markerChiamata, action.codCompetenze));
@@ -648,138 +580,99 @@ export class SchedaTelefonataState {
         let chiamata: SintesiRichiesta;
         let tipologia: Tipologia;
 
-        if (f) {
-            const codTipologia = f.codTipologia ? f.codTipologia : componentFormValue.codTipologia;
-            if (codTipologia) {
-                const tipologie = this.store.selectSnapshot(TipologieState.tipologie);
-                tipologia = tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
-            }
-
-            let competenze = state.competenze;
-            let codCompetenze: string[];
-            if (competenze?.length <= 0) {
-                codCompetenze = [];
-                if (!f.codPrimaCompetenza && !f.codSecondaCompetenza && !f.codTerzaCompetenza && !f.codPrimaCompetenzaManuale && !f.codSecondaCompetenzaManuale && !f.codTerzaCompetenzaManuale) {
-                    codCompetenze = [f.codCompetenzaCentrale];
-                } else {
-                    if (f.codPrimaCompetenza) {
-                        codCompetenze.push(f.codPrimaCompetenza);
-                    }
-                    if (f.codSecondaCompetenza) {
-                        codCompetenze.push(f.codSecondaCompetenza);
-                    }
-                    if (f.codTerzaCompetenza) {
-                        codCompetenze.push(f.codTerzaCompetenza);
-                    }
-                    if (f.codPrimaCompetenzaManuale) {
-                        codCompetenze.push(f.codPrimaCompetenzaManuale);
-                    }
-                    if (f.codSecondaCompetenzaManuale) {
-                        codCompetenze.push(f.codSecondaCompetenzaManuale);
-                    }
-                    if (f.codTerzaCompetenzaManuale) {
-                        codCompetenze.push(f.codTerzaCompetenzaManuale);
-                    }
-                }
-            }
-
-            if (!competenze?.length) {
-                const distaccamenti = this.store.selectSnapshot(DistaccamentiState.distaccamenti);
-                const competenzeToAdd = [];
-                codCompetenze?.forEach((codCompetenza: string) => {
-                    const competenza = distaccamenti.filter((d: Sede) => codCompetenza === d.codice)[0];
-                    if (competenza) {
-                        competenzeToAdd.push(competenza);
-                    }
-                });
-                competenze = competenzeToAdd;
-            }
-
-            const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
-            const tipiTerreno = [] as TipoTerreno[];
-
-            if (f.boschi) {
-                tipiTerreno.push({
-                    descrizione: TipoTerrenoEnum.Boschi,
-                    ha: f.boschi
-                });
-            }
-            if (f.campi) {
-                tipiTerreno.push({
-                    descrizione: TipoTerrenoEnum.Campi,
-                    ha: f.campi
-                });
-            }
-            if (f.sterpaglie) {
-                tipiTerreno.push({
-                    descrizione: TipoTerrenoEnum.Sterpaglie,
-                    ha: f.sterpaglie
-                });
-            }
-
-            chiamata = new SintesiRichiesta(
-                f.id,
-                f.codice,
-                f.codiceRichiesta,
-                f.operatore,
-                f.istanteRicezioneRichiesta,
-                f.stato,
-                f.prioritaRichiesta,
-                [tipologia],
-                f.dettaglioTipologia ? f.dettaglioTipologia : null,
-                f.dettaglioTipologia ? f.dettaglioTipologia.descrizione : (f.codTipologia ? tipologia.descrizione : null),
-                new Richiedente(f.telefono, f.nominativo),
-                {
-                    indirizzo: f.indirizzo,
-                    piano: f.piano,
-                    palazzo: f.palazzo,
-                    scala: f.scala,
-                    interno: f.interno,
-                    contatto: f.codSchedaContatto,
-                    note: f.noteIndirizzo,
-                    coordinate: {
-                        longitudine: f.longitudine,
-                        latitudine: f.latitudine
-                    },
-                    citta: f.citta,
-                    provincia: f.provincia,
-                    cap: f.cap,
-                    regione: f.regione,
-                    civico: f.civico
-                },
-                competenze,
-                codCompetenze,
-                f.complessita,
-                f.istantePresaInCarico,
-                f.istantePrimaAssegnazione,
-                f.rilevanzaGrave,
-                f.codSchedaContatto ? f.codSchedaContatto : null,
-                null,
-                f.fonogramma,
-                f.partenze,
-                (f.etichette && f.etichette.length) ? f.etichette : null,
-                f.notePubbliche,
-                f.notePrivate,
-                azioneChiamata,
-                f.trnInsChiamata,
-                f.turnoIntervento,
-                tipiTerreno.length ? tipiTerreno : null,
-                f.codEntiIntervenuti?.length ? f.codEntiIntervenuti : null,
-                f.listaEntiPresaInCarico,
-                f.obiettivoSensibile,
-                f.rilevanzaStArCu,
-                f.motivazione,
-                f.listaUtentiPresaInCarico,
-                f.codUOCompetenza,
-                f.codSOAllertate,
-                f.sediAllertate,
-                f.codSOCompetente,
-                f.urgenza || urgente,
-                f.esercitazione,
-                triageSummary?.length ? triageSummary : null,
-                f.noteNue
-            );
+        const codTipologia = f.codTipologia ? f.codTipologia : componentFormValue.codTipologia;
+        if (codTipologia) {
+            const tipologie = this.store.selectSnapshot(TipologieState.tipologie);
+            tipologia = tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
         }
+
+        const competenze = state.competenze;
+        const codCompetenze = competenze?.map((c: Sede) => c.codice);
+
+        const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
+        const tipiTerreno = [] as TipoTerreno[];
+
+        if (f.boschi) {
+            tipiTerreno.push({
+                descrizione: TipoTerrenoEnum.Boschi,
+                ha: f.boschi
+            });
+        }
+        if (f.campi) {
+            tipiTerreno.push({
+                descrizione: TipoTerrenoEnum.Campi,
+                ha: f.campi
+            });
+        }
+        if (f.sterpaglie) {
+            tipiTerreno.push({
+                descrizione: TipoTerrenoEnum.Sterpaglie,
+                ha: f.sterpaglie
+            });
+        }
+
+        chiamata = new SintesiRichiesta(
+            f.id,
+            f.codice,
+            f.codiceRichiesta,
+            f.operatore,
+            f.istanteRicezioneRichiesta,
+            f.stato,
+            f.prioritaRichiesta,
+            [tipologia],
+            f.dettaglioTipologia ? f.dettaglioTipologia : null,
+            f.dettaglioTipologia ? f.dettaglioTipologia.descrizione : (f.codTipologia ? tipologia.descrizione : null),
+            new Richiedente(f.telefono, f.nominativo),
+            {
+                indirizzo: f.indirizzo,
+                piano: f.piano,
+                palazzo: f.palazzo,
+                scala: f.scala,
+                interno: f.interno,
+                contatto: f.codSchedaContatto,
+                note: f.noteIndirizzo,
+                coordinate: {
+                    longitudine: f.longitudine,
+                    latitudine: f.latitudine
+                },
+                citta: f.citta,
+                provincia: f.provincia,
+                cap: f.cap,
+                regione: f.regione,
+                civico: f.civico
+            },
+            competenze?.length ? competenze : null,
+            codCompetenze?.length ? codCompetenze : null,
+            f.complessita,
+            f.istantePresaInCarico,
+            f.istantePrimaAssegnazione,
+            f.rilevanzaGrave,
+            f.codSchedaContatto ? f.codSchedaContatto : null,
+            null,
+            f.fonogramma,
+            f.partenze,
+            (f.etichette && f.etichette.length) ? f.etichette : null,
+            f.notePubbliche,
+            f.notePrivate,
+            azioneChiamata,
+            f.trnInsChiamata,
+            f.turnoIntervento,
+            tipiTerreno.length ? tipiTerreno : null,
+            f.codEntiIntervenuti?.length ? f.codEntiIntervenuti : null,
+            f.listaEntiPresaInCarico,
+            f.obiettivoSensibile,
+            f.rilevanzaStArCu,
+            f.motivazione,
+            f.listaUtentiPresaInCarico,
+            f.codUOCompetenza,
+            f.codSOAllertate,
+            f.sediAllertate,
+            f.codSOCompetente,
+            f.urgenza || urgente,
+            f.esercitazione,
+            triageSummary?.length ? triageSummary : null,
+            f.noteNue
+        );
 
         patchState({ azioneChiamata });
 

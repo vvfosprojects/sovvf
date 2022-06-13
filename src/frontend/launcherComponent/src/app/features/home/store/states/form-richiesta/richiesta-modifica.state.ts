@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ToggleComposizione, ToggleModifica } from '../../actions/view/view.actions';
-import { GetInitCentroMappa } from '../../../../maps/store/actions/centro-mappa.actions';
 import produce from 'immer';
 import {
     ChiudiRichiestaModifica,
@@ -68,6 +67,11 @@ export class RichiestaModificaState {
         return state.successModifica;
     }
 
+    @Selector()
+    static modificaIndirizzo(state: RichiestaModificaStateModel): boolean {
+        return state.modificaIndirizzo;
+    }
+
     @Action(SetRichiestaModifica)
     setRichiestaModifica({ patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: SetRichiestaModifica): void {
         dispatch(new SetTriageSummary(action.richiesta.triageSummary));
@@ -132,27 +136,8 @@ export class RichiestaModificaState {
                     tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
                 }
 
-                let competenze = this.store.selectSnapshot(SchedaTelefonataState.competenze) ? this.store.selectSnapshot(SchedaTelefonataState.competenze) : [];
-                let codCompetenze: string[];
-                if (!competenze?.length) {
-                    competenze = getState().richiestaModifica.competenze;
-                    codCompetenze = [];
-                    if (!f.codPrimaCompetenza && !f.codSecondaCompetenza && !f.codTerzaCompetenza) {
-                        codCompetenze = [f.codCompetenzaCentrale];
-                    } else {
-                        if (f.codPrimaCompetenza) {
-                            codCompetenze.push(f.codPrimaCompetenza);
-                        }
-                        if (f.codSecondaCompetenza) {
-                            codCompetenze.push(f.codSecondaCompetenza);
-                        }
-                        if (f.codTerzaCompetenza) {
-                            codCompetenze.push(f.codTerzaCompetenza);
-                        }
-                    }
-                } else {
-                    codCompetenze = competenze.map((c: Sede) => c.codice);
-                }
+                const competenze = this.store.selectSnapshot(SchedaTelefonataState.competenze) ? this.store.selectSnapshot(SchedaTelefonataState.competenze) : null;
+                const codCompetenze = competenze?.map((c: Sede) => c.codice);
 
                 const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
                 const tipiTerreno = [] as TipoTerreno[];
@@ -206,8 +191,8 @@ export class RichiestaModificaState {
                         regione: f.regione,
                         civico: f.civico
                     },
-                    competenze,
-                    codCompetenze,
+                    competenze?.length ? competenze : null,
+                    codCompetenze?.length ? codCompetenze : null,
                     f.complessita,
                     f.istantePresaInCarico,
                     f.istantePrimaAssegnazione,
@@ -260,8 +245,6 @@ export class RichiestaModificaState {
             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Modifica, [sintesiRichiesta.codice]));
         }, () => {
             dispatch([
-                new ClearIndirizzo(),
-                new GetInitCentroMappa(),
                 new StopLoadingSchedaRichiesta()
             ]);
         });

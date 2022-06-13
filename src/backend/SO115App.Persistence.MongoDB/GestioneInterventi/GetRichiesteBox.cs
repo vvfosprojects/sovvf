@@ -113,11 +113,13 @@ namespace SO115App.Persistence.MongoDB
             }
 
             var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi);
+            var filtriSediPartenze = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSediPartenze, listaCodSedi.ToHashSet());
+
 
             var lstRichieste = new List<RichiestaAssistenza>();
             if (filtro.SearchKey == null || filtro.SearchKey.Length == 0)
             {
-                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate).ToList();
+                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate | filtriSediPartenze).ToList();
             }
             else
             {
@@ -144,7 +146,7 @@ namespace SO115App.Persistence.MongoDB
                 indexes.Add(indexWildcardTextSearch);
 
                 _dbContext.RichiestaAssistenzaCollection.Indexes.CreateMany(indexes);
-                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText & (filtroSediCompetenti | filtriSediAllertate)).ToList();
+                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText & (filtroSediCompetenti | filtriSediAllertate | filtriSediPartenze)).ToList();
             }
 
             if (filtro == null)

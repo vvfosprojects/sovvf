@@ -23,20 +23,20 @@ export class ChiamataService {
         return this.http.post<ResponseInterface>(`${API_COMPETENZE}/GetCompetenze`, coordinate);
     }
 
-    public getCountInterventiProssimita(indirizzo: string, coordinate: Coordinate, codCompetenze: string[]): Observable<CountInterventiProssimitaResponse> {
+    public getCountInterventiProssimita(indirizzo: string, coordinate: Coordinate, codCompetenze?: string[]): Observable<CountInterventiProssimitaResponse> {
         const obj = {
             coordinate,
             indirizzo,
-            competenze: codCompetenze
+            competenze: codCompetenze?.length ? codCompetenze : null
         };
         return this.http.post<CountInterventiProssimitaResponse>(`${API_GESTIONE_RICHIESTA}/GetCountInterventiVicinanze`, obj);
     }
 
-    public getInterventiProssimita(indirizzo: string, coordinate: Coordinate, codCompetenze: string[]): Observable<InterventiProssimitaResponse> {
+    public getInterventiProssimita(indirizzo: string, coordinate: Coordinate, codCompetenze?: string[]): Observable<InterventiProssimitaResponse> {
         const obj = {
             coordinate,
             indirizzo,
-            competenze: codCompetenze
+            competenze: codCompetenze?.length ? codCompetenze : null
         };
         return this.http.post<InterventiProssimitaResponse>(`${API_GESTIONE_RICHIESTA}/GetInterventiVicinanze`, obj);
     }

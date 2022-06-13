@@ -8,7 +8,7 @@
             <div class="col-12 px-0">
                 <app-filterbar-composizione [filtri]="filtri"
                                             [nightMode]="nightMode"
-                                            [competenze]="richiesta?.competenze"
+                                            [competenze]="richiesta?.competenze ? richiesta?.competenze : []"
                                             [disableComposizioneMode]="loadingMezzi || loadingSquadre"
                                             [composizionePartenza]="true"
                                             [loadingSquadre]="loadingSquadre"
@@ -20,7 +20,9 @@
             <!-- Lista Squadre -->
             <div class="col-5 px-0">
                 <div class="card min-h-comp">
-                    <app-partial-loader *ngIf="!squadreComposizione || loadingSquadre"></app-partial-loader>
+                    <ng-container *ngIf="loadingSquadre">
+                        <app-partial-loader></app-partial-loader>
+                    </ng-container>
                     <div class="card-header clearfix px-2 py-1">
                         <div class="float-left h3 mb-0 pt-1 pl-2">
                             <i class="fas fa-users mr-1"></i>
@@ -102,7 +104,9 @@
             <!-- Lista Mezzi -->
             <div class="col-7 pr-0">
                 <div class="card mx-auto min-h-comp">
-                    <app-partial-loader *ngIf="!squadreComposizione || loadingMezzi"></app-partial-loader>
+                    <ng-container *ngIf="loadingMezzi">
+                        <app-partial-loader></app-partial-loader>
+                    </ng-container>
                     <div class="card-header clearfix px-2 py-1">
                         <div class="float-left h3 mb-0 pt-1 pl-2">
                             <i class="fas fa-truck mr-1"></i>

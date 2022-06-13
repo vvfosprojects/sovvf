@@ -68,13 +68,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
                     #endregion Concorrenza
 
                     bool abilitato = false;
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiciSede[0], Costanti.GestoreChiamate))
-                            abilitato = true;
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiciSede[0], Costanti.GestoreRichieste))
-                            abilitato = true;
-                    }
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiciSede[0], Costanti.GestoreChiamate))
+                        abilitato = true;
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiciSede[0], Costanti.GestoreRichieste))
+                        abilitato = true;
+                    
 
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

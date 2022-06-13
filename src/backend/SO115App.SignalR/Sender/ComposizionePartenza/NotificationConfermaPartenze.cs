@@ -42,7 +42,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetSedi _getSedi;
-
+        private readonly GetSediPartenze _getSediPartenze;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiestehandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
@@ -58,7 +58,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             IMapperRichiestaSuSintesi mapperSintesi,
             GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetMezziInServizio getListaMezzi,
-            IGetSedi getSedi)
+            IGetSedi getSedi, GetSediPartenze getSediPartenze)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getListaMezzi = getListaMezzi;
@@ -70,6 +70,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _mapperSintesi = mapperSintesi;
             _getDistaccamentoUC = getDistaccamentoUC;
             _getSedi = getSedi;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
@@ -81,17 +82,18 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(conferma.Richiesta.CodSOCompetente);
 
+            SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(conferma.Richiesta));
+
             //Sedi dei mezzi in partenza che dovranno ricevere la notifica
             SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
 
-            var listaMezziInServizio = _getListaMezzi.MapPartenzeInMezziInServizio(conferma.Richiesta, SediDaNotificare.ToArray());
+            var listaMezziInServizio = _getListaMezzi.MapPartenzeInMezziInServizio(conferma.Richiesta,SediDaNotificare.ToArray());
             var result = listaMezziInServizio;
-
             var sintesi = Task.Factory.StartNew(() => _mapperSintesi.Map(conferma.Richiesta)).ContinueWith(sintesi =>
             {
-                sintesi.Result.Competenze = conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
+                sintesi.Result.Competenze = conferma.Richiesta.CodUOCompetenza != null ? conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi) : null;
                 conferma.ConfermaPartenze.Chiamata = sintesi.Result;
                 sintesi.Result.Motivazione = sintesi.Result.Descrizione;
 
@@ -152,7 +154,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                         Task.Factory.StartNew(() =>
                         {
                             var sintesiSganciata = _mapperSintesi.Map(conferma.RichiestaDaSganciare);
-                            sintesiSganciata.Competenze = conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi);
+                            sintesiSganciata.Competenze = conferma.Richiesta.CodUOCompetenza != null ? conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi) : null;
                             conferma.ConfermaPartenze.Chiamata = sintesiSganciata;
                             _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
                         });
