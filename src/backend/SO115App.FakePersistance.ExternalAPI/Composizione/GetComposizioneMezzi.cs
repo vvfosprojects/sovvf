@@ -85,7 +85,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             switch (query.Filtro.Turno) //FILTRO PER TURNO
             {
                 case TurnoRelativo.Precedente: codiceTurno = TurnoPrecedente.Codice; break;
-                case TurnoRelativo.Successivo: codiceTurno = TurnoPrecedente.Codice; break;
+                case TurnoRelativo.Successivo: codiceTurno = TurnoSuccessivo.Codice; break;
                 case TurnoRelativo.Attuale: codiceTurno = TurnoAttuale.Codice; break;
                 case null: goto case TurnoRelativo.Attuale;
             }
