@@ -98,17 +98,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         {
             try
             {
-                var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
-                var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
+                DistaccamentoUC sede = new DistaccamentoUC();
+                if (!_memoryCache.TryGetValue($"InfoSede{codSede}", out sede))
+                {
+                    var baseurl = URLProvvisorio; // _config.GetSection("UrlExternalApi").GetValue<string>("InfoSedeApiUtenteComune");
+                    var url = new Uri(baseurl + "/GetInfoSede" + "?codSede=" + codSede);
 
-                _serviceSedi.SetCache(codSede);
+                    _serviceSedi.SetCache(codSede);
 
-                var sede = _serviceSedi.GetAsync(url).Result;
+                    sede = _serviceSedi.GetAsync(url).Result;
 
-                if (sede == null)
-                    return get(codSede);
+                    if (sede == null)
+                        return get(codSede);
 
-                return sede;
+                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
+                    _memoryCache.Set($"InfoSede{codSede}", sede, cacheEntryOptions);
+
+                    return sede;
+                }
+                else
+                {
+                    return sede;
+                }
             }
             catch (Exception)
             {
@@ -162,30 +173,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Coordinate = fff.Coordinate,
                 Indirizzo = null
             }))));
-
-            //result.AddRange(lstSedi.Figli.First().Figli.Select(f => new Sede()
-            //{
-            //    Codice = f.Codice,
-            //    Descrizione = f.Nome,
-            //    Coordinate = f.Coordinate,
-            //    Indirizzo = null
-            //}));
-
-            //result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
-            //{
-            //    Codice = ff.Codice,
-            //    Descrizione = ff.Nome,
-            //    Coordinate = ff.Coordinate,
-            //    Indirizzo = null
-            //})));
-
-            //result.AddRange(lstSedi.Figli.First().Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
-            //{
-            //    Codice = fff.Codice,
-            //    Descrizione = fff.Nome,
-            //    Coordinate = fff.Coordinate,
-            //    Indirizzo = null
-            //}))));
 
             return result.Distinct().ToList();
         }

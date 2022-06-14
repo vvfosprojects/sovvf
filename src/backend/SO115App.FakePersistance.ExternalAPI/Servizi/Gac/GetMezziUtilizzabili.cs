@@ -29,14 +29,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         private readonly IGetComposizioneMezziDB _getComposizioneMezziDB;
         private readonly ISetComposizioneMezzi _setComposizioneMezziDB;
-
+        private readonly IGetSedi _getSedi;
         private readonly IGetToken _getToken;
         private readonly IHttpRequestManager<IEnumerable<MezzoDTO>> _clientMezzi;
 
         public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken,
             IConfiguration configuration, IGetStatoMezzi GetStatoMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetPosizioneFlotta getPosizioneFlotta, IGetStringCoordinateByCodSede getStringCoordinateByCodSede,
-            IGetComposizioneMezziDB getComposizioneMezziDB, ISetComposizioneMezzi setComposizioneMezziDB)
+            IGetComposizioneMezziDB getComposizioneMezziDB, ISetComposizioneMezzi setComposizioneMezziDB, IGetSedi getSedi)
         {
             _getStatoMezzi = GetStatoMezzi;
             _clientMezzi = clientMezzi;
@@ -47,6 +47,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _getStringCoordinateByCodSede = getStringCoordinateByCodSede;
             _getComposizioneMezziDB = getComposizioneMezziDB;
             _setComposizioneMezziDB = setComposizioneMezziDB;
+            _getSedi = getSedi;
         }
 
         /// <summary>
@@ -244,56 +245,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private IEnumerable<Sede> GetListaSediMezzi(List<MezzoDTO> lstMezzi, List<MessaggioPosizione> flotta, UnitaOperativa listaSediAlberate)
         {
             var lstCodSedi = new List<string>();
+            List<Sede> listaSedi = new List<Sede>();
 
-            foreach (var mezzoDto in lstMezzi)
+            lstCodSedi = lstMezzi.Select(s => s.CodiceDistaccamento).ToList();
+
+            foreach (var sede in lstCodSedi.Distinct())
             {
-                var pinNodi = new List<PinNodo>();
-                pinNodi.Add(new PinNodo(mezzoDto.CodiceDistaccamento, true));
+                var infoSede = _getSedi.GetInfoSede(sede).Result;
 
-                string descSede = "";
-                string IndirizzoSede = "";
-                Coordinate coordinate = null;
-                string[] coordinateStrg = new string[2];
-
-                var CoordinateMezzoGeoFleet = flotta.Find(x => x.CodiceMezzo.Equals(mezzoDto.CodiceMezzo));
-
-                if (CoordinateMezzoGeoFleet != null)
+                Sede sedeMezzo = new Sede(sede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
                 {
-                    coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
-                    coordinateStrg = new string[2] { coordinate.Latitudine.ToString(), coordinate.Longitudine.ToString() };
-                }
+                    CoordinateString = infoSede.coordinate.Split(',')
+                };
+                listaSedi.Add(sedeMezzo);
+            };
 
-                if (!lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
-                {
-                    foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
-                    {
-                        if (figlio.Codice.Equals(mezzoDto.CodiceDistaccamento))
-                        {
-                            descSede = figlio.Nome;
-
-                            if (coordinate == null)
-                            {
-                                coordinateStrg = _getStringCoordinateByCodSede.Get(figlio.Codice);
-
-                                if (coordinateStrg != null)
-                                    coordinate = new Coordinate(Convert.ToDouble(coordinateStrg[0].Replace(".", ",")), Convert.ToDouble(coordinateStrg[1].Replace(".", ",")));
-                                else
-                                    coordinateStrg = new string[] { "0", "0" };
-                            }
-                        }
-                    }
-                }
-
-                if (!lstCodSedi.Contains(mezzoDto.CodiceDistaccamento))
-                {
-                    lstCodSedi.Add(mezzoDto.CodiceDistaccamento);
-
-                    yield return new Sede(mezzoDto.CodiceDistaccamento, descSede ?? "", IndirizzoSede ?? "", coordinate ?? null)
-                    {
-                        CoordinateString = _getStringCoordinateByCodSede.Get(mezzoDto.CodiceDistaccamento)
-                    };
-                }
-            }
+            return listaSedi.OrderBy(s => s.Codice).ToList();
         }
 
         private Mezzo MapMezzo(MezzoDTO mezzoDto, List<MessaggioPosizione> ListaPosizioneFlotta, UnitaOperativa listaSediAlberate, List<Sede> lstSedi)
