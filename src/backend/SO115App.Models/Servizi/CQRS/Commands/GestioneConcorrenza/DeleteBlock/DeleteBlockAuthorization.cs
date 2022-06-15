@@ -41,6 +41,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
                     if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
                         abilitato = true;
 
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(command.utente.Ruoli, command.CodiceSede, Costanti.Amministratore))
+                        abilitato = true;
+
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
