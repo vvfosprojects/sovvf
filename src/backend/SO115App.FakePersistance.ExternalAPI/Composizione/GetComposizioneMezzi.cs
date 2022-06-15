@@ -137,6 +137,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 qualifications = m.qualifications,
                                 Ruolo = m.qualifications.FirstOrDefault()?.name
                             }).ToList(),
+                            IdSquadra = sq.spotId
                         }).ToList()).Result;
 
                         m.PreAccoppiato = lstSqPreacc.Count > 0;
