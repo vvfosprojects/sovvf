@@ -108,46 +108,37 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
                     _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
 
-                    Task.Factory.StartNew(() =>
+                    foreach (var partenze in conferma.ConfermaPartenze.Partenze)
                     {
-                        foreach (var partenze in conferma.ConfermaPartenze.Partenze)
-                        {
-                            _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
-                        }
-                    });
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
+                    }
 
                     conferma.ConfermaPartenze.Chiamata = sintesi.Result;
                     _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
 
-                    Task.Factory.StartNew(() =>
-                    {
-                        var boxRichiesteQuery = new BoxRichiesteQuery()
-                        {
-                            CodiciSede = new string[] { sede }
-                        };
-                        var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                    });
 
-                    Task.Factory.StartNew(() =>
+                    var boxRichiesteQuery = new BoxRichiesteQuery()
                     {
-                        var boxMezziQuery = new BoxMezziQuery()
-                        {
-                            CodiciSede = new string[] { sede }
-                        };
-                        var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-                    });
+                        CodiciSede = new string[] { sede }
+                    };
+                    var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
 
-                    Task.Factory.StartNew(() =>
+
+                    var boxMezziQuery = new BoxMezziQuery()
                     {
-                        var boxPersonaleQuery = new BoxPersonaleQuery()
-                        {
-                            CodiciSede = new string[] { sede }
-                        };
-                        var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-                    });
+                        CodiciSede = new string[] { sede }
+                    };
+                    var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+
+
+                    var boxPersonaleQuery = new BoxPersonaleQuery()
+                    {
+                        CodiciSede = new string[] { sede }
+                    };
+                    var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
                     if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                     {

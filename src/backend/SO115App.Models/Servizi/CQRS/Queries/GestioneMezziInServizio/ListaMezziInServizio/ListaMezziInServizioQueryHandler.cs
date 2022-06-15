@@ -64,8 +64,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
             /// </summary>
             pinNodi.AddRange(listaSediAlberate.Result.GetSottoAlbero(pinNodi).Select(figlio => new PinNodo(figlio.Codice, true)));
 
-
-
             var listaMezzi = _getListaMezzi.Get(query.CodiciSede);
 
             var listaMezziFiltrata = listaMezzi //FILTRI
@@ -116,7 +114,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
                     return m;
                 }
                 else return m;
-            }).ToList();
+            }).OrderBy(m => m.Mezzo.Mezzo.Distaccamento.Codice).ToList();
 
             //GESTISCO PAGINAZIONE
             if (query.Pagination != null) return new ListaMezziInServizioResult()

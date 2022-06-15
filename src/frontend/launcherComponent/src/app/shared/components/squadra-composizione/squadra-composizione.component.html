@@ -4,9 +4,9 @@
     (mouseenter)="onHoverIn()"
     (mouseleave)="onHoverOut()"
     (click)="onClick()">
-    <ng-container *ngIf="(tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: [squadraComposizione.codice])">
+    <ng-container *ngIf="(tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: [squadraComposizione.idSquadra])">
         <app-locked-concorrenza
-                [nominativoOperatore]="tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: [squadraComposizione.codice]">
+                [nominativoOperatore]="tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: [squadraComposizione.idSquadra]">
         </app-locked-concorrenza>
     </ng-container>
     <div class="row px-3">

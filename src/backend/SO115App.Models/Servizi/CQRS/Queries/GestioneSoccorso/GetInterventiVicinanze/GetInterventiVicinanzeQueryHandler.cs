@@ -29,7 +29,13 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetInterventiVic
 
             var lstPinNodo = competenze.Select(c => new PinNodo(c, true)).ToHashSet();
 
-            var interventiInProssimita = _getInterventiInProssimita.Get(query.Coordinate, lstPinNodo);
+            if (query.Competenze[0].Contains(".")) 
+            {
+                var nodoComando = new PinNodo(query.Competenze[0].Split('.')[0] + ".1000",true);
+                lstPinNodo.Add(nodoComando);
+            }
+
+            var interventiInProssimita = _getInterventiInProssimita.Get(query.Coordinate, lstPinNodo.Distinct().ToHashSet());
 
             var resultStessaVia = _getListaSintesi.GetListaSintesiRichieste(new FiltroRicercaRichiesteAssistenza()
             {

@@ -85,7 +85,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             switch (query.Filtro.Turno) //FILTRO PER TURNO
             {
                 case TurnoRelativo.Precedente: codiceTurno = TurnoPrecedente.Codice; break;
-                case TurnoRelativo.Successivo: codiceTurno = TurnoPrecedente.Codice; break;
+                case TurnoRelativo.Successivo: codiceTurno = TurnoSuccessivo.Codice; break;
                 case TurnoRelativo.Attuale: codiceTurno = TurnoAttuale.Codice; break;
                 case null: goto case TurnoRelativo.Attuale;
             }
@@ -163,18 +163,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         }).ToList()).Result;
                     }
 
-                    m.IdRichiesta = statiOperativiMezzi.FirstOrDefault(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
-
-                    Coordinate coordinateMezzo = null;
-
-                    if (m.CoordinateStrg != null)
-                    {
-                        if (m.CoordinateStrg[0] == null)
-                            coordinateMezzo = new Coordinate(m.Distaccamento.Coordinate.Latitudine, m.Distaccamento.Coordinate.Longitudine);
-                        else
-                            coordinateMezzo = new Coordinate(Convert.ToDouble(m.CoordinateStrg[0]), Convert.ToDouble(m.CoordinateStrg[1]));
-                    }
-
                     var mc = new ComposizioneMezzi()
                     {
                         Id = m.Codice,
@@ -213,6 +201,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         mc.Mezzo.Coordinate = sede?.Coordinate;
                         mc.Mezzo.CoordinateStrg = sede?.CoordinateString;
                     }
+
+                    m.IdRichiesta = statiOperativiMezzi.FirstOrDefault(s => s.CodiceMezzo == m.Codice)?.CodiceRichiesta;
+                    m.CoordinateStrg = m.Distaccamento?.CoordinateString;
 
                     lstMezzi.Add(mc);
                 });

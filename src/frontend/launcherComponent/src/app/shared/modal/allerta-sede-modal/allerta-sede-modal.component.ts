@@ -10,7 +10,6 @@ import { Sede } from '../../model/sede.model';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
-import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { makeCopy } from '../../helper/function-generiche';
 import { AppState } from '../../store/states/app/app.state';
 
@@ -66,7 +65,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.f.codRichiesta.patchValue(this.codRichiesta);
-        this.store.dispatch(new GetFiltriComposizione());
         this.removeSedeTreeviewSelezionata();
     }
 
