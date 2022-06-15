@@ -81,60 +81,49 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
             var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo));
 
-            foreach (var sede in SediDaNotificare.ToArray())
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
-
             Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
                 _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
 
-                Task.Factory.StartNew(() =>
+                var counterCodaChiamate = new CounterNotifica()
                 {
-                    var boxMezziQuery = new BoxMezziQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-                });
+                    codDistaccamento = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Mezzo.Distaccamento.Codice,
+                    count = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Squadre.Count
+                };
 
-                Task.Factory.StartNew(() =>
+                if (intervento.StatoMezzo.Equals("InSede") || intervento.StatoMezzo.Equals("Rientrato"))
                 {
-                    var boxRichiesteQuery = new BoxRichiesteQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                });
-
-                Task.Factory.StartNew(() =>
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreLibereCodaChiamate", counterCodaChiamate);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreOccupateCodaChiamate", counterCodaChiamate);
+                }
+                else
                 {
-                    var boxPersonaleQuery = new BoxPersonaleQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
+                }
 
-                    var counterCodaChiamate = new CounterNotifica()
-                    {
-                        codDistaccamento = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Mezzo.Distaccamento.Codice,
-                        count = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Squadre.Count
-                    };
+                var boxMezziQuery = new BoxMezziQuery()
+                {
+                    CodiciSede = new string[] { sede }
+                };
+                var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
 
-                    if (intervento.StatoMezzo.Equals("InSede") || intervento.StatoMezzo.Equals("Rientrato"))
-                    {
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreLibereCodaChiamate", counterCodaChiamate);
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreOccupateCodaChiamate", counterCodaChiamate);
-                    }
-                    else
-                    {
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
-                    }
-                });
+                var boxRichiesteQuery = new BoxRichiesteQuery()
+                {
+                    CodiciSede = new string[] { sede }
+                };
+                var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+
+                var boxPersonaleQuery = new BoxPersonaleQuery()
+                {
+                    CodiciSede = new string[] { sede }
+                };
+                var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
             });
         }
     }
