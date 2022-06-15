@@ -1140,7 +1140,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 this.store.dispatch(new SetDirectionTravelData(idDirectionSymbols, { totalKilometers, totalTravelTime }));
 
                 let labelText = '';
-                labelText = totalKilometers?.toFixed(2) + ' KM \n ' + totalTravelTime?.toFixed(2) + ' MIN';
+                if (totalKilometers?.toFixed(2)) {
+                    labelText = labelText + (totalKilometers?.toFixed(2) + ' KM \n ');
+                }
+                if (totalTravelTime?.toFixed(2)) {
+                    labelText = labelText + (totalTravelTime?.toFixed(2) + ' MIN');
+                }
                 const textSymbol = {
                     id: 'textSymbol',
                     type: 'text',  // autocasts as new TextSymbol()
