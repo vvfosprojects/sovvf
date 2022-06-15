@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { BoxPartenzaPreAccoppiati } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { DirectionInterface } from '../../../maps/maps-interface/direction.interface';
@@ -21,7 +21,6 @@ import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { BoxPartenzaHover } from '../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
-import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { TriageSummary } from '../../../../shared/interface/triage-summary.interface';
 import { NecessitaSoccorsoAereoEnum } from '../../../../shared/enum/necessita-soccorso-aereo.enum';
@@ -42,7 +41,7 @@ import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.en
     templateUrl: './composizione-veloce.component.html',
     styleUrls: ['./composizione-veloce.component.css']
 })
-export class FasterComponent implements OnInit, OnChanges, OnDestroy {
+export class FasterComponent implements OnChanges, OnDestroy {
 
     // Percorsi richiesta
     @Input() visualizzaPercorsiRichiesta: boolean;
@@ -79,10 +78,6 @@ export class FasterComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(private store: Store,
                 private travelModeService: TravelModeService) {
-    }
-
-    ngOnInit(): void {
-        this.store.dispatch(new GetFiltriComposizione());
     }
 
     ngOnChanges(changes: SimpleChanges): void {

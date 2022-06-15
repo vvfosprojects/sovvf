@@ -216,7 +216,9 @@ export class SchedeContattoState {
         const gestita = state.filtriSelezionati.gestita;
         const search = this.store.selectSnapshot(RicercaFilterbarState.ricerca);
         const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
-        let rangeVisualizzazione = state.filtriSelezionati.rangeVisualizzazione;
+        const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
+        const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
+        let rangeVisualizzazione = chiamataActive && !schedeContattoActive ? RangeSchedeContattoEnum.Ultimi30 : state.filtriSelezionati.rangeVisualizzazione;
         switch (rangeVisualizzazione) {
             case RangeSchedeContattoEnum.Ultime24:
                 rangeVisualizzazione = 24;
@@ -247,8 +249,6 @@ export class SchedeContattoState {
         } as FiltersInterface;
         dispatch(new GetContatoriSchedeContatto(filtersContatori));
         this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
-            const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
-            const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
             if (schedeContattoActive || chiamataActive) {
                 dispatch([
                     new SetListaSchedeContatto(response.dataArray),
@@ -256,7 +256,7 @@ export class SchedeContattoState {
                 ]);
             }
             dispatch(new StopLoadingSchedeContatto());
-        });
+        }, () => dispatch(new StopLoadingSchedeContatto()));
     }
 
     @Action(SetListaSchedeContatto)

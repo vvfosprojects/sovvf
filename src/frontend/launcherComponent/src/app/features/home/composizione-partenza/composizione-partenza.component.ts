@@ -30,7 +30,6 @@ import { MezzoComposizione } from '../../../shared/interface/mezzo-composizione-
 import { SquadreComposizioneState } from '../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 import { SquadraComposizione } from '../../../shared/interface/squadra-composizione-interface';
-import { GetFiltriComposizione } from '../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { TipologicaComposizionePartenza } from './interface/filtri/tipologica-composizione-partenza.interface';
 import { FiltroTurnoSquadre } from '../../../shared/enum/filtro-turno-composizione-partenza.enum';
 import { TipologicheMezziState } from '../store/states/composizione-partenza/tipologiche-mezzi.state';
@@ -193,7 +192,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                         return d;
                     });
                     this.tipologicheMezzi.turni = [FiltroTurnoSquadre.Precedente, FiltroTurnoSquadre.Successivo];
-                    this.store.dispatch(new GetFiltriComposizione());
                 }
             })
         );

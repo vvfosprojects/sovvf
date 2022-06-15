@@ -3,6 +3,7 @@ import { ListaTipologicheMezzi } from '../../../composizione-partenza/interface/
 import { SetTipologicheMezzi } from '../../actions/composizione-partenza/tipologiche-mezzi.actions';
 import { TipologicaComposizionePartenza } from '../../../composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { Injectable } from '@angular/core';
+import { GetFiltriComposizione } from '../../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 
 export interface TipologicheMezziStateModel {
     tipologiche: ListaTipologicheMezzi;
@@ -32,9 +33,10 @@ export class TipologicheMezziState {
     }
 
     @Action(SetTipologicheMezzi)
-    setTipologicheMezzi({ patchState }: StateContext<TipologicheMezziStateModel>, action: SetTipologicheMezzi): void {
+    setTipologicheMezzi({ patchState, dispatch }: StateContext<TipologicheMezziStateModel>, action: SetTipologicheMezzi): void {
         patchState({
             tipologiche: action.tipologiche
         });
+        dispatch(new GetFiltriComposizione());
     }
 }
