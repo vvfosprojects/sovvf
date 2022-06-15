@@ -39,7 +39,6 @@ import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.int
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
-import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
@@ -139,7 +138,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     ngOnInit(): void {
         console.log('Componente ComposizioneAvanzata creato');
-        this.store.dispatch(new GetFiltriComposizione());
     }
 
     ngOnChanges(changes: SimpleChanges): void {
