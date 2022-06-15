@@ -244,6 +244,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         private IEnumerable<Sede> GetListaSediMezzi(List<MezzoDTO> lstMezzi, List<MessaggioPosizione> flotta, UnitaOperativa listaSediAlberate)
         {
+            var sedi = _getSedi.GetAll().Result;
             var lstCodSedi = new List<string>();
             List<Sede> listaSedi = new List<Sede>();
 
@@ -252,6 +253,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             foreach (var sede in lstCodSedi.Distinct())
             {
                 var infoSede = _getSedi.GetInfoSede(sede).Result;
+
+                if (infoSede.Descrizione.ToLower().Contains("centrale"))
+                {
+                    infoSede.Descrizione = sedi.Find(s => s.Codice.Equals(sede)).Descrizione;
+                }
 
                 Sede sedeMezzo = new Sede(sede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
                 {
