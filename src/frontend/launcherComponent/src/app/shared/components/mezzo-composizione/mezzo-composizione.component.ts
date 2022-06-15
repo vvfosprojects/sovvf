@@ -251,6 +251,11 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
         return result;
     }
 
+    getButtonPreaccoppiatoDisabled(): boolean {
+        // tslint:disable-next-line:max-line-length
+        return this.disableBtnFeature || this.loadingSquadre || this.itemSelezionato || this.boxPartenzaList[this.boxPartenzaList?.length - 1]?.squadreComposizione?.length > 0 || !!(this.boxPartenzaList[this.boxPartenzaList?.length - 1]?.mezzoComposizione) || !!(this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, [this.mezzoComp.squadrePreaccoppiate[0].idSquadra]));
+    }
+
     mezzoDirection(mezzoComp: MezzoComposizione): void {
         const lat = mezzoComp.mezzo.coordinateStrg?.length > 0 ? +mezzoComp.mezzo.coordinateStrg[0] : null;
         const lon = mezzoComp.mezzo.coordinateStrg?.length > 1 ? +mezzoComp.mezzo.coordinateStrg[1] : null;
