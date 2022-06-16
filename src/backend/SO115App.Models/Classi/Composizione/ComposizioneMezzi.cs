@@ -36,18 +36,20 @@ namespace SO115App.API.Models.Classi.Composizione
         public List<SquadraSemplice> SquadrePreaccoppiate { get; set; } = null;
 
         /// <summary>
-        /// Squadre in rientro
+        ///   Squadre in rientro
         /// </summary>
         public List<SquadraSemplice> ListaSquadre { get; set; } = null;
 
         /// <summary>
-        /// Rappresentato in KM
+        ///   Rappresentato in KM
         /// </summary>
         public string Km { get; set; } = "0";
+
         /// <summary>
-        /// Rappresentato in Minuti
+        ///   Rappresentato in Minuti
         /// </summary>
         public string TempoPercorrenza { get; set; } = "0";
+
         public DateTime? IstanteScadenzaSelezione { get; set; }
 
         /// <summary>
@@ -64,6 +66,7 @@ namespace SO115App.API.Models.Classi.Composizione
 
     public class SquadraSemplice
     {
+        public string IdSquadra { get; set; }
         public string Codice { get; set; }
         public Sede Distaccamento { get; set; }
         public string Nome { get; set; }
