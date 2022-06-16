@@ -47,7 +47,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Notify(AnnullaStatoPartenzaCommand command)
         {
-            Task.Run(() => _sender.SendNotification(command));
+            _sender.SendNotification(command);
 
             #region Chiamata GAC
 
