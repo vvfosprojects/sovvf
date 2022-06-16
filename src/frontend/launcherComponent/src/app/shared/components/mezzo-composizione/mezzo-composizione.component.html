@@ -92,7 +92,7 @@
                         triggers="mouseenter:mouseleave"
                         tabindex="0"
                         style="cursor:pointer; vertical-align: baseline"
-                        [disabled]="disableBtnFeature || loadingSquadre || (mezzoComp | mezzoInRientroDisabled)"
+                        [disabled]="disableBtnFeature || loadingSquadre || (mezzoComp | mezzoInRientroDisabled) || getPartenzaMezzoInRichiestaComposizione()"
                         (click)="onClick(true); $event.stopPropagation()">
                     <i class="fas fa-users fa-fw"></i>
                     <i class="fas fa-arrow-right guida fa-fw mx-1"></i>
