@@ -102,10 +102,9 @@ namespace SO115App.SignalR.Utility
 
             var codiciSede = new List<string> { };
 
-            if (codiciSede == null || codiciSede.Count == 0)
+            if (mezzo == null)
             {
-                codiciSede = new List<string> { _getMezzi.GetInfo(new List<string> { value }).Result.Find(m => m.CodiceMezzo.Contains(value)).CodiceDistaccamento };
-                codiciSede.Add(mezzo?.CodiceSede);
+                codiciSede.Add(_getMezzi.GetInfo(new List<string> { value }).Result.Find(m => m.CodiceMezzo.Contains(value)).CodiceDistaccamento);
             }
             else
             {
