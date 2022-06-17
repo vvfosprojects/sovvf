@@ -22,6 +22,7 @@
         {{ 'Chiudi' | uppercase }}
     </button>
     <button class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+            [disabled]="gestisciSchedaContattoForm.invalid"
             (click)="close('ok')">
         {{ 'Conferma' | uppercase }}
     </button>
