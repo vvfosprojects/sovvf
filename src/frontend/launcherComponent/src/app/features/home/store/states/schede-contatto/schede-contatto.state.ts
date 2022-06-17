@@ -534,8 +534,8 @@ export class SchedeContattoState {
             });
         } else {
             dispatch(new StartLoadingDettaglioSchedaContatto(action.codiceScheda));
-            this.schedeContattoService.getSchedaContatto(action.codiceScheda).subscribe((schedaContatto: SchedaContatto) => {
-                if (schedaContatto) {
+            this.schedeContattoService.getSchedaContatto(action.codiceScheda).subscribe((res: { schedaContatto: SchedaContatto }) => {
+                if (res?.schedaContatto) {
                     this.ngZone.run(() => {
                         const modal = this.modal.open(DettaglioSchedaContattoModalComponent, {
                                 windowClass: 'xxlModal modal-holder',
@@ -544,7 +544,7 @@ export class SchedeContattoState {
                                 backdrop: true
                             }
                         );
-                        modal.componentInstance.schedaContatto = schedaContatto;
+                        modal.componentInstance.schedaContatto = res.schedaContatto;
                     });
                 } else {
                     console.error('[getSchedaContatto] il server non ha risposto');
