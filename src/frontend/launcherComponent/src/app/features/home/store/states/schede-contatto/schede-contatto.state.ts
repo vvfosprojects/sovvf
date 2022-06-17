@@ -57,7 +57,6 @@ import { ImpostazioniState } from '../../../../../shared/store/states/impostazio
 import { ViewComponentState } from '../view/view.state';
 import { GetCodiciRichieste } from '../../../../../shared/store/actions/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.actions';
 import { GestisciSchedaContattoModalComponent } from '../../../../../shared/modal/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.component';
-import { GestisciSchedaContattoModalState } from '../../../../../shared/store/states/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.state';
 import { ResetForm } from '@ngxs/form-plugin';
 
 export interface SchedeContattoStateModel {
@@ -219,7 +218,7 @@ export class SchedeContattoState {
         const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
         const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
         const modificaRichiestaActive = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);
-        let rangeVisualizzazione = (chiamataActive || modificaRichiestaActive) && !schedeContattoActive ? RangeSchedeContattoEnum.Ultimi30 : state.filtriSelezionati.rangeVisualizzazione;
+        let rangeVisualizzazione = action.rangeVisualizzazione ? action.rangeVisualizzazione : state.filtriSelezionati.rangeVisualizzazione;
         switch (rangeVisualizzazione) {
             case RangeSchedeContattoEnum.Ultime24:
                 rangeVisualizzazione = 24;
@@ -348,11 +347,10 @@ export class SchedeContattoState {
                         backdrop: true
                     }
                 );
-                modal.result.then((res: string) => {
-                    switch (res) {
+                modal.result.then((res: { type: string, codiceRichiesta: string }) => {
+                    switch (res?.type) {
                         case 'ok':
-                            const formValueGestioneSchedaContatto = this.store.selectSnapshot(GestisciSchedaContattoModalState.formValue);
-                            this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita, formValueGestioneSchedaContatto.codiceRichiesta).subscribe(() => {
+                            this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita, res.codiceRichiesta).subscribe(() => {
                                 dispatch(new ResetForm({ path: 'gestisciSchedaContattoModal.gestisciSchedaContattoForm' }));
                             }, () => dispatch(new ResetForm({ path: 'gestisciSchedaContattoModal.gestisciSchedaContattoForm' })));
                             break;

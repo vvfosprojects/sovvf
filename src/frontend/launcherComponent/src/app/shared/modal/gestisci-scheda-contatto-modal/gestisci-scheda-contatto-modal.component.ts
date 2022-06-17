@@ -52,7 +52,7 @@ export class GestisciSchedaContattoModalComponent implements OnDestroy {
     }
 
     close(type: string): void {
-        this.modal.close(type);
+        this.modal.close({ type, codiceRichiesta: this.f.codiceRichiesta.value });
     }
 
 }
