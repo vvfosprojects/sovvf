@@ -32,6 +32,7 @@ using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneLog;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.GestionePOS;
+using SO115App.Persistence.MongoDB.GestioneSchedeContatto;
 using SO115App.Persistence.MongoDB.GestioneSedi;
 using SO115App.Persistence.MongoDB.GestioneStatoSquadra;
 using SO115App.Persistence.MongoDB.GestioneTriage;
@@ -151,6 +152,10 @@ namespace SO115App.CompositionRoot
 
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeContatto_WSNUE,
                                 Persistence.MongoDB.GestioneSchedeContatto.GetSchedeContatto>();
+
+            container.Register<
+                 Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedaContattoByCodice,
+                 GetSchedaContattoByCodice>();
 
             #endregion Schede Contatto
 

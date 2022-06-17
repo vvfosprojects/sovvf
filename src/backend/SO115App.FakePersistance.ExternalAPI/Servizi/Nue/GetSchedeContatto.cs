@@ -53,7 +53,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
         {
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
 
-            DateTime giornoMassimo = DateTime.Now.AddDays(-2);
+            DateTime giornoMassimo = DateTime.Now.AddDays(-31);
 
             if (codiceSede.Length > 0)
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();

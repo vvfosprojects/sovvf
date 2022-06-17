@@ -58,7 +58,7 @@ export class GestisciSchedaContattoModalState {
     getCodiciRichieste({ patchState }: StateContext<GestisciSchedaContattoModalStateModel>): void {
         this.richiesteService.getRichieste(null, null).subscribe((res: { sintesiRichiesta: SintesiRichiesta[] }) => {
             patchState({
-                codiciRichieste: res.sintesiRichiesta.map((r: SintesiRichiesta) => {
+                codiciRichieste: res.sintesiRichiesta.filter((r: SintesiRichiesta) => !r.codiceSchedaNue).map((r: SintesiRichiesta) => {
                     return r.codiceRichiesta ? r.codiceRichiesta : r.codice;
                 })
             });

@@ -21,6 +21,7 @@ import {
     ClearPrioritaRichiesta,
     ClearStatoChiamata,
     ReducerSchedaTelefonata,
+    ResetScorciatoieTelefono,
     SetCompetenze,
     SetFormSubmitted,
     SetRedirectComposizionePartenza,
@@ -974,6 +975,19 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
         f.indirizzo.patchValue(scheda.localita?.indirizzo);
         f.latitudine.patchValue(latitude);
         f.longitudine.patchValue(longitude);
+        f.nominativo.patchValue(scheda.richiedente?.nominativo);
+        f.telefono.patchValue(scheda.richiedente?.telefono);
+
+        // Controllo scorciatoia numero da Scheda Contatto
+        const telefono = scheda.richiedente.telefono;
+        const checkTelefono = JSON.stringify(Object.keys(this.scorciatoieTelefono));
+        if (checkTelefono.includes(telefono)) {
+            this.onCheckScorciatoiaNumero(telefono);
+        } else {
+            this.store.dispatch(new ResetScorciatoieTelefono());
+            f.nominativo.enable();
+            f.telefono.enable();
+        }
 
         const params = {
             location: locationPOI
@@ -995,17 +1009,17 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }));
 
-            if (!this.richiestaModifica?.richiedente) {
-                f.nominativo.patchValue(scheda.richiedente?.nominativo);
-                f.telefono.patchValue(scheda.richiedente?.telefono);
-            }
-
+            const coordinate = new Coordinate(latitude, longitude);
             if (!this.richiestaModifica) {
-                const coordinate = new Coordinate(latitude, longitude);
                 const sediSelezionate = this.store.selectSnapshot(AppState.vistaSedi);
                 const sedeSelezionata = sediSelezionate[0];
                 this.chiamataMarker = createChiamataMarker(this.idChiamata, this.operatore, sedeSelezionata, new Localita(coordinate ? coordinate : null, scheda.localita.indirizzo));
                 this.reducerSchedaTelefonata('cerca');
+            } else {
+                this.store.dispatch([
+                    new ClearCompetenze(),
+                    new SetCompetenze(coordinate, scheda.localita.indirizzo, null)
+                ]);
             }
         });
     }

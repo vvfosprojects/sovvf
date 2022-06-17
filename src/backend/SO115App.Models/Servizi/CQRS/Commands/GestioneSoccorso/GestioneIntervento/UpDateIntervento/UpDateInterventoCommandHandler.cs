@@ -21,6 +21,7 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Gac;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
@@ -131,7 +132,13 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.TriageSummary = command.Chiamata.TriageSummary;
             richiesta.ChiamataUrgente = command.Chiamata.ChiamataUrgente;
             richiesta.Esercitazione = command.Chiamata.Esercitazione;
-            richiesta.NoteNue = command.Chiamata.NoteNue;
+
+            if (richiesta.CodNue == null && command.Chiamata.CodiceSchedaNue.Length > 0)
+            {
+                richiesta.NoteNue = command.Chiamata.NoteNue;
+                var telefonata = richiesta.ListaEventi.ToList().Find(e => e is Telefonata);
+                ((Telefonata)telefonata).CodiceSchedaContatto = command.Chiamata.CodiceSchedaNue;
+            }
 
             if (command.Chiamata.Tags != null)
                 richiesta.Tags = new HashSet<string>(command.Chiamata.Tags);

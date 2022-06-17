@@ -223,10 +223,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             if (!string.IsNullOrWhiteSpace(codiceFiscale))
                 listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.OperatoreChiamata.CodiceFiscale.Equals(codiceFiscale));
 
-            if (gestita == null)
-                gestita = false;
-
-            listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Gestita.Equals(gestita));
+            if (gestita != null)
+                listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Gestita.Equals(gestita));
 
             if (rangeOre.HasValue)
             {
