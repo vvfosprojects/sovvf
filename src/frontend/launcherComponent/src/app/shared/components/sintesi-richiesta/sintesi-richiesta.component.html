@@ -343,7 +343,8 @@
                                         <!-- Operatore chiamata -->
                                         <ng-container *ngIf="richiesta?.operatore as op">
                                             <h4 class="mb-0"
-                                                [ngbTooltip]="operatoreRegistrazioneChiamata">
+                                                [ngbTooltip]="operatoreRegistrazioneChiamata"
+                                                placement="top">
                                                 <i class="guida fas fa-user fa-fw"></i>
                                                 <i class="guida fas fa-phone-alt fa-fw mr-1"></i>
                                                 {{ op?.nome + ' ' + op?.cognome | truncate: 11 }}

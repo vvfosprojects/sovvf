@@ -535,16 +535,20 @@ export class SchedeContattoState {
         } else {
             dispatch(new StartLoadingDettaglioSchedaContatto(action.codiceScheda));
             this.schedeContattoService.getSchedaContatto(action.codiceScheda).subscribe((schedaContatto: SchedaContatto) => {
-                this.ngZone.run(() => {
-                    const modal = this.modal.open(DettaglioSchedaContattoModalComponent, {
-                            windowClass: 'xxlModal modal-holder',
-                            backdropClass: 'light-blue-backdrop',
-                            centered: true,
-                            backdrop: true
-                        }
-                    );
-                    modal.componentInstance.schedaContatto = schedaContatto;
-                });
+                if (schedaContatto) {
+                    this.ngZone.run(() => {
+                        const modal = this.modal.open(DettaglioSchedaContattoModalComponent, {
+                                windowClass: 'xxlModal modal-holder',
+                                backdropClass: 'light-blue-backdrop',
+                                centered: true,
+                                backdrop: true
+                            }
+                        );
+                        modal.componentInstance.schedaContatto = schedaContatto;
+                    });
+                } else {
+                    console.error('[getSchedaContatto] il server non ha risposto');
+                }
                 dispatch(new StopLoadingDettaglioSchedaContatto());
             }, () => dispatch(new StopLoadingDettaglioSchedaContatto()));
         }
