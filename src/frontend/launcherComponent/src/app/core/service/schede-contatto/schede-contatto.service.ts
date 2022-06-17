@@ -32,8 +32,8 @@ export class SchedeContattoService {
         return this.http.post<ResponseInterface>(`${API_SCHEDE_CONTATTO}/GetSchede`, obj);
     }
 
-    getSchedaContatto(codScheda: string): Observable<SchedaContatto> {
-        return this.http.get<SchedaContatto>(`${API_SCHEDE_CONTATTO}/GetByCodiceScheda?Codice=` + codScheda);
+    getSchedaContatto(codScheda: string): Observable<{ schedaContatto: SchedaContatto }> {
+        return this.http.get<{ schedaContatto: SchedaContatto }>(`${API_SCHEDE_CONTATTO}/GetByCodiceScheda?Codice=` + codScheda);
     }
 
     getContatoriSchedeContatto(filters: any): Observable<{ infoNue: ContatoriSchedeContatto }> {
