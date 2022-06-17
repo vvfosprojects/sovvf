@@ -63,9 +63,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             {
                 _context.SchedeContattoCollection.DeleteOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda));
                 _context.SchedeContattoCollection.InsertOne(scheda);
-
-
-                //_context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("gestita", scheda.Gestita));
             }
         }
 
@@ -91,7 +88,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                         var telefonata = intervento.ListaEventi.ToList().Find(e => e is Telefonata);
                         ((Telefonata)telefonata).CodiceSchedaContatto = codiceScheda;
                         _upDateRichiestaAssistenza.UpDate(intervento);
-                    }else
+                    }
+                    else
                     {
                         intervento.NoteNue = "";
                         var telefonata = intervento.ListaEventi.ToList().Find(e => e is Telefonata);
