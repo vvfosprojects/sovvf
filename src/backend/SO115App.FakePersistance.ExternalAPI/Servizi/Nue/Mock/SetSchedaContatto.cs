@@ -20,12 +20,15 @@
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using Persistence.MongoDB;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallESRI;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
@@ -38,11 +41,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         private readonly string filepath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
         private readonly DbContext _context;
         private readonly IGetSchedeContatto _getSchedeContatto;
+        private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
-        public SetSchedaContatto(DbContext context, IGetSchedeContatto getSchedeContatto)
+        public SetSchedaContatto(DbContext context, IGetSchedeContatto getSchedeContatto, IUpDateRichiestaAssistenza upDateRichiestaAssistenza)
         {
             _context = context;
             _getSchedeContatto = getSchedeContatto;
+            _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
         }
 
         /// <summary>
@@ -72,6 +77,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             try
             {
                 var schedaContatto = _context.SchedeContattoCollection.Find(x => x.CodiceScheda.Equals(codiceScheda)).SingleOrDefault();
+                var intervento = _context.RichiestaAssistenzaCollection.Find(x => x.Codice.Equals(codiceIntervento)).SingleOrDefault();
+
+                intervento.NoteNue = schedaContatto.Dettaglio;
+                var telefonata = intervento.ListaEventi.ToList().Find(e => e is Telefonata);
+                ((Telefonata)telefonata).CodiceSchedaContatto = codiceScheda;
+                _upDateRichiestaAssistenza.UpDate(intervento);
 
                 if (schedaContatto.OperatoreChiamata != null)
                 {
@@ -84,6 +95,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                     schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
                     schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
                 }
+
                 schedaContatto.Gestita = gestita;
                 schedaContatto.CodiceInterventoAssociato = codiceIntervento;
 
