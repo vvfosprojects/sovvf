@@ -21,7 +21,7 @@ export class SetContatoriSchedeContatto {
 export class GetListaSchedeContatto {
     static readonly type = '[SchedeContatto] Get Lista Schede Contatto';
 
-    constructor(public page?: number) {
+    constructor(public page?: number, public rangeVisualizzazione?: RangeSchedeContattoEnum) {
     }
 }
 
