@@ -59,7 +59,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         {
             var schedaDB = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Eq(s => s.CodiceScheda, codiceSchedaModificata)).SingleOrDefault();
 
-            if(schedaDB != null)
+            if (schedaDB != null)
             {
                 _context.SchedeContattoCollection.UpdateOne(Builders<SchedaContatto>.Filter.Eq("codiceScheda", scheda.CodiceScheda), Builders<SchedaContatto>.Update.Set("gestita", scheda.Gestita));
             }
@@ -79,10 +79,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 var schedaContatto = _context.SchedeContattoCollection.Find(x => x.CodiceScheda.Equals(codiceScheda)).SingleOrDefault();
                 var intervento = _context.RichiestaAssistenzaCollection.Find(x => x.Codice.Equals(codiceIntervento)).SingleOrDefault();
 
-                intervento.NoteNue = schedaContatto.Dettaglio;
-                var telefonata = intervento.ListaEventi.ToList().Find(e => e is Telefonata);
-                ((Telefonata)telefonata).CodiceSchedaContatto = codiceScheda;
-                _upDateRichiestaAssistenza.UpDate(intervento);
+                if (intervento != null)
+                {
+                    intervento.NoteNue = schedaContatto.Dettaglio;
+                    var telefonata = intervento.ListaEventi.ToList().Find(e => e is Telefonata);
+                    ((Telefonata)telefonata).CodiceSchedaContatto = codiceScheda;
+                    _upDateRichiestaAssistenza.UpDate(intervento);
+                }
 
                 if (schedaContatto.OperatoreChiamata != null)
                 {
