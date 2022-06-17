@@ -218,7 +218,7 @@ export class SchedeContattoState {
         const schedeContattoActive = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
         const chiamataActive = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
         const modificaRichiestaActive = this.store.selectSnapshot(ViewComponentState.modificaRichiestaStatus);
-        let rangeVisualizzazione = (chiamataActive || modificaRichiestaActive) && !schedeContattoActive ? RangeSchedeContattoEnum.Ultimi30 : state.filtriSelezionati.rangeVisualizzazione;
+        let rangeVisualizzazione = action.rangeVisualizzazione ? action.rangeVisualizzazione : state.filtriSelezionati.rangeVisualizzazione;
         switch (rangeVisualizzazione) {
             case RangeSchedeContattoEnum.Ultime24:
                 rangeVisualizzazione = 24;
