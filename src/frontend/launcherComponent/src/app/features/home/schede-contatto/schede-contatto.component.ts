@@ -42,7 +42,6 @@ import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
     styleUrls: ['./schede-contatto.component.css']
 })
 export class SchedeContattoComponent implements OnInit, OnDestroy {
-
     @Input() boxAttivi: boolean;
     @Input() nightMode: boolean;
 

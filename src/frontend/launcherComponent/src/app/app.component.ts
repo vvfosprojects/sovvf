@@ -34,7 +34,6 @@ import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actio
 import { DeleteAllConcorrenza, GetConcorrenza } from './shared/store/actions/concorrenza/concorrenza.actions';
 import { clearAllPagesSession } from './shared/helper/function-paginazione-session';
 
-
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
