@@ -54,7 +54,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneDocumen
                 {
                     bool abilitato = false;
 
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Documento.CodSede, Costanti.Amministratore))
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Documento.CodSede, Costanti.GestoreChiamate)
+                        || _getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Documento.CodSede, Costanti.GestoreRichieste))
                         abilitato = true;
 
                     if (!abilitato)

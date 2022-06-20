@@ -28,6 +28,8 @@ using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,17 +44,23 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IModificaInterventoChiuso _modificaInterventoChiuso;
         private readonly IGetTipologieByCodice _getTipologie;
+        private readonly ISetStatoGestioneSchedaContatto _setStatoGestioneSchedaContatto;
+        private readonly IGetUtenteById _getUtenteById;
 
         public UpDateInterventoCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
             IGetRichiesta getRichiestaById,
             IModificaInterventoChiuso modificaInterventoChiuso,
-            IGetTipologieByCodice getTipologie)
+            IGetTipologieByCodice getTipologie,
+            ISetStatoGestioneSchedaContatto setStatoGestioneSchedaContatto,
+            IGetUtenteById getUtenteById)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;
             _modificaInterventoChiuso = modificaInterventoChiuso;
             _getTipologie = getTipologie;
+            _setStatoGestioneSchedaContatto = setStatoGestioneSchedaContatto;
+            _getUtenteById = getUtenteById;
         }
 
         public void Handle(UpDateInterventoCommand command)
@@ -138,6 +146,9 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 richiesta.NoteNue = command.Chiamata.NoteNue;
                 var telefonata = richiesta.ListaEventi.ToList().Find(e => e is Telefonata);
                 ((Telefonata)telefonata).CodiceSchedaContatto = command.Chiamata.CodiceSchedaNue;
+
+                var codiceFiscaleOperatore = _getUtenteById.GetUtenteByCodice(command.CodUtente).CodiceFiscale;
+                _setStatoGestioneSchedaContatto.Gestita(command.Chiamata.CodiceSchedaNue, command.CodiceSede, codiceFiscaleOperatore, true, command.Chiamata.Codice);
             }
 
             if (command.Chiamata.Tags != null)
