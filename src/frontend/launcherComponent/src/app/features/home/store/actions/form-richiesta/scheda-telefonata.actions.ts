@@ -100,10 +100,6 @@ export class SetFormSubmitted {
     }
 }
 
-export class InsertChiamataTest {
-    static readonly type = '[SchedaTelefonata] Insert chiamata test';
-}
-
 export class InsertChiamata {
     static readonly type = '[SchedaTelefonata] Insert chiamata';
 
