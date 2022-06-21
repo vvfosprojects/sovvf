@@ -52,35 +52,24 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
 
-            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            var pinNodi = new List<PinNodo>();
+            //var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            //var pinNodi = new List<PinNodo>();
 
-            foreach (var sede in query.CodiceSede)
-            {
-                pinNodi.Add(new PinNodo(sede, true));
-            }
-            var listaSedi = listaSediAlberate.Result.GetSottoAlbero(pinNodi);
-            foreach (var figlio in listaSedi)
-            {
-                pinNodi.Add(new PinNodo(figlio.Codice, true));
-            }
+            //foreach (var sede in query.CodiceSede)
+            //{
+            //    pinNodi.Add(new PinNodo(sede, true));
+            //}
 
-            query.CodiceSede = pinNodi.Select(x => x.Codice).ToArray();
+            //var listaSedi = listaSediAlberate.Result.GetSottoAlbero(pinNodi);
+
+            //foreach (var figlio in listaSedi)
+            //{
+            //    pinNodi.Add(new PinNodo(figlio.Codice, true));
+            //}
+
+            //query.CodiceSede = pinNodi.Select(x => x.Codice).ToArray();
 
             var ListapreAccoppiati = _GetPreAccoppiati.GetAsync(query).Result;
-
-            //if (ListapreAccoppiati.Any(p => p.CodiceMezzo == null))
-            //    return new PreAccoppiatiResult() { DataArray = new List<PreAccoppiato>()};
-
-            //if (query.Filtri.TipoMezzo != null)
-            //{
-            //    ListapreAccoppiati = ListapreAccoppiati.FindAll(m => m.GenereMezzo.Equals(query.Filtri.TipoMezzo));
-            //}
-
-            //if (query.Filtri.StatoMezzo != null)
-            //{
-            //    ListapreAccoppiati = ListapreAccoppiati.FindAll(m => query.Filtri.StatoMezzo.Any(s => s.Equals(m.StatoMezzo)));
-            //}
 
             Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");
 

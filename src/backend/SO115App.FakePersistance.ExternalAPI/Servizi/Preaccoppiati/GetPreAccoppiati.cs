@@ -31,7 +31,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         private readonly IGetStatoSquadra _getStatoSquadre;
         private readonly IGetTurno _getTurno;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
-        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
+        //private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
 
         private readonly List<MessaggioPosizione> pFlotta = new();
 
@@ -45,7 +45,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             _getStatoSquadre = getStatoSquadre;
             _getTurno = getTurno;
             _getPosizioneFlotta = getPosizioneFlotta;
-            _getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
+            //_getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
 
             pFlotta = _getPosizioneFlotta.Get(0).Result;
         }
