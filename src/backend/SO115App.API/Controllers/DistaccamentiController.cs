@@ -50,7 +50,7 @@ namespace SO115App.API.Controllers
             try
             {
                 var result = _handler.Handle(query);
-
+                //return
                 return Ok(result.DataArray);
             }
             catch (Exception e)

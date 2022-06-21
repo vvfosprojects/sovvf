@@ -141,7 +141,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.ChiamataUrgente = command.Chiamata.ChiamataUrgente;
             richiesta.Esercitazione = command.Chiamata.Esercitazione;
 
-            if (richiesta.CodNue == null && command.Chiamata.CodiceSchedaNue.Length > 0)
+            if (richiesta.CodNue == null && command.Chiamata.CodiceSchedaNue?.Length > 0)
             {
                 richiesta.NoteNue = command.Chiamata.NoteNue;
                 var telefonata = richiesta.ListaEventi.ToList().Find(e => e is Telefonata);
