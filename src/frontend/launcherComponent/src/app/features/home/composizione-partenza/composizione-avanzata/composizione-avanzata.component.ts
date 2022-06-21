@@ -149,7 +149,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (changes?.mezziComposizione?.currentValue) {
             this.mezziComposizione = makeCopy(changes.mezziComposizione.currentValue);
             this.mezziComposizione?.forEach((m: MezzoComposizione) => {
-                if (!m.km || !m.tempoPercorrenza) {
+                if (!m.km || !m.tempoPercorrenza || m.km === '0' || m.tempoPercorrenza === '0') {
                     const pointPartenza = new Point({
                         longitude: +m.mezzo.coordinateStrg[1],
                         latitude: +m.mezzo.coordinateStrg[0],
@@ -181,7 +181,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                         stops: new FeatureSet({
                             features: [pointPartenzaGraphic, pointDestinazioneGraphic]
                         }),
-                        travelMode: this.travelModeService.getTravelModeByGenereMezzo(m.mezzo.genere)
+                        // travelMode: this.travelModeService.getTravelModeByGenereMezzo(m.mezzo.genere)
                     });
 
                     routeTask.solve(routeParams).then((data: any) => {
@@ -189,7 +189,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                             const km = data.routeResults[0]?.route?.attributes?.Total_Kilometers;
                             m.km = km.toFixed(2);
                         }
-                        if (!m.tempoPercorrenza) {
+                        if (!m.tempoPercorrenza || m.tempoPercorrenza === '0') {
                             const tempoPercorrenza = data.routeResults[0]?.route?.attributes?.Total_TravelTime ? data.routeResults[0].route.attributes.Total_TravelTime : data.routeResults[0]?.route?.attributes?.Total_TruckTravelTime;
                             m.tempoPercorrenza = tempoPercorrenza.toFixed(2);
                         }
