@@ -6,16 +6,17 @@
             (click)="turnOffComposizione()">
         Torna Indietro
     </button>
-    <ng-template [ngIf]="dettaglioSoccorsoAereo">
+    <ng-template [ngIf]="checkDettaglioSoccorsoAereo()">
         <button class="btn btn-warning btn-block btn-no-hover" style="outline: none; width: 33%"
                 ngbTooltip="Richiesta AFM in corso. Annullare richiesta per poterne creare una nuova"
                 placement="top"
-                (click)="openSoccorsoAereoModal($event)" [disabled]="dettaglioSoccorsoAereo">
+                (click)="openSoccorsoAereoModal($event)"
+                [disabled]="checkDettaglioSoccorsoAereo()">
             <i class="fas fa-helicopter"
                style="font-size: 130%; color: white; transform: translate(0px, 2.5px)"></i>
         </button>
     </ng-template>
-    <ng-template [ngIf]="!dettaglioSoccorsoAereo">
+    <ng-template [ngIf]="!checkDettaglioSoccorsoAereo()">
         <button class="btn btn-warning btn-block btn-no-hover"
                 style="width: 32%"
                 ngbTooltip="Intervento aereo"
