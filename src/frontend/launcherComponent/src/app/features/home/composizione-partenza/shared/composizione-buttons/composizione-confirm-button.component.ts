@@ -36,7 +36,7 @@ export class ComposizioneConfirmButtonComponent implements OnInit {
     }
 
     checkDettaglioSoccorsoAereo(): void {
-        if (this.richiesta && this.richiesta.eventi && this.richiesta.eventi.note) {
+        if (this.richiesta && this.richiesta.eventi) {
             const afmAccettato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Attesa assegnazione SOCAV'));
             const afmAnnullato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Annullato'));
             this.dettaglioSoccorsoAereo = afmAccettato.length > afmAnnullato.length;

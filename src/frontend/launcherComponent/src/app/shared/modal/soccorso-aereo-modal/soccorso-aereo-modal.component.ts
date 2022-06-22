@@ -29,7 +29,6 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
     submitted: boolean;
     inserimentoFallito: boolean;
 
-
     constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
         this.getUtente();
         this.getAzioniRichiesta();
