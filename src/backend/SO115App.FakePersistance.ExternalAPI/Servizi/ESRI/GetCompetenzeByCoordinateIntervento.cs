@@ -55,9 +55,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             }
 
             //var url = new Uri($"{_configuration.GetSection("ESRI").GetSection("URLCompetenze").Value}/execute");
-
-            var url = new Uri("https://gis.dipvvf.it/server/rest/services/RankCompetenze/GPServer/Rank%20Competenze/execute");
-                               
+            var url = new Uri("https://gis.dipvvf.it/server/rest/services/RankCompetenze/GPServer/RankCompetenze/execute");
 
             var response = _getCompetenze.PostAsyncFormData(url, multipartFormDataContent).Result;
 
@@ -78,12 +76,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.ESRI
             }
             else
             {
-                if (response == null)
-                    throw new ArgumentException($"Response == null", nameof(competenze));
-                else if (response.results == null)
-                    throw new ArgumentException($"Results == null", nameof(competenze));
-                else
-                    throw new ArgumentException($"Coordinate Errate x: {coord.x} y:{coord.y}", nameof(competenze));
+                //if (response == null)
+                //    throw new ArgumentException($"Response == null", nameof(competenze));
+                //else if (response.results == null)
+                //    throw new ArgumentException($"Results == null", nameof(competenze));
+                //else
+                //    throw new ArgumentException($"Coordinate Errate x: {coord.x} y:{coord.y}", nameof(competenze));
             }
 
             return competenze.Where(c => c != null).ToArray();

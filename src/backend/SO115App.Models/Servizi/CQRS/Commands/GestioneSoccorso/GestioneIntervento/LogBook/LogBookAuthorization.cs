@@ -60,16 +60,11 @@ namespace DomainModel.CQRS.Commands.HLogBook
                 else
                 {
                     Boolean abilitato = false;
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        foreach (var competenza in command.Richiesta.CodUOCompetenza)
-                        {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
-                                abilitato = true;
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
-                        }
-                    }
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreChiamate))
+                        abilitato = true;
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                        abilitato = true;
 
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

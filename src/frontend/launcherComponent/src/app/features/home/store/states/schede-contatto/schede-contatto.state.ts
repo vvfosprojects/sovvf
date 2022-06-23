@@ -14,7 +14,7 @@ import {
     RemoveSchedeContatto,
     ResetFiltriSelezionatiSchedeContatto,
     SaveMergeSchedeContatto,
-    SetContatoriSchedeContatto,
+    SetContatoriSchedeContatto, SetDettaglioSchedaContattoOpened,
     SetFiltroGestitaSchedeContatto,
     SetFiltroSelezionatoSchedaContatto,
     SetListaSchedeContatto,
@@ -70,6 +70,7 @@ export interface SchedeContattoStateModel {
     tabAttivo: ClassificazioneSchedaContatto;
     idVisualizzati: string[];
     idCollapsed: string[];
+    dettaglioSchedaContattoOpened: boolean;
     loadingSchedeContatto: boolean;
     loadingDettaglioSchedeContatto: string;
 }
@@ -85,6 +86,7 @@ export const SchedeContattoEmpty = {
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     contatoriSchedeContatto: new ContatoriSchedeContattoModel(),
     ...SchedeContattoEmpty,
+    dettaglioSchedaContattoOpened: undefined,
     loadingDettaglioSchedeContatto: undefined,
     schedaContattoTelefonata: undefined,
     codiceSchedaContattoHover: undefined,
@@ -519,7 +521,9 @@ export class SchedeContattoState {
     openDettaglioSchedaContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDettaglioSchedaContatto): void {
         const state = getState();
         const schedaContattoDetail = state.schedeContatto?.length ? state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0] : null;
-        if (schedaContattoDetail) {
+        const dettaglioSchedaContattoOpened = state.dettaglioSchedaContattoOpened;
+        if (schedaContattoDetail && !dettaglioSchedaContattoOpened) {
+            dispatch(new SetDettaglioSchedaContattoOpened(true));
             this.ngZone.run(() => {
                 const modal = this.modal.open(DettaglioSchedaContattoModalComponent, {
                         windowClass: 'xxlModal modal-holder',
@@ -529,11 +533,15 @@ export class SchedeContattoState {
                     }
                 );
                 modal.componentInstance.schedaContatto = schedaContattoDetail;
+                modal.result.then(() => {
+                    dispatch(new SetDettaglioSchedaContattoOpened(false));
+                });
             });
-        } else {
+        } else if (!dettaglioSchedaContattoOpened) {
             dispatch(new StartLoadingDettaglioSchedaContatto(action.codiceScheda));
             this.schedeContattoService.getSchedaContatto(action.codiceScheda).subscribe((res: { schedaContatto: SchedaContatto }) => {
                 if (res?.schedaContatto) {
+                    dispatch(new SetDettaglioSchedaContattoOpened(true));
                     this.ngZone.run(() => {
                         const modal = this.modal.open(DettaglioSchedaContattoModalComponent, {
                                 windowClass: 'xxlModal modal-holder',
@@ -543,6 +551,9 @@ export class SchedeContattoState {
                             }
                         );
                         modal.componentInstance.schedaContatto = res.schedaContatto;
+                        modal.result.then(() => {
+                            dispatch(new SetDettaglioSchedaContattoOpened(false));
+                        });
                     });
                 } else {
                     console.error('[getSchedaContatto] il server non ha risposto');
@@ -550,6 +561,14 @@ export class SchedeContattoState {
                 dispatch(new StopLoadingDettaglioSchedaContatto());
             }, () => dispatch(new StopLoadingDettaglioSchedaContatto()));
         }
+    }
+
+
+    @Action(SetDettaglioSchedaContattoOpened)
+    setDettaglioSchedaContattoOpened({ patchState }: StateContext<SchedeContattoStateModel>, action: SetDettaglioSchedaContattoOpened): void {
+        patchState({
+            dettaglioSchedaContattoOpened: action.value
+        });
     }
 
     @Action(StartLoadingSchedeContatto)

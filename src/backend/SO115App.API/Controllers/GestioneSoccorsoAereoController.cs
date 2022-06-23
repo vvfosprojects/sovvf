@@ -178,7 +178,7 @@ namespace SO115App.API.Controllers
 
                 if (command.ResponseAFM.IsError())
                 {
-                    throw new Exception("Inserimento richiesta soccorso aereo fallito: ");
+                    throw new Exception($"Inserimento richiesta soccorso aereo fallito: {command.ResponseAFM.errors[0].detail} ");
                 }
 
                 return Ok();
