@@ -68,7 +68,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                     {
                         await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new Notifica()
                         {
-                            Titolo = "AAllerta altra Sede",
+                            Titolo = "Allerta altra Sede",
                             Descrizione = $"E' stata allertata la sede: {command.CodSediAllertate[0]}  per l'ìntervento {codiceSintesiDaNotificare}",
                             Data = DateTime.Now
                         });
