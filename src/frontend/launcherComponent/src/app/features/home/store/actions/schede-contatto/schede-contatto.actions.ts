@@ -168,6 +168,13 @@ export class OpenDettaglioSchedaContatto {
     }
 }
 
+export class SetDettaglioSchedaContattoOpened {
+    static readonly type = '[SchedeContatto] Set DettaglioSchedaContattoOpened';
+
+    constructor(public value: boolean) {
+    }
+}
+
 export class StartLoadingSchedeContatto {
     static readonly type = '[SchedeContatto] Start Loading Schede Contatto';
 }
