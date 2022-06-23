@@ -1,5 +1,6 @@
 ﻿using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -99,8 +100,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                         SiglaMezzo = partenza.Mezzo.Descrizione,
                         TargaMezzo = partenza.Mezzo.Codice,
                         SiglaSquadra = squadra.Codice,
-                        //SchedaCapoPartenza = squadra.Membri?.FirstOrDefault(c => c.CapoPartenza)?.Nominativo,
-                        //OraAss = DateTime.Now
+                        SchedaCapoPartenza = squadra.Membri.Where(m => m.DescrizioneQualifica.ToUpper().Equals("TEAM_LEADER")).Select(m => m.Nominativo?.ToLower()).FirstOrDefault(),
+                        OraAss = richiesta.Eventi.OfType<ComposizionePartenze>().First(p => p.CodicePartenza.Equals(partenza.Codice)).DataOraInserimento,
                     })).ToList()
                 };
 
