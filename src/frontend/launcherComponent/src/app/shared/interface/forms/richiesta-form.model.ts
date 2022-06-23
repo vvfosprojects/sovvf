@@ -106,7 +106,7 @@ export class RichiestaForm {
         this.notePubbliche = null;
         this.descrizione = null;
         this.zoneEmergenza = null;
-        this.prioritaRichiesta = null;
+        this.prioritaRichiesta = 3;
         this.codSchedaContatto = null;
         this.listaEntiPresaInCarico = null;
         this.urgenza = null;
