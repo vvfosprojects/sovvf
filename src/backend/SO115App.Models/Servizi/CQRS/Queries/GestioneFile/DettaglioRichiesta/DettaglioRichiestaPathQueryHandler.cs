@@ -1,9 +1,11 @@
 ﻿using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Persistence.File.CSVManagement;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
@@ -17,6 +19,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
         private readonly IGetTipologieByCodice _getTipologie;
         private readonly IGetRichiesta _getRichiesta;
         private readonly IGetUtenteById _getUtente;
+        private readonly IGetSedi _getSedi;
         private readonly IPDFTemplateManager<DettaglioChiamataModelForm> _PDFdettChiamataManager;
         private readonly IPDFTemplateManager<DettaglioInterventoModelForm> _PDFdettInterventoManager;
         private readonly ICSVTemplateManager<DettaglioChiamataModelForm> _CSVdettChiamataManager;
@@ -25,6 +28,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
         public DettaglioRichiestaPathQueryHandler(IGetRichiesta getRichiesta,
             IGetTipologieByCodice getTipologie,
             IGetUtenteById getUtente,
+            IGetSedi getSedi,
             IPDFTemplateManager<DettaglioChiamataModelForm> dettChiamataManager,
             IPDFTemplateManager<DettaglioInterventoModelForm> dettInterventoManager,
             ICSVTemplateManager<DettaglioChiamataModelForm> CSVdettChiamataManager,
@@ -33,6 +37,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
             _getUtente = getUtente;
             _getTipologie = getTipologie;
             _getRichiesta = getRichiesta;
+            _getSedi = getSedi;
             _PDFdettChiamataManager = dettChiamataManager;
             _PDFdettInterventoManager = dettInterventoManager;
             _CSVdettChiamataManager = CSVdettChiamataManager;
@@ -46,10 +51,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
             Log.Error($"Dettaglio QH - 1 **************** INIZIO ************************");
             var richiesta = _getRichiesta.GetByCodice(query.CodiceRichiesta) ?? _getRichiesta.GetByCodiceRichiesta(query.CodiceRichiesta);
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
+            var sede = _getSedi.GetInfoSede(query.IdSede.First());
 
             var chiamata = new DettaglioChiamata()
             {
-                //Civ_Km = richiesta.Localita.Indirizzo.Split(',')[1],
+                Civ_Km = richiesta.Localita.Civico,
                 Comune = richiesta.Localita.Citta,
                 Prov = richiesta.Localita.Provincia,
                 DataOraChiamata = richiesta.ListaEventi.OfType<Telefonata>().First().Istante,
@@ -64,7 +70,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                 Operatore = $"{operatore.Nome} {operatore.Cognome}",
                 Piano = richiesta.Localita.Piano,
                 Scala = richiesta.Localita.Scala,
-                TitoloDistaccamento = richiesta.Competenze.First().Descrizione
+                TitoloDistaccamento = sede.Result.Descrizione
             };
 
             Log.Error($"Dettaglio QH - 1 **************** CHIAMATA ************************");
@@ -94,8 +100,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.DettaglioRichiesta
                         SiglaMezzo = partenza.Mezzo.Descrizione,
                         TargaMezzo = partenza.Mezzo.Codice,
                         SiglaSquadra = squadra.Codice,
-                        //SchedaCapoPartenza = squadra.Membri?.FirstOrDefault(c => c.CapoPartenza)?.Nominativo,
-                        //OraAss = DateTime.Now
+                        SchedaCapoPartenza = squadra.Membri.Where(m => m.DescrizioneQualifica.ToUpper().Equals("TEAM_LEADER")).Select(m => m.Nominativo?.ToLower()).FirstOrDefault(),
+                        OraAss = richiesta.Eventi.OfType<ComposizionePartenze>().First(p => p.CodicePartenza.Equals(partenza.Codice)).DataOraInserimento,
                     })).ToList()
                 };
 
