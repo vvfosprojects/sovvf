@@ -753,7 +753,7 @@ export class SchedaTelefonataState {
                 ...state.richiestaForm,
                 model: {
                     ...state.richiestaForm.model,
-                    prioritaRichiesta: null
+                    prioritaRichiesta: 3
                 }
             }
         });
@@ -783,7 +783,7 @@ export class SchedaTelefonataState {
                 model: {
                     ...SchedaTelefonataStateDefaults.richiestaForm?.model,
                     operatore: state.richiestaForm?.model?.operatore,
-                    prioritaRichiesta: state.richiestaForm?.model?.prioritaRichiesta,
+                    prioritaRichiesta: 3,
                     stato: state.richiestaForm?.model?.stato,
                     istanteRicezioneRichiesta: state.richiestaForm?.model?.istanteRicezioneRichiesta,
                     esercitazione: false,
