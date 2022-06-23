@@ -215,7 +215,7 @@
                     </ng-template>
                     <!-- COMPETENZE RICHIESTA -->
                     <ng-template
-                            [ngIf]="!loadingCompetenze && (!indirizzoModificato && richiestaModifica?.competenze?.length)">
+                            [ngIf]="!loadingCompetenze && (!indirizzoModificato && richiestaModifica?.competenze?.length && !competenze?.length)">
                         <div class="font-xxlarge">
                             <app-competenza *ngFor="let c of richiestaModifica?.competenze; let i = index"
                                             [competenza]="c" [i]="i">

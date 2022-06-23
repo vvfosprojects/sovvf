@@ -111,9 +111,9 @@
                                 </span>
 
                                 <!-- dettaglio soccorso aereo -->
-                                <span *ngIf="dettaglioSoccorsoAereo" class="nowrap">
+                                <span *ngIf="checkDettaglioSoccorsoAereo()" class="nowrap">
                                     <button class="btn btn-info pl-0 py-0 mr-1"
-                                            style="cursor:pointer" (click)="openDettaglioSoccorsoAereoModal($event)">
+                                            (click)="openDettaglioSoccorsoAereoModal($event)">
                                         <i class="fas fa-helicopter fa-fw ml-2 pl-1" style="color: #f8f9fa"
                                            ngbTooltip="Dettaglio Soccorso Aereo"></i>
                                     </button>
@@ -343,7 +343,8 @@
                                         <!-- Operatore chiamata -->
                                         <ng-container *ngIf="richiesta?.operatore as op">
                                             <h4 class="mb-0"
-                                                [ngbTooltip]="operatoreRegistrazioneChiamata">
+                                                [ngbTooltip]="operatoreRegistrazioneChiamata"
+                                                placement="top">
                                                 <i class="guida fas fa-user fa-fw"></i>
                                                 <i class="guida fas fa-phone-alt fa-fw mr-1"></i>
                                                 {{ op?.nome + ' ' + op?.cognome | truncate: 11 }}

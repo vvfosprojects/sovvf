@@ -12,6 +12,7 @@ import { MergeSchedeContattoState } from '../../../features/home/store/states/sc
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { PermissionFeatures } from '../../enum/permission-features.enum';
 import {
+    ClearFiltriSchedeContatto, ClearListaSchedeContatto,
     ClearSchedaContattoHover,
     GetListaSchedeContatto,
     OpenDettaglioSchedaContatto,
@@ -91,6 +92,8 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.store.dispatch([
+            new ClearFiltriSchedeContatto(),
+            new ClearListaSchedeContatto(),
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
@@ -103,14 +106,14 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
             this.ricerca$.subscribe((ricerca: string) => {
                 if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
-                    this.store.dispatch(new GetListaSchedeContatto());
+                    this.store.dispatch(new GetListaSchedeContatto(null, RangeSchedeContattoEnum.Ultimi30));
                 }
             })
         );
     }
 
     getSchedeContatto(): void {
-        this.store.dispatch(new GetListaSchedeContatto());
+        this.store.dispatch(new GetListaSchedeContatto(null, RangeSchedeContattoEnum.Ultimi30));
         this.subscriptions.add(
             this.schedeContatto$.subscribe((schedeContatto: SchedaContatto[]) => {
                 this.schedeContatto = schedeContatto;
@@ -184,7 +187,7 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
     }
 
     onPageChange(page: number): void {
-        this.store.dispatch(new GetListaSchedeContatto(page));
+        this.store.dispatch(new GetListaSchedeContatto(page, RangeSchedeContattoEnum.Ultimi30));
     }
 
     onSelectTab($event: NgbTabChangeEvent): void {

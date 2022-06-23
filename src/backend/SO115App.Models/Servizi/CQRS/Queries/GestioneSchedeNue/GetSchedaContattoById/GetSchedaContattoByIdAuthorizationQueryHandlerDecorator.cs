@@ -6,29 +6,35 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTriage
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedaContattoById
 {
-    public class GetTriageAuthorization : IQueryAuthorizer<GetTriageQuery, GetTriageResult>
+    internal class GetSchedaContattoByIdAuthorizationQueryHandlerDecorator : IQueryAuthorizer<GetSchedaContattoByIdQuery, GetSchedaContattoByIdResult>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public GetTriageAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public GetSchedaContattoByIdAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(GetTriageQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(GetSchedaContattoByIdQuery query)
         {
-            var user = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
+            var username = _currentUser.Identity.Name;
+            var user = _findUserByUsername.FindUserByUs(username);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreChiamate))
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

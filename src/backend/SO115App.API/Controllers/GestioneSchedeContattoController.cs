@@ -27,6 +27,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedaContattoById;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate;
 using System;
@@ -41,6 +42,7 @@ namespace SO115App.API.Controllers
     {
         private readonly IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> _queryHandler;
         private readonly IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> _queryhandlerSchede;
+        private readonly IQueryHandler<GetSchedaContattoByIdQuery, GetSchedaContattoByIdResult> _queryhandlerSchedaByCodice;
         private readonly IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> _queryhandlerContatoriSchede;
         private readonly ICommandHandler<SetSchedaGestitaCommand> _setGestita;
         private readonly ICommandHandler<MergeSchedeNueCommand> _setMerge;
@@ -52,7 +54,8 @@ namespace SO115App.API.Controllers
             IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> queryhandlerContatoriSchede,
             ICommandHandler<SetSchedaGestitaCommand> setGestita,
             ICommandHandler<MergeSchedeNueCommand> setMerge,
-            ICommandHandler<UndoMergeSchedeNueCommand> undoMergeSchede)
+            ICommandHandler<UndoMergeSchedeNueCommand> undoMergeSchede,
+            IQueryHandler<GetSchedaContattoByIdQuery, GetSchedaContattoByIdResult> queryhandlerSchedaByCodice)
         {
             _queryHandler = queryHandler ?? throw new ArgumentNullException(nameof(_queryHandler));
             _setGestita = setGestita ?? throw new ArgumentNullException(nameof(_setGestita));
@@ -60,6 +63,7 @@ namespace SO115App.API.Controllers
             _undoMergeSchede = undoMergeSchede ?? throw new ArgumentNullException(nameof(_undoMergeSchede));
             _queryhandlerSchede = queryhandlerSchede;
             _queryhandlerContatoriSchede = queryhandlerContatoriSchede;
+            _queryhandlerSchedaByCodice = queryhandlerSchedaByCodice;
         }
 
         /// <summary>
@@ -119,11 +123,15 @@ namespace SO115App.API.Controllers
         [ProducesResponseType(typeof(string), 400)]
         public async Task<IActionResult> Get(string codice)
         {
-            var query = new GetSchedeContattoQuery() { CodiceSede = Request.Headers["codiceSede"].ToArray()[0] };
+            var query = new GetSchedaContattoByIdQuery()
+            {
+                Codice = codice,
+                CodiceSede = Request.Headers["codiceSede"]
+            };
 
             try
             {
-                return Ok(_queryhandlerSchede.Handle(query).SchedeContatto.FirstOrDefault(s => s.CodiceScheda == codice));
+                return Ok(_queryhandlerSchedaByCodice.Handle(query));
             }
             catch (Exception ex)
             {

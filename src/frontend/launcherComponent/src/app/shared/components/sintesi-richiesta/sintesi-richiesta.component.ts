@@ -87,7 +87,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     methods = new HelperSintesiRichiesta();
     live = true;
-    dettaglioSoccorsoAereo: boolean;
 
     // Enum
     StatoRichiesta = StatoRichiesta;
@@ -109,7 +108,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
-        this.checkDettaglioSoccorsoAereo();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -147,12 +145,13 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         }
     }
 
-    checkDettaglioSoccorsoAereo(): void {
-        if (this.richiesta.eventi && this.richiesta.eventi.note) {
-            const afmAccettato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Attesa assegnazione SOCAV'));
-            const afmAnnullato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Annullato'));
-            this.dettaglioSoccorsoAereo = afmAccettato.length > afmAnnullato.length;
+    checkDettaglioSoccorsoAereo(): boolean {
+        if (this.richiesta.eventi) {
+            const afmAccettato = this.richiesta.eventi.filter(x => x.note?.includes('AFM accettato: Attesa assegnazione SOCAV'));
+            const afmAnnullato = this.richiesta.eventi.filter(x => x.note?.includes('AFM accettato: Annullato'));
+            return afmAccettato.length > afmAnnullato.length;
         }
+        return false;
     }
 
     fissaClick(richiesta: SintesiRichiesta): void {

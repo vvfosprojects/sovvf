@@ -18,21 +18,6 @@
                 {{ 'Stai inserendo una nuova chiamata' }}
             </h4>
         </div>
-        <div class="float-left">
-            <ng-container *ngIf="!testInserimento.active">
-                <button class="btn btn-outline-primary btn-no-hover ml-4"
-                        (click)="startTestInserimento()">
-                    {{ 'Avvia test inserimento' | uppercase }}
-                </button>
-            </ng-container>
-            <ng-container *ngIf="testInserimento.active">
-                <button class="btn btn-outline-primary btn-no-hover ml-4"
-                        (click)="stopTestInserimento()">
-                    {{ 'Stop test inserimento' | uppercase }}
-                   - {{ (testInserimento.maxCount - testInserimento.count) >= 0 ? (testInserimento.maxCount - testInserimento.count) : 0 }}
-                </button>
-            </ng-container>
-        </div>
     </div>
 </ng-template>
 <ng-template [ngIf]="!!richiestaModifica">

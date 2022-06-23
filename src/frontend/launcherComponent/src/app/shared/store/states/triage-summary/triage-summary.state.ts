@@ -63,11 +63,15 @@ export class TriageSummaryState {
 
     @Action(SetSchedaContattoTriageSummary)
     setSchedaContattoTriageSummary({ patchState, dispatch }: StateContext<TriageSummaryStateModel>, action: SetSchedaContattoTriageSummary): void {
-        this.schedeContattoService.getSchedaContatto(action.codScheda).subscribe((schedaContatto: SchedaContatto) => {
-            dispatch(new SetSchedaContattoTelefonata(schedaContatto));
-            patchState({
-                schedaContatto
-            });
+        this.schedeContattoService.getSchedaContatto(action.codScheda).subscribe((res: { schedaContatto: SchedaContatto }) => {
+            if (res?.schedaContatto) {
+                dispatch(new SetSchedaContattoTelefonata(res.schedaContatto));
+                patchState({
+                    schedaContatto: res.schedaContatto
+                });
+            } else {
+                console.error('[getSchedaContatto] il server non ha risposto');
+            }
         });
     }
 }
