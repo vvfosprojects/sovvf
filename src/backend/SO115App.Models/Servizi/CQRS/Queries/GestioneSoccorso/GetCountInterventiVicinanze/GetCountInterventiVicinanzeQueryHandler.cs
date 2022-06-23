@@ -29,9 +29,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterven
 
             var lstPinNodo = competenze.Select(c => new PinNodo(c, true)).ToHashSet();
 
-            if (query.Competenze[0].Contains("."))
+            if (competenze[0].Contains("."))
             {
-                var nodoComando = new PinNodo(query.Competenze[0].Split('.')[0] + ".1000", true);
+                var nodoComando = new PinNodo(competenze[0].Split('.')[0] + ".1000", true);
                 lstPinNodo.Add(nodoComando);
             }
 
