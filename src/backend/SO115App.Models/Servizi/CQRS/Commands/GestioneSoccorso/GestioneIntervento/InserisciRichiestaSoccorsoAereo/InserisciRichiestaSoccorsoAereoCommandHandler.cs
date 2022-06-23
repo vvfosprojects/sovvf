@@ -36,7 +36,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             #region AFM Servizio
 
             //COMPONGO IL MODELLO PER AFM
-            var codiceDistaccamentoCompetenza = _getComeptenze.GetCompetenzeByCoordinateIntervento(new Coordinate((double)command.RichiestaSoccorsoAereo.lat, (double)command.RichiestaSoccorsoAereo.lng), command.CodiciSede[0].Split('.')[0])[0];
+            var competenze = _getComeptenze.GetCompetenzeByCoordinateIntervento(new Coordinate((double)command.RichiestaSoccorsoAereo.lat, (double)command.RichiestaSoccorsoAereo.lng), command.CodiciSede[0].Split('.')[0]);
+            var codiceDistaccamentoCompetenza = competenze.Length > 0 ? competenze[0] : command.CodiciSede[0];
             var distaccamentoCompetenza = _getDistaccamento.Get(codiceDistaccamentoCompetenza);
 
             command.RichiestaSoccorsoAereo.datetime = date;
