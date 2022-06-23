@@ -16,7 +16,6 @@ import {
     ClearStatoChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
-    InsertChiamataTest,
     MarkerChiamata,
     ReducerSchedaTelefonata,
     ResetChiamata,
@@ -512,56 +511,6 @@ export class SchedaTelefonataState {
     setFormSubmitted({ patchState }: StateContext<SchedaTelefonataStateModel>, action: SetFormSubmitted): void {
         patchState({
             submitted: action.value
-        });
-    }
-
-    @Action(InsertChiamataTest)
-    insertChiamataTest({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
-        dispatch(new StartLoadingSchedaRichiesta());
-        const utenteLoggato = this.store.selectSnapshot(AuthState.currentUser);
-        const turno = this.store.selectSnapshot(TurnoState.turnoCalendario).corrente;
-        const tipologie = this.store.selectSnapshot(TipologieState.tipologie);
-        const chiamata = new SintesiRichiesta(
-            null,
-            null,
-            null,
-            utenteLoggato,
-            new Date(),
-            StatoRichiesta.Chiamata,
-            3,
-            [tipologie[0]],
-            null,
-            'Incendio normale (generico)',
-            { telefono: '3518103364', nominativo: 'SANTE SALVATI' },
-            utenteLoggato.sede,
-            [
-                utenteLoggato.sede
-            ],
-            [utenteLoggato.sede.codice],
-            null,
-            null,
-            null,
-            false,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            AzioneChiamataEnum.MettiInCoda,
-            turno,
-            null,
-            null,
-            null,
-            null,
-            null,
-            false,
-            null,
-            null
-        );
-
-        this.chiamataService.insertChiamata(chiamata).subscribe((chiamataResult: SintesiRichiesta) => {
         });
     }
 

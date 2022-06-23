@@ -31,7 +31,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         private readonly IGetStatoSquadra _getStatoSquadre;
         private readonly IGetTurno _getTurno;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
-        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
+        //private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
 
         private readonly List<MessaggioPosizione> pFlotta = new();
 
@@ -45,106 +45,99 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             _getStatoSquadre = getStatoSquadre;
             _getTurno = getTurno;
             _getPosizioneFlotta = getPosizioneFlotta;
-            _getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
+            //_getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
 
             pFlotta = _getPosizioneFlotta.Get(0).Result;
         }
 
         public async Task<List<PreAccoppiato>> GetAsync(PreAccoppiatiQuery query)
         {
-            string codiceTurno = _getTurno.Get().Codice.Substring(0, 1);
+            var lstProvinceSedi = query.CodiceSede.Select(sede => sede.Split('.')[0]).Distinct().ToList();
 
-            var lstStatoMezzi = _getStatoMezzi.Get(query.CodiceSede);
-            var lstStatoSquadre = _getStatoSquadre.Get(codiceTurno, query.CodiceSede.ToList());
-
-            var lstProvinceSedi = query.CodiceSede.Select(sede => sede.Split('.')[0]).Distinct();
-            var lstSquadreWS = lstProvinceSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede).Result).ToList();
+            var codiceTurno = Task.Run(() => _getTurno.Get().Codice.Substring(0, 1));
+            var lstStatoMezzi = Task.Run(() => _getStatoMezzi.Get(query.CodiceSede));
+            var lstStatoSquadre = Task.Run(async () => _getStatoSquadre.Get(await codiceTurno, query.CodiceSede.ToList()));
+            var lstSquadreWS = lstProvinceSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede)).Where(s => s.Result != null).ToList();
 
             var lstSquadre = new List<SquadraOpService>();
 
-            var result = new List<PreAccoppiato>();
-
-            if (lstSquadreWS[0] != null)
+            if (query.Filtri?.Turno != null)
             {
-                if (query.Filtri.Turno != null)
-                {
-                    if (query.Filtri.Turno.Equals("0"))
-                        lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Precedente.Squadre).ToList();
-                    else if (query.Filtri.Turno.Equals("1"))
-                        lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Successivo.Squadre).ToList();
-                    else
-                        lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Attuale.Squadre).ToList();
-                }
+                if (query.Filtri.Turno.Equals("0"))
+                    lstSquadre = lstSquadreWS.SelectMany(shift => shift.Result?.Precedente?.Squadre).ToList();
+                else if (query.Filtri.Turno.Equals("1"))
+                    lstSquadre = lstSquadreWS.SelectMany(shift => shift.Result?.Successivo?.Squadre).ToList();
                 else
+                    lstSquadre = lstSquadreWS.SelectMany(shift => shift.Result?.Attuale?.Squadre).ToList();
+            }
+            else
+            {
+                lstSquadre = lstSquadreWS.SelectMany(shift => shift.Result?.Attuale?.Squadre).ToList();
+            }
+
+            var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false && !s.spotType.Equals("MODULE")).ToList();
+
+            if (!lstSquadrePreaccoppiate.Any())
+                return new List<PreAccoppiato>(); 
+
+            var lstMezziPreaccoppiati = lstSquadrePreaccoppiate.SelectMany(s => _getMezzi.GetInfo(s.CodiciMezziPreaccoppiati.ToList()).Result).ToList();
+            
+            var result = await Task.Run(() => // MAPPING
+            {
+                var lstSquadreMezzo = new List<PreAccoppiato>();
+
+                foreach (var squadraPreaccoppiata in lstSquadrePreaccoppiate)
                 {
-                    lstSquadre = lstSquadreWS.SelectMany(shift => shift?.Attuale.Squadre).ToList();
+                    foreach (var mezzoPreaccoppiato in squadraPreaccoppiata.CodiciMezziPreaccoppiati)
+                    {
+                        var mezzo = lstMezziPreaccoppiati.First(m => m.CodiceMezzo.Equals(mezzoPreaccoppiato));
+
+                        var preaccoppiato = new PreAccoppiato()
+                        {
+                            CodiceMezzo = mezzoPreaccoppiato,
+                            Appartenenza = mezzo.CodiceDistaccamento,
+                            Squadre = lstSquadrePreaccoppiate.Where(s => s.CodiciMezziPreaccoppiati?.Contains(mezzoPreaccoppiato) ?? false).Select(s => new API.Models.Classi.Composizione.Squadra()
+                            {
+                                Codice = s.Codice,
+                                Nome = s.Codice,
+                                Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(lstStatoSquadre.Result?.FirstOrDefault(ss => ss.IdSquadra.Equals($"{s.Codice}_{s.TurnoAttuale}"))?.StatoSquadra ?? Costanti.MezzoInSede),
+                                Turno = s.TurnoAttuale,
+                                Membri = lstSquadrePreaccoppiate.FirstOrDefault(sq => sq.Codice.Equals(s.Codice))?.Membri.Select(m => new Componente()
+                                {
+                                    CodiceFiscale = m.CodiceFiscale,
+                                    DescrizioneQualifica = m.Ruolo,
+                                    Nominativo = $"{m.FirstName} {m.LastName}",
+                                    Ruolo = m.Ruolo
+                                }).ToList(),
+                            }).ToList(),
+                            StatoMezzo = lstStatoMezzi.Result.FirstOrDefault(m => squadraPreaccoppiata.CodiciMezziPreaccoppiati?.Any(c => c.Equals(m.CodiceMezzo)) ?? false)?.StatoOperativo ?? Costanti.MezzoInSede,
+
+                            Distaccamento = mezzo.DescrizioneAppartenenza,
+                            DescrizioneMezzo = mezzo.Descrizione,
+                            GenereMezzo = mezzo.Genere,
+
+                            Coordinate = default,
+                            Km = null,
+                            TempoPercorrenza = null
+                        };
+
+                        if(!lstSquadreMezzo.Select(s => s.CodiceMezzo).Contains(preaccoppiato.CodiceMezzo))
+                            lstSquadreMezzo.Add(preaccoppiato);
+                    }
                 }
 
-                var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && s.CodiciMezziPreaccoppiati.Length > 0 && !s.spotType.Equals("MODULE")).Distinct().ToList();
-                var codMezziPreaccoppiati = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati != null && s.CodiciMezziPreaccoppiati.Length > 0 && !s.spotType.Equals("MODULE"))
-                    .SelectMany(s => s.CodiciMezziPreaccoppiati).Distinct().ToList();
-                var lstMezziPreaccoppiati = _getMezzi.GetBySedi(query.CodiceSede).Result;
-                
-                result = await Task.Run(() => // MAPPING
-                {
-                    var lstSquadreMezzo = new List<PreAccoppiato>();
+                return lstSquadreMezzo;
+            })
+            .ContinueWith(preaccoppiati => preaccoppiati.Result.Where(p => // FILTRAGGIO
+            {
+                var distaccamento = query.Filtri?.CodiceDistaccamento?.Contains(p.Appartenenza) ?? true;
 
-                    foreach (var squadraPreaccoppiata in lstSquadrePreaccoppiate)
-                    {
-                        foreach (var mezzoPreaccoppiato in squadraPreaccoppiata.CodiciMezziPreaccoppiati)
-                        {
-                            var mezzo = lstMezziPreaccoppiati.FirstOrDefault(m => m.Codice.Equals(mezzoPreaccoppiato));
+                var statoMezzo = query.Filtri?.StatoMezzo?.Contains(p.StatoMezzo) ?? true;
 
-                            if (mezzo == null)
-                                continue;
+                var genereMezzo = query.Filtri?.TipoMezzo?.Contains(p.GenereMezzo) ?? true;
 
-                            var preaccoppiato = new PreAccoppiato()
-                            {
-                                CodiceMezzo = mezzoPreaccoppiato,
-                                Appartenenza = mezzo?.Distaccamento?.Codice,
-                                Squadre = lstSquadrePreaccoppiate.Where(s => s.CodiciMezziPreaccoppiati?.Contains(mezzoPreaccoppiato) ?? false).Select(s => new API.Models.Classi.Composizione.Squadra()
-                                {
-                                    Codice = s.Codice,
-                                    Nome = s.Codice,
-                                    Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(lstStatoSquadre?.FirstOrDefault(ss => ss.IdSquadra.Equals($"{s.Codice}_{s.TurnoAttuale}"))?.StatoSquadra ?? Costanti.MezzoInSede),
-                                    Turno = s.TurnoAttuale,
-                                    Membri = lstSquadrePreaccoppiate.FirstOrDefault(sq => sq.Codice.Equals(s.Codice))?.Membri.Select(m => new Componente()
-                                    {
-                                        CodiceFiscale = m.CodiceFiscale,
-                                        DescrizioneQualifica = m.Ruolo,
-                                        Nominativo = $"{m.FirstName} {m.LastName}",
-                                        Ruolo = m.Ruolo
-                                    }).ToList(),
-                                }).ToList(),
-                                StatoMezzo = lstStatoMezzi.FirstOrDefault(m => squadraPreaccoppiata.CodiciMezziPreaccoppiati?.Any(c => c.Equals(m.CodiceMezzo)) ?? false)?.StatoOperativo ?? Costanti.MezzoInSede,
-
-                                Distaccamento = mezzo?.Distaccamento?.Descrizione,
-                                Coordinate = mezzo.Coordinate,
-                                DescrizioneMezzo = mezzo.Descrizione,
-                                GenereMezzo = mezzo.Genere,
-
-                                Km = null,
-                                TempoPercorrenza = null
-                            };
-
-                            if(!lstSquadreMezzo.Select(s => s.CodiceMezzo).Contains(preaccoppiato.CodiceMezzo))
-                                lstSquadreMezzo.Add(preaccoppiato);
-                        }
-                    }
-
-                    return lstSquadreMezzo.Distinct();
-                })
-                .ContinueWith(preaccoppiati => preaccoppiati.Result.Where(p => // FILTRAGGIO
-                {
-                    var distaccamento = query.Filtri?.CodiceDistaccamento?.Contains(p.Appartenenza) ?? true;
-
-                    var statoMezzo = query.Filtri?.StatoMezzo?.Contains(p.StatoMezzo) ?? true;
-
-                    var genereMezzo = query.Filtri?.TipoMezzo?.Contains(p.GenereMezzo) ?? true;
-
-                    return distaccamento && statoMezzo && genereMezzo;
-                }).ToList());
-            }
+                return distaccamento && statoMezzo && genereMezzo;
+            }).ToList());
 
             return result;
         }

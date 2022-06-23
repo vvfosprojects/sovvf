@@ -1123,7 +1123,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             stops: new FeatureSet({
                 features: [pointPartenzaGraphic, pointDestinazioneGraphic]
             }),
-            travelMode: this.travelModeService.getTravelModeByGenereMezzo(direction.genereMezzo)
+            // travelMode: this.travelModeService.getTravelModeByGenereMezzo(direction.genereMezzo)
         });
 
         routeTask.solve(routeParams).then((data: RouteResult) => {

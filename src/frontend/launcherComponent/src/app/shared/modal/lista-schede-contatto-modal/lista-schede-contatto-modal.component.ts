@@ -12,6 +12,7 @@ import { MergeSchedeContattoState } from '../../../features/home/store/states/sc
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { PermissionFeatures } from '../../enum/permission-features.enum';
 import {
+    ClearFiltriSchedeContatto, ClearListaSchedeContatto,
     ClearSchedaContattoHover,
     GetListaSchedeContatto,
     OpenDettaglioSchedaContatto,
@@ -91,6 +92,8 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.store.dispatch([
+            new ClearFiltriSchedeContatto(),
+            new ClearListaSchedeContatto(),
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);

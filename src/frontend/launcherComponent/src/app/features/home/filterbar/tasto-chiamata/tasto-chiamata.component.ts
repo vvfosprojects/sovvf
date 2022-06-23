@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { defineChiamataIntervento } from '../../../../shared/helper/function-richieste';
-import { InsertChiamataTest, StopLoadingSchedaRichiesta } from '../../store/actions/form-richiesta/scheda-telefonata.actions';
-import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-tasto-chiamata',
@@ -29,7 +27,7 @@ export class TastoChiamataComponent {
         count: 0
     };
 
-    constructor(private store: Store) {
+    constructor() {
         this.defaultColorButtonChiamata = this.colorButtonChiamata;
     }
 
@@ -62,30 +60,5 @@ export class TastoChiamataComponent {
             default:
                 return 'la richiesta';
         }
-    }
-
-    startTestInserimento(): void {
-        // Parametri modificabili
-        this.testInserimento.maxCount = 500;
-        this.testInserimento.msInterval = 5000;
-        // Fine Parametri modificabili
-
-        this.testInserimento.active = true;
-        this.testInserimento.count = 0;
-        this.testInserimento.interval = setInterval(() => {
-            if (this.testInserimento.count <= this.testInserimento.maxCount) {
-                this.store.dispatch(new InsertChiamataTest());
-                this.testInserimento.count = this.testInserimento.count + 1;
-            } else {
-                this.stopTestInserimento();
-            }
-        }, this.testInserimento.msInterval);
-    }
-
-    stopTestInserimento(): void {
-        this.store.dispatch(new StopLoadingSchedaRichiesta());
-        this.testInserimento.active = false;
-        this.testInserimento.count = 0;
-        clearInterval(this.testInserimento.interval);
     }
 }
