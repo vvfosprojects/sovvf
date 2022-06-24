@@ -3,12 +3,16 @@
         {{ 'INVIO DELLA RICHIESTA AL SISTEMA AFM' }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            [disabled]="loading"
             (click)="chiudiModalSoccorsoAereo('ko')">
         <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 
 <div class="modal-body pb-0">
+    <ng-container *ngIf="loading">
+        <app-partial-loader></app-partial-loader>
+    </ng-container>
     <div class="row pt-4" style="justify-content: center; font-size: x-large">
         <div class="col-7" style="text-align: center">
             <span style="font-size: 130%">Seleziona le Azioni Richieste</span>
@@ -68,6 +72,7 @@
 <div class="modal-footer d-flex align-items-center justify-content-between">
     <button type="button"
             class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            [disabled]="loading"
             (click)="chiudiModalSoccorsoAereo('ko')">
         {{ 'Chiudi' | uppercase }}
     </button>

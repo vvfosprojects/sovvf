@@ -8,6 +8,8 @@ import { Utente } from '../../model/utente.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import { makeCopy } from '../../helper/function-generiche';
+import { ShowToastr } from '../../store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../enum/toastr';
 
 @Component({
     selector: 'app-soccorso-aereo-modal',
@@ -26,8 +28,9 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
     subscription: Subscription = new Subscription();
     tipologiaChecked = false;
     motivazione: string;
-    submitted: boolean;
 
+    loading: boolean;
+    submitted: boolean;
     error: string;
 
     constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
@@ -62,9 +65,14 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
                 lat: this.richiesta.localita.coordinate.latitudine,
                 lng: this.richiesta.localita.coordinate.longitudine,
             };
+            this.loading = true;
+            this.error = null;
             this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
+                this.loading = false;
+                this.store.dispatch(new ShowToastr(ToastrType.Success, 'Richiesta Soccorso Aereo', 'Richiesta avvenuta con successo'));
                 this.modal.close({ status: 'ok' });
             }, (errorMsg: string) => {
+                this.loading = false;
                 this.submitted = false;
                 this.error = errorMsg;
             });
