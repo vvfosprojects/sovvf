@@ -10,14 +10,12 @@ namespace SO115App.Models.Classi.Soccorso.Eventi
     {
         public string Note { get; set; }
         public string Targa { get; set; }
-        public string CodicePartenza { get; set; }
 
         public AnnullamentoRichiestaSoccorsoAereo(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string note, string targaVeivolo, string codicePartenza)
             : base(richiesta, targaVeivolo, istante, codiceFonte, "AnnullamentoSoccorsoAereo", codicePartenza)
         {
             Note = note;
             Targa = targaVeivolo;
-            CodicePartenza = codicePartenza;
         }
 
         public override IStatoMezzo Visit(ICanAcceptVisitorStatoMezzo stato)
