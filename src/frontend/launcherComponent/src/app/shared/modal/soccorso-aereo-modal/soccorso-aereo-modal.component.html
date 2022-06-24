@@ -57,10 +57,10 @@
             <input type="text" class="w-75" style="height: 48px; vertical-align: bottom; outline: none" disabled>
         </div>
     </div>
-    <div *ngIf="inserimentoFallito" class="row pb-1">
+    <div *ngIf="error" class="row pb-1">
         <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">
-            Richiesta di inserimento richiesta AFM non riuscita.
-            <span (click)="inserimentoFallito = false" style="float: right; cursor: pointer;">X</span>
+            {{ error }}
+            <span (click)="error = null" style="float: right; cursor: pointer;">X</span>
         </div>
     </div>
 </div>
