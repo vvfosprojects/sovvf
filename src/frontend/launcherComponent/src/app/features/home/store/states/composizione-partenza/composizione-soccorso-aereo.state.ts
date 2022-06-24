@@ -52,7 +52,7 @@ export interface DettaglioAFM {
             regMark: string;
             distance: number,
             estimatedFlightTime: number,
-            rescueCategories: string;
+            rescueCategories: { categoryCode: string, categoryName: string }[];
         }
         department: string;
         landingDatetime: string;

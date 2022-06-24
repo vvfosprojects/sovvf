@@ -29,17 +29,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             //Comunico al servizio esterno
             var result = _annullaRichiestaSoccorsoAereo.Annulla(command.Annullamento, MapRequestKeyAFM.MapForAFM(command.CodiceRichiesta));
 
-            #endregion
+            #endregion AFM Servizio
 
             command.ResponseAFM = result;
 
             if (!result.IsError()) //OK ANNULLAMENTO
             {
-                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento("Annullamento"), command.ResponseAFM.GetTargaEvento(), result.locality);
+                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento("Annullamento"), command.ResponseAFM.GetTargaEvento(), result.Locality);
             }
             else //ERRORE ANNULLAMENTO
             {
-                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento("Annullamento"), command.ResponseAFM.GetTargaEvento(), result.locality);
+                new AnnullamentoRichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, command.ResponseAFM.GetNoteEvento("Annullamento"), command.ResponseAFM.GetTargaEvento(), result.Locality);
             }
 
             //Salvo richiesta sul db
