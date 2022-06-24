@@ -22,6 +22,10 @@ export class CompPartenzaService {
     constructor(private http: HttpClient) {
     }
 
+    // getTipologieSoccorso(): Observable<any[]> {
+    //     return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetTipologie`);
+    // }
+
     getCategorieSoccorso(): Observable<any[]> {
         return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetCategorie`);
     }

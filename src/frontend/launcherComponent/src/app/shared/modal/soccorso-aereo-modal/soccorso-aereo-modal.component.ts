@@ -10,6 +10,7 @@ import { CompPartenzaService } from '../../../core/service/comp-partenza-service
 import { makeCopy } from '../../helper/function-generiche';
 import { ShowToastr } from '../../store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../enum/toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-soccorso-aereo-modal',
@@ -21,7 +22,7 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
 
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     utente: Utente;
-    @Select(ComposizioneSoccorsoAereoState.azioniRichieste) azioniRichiesta$: Observable<boolean>;
+    @Select(ComposizioneSoccorsoAereoState.azioniRichieste) azioniRichiesta$: Observable<any>;
     azioniRichiesta: any[];
 
     richiesta: SintesiRichiesta;
@@ -31,7 +32,7 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
 
     loading: boolean;
     submitted: boolean;
-    error: string;
+    errorMsg: string;
 
     constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
         this.getUtente();
@@ -66,19 +67,23 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
                 lng: this.richiesta.localita.coordinate.longitudine,
             };
             this.loading = true;
-            this.error = null;
+            this.setErrorMsg();
             this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
                 this.loading = false;
                 this.store.dispatch(new ShowToastr(ToastrType.Success, 'Richiesta Soccorso Aereo', 'Richiesta avvenuta con successo'));
                 this.modal.close({ status: 'ok' });
-            }, (errorMsg: string) => {
+            }, (error: HttpErrorResponse) => {
                 this.loading = false;
                 this.submitted = false;
-                this.error = errorMsg;
+                this.setErrorMsg(error.error);
             });
         } else {
             this.modal.close({ status: 'ko' });
         }
+    }
+
+    setErrorMsg(errorMsg?: string): void {
+        this.errorMsg = errorMsg;
     }
 
     getUtente(): void {

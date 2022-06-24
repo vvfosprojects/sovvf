@@ -9,6 +9,8 @@ import { CompPartenzaService } from '../../../core/service/comp-partenza-service
 import {
     ComposizioneSoccorsoAereoState, DettaglioAFM, EventiAFM
 } from '../../../features/home/store/states/composizione-partenza/composizione-soccorso-aereo.state';
+import { ShowToastr } from '../../store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../enum/toastr';
 
 @Component({
     selector: 'app-dettaglio-soccorso-aereo-modal',
@@ -86,6 +88,7 @@ export class DettaglioSoccorsoAereoModalComponent implements OnDestroy {
                 description: this.motivazione,
             };
             this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
+                this.store.dispatch(new ShowToastr(ToastrType.Success, 'Modifica Motivazione Soccorso Aereo', 'Modifica della motivazione avvenuta con successo'));
                 this.modal.close({ status: 'ok' });
             }, () => {
                 this.submittedModifica = false;
