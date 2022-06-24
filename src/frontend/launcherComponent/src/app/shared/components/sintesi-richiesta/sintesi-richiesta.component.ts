@@ -336,7 +336,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         let modalOptions;
         if (open) {
             modalOptions = {
-                windowClass: '',
+                windowClass: 'xlModal modal-holder',
                 backdrop: 'static',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,

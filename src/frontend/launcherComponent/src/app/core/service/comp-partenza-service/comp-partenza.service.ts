@@ -7,14 +7,11 @@ import { ConfermaPartenze } from '../../../features/home/composizione-partenza/i
 import { FiltriComposizione } from 'src/app/features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ListaComposizioneVeloce } from '../../../shared/interface/lista-composizione-veloce-interface';
 
-
 const BASE_URL = environment.baseUrl;
 const API_URL_SOCCORSO_AEREO = BASE_URL + environment.apiUrl.gestioneSoccorsoAereo;
 const API_URL_PREACCOPPIATI = BASE_URL + environment.apiUrl.composizione.preaccoppiati;
-// const API_URL_AVANZATA = BASE_URL + environment.apiUrl.composizione.avanzata;
 const API_URL_AVANZATA_SQUADRE = BASE_URL + environment.apiUrl.composizione.squadre;
 const API_URL_AVANZATA_MEZZI = BASE_URL + environment.apiUrl.composizione.mezzi;
-// const API_URL_PRENOTAZIONE = BASE_URL + environment.apiUrl.composizione.prenotazione;
 const API_URL_CONFERMA_PARTENZA = BASE_URL + environment.apiUrl.composizione.confermaPartenze;
 
 @Injectable({
@@ -25,22 +22,20 @@ export class CompPartenzaService {
     constructor(private http: HttpClient) {
     }
 
+    // getTipologieSoccorso(): Observable<any[]> {
+    //     return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetTipologie`);
+    // }
+
     getCategorieSoccorso(): Observable<any[]> {
         return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetCategorie`);
     }
 
-    /*
-    getTipologieSoccorso(): Observable<any[]> {
-      return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetTipologie`);
-    }
-    */
-
-    getDettaglioSoccorsoAereo(codRichiesta: any): Observable<any[]> {
-        return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetInfo?requestKey=${codRichiesta.codRichiesta}`);
+    getDettaglioSoccorsoAereo(codRichiesta: string): Observable<any[]> {
+        return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetInfo?requestKey=${codRichiesta}`);
     }
 
-    getEventiSoccorsoAereo(codRichiesta: any): Observable<any[]> {
-        return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetStorico?requestKey=${codRichiesta.codRichiesta}`);
+    getEventiSoccorsoAereo(codRichiesta: string): Observable<any[]> {
+        return this.http.get<any[]>(`${API_URL_SOCCORSO_AEREO}/GetStorico?requestKey=${codRichiesta}`);
     }
 
     addSoccorsoAereo(obj: any): Observable<any> {
@@ -62,14 +57,6 @@ export class CompPartenzaService {
     getMezziComposizioneAvanzata(obj: FiltriComposizione): Observable<MezziComposizioneAvanzata> {
         return this.http.post<MezziComposizioneAvanzata>(API_URL_AVANZATA_MEZZI, obj);
     }
-
-    // setMezzoPrenotato(mezzoPrenotatoObj: any): Observable<any> {
-    //     return this.http.post(`${API_URL_PRENOTAZIONE}/PrenotaMezzo`, mezzoPrenotatoObj);
-    // }
-
-    // removeMezzoPrenotato(mezzoPrenotatoObj: any): Observable<any> {
-    //     return this.http.post(`${API_URL_PRENOTAZIONE}/SbloccaMezzo`, mezzoPrenotatoObj);
-    // }
 
     confermaPartenze(partenze: ConfermaPartenze): Observable<any> {
         return this.http.post(API_URL_CONFERMA_PARTENZA, partenze);
