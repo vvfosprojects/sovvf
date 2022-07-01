@@ -5,33 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8cccd0a9-d7ab-4329-8c71-c7cc1de877c3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/manuale.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/manuale.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/.nojekyll" beforeDir="false" afterPath="$PROJECT_DIR$/book/.nojekyll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/404.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/FontAwesome/css/font-awesome.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/FontAwesome/css/font-awesome.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/FontAwesome/fonts/fontawesome-webfont.svg" beforeDir="false" afterPath="$PROJECT_DIR$/book/FontAwesome/fonts/fontawesome-webfont.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/ayu-highlight.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/ayu-highlight.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/book.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/book.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/clipboard.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/clipboard.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/css/chrome.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/css/chrome.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/css/general.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/css/general.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/css/print.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/css/print.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/css/variables.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/css/variables.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/elasticlunr.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/elasticlunr.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/favicon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/book/favicon.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/fonts/OPEN-SANS-LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/book/fonts/OPEN-SANS-LICENSE.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/fonts/SOURCE-CODE-PRO-LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/book/fonts/SOURCE-CODE-PRO-LICENSE.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/fonts/fonts.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/fonts/fonts.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/highlight.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/highlight.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/highlight.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/highlight.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/mark.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/mark.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/print.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/print.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/searcher.js" beforeDir="false" afterPath="$PROJECT_DIR$/book/searcher.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/tomorrow-night.css" beforeDir="false" afterPath="$PROJECT_DIR$/book/tomorrow-night.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/users-management/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/users-management/edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/users-management/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/users-management/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book/users-management/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/book/users-management/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/homepage/img/sganciamento.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/homepage/img/sganciamento.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/homepage/img/sganciamentoDettaglio.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/homepage/img/sganciamentoDettaglio.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/homepage/sganciamento.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/homepage/sganciamento.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,20 +31,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/micheledragonetti/sovvf/doc/manuale",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\micheledragonetti\sovvf\doc\manuale\src\offices-settings" />
@@ -84,6 +59,7 @@
       <workItem from="1643109107005" duration="8000" />
       <workItem from="1643109127328" duration="48000" />
       <workItem from="1643212354080" duration="669000" />
+      <workItem from="1656683852407" duration="905000" />
     </task>
     <servers />
   </component>
