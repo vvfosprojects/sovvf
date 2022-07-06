@@ -175,6 +175,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             Codice = m.CodiceMezzo,
                             Descrizione = m.Descrizione,
                             Genere = m.Genere,
+                            Sigla = m.Sigla,
+                            Modello = m.Modello,
                             Distaccamento = new Sede(m.DescrizioneAppartenenza),
                             Stato = lstStatiMezzi.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
                         }
