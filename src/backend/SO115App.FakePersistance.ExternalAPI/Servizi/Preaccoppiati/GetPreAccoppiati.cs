@@ -78,10 +78,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false && !s.spotType.Equals("MODULE")).ToList();
 
             if (!lstSquadrePreaccoppiate.Any())
-                return new List<PreAccoppiato>(); 
+                return new List<PreAccoppiato>();
 
             var lstMezziPreaccoppiati = lstSquadrePreaccoppiate.SelectMany(s => _getMezzi.GetInfo(s.CodiciMezziPreaccoppiati.ToList()).Result).ToList();
-            
+
             var result = await Task.Run(() => // MAPPING
             {
                 var lstSquadreMezzo = new List<PreAccoppiato>();
@@ -102,6 +102,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                                 Nome = s.Codice,
                                 Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(lstStatoSquadre.Result?.FirstOrDefault(ss => ss.IdSquadra.Equals($"{s.Codice}_{s.TurnoAttuale}"))?.StatoSquadra ?? Costanti.MezzoInSede),
                                 Turno = s.TurnoAttuale,
+                                DiEmergenza = s.Emergenza,
                                 Membri = lstSquadrePreaccoppiate.FirstOrDefault(sq => sq.Codice.Equals(s.Codice))?.Membri.Select(m => new Componente()
                                 {
                                     CodiceFiscale = m.CodiceFiscale,
@@ -115,13 +116,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                             Distaccamento = mezzo.DescrizioneAppartenenza,
                             DescrizioneMezzo = mezzo.Descrizione,
                             GenereMezzo = mezzo.Genere,
-
+                            Sigla = mezzo.Sigla,
+                            Modello = mezzo.Modello,
                             Coordinate = default,
                             Km = null,
                             TempoPercorrenza = null
                         };
 
-                        if(!lstSquadreMezzo.Select(s => s.CodiceMezzo).Contains(preaccoppiato.CodiceMezzo))
+                        if (!lstSquadreMezzo.Select(s => s.CodiceMezzo).Contains(preaccoppiato.CodiceMezzo))
                             lstSquadreMezzo.Add(preaccoppiato);
                     }
                 }

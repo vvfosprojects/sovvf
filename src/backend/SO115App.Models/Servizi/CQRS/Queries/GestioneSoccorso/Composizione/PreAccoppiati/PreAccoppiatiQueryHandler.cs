@@ -52,23 +52,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
 
-            //var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            //var pinNodi = new List<PinNodo>();
-
-            //foreach (var sede in query.CodiceSede)
-            //{
-            //    pinNodi.Add(new PinNodo(sede, true));
-            //}
-
-            //var listaSedi = listaSediAlberate.Result.GetSottoAlbero(pinNodi);
-
-            //foreach (var figlio in listaSedi)
-            //{
-            //    pinNodi.Add(new PinNodo(figlio.Codice, true));
-            //}
-
-            //query.CodiceSede = pinNodi.Select(x => x.Codice).ToArray();
-
             var ListapreAccoppiati = _GetPreAccoppiati.GetAsync(query).Result;
 
             Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");

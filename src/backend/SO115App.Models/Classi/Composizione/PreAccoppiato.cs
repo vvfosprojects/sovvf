@@ -29,10 +29,10 @@ namespace SO115App.API.Models.Classi.Composizione
     {
         public string Id => CodiceMezzo;
         public string CodiceMezzo { get; set; }
-
         public string Appartenenza { get; set; }
-
         public string GenereMezzo { get; set; }
+        public string Sigla { get; set; }
+        public string Modello { get; set; }
         public string StatoMezzo { get; set; }
         public string DescrizioneMezzo { get; set; }
         public string Distaccamento { get; set; }
@@ -57,7 +57,7 @@ namespace SO115App.API.Models.Classi.Composizione
         public StatoSquadra Stato { get; set; }
         public string Nome { get; set; }
         public string Turno { get; set; }
-
+        public bool DiEmergenza { get; set; }
         public List<Componente> Membri { get; set; }
     }
 }
