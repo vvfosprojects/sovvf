@@ -91,8 +91,8 @@ export class FasterComponent implements OnChanges, OnDestroy {
             this.preAccoppiati?.forEach((p: BoxPartenzaPreAccoppiati) => {
                 if (!p.km || !p.tempoPercorrenza) {
                     const pointPartenza = new Point({
-                        longitude: +p.coordinate.longitudine,
-                        latitude: +p.coordinate.latitudine,
+                        longitude: +p.coordinate?.longitudine,
+                        latitude: +p.coordinate?.latitudine,
                         spatialReference: {
                             wkid: 3857
                         }

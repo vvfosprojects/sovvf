@@ -41,8 +41,8 @@ export class ListaPartenzeComponent {
     constructor(private store: Store) {
     }
 
-    onListaSquadrePartenza(codiceMezzo: string, listaSquadre: ListaSquadre): void {
-        this.store.dispatch(new VisualizzaListaSquadrePartenza(codiceMezzo, listaSquadre));
+    onListaSquadrePartenza(codiceMezzo: string, listaSquadre: ListaSquadre, siglaMezzo: string, descMezzo: string): void {
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(codiceMezzo, listaSquadre, siglaMezzo, descMezzo));
     }
 
     checkNumeroPartenzeAttive(partenze: Partenza[]): number {

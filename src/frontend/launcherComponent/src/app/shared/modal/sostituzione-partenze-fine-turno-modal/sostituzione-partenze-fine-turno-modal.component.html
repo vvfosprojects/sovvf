@@ -33,8 +33,7 @@
             <div class="shadow-sm mb-4">
                 <app-box-anteprima-partenza [partenza]="partenzaMontante"
                                             [title]="'Partenza Montante'"
-                                            [testoModifica]="'Modifica Partenza Montante'"
-                                            (modificaPartenza)="onModificaPartenzaMontante()">
+                                            [testoModifica]="'Modifica Partenza Montante'">
                 </app-box-anteprima-partenza>
             </div>
             <div *ngFor="let s of partenzaMontante?.squadre; let i = index" class="py-2">

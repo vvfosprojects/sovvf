@@ -35,7 +35,7 @@ export class PartenzaComponent implements OnInit {
     @Input() disabledModificaStatoMezzo: boolean;
     @Input() hideGestisciPartenza: boolean;
 
-    @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }>();
+    @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre, siglaMezzo: string, descMezzo: string }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre, siglaMezzo: string, descMezzo: string }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
@@ -95,7 +95,7 @@ export class PartenzaComponent implements OnInit {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
         listaSquadre.squadre = this.partenza.squadre;
-        this.listaSquadre.emit({ codiceMezzo: this.partenza.mezzo.codice, listaSquadre });
+        this.listaSquadre.emit({ codiceMezzo: this.partenza.mezzo.codice, listaSquadre, siglaMezzo: this.partenza.mezzo.sigla, descMezzo: this.partenza.mezzo.descrizione });
     }
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
