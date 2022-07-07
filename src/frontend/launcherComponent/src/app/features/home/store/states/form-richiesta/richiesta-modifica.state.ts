@@ -226,13 +226,13 @@ export class RichiestaModificaState {
             }
         }
         dispatch(new StartLoadingSchedaRichiesta());
-        this.richiesteService.patchRichiesta(sintesiRichiesta).subscribe(() => {
+        this.richiesteService.patchRichiesta(sintesiRichiesta).subscribe((result: SintesiRichiesta) => {
             const redirectComposizionePartenza = this.store.selectSnapshot(SchedaTelefonataState.redirectComposizionePartenza);
             if (redirectComposizionePartenza) {
                 dispatch([
                     new SuccessRichiestaModifica(),
                     new StopLoadingSchedaRichiesta(),
-                    new SetRichiestaComposizione(sintesiRichiesta),
+                    new SetRichiestaComposizione(result),
                     new ToggleComposizione(Composizione.Avanzata),
                     new SetRedirectComposizionePartenza(false),
                 ]);
