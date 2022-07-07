@@ -162,7 +162,7 @@ namespace SO115App.API.Controllers
             try
             {
                 this._Updatehandler.Handle(command);
-                return Ok();
+                return Ok(_getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice));
             }
             catch (Exception ex)
             {
