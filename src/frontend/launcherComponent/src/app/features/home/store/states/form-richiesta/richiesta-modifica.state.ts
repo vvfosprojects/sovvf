@@ -136,7 +136,7 @@ export class RichiestaModificaState {
                     tipologia = this.store.selectSnapshot(TipologieState.tipologie).filter((t: Tipologia) => t.codice === f.codTipologia)[0];
                 }
 
-                const competenze = this.store.selectSnapshot(SchedaTelefonataState.competenze) ? this.store.selectSnapshot(SchedaTelefonataState.competenze) : null;
+                const competenze = this.store.selectSnapshot(SchedaTelefonataState.competenze) ? this.store.selectSnapshot(SchedaTelefonataState.competenze) : f.competenze;
                 const codCompetenze = competenze?.map((c: Sede) => c.codice);
 
                 const triageSummary = this.store.selectSnapshot(TriageSummaryState.summary);
