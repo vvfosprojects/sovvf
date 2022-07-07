@@ -183,6 +183,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         switch (mc.Mezzo.Stato)
                         {
                             case Costanti.MezzoInViaggio:
+                                mc.IndirizzoIntervento = _getRichiesta.GetByCodice(statoMezzo.CodiceRichiesta).Localita.Indirizzo;
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
                                 break;
 

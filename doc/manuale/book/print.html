@@ -251,16 +251,15 @@ In più è possibile:</p>
 <img src="homepage/./img/AzioniIntervento.png" alt="Sganciamento" /></p>
 <p>Premendo sul tasto &quot;Sganciamento Mezzo&quot; si visualizzerà la lista di tutti i mezzi che risultano occupati.
 <img src="homepage/./img/sganciamento.png" alt="Sganciamento" /></p>
-<p>Premendo il tasto &quot;INFO&quot; presente sulla destra di ogni mezzo, è possibile vedere il dettaglio della richiesta nella quale è impegnato il mezzo, a questo punto, se si ritiene opportuno, si preme il tasto &quot;Conferma Sganciamento&quot; e verrà creata una partenza nell'intervento sul quale si effettua l'azione e verrà chiusa la partenza nell'intervento precedente.
+<p>Premendo il tasto &quot;INFO&quot; presente sulla destra di ogni mezzo, verrà visualizzato il dettaglio dello sganciamento che si sta effetuando, a questo punto, se si ritiene opportuno, si preme il tasto &quot;Conferma Sganciamento&quot; e verrà creata una partenza nell'intervento sul quale si effettua l'azione e verrà chiusa la partenza nell'intervento precedente.
 <img src="homepage/./img/sganciamentoDettaglio.png" alt="Sganciamento" /></p>
 <p><b>Composizione Partenza</b></p>
 <p>Un altro funzionalità dal quale è possibile effettuare lo sganciamento è la composizione partenza. 
 <img src="homepage/./img/ComposizionePartenza.png" alt="Sganciamento" /></p>
 <p>Nella lista dei mezzi sono evidenziati i mezzi occupati, tramite un'icona apposta sulla sinistra di ogni mezzo. 
 <img src="homepage/./img/DettaglioMezziOccupati.png" alt="Sganciamento" /></p>
-<p>Premendo su un mezzo occupato si aprirà il dettaglio dell'intervento sul quale è impiegato il mezzo
+<p>Premendo su un mezzo occupato si potrà eseguire lo Sganciamento di quest'ultimo, confermandolo tramite il tasto &quot;Conferma Sganciamento&quot; nella finestra di dettaglio visualizzata
 <img src="homepage/./img/sganciamentoDettaglio.png" alt="Sganciamento" /></p>
-<p>Da qui è possibile effettuare lo sganciamento premendo sul tasto &quot;Conferma Sganciamento&quot;</p>
 <blockquote>
 <p>N.B. Se sull'intervento dal quale si sta togliendo la partenza era presente solo una partenza, l'intervento assumerà lo stato di sospeso</p>
 </blockquote>
@@ -524,20 +523,6 @@ A questo punto si può o aggiungere un'altra partenza premendo sul tasto <img sr
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         <script type="text/javascript">
             window.playground_copyable = true;
         </script>
