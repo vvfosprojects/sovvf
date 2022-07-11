@@ -9,6 +9,7 @@ import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/
 import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { Tipologia } from '../../model/tipologia.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
+import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composizione';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -70,6 +71,14 @@ export class MezzoInServizioComponent implements OnChanges {
 
     statoMezzoColor(stato: StatoMezzo): string {
         return statoMezzoColor(stato);
+    }
+
+    _iconaStatiClass(statoMezzo: any): string {
+        return iconaStatiClass(statoMezzo);
+    }
+
+    _nomeStatiSquadra(statoSquadra: number): string {
+        return nomeStatiSquadra(statoSquadra);
     }
 
     getSedeString(sede: string): string {

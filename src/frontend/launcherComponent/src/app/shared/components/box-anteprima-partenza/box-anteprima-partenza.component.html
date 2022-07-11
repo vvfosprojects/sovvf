@@ -9,10 +9,10 @@
                 <div class="mb-2">
                     Mezzo
                 </div>
-                <i class="fas fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza.mezzo.stato) }}"
-                   ngbTooltip="Mezzo {{ partenza.mezzo.stato }}"></i>
+                <i class="fas fa-truck fa-fw mr-2 text-{{ statoMezzoColor(partenza.mezzo.stato) }}"
+                   [ngbTooltip]="partenza.mezzo.stato"></i>
                 <div class="d-inline-block font-weight-bold mr-2"
-                     [ngbTooltip]="partenza.mezzo.sigla.length <= 6 ? labelMezzo : labelMezzo2"
+                     [ngbTooltip]="partenza.mezzo.sigla.length <= 6 ? labelMezzo : labelMezzoSigla"
                      [disableTooltip]="!partenza.mezzo.sigla && !partenza.mezzo.modello && partenza.mezzo.descrizione?.length <= 6"
                      placement="top">
                     <ng-container *ngIf="partenza.mezzo.sigla">
@@ -29,8 +29,11 @@
                     <div>
                         {{ 'Modello: ' + partenza.mezzo.modello }}
                     </div>
+                    <div>
+                        {{ 'Sede: ' + partenza.mezzo.distaccamento.descrizione }}
+                    </div>
                 </ng-template>
-                <ng-template #labelMezzo2>
+                <ng-template #labelMezzoSigla>
                     <div>
                         {{ 'Sigla: ' + partenza.mezzo.sigla }}
                     </div>
@@ -39,6 +42,9 @@
                     </div>
                     <div>
                         {{ 'Modello: ' + partenza.mezzo.modello }}
+                    </div>
+                    <div>
+                        {{ 'Sede: ' + partenza.mezzo.distaccamento.descrizione }}
                     </div>
                 </ng-template>
                 <div class="d-inline-block m-0"
@@ -63,9 +69,31 @@
                 </div>
                 <i class="fas fa-users mr-2"
                    [ngClass]="_iconaStatiClass(_nomeStatiSquadra(partenza.squadre[0].stato))"
-                   ngbTooltip="Squadra {{ _nomeStatiSquadra(partenza.squadre[0].stato) }}"></i>
-                <b class="font-box-partenza">{{ partenza?.squadre[0]?.codice }} ({{partenza?.squadre[0]?.turno}})</b>
-                <i class="fas fa-check-circle text-success ml-3"></i>
+                   [ngbTooltip]="_nomeStatiSquadra(partenza.squadre[0].stato)"></i>
+                <b class="font-box-partenza"
+                   [ngbTooltip]="partenza?.squadre[0]?.codice?.length <= 7 ? labelSquadra : labelSquadraCodice">
+                    {{ partenza?.squadre[0]?.codice | truncate: 7 }}
+                </b>
+                <span> ({{partenza?.squadre[0]?.turno}})</span>
+                <ng-template #labelSquadra>
+                    <div>
+                        {{ 'Nome: ' + partenza?.squadre[0]?.nome }}
+                    </div>
+                    <div>
+                        {{ 'Sede: ' + partenza?.squadre[0]?.distaccamento.descrizione }}
+                    </div>
+                </ng-template>
+                <ng-template #labelSquadraCodice>
+                    <div>
+                        {{ 'Codice: ' + partenza?.squadre[0]?.codice }}
+                    </div>
+                    <div>
+                        {{ 'Nome: ' + partenza?.squadre[0]?.nome }}
+                    </div>
+                    <div>
+                        {{ 'Sede: ' + partenza?.squadre[0]?.distaccamento.descrizione }}
+                    </div>
+                </ng-template>
             </ng-container>
             <!-- Più di una squadra sul mezzo -->
             <ng-container *ngIf="partenza?.squadre.length > 1">
@@ -78,15 +106,36 @@
                         <span><i class="fas fa-search"></i></span>
                     </button>
                 </div>
-                <ng-container *ngFor="let squadre of partenza?.squadre">
+                <ng-container *ngFor="let squadra of partenza?.squadre">
                     <div class="mb-1">
                         <i class="fas fa-users mr-2"
-                           [ngClass]="_iconaStatiClass(_nomeStatiSquadra(squadre['stato']))"
-                           ngbTooltip="Squadra {{ _nomeStatiSquadra(squadre['stato']) }}"></i>
-                        <b class="font-box-partenza">{{ squadre['codice'] }}</b>
-                        <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
-                        <i class="fas fa-check-circle text-success ml-3"></i>
+                           [ngClass]="_iconaStatiClass(_nomeStatiSquadra(squadra.stato))"
+                           [ngbTooltip]="_nomeStatiSquadra(squadra.stato)"></i>
+                        <b class="font-box-partenza"
+                           [ngbTooltip]="squadra?.codice?.length <= 7 ? labelSquadra : labelSquadraCodice">
+                            {{ squadra.codice | truncate: 7 }}
+                        </b>
+                        <span class="font-box-partenza"> ({{ squadra.turno }})</span>
                     </div>
+                    <ng-template #labelSquadra>
+                        <div>
+                            {{ 'Nome: ' + squadra?.nome }}
+                        </div>
+                        <div>
+                            {{ 'Sede: ' + squadra?.distaccamento.descrizione }}
+                        </div>
+                    </ng-template>
+                    <ng-template #labelSquadraCodice>
+                        <div>
+                            {{ 'Codice: ' + squadra?.codice }}
+                        </div>
+                        <div>
+                            {{ 'Nome: ' + squadra?.nome }}
+                        </div>
+                        <div>
+                            {{ 'Sede: ' + squadra?.distaccamento.descrizione }}
+                        </div>
+                    </ng-template>
                 </ng-container>
             </ng-container>
         </div>

@@ -145,9 +145,29 @@
                                                             <app-icona-stato [stato]="_nomeStatiSquadra(s.stato)">
                                                             </app-icona-stato>
                                                         </div>
-                                                        <div class="d-inline-block font-weight-bold">
-                                                            {{ s.nome }}
+                                                        <div class="d-inline-block font-weight-bold"
+                                                             [ngbTooltip]="s?.codice?.length <= 7 ? labelSquadra : labelSquadraCodice">
+                                                            {{ s.codice | truncate: 7 }}
                                                         </div>
+                                                        <ng-template #labelSquadra>
+                                                            <div>
+                                                                {{ 'Nome: ' + s?.nome }}
+                                                            </div>
+                                                            <div>
+                                                                {{ 'Sede: ' + s?.distaccamento.descrizione }}
+                                                            </div>
+                                                        </ng-template>
+                                                        <ng-template #labelSquadraCodice>
+                                                            <div>
+                                                                {{ 'Codice: ' + s?.codice }}
+                                                            </div>
+                                                            <div>
+                                                                {{ 'Nome: ' + s?.nome }}
+                                                            </div>
+                                                            <div>
+                                                                {{ 'Sede: ' + s?.distaccamento.descrizione }}
+                                                            </div>
+                                                        </ng-template>
                                                         ({{ s.turno }})
                                                     </h6>
                                                 </div>
@@ -186,7 +206,7 @@
                                                     </div>
                                                     <!-- Sigla/Descrizione -->
                                                     <div class="d-inline-block font-weight-bold mr-2"
-                                                         [ngbTooltip]="m.sigla?.length <= 6 ? labelMezzo : labelMezzo2"
+                                                         [ngbTooltip]="m.sigla?.length <= 6 ? labelMezzo : labelMezzoSigla"
                                                          [disableTooltip]="!m.sigla && !m.modello && m.descrizione?.length <= 6"
                                                          placement="top">
                                                         <ng-container *ngIf="m.sigla">
@@ -203,8 +223,11 @@
                                                         <div>
                                                             {{ 'Modello: ' + m.modello }}
                                                         </div>
+                                                        <div>
+                                                            {{ 'Sede: ' + m.distaccamento.descrizione }}
+                                                        </div>
                                                     </ng-template>
-                                                    <ng-template #labelMezzo2>
+                                                    <ng-template #labelMezzoSigla>
                                                         <div>
                                                             {{ 'Sigla: ' + m.sigla }}
                                                         </div>
@@ -213,6 +236,9 @@
                                                         </div>
                                                         <div>
                                                             {{ 'Modello: ' + m.modello }}
+                                                        </div>
+                                                        <div>
+                                                            {{ 'Sede: ' + m.distaccamento.descrizione }}
                                                         </div>
                                                     </ng-template>
                                                     <!-- Genere -->

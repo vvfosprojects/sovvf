@@ -56,9 +56,22 @@
             </div>
             <!-- Codice -->
             <div class="d-inline-block font-weight-bolder mr-1"
-                 [ngbTooltip]="squadraComposizione?.nome">
+                 [ngbTooltip]="squadraComposizione?.codice?.length <= 7 ? labelSquadra : labelSquadraCodice">
                 {{ squadraComposizione?.codice | truncate: 7 }}
             </div>
+            <ng-template #labelSquadra>
+                <div>
+                    {{ 'Nome: ' + squadraComposizione?.nome }}
+                </div>
+            </ng-template>
+            <ng-template #labelSquadraCodice>
+                <div>
+                    {{ 'Codice: ' + squadraComposizione?.codice }}
+                </div>
+                <div>
+                    {{ 'Nome: ' + squadraComposizione?.nome }}
+                </div>
+            </ng-template>
             <!-- Turno -->
             <div class="d-inline-block">({{ squadraComposizione?.turno }})</div>
             <!-- Mezzo Preaccoppiato -->

@@ -17,7 +17,7 @@
             </div>
             <!-- Descrizione -->
             <div class="font-weight-bold mr-2"
-                 [ngbTooltip]="mezzoComp.mezzo.sigla?.length <= 6 ? labelMezzo : labelMezzo2"
+                 [ngbTooltip]="mezzoComp.mezzo.sigla?.length <= 6 ? labelMezzo : labelMezzoSigla"
                  [disableTooltip]="!mezzoComp.mezzo.sigla && !mezzoComp.mezzo.modello && mezzoComp.mezzo.descrizione?.length <= 6"
                  placement="top">
                 <ng-container *ngIf="mezzoComp.mezzo.sigla">
@@ -34,8 +34,11 @@
                 <div>
                     {{ 'Modello: ' + mezzoComp.mezzo.modello }}
                 </div>
+                <div>
+                    {{ 'Sede: ' + mezzoComp.mezzo.distaccamento.descrizione }}
+                </div>
             </ng-template>
-            <ng-template #labelMezzo2>
+            <ng-template #labelMezzoSigla>
                 <div>
                     {{ 'Sigla: ' + mezzoComp.mezzo.sigla }}
                 </div>
@@ -44,6 +47,9 @@
                 </div>
                 <div>
                     {{ 'Modello: ' + mezzoComp.mezzo.modello }}
+                </div>
+                <div>
+                    {{ 'Sede: ' + mezzoComp.mezzo.distaccamento.descrizione }}
                 </div>
             </ng-template>
             <!-- Genere -->

@@ -16,19 +16,21 @@
     <table class="table table-striped table-bordered mb-0">
         <thead class="thead-light">
         <tr>
+            <th scope="col">Codice</th>
             <th scope="col">Nome</th>
             <th scope="col">Componenti</th>
             <th scope="col">Turno</th>
             <th scope="col">Data</th>
+            <th scope="col">Sede</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let s of listaSquadre.squadre">
             <td>
-                <div [ngbTooltip]="s.nome"
-                     placement="top">
-                    {{ s.codice }}
-                </div>
+                {{ s.codice }}
+            </td>
+            <td>
+                {{ s.nome }}
             </td>
             <td>
                 <div *ngFor="let c of s.membri">
@@ -52,6 +54,7 @@
             </td>
             <td>{{ s.turno }}</td>
             <td>Non presente</td>
+            <td>{{ s.distaccamento.descrizione }}</td>
         </tr>
         </tbody>
     </table>
