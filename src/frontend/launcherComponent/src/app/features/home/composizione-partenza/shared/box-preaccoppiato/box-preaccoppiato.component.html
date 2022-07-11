@@ -27,9 +27,39 @@
                        [ngClass]="_iconaStatiClass(partenzaPreAccopiati.statoMezzo)"
                        ngbTooltip="Mezzo {{ partenzaPreAccopiati.statoMezzo }}"
                        placement="top-left"></i>
-                    <span class="font-weight-bold mr-1" [ngbTooltip]="partenzaPreAccopiati.descrizioneMezzo"
-                          [disableTooltip]="partenzaPreAccopiati.descrizioneMezzo.length <= 7">{{partenzaPreAccopiati.descrizioneMezzo | slice: 0:7}}</span>
-                    <span class="font-weight-normal">{{partenzaPreAccopiati.genereMezzo}}</span>
+                    <div class="d-inline-block font-weight-bold mr-2"
+                         [ngbTooltip]="partenzaPreAccopiati.sigla?.length <= 6 ? labelMezzo : labelMezzo2"
+                         [disableTooltip]="!partenzaPreAccopiati.sigla && !partenzaPreAccopiati.modello && partenzaPreAccopiati.descrizioneMezzo?.length <= 6"
+                         placement="top">
+                        <ng-container *ngIf="partenzaPreAccopiati.sigla">
+                            {{ partenzaPreAccopiati.sigla | truncate: 6 }}
+                        </ng-container>
+                        <ng-container *ngIf="!partenzaPreAccopiati.sigla && partenzaPreAccopiati.descrizioneMezzo">
+                            {{ partenzaPreAccopiati.descrizioneMezzo | truncate: 6 }}
+                        </ng-container>
+                    </div>
+                    <ng-template #labelMezzo>
+                        <div>
+                            {{ 'Targa: ' + partenzaPreAccopiati.descrizioneMezzo }}
+                        </div>
+                        <div>
+                            {{ 'Modello: ' + partenzaPreAccopiati.modello }}
+                        </div>
+                    </ng-template>
+                    <ng-template #labelMezzo2>
+                        <div>
+                            {{ 'Sigla: ' + partenzaPreAccopiati.sigla }}
+                        </div>
+                        <div>
+                            {{ 'Targa: ' + partenzaPreAccopiati.descrizioneMezzo }}
+                        </div>
+                        <div>
+                            {{ 'Modello: ' + partenzaPreAccopiati.modello }}
+                        </div>
+                    </ng-template>
+                    <div class="d-inline-block">
+                        {{ partenzaPreAccopiati.genereMezzo }}
+                    </div>
                 </div>
             </div>
         </ng-container>
@@ -65,14 +95,18 @@
             <div class="col">
                 <div class="d-inline-block"
                      [ngbPopover]="piusquadre"
-                     popoverTitle="Squadre"
                      triggers="mouseenter:mouseleave">
                     <i class="fas fa-users guida mr-1"></i>
                     <small>{{ partenzaPreAccopiati.squadre?.length }} squadre</small>
                 </div>
                 <ng-template #piusquadre>
-                    <div *ngFor="let sC of partenzaPreAccopiati.squadre" class="text-center nowrap">
-                        <span class="d-inline-block mb-1">{{ sC.nome }}</span>
+                    <div [class.text-light]="nightMode">
+                        <h5 class="mb-0">{{ partenzaPreAccopiati.squadre?.length }} Squadre</h5>
+                        <hr class="my-2">
+                        <div *ngFor="let sC of partenzaPreAccopiati.squadre"
+                             class="text-center nowrap">
+                            <h6 class="d-inline-block">{{ sC.codice }} ({{ sC.turno }})</h6>
+                        </div>
                     </div>
                 </ng-template>
             </div>

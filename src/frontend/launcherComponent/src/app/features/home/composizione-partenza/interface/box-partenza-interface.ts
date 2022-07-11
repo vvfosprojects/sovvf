@@ -16,6 +16,8 @@ export interface BoxPartenzaPreAccoppiati {
     squadre: SquadraComposizione[];
     statoMezzo: StatoMezzo;
     descrizioneMezzo: string;
+    sigla: string;
+    modello: string;
     km: string;
     tempoPercorrenza: string;
     distaccamento: string;

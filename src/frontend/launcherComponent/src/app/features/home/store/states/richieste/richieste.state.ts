@@ -458,6 +458,8 @@ export class RichiesteState {
         });
         modal.componentInstance.codiceMezzo = action.codiceMezzo;
         modal.componentInstance.listaSquadre = action.listaSquadre;
+        modal.componentInstance.siglaMezzo = action.siglaMezzo;
+        modal.componentInstance.descMezzo = action.descMezzo;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));
     }

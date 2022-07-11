@@ -16,14 +16,41 @@
                 <app-icona-stato [stato]="mezzoComp.mezzo.stato"></app-icona-stato>
             </div>
             <!-- Descrizione -->
-            <div class="font-weight-bold mr-1"
-                 [ngbTooltip]="mezzoComp.mezzo.descrizione"
-                 [disableTooltip]="mezzoComp.mezzo.descrizione.length <= 8">
-                {{ mezzoComp.mezzo.descrizione | slice: 0:8 }}
+            <div class="font-weight-bold mr-2"
+                 [ngbTooltip]="mezzoComp.mezzo.sigla?.length <= 6 ? labelMezzo : labelMezzo2"
+                 [disableTooltip]="!mezzoComp.mezzo.sigla && !mezzoComp.mezzo.modello && mezzoComp.mezzo.descrizione?.length <= 6"
+                 placement="top">
+                <ng-container *ngIf="mezzoComp.mezzo.sigla">
+                    {{ mezzoComp.mezzo.sigla | truncate: 6 }}
+                </ng-container>
+                <ng-container *ngIf="!mezzoComp.mezzo.sigla && mezzoComp.mezzo.descrizione">
+                    {{ mezzoComp.mezzo.descrizione | truncate: 6 }}
+                </ng-container>
             </div>
+            <ng-template #labelMezzo>
+                <div>
+                    {{ 'Targa: ' + mezzoComp.mezzo.descrizione }}
+                </div>
+                <div>
+                    {{ 'Modello: ' + mezzoComp.mezzo.modello }}
+                </div>
+            </ng-template>
+            <ng-template #labelMezzo2>
+                <div>
+                    {{ 'Sigla: ' + mezzoComp.mezzo.sigla }}
+                </div>
+                <div>
+                    {{ 'Targa: ' + mezzoComp.mezzo.descrizione }}
+                </div>
+                <div>
+                    {{ 'Modello: ' + mezzoComp.mezzo.modello }}
+                </div>
+            </ng-template>
             <!-- Genere -->
-            <div class="mr-2">
-                {{ mezzoComp.mezzo.genere }}
+            <div class="mr-2"
+                 [ngbTooltip]="mezzoComp.mezzo.genere"
+                 [disableTooltip]="mezzoComp.mezzo.genere?.length <= 4">
+                {{ mezzoComp.mezzo.genere | truncate: 4 }}
             </div>
             <!-- Squadre Preaccoppiate -->
             <ng-container
@@ -47,42 +74,28 @@
                     <ng-template #popSquadre>
                         <div [class.text-light]="nightMode">
                             <h5 class="font-weight-bolder mb-0 mt-1">
-                                Squadre di {{ mezzoComp.mezzo?.descrizione }}
+                                Squadre di
+                                <ng-container *ngIf="mezzoComp.mezzo?.sigla">
+                                    {{ mezzoComp.mezzo.sigla }}
+                                </ng-container>
+                                <ng-container *ngIf="!mezzoComp.mezzo?.sigla && mezzoComp.mezzo?.descrizione">
+                                    {{ mezzoComp.mezzo.descrizione }}
+                                </ng-container>
                             </h5>
                             <hr class="my-2">
                             <div *ngFor="let s of mezzoComp?.squadrePreaccoppiate" class="h6 text-center">
-                                <div class="d-inline-block font-weight-bold">{{ s?.codice}}</div>
-                                <div *ngIf="s.turno" class="d-inline-block"> ({{ s?.turno }})</div>
+                                <div class="d-inline-block font-weight-bold"
+                                     [class.mr-1]="s.turno">
+                                    {{ s?.codice}}
+                                </div>
+                                <ng-container *ngIf="s.turno">
+                                    <div class="d-inline-block"> ({{ s?.turno }})</div>
+                                </ng-container>
                                 <div class="d-inline"> - {{ _nomeStatiSquadra(s?.stato) }}</div>
                             </div>
                         </div>
                     </ng-template>
                 </ng-container>
-            </ng-container>
-            <!-- Km / Tempo Percorrenza -->
-            <ng-container *ngIf="!mezzoComp.mezzo?.coordinateFake">
-                <div class="ml-2">
-                    <span *ngIf="mezzoComp.km">
-                        <i class="fas fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
-                        <div class="d-inline-block mr-2">{{ mezzoComp.km }} km</div>
-                    </span>
-                    <span *ngIf="mezzoComp.tempoPercorrenza">
-                        <i class="far fa-clock guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
-                        <div class="d-inline-block mr-2">{{ mezzoComp.tempoPercorrenza }} min</div>
-                    </span>
-
-                </div>
-            </ng-container>
-            <!-- Indirizzo Intervento -->
-            <ng-container *ngIf="mezzoComp.indirizzoIntervento">
-                <div [class.ml-2]="!mezzoComp.mezzo.preAccoppiato"
-                     [class.ml-4]="mezzoComp.mezzo.preAccoppiato">
-                    <i class="fas fa-map-marker-alt text-success mr-2"></i>
-                    <div class="d-inline-block font-weight-bold"
-                         [ngbTooltip]="'Posizione Attuale: ' + mezzoComp.indirizzoIntervento">
-                        {{ mezzoComp.indirizzoIntervento | truncate:10 }}
-                    </div>
-                </div>
             </ng-container>
             <!-- Squadre su Mezzo per Intervento -->
             <ng-container *ngIf="mezzoComp.listaSquadre?.length">
@@ -101,7 +114,14 @@
                 <ng-template #popSquadreIntervento>
                     <div [class.text-light]="nightMode">
                         <h6 class="font-weight-bolder mb-0 mt-1">
-                            Squadre su {{ mezzoComp.mezzo?.descrizione }} per Intervento
+                            Squadre su
+                            <ng-container *ngIf="mezzoComp.mezzo?.sigla">
+                                {{ mezzoComp.mezzo.sigla }}
+                            </ng-container>
+                            <ng-container *ngIf="!mezzoComp.mezzo?.sigla && mezzoComp.mezzo?.descrizione">
+                                {{ mezzoComp.mezzo.descrizione }}
+                            </ng-container>
+                            per Intervento
                         </h6>
                         <hr class="my-2">
                         <div *ngFor="let s of mezzoComp.listaSquadre" class="h6 text-center">
@@ -111,6 +131,35 @@
                         </div>
                     </div>
                 </ng-template>
+            </ng-container>
+            <!-- Km / Tempo Percorrenza -->
+            <ng-container
+                    *ngIf="!mezzoComp.mezzo?.coordinateFake && (mezzoComp.mezzo.stato === statoMezzo.InSede || mezzoComp.mezzo.stato === statoMezzo.InRientro)">
+                <div class="ml-2">
+                    <ng-container *ngIf="mezzoComp.km">
+                        <small>
+                            <i class="fas fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
+                            {{ mezzoComp.km }} km
+                        </small>
+                    </ng-container>
+                    <ng-container *ngIf="mezzoComp.tempoPercorrenza">
+                        <small>
+                            <i class="far fa-clock guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
+                            {{ mezzoComp.tempoPercorrenza }} min
+                        </small>
+                    </ng-container>
+                </div>
+            </ng-container>
+            <!-- Indirizzo Intervento -->
+            <ng-container *ngIf="mezzoComp.indirizzoIntervento && mezzoComp.mezzo.stato !== statoMezzo.InRientro">
+                <div [class.ml-2]="!mezzoComp.mezzo.preAccoppiato"
+                     [class.ml-4]="mezzoComp.mezzo.preAccoppiato">
+                    <i class="fas fa-map-marker-alt guida mr-2"></i>
+                    <div class="d-inline-block"
+                         [ngbTooltip]="'Indirizzo Intervento: ' + mezzoComp.indirizzoIntervento">
+                        {{ mezzoComp.indirizzoIntervento | truncate:20 }}
+                    </div>
+                </div>
             </ng-container>
         </div>
         <!-- Distaccamento -->

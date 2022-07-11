@@ -124,7 +124,7 @@ export class ClearRichiestaAzioni {
 export class VisualizzaListaSquadrePartenza {
     static readonly type = '[Richieste] Visualizza Lista Squadre Partenza';
 
-    constructor(public codiceMezzo: string, public listaSquadre: ListaSquadre) {
+    constructor(public codiceMezzo: string, public listaSquadre: ListaSquadre, public siglaMezzo: string, public descMezzo: string) {
     }
 }
 

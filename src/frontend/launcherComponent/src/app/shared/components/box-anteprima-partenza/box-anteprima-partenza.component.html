@@ -4,16 +4,50 @@
 <div class="border-partenza-box bg-dark-light">
     <div class="clearfix">
         <!-- Info mezzo -->
-        <div class="float-left">
-            <div class="mb-2">
-                Mezzo
+        <ng-container *ngIf="partenza?.mezzo">
+            <div class="float-left">
+                <div class="mb-2">
+                    Mezzo
+                </div>
+                <i class="fas fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza.mezzo.stato) }}"
+                   ngbTooltip="Mezzo {{ partenza.mezzo.stato }}"></i>
+                <div class="d-inline-block font-weight-bold mr-2"
+                     [ngbTooltip]="partenza.mezzo.sigla.length <= 6 ? labelMezzo : labelMezzo2"
+                     [disableTooltip]="!partenza.mezzo.sigla && !partenza.mezzo.modello && partenza.mezzo.descrizione?.length <= 6"
+                     placement="top">
+                    <ng-container *ngIf="partenza.mezzo.sigla">
+                        {{ partenza.mezzo.sigla | truncate: 6 }}
+                    </ng-container>
+                    <ng-container *ngIf="!partenza.mezzo.sigla && partenza.mezzo.descrizione">
+                        {{ partenza.mezzo.descrizione | truncate: 6 }}
+                    </ng-container>
+                </div>
+                <ng-template #labelMezzo>
+                    <div>
+                        {{ 'Targa: ' + partenza.mezzo.descrizione }}
+                    </div>
+                    <div>
+                        {{ 'Modello: ' + partenza.mezzo.modello }}
+                    </div>
+                </ng-template>
+                <ng-template #labelMezzo2>
+                    <div>
+                        {{ 'Sigla: ' + partenza.mezzo.sigla }}
+                    </div>
+                    <div>
+                        {{ 'Targa: ' + partenza.mezzo.descrizione }}
+                    </div>
+                    <div>
+                        {{ 'Modello: ' + partenza.mezzo.modello }}
+                    </div>
+                </ng-template>
+                <div class="d-inline-block m-0"
+                     [ngbTooltip]="partenza.mezzo.genere"
+                     [disableTooltip]="partenza.mezzo.genere?.length <= 4">
+                    {{ partenza.mezzo.genere | truncate: 4 }}
+                </div>
             </div>
-            <i class="fas fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza?.mezzo['stato']) }}"
-               ngbTooltip="Mezzo {{ partenza?.mezzo['stato'] }}"></i>
-            <b class="font-box-partenza">{{ partenza?.mezzo['descrizione'] }}</b>
-            <span class="badge badge-default m-0">{{ partenza?.mezzo['genere'] }}</span>
-            <i class="fas fa-check-circle text-success ml-3"></i>
-        </div>
+        </ng-container>
         <!-- Info squadra -->
         <div class="float-right">
             <!-- Singola squadra sul mezzo -->

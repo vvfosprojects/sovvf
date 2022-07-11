@@ -17,7 +17,7 @@
                           [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice))"
                           [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
                           [hideGestisciPartenza]="hideGestisciPartenza"
-                          (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre)"
+                          (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre, $event.siglaMezzo, $event.descMezzo)"
                           (actionMezzo)="onActionMezzo($event)"
                           (modificaPartenza)="modificaPartenza.emit($event)"
                           (selezioneMezzo)="selezioneMezzo.emit($event)">

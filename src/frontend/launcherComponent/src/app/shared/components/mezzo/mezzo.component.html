@@ -9,12 +9,37 @@
                     <i class="fas fa-truck fa-fw text-{{statoMezzoColor(mezzo?.stato)}}"
                        [ngbTooltip]="mezzo?.stato"></i>
                 </div>
-                <ng-container *ngIf="mezzo.descrizione">
-                    <div class="font-weight-bold mx-2"
-                         [ngbTooltip]="mezzo.descrizione.length > 8 ? mezzo.descrizione : ''">
-                        {{ mezzo.descrizione | truncate: 8 }}
+                <div class="font-weight-bold mx-2"
+                     [ngbTooltip]="mezzo.sigla?.length <= 6 ? labelMezzo : labelMezzo2"
+                     [disableTooltip]="!mezzo.sigla && !mezzo.modello && mezzo.descrizione?.length <= 6"
+                     placement="top">
+                    <ng-container *ngIf="mezzo.sigla">
+                        {{ mezzo.sigla | truncate: 6 }}
+                    </ng-container>
+                    <ng-container *ngIf="!mezzo.sigla && mezzo.descrizione">
+                        {{ mezzo.descrizione | truncate: 6 }}
+                    </ng-container>
+                </div>
+
+                <ng-template #labelMezzo>
+                    <div>
+                        {{ 'Targa: ' + mezzo.descrizione }}
                     </div>
-                </ng-container>
+                    <div>
+                        {{ 'Modello: ' + mezzo.modello }}
+                    </div>
+                </ng-template>
+                <ng-template #labelMezzo2>
+                    <div>
+                        {{ 'Sigla: ' + mezzo.sigla }}
+                    </div>
+                    <div>
+                        {{ 'Targa: ' + mezzo.descrizione }}
+                    </div>
+                    <div>
+                        {{ 'Modello: ' + mezzo.modello }}
+                    </div>
+                </ng-template>
                 <ng-container *ngIf="mezzo.genere">
                     <div [ngbTooltip]="mezzo.genere.length > 3 ? mezzo.genere : ''">
                         {{ mezzo.genere | truncate: 3 }}

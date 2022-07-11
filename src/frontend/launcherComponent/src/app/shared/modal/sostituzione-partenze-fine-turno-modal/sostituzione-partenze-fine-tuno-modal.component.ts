@@ -107,10 +107,6 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
         this.store.dispatch(new SetPartenzaMontante(p));
     }
 
-    onModificaPartenzaMontante(): void {
-        this.store.dispatch(new SetPartenzaMontante(null));
-    }
-
     getSquadrePartenze(): any[] {
         return this.partenze?.filter((p: Partenza) => p.partenza.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.partenza.mezzo.stato === StatoMezzo.SulPosto).map((p: Partenza) => p.partenza.squadre);
     }
