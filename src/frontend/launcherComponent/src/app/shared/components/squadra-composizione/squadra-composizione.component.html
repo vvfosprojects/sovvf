@@ -122,6 +122,17 @@
                     </ng-container>
                 </div>
             </ng-container>
+            <!-- Tipo (Ordinaria/Emergenza) -->
+            <div class="d-inline-block ml-2">
+                <ng-container *ngIf="squadraComposizione.diEmergenza">
+                    <i class="fas fa-exclamation-triangle text-danger"
+                       ngbTooltip="Squadra di Emergenza"></i>
+                </ng-container>
+                <ng-container *ngIf="!squadraComposizione.diEmergenza">
+                    <i class="fas fa-exclamation-circle"
+                       ngbTooltip="Squadra Ordinaria"></i>
+                </ng-container>
+            </div>
             <!-- Mezzi su cui è presente la squadra per Intervento -->
             <!-- <ng-template [ngIf]="squadraComposizione.mezziInRientro?.length">
                 <div class="d-inline-block nowrap">
