@@ -26,6 +26,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.CodaChiamate;
+using SO115App.Models.Classi.NotificaSound;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -89,7 +90,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
 
-            var listaMezziInServizio = _getListaMezzi.MapPartenzeInMezziInServizio(conferma.Richiesta,SediDaNotificare.ToArray());
+            var listaMezziInServizio = _getListaMezzi.MapPartenzeInMezziInServizio(conferma.Richiesta, SediDaNotificare.ToArray());
             var result = listaMezziInServizio;
             var sintesi = Task.Factory.StartNew(() => _mapperSintesi.Map(conferma.Richiesta)).ContinueWith(sintesi =>
             {
@@ -98,6 +99,15 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 sintesi.Result.Motivazione = sintesi.Result.Descrizione;
 
                 return sintesi.Result;
+            });
+
+            Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
+            {
+                Notifica notificaSound = new Notifica()
+                {
+                    NotificaType = TipoNotifica.NuovaPartenzaDistaccamento
+                };
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
             });
 
             Parallel.ForEach(SediDaNotificare, sede =>
@@ -116,7 +126,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     conferma.ConfermaPartenze.Chiamata = sintesi.Result;
                     _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
 
-
                     var boxRichiesteQuery = new BoxRichiesteQuery()
                     {
                         CodiciSede = new string[] { sede }
@@ -124,14 +133,12 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
 
-
                     var boxMezziQuery = new BoxMezziQuery()
                     {
                         CodiciSede = new string[] { sede }
                     };
                     var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-
 
                     var boxPersonaleQuery = new BoxPersonaleQuery()
                     {
