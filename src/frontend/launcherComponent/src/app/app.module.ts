@@ -66,6 +66,7 @@ import { TastoZonaEmergenzaMappaState } from './features/zone-emergenza/store/st
 import { SganciamentoMezziState } from './shared/store/states/sganciamento-mezzi/sganciamento-mezzi.state';
 import { GestisciSchedaContattoModalState } from './shared/store/states/gestisci-scheda-contatto-modal/gestisci-scheda-contatto-modal.state';
 import { ConcorrenzaState } from './shared/store/states/concorrenza/concorrenza.state';
+import { AlertModalState } from './shared/store/states/alert-modal/alert-modal.state';
 /**
  * Route
  */
@@ -149,7 +150,8 @@ import { HttpCancelService } from './core/service/common/http-cancel.service';
                 TastoZonaEmergenzaMappaState,
                 SganciamentoMezziState,
                 GestisciSchedaContattoModalState,
-                ConcorrenzaState
+                ConcorrenzaState,
+                AlertModalState
             ],
             { developmentMode: !environment.production }
         ),

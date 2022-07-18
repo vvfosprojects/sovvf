@@ -26,6 +26,7 @@ import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
 import { NavbarState } from './store/states/navbar.state';
 import { TipoNotifica } from '../../shared/enum/tipo-notifica.enum';
+import { OpenAlertModal } from '../../shared/store/actions/alert-modal/alert-modal.actions';
 
 @Component({
     selector: 'app-navbar',

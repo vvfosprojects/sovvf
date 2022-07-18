@@ -138,7 +138,7 @@ export class ComposizioneVeloceState {
         if (preAccoppiato) {
             const dataSquadraList = [] as AddConcorrenzaDtoInterface[];
             preAccoppiato.squadre.forEach((sC: SquadraComposizione) => {
-                console.log('select squadra preaccoppiato', sC.codice);
+                console.log('select squadra preaccoppiato', sC.idSquadra);
                 const dataSquadra = {
                     type: TipoConcorrenzaEnum.Squadra,
                     value: sC.idSquadra

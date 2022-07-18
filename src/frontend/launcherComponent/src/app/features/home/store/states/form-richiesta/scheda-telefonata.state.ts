@@ -74,7 +74,7 @@ import { SetRichiestaComposizione } from '../../actions/composizione-partenza/co
 import { SetFiltriGeneriMezzoTriage } from '../../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
-import { UrgenzaSegnalataModalComponent } from '../../../../../shared/modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
+import { AlertModalComponent } from '../../../../../shared/modal/alert-modal/alert-modal.component';
 import { ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
 import { TipologicaComposizionePartenza } from '../../../composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
 import { TipologicheMezziState } from '../composizione-partenza/tipologiche-mezzi.state';
@@ -89,6 +89,7 @@ import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/functi
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
 import * as data from '../../../../../../assets/province/province.json';
+import { OpenAlertModal } from '../../../../../shared/store/actions/alert-modal/alert-modal.actions';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
@@ -640,17 +641,13 @@ export class SchedaTelefonataState {
                     this.store.dispatch(new SetFiltriGeneriMezzoTriage(generiMezzoTriage));
                 }
             } else if (chiamataResult && chiamata.chiamataUrgente) {
+                const alertModalInnerHTMLBody = '<div class="alert alert-danger m-0"> La chiamata urgente è stata correttamente registrata e condivisa in gestione</div>';
                 dispatch([
                     new CestinaChiamata(),
                     new SetRichiestaModifica(chiamataResult),
-                    new ToggleModifica()
+                    new ToggleModifica(),
+                    new OpenAlertModal('Urgenza segnalata', alertModalInnerHTMLBody, [{ bgColor: 'secondary', text: 'chiudi' }])
                 ]);
-                this.ngZone.run(() => {
-                    this.modalService.open(UrgenzaSegnalataModalComponent, {
-                        centered: true,
-                        size: 'md'
-                    });
-                });
             } else if (chiamataResult && (action.azioneChiamata === AzioneChiamataEnum.InAttesa)) {
                 dispatch([
                     new CestinaChiamata(),

@@ -124,10 +124,27 @@ export class SignalRService {
         });
 
         /**
-         * Notifiche Navbar
+         * Navbar
          */
         this.hubNotification.on('NotifyNavbar', (data: NotificaInterface) => {
             this.store.dispatch(new AddNotifica(data));
+        });
+
+        /**
+         * Notifica Sound
+         */
+        this.hubNotification.on('NotifySound', (data: { notificaType: TipoNotificaSound }) => {
+            this.soundAlertService.startSound(data.notificaType);
+        });
+
+        /**
+         * Modale Alert
+         */
+        this.hubNotification.on('NotifyAlertModal', (data: { title: string, text: string, buttons: { bgColor: string, text: string }[], timeToClose: number }) => {
+            console.log('NotifyAlertModal', data);
+            // TODO: capire che dati passare nel modale
+            const alertModalInnerHTMLBody = '<div class="alert alert-danger m-0">' + data.text + '</div>';
+            this.store.dispatch(new OpenAlertModal(data.title, alertModalInnerHTMLBody, data.buttons, data.timeToClose));
         });
 
         /**
