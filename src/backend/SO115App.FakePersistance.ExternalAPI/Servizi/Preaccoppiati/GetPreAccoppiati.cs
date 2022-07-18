@@ -98,6 +98,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                             Appartenenza = mezzo.CodiceDistaccamento,
                             Squadre = lstSquadrePreaccoppiate.Where(s => s.CodiciMezziPreaccoppiati?.Contains(mezzoPreaccoppiato) ?? false).Select(s => new API.Models.Classi.Composizione.Squadra()
                             {
+                                IdSquadra = s.spotId,
                                 Codice = s.Codice,
                                 Nome = s.Codice,
                                 Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(lstStatoSquadre.Result?.FirstOrDefault(ss => ss.IdSquadra.Equals($"{s.Codice}_{s.TurnoAttuale}"))?.StatoSquadra ?? Costanti.MezzoInSede),
