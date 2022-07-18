@@ -59,6 +59,9 @@ import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/
 import { RicercaRubricaState } from '../../features/rubrica/store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { RichiesteState } from '../../features/home/store/states/richieste/richieste.state';
 import { GetPos } from '../../features/pos/store/actions/pos/pos.actions';
+import { SoundAlertService } from '../service/sound-alert/sound-alert.service';
+import { OpenAlertModal } from '../../shared/store/actions/alert-modal/alert-modal.actions';
+import { TipoNotificaSound } from '../../shared/enum/tipo-notifica-sound';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -72,7 +75,8 @@ export class SignalRService {
 
     private hubNotification: HubConnection;
 
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private soundAlertService: SoundAlertService) {
     }
 
     initSubscription(): void {
