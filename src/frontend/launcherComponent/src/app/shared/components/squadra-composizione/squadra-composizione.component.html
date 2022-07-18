@@ -122,17 +122,6 @@
                     </ng-container>
                 </div>
             </ng-container>
-            <!-- Tipo (Ordinaria/Emergenza) -->
-            <div class="d-inline-block ml-2">
-                <ng-container *ngIf="squadraComposizione.diEmergenza">
-                    <i class="fas fa-exclamation-triangle text-danger"
-                       ngbTooltip="Squadra di Emergenza"></i>
-                </ng-container>
-                <ng-container *ngIf="!squadraComposizione.diEmergenza">
-                    <i class="fas fa-exclamation-circle"
-                       ngbTooltip="Squadra Ordinaria"></i>
-                </ng-container>
-            </div>
             <!-- Mezzi su cui è presente la squadra per Intervento -->
             <!-- <ng-template [ngIf]="squadraComposizione.mezziInRientro?.length">
                 <div class="d-inline-block nowrap">
@@ -164,6 +153,13 @@
         <div *ngIf="viewState?.composizione?.active"
              class="clearfix text-right pr-1"
              style="width: 33%;">
+            <!-- Tipo (Ordinaria/Emergenza) -->
+            <div class="badge badge-light mr-2"
+                 [ngbTooltip]="squadraComposizione.diEmergenza ? 'Squadra di Emergenza' : 'Squadra Ordinaria'">
+                <ng-container *ngIf="squadraComposizione.diEmergenza">E</ng-container>
+                <ng-container *ngIf="!squadraComposizione.diEmergenza">O</ng-container>
+            </div>
+            <!-- Badge Distaccamento -->
             <div class="d-inline-block py-0"
                  [ngClass]="badgeDistaccamentoClass()"
                  [ngbTooltip]="squadraComposizione?.distaccamento?.descrizione">
