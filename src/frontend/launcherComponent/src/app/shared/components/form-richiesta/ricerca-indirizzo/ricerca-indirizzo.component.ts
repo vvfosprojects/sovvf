@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { AppState } from '../../../store/states/app/app.state';
-import { SediTreeviewState } from '../../../store/states/sedi-treeview/sedi-treeview.state';
+import { getProvinciaByCodProvincia } from '../../../helper/function-province';
 import SpatialReference from '@arcgis/core/geometry/SpatialReference';
 import AddressCandidate from '@arcgis/core/tasks/support/AddressCandidate';
 import Point from '@arcgis/core/geometry/Point';
@@ -85,14 +85,14 @@ export class RicercaIndirizzoComponent implements OnInit {
 
             let location: Point;
             let paramsSuggestLocation: locatorSuggestLocationsParams;
-
-            const sediNavbarTesto = this.store.selectSnapshot(SediTreeviewState.sediNavbarTesto);
-            const sedeNavbarTestoArray = sediNavbarTesto.split(' ');
-            const city = sedeNavbarTestoArray[sedeNavbarTestoArray.length - 1];
+            const vistaSedi = this.store.selectSnapshot(AppState.vistaSedi);
+            const sedeSelezionata = vistaSedi[0];
+            const provinciaSedeSelezionata = sedeSelezionata.split('.')[0];
+            const provincia = getProvinciaByCodProvincia(provinciaSedeSelezionata);
 
             const parmasFindAddress = {
                 address: {
-                    address: city !== 'CON' ? city : 'ITALIA'
+                    address: provincia !== 'CON' ? provincia : 'ITALIA'
                 }, // questo preso dalla checkbox selezionata in alto
                 maxLocations: 1
             };
