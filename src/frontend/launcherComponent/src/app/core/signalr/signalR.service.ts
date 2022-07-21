@@ -140,7 +140,7 @@ export class SignalRService {
         /**
          * Modale Alert
          */
-        this.hubNotification.on('NotifyAlertModal', (data: { title: string, text: string, buttons: { bgColor: string, text: string }[], timeToClose: number }) => {
+        this.hubNotification.on('NotifyAvvisoModal', (data: { title: string, text: string, buttons: { bgColor: string, text: string }[], timeToClose: number }) => {
             console.log('NotifyAlertModal', data);
             // TODO: capire che dati passare nel modale
             const alertModalInnerHTMLBody = '<div class="alert alert-danger m-0">' + data.text + '</div>';
