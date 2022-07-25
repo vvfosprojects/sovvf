@@ -53,11 +53,13 @@ namespace SO115App.API.Models.Classi.Composizione
         public Squadra()
         { }
 
+        public string IdSquadra { get; set; }
+
         public string Codice { get; set; }
         public StatoSquadra Stato { get; set; }
         public string Nome { get; set; }
         public string Turno { get; set; }
-
+        public bool DiEmergenza { get; set; }
         public List<Componente> Membri { get; set; }
     }
 }

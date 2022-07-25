@@ -31,13 +31,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         private readonly IGetStatoSquadra _getStatoSquadre;
         private readonly IGetTurno _getTurno;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
+        private readonly IGetSedi _getSedi;
         //private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
 
         private readonly List<MessaggioPosizione> pFlotta = new();
 
         public GetPreAccoppiati(IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSedeUC, IGetSquadre getSquadre, IGetMezziUtilizzabili getMezzi,
                                 IGetStatoMezzi getStatoMezzi, IGetStatoSquadra getStatoSquadre, IGetTurno getTurno,
-                                IGetPosizioneFlotta getPosizioneFlotta)
+                                IGetPosizioneFlotta getPosizioneFlotta, IGetSedi getSedi)
         {
             _getSquadre = getSquadre;
             _getMezzi = getMezzi;
@@ -45,6 +46,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             _getStatoSquadre = getStatoSquadre;
             _getTurno = getTurno;
             _getPosizioneFlotta = getPosizioneFlotta;
+            _getSedi = getSedi;
             //_getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
 
             pFlotta = _getPosizioneFlotta.Get(0).Result;
@@ -53,7 +55,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         public async Task<List<PreAccoppiato>> GetAsync(PreAccoppiatiQuery query)
         {
             var lstProvinceSedi = query.CodiceSede.Select(sede => sede.Split('.')[0]).Distinct().ToList();
-
+            var lstSedi = _getSedi.GetAll().Result;
             var codiceTurno = Task.Run(() => _getTurno.Get().Codice.Substring(0, 1));
             var lstStatoMezzi = Task.Run(() => _getStatoMezzi.Get(query.CodiceSede));
             var lstStatoSquadre = Task.Run(async () => _getStatoSquadre.Get(await codiceTurno, query.CodiceSede.ToList()));
@@ -98,6 +100,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                             Appartenenza = mezzo.CodiceDistaccamento,
                             Squadre = lstSquadrePreaccoppiate.Where(s => s.CodiciMezziPreaccoppiati?.Contains(mezzoPreaccoppiato) ?? false).Select(s => new API.Models.Classi.Composizione.Squadra()
                             {
+                                IdSquadra = s.spotId,
                                 Codice = s.Codice,
                                 Nome = s.Codice,
                                 Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(lstStatoSquadre.Result?.FirstOrDefault(ss => ss.IdSquadra.Equals($"{s.Codice}_{s.TurnoAttuale}"))?.StatoSquadra ?? Costanti.MezzoInSede),
