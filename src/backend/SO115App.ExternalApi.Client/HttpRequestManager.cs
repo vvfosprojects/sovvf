@@ -73,7 +73,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
 
-            return manageResponse(response);
+            return manageResponse(response, url);
 
             Log.Information($"--------------------------- FINE GET ASYNC BEARER {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
@@ -92,7 +92,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
 
-            return manageResponse(response);
+            return manageResponse(response, url);
 
             Log.Information($"--------------------------- FINE GET ASYNC BASIC {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
@@ -126,7 +126,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
 
-            return manageResponse(response);
+            return manageResponse(response, url);
 
             Log.Information($"--------------------------- FINE POST ASYNC {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
@@ -158,7 +158,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
 
-            return manageResponse(response);
+            return manageResponse(response, url);
 
             Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
@@ -184,7 +184,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
 
-            return manageResponse(response);
+            return manageResponse(response, url);
 
             Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
@@ -216,7 +216,7 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
 
-            return manageResponse(response);
+            return manageResponse(response, url);
 
             Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
@@ -240,14 +240,14 @@ namespace SO115App.ExternalAPI.Client
 
             stopWatch.Stop();
 
-            return manageResponse(response);
+            return manageResponse(response, url);
 
             Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
 
         //PRIVATE METHODS
 
-        private ResponseObject manageResponse(HttpResponseMessage response)
+        private ResponseObject manageResponse(HttpResponseMessage response, Uri url)
         {
             var data = response.Content.ReadAsStringAsync().Result;
 
@@ -270,7 +270,7 @@ namespace SO115App.ExternalAPI.Client
             }
             catch (Exception e)
             {
-                Log.Information("--------- ERRORE: " + data);
+                Log.Information("--------- ERRORE: " + url);
 
                 return null;
             }
