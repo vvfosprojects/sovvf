@@ -72,10 +72,10 @@ namespace SO115App.ExternalAPI.Client
             var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
             stopWatch.Stop();
-            Log.Information(response.Content.ReadAsStringAsync().Result);
-            Log.Information($"--------------------------- FINE GET ASYNC BEARER {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             return manageResponse(response);
+
+            Log.Information($"--------------------------- FINE GET ASYNC BEARER {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
 
         public async Task<ResponseObject> GetAsync(Uri url, string username, string password)
@@ -91,10 +91,10 @@ namespace SO115App.ExternalAPI.Client
             var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
             stopWatch.Stop();
-            Log.Information(response.Content.ReadAsStringAsync().Result);
-            Log.Information($"--------------------------- FINE GET ASYNC BASIC {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             return manageResponse(response);
+
+            Log.Information($"--------------------------- FINE GET ASYNC BASIC {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
 
         public async Task<ResponseObject> PostAsync(Uri url, HttpContent content = null, string token = null)
@@ -125,10 +125,10 @@ namespace SO115App.ExternalAPI.Client
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content ?? new StringContent("")));
 
             stopWatch.Stop();
-            Log.Information(response.Content.ReadAsStringAsync().Result);
-            Log.Information($"--------------------------- FINE POST ASYNC {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             return manageResponse(response);
+
+            Log.Information($"--------------------------- FINE POST ASYNC {url.AbsoluteUri} --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
 
         public async Task<ResponseObject> PostAsyncFormData(Uri url, HttpContent content = null, string token = null)
@@ -157,25 +157,56 @@ namespace SO115App.ExternalAPI.Client
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
             stopWatch.Stop();
-            Log.Information(response.Content.ReadAsStringAsync().Result);
-            Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             return manageResponse(response);
+
+            Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
 
         public async Task<ResponseObject> PostAsync(Uri url, string username, string password, HttpContent content = null)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            Log.Information($"--------------------------- INIZIO POST ASYNC {url.AbsoluteUri} --------------------------- {DateTime.Now}");
+            Log.Information(url.AbsoluteUri);
+
+            if (content != null)
+                Log.Information($"CONTENT: {content}");
+            else
+                Log.Information($"CONTENT: NULL");
+
+            stopWatch.Start();
+
             content.Headers.ContentType = getMediaType();
 
             _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
 
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content ?? new StringContent("")));
 
+            stopWatch.Stop();
+
             return manageResponse(response);
+
+            Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
 
         public async Task<ResponseObject> PutAsync(Uri url, HttpContent content = null, string token = null)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            Log.Information($"--------------------------- INIZIO POST ASYNC {url.AbsoluteUri} --------------------------- {DateTime.Now}");
+            Log.Information(url.AbsoluteUri);
+
+            if (content != null)
+                Log.Information($"CONTENT: {content}");
+            else
+                Log.Information($"CONTENT: NULL");
+
+            if (token != null)
+                Log.Information($"CONTENT: {token}");
+            else
+                Log.Information($"TOKEN: NULL");
+
+            stopWatch.Start();
+
             content.Headers.ContentType = getMediaType();
 
             if (token != null)
@@ -183,18 +214,35 @@ namespace SO115App.ExternalAPI.Client
 
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content ?? new StringContent("")));
 
+            stopWatch.Stop();
+
             return manageResponse(response);
+
+            Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
 
         public async Task<ResponseObject> PutAsync(Uri url, string username, string password, HttpContent content = null)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            Log.Information($"--------------------------- INIZIO POST ASYNC {url.AbsoluteUri} --------------------------- {DateTime.Now}");
+            Log.Information(url.AbsoluteUri);
+
+            if (content != null)
+                Log.Information($"CONTENT: {content}");
+            else
+                Log.Information($"CONTENT: NULL");
+
             content.Headers.ContentType = getMediaType();
 
             _client.DefaultRequestHeaders.Authorization = getBasicAuthorization(username, password);
 
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content ?? new StringContent("")));
 
+            stopWatch.Stop();
+
             return manageResponse(response);
+
+            Log.Information($"--------------------------- FINE POST ASYNC FORM DATA {url.AbsoluteUri}  --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
         }
 
         //PRIVATE METHODS
@@ -216,6 +264,9 @@ namespace SO115App.ExternalAPI.Client
                 //#endif
 
                 return result;
+
+
+                Log.Information(data);
             }
             catch (Exception e)
             {
