@@ -270,6 +270,8 @@ namespace SO115App.ExternalAPI.Client
             }
             catch (Exception e)
             {
+                Log.Information("--------- ERRORE: " + data);
+
                 return null;
             }
         }
