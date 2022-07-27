@@ -1,0 +1,24 @@
+{
+	"dirRegionali": [
+		{
+			"Piemonte": "01",
+			"Lombardia": "02",
+			"liguria": "03",
+			"Veneto": "04",
+			"Friuli Venezia Giulia": "05",
+			"Emilia Romagna": "06",
+			"Toscana": "07",
+			"Marche": "09",
+			"Lazio": "10",
+			"Umbria": "12",
+			"Campania": "13",
+			"Puglia": "15",
+			"Calabria": "16",
+			"Sardegna": "17",
+			"Sicilia": "18",
+			"Basilicata": "19",
+			"Abruzzo": "20",
+			"Molise": "21"
+		}
+	]
+}

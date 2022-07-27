@@ -9,6 +9,7 @@ import * as Locator from '@arcgis/core/rest/locator';
 import SuggestionResult = __esri.SuggestionResult;
 import locatorAddressToLocationsParams = __esri.locatorAddressToLocationsParams;
 import locatorSuggestLocationsParams = __esri.locatorSuggestLocationsParams;
+import { getRegioneByCodDirRegionale } from '../../../helper/function-regioni';
 
 @Component({
     selector: 'app-ricerca-indirizzo',
@@ -87,12 +88,20 @@ export class RicercaIndirizzoComponent implements OnInit {
             let paramsSuggestLocation: locatorSuggestLocationsParams;
             const vistaSedi = this.store.selectSnapshot(AppState.vistaSedi);
             const sedeSelezionata = vistaSedi[0];
+
+            let address: string;
             const provinciaSedeSelezionata = sedeSelezionata.split('.')[0];
-            const provincia = getProvinciaByCodProvincia(provinciaSedeSelezionata);
+            address = getProvinciaByCodProvincia(provinciaSedeSelezionata);
+            if (!address) {
+                address = getRegioneByCodDirRegionale(sedeSelezionata);
+            }
+            if (!address) {
+                address = 'Italia';
+            }
 
             const parmasFindAddress = {
                 address: {
-                    address: provincia !== 'CON' ? provincia : 'ITALIA'
+                    address
                 }, // questo preso dalla checkbox selezionata in alto
                 maxLocations: 1
             };
