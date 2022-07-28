@@ -120,13 +120,13 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                         {
                             new Button()
                             {
-                                bgColor = "",
-                                text = ""
+                                bgColor = "danger",
+                                text = "chiudi"
                             }
                         },
-                        text = "",
-                        timeToClose = "",
-                        title = ""
+                        text = "Nuova partenza distaccamento",
+                        timeToClose = 5000,
+                        title = "Alert Distaccamento"
                     }
                 };
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
