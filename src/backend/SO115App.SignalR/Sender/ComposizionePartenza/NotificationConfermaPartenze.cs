@@ -101,6 +101,36 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 return sintesi.Result;
             });
 
+            Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
+            {
+                var notificaSound = new NotificaSound()
+                {
+                    data = new DataSound()
+                    {
+                        buttons = new List<Button>()
+                        {
+                            new Button()
+                            {
+                                bgColor = "danger",
+                                text = "chiudi"
+                            }
+                        },
+                        text = "Nuova partenza distaccamento",
+                        timeToClose = 5000,
+                        title = "Alert Distaccamento"
+                    }
+                };
+
+                var notificaAlert = new Notifica()
+                {
+                    NotificaType = TipoNotifica.NuovaPartenzaDistaccamento
+                };
+
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAvvisoModal", notificaAlert);
+
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
+            });
+
             Parallel.ForEach(SediDaNotificare, sede =>
             {
                 if (sede != null)
@@ -161,36 +191,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
                    });
                 }
-            });
-
-            Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
-            {
-                var notificaSound = new NotificaSound()
-                {
-                    data = new DataSound()
-                    {
-                        buttons = new List<Button>()
-                        {
-                            new Button()
-                            {
-                                bgColor = "danger",
-                                text = "chiudi"
-                            }
-                        },
-                        text = "Nuova partenza distaccamento",
-                        timeToClose = 5000,
-                        title = "Alert Distaccamento"
-                    }
-                };
-
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAvvisoModal", notificaSound);
-
-                var notificaAlert = new Notifica()
-                {
-                    NotificaType = TipoNotifica.NuovaPartenzaDistaccamento
-                };
-
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaAlert);
             });
         }
     }
