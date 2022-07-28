@@ -134,6 +134,7 @@ export class SignalRService {
          * Notifica Sound
          */
         this.hubNotification.on('NotifySound', (data: { notificaType: TipoNotificaSound }) => {
+            console.log('NotifySound', data);
             this.soundAlertService.startSound(data.notificaType);
         });
 
@@ -141,7 +142,7 @@ export class SignalRService {
          * Modale Alert
          */
         this.hubNotification.on('NotifyAvvisoModal', (data: { title: string, text: string, buttons: { bgColor: string, text: string }[], timeToClose: number }) => {
-            console.log('NotifyAlertModal', data);
+            console.log('NotifyAvvisoModal', data);
             // TODO: capire che dati passare nel modale
             const alertModalInnerHTMLBody = '<div class="alert alert-danger m-0">' + data.text + '</div>';
             this.store.dispatch(new OpenAlertModal(data.title, alertModalInnerHTMLBody, data.buttons, data.timeToClose));
