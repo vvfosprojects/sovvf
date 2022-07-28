@@ -101,44 +101,33 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 return sintesi.Result;
             });
 
-            Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
-            {
-                Notifica notificaSound = new Notifica()
-                {
-                    NotificaType = TipoNotifica.NuovaPartenzaDistaccamento
-                };
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
-            });
-
-            Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
-            {
-                var notificaSound = new NotificaSound()
-                {
-                    data = new DataSound()
-                    {
-                        buttons = new List<Button>()
-                        {
-                            new Button()
-                            {
-                                bgColor = "danger",
-                                text = "chiudi"
-                            }
-                        },
-                        text = "Nuova partenza distaccamento",
-                        timeToClose = 5000,
-                        title = "Alert Distaccamento"
-                    }
-                };
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
-            });
-
             Parallel.ForEach(SediDaNotificare, sede =>
             {
                 if (sede != null)
                 {
+                    _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+
                     var CodSede = new string[] { sede };
 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+                    var notificaSound = new NotificaSound()
+                    {
+                        data = new DataSound()
+                        {
+                            buttons = new List<Button>()
+                            {
+                                new Button()
+                                {
+                                    bgColor = "danger",
+                                    text = "chiudi"
+                                }
+                            },
+                            text = "Nuova partenza distaccamento",
+                            timeToClose = 5000,
+                            title = "Alert Distaccamento"
+                        }
+                    };
+                    
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAvvisoModal", notificaSound);
 
                     foreach (var partenze in conferma.ConfermaPartenze.Partenze)
                     {
@@ -192,6 +181,15 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
                    });
                 }
+            });
+
+            Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
+            {
+                Notifica notificaSound = new Notifica()
+                {
+                    NotificaType = TipoNotifica.NuovaPartenzaDistaccamento
+                };
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
             });
         }
     }
