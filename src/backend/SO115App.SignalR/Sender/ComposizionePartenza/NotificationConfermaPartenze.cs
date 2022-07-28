@@ -110,6 +110,28 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
             });
 
+            Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
+            {
+                var notificaSound = new NotificaSound()
+                {
+                    data = new DataSound()
+                    {
+                        buttons = new List<Button>()
+                        {
+                            new Button()
+                            {
+                                bgColor = "",
+                                text = ""
+                            }
+                        },
+                        text = "",
+                        timeToClose = "",
+                        title = ""
+                    }
+                };
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
+            });
+
             Parallel.ForEach(SediDaNotificare, sede =>
             {
                 if (sede != null)
