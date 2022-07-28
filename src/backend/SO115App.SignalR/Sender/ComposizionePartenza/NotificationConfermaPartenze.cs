@@ -103,22 +103,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
             {
-                var notificaSound = new Notifica()
+                Notifica notificaSound = new Notifica()
                 {
-                    data = new DataSound()
-                    {
-                        buttons = new List<Button>()
-                        {
-                            new Button()
-                            {
-                                bgColor = "",
-                                text = ""
-                            }
-                        },
-                        text = "",
-                        timeToClose = "",
-                        title = ""
-                    }
+                    NotificaType = TipoNotifica.NuovaPartenzaDistaccamento
                 };
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
             });
