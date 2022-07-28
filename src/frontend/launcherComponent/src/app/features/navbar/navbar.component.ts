@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
-import { Store, Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { TurnoState } from './store/states/turno.state';
 import { Ruolo, Utente } from '../../shared/model/utente.model';
 import { TurnoExtra } from './turno/model/turno-extra.model';
@@ -15,9 +15,9 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
-import { ToggleCodaChiamate, ToggleMezziInServizio, ToggleModifica, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
+import { ToggleCodaChiamate, ToggleMezziInServizio, ToggleSchedeContatto, TurnOffComposizione } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
-import { ChiudiRichiestaModifica, ClearRichiestaModifica } from '../home/store/actions/form-richiesta/richiesta-modifica.actions';
+import { ChiudiRichiestaModifica } from '../home/store/actions/form-richiesta/richiesta-modifica.actions';
 import { ClearComposizioneAvanzata } from '../home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearComposizioneVeloce } from '../home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { AnnullaChiamata } from '../home/store/actions/form-richiesta/scheda-telefonata.actions';
@@ -26,7 +26,6 @@ import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
 import { NavbarState } from './store/states/navbar.state';
 import { TipoNotifica } from '../../shared/enum/tipo-notifica.enum';
-import { OpenAlertModal } from '../../shared/store/actions/alert-modal/alert-modal.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -241,14 +240,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     toggleChiamataStatus(): void {
         this.returnToHome();
         this.store.dispatch(new AnnullaChiamata());
-    }
-
-    toggleModificaRichiesta(): void {
-        this.returnToHome();
-        this.store.dispatch([
-            new ToggleModifica(),
-            new ClearRichiestaModifica()
-        ]);
     }
 
     turnOffComposizionePartenza(): void {
