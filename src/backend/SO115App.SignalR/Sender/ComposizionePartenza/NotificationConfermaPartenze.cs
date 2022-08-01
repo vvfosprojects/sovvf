@@ -91,7 +91,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(conferma.Richiesta));
 
             //Sedi dei mezzi in partenza che dovranno ricevere la notifica
-            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
 
@@ -163,10 +163,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     //var avvisoNotifica = new
                     //{
                     //    data = new
-                    //    { 
+                    //    {
                     //        title = "",
                     //        text = "",
-                    //        buttons = new [] 
+                    //        buttons = new []
                     //        {
                     //            new
                     //            {
@@ -207,6 +207,83 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             stopWatch.Stop();
             Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine invio Notifiche Conferma Partenza Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
+
+            await Task.Factory.StartNew(() =>
+            {
+                Stopwatch stopWatchCON = new Stopwatch();
+                Log.Information($"NOTIFICA CONFERMA PARTENZA CON ********** Inizio invio Notifiche Conferma Partenza {DateTime.Now} **************");
+                stopWatchCON.Start();
+
+                //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+
+                var CodSede = new string[] { "00" };
+
+                _notificationHubContext.Clients.Group("00").SendAsync("ChangeStateSuccess", true);
+
+                foreach (var partenze in conferma.ConfermaPartenze.Partenze)
+                {
+                    _notificationHubContext.Clients.Group("00").SendAsync("NotifyUpdateMezzoInServizio", result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
+                }
+
+                conferma.ConfermaPartenze.Chiamata = sintesi.Result;
+                _notificationHubContext.Clients.Group("00").SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+
+                var boxRichiesteQuery = new BoxRichiesteQuery()
+                {
+                    CodiciSede = new string[] { "00" }
+                };
+                var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
+
+                Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine caricamento Box Richieste per la sede CON Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
+
+                _notificationHubContext.Clients.Group("00").SendAsync("NotifyGetBoxInterventi", boxInterventi);
+
+                var boxMezziQuery = new BoxMezziQuery()
+                {
+                    CodiciSede = new string[] { "00" }
+                };
+                var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
+
+                Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine caricamento Box Mezzi per la sede CON Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
+
+                _notificationHubContext.Clients.Group("00").SendAsync("NotifyGetBoxMezzi", boxMezzi);
+
+                var boxPersonaleQuery = new BoxPersonaleQuery()
+                {
+                    CodiciSede = new string[] { "00" }
+                };
+                var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
+
+                Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine caricamento Box Personale per la sede CON Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
+
+                _notificationHubContext.Clients.Group("00").SendAsync("NotifyGetBoxPersonale", boxPersonale);
+
+                if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
+                {
+                    Task.Factory.StartNew(() =>
+                    {
+                        var sintesiSganciata = _mapperSintesi.Map(conferma.RichiestaDaSganciare);
+                        sintesiSganciata.Competenze = conferma.Richiesta.CodUOCompetenza != null ? conferma.Richiesta.CodUOCompetenza.MapCompetenze(_getSedi) : null;
+                        conferma.ConfermaPartenze.Chiamata = sintesiSganciata;
+                        _notificationHubContext.Clients.Group("00").SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+                    });
+                }
+
+                Parallel.ForEach(conferma.ConfermaPartenze.Partenze, partenza =>
+                {
+                    var counterCodaChiamate = new CounterNotifica()
+                    {
+                        codDistaccamento = partenza.Mezzo.Distaccamento.Codice,
+                        count = partenza.Squadre.Count
+                    };
+
+                    _notificationHubContext.Clients.Group("00").SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
+                    _notificationHubContext.Clients.Group("00").SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
+                });
+
+                stopWatchCON.Stop();
+                Log.Information($"NOTIFICA CONFERMA PARTENZA CON ********** Fine invio Notifiche Conferma Partenza Elapsed Time:{stopWatchCON.ElapsedMilliseconds} **************");
+            });
         }
     }
 }
