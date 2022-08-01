@@ -178,7 +178,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     //    },
                     //};
 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("", new { });
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("", new { });
 
                     if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                     {
