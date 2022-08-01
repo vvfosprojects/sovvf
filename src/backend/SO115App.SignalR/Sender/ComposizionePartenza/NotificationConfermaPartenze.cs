@@ -160,6 +160,26 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
+                    //var avvisoNotifica = new
+                    //{
+                    //    data = new
+                    //    { 
+                    //        title = "",
+                    //        text = "",
+                    //        buttons = new [] 
+                    //        {
+                    //            new
+                    //            {
+                    //                bgColor = "",
+                    //                text = ""
+                    //            },
+                    //        },
+                    //        timeToClose = ""
+                    //    },
+                    //};
+
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("", new { });
+
                     if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                     {
                         Task.Factory.StartNew(() =>
