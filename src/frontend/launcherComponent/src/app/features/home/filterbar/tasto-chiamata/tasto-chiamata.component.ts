@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { defineChiamataIntervento } from '../../../../shared/helper/function-richieste';
 
 @Component({
     selector: 'app-tasto-chiamata',
     templateUrl: './tasto-chiamata.component.html',
-    styleUrls: ['./tasto-chiamata.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./tasto-chiamata.component.css']
 })
 export class TastoChiamataComponent {
 
@@ -19,6 +18,14 @@ export class TastoChiamataComponent {
     @Output() startChiamata = new EventEmitter();
 
     defaultColorButtonChiamata: string;
+
+    testInserimento = {
+        active: false,
+        interval: null,
+        maxCount: 0,
+        msInterval: 0,
+        count: 0
+    };
 
     constructor() {
         this.defaultColorButtonChiamata = this.colorButtonChiamata;
@@ -54,5 +61,4 @@ export class TastoChiamataComponent {
                 return 'la richiesta';
         }
     }
-
 }

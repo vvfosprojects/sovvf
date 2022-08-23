@@ -39,7 +39,6 @@ import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.int
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
-import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { GetListeComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
@@ -139,7 +138,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     ngOnInit(): void {
         console.log('Componente ComposizioneAvanzata creato');
-        this.store.dispatch(new GetFiltriComposizione());
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -151,7 +149,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         if (changes?.mezziComposizione?.currentValue) {
             this.mezziComposizione = makeCopy(changes.mezziComposizione.currentValue);
             this.mezziComposizione?.forEach((m: MezzoComposizione) => {
-                if (!m.km || !m.tempoPercorrenza) {
+                if (!m.km || !m.tempoPercorrenza || m.km === '0' || m.tempoPercorrenza === '0') {
                     const pointPartenza = new Point({
                         longitude: +m.mezzo.coordinateStrg[1],
                         latitude: +m.mezzo.coordinateStrg[0],
@@ -183,7 +181,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                         stops: new FeatureSet({
                             features: [pointPartenzaGraphic, pointDestinazioneGraphic]
                         }),
-                        travelMode: this.travelModeService.getTravelModeByGenereMezzo(m.mezzo.genere)
+                        // travelMode: this.travelModeService.getTravelModeByGenereMezzo(m.mezzo.genere)
                     });
 
                     routeTask.solve(routeParams).then((data: any) => {
@@ -191,7 +189,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                             const km = data.routeResults[0]?.route?.attributes?.Total_Kilometers;
                             m.km = km.toFixed(2);
                         }
-                        if (!m.tempoPercorrenza) {
+                        if (!m.tempoPercorrenza || m.tempoPercorrenza === '0') {
                             const tempoPercorrenza = data.routeResults[0]?.route?.attributes?.Total_TravelTime ? data.routeResults[0].route.attributes.Total_TravelTime : data.routeResults[0]?.route?.attributes?.Total_TruckTravelTime;
                             m.tempoPercorrenza = tempoPercorrenza.toFixed(2);
                         }
@@ -230,9 +228,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     checkDoubleDividi(box: BoxPartenza): boolean {
         if (box.squadreComposizione?.length === 1) {
-            const codiceSquadra = box.squadreComposizione[0].codice;
+            const idSquadra = box.squadreComposizione[0].idSquadra;
             const boxPartenze = this.boxPartenzaList.slice().reverse() as BoxPartenza[];
-            const boxPartenzeSquadra: BoxPartenza[] = boxPartenze.filter((boxPartenza: BoxPartenza) => boxPartenza.squadreComposizione?.length === 1 && boxPartenza.squadreComposizione[0].codice === codiceSquadra);
+            const boxPartenzeSquadra: BoxPartenza[] = boxPartenze.filter((boxPartenza: BoxPartenza) => boxPartenza.squadreComposizione?.length === 1 && boxPartenza.squadreComposizione[0].idSquadra === idSquadra);
             return boxPartenzeSquadra?.length > 1 && boxPartenzeSquadra.reverse().findIndex((boxPartenza: BoxPartenza) => boxPartenza === box) === 0;
         } else {
             return false;
@@ -351,25 +349,25 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.idSquadra));
     }
 
     squadraDeselezionataInRientro(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizioneInRientro(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.idSquadra));
     }
 
     squadraDeselezionataPreAccoppiati(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizionePreAccoppiati(squadraComposizione));
-        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.codice));
+        this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.idSquadra));
     }
 
     squadraHoverIn(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.codice));
+        this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.idSquadra));
     }
 
     squadraHoverOut(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.codice));
+        this.store.dispatch(new HoverOutSquadraComposizione());
     }
 
     onSearchSquadre(): void {

@@ -117,14 +117,14 @@ export class BoxPartenzaState {
             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [boxPartenza.mezzoComposizione.mezzo.codice]));
         }
         if (boxPartenza.squadreComposizione?.length > 0) {
-            const codiciSquadre = [] as string[];
+            const idSquadre = [] as string[];
             boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                const squadraCountInBoxes = state.boxPartenzaList.filter((b: BoxPartenza) => b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice).includes(squadra.codice))?.length;
+                const squadraCountInBoxes = state.boxPartenzaList.filter((b: BoxPartenza) => b.squadreComposizione.map((sC: SquadraComposizione) => sC.idSquadra).includes(squadra.idSquadra))?.length;
                 if (squadraCountInBoxes <= 1) {
-                    codiciSquadre.push(squadra.codice);
+                    idSquadre.push(squadra.idSquadra);
                 }
             });
-            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+            dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));
         }
         // controllo se il boxPartenza che sto eliminando è quello selezionato
         if (boxPartenza.id === state.idBoxPartenzaSelezionato) {
@@ -205,8 +205,8 @@ export class BoxPartenzaState {
                         boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
                             dispatch(new UnselectSquadraComposizione(squadra));
                         });
-                        const codiciSquadre = boxPartenza.squadreComposizione.map((sC: SquadraComposizione) => sC.codice);
-                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+                        const idSquadre = boxPartenza.squadreComposizione.map((sC: SquadraComposizione) => sC.idSquadra);
+                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));
                     }
                 }
             }
@@ -254,7 +254,7 @@ export class BoxPartenzaState {
     addSquadraBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: AddSquadreBoxPartenza): void {
         const state = getState();
         const boxPartenzaList = state.boxPartenzaList;
-        const codiciSquadreBoxPartenzaList = boxPartenzaList?.map((b: BoxPartenza) => b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice)[0]);
+        const idSquadreBoxPartenzaList = boxPartenzaList?.map((b: BoxPartenza) => b.squadreComposizione.map((sC: SquadraComposizione) => sC.idSquadra)[0]);
         if (action.preAccoppiato) {
             setState(
                 produce(state, draft => {
@@ -263,10 +263,10 @@ export class BoxPartenzaState {
                             box.squadreComposizione = [];
                             const dataList = [] as AddConcorrenzaDtoInterface[];
                             action.squadre.forEach((squadra: SquadraComposizione) => {
-                                if (!codiciSquadreBoxPartenzaList.includes(squadra.codice)) {
+                                if (!idSquadreBoxPartenzaList.includes(squadra.idSquadra)) {
                                     const data = {
                                         type: TipoConcorrenzaEnum.Squadra,
-                                        value: squadra.codice
+                                        value: squadra.idSquadra
                                     } as AddConcorrenzaDtoInterface;
                                     dataList.push(data);
                                 }
@@ -284,10 +284,10 @@ export class BoxPartenzaState {
                         if (box.id === state.idBoxPartenzaSelezionato) {
                             const dataList = [] as AddConcorrenzaDtoInterface[];
                             action.squadre.forEach((squadra: SquadraComposizione) => {
-                                if (!codiciSquadreBoxPartenzaList.includes(squadra.codice)) {
+                                if (!idSquadreBoxPartenzaList.includes(squadra.idSquadra)) {
                                     const data = {
                                         type: TipoConcorrenzaEnum.Squadra,
-                                        value: squadra.codice
+                                        value: squadra.idSquadra
                                     } as AddConcorrenzaDtoInterface;
                                     dataList.push(data);
                                 }
@@ -309,14 +309,14 @@ export class BoxPartenzaState {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box.id === state.idBoxPartenzaSelezionato) {
                         let index = null;
-                        const codiciSquadre = [] as string[];
+                        const idSquadre = [] as string[];
                         box.squadreComposizione.forEach((squadra: SquadraComposizione, i) => {
-                            if (action.idSquadra === squadra.codice) {
-                                codiciSquadre.push(squadra.codice);
+                            if (action.idSquadra === squadra.idSquadra) {
+                                idSquadre.push(squadra.idSquadra);
                                 index = i;
                             }
                         });
-                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+                        dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));
                         box.squadreComposizione.splice(index, 1);
                     }
                 });
@@ -332,7 +332,7 @@ export class BoxPartenzaState {
                 if (box.id === state.idBoxPartenzaSelezionato && box.mezzoComposizione) {
                     if (box.squadreComposizione && box.squadreComposizione.length > 0) {
                         box.squadreComposizione.forEach((squadra: SquadraComposizione) => {
-                            dispatch(new RemoveSquadraBoxPartenza(squadra.codice));
+                            dispatch(new RemoveSquadraBoxPartenza(squadra.idSquadra));
                             dispatch(new UnselectSquadraComposizione(squadra));
                         });
                     }
@@ -400,8 +400,8 @@ export class BoxPartenzaState {
                 dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [b.mezzoComposizione.mezzo.codice]));
             }
             if (b.squadreComposizione) {
-                const codiciSquadre = b.squadreComposizione.map((sC: SquadraComposizione) => sC.codice);
-                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, codiciSquadre));
+                const idSquadre = b.squadreComposizione.map((sC: SquadraComposizione) => sC.idSquadra);
+                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));
             }
         });
         dispatch(new ClearDirection());

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { ReducerFilterListeComposizione, SetRichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -18,13 +18,20 @@ import { TriageSummaryModalComponent } from '../../modal/triage-summary-modal/tr
 import { getGeneriMezzoTriageSummary } from '../../helper/function-triage';
 import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
+import { AppState } from '../../store/states/app/app.state';
 
 @Component({
     selector: 'app-filterbar-composizione',
     templateUrl: './filterbar-composizione.component.html',
     styleUrls: ['./filterbar-composizione.component.css']
 })
-export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnInit {
+export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
+
+    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    @Select(ComposizionePartenzaState.loadingMezzi) loadingMezzi$: Observable<boolean>;
+    @Select(ComposizionePartenzaState.loadingSquadre) loadingSquadre$: Observable<boolean>;
 
     @Input() filtri: ListaTipologicheMezzi;
     @Input() disableComposizioneMode: boolean;
@@ -37,12 +44,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
     @Input() loadingSquadre: boolean;
     @Input() loadingMezzi: boolean;
     @Input() triageSummary: TriageSummary[];
-
-    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
-    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
-    @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
-    @Select(ComposizionePartenzaState.loadingMezzi) loadingMezzi$: Observable<boolean>;
-    @Select(ComposizionePartenzaState.loadingSquadre) loadingSquadre$: Observable<boolean>;
 
     richiesta: SintesiRichiesta;
     notFoundText = 'Nessun Filtro Trovato';
@@ -62,9 +63,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         this.getViewState();
     }
 
-    ngOnInit(): void {
-    }
-
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.triageSummary?.currentValue && !changes?.triageSummary?.previousValue && !changes?.generiMezzoSelezionato?.currentValue?.length) {
             this.setGenereMezzoTriage();
@@ -74,7 +72,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
             this.checkDistaccamenti();
         }
 
-        if (changes?.competenze?.currentValue && changes?.filtri?.currentValue) {
+        if (((changes?.competenze?.currentValue && changes?.competenze?.currentValue !== []) || changes?.competenze?.currentValue === []) && changes?.filtri?.currentValue) {
             this.setDistaccamentiDefault();
             this.checkDistaccamenti();
         }
@@ -105,17 +103,25 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy, OnI
         this.distaccamentiSelezionati = [];
         const distaccamentiDefault = [];
 
-        if (this.competenze) {
-            this.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
-            if (distaccamentiDefault?.length) {
-                const distaccamentiIds = this.filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => d.id);
-                if (distaccamentiIds.includes(distaccamentiDefault[0].id)) {
-                    this.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
-                    this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
-                } else {
-                    this.addFiltro([], 'codiceDistaccamento');
+        if (this.competenze?.length) {
+            const vistaSedi = this.store.selectSnapshot(AppState.vistaSedi);
+            const sedeSelezionata = vistaSedi[0];
+            if (sedeSelezionata.indexOf('.') !== -1) {
+                this.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
+                if (distaccamentiDefault?.length) {
+                    const distaccamentiIds = this.filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => d.id);
+                    if (distaccamentiIds.includes(distaccamentiDefault[0].id)) {
+                        this.competenze.forEach(x => this.distaccamentiSelezionati.push(x.codice));
+                        this.addFiltro(distaccamentiDefault, 'codiceDistaccamento');
+                    } else {
+                        this.addFiltro([], 'codiceDistaccamento');
+                    }
                 }
+            } else {
+                this.addFiltro([], 'codiceDistaccamento');
             }
+        } else {
+            this.addFiltro([], 'codiceDistaccamento');
         }
     }
 

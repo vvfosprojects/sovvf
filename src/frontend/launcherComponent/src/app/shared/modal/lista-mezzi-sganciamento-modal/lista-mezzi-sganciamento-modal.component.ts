@@ -117,4 +117,5 @@ export class ListaMezziSganciamentoModalComponent implements OnInit, OnDestroy {
     close(esito: string): void {
         this.modal.close(esito);
     }
+
 }

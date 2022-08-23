@@ -144,7 +144,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Modifica Intervento
         /// </summary>
-        //
+
         [ProducesResponseType(typeof(string), 400)]
         [HttpPost("UpdateIntervento")]
         public async Task<IActionResult> UpdateIntervento([FromBody] Intervento chiamata)
@@ -162,7 +162,7 @@ namespace SO115App.API.Controllers
             try
             {
                 this._Updatehandler.Handle(command);
-                return Ok();
+                return Ok(_getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice));
             }
             catch (Exception ex)
             {

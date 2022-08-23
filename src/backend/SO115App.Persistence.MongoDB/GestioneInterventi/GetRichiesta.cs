@@ -34,6 +34,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,12 +49,13 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetRubrica _getRubrica;
         private readonly IGetTurno _getTurno;
         private readonly IGetSedi _getSedi;
+        private readonly IGetSottoSediByCodSede _getSottoSediByCodSede;
 
         public GetRichiesta(DbContext dbContext,
             IMapperRichiestaSuSintesi mapperSintesi,
             IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC,
             IGetRubrica getRubrica, IGetTurno getTurno,
-            IGetSedi getSedi)
+            IGetSedi getSedi, IGetSottoSediByCodSede getSottoSediByCodSede)
         {
             _dbContext = dbContext;
             _mapperSintesi = mapperSintesi;
@@ -61,6 +63,7 @@ namespace SO115App.Persistence.MongoDB
             _getRubrica = getRubrica;
             _getTurno = getTurno;
             _getSedi = getSedi;
+            _getSottoSediByCodSede = getSottoSediByCodSede;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -111,12 +114,13 @@ namespace SO115App.Persistence.MongoDB
                 listaCodSedi.Add(sede.Codice);
             }
 
-            var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi);
+            var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi.ToHashSet());
+            var filtriSediPartenze = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSediPartenze, listaCodSedi.ToHashSet());
 
             var lstRichieste = new List<RichiestaAssistenza>();
             if (filtro.SearchKey == null || filtro.SearchKey.Length == 0)
             {
-                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate).ToList();
+                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate | filtriSediPartenze).ToList();
             }
             else
             {
@@ -150,7 +154,7 @@ namespace SO115App.Persistence.MongoDB
                 indexes.Add(indexWildcardTextSearch);
 
                 _dbContext.RichiestaAssistenzaCollection.Indexes.CreateMany(indexes);
-                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText & (filtroSediCompetenti | filtriSediAllertate)).ToList();
+                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText & (filtroSediCompetenti | filtriSediAllertate | filtriSediPartenze)).ToList();
             }
 
             if (filtro == null)
@@ -287,7 +291,7 @@ namespace SO115App.Persistence.MongoDB
                 }
             }
 
-            var listaSistesiRichieste = result.Where(richiesta => richiesta.CodUOCompetenza != null).Select(richiesta =>
+            var listaSistesiRichieste = result.Where(richiesta => richiesta.CodSOCompetente != null).Select(richiesta =>
             {
                 var rubrica = new List<EnteDTO>();
                 var sintesi = new SintesiRichiesta();
@@ -320,7 +324,7 @@ namespace SO115App.Persistence.MongoDB
             if (richiesta.CodEntiIntervenuti != null)
                 rubrica = _getRubrica.GetBylstCodici(richiesta.CodEntiIntervenuti.Select(c => c).ToArray());
 
-            if (richiesta.CodUOCompetenza != null)
+            if (richiesta.CodSOCompetente.Trim().Length > 0)
             {
                 sintesi = _mapperSintesi.Map(richiesta);
                 //sintesi.CodEntiIntervenuti = rubrica.Count > 0 ? rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false) : null;
@@ -331,34 +335,49 @@ namespace SO115App.Persistence.MongoDB
             return sintesi;
         }
 
-        public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri)
+        public async Task<List<RichiestaAssistenza>> GetRiepilogoInterventi(FiltriRiepilogoInterventi filtri, string[] codSede)
         {
+            var filter = Builders<RichiestaAssistenza>.Filter;
+            var empty = filter.In(richiesta => richiesta.CodSOCompetente, codSede);
+
             //FILTRO I CAMPI CHE ABBIAMO SALVATI SUL DB
 
-            var empty = Builders<RichiestaAssistenza>.Filter.Empty;
+            var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
 
-            var soloInterventi = filtri?.AltriFiltri?.SoloInterventi == false ? Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "C") : empty; //OK
+            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & empty).ToList();
 
-            var distaccamento = filtri?.Distaccamenti == null || filtri?.Distaccamenti?.Count() == 0 ? empty : Builders<RichiestaAssistenza>.Filter.In(r => r.CodSOCompetente, filtri?.Distaccamenti); //OK
-
-            var turno = string.IsNullOrEmpty(filtri.Turno) ? empty : Builders<RichiestaAssistenza>.Filter.Eq(r => r.TrnInsChiamata, filtri.Turno.Substring(0, 1)); //OK
-
-            var result = _dbContext.RichiestaAssistenzaCollection.Find(soloInterventi & distaccamento & turno).ToList();
-
-            //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB)
+            //FILTRO I CAMBI CALCOLATI DAL MODELLO IN GET (NON PRESENTI SUL DB) dopo la query mongo
 
             //fonogramma trasmesso
             if (filtri.AltriFiltri?.Trasmessi ?? false)
-                result = result.Where(r => r.ListaEventi.OfType<FonogrammaInviato>().Count() > 0).ToList();
+                result = result.Where(r => r.ListaEventi.OfType<FonogrammaInviato>().Any()).ToList();
 
             //data
             result = result.Where(r => filtri.Da <= r.dataOraInserimento && filtri.A >= r.dataOraInserimento).ToList();
 
-            //squadre
-            if (filtri.Squadre?.Count() > 0)
-                result = result.Where(r => r.lstSquadre.Any(sq => filtri.Squadre.Contains(sq))).ToList();
+            //filtri squadra
+            if (filtri != null) result = result.Where(r => r.lstPartenze.SelectMany(p => p.Squadre).Any(s =>
+             {
+                 bool turno = true;
+                 bool distaccamento = true;
+                 bool codice = true;
 
-            return result.ToList();
+                 if (filtri.Turni != null && filtri.Turni.Length > 0)
+                     turno = filtri.Turni.Contains(s.Turno);
+
+                 if (filtri.Distaccamenti != null && filtri.Distaccamenti?.Length > 0 /*&& s.Distaccamento != null*/)
+                     distaccamento = filtri.Distaccamenti.Any(d => d.Equals(s.Distaccamento.Codice));
+
+                 //if (s.Distaccamento == null)
+                 //    distaccamento = false;
+
+                 if (filtri.Squadre != null && filtri.Squadre.Length > 0)
+                     codice = filtri.Squadre.Contains(s.Codice);
+
+                 return turno && distaccamento && codice;
+             })).ToList();
+
+            return result;
         }
     }
 }

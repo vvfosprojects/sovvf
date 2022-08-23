@@ -37,7 +37,6 @@ export class PartenzaComponent implements OnInit {
 
     @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
-    @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
 
@@ -55,6 +54,14 @@ export class PartenzaComponent implements OnInit {
 
     ngOnInit(): void {
         this.checkListaEventiMezzo();
+    }
+
+    getUltimoStatoMezzo(codMezzo: string): StatoMezzo {
+        const eventoCodMezzo = this.richiesta.eventi.filter((evento: EventoMezzo) => evento.codiceMezzo === codMezzo);
+        if (eventoCodMezzo) {
+            const eventoUltimoStatoMezzo = eventoCodMezzo[eventoCodMezzo?.length - 1];
+            return eventoUltimoStatoMezzo.stato;
+        }
     }
 
     onAnnullaStato(codiceMezzo: string, statoMezzo: StatoMezzo): void {

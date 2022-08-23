@@ -13,6 +13,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock
     public class DeleteBlockCommand
     {
         public List<string> ListaIdConcorrenza { get; set; }
+        public List<Concorrenza> ListaConcorrenza { get; set; }
         public string CodiceSede { get; set; }
         public Utente utente { get; set; }
         public List<string> listaSediDaAllertare { get; set; }

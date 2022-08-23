@@ -4,6 +4,7 @@ import { Sede } from '../model/sede.model';
 import { Componente } from '../model/componente.model';
 
 export interface SquadraComposizione {
+    idSquadra: string;
     codice: string;
     diEmergenza: boolean;
     nome: string;

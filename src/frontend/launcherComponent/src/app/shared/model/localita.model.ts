@@ -34,6 +34,10 @@ export class Localita {
         /**
          * provincia
          */
+        public citta?: string,
+        /**
+         * provincia
+         */
         public provincia?: string,
         /**
          * cap

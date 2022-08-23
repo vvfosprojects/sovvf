@@ -5,6 +5,7 @@ import { Priorita } from '../../model/sintesi-richiesta.model';
 import { SetRichiestaById } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { SintesiRichiestaModalComponent } from '../sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import { Store } from '@ngxs/store';
+import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 
 @Component({
     selector: 'app-dettaglio-scheda-contatto-modal',
@@ -29,12 +30,17 @@ export class DettaglioSchedaContattoModalComponent {
 
     /* Apre il modal per visualizzare la richiesta */
     onDettaglioRichiesta(idRichiesta: string): void {
-        this.store.dispatch(new SetRichiestaById(idRichiesta));
-        this.modalService.open(SintesiRichiestaModalComponent, {
-            windowClass: 'xxlModal modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
+        const richiestaById = this.store.selectSnapshot(RichiesteState.getRichiestaById);
+        if (!richiestaById) {
+            this.store.dispatch(new SetRichiestaById(idRichiesta));
+            this.modalService.open(SintesiRichiestaModalComponent, {
+                windowClass: 'xxlModal modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+        } else {
+            console.warn('Dettaglio Richiesta già aperto');
+        }
     }
 
     close(type: string): void {

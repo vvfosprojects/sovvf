@@ -52,7 +52,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 
             var Competenze = chiamata.Competenze;
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
+            var SediDaNotificare = _getGerarchiaToSend.Get((chiamata.ChiamataInCorso.CodiceSedeOperatore));
 
             foreach (var sede in SediDaNotificare)
             {

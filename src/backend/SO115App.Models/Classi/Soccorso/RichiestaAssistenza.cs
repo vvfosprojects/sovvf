@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
@@ -639,35 +640,22 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                    var partenze = this.Partenze;
+                var partenze = this.Partenze;
 
-                    if (partenze.Count > 0)
+                if (partenze.Count > 0)
+                {
+                    if (partenze.ToList().FindAll(p => p.Partenza.Terminata || p.Partenza.Sganciata).Count < partenze.Count)
                     {
-                        if (partenze.ToList().FindAll(p => p.Partenza.Terminata || p.Partenza.Sganciata).Count < partenze.Count)
-                        {
-                            var partenzeAperte = partenze.ToList().Where(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
+                        var partenzeAperte = partenze.ToList().Where(p => !p.Partenza.Terminata && !p.Partenza.Sganciata);
 
-                            if ((partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio)).Count() > 0 ||
-                                partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro)).Count() > 0) &&
-                                partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count() == 0)
-                                return new Assegnata();
-                            else if (partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count() > 0)
-                                return new Presidiata();
-                            else
-                                return new Sospesa();
-                        }
+                        if ((partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio)).Count() > 0 ||
+                            partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro)).Count() > 0) &&
+                            partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count() == 0)
+                            return new Assegnata();
+                        else if (partenzeAperte.Where(p => p.Partenza.Mezzo.Stato.Equals(Costanti.MezzoSulPosto)).Count() > 0)
+                            return new Presidiata();
                         else
-                        {
-                            var contChiusura = _eventi.Where(e => e is ChiusuraRichiesta).Count();
-                            var contRiapertura = _eventi.Where(e => e is RiaperturaRichiesta).Count();
-
-                            if (contChiusura > contRiapertura)
-                                return new Chiusa();
-                            else if (CodRichiesta != null)
-                                return new Sospesa();
-                            else
-                                return new InAttesa();
-                        }
+                            return new Sospesa();
                     }
                     else
                     {
@@ -680,7 +668,20 @@ namespace SO115App.API.Models.Classi.Soccorso
                             return new Sospesa();
                         else
                             return new InAttesa();
-                    }                
+                    }
+                }
+                else
+                {
+                    var contChiusura = _eventi.Where(e => e is ChiusuraRichiesta).Count();
+                    var contRiapertura = _eventi.Where(e => e is RiaperturaRichiesta).Count();
+
+                    if (contChiusura > contRiapertura)
+                        return new Chiusa();
+                    else if (CodRichiesta != null)
+                        return new Sospesa();
+                    else
+                        return new InAttesa();
+                }
             }
         }
 
@@ -819,6 +820,11 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Lista delle Competenze della richiesta
         /// </summary>
         public virtual List<Sede> Competenze { get; set; }
+
+        /// <summary>
+        ///   Lista delle Competenze in base alle sedi delle partenze presenti
+        /// </summary>
+        public string[] CodSediPartenze { get; set; }
 
         /// <summary>
         ///   Codice della scheda Nue, estratto dalla prima telefonata che è legata ad una scheda

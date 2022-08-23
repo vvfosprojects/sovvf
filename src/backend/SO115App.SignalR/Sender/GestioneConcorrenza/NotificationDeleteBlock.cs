@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneConcorrenza.DeleteBlock;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneConcorrenza;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneConcorrenza
@@ -11,26 +13,33 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IGetSediConcorrenza _getSediConcorrenza;
 
         public NotificationDeleteBlock(IHubContext<NotificationHub> NotificationHubContext,
-                                       GetGerarchiaToSend getGerarchiaToSend)
+                                       GetGerarchiaToSend getGerarchiaToSend,
+                                       IGetSediConcorrenza getSediConcorrenza)
         {
             _notificationHubContext = NotificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getSediConcorrenza = getSediConcorrenza;
         }
 
         public async Task SendNotification(DeleteBlockCommand command)
         {
-            var SediDaNotificare = new List<string>();
+            var SediDaAllertare = new List<string>();
 
-            if (command.listaSediDaAllertare != null)
+            if (command.ListaConcorrenza.Count > 0)
             {
-                SediDaNotificare = _getGerarchiaToSend.Get(command.CodSOCompetente, command.listaSediDaAllertare.ToArray());
+                foreach (var concorrenza in command.ListaConcorrenza)
+                {
+                    SediDaAllertare.AddRange(_getSediConcorrenza.Get(concorrenza.Type, concorrenza.Value, concorrenza.CodComando));
+                }
             }
-            else
-                SediDaNotificare = _getGerarchiaToSend.Get(command.CodSOCompetente);
 
-            foreach (var sede in SediDaNotificare)
+            var SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede, SediDaAllertare.ToArray());
+            SediDaNotificare.Add("00");
+
+            foreach (var sede in SediDaNotificare.Distinct())
             {
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyConcorrenza", command);
             }

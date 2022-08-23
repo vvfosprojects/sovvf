@@ -3,16 +3,19 @@
         {{ 'INVIO DELLA RICHIESTA AL SISTEMA AFM' }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            [disabled]="loading"
             (click)="chiudiModalSoccorsoAereo('ko')">
         <i class="fas fa-times text-danger"></i>
     </button>
 </div>
 
-<div class="modal-body pb-0">
-    <div class="row pt-4" style="justify-content: center; font-size: x-large">
-        <div class="col-7" style="text-align: center">
-            <span style="font-size: 130%">Seleziona le Azioni Richieste</span>
-            <div class="row"></div>
+<div class="modal-body">
+    <ng-container *ngIf="loading">
+        <app-partial-loader></app-partial-loader>
+    </ng-container>
+    <div class="row">
+        <div class="col-7">
+            <label>Seleziona le Azioni Richieste</label>
             <div *ngIf="!azioniRichiesta?.length" class="card card-shadow mx-auto px-3">
                 <div class="clearfix ml-2 text-secondary">
                     <i class="fas fa-spin fa-spinner mr-1"></i>
@@ -42,32 +45,35 @@
                 </div>
             </div>
         </div>
-        <div class="col-5" style="text-align: center">
-            <span style="font-size: 130%">Motivazione della richiesta</span>
+        <div class="col-5">
+            <label for="motivazioneRichiesta">Motivazione della richiesta</label>
             <textarea [(ngModel)]="motivazione" id="motivazioneRichiesta" type="text"
                       placeholder="Inserisci motivazione della richiesta" style="font-size: 110%"
                       class="form-control font-xlarge area-size"></textarea>
         </div>
     </div>
-    <div class="row pt-5 pb-4">
+    <!-- <div class="row pt-5 pb-4">
         <div class="col-12  d-inline-flex">
             <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder mr-1 w-25">
                 Consulta
             </button>
             <input type="text" class="w-75" style="height: 48px; vertical-align: bottom; outline: none" disabled>
         </div>
-    </div>
-    <div *ngIf="inserimentoFallito" class="row pb-1">
-        <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">
-            Richiesta di inserimento richiesta AFM non riuscita.
-            <span (click)="inserimentoFallito = false" style="float: right; cursor: pointer;">X</span>
+    </div> -->
+    <ng-container *ngIf="errorMsg">
+        <div class="row pt-3 pb-1">
+            <div class="col-12 alert alert-danger text-uppercase font-weight-bold mb-0" role="alert">
+                {{ errorMsg }}
+                <span style="float: right; cursor: pointer;" (click)="setErrorMsg()">X</span>
+            </div>
         </div>
-    </div>
+    </ng-container>
 </div>
 
 <div class="modal-footer d-flex align-items-center justify-content-between">
     <button type="button"
             class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
+            [disabled]="loading"
             (click)="chiudiModalSoccorsoAereo('ko')">
         {{ 'Chiudi' | uppercase }}
     </button>

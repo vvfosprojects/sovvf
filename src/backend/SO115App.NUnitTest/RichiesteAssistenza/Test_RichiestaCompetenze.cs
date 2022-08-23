@@ -95,7 +95,7 @@ namespace SO115App.NUnitTest.RichiesteAssistenza
                         Coordinate = new API.Models.Classi.Condivise.Coordinate(41.89996, 12.49104)
                     };
 
-                    var comp = _queryHandler.GetCompetenzeByCoordinateIntervento(query.Coordinate);
+                    var comp = _queryHandler.GetCompetenzeByCoordinateIntervento(query.Coordinate, "RM");
                 }
 
                 //Assert.Pass($"Elenco Competenze: {String.Join(",", comp)}");

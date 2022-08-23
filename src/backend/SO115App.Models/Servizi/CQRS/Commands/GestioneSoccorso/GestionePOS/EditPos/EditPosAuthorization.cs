@@ -73,7 +73,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePOS.Edi
 
                     bool abilitato = false;
 
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Pos.CodSede, Costanti.Amministratore))
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Pos.CodSede, Costanti.GestoreRichieste))
+                        abilitato = true;
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Pos.CodSede, Costanti.GestoreChiamate))
                         abilitato = true;
 
                     if (!abilitato)

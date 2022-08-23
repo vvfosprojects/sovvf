@@ -30,7 +30,6 @@
                                            [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate) || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [r.codice]) || r.stato === statoRichiesta.Chiusa"
                                            [disableTooltips]="scrolling"
                                            [disableFissaInAlto]="richieste.length === 1"
-                                           [loadingEliminaPartenza]="loadingEliminaPartenza"
                                            [loadingActionMezzo]="loadingActionMezzo"
                                            [loadingDettaglioSchedaContatto]="loadingDettaglioSchedaContatto"
                                            [annullaStatoMezzi]="annullaStatoMezzi"
@@ -42,8 +41,7 @@
                                            (nuovaPartenza)="nuovaPartenza($event)"
                                            (modificaRichiesta)="onModificaRichiesta($event)"
                                            (gestioneRichiesta)="onGestioneRichiesta($event)"
-                                           (actionMezzo)="actionMezzo.emit($event)"
-                                           (eliminaPartenza)="eliminaPartenza.emit($event)">
+                                           (actionMezzo)="actionMezzo.emit($event)">
                     </app-sintesi-richiesta>
                 </div>
             </div>

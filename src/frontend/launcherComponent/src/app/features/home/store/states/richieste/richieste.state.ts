@@ -10,7 +10,6 @@ import {
     ClearRichiestaAzioni,
     ClearRichiestaById,
     ClearRichieste,
-    EliminaPartenzaRichiesta,
     GetListaRichieste,
     ModificaStatoFonogramma,
     SetIdChiamataInviaPartenza,
@@ -20,12 +19,10 @@ import {
     StartInviaPartenzaFromChiamata,
     StartLoadingActionMezzo,
     StartLoadingActionRichiesta,
-    StartLoadingEliminaPartenza,
     StartLoadingModificaFonogramma,
     StartLoadingRichieste,
     StopLoadingActionMezzo,
     StopLoadingActionRichiesta,
-    StopLoadingEliminaPartenza,
     StopLoadingModificaFonogramma,
     StopLoadingRichieste,
     UpdateRichiesta,
@@ -73,7 +70,6 @@ export interface RichiesteStateModel {
     chiamataInviaPartenza: string;
     loadingRichieste: boolean;
     loadingActionMezzo: string[];
-    loadingEliminaPartenza: boolean;
     loadingActionRichiesta: string[];
     loadingModificaFonogramma: boolean;
     needRefresh: boolean;
@@ -85,7 +81,6 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     richiestaAzioni: null,
     chiamataInviaPartenza: null,
     loadingRichieste: false,
-    loadingEliminaPartenza: false,
     loadingActionMezzo: null,
     loadingActionRichiesta: null,
     loadingModificaFonogramma: false,
@@ -143,11 +138,6 @@ export class RichiesteState {
     @Selector()
     static loadingActionRichiesta(state: RichiesteStateModel): string[] {
         return state.loadingActionRichiesta;
-    }
-
-    @Selector()
-    static loadingEliminaPartenza(state: RichiesteStateModel): boolean {
-        return state.loadingEliminaPartenza;
     }
 
     @Selector()
@@ -373,24 +363,10 @@ export class RichiesteState {
             }
             if (!action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
                 dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, obj.statoMezzo));
+            } else if (action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
+                dispatch(new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice]));
             }
         }
-    }
-
-    // TODO: Rimuovere (con relativi riferimenti nei componenti) poichè la funzionalità è stata rimossa
-    @Action(EliminaPartenzaRichiesta)
-    eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>): void {
-        dispatch(new StartLoadingEliminaPartenza());
-        // const obj = {
-        //     idRichiesta: action.idRichiesta,
-        //     targaMezzo: action.targaMezzo,
-        //     codMotivazione: action.motivazione.codMotivazione,
-        //     testoMotivazione: action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
-        //     codRichiestaSubentrata: action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
-        // };
-        // this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
-        //     dispatch(new StopLoadingEliminaPartenza());
-        // }, error => dispatch(new StopLoadingEliminaPartenza()));
     }
 
     @Action(ActionRichiesta)
@@ -419,11 +395,9 @@ export class RichiesteState {
 
     @Action(AllertaSede)
     allertaSede({ dispatch }: StateContext<RichiesteStateModel>, action: AllertaSede): void {
-        const codSediAllertate = [];
-        action.event.sedi.forEach(x => codSediAllertate.push(x.codice));
         const obj = {
             codiceRichiesta: action.event.codRichiesta,
-            codSediAllertate,
+            codSediAllertate: action.event.sedi,
             motivazione: action.event.motivazione,
             generiMezzi: action.event.generiMezzi,
         };
@@ -518,21 +492,6 @@ export class RichiesteState {
                 loadingActionMezzo: removeItem<string>(idMezzo => idMezzo === action.idMezzo)
             })
         );
-    }
-
-
-    @Action(StartLoadingEliminaPartenza)
-    startLoadingEliminaPartenza({ patchState }: StateContext<RichiesteStateModel>): void {
-        patchState({
-            loadingEliminaPartenza: true
-        });
-    }
-
-    @Action(StopLoadingEliminaPartenza)
-    stopLoadingEliminaPartenza({ patchState }: StateContext<RichiesteStateModel>): void {
-        patchState({
-            loadingEliminaPartenza: false
-        });
     }
 
     @Action(StartLoadingActionRichiesta)

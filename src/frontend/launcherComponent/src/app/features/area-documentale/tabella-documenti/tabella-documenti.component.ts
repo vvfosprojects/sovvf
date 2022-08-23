@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DocumentoInterface } from '../../../shared/interface/documento.interface';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-tabella-documenti',
@@ -25,6 +26,7 @@ export class TabellaDocumentiComponent {
     @Output() deleteDocumento: EventEmitter<{ idDocumento: string, descrizioneDocumento: string, descrizioneCategoria: string }> = new EventEmitter<{ idDocumento: string, descrizioneDocumento: string, descrizioneCategoria: string }>();
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+    permissionFeatures = PermissionFeatures;
 
     constructor(private lockedConcorrenzaService: LockedConcorrenzaService) {
     }

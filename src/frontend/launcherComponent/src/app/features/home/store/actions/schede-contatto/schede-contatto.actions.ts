@@ -21,7 +21,7 @@ export class SetContatoriSchedeContatto {
 export class GetListaSchedeContatto {
     static readonly type = '[SchedeContatto] Get Lista Schede Contatto';
 
-    constructor(public page?: number) {
+    constructor(public page?: number, public rangeVisualizzazione?: RangeSchedeContattoEnum) {
     }
 }
 
@@ -165,6 +165,13 @@ export class OpenDettaglioSchedaContatto {
     static readonly type = '[SchedeContatto] Open Dettaglio Scheda Contatto';
 
     constructor(public codiceScheda: string) {
+    }
+}
+
+export class SetDettaglioSchedaContattoOpened {
+    static readonly type = '[SchedeContatto] Set DettaglioSchedaContattoOpened';
+
+    constructor(public value: boolean) {
     }
 }
 

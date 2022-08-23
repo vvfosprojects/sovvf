@@ -74,7 +74,7 @@ namespace SO115App.API.Controllers
                     Filtri = filtri,
                     ContentType = contentType,
                     IdOperatore = Request.Headers["IdUtente"],
-                    IdSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    IdSede = Request.Headers["CodiceSede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
                 };
 
                 var result = _riepilogoInterventiQuery.Handle(query);

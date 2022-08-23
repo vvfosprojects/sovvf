@@ -52,9 +52,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 
             #endregion connessione al WSSignalR
 
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.ChiamataInCorso.Localita.Coordinate);
-
-            var SediDaNotificare = _getGerarchiaToSend.Get(chiamata.ChiamataInCorso.Competenze[0]);
+            var SediDaNotificare = _getGerarchiaToSend.Get(chiamata.ChiamataInCorso.CodiceSedeOperatore);
             //SediDaNotificare.Add(chiamata.ChiamataInCorso.CodiceSedeOperatore);
 
             foreach (var sede in SediDaNotificare)

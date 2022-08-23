@@ -8,6 +8,9 @@ import { Utente } from '../../model/utente.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
 import { makeCopy } from '../../helper/function-generiche';
+import { ShowToastr } from '../../store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../enum/toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-soccorso-aereo-modal',
@@ -19,22 +22,21 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
 
     @Select(AuthState.currentUser) user$: Observable<Utente>;
     utente: Utente;
-    @Select(ComposizioneSoccorsoAereoState.azioniRichieste) azioniRichiesta$: Observable<boolean>;
+    @Select(ComposizioneSoccorsoAereoState.azioniRichieste) azioniRichiesta$: Observable<any>;
     azioniRichiesta: any[];
 
     richiesta: SintesiRichiesta;
     subscription: Subscription = new Subscription();
     tipologiaChecked = false;
     motivazione: string;
-    submitted: boolean;
-    inserimentoFallito: boolean;
 
+    loading: boolean;
+    submitted: boolean;
+    errorMsg: string;
 
     constructor(private modal: NgbActiveModal, private store: Store, private compPartenzaService: CompPartenzaService) {
         this.getUtente();
         this.getAzioniRichiesta();
-        this.motivazione = null;
-        this.inserimentoFallito = false;
     }
 
     ngOnDestroy(): void {
@@ -64,15 +66,24 @@ export class SoccorsoAereoModalComponent implements OnDestroy {
                 lat: this.richiesta.localita.coordinate.latitudine,
                 lng: this.richiesta.localita.coordinate.longitudine,
             };
+            this.loading = true;
+            this.setErrorMsg();
             this.compPartenzaService.addSoccorsoAereo(obj).subscribe(() => {
+                this.loading = false;
+                this.store.dispatch(new ShowToastr(ToastrType.Success, 'Richiesta Soccorso Aereo', 'Richiesta avvenuta con successo'));
                 this.modal.close({ status: 'ok' });
-            }, () => {
+            }, (error: HttpErrorResponse) => {
+                this.loading = false;
                 this.submitted = false;
-                this.inserimentoFallito = true;
+                this.setErrorMsg(error.error);
             });
         } else {
             this.modal.close({ status: 'ko' });
         }
+    }
+
+    setErrorMsg(errorMsg?: string): void {
+        this.errorMsg = errorMsg;
     }
 
     getUtente(): void {

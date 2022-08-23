@@ -8,9 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using WSSignlR.Hubs;
 
@@ -56,6 +58,31 @@ namespace WSSignlR
             });
 
             services.AddSignalR()
+                .AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, o =>
+                {
+                    o.Configuration.ChannelPrefix = "SO115Web";
+                    o.ConnectionFactory = async writer =>
+                    {
+                        var config = new ConfigurationOptions
+                        {
+                            AbortOnConnectFail = false
+                        };
+                        config.EndPoints.Add(IPAddress.Loopback, 0);
+                        config.SetDefaultPorts();
+                        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                        connection.ConnectionFailed += (_, e) =>
+                        {
+                            Console.WriteLine("Connection to Redis failed.");
+                        };
+
+                        if (!connection.IsConnected)
+                        {
+                            Console.WriteLine("Did not connect to Redis.");
+                        }
+
+                        return connection;
+                    };
+                })
                 .AddNewtonsoftJsonProtocol(opt =>
                 {
                     opt.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;

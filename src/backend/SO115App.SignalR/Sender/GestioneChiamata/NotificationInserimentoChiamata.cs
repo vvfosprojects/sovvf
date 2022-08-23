@@ -86,8 +86,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             else
                 sedeComando = command.sintesi.CodSOCompetente;
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(sedeComando);
-            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+            var SediDaNotificare = _getGerarchiaToSend.Get(sedeComando, command.sintesi.CodUOCompetenza);
+
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
             var filtriSchedeContatto = new FiltriContatoriSchedeContatto()
             {
@@ -117,7 +118,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
                     var counterCodaChiamate = new CounterNotifica()
                     {
-                        codDistaccamento = command.sintesi.Competenze[0].Codice,
+                        codDistaccamento = command.sintesi.Competenze != null && command.sintesi.Competenze.Count > 0 ? command.sintesi.Competenze[0].Codice : command.sintesi.CodSOCompetente,
                         count = 1
                     };
 

@@ -11,6 +11,7 @@ import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { InfoMezzo } from '../../store/states/loading/loading.state';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
+import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import * as moment from 'moment';
 
 @Component({
@@ -31,7 +32,6 @@ export class ListaPartenzeComponent {
     @Input() hideGestisciPartenza: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
-    @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
     @Output() sostituzioneFineTurno: EventEmitter<any> = new EventEmitter<any>();
@@ -49,6 +49,14 @@ export class ListaPartenzeComponent {
         return checkNumeroPartenzeAttive(partenze);
     }
 
+    getUltimoStatoMezzo(codMezzo: string): StatoMezzo {
+        const eventoCodMezzo = this.richiesta.eventi.filter((evento: EventoMezzo) => evento.codiceMezzo === codMezzo);
+        if (eventoCodMezzo) {
+            const eventoUltimoStatoMezzo = eventoCodMezzo[eventoCodMezzo?.length - 1];
+            return eventoUltimoStatoMezzo.stato;
+        }
+    }
+
     checkAnnullaStatoMezzo(codMezzo: string, statoMezzo: StatoMezzo): boolean {
         const annullaStatoMezzo = this.annullaStatoMezzi?.filter((iM: InfoMezzo) => iM.codMezzo === codMezzo && iM.stato === statoMezzo)[0];
         if (annullaStatoMezzo) {
@@ -60,6 +68,11 @@ export class ListaPartenzeComponent {
             return moment(annullaStatoMezzo.istante).isAfter(unMinutoFa);
         }
         return false;
+    }
+
+    getSostituzioneFineTurnoVisible(): boolean {
+        // tslint:disable-next-line:max-line-length
+        return !this.hideSostituzioneFineTurno && this.inGestione && this.sostituzioneFineTurnoActive && !this.richiesta.partenze?.some((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.terminata && !p.partenza.sganciata && this.loadingActionMezzo?.includes(p.partenza.mezzo.codice));
     }
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {

@@ -41,14 +41,16 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
     {
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly GetSediPartenze _getSediPartenze;
         private readonly IConfiguration _config;
 
         public NotificationDeletePresaInCarico(IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
-                                          GetGerarchiaToSend getGerarchiaToSend, IConfiguration config)
+                                          GetGerarchiaToSend getGerarchiaToSend, IConfiguration config, GetSediPartenze getSediPartenze)
         {
             _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
             _config = config;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(RimozionePresaInCaricoCommand intervento)
@@ -66,6 +68,11 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente, intervento.Chiamata.CodSOAllertate.ToArray());
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente);
+
+            var listaSediPartenze = _getSediPartenze.GetFromSintesi(intervento.Chiamata);
+
+            if (listaSediPartenze != null)
+                SediDaNotificare.AddRange(listaSediPartenze);
 
             var infoDaNotificare = new List<InfoDeletePresaInCarico>();
 

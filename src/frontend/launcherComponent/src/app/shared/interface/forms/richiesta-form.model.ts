@@ -22,13 +22,6 @@ export class RichiestaForm {
     nominativo: string;
     telefono: string;
     competenze: Sede[];
-    codCompetenzaCentrale?: string;
-    codPrimaCompetenza?: string;
-    codSecondaCompetenza?: string;
-    codTerzaCompetenza?: string;
-    codPrimaCompetenzaManuale?: string;
-    codSecondaCompetenzaManuale?: string;
-    codTerzaCompetenzaManuale?: string;
     complessita: Complessita;
     istantePresaInCarico: Date;
     istantePrimaAssegnazione: Date;
@@ -40,6 +33,7 @@ export class RichiestaForm {
     indirizzo: string;
     latitudine: number;
     longitudine: number;
+    citta?: string;
     provincia: string;
     cap: string;
     regione: string;
@@ -84,11 +78,6 @@ export class RichiestaForm {
         this.dettaglioTipologia = null;
         this.nominativo = null;
         this.telefono = null;
-        this.competenze = null;
-        this.codCompetenzaCentrale = null;
-        this.codPrimaCompetenza = null;
-        this.codSecondaCompetenza = null;
-        this.codTerzaCompetenza = null;
         this.complessita = null;
         this.istantePresaInCarico = null;
         this.istantePrimaAssegnazione = null;
@@ -117,7 +106,7 @@ export class RichiestaForm {
         this.notePubbliche = null;
         this.descrizione = null;
         this.zoneEmergenza = null;
-        this.prioritaRichiesta = null;
+        this.prioritaRichiesta = 3;
         this.codSchedaContatto = null;
         this.listaEntiPresaInCarico = null;
         this.urgenza = null;

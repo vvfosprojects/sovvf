@@ -85,7 +85,7 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
     }
 
     onClick(inRientro?: boolean, preAccoppiato?: boolean): void {
-        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, [this.squadraComposizione.codice])) {
+        if (!this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, [this.squadraComposizione.idSquadra])) {
             if (!this.loadingMezzi) {
                 if (!this.squadraComposizioneBusy() && !inRientro && !preAccoppiato) {
                     if (!this.itemSelezionato) {
@@ -181,5 +181,10 @@ export class SquadraComposizioneComponent implements OnDestroy, OnChanges, OnIni
         if (this.squadraComposizione) {
             this.squadraComposizione.membri.forEach(x => x.autista ? this.autistaInSquadra = true : null);
         }
+    }
+
+    getButtonPreaccoppiatoDisabled(): boolean {
+        // tslint:disable-next-line:max-line-length
+        return this.disableBtnFeature || this.loadingMezzi || this.itemSelezionato || this.boxPartenzaList[this.boxPartenzaList?.length - 1]?.squadreComposizione?.length > 0 || !!(this.boxPartenzaList[this.boxPartenzaList?.length - 1]?.mezzoComposizione) || (this.boxPartenzaList[0]?.mezzoComposizione?.mezzo.codice === this.squadraComposizione.mezziPreaccoppiati[0]?.mezzo.codice) || !!(this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Mezzo, [this.squadraComposizione.mezziPreaccoppiati[0].mezzo.codice]));
     }
 }

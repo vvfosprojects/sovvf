@@ -29,8 +29,8 @@
                 </div>
                 <div class="mx-2"
                      ngbTooltip="{{mezzoInServizio.squadre[0].codice}}"
-                     [disableTooltip]="mezzoInServizio.squadre[0].codice.length <= 6">
-                    {{ mezzoInServizio.squadre[0].codice | truncate: 6}}
+                     [disableTooltip]="mezzoInServizio.squadre[0].codice.length <= 4">
+                    {{ mezzoInServizio.squadre[0].codice | truncate: 4}}
                 </div>
                 <button class="btn btn-sm btn-no-hover btn-light border ml-1" ngbTooltip="Elenco squadre"
                         (click)="onListaSquadrePartenza(); $event.stopPropagation()">
@@ -114,10 +114,21 @@
     <!-- Select Button -->
     <ng-container *ngIf="showSelectButton">
         <div class="col-1">
-            <button class="btn btn-block btn-light btn-no-hover border-secondary"
-                    (click)="onSelect(mezzoInServizio)">
-                {{ 'info' | uppercase }}
-            </button>
+            <div class="d-inline-block"
+                 [ngbTooltip]="tooltipLockedConcorrenza"
+                 [disableTooltip]="!(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice])">
+                <button class="btn btn-block btn-light btn-no-hover border-secondary"
+                        [class.cursor-not-allowed]="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice]"
+                        [disabled]="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice]"
+                        (click)="onSelect(mezzoInServizio)">
+                    {{ 'info' | uppercase }}
+                </button>
+            </div>
         </div>
     </ng-container>
 </div>
+
+<ng-template #tooltipLockedConcorrenza>
+    <i class="fas fa-lock mr-1"></i>
+    {{ tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice] }}
+</ng-template>

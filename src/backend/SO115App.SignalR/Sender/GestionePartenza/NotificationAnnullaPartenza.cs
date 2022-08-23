@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 
 using CQRS.Queries;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Boxes;
@@ -39,23 +38,24 @@ namespace SO115App.SignalR.Sender.GestionePartenza
     {
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
-        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
         private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _listaMezziInServizioHandler;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IConfiguration _config;
+        private readonly GetSediPartenze _getSediPartenze;
 
         public NotificationAnnullaPartenza(IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                           IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
-                                          IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
-                                          GetGerarchiaToSend getGerarchiaToSend, IConfiguration config)
+                                          GetGerarchiaToSend getGerarchiaToSend,
+                                          GetSediPartenze getSediPartenze,
+                                          IConfiguration config)
         {
             _boxRichiesteHandler = boxRichiesteHandler;
             _boxMezziHandler = boxMezziHandler;
-            _boxPersonaleHandler = boxPersonaleHandler;
             _listaMezziInServizioHandler = listaMezziInServizioHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
             _config = config;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(AnnullaStatoPartenzaCommand command)
@@ -76,87 +76,70 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
             var infoDaInviare = new List<InfoDaInviareAnnullaPartenza>();
 
-            Parallel.ForEach(SediDaNotificare, sede =>
+            SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(command.Richiesta));
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+
+            Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
                 var info = new InfoDaInviareAnnullaPartenza();
                 //_notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
                 //_notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
 
-                Task.Run(() =>
+                //Task.Run(() =>
+                //{
+                var boxRichiesteQuery = new BoxRichiesteQuery()
                 {
-                    var boxRichiesteQuery = new BoxRichiesteQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    info.boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
-                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                });
+                    CodiciSede = new string[] { sede }
+                };
+                info.boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                //});
 
-                Task.Run(() =>
+                //Task.Run(() =>
+                //{
+                var boxMezziQuery = new BoxMezziQuery()
                 {
-                    var boxMezziQuery = new BoxMezziQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    info.boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
-                    //var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
-                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-                });
+                    CodiciSede = new string[] { sede }
+                };
+                var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+                //});
 
-                Task.Run(() =>
+                //Task.Run(() =>
+                //{
+                var boxPersonaleQuery = new BoxPersonaleQuery()
                 {
-                    var boxPersonaleQuery = new BoxPersonaleQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
+                    CodiciSede = new string[] { sede }
+                };
 
-                    info.boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
-                    //var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
-                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-                });
+                //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+                //});
 
-                Task.Run(() =>
+                //Task.Run(() =>
+                //{
+                var listaMezziInServizioQuery = new ListaMezziInServizioQuery
                 {
-                    var listaMezziInServizioQuery = new ListaMezziInServizioQuery
-                    {
-                        CodiciSede = new string[] { sede },
-                        IdOperatore = command.IdOperatore
-                    };
+                    CodiciSede = new string[] { sede },
+                    IdOperatore = command.IdOperatore,
+                };
 
-                    info.listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
-                    info.mezzo = info.listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
+                info.listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+                info.mezzo = info.listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
 
-                    infoDaInviare.Add(info);
-
-                    //var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
-                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
-                    //var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
-                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
-                });
-            });
-
-            Parallel.ForEach(infoDaInviare, info =>
-            {
-                hubConnection.StartAsync();
-                hubConnection.InvokeAsync("ModifyAndNotifySuccessAnnullaPartenza", command, info.codiceSede);
-                hubConnection.InvokeAsync("ChangeStateSuccess", true, info.codiceSede);
-                hubConnection.InvokeAsync("NotifyGetBoxInterventi", info.boxInterventi, info.codiceSede);
-                hubConnection.InvokeAsync("NotifyGetBoxMezzi", info.boxMezzi, info.codiceSede);
-                hubConnection.InvokeAsync("NotifyGetBoxPersonale", info.boxPersonale, info.codiceSede);
-                hubConnection.InvokeAsync("NotifyGetListaMezziInServizio", info.listaMezziInServizio, info.codiceSede);
-                hubConnection.InvokeAsync("NotifyUpdateMezzoInServizio", info.mezzo, info.codiceSede);
-                hubConnection.StopAsync();
+                infoDaInviare.Add(info);
+                //});
             });
         }
-    }
 
-    internal class InfoDaInviareAnnullaPartenza
-    {
-        public string codiceSede { get; set; }
-        public BoxInterventi boxInterventi { get; set; }
-        public BoxMezzi boxMezzi { get; set; }
-        public BoxPersonale boxPersonale { get; set; }
-        public List<MezzoInServizio> listaMezziInServizio { get; set; }
-        public MezzoInServizio mezzo { get; set; }
+        internal class InfoDaInviareAnnullaPartenza
+        {
+            public string codiceSede { get; set; }
+            public BoxInterventi boxInterventi { get; set; }
+            public BoxMezzi boxMezzi { get; set; }
+            public BoxPersonale boxPersonale { get; set; }
+            public List<MezzoInServizio> listaMezziInServizio { get; set; }
+            public MezzoInServizio mezzo { get; set; }
+        }
     }
 }

@@ -14,6 +14,7 @@ import { Coordinate } from '../../model/coordinate.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { Partenza } from '../../model/partenza.model';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -249,6 +250,16 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
             }
         }
         return result;
+    }
+
+    getPartenzaMezzoInRichiestaComposizione(): boolean {
+        const partenza = this.richiesta.partenze.filter((p: Partenza) => p.mezzo.codice === this.mezzoComp.mezzo.codice && !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata)[0];
+        return !!partenza;
+    }
+
+    getButtonPreaccoppiatoDisabled(): boolean {
+        // tslint:disable-next-line:max-line-length
+        return this.disableBtnFeature || this.loadingSquadre || this.itemSelezionato || this.boxPartenzaList[this.boxPartenzaList?.length - 1]?.squadreComposizione?.length > 0 || !!(this.boxPartenzaList[this.boxPartenzaList?.length - 1]?.mezzoComposizione) || !!(this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Squadra, [this.mezzoComp.squadrePreaccoppiate[0].idSquadra]));
     }
 
     mezzoDirection(mezzoComp: MezzoComposizione): void {

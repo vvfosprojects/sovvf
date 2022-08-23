@@ -46,6 +46,7 @@ using SO115App.SignalR;
 using StackExchange.Redis;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Principal;
@@ -134,10 +135,6 @@ namespace SO115App.API
                 });
 
             services.AddSignalR()
-                //.AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, options =>
-                // {
-                //    options.Configuration.ChannelPrefix = "SO115Web";
-                //})
                 .AddNewtonsoftJsonProtocol(opt =>
                 {
                     opt.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;

@@ -84,6 +84,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() tastoChiamataMappaActive: boolean;
     @Input() tastoZonaEmergenzaMappaActive: boolean;
     @Input() filtriRichiesteSelezionati: VoceFiltro[];
+    @Input() chiamataStatus: boolean;
     @Input() schedeContattoStatus: boolean;
     @Input() composizionePartenzaStatus: boolean;
     @Input() mezziInServizioStatus: boolean;
@@ -425,6 +426,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     }, 1500);
                     break;
             }
+            this.store.dispatch(new GetInitCentroMappa());
+        }
+
+        // Controllo se la feature "Nuova Chiamata" viene attivata
+        if (changes?.chiamataStatus?.currentValue) {
             this.store.dispatch(new GetInitCentroMappa());
         }
 
@@ -956,6 +962,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             modalNuovaChiamata.componentInstance.lat = lat;
             modalNuovaChiamata.componentInstance.lon = lon;
             modalNuovaChiamata.componentInstance.address = response.attributes.Match_addr;
+            modalNuovaChiamata.componentInstance.citta = response.attributes.City;
             modalNuovaChiamata.componentInstance.provincia = response.attributes.Subregion;
             modalNuovaChiamata.componentInstance.cap = response.attributes.Postal;
             modalNuovaChiamata.componentInstance.regione = response.attributes.Region;
@@ -1122,7 +1129,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
             stops: new FeatureSet({
                 features: [pointPartenzaGraphic, pointDestinazioneGraphic]
             }),
-            travelMode: this.travelModeService.getTravelModeByGenereMezzo(direction.genereMezzo)
+            // travelMode: this.travelModeService.getTravelModeByGenereMezzo(direction.genereMezzo)
         });
 
         routeTask.solve(routeParams).then((data: RouteResult) => {
@@ -1139,7 +1146,12 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 this.store.dispatch(new SetDirectionTravelData(idDirectionSymbols, { totalKilometers, totalTravelTime }));
 
                 let labelText = '';
-                labelText = totalKilometers?.toFixed(2) + ' KM \n ' + totalTravelTime?.toFixed(2) + ' MIN';
+                if (totalKilometers?.toFixed(2)) {
+                    labelText = labelText + (totalKilometers?.toFixed(2) + ' KM \n ');
+                }
+                if (totalTravelTime?.toFixed(2)) {
+                    labelText = labelText + (totalTravelTime?.toFixed(2) + ' MIN');
+                }
                 const textSymbol = {
                     id: 'textSymbol',
                     type: 'text',  // autocasts as new TextSymbol()

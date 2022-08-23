@@ -11,11 +11,13 @@
     </button>
 </ng-template>
 <ng-template [ngIf]="!richiestaModifica && getActive()">
-    <div class="pl-2">
-        <h4 class="d-inline-block mb-0">
-            <i class="fas fa-phone-alt mr-1"></i>
-            {{ 'Stai inserendo una nuova chiamata' }}
-        </h4>
+    <div class="clearfix d-flex align-items-center">
+        <div class="float-left pl-2">
+            <h4 class="d-inline-block mb-0">
+                <i class="fas fa-phone-alt mr-1"></i>
+                {{ 'Stai inserendo una nuova chiamata' }}
+            </h4>
+        </div>
     </div>
 </ng-template>
 <ng-template [ngIf]="!!richiestaModifica">

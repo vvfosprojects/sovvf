@@ -83,11 +83,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     #endregion Concorrenza
 
                     bool abilitato = false;
-                    foreach (var competenza in richiesta.CodUOCompetenza)
-                    {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                            abilitato = true;
-                    }
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                        abilitato = true;
+
+                    if (richiesta.CodUOCompetenza!=null)
+                        foreach (var competenza in richiesta.CodUOCompetenza)
+                        {
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                                abilitato = true;
+                        }
 
                     if (richiesta.CodSOAllertate != null)
                     {

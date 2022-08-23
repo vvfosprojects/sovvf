@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngxs/store';
 import { SoccorsoAereoModalComponent } from '../../../../../shared/modal/soccorso-aereo-modal/soccorso-aereo-modal.component';
@@ -9,8 +9,7 @@ import { TurnOffComposizione } from '../../../store/actions/view/view.actions';
 @Component({
     selector: 'app-composizione-confirm-button',
     templateUrl: './composizione-confirm-button.component.html',
-    styleUrls: ['./composizione-confirm-button.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./composizione-confirm-button.component.css']
 })
 export class ComposizioneConfirmButtonComponent implements OnInit {
 
@@ -19,8 +18,6 @@ export class ComposizioneConfirmButtonComponent implements OnInit {
     @Input() richiesta: SintesiRichiesta;
 
     @Output() confirmPartenzaInViaggio = new EventEmitter();
-
-    dettaglioSoccorsoAereo = false;
 
     constructor(private store: Store,
                 private modalService: NgbModal) {
@@ -35,12 +32,13 @@ export class ComposizioneConfirmButtonComponent implements OnInit {
         this.confirmPartenzaInViaggio.emit();
     }
 
-    checkDettaglioSoccorsoAereo(): void {
-        if (this.richiesta && this.richiesta.eventi && this.richiesta.eventi.note) {
-            const afmAccettato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Attesa assegnazione SOCAV'));
-            const afmAnnullato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Annullato'));
-            this.dettaglioSoccorsoAereo = afmAccettato.length > afmAnnullato.length;
+    checkDettaglioSoccorsoAereo(): boolean {
+        if (this.richiesta?.eventi) {
+            const afmAccettato = this.richiesta.eventi.filter(x => x.note?.includes('Inserimento soccorso AFM accettato: Attesa assegnazione SOCAV'));
+            const afmAnnullato = this.richiesta.eventi.filter(x => x.note?.includes('Annullamento soccorso AFM accettato: Annullato'));
+            return afmAccettato.length > afmAnnullato.length;
         }
+        return false;
     }
 
     openSoccorsoAereoModal(open: any): void {

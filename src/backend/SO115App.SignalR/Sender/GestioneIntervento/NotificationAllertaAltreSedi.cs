@@ -49,9 +49,14 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente);
 
+            if (sintesi.CodSediPartenze != null)
+                SediDaNotificare.AddRange(sintesi.CodSediPartenze);
+
             command.Chiamata = sintesi;
+
+            var codiceSintesiDaNotificare = sintesi.CodiceRichiesta != null ? sintesi.CodiceRichiesta : sintesi.Codice;
             //Invio la notifica alle competenze della richiesta
-            foreach (var sede in SediDaNotificare)
+            foreach (var sede in SediDaNotificare.Distinct())
             {
                 await hubConnection.StartAsync();
                 await hubConnection.InvokeAsync("ModifyAndNotifySuccessAllerta", command, sede);
@@ -67,9 +72,8 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                     {
                         await hubConnection.InvokeAsync("NotifyNavBar", new Notifica()
                         {
-                            Titolo = "Allerta Emergenza",
-                            Descrizione = $"Sono state allertate le sedi: {String.Join(',', command.CodSediAllertate)}",
-                            Tipo = TipoNotifica.AllertaEmergenza,
+                            Titolo = "Allerta altra Sede",
+                            Descrizione = $"Sono state allertate le sedi: {String.Join(',', command.CodSediAllertate)} per l'ìntervento {codiceSintesiDaNotificare}",
                             Data = DateTime.Now
                         }, sede);
                     }
@@ -77,9 +81,8 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                     {
                         await hubConnection.InvokeAsync("NotifyNavBar", new Notifica()
                         {
-                            Titolo = "Allerta Emergenza",
-                            Descrizione = $"E' stata allertata la sede: {command.CodSediAllertate[0]}",
-                            Tipo = TipoNotifica.AllertaEmergenza,
+                            Titolo = "Allerta altra Sede",
+                            Descrizione = $"E' stata allertata la sede: {command.CodSediAllertate[0]}  per l'ìntervento {codiceSintesiDaNotificare}",
                             Data = DateTime.Now
                         }, sede);
                     }
@@ -90,7 +93,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                     await hubConnection.InvokeAsync("NotifyNavBar", new Notifica()
                     {
                         Titolo = "Allerta Emergenza",
-                        Descrizione = $"La sede {command.CodiceSede} ha allertato {String.Join(',', command.CodSediAllertate)} per l'intervento {codiceSintesi}",
+                        Descrizione = $"La sede {command.CodiceSede} ha allertato {String.Join(',', command.CodSediAllertate)} per l'intervento {codiceSintesiDaNotificare}",
                         Tipo = TipoNotifica.AllertaEmergenza,
                         Data = DateTime.Now
                     }, sede);

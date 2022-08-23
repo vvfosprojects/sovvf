@@ -87,6 +87,11 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(Richiesta.CodSOCompetente);
 
+            if (Richiesta.CodSediPartenze != null)
+                SediDaNotificare.AddRange(Richiesta.CodSediPartenze);
+
+            const bool notificaChangeState = true;
+
             //AGGIORNO LE SEDI PRINCIPALI
             var infoDaNotificare = new List<InfoDaNotificareUpDateStato>();
             Parallel.ForEach(SediDaNotificare, sede =>

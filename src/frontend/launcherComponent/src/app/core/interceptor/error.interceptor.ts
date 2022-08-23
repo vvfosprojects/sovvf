@@ -28,10 +28,10 @@ export class ErrorInterceptor implements HttpInterceptor {
                     this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', errorMsg, null, null, true));
                 }
             } else if ([403].indexOf(err.status) !== -1) {
-                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', errorMsg, null, null));
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', errorMsg.slice(3), null, null));
             } else {
                 if (request.url.indexOf('GetCompetenze') !== -1) {
-                    this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore Competenze', 'Il servizio di reperimento competenze non è al momento raggiungibile, si prega di inserirle manualmente', null, null));
+                    console.error('[Errore Competenze] Il servizio di reperimento competenze non è al momento raggiungibile.');
                 } else {
                     if (errorMsg?.split(' ')[0] === '1*') {
                         this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', errorMsg.slice(3), null, null));

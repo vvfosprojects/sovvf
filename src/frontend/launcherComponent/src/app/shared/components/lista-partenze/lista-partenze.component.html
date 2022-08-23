@@ -14,18 +14,17 @@
                           [inGestione]="inGestione"
                           [idDaSganciare]="idDaSganciare"
                           [index]="'' + index"
-                          [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, p?.partenza?.mezzo?.stato)"
+                          [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice))"
                           [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
                           [hideGestisciPartenza]="hideGestisciPartenza"
                           (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre)"
                           (actionMezzo)="onActionMezzo($event)"
-                          (eliminaPartenza)="eliminaPartenza.emit($event)"
                           (modificaPartenza)="modificaPartenza.emit($event)"
                           (selezioneMezzo)="selezioneMezzo.emit($event)">
             </app-partenza>
         </div>
     </div>
-    <ng-container *ngIf="!hideSostituzioneFineTurno && inGestione && sostituzioneFineTurnoActive">
+    <ng-container *ngIf="getSostituzioneFineTurnoVisible()">
         <button class="btn btn-sm btn-info"
                 [class.cursor-not-allowed]="disabledModificaStatoMezzo"
                 style="position: absolute; top: -14px; left: -14px"

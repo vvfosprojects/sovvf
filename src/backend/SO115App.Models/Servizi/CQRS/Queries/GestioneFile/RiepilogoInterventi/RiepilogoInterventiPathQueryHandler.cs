@@ -1,4 +1,5 @@
 ﻿using CQRS.Queries;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
@@ -6,10 +7,12 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.Utility;
 using SO115App.Persistence.File.CSVManagement;
 using SO115App.Persistence.File.PDFManagement;
 using SO115App.Persistence.File.PDFManagement.TemplateModelForms;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -21,6 +24,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
         private readonly IGetRiepilogoInterventi _getRiepilogoInterventi;
         private readonly IGetUtenteById _getUtente;
         private readonly IGetSedi _getSedi;
+        private readonly IGetSottoSediByCodSede _getSottoSedi;
         private readonly IPDFTemplateManager<RiepilogoInterventiModelForm> _pdfManager;
         private readonly ICSVTemplateManager<RiepilogoInterventiModelForm> _csvManager;
 
@@ -29,7 +33,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             IGetUtenteById getUtente,
             IGetTipologieByCodice getTipologie,
             IPDFTemplateManager<RiepilogoInterventiModelForm> pdfManager,
-            ICSVTemplateManager<RiepilogoInterventiModelForm> csvManager)
+            ICSVTemplateManager<RiepilogoInterventiModelForm> csvManager,
+            IGetSottoSediByCodSede getSottoSedi)
         {
             _getSedi = getSedi;
             _getUtente = getUtente;
@@ -37,13 +42,28 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             _pdfManager = pdfManager;
             _getTipologie = getTipologie;
             _csvManager = csvManager;
+            _getSottoSedi = getSottoSedi;
         }
 
         public RiepilogoInterventiPathResult Handle(RiepilogoInterventiPathQuery query)
         {
-            var distaccamento = _getSedi.GetInfoSede(query.IdSede.First()).Result.MapSede();
+            var sediAll = _getSedi.GetAll().Result;
+            var distaccamento = _getSedi.GetInfoSede(query.IdSede[0]).Result.MapSede();
 
-            var lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri).Result;
+            List<RichiestaAssistenza> lstInterventi = null;
+
+            if(query.IdSede[0].Equals("00"))
+            {
+                lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri, sediAll.Select(s => s.Codice).ToArray()).Result;
+
+                //distaccamento = _getSedi.GetInfoSede("00").Result.MapSede();
+            }
+            else
+            {
+                var sottoSedi = _getSottoSedi.Get(query.IdSede).ToArray();
+
+                lstInterventi = _getRiepilogoInterventi.GetRiepilogoInterventi(query.Filtri, sottoSedi).Result;
+            }
 
             var operatore = _getUtente.GetUtenteByCodice(query.IdOperatore);
 
@@ -54,34 +74,34 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneFile.RiepilogoInterventi
             var lstRiepiloghi = lstInterventi?.Select(i => new RiepilogoIntervento()
             {
                 Stato = char.Parse(i.TestoStatoRichiesta),
-                Data = i.Eventi.OfType<Telefonata>().First().DataOraInserimento,
+                Data = i.dataOraInserimento,
                 Turno = i.TrnInsChiamata.Substring(0, 1),
-                Indirizzo = i.Localita?.Indirizzo,
+                Indirizzo = string.IsNullOrEmpty(i.Localita.Indirizzo) ? "non presente" : i.Localita.Indirizzo.Split(',').First(),
                 X = "X: " + i.Localita.Coordinate.Latitudine,
                 Y = "Y: " + i.Localita.Coordinate.Longitudine,
                 Richiedente = i.Richiedente.Nominativo,
                 Tipologie = string.Join(',', lstTipologie.FindAll(t => i.Tipologie.Any(ct => t.Codice.Equals(ct.Codice))).Select(t => t.Descrizione + '.')),
-                NumeroIntervento = i.CodRichiesta != null ? int.Parse(i.CodRichiesta.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()) : 0,
-                Comune = i?.Localita?.Citta ?? i?.Localita?.Indirizzo,
-                //KmCiv = i?.Localita?.Indirizzo,
+                NumeroIntervento = i.CodRichiesta?.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault()?.TrimStart('0'),
+                Comune = string.IsNullOrEmpty(i.Localita.Citta) ? "non presente" : i.Localita.Citta,
+                KmCiv = i.Localita.Civico,
                 Interno = i.Localita.Interno,
                 Piano = i.Localita.Piano,
                 Scala = i.Localita.Scala,
-                CodTipologie = string.Join(',', i?.Tipologie),
+                CodTipologie = string.Join(',', i.Tipologie),
                 Descrizione = i.Descrizione,
                 Telefono = i.Richiedente.Telefono,
-                ZonaEmergenza = i?.CodZoneEmergenza?.Count() > 0 ? "true" : "false",
+                ZonaEmergenza = i.CodZoneEmergenza?.Length > 0 ? "true" : "false",
 
-                lstPartenze = query.Filtri?.AltriFiltri?.SoloInterventi ?? false ? null : i?.Partenze?.Select(p => new RiepilogoPartenza()
+                lstPartenze = query.Filtri?.AltriFiltri?.SoloInterventi ?? false ? null : i.Partenze?.Select(p => new RiepilogoPartenza()
                 {
-                    SiglaSquadra = string.Join(", ", p.Partenza.Squadre.Select(s => s.Codice)),
+                    SiglaSquadra = string.Join(", ", p.Partenza.Squadre.Select(s => $"{s.Codice} ({s.Turno.Substring(0 ,1)})")),
                     CodMezzo = p.CodiceMezzo,
                     CapoPartenza = p.Partenza.Squadre.SelectMany(s => s.Membri.Where(m => m.DescrizioneQualifica.ToUpper().Equals("TEAM_LEADER")).Select(m => m.Nominativo?.ToLower())).FirstOrDefault(),
                     MezzoInUscita = p.DataOraInserimento,
-                    MezzoSulPosto = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is ArrivoSulPosto)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
-                    MezzoInRientro = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaInRientro)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
-                    MezzoRientrato = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaRientrata)?.FirstOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
-                    Servizio = "",
+                    MezzoSulPosto = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is ArrivoSulPosto)?.LastOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
+                    MezzoInRientro = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaInRientro)?.LastOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
+                    MezzoRientrato = i.Eventi.OfType<AbstractPartenza>().Where(pp => pp is PartenzaRientrata)?.LastOrDefault(e => e.CodicePartenza.Equals(p.CodicePartenza))?.DataOraInserimento,
+                    Servizio = null,
                     TpSch = p.CodicePartenza
                 }).ToList()
             }).OrderByDescending(r => r.NumeroIntervento);

@@ -10,7 +10,6 @@ import { StatoFonogramma } from '../../enum/stato-fonogramma.enum';
 import { Select, Store } from '@ngxs/store';
 import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 import { ListaEntiComponent } from '../lista-enti/lista-enti.component';
-import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { DettaglioFonogrammaModalComponent } from '../../modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
@@ -36,6 +35,7 @@ import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
 import { ClearRichiestaAzioni, SetRichiestaAzioni } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { InfoMezzo } from '../../store/states/loading/loading.state';
+import * as province from '../../../../assets/province/province.json';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -59,7 +59,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() idDaSganciare: string;
     @Input() disableTooltips: boolean;
     @Input() disableFissaInAlto: boolean;
-    @Input() loadingEliminaPartenza: boolean;
     @Input() loadingActionMezzo: string[];
     @Input() loadingDettaglioSchedaContatto: string;
     @Input() disabledModificaRichiesta: boolean;
@@ -77,7 +76,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Output() clickIndirizzo = new EventEmitter<SintesiRichiesta>();
     @Output() fissaInAlto = new EventEmitter<SintesiRichiesta>();
     @Output() nuovaPartenza = new EventEmitter<SintesiRichiesta>();
-    @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() deseleziona = new EventEmitter<boolean>();
@@ -89,7 +87,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     methods = new HelperSintesiRichiesta();
     live = true;
-    dettaglioSoccorsoAereo: boolean;
 
     // Enum
     StatoRichiesta = StatoRichiesta;
@@ -111,7 +108,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
-        this.checkDettaglioSoccorsoAereo();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -133,7 +129,12 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     getIndirizzoFormatted(): string {
         let indirizzo = this.richiesta?.localita?.indirizzo;
         if (this.richiesta?.localita?.provincia) {
-            indirizzo = indirizzo + ', ' + this.richiesta?.localita?.provincia;
+            indirizzo = indirizzo + ', ' + this.richiesta?.localita?.citta;
+            if (this.richiesta?.localita?.citta !== this.richiesta?.localita?.provincia) {
+                const provinceData = province['default']['province'][0];
+                const codProvincia = provinceData[this.richiesta?.localita?.provincia];
+                indirizzo = indirizzo + ' (' + codProvincia + ')';
+            }
         }
         return indirizzo;
     }
@@ -144,12 +145,13 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         }
     }
 
-    checkDettaglioSoccorsoAereo(): void {
-        if (this.richiesta.eventi && this.richiesta.eventi.note) {
-            const afmAccettato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Attesa assegnazione SOCAV'));
-            const afmAnnullato = this.richiesta.eventi.filter(x => x.note.includes('AFM accettato: Annullato'));
-            this.dettaglioSoccorsoAereo = afmAccettato.length > afmAnnullato.length;
+    checkDettaglioSoccorsoAereo(): boolean {
+        if (this.richiesta?.eventi) {
+            const afmAccettato = this.richiesta.eventi.filter(x => x.note?.includes('Inserimento soccorso AFM accettato: Attesa assegnazione SOCAV'));
+            const afmAnnullato = this.richiesta.eventi.filter(x => x.note?.includes('Annullamento soccorso AFM accettato: Annullato'));
+            return afmAccettato.length > afmAnnullato.length;
         }
+        return false;
     }
 
     fissaClick(richiesta: SintesiRichiesta): void {
@@ -239,26 +241,6 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
         mezzoAction.codRichiesta = this.richiesta.codice;
         this.actionMezzo.emit(mezzoAction);
-    }
-
-    onEliminaPartenza(targaMezzo: string): void {
-        let modal;
-        modal = this.modalService.open(EliminaPartenzaModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-        });
-        modal.componentInstance.targaMezzo = targaMezzo;
-        modal.componentInstance.idRichiesta = this.richiesta.id;
-        modal.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    this.eliminaPartenza.emit({ targaMezzo, idRichiesta: this.richiesta.id, modalResult: res.result });
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
     }
 
     onModificaPartenza(index: string): void {
@@ -354,7 +336,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         let modalOptions;
         if (open) {
             modalOptions = {
-                windowClass: '',
+                windowClass: 'xlModal modal-holder',
                 backdrop: 'static',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetMezzoByCodice.cs" company="CNVVF">
+// <copyright file="IGetSchedaContattoByCodice.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.NUE;
+using System.Collections.Generic;
 
-using SO115App.API.Models.Classi.Condivise;
-
-namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
+namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
 {
     /// <summary>
-    ///   Servizio di risoluzione di un <see cref="Mezzo" /> mediante interrogazione di un'anagrafica
-    ///   dei mezzi.
+    ///   Interfaccia del servizio che restituisce l'elenco delle schede contatto corrispondenti ai
+    ///   criteri di ricerca indicati
     /// </summary>
-    public interface IGetMezzoByCodice
+    public interface IGetSchedaContattoByCodice
     {
         /// <summary>
-        ///   Restituisce l'anagrafica del mezzo a partire dal suo codice
+        ///   Restituisce la scheda contatto corrispondente al codice
         /// </summary>
-        /// <param name="codice">Il codice del mezzo</param>
-        /// <returns>L'anagrafica del mezzo</returns>
-        Mezzo Get(string codice);
+        /// <returns>Lista schede contatto</returns>
+        SchedaContatto Get(string codice);
     }
 }

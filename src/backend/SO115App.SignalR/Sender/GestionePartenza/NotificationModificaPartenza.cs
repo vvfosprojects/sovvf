@@ -22,6 +22,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
     {
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
         private readonly IConfiguration _config;
+        private readonly GetSediPartenze _getSediPartenze;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
@@ -32,11 +33,13 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
-            IMapperRichiestaSuSintesi mapperSintesi, IConfiguration config)
+            IMapperRichiestaSuSintesi mapperSintesi, IConfiguration config,
+            GetSediPartenze getSediPartenze)
         {
             _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
             _mapperSintesi = mapperSintesi;
             _config = config;
+            _getSediPartenze = getSediPartenze;
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -58,6 +61,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente);
 
+            SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(command.Richiesta));
+
             var confermaPartenza = new ConfermaPartenze()
             {
                 CodiceSede = command.CodSede.First(),
@@ -70,7 +75,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
             var infoDaInviare = new List<InfoDaInviareModificaPartenza>();
 
-            Parallel.ForEach(SediDaNotificare, sede =>
+            Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
                 var info = new InfoDaInviareModificaPartenza();
 

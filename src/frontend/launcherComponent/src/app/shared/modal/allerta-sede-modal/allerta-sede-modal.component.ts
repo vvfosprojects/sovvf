@@ -10,7 +10,6 @@ import { Sede } from '../../model/sede.model';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { TipologicaComposizionePartenza } from '../../../features/home/composizione-partenza/interface/filtri/tipologica-composizione-partenza.interface';
-import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { makeCopy } from '../../helper/function-generiche';
 import { AppState } from '../../store/states/app/app.state';
 
@@ -31,7 +30,6 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     allertaSedeForm: FormGroup;
     submitted: boolean;
-    sediSelezionate: string[] = [];
     checkbox: { conoscenza: boolean, allerta: boolean } = {
         conoscenza: false,
         allerta: true,
@@ -67,12 +65,10 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.f.codRichiesta.patchValue(this.codRichiesta);
-        this.store.dispatch(new GetFiltriComposizione());
         this.removeSedeTreeviewSelezionata();
     }
 
     ngOnDestroy(): void {
-        this.sediSelezionate = [];
         this.subscriptions.unsubscribe();
     }
 
@@ -99,7 +95,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     getGenereMezzo(): void {
         this.subscriptions.add(
             this.filtri$.subscribe((filtri: ListaTipologicheMezzi) => {
-                this.generiMezzi = filtri.generiMezzi;
+                this.generiMezzi = filtri?.generiMezzi;
             })
         );
     }
@@ -114,19 +110,11 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.distaccamenti = distaccamentiUnique;
     }
 
-    onPatchSedi(event: Sede[]): void {
-        if (event.length) {
-            event.forEach(x => this.sediSelezionate.push(x.codice));
-        }
-        this.f.sedi.patchValue(event);
-    }
-
-    onClearSedi(): void {
-        this.sediSelezionate = [];
-    }
-
     checkSediSelezionateError(): boolean {
-        return this.sediSelezionate.includes(this.codSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => this.sediSelezionate.includes(codSOAllertata));
+        const sediSelezionate = this.f?.sedi?.value;
+        const siglaComandoSOCompetente = this.codSOCompetente.split('.')?.length === 2 ? this.codSOCompetente.split('.')[0] : null;
+        const siglaComandoSediSelezionate = sediSelezionate?.map((codComando: string) => codComando.split('.')?.length === 2 ? codComando.split('.')[0] : null);
+        return siglaComandoSediSelezionate?.includes(siglaComandoSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
     }
 
     onConferma(): void {

@@ -24,7 +24,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
@@ -39,25 +38,27 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 {
     public class NotificationUpDateChiamata : INotifyUpDateChiamata
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IConfiguration _config;
+        private readonly GetSediPartenze _getSediPartenze;
 
-        public NotificationUpDateChiamata(IHubContext<NotificationHub> notificationHubContext,
+        public NotificationUpDateChiamata(
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
                                           IGetSintesiRichiestaAssistenzaByCodice getSintesiById,
-                                          GetGerarchiaToSend getGerarchiaToSend, IConfiguration config)
+                                          GetGerarchiaToSend getGerarchiaToSend,
+                                          GetSediPartenze getSediPartenze,
+                                          IConfiguration config)
         {
-            _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _getSintesiById = getSintesiById;
             _getGerarchiaToSend = getGerarchiaToSend;
             _config = config;
+            _getSediPartenze = getSediPartenze;
         }
 
         public async Task SendNotification(UpDateInterventoCommand intervento)
@@ -73,13 +74,16 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             var SintesiRichiesta = _getSintesiById.GetSintesi(intervento.Chiamata.Codice);
             intervento.sintesiRichiesta = SintesiRichiesta;
 
-            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.sintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
+            var SediDaNotificare = _getGerarchiaToSend.Get(SintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
 
             var listaInfoDaInviare = new List<InfoDaInviare>();
 
-            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
-            foreach (var sede in SediDaNotificare)
+            if (SintesiRichiesta.CodSediPartenze != null)
+                SediDaNotificare.AddRange(SintesiRichiesta.CodSediPartenze);
+
+            foreach (var sede in SediDaNotificare.Distinct())
             {
                 var info = new InfoDaInviare();
                 var boxRichiesteQuery = new BoxRichiesteQuery()

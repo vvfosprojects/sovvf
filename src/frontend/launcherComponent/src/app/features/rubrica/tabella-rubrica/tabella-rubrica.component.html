@@ -16,12 +16,16 @@
                 <button class="btn btn-sm btn-danger font-weight-bold mr-2"
                         ngbTooltip="Rimuovi Voce"
                         placement="bottom"
+                        [class.cursor-not-allowed]="permissionFeatures.ModificaVoceRubrica | checkPermissionCodSedeAppartenenza: voce.codSede"
+                        [disabled]="permissionFeatures.EliminaVoceRubrica | checkPermissionCodSedeAppartenenza: voce.codSede"
                         (click)="onDeleteVoceRubrica(voce?.id, voce?.descrizione)">
                     <i class="fas fa-trash"></i>
                 </button>
                 <button class="btn btn-sm btn-warning font-weight-bold text-white"
                         ngbTooltip="Modifica Voce"
                         placement="bottom"
+                        [class.cursor-not-allowed]="permissionFeatures.ModificaVoceRubrica | checkPermissionCodSedeAppartenenza: voce.codSede"
+                        [disabled]="permissionFeatures.ModificaVoceRubrica | checkPermissionCodSedeAppartenenza: voce.codSede"
                         (click)="onEditVoceRubrica(voce)">
                     <i class="far fa-edit"></i>
                 </button>

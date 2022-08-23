@@ -21,7 +21,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCompetenze
 
         public GetCompetenzeResult Handle(GetCompetenzeQuery query)
         {
-            var lstCodiciCompetenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(query.Coordinate);
+            var lstCodiciCompetenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(query.Coordinate, query.CodiciSede[0].Split('.')[0]);
 
             var lstCompetenze = lstCodiciCompetenze.MapCompetenze(_getSede);
 

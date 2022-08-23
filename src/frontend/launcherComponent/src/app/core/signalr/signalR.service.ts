@@ -250,13 +250,13 @@ export class SignalRService {
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamata', data);
             this.store.dispatch([
-                new InsertChiamataSuccess(data)
+                new InsertChiamataSuccess()
             ]);
         });
         this.hubNotification.on('SaveAndNotifySuccessChiamataTrasferita', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamataTrasferita', data);
             this.store.dispatch([
-                new InsertChiamataSuccess(data, { trasferimento: true }),
+                new InsertChiamataSuccess({ trasferimento: true }),
             ]);
         });
 

@@ -110,6 +110,8 @@ namespace SO115App.API.Models.Classi.Condivise
 
         #region Info per OPService
 
+        public string IdSquadra { get; set; }
+
         public string IdOPService { get; set; }
         public string spotId { get; set; }
 

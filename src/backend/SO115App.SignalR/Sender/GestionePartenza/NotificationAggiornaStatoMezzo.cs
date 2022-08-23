@@ -23,10 +23,8 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
@@ -40,29 +38,29 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 {
     public class NotificationAggiornaStatoMezzo : INotifyAggiornaStatoMezzo
     {
-        private readonly IMapperRichiestaSuSintesi _mapperRichiesta;
         private readonly IConfiguration _config;
+        private readonly IGetMezziInServizio _getListaMezzi;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
-
+        private readonly GetSediPartenze _getSediPartenze;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
-        private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _listaMezziInServizioHandler;
 
         public NotificationAggiornaStatoMezzo(IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                           IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
                                           IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
-                                          IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
                                           GetGerarchiaToSend getGerarchiaToSend,
-                                          IMapperRichiestaSuSintesi mapperRichiesta, IConfiguration config)
+                                          GetSediPartenze getSediPartenze,
+                                          IGetMezziInServizio getListaMezzi,
+                                          IConfiguration config)
         {
             _boxRichiesteHandler = boxRichiesteHandler;
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
-            _listaMezziInServizioHandler = listaMezziInServizioHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
-            _mapperRichiesta = mapperRichiesta;
             _config = config;
+            _getSediPartenze = getSediPartenze;
+            _getListaMezzi = getListaMezzi;
         }
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
@@ -81,25 +79,11 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare.AddRange(_getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente));
 
-            //var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
-            //{
-            //    Filtro = new FiltroRicercaRichiesteAssistenza
-            //    {
-            //        idOperatore = intervento.IdUtente,
-            //        PageSize = 99,
-            //        IncludiRichiesteChiuse = true
-            //    },
-            //    CodiciSede = SediDaNotificare.ToArray()
-            //};
+            SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(intervento.Richiesta));
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
-            //intervento.Chiamata = _mapperRichiesta.Map(intervento.Richiesta);
+            var listaMezziInServizio = _getListaMezzi.MapPartenzeInMezziInServizio(intervento.Richiesta, SediDaNotificare.ToArray());
 
-            var listaMezziInServizioQuery = new ListaMezziInServizioQuery
-            {
-                CodiciSede = intervento.CodiciSede,
-                IdOperatore = intervento.IdUtente
-            };
-            var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
             var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo));
 
             var infoDaInviare = new List<InfoDaInviareAggiornaStatoMezzo>();
@@ -110,41 +94,41 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
                 info.codiceSede = sede;
 
-                Task.Factory.StartNew(() =>
+                //Task.Factory.StartNew(() =>
+                //{
+                var boxMezziQuery = new BoxMezziQuery()
                 {
-                    var boxMezziQuery = new BoxMezziQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    info.boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
-                });
+                    CodiciSede = new string[] { sede }
+                };
+                info.boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+                //});
 
-                Task.Factory.StartNew(() =>
+                //Task.Factory.StartNew(() =>
+                //{
+                var boxRichiesteQuery = new BoxRichiesteQuery()
                 {
-                    var boxRichiesteQuery = new BoxRichiesteQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
+                    CodiciSede = new string[] { sede }
+                };
 
-                    info.boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
-                });
+                info.boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                //});
 
-                Task.Factory.StartNew(() =>
+                //Task.Factory.StartNew(() =>
+                //{
+                var boxPersonaleQuery = new BoxPersonaleQuery()
                 {
-                    var boxPersonaleQuery = new BoxPersonaleQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
+                    CodiciSede = new string[] { sede }
+                };
 
-                    info.boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
-                    var counterCodaChiamate = new CounterNotifica()
-                    {
-                        codDistaccamento = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Mezzo.Distaccamento.Codice,
-                        count = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Squadre.Count
-                    };
+                info.boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+                var counterCodaChiamate = new CounterNotifica()
+                {
+                    codDistaccamento = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Mezzo.Distaccamento.Codice,
+                    count = intervento.Richiesta.Partenze.ToList().Find(x => x.CodiceMezzo.Equals(intervento.IdMezzo)).Partenza.Squadre.Count
+                };
 
-                    info.counterNotifica = counterCodaChiamate;
-                });
+                info.counterNotifica = counterCodaChiamate;
+                //});
 
                 infoDaInviare.Add(info);
             });
