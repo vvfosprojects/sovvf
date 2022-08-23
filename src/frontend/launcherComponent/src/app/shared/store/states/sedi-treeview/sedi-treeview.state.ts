@@ -15,6 +15,7 @@ import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno.actions';
 import { Injectable } from '@angular/core';
 import { LSNAME } from '../../../../core/settings/config';
+import { getProvinciaByCodProvincia } from '../../../helper/function-province';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
@@ -141,7 +142,8 @@ export class SediTreeviewState {
         let item = '';
         if (action.selected[0]) {
             if (!action.multi) {
-                item = findItem(state.listaSediNavbar, action.selected[0]).text;
+                const itemText = findItem(state.listaSediNavbar, action.selected[0]).text;
+                item = itemText.toLowerCase() === 'centrale' ? itemText + ' ' + getProvinciaByCodProvincia(action.selected[0].split('.')[0]).toUpperCase() : itemText;
             } else {
                 item = 'più sedi selezionate';
             }
