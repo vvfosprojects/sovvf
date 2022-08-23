@@ -66,8 +66,15 @@ export class DistaccamentiState {
 
     @Action(SetDistaccamenti)
     setDistaccamenti({ patchState }: StateContext<DistaccamentiStateModel>, action: SetDistaccamenti): void {
+        let distaccamenti = action.distaccamenti;
+        distaccamenti = distaccamenti.map((d: Sede) => {
+            return {
+                ...d,
+                descrizione: d.descrizione.toLowerCase() === 'centrale' ? d.descrizione + ' ' + getProvinciaByCodProvincia(d.codice.split('.')[0]).toUpperCase() : d.descrizione
+            };
+        });
         patchState({
-            distaccamenti: action.distaccamenti
+            distaccamenti
         });
     }
 
@@ -76,8 +83,11 @@ export class DistaccamentiState {
         let sediAllertaFiltered = action.sediAllerta;
         // Filtro per avere solo i comandi, il BE restituisce tutte le sedi
         sediAllertaFiltered = sediAllertaFiltered.filter((s: Sede) => (s.codice.split('.')?.length === 2 && s.codice.split('.')[1] === '1000'));
-        sediAllertaFiltered.forEach((sedeCentrale: Sede) => {
-            sedeCentrale.descrizione = `${sedeCentrale.descrizione} ${getProvinciaByCodProvincia(sedeCentrale.codice.split('.')[0])?.toUpperCase()}`;
+        sediAllertaFiltered = sediAllertaFiltered.map((d: Sede) => {
+            return {
+                ...d,
+                descrizione: d.descrizione + ' ' + getProvinciaByCodProvincia(d.codice.split('.')[0]).toUpperCase()
+            };
         });
         patchState({
             sediAllerta: sediAllertaFiltered
@@ -86,13 +96,15 @@ export class DistaccamentiState {
 
     @Action(SetSediTrasferimenti)
     setSediTrasferimenti({ patchState }: StateContext<DistaccamentiStateModel>, action: SetSediTrasferimenti): void {
-        const sediTrasferimentiFiltered = action.sediTrasferimenti;
-        // Rimuovo la centrale
-        sediTrasferimentiFiltered.forEach((sedeCentrale: Sede) => {
-            sedeCentrale.descrizione = `${sedeCentrale.descrizione} ${getProvinciaByCodProvincia(sedeCentrale.codice.split('.')[0])?.toUpperCase()}`;
+        let sediTrasferimenti = action.sediTrasferimenti;
+        sediTrasferimenti = sediTrasferimenti.map((d: Sede) => {
+            return {
+                ...d,
+                descrizione: d.descrizione + ' ' + getProvinciaByCodProvincia(d.codice.split('.')[0]).toUpperCase()
+            };
         });
         patchState({
-            sediTrasferimenti: sediTrasferimentiFiltered
+            sediTrasferimenti
         });
     }
 }
