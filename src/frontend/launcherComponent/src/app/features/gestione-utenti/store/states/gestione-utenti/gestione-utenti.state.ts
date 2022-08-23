@@ -144,7 +144,7 @@ export class GestioneUtentiState {
             };
             const pagination = {
                 page: action.page ? action.page : 1,
-                pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+                pageSize: 4
             };
             this.gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
                     let listaSediPresentiUnique = [];

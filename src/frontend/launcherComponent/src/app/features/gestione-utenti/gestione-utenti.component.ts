@@ -9,7 +9,6 @@ import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-ute
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
-import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { wipeStringUppercase } from '../../shared/helper/function-generiche';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
@@ -39,9 +38,6 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(GestioneUtentiState.utenteDetail) utenteGestioneDetail$: Observable<Utente>;
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
-    @Select(PaginationState.pageSize) pageSize$: Observable<number>;
-    pageSize: number;
-    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(GestioneUtentiState.loadingGestioneUtenti) loading$: Observable<boolean>;
@@ -54,16 +50,11 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
-        const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
-        if (pageSizeAttuale === 7) {
-            this.store.dispatch(new SetPageSize(10));
-        }
         this.getDoubleMonitorMode();
         this.getDistaccamenti();
         this.getUtente();
         this.getListaUtenti();
         this.getRicerca();
-        this.getPageSize();
         this.getUtentiGestione(true);
     }
 
@@ -243,10 +234,6 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetUtentiGestione(page));
     }
 
-    onPageSizeChange(page: number): void {
-        this.store.dispatch(new SetPageSize(page));
-    }
-
     getUtentiGestione(pageAttuale: boolean): void {
         let page = null;
         if (pageAttuale) {
@@ -277,19 +264,6 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                 if (ricerca || ricerca === '') {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetUtentiGestione());
-                }
-            })
-        );
-    }
-
-    getPageSize(): void {
-        this.subscriptions.add(
-            this.pageSize$.subscribe((pageSize: number) => {
-                if (pageSize) {
-                    if (this.pageSize && pageSize !== this.pageSize) {
-                        this.store.dispatch(new GetUtentiGestione());
-                    }
-                    this.pageSize = pageSize;
                 }
             })
         );

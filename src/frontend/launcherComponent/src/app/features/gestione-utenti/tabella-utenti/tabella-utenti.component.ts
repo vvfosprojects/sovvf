@@ -14,8 +14,6 @@ export class TabellaUtentiComponent {
 
     @Input() listaUtenti: Utente[];
     @Input() page: number;
-    @Input() pageSize: number;
-    @Input() pageSizes: number[];
     @Input() totalItems: number;
     @Input() loading: boolean;
     @Input() idUtenteLoggato: string;
@@ -24,7 +22,6 @@ export class TabellaUtentiComponent {
     @Output() removeRoleUser: EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }> = new EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }>();
     @Output() addRuoloUtente: EventEmitter<{ codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }> = new EventEmitter<{ codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
-    @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 

@@ -91,7 +91,7 @@
             {{ getTooltipConcorrenzaText(utente) }}
         </ng-template>
     </tr>
-    <tr *ngIf="listaUtenti?.length <= 0">
+    <tr *ngIf="!listaUtenti?.length">
         <td>
             <ng-template [ngIf]="!loading">Nessun Utente trovato</ng-template>
             <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
@@ -100,12 +100,10 @@
     </tr>
     </tbody>
 </table>
-<div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between pt-2 px-2">
-    <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'utenti'"
-                                    (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
+<div *ngIf="listaUtenti?.length" class="d-flex justify-content-end pt-2 px-2">
     <ngb-pagination
             [(page)]="page"
-            [pageSize]="pageSize"
+            [pageSize]="3"
             [collectionSize]="totalItems"
             [maxSize]="5"
             [disabled]="loading"
