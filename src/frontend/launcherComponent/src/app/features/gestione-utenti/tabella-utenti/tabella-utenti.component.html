@@ -59,7 +59,7 @@
                                     </ng-container>
                                     <span class="font-weight-bolder mr-1">{{wipeRoleString(ruolo.descrizione)}}</span>
                                     di
-                                    <span class="font-weight-bolder ml-1">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>
+                                    <span class="font-weight-bolder ml-1">{{ruolo.descSede ? getDescSedeRuolo(ruolo.descSede, ruolo.codSede) : ruolo.codSede}}</span>
                                 </div>
                                 <div class="float-right">
                                     <div class="d-inline-block float-right ml-3"

@@ -4,6 +4,7 @@ import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { wipeStringUppercase } from '../../../shared/helper/function-generiche';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { getProvinciaByCodProvincia } from 'src/app/shared/helper/function-province';
 
 @Component({
     selector: 'app-tabella-utenti',
@@ -45,6 +46,10 @@ export class TabellaUtentiComponent {
 
     wipeRoleString(text: string): string {
         return wipeStringUppercase(text);
+    }
+
+    getDescSedeRuolo(descSedeRuolo: string, codSedeRuolo: string): string {
+        return descSedeRuolo.toLowerCase() === 'centrale' ? descSedeRuolo + ' ' + getProvinciaByCodProvincia(codSedeRuolo.split('.')[0]).toUpperCase() : descSedeRuolo;
     }
 
     getTooltipConcorrenzaText(utente: Utente): string {
