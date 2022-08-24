@@ -26,7 +26,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.CodaChiamate;
-using SO115App.Models.Classi.NotificaSound;
+using SO115App.Models.Classi.NotificaSoundModale;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -86,7 +86,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(conferma.Richiesta));
 
             //Sedi dei mezzi in partenza che dovranno ricevere la notifica
-            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
 
@@ -103,11 +103,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
             {
-                var notificaSound = new NotificaSound()
+                var notificaModal = new DataModal()
                 {
-                    data = new DataSound()
-                    {
-                        buttons = new List<Button>()
+                    buttons = new List<Button>()
                         {
                             new Button()
                             {
@@ -115,18 +113,17 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                                 text = "chiudi"
                             }
                         },
-                        text = "Nuova partenza distaccamento",
-                        timeToClose = 5000,
-                        title = "Alert Distaccamento"
-                    }
+                    text = "Nuova partenza distaccamento",
+                    timeToClose = 5000,
+                    title = "Alert Distaccamento"
                 };
 
-                var notificaAlert = new Notifica()
+                var notificaSound = new Notifica()
                 {
                     NotificaType = TipoNotifica.NuovaPartenzaDistaccamento
                 };
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAvvisoModal", notificaAlert);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAvvisoModal", notificaModal);
 
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
             });

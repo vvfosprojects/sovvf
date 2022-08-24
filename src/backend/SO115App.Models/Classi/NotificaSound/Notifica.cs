@@ -1,29 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace SO115App.Models.Classi.NotificaSound
+namespace SO115App.Models.Classi.NotificaSoundModale
 {
     public class Notifica
     {
         public TipoNotifica NotificaType { get; set; }
     }
 
-    public class NotificaSound
+    public class NotificaModal
     {
-        public DataSound data { get; set; }
-
+        public DataModal data { get; set; }
     }
 
-    public class DataSound
+    public class DataModal
     {
         public string title { get; set; }
         public string text { get; set; }
         public List<Button> buttons { get; set; }
         public int timeToClose { get; set; }
-
     }
 
     public class Button
