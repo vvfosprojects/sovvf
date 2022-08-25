@@ -30,6 +30,7 @@ using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.SignalR.Sender.AggiornamentoBox;
 using SO115App.SignalR.Utility;
 using System;
 using System.Collections.Generic;
@@ -46,34 +47,27 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetSedi _getSedi;
         private readonly GetSediPartenze _getSediPartenze;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiestehandler;
-        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
-        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
+        private readonly NotificationAggiornaBox _notificationAggiornaBox;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
 
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IGetMezziInServizio _getListaMezzi;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
-            IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
-            IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezzihandler,
-            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             IMapperRichiestaSuSintesi mapperSintesi,
             GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetMezziInServizio getListaMezzi,
-            IGetSedi getSedi, GetSediPartenze getSediPartenze)
+            IGetSedi getSedi, GetSediPartenze getSediPartenze, NotificationAggiornaBox notificationAggiornaBox)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getListaMezzi = getListaMezzi;
             _notificationHubContext = notificationHubContext;
-            _boxRichiestehandler = boxRichiestehandler;
-            _boxMezzihandler = boxMezzihandler;
-            _boxPersonalehandler = boxPersonalehandler;
             _sintesiRichiesteAssistenzaMarkerhandler = sintesiRichiesteAssistenzaMarkerhandler;
             _mapperSintesi = mapperSintesi;
             _getDistaccamentoUC = getDistaccamentoUC;
             _getSedi = getSedi;
             _getSediPartenze = getSediPartenze;
+            _notificationAggiornaBox = notificationAggiornaBox;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
@@ -130,36 +124,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     conferma.ConfermaPartenze.Chiamata = sintesi.Result;
                     _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
 
-                    var boxRichiesteQuery = new BoxRichiesteQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
-
-                    Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine caricamento Box Richieste per la sede {sede} Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
-
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-
-                    var boxMezziQuery = new BoxMezziQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
-
-                    Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine caricamento Box Mezzi per la sede {sede} Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
-
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-
-                    var boxPersonaleQuery = new BoxPersonaleQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
-
-                    Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine caricamento Box Personale per la sede {sede} Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
-
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-
                     if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                     {
                         Task.Factory.StartNew(() =>
@@ -189,6 +153,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             stopWatch.Stop();
             Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine invio Notifiche Conferma Partenza Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
+
+            _notificationAggiornaBox.SendNotification(SediDaNotificare);
+
+            //await _notificationAggiornaBox.SendNotification(SediDaNotificare);
         }
     }
 }

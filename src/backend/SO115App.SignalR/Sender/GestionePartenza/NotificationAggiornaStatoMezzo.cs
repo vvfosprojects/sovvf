@@ -32,6 +32,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 using SO115App.Models.Classi.CodaChiamate;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
+using SO115App.SignalR.Sender.AggiornamentoBox;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,27 +44,20 @@ namespace SO115App.SignalR.Sender.GestionePartenza
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IGetMezziInServizio _getListaMezzi;
+        private readonly NotificationAggiornaBox _notificationAggiornaBox;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly GetSediPartenze _getSediPartenze;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
-        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
-        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
 
         public NotificationAggiornaStatoMezzo(IHubContext<NotificationHub> notificationHubContext,
-                                          IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
-                                          IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
-                                          IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           GetGerarchiaToSend getGerarchiaToSend,
                                           GetSediPartenze getSediPartenze,
-                                          IGetMezziInServizio getListaMezzi)
+                                          IGetMezziInServizio getListaMezzi, NotificationAggiornaBox notificationAggiornaBox)
         {
             _notificationHubContext = notificationHubContext;
-            _boxRichiesteHandler = boxRichiesteHandler;
-            _boxMezziHandler = boxMezziHandler;
-            _boxPersonaleHandler = boxPersonaleHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
             _getSediPartenze = getSediPartenze;
             _getListaMezzi = getListaMezzi;
+            _notificationAggiornaBox = notificationAggiornaBox;
         }
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
@@ -103,28 +97,9 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddSquadreOccupateCodaChiamate", counterCodaChiamate);
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
                 }
-
-                var boxMezziQuery = new BoxMezziQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-
-                var boxRichiesteQuery = new BoxRichiesteQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-
-                var boxPersonaleQuery = new BoxPersonaleQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
             });
+
+            _notificationAggiornaBox.SendNotification(SediDaNotificare);
         }
     }
 }
