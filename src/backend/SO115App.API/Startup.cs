@@ -46,6 +46,7 @@ using SO115App.SignalR;
 using StackExchange.Redis;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Principal;
@@ -134,9 +135,27 @@ namespace SO115App.API
                 });
 
             services.AddSignalR()
-                //.AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, options =>
-                // {
-                //    options.Configuration.ChannelPrefix = "SO115Web";
+                //.AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, o =>
+                //{
+                //    o.Configuration.ChannelPrefix = "SO115Web";
+                //    o.ConnectionFactory = async writer =>
+                //    {
+                //        var config = new ConfigurationOptions
+                //        {
+                //            AbortOnConnectFail = false
+                //        };
+                //        config.EndPoints.Add(IPAddress.Loopback, 0);
+                //        config.SetDefaultPorts();
+                //        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                //        connection.ConnectionFailed += (_, e) =>
+                //        {
+                //            Console.WriteLine("Connection to Redis failed.");
+                //        };
+
+                // if (!connection.IsConnected) { Console.WriteLine("Did not connect to Redis."); }
+
+                //        return connection;
+                //    };
                 //})
                 .AddNewtonsoftJsonProtocol(opt =>
                 {

@@ -37,7 +37,7 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
             }
 
             var SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede, SediDaAllertare.ToArray());
-            SediDaNotificare.Add("00");
+            //SediDaNotificare.Add("00");
 
             foreach (var sede in SediDaNotificare.Distinct())
             {
