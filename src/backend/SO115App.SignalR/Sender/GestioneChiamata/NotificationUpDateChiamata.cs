@@ -65,9 +65,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var SediDaNotificare = _getGerarchiaToSend.Get(SintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
 
-            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
-            if(SintesiRichiesta.CodSediPartenze!=null)
+            if (SintesiRichiesta.CodSediPartenze != null)
                 SediDaNotificare.AddRange(SintesiRichiesta.CodSediPartenze);
 
             foreach (var sede in SediDaNotificare.Distinct())

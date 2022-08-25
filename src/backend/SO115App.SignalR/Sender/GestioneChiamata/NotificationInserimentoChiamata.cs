@@ -68,7 +68,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var SediDaNotificare = _getGerarchiaToSend.Get(sedeComando, command.sintesi.CodUOCompetenza);
 
-            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
             var filtriSchedeContatto = new FiltriContatoriSchedeContatto()
             {

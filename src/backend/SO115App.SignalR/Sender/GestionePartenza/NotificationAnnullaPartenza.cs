@@ -68,7 +68,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente);
 
             SediDaNotificare.AddRange(_getSediPartenze.GetFromRichiesta(command.Richiesta));
-            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
             Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
