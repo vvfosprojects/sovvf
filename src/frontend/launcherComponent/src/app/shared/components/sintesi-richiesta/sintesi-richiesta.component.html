@@ -81,8 +81,8 @@
                         <!-- Tipologia/Descrizione Chiamata/Intervento -->
                         <div style="width: 33%">
                             <div class="mb-1 nowrap default-cursor font-xxlarge">
-                                <app-tipologia-sintesi-richiesta [tipologieRichiesta]="richiesta?.tipologie"
-                                                                 [descrizioneRichiesta]="richiesta?.descrizione">
+                                <app-tipologia-sintesi-richiesta [tipologia]="richiesta?.tipologie[0]"
+                                                                 [dettaglioTipologia]="richiesta?.dettaglioTipologia">
                                 </app-tipologia-sintesi-richiesta>
                             </div>
                         </div>
