@@ -16,6 +16,7 @@ import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno.
 import { Injectable } from '@angular/core';
 import { LSNAME } from '../../../../core/settings/config';
 import { getProvinciaByCodProvincia } from '../../../helper/function-province';
+import * as province from '../../../../../assets/province/province.json';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
@@ -71,9 +72,10 @@ export class SediTreeviewState {
 
     @Selector()
     static sediNavbarTastoConferma(state: SediTreeviewStateModel): boolean {
+        const provinceData = province['default']['province'][0];
         const sediNavbar = state.sediNavbarSelezionate;
         if (sediNavbar.correnti?.length > 0 && sediNavbar.correnti?.length < 2) {
-            return arraysEqual(sediNavbar.iniziali, sediNavbar.correnti);
+            return arraysEqual(sediNavbar.iniziali, sediNavbar.correnti) || Object.values(provinceData).includes(sediNavbar.correnti[0]);
         } else {
             return true;
         }
