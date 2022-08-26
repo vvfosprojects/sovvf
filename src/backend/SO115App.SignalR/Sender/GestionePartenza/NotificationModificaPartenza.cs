@@ -78,7 +78,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 }
             });
 
-            _notificationAggiornaBox.SendNotification(SediDaNotificare);
+            var res = Task.Factory.StartNew(() =>
+            {
+                _notificationAggiornaBox.SendNotification(SediDaNotificare);
+            });
         }
     }
 }

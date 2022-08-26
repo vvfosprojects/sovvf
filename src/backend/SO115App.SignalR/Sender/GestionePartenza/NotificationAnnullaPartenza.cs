@@ -80,7 +80,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
             });
 
-            _notificationAggiornaBox.SendNotification(SediDaNotificare);
+            var res = Task.Factory.StartNew(() =>
+            {
+                _notificationAggiornaBox.SendNotification(SediDaNotificare);
+            });
         }
     }
 }

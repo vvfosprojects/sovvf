@@ -28,33 +28,33 @@ namespace SO115App.SignalR.Sender.AggiornamentoBox
 
         public void SendNotification(List<string> listaSediDaNotificare)
         {
-            foreach (var sede in listaSediDaNotificare)
-            {
-                if (sede != null)
-                {
-                    var boxRichiesteQuery = new BoxRichiesteQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
+            Parallel.ForEach(listaSediDaNotificare, sede =>
+           {
+               if (sede != null)
+               {
+                   var boxRichiesteQuery = new BoxRichiesteQuery()
+                   {
+                       CodiciSede = new string[] { sede }
+                   };
+                   var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
 
-                    Log.Information($"*************NOTIFICA BOX INTERVENTI PER SEDE {sede}");
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                   Log.Information($"*************NOTIFICA BOX INTERVENTI PER SEDE {sede}");
+                   _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
 
-                    var boxMezziQuery = new BoxMezziQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
-                    Log.Information($"*************NOTIFICA BOX INTERVENTI PER MEZZI {sede}");
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+                   var boxMezziQuery = new BoxMezziQuery()
+                   {
+                       CodiciSede = new string[] { sede }
+                   };
+                   var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
+                   Log.Information($"*************NOTIFICA BOX INTERVENTI PER MEZZI {sede}");
+                   _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
 
-                    Log.Information($"*************INIZIO NOTIFICA BOX INTERVENTI PER MEZZI {sede}");
-                    var boxPersonale = _boxPersonalehandler.Get(new string[] { sede });
-                    Log.Information($"*************FINE NOTIFICA BOX INTERVENTI PER MEZZI {sede}");
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-                }
-            };
+                   Log.Information($"*************INIZIO NOTIFICA BOX INTERVENTI PER MEZZI {sede}");
+                   var boxPersonale = _boxPersonalehandler.Get(new string[] { sede });
+                   Log.Information($"*************FINE NOTIFICA BOX INTERVENTI PER MEZZI {sede}");
+                   _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+               }
+           });
         }
     }
 }
