@@ -154,8 +154,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             stopWatch.Stop();
             Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine invio Notifiche Conferma Partenza Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
 
-            _notificationAggiornaBox.SendNotification(SediDaNotificare);
-
+            var res = Task.Factory.StartNew(() =>
+            {
+                _notificationAggiornaBox.SendNotification(SediDaNotificare);
+            });
             //await _notificationAggiornaBox.SendNotification(SediDaNotificare);
         }
     }

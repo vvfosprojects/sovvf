@@ -109,7 +109,10 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", ChiamataUpd);
            });
 
-            _notificationAggiornaBox.SendNotification(SediDaNotificare);
+            var res = Task.Factory.StartNew(() =>
+            {
+                _notificationAggiornaBox.SendNotification(SediDaNotificare);
+            });
 
             if (Richiesta.CodSOAllertate != null)
             {
