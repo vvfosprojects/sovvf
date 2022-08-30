@@ -135,29 +135,33 @@ namespace SO115App.API
                 });
 
             services.AddSignalR()
-                .AddStackExchangeRedis(o =>
+                //.AddStackExchangeRedis(o =>
+                //{
+                //    o.Configuration.ChannelPrefix = "SO115Web";
+                //    //o.Configuration.Password = Configuration.GetSection("RedisPassword").Value;
+                //    o.ConnectionFactory = async writer =>
+                //    {
+                //        var config = new ConfigurationOptions
+                //        {
+                //            AbortOnConnectFail = false
+                //        };
+                //        config.EndPoints.Add(Configuration.GetSection("UrlRedis").Value, 0);
+                //        config.Password = Configuration.GetSection("RedisPassword").Value;
+                //        config.SetDefaultPorts();
+                //        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                //        connection.ConnectionFailed += (_, e) =>
+                //        {
+                //            Console.WriteLine("Connection to Redis failed.");
+                //        };
+
+                // if (!connection.IsConnected) { Console.WriteLine("Did not connect to Redis."); }
+
+                //        return connection;
+                //    };
+                //})
+                .AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, options =>
                 {
-                    o.Configuration.ChannelPrefix = "SO115Web";
-                    //o.Configuration.Password = Configuration.GetSection("RedisPassword").Value;
-                    o.ConnectionFactory = async writer =>
-                    {
-                        var config = new ConfigurationOptions
-                        {
-                            AbortOnConnectFail = false
-                        };
-                        config.EndPoints.Add(Configuration.GetSection("UrlRedis").Value, 0);
-                        config.Password = Configuration.GetSection("RedisPassword").Value;
-                        config.SetDefaultPorts();
-                        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
-                        connection.ConnectionFailed += (_, e) =>
-                        {
-                            Console.WriteLine("Connection to Redis failed.");
-                        };
-
-                        if (!connection.IsConnected) { Console.WriteLine("Did not connect to Redis."); }
-
-                        return connection;
-                    };
+                    options.Configuration.ChannelPrefix = "SO115Web";
                 })
                 .AddNewtonsoftJsonProtocol(opt =>
                 {
