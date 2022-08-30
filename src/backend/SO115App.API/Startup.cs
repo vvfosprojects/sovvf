@@ -138,7 +138,7 @@ namespace SO115App.API
                 .AddStackExchangeRedis(o =>
                 {
                     o.Configuration.ChannelPrefix = "SO115Web";
-                    //o.Configuration.Password = Configuration.GetSection("RedisPassword").Value;
+                    o.Configuration.Password = Configuration.GetSection("RedisPassword").Value;
                     o.ConnectionFactory = async writer =>
                     {
                         var config = new ConfigurationOptions
