@@ -135,7 +135,7 @@ namespace SO115App.API
                 });
 
             services.AddSignalR()
-                .AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, o =>
+                .AddStackExchangeRedis(o =>
                 {
                     o.Configuration.ChannelPrefix = "SO115Web";
                     //o.Configuration.Password = Configuration.GetSection("RedisPassword").Value;
@@ -145,7 +145,7 @@ namespace SO115App.API
                         {
                             AbortOnConnectFail = false
                         };
-                        config.EndPoints.Add(IPAddress.Loopback, 0);
+                        config.EndPoints.Add(Configuration.GetSection("UrlRedis").Value, 0);
                         config.SetDefaultPorts();
                         var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
                         connection.ConnectionFailed += (_, e) =>
