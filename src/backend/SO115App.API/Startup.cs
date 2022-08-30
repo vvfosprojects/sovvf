@@ -147,7 +147,7 @@ namespace SO115App.API
                         };
                         config.EndPoints.Add(Configuration.GetSection("UrlRedis").Value, 0);
                         config.Password = Configuration.GetSection("RedisPassword").Value;
-                        config.SetDefaultPorts();
+                        //config.SetDefaultPorts();
                         var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
                         connection.ConnectionFailed += (_, e) =>
                         {
