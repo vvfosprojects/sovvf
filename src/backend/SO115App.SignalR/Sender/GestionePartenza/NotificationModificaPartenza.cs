@@ -21,18 +21,16 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
         private readonly GetSediPartenze _getSediPartenze;
-        private readonly NotificationAggiornaBox _notificationAggiornaBox;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         public NotificationModificaPartenza(IHubContext<NotificationHub> notificationHubContext,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IMapperRichiestaSuSintesi mapperSintesi,
-            GetSediPartenze getSediPartenze, NotificationAggiornaBox notificationAggiornaBox)
+            GetSediPartenze getSediPartenze)
         {
             _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
             _mapperSintesi = mapperSintesi;
             _getSediPartenze = getSediPartenze;
-            _notificationAggiornaBox = notificationAggiornaBox;
             _notificationHubContext = notificationHubContext;
         }
 
@@ -76,11 +74,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                         Squadre = partenza.Squadre
                     });
                 }
-            });
-
-            var res = Task.Factory.StartNew(() =>
-            {
-                _notificationAggiornaBox.SendNotification(SediDaNotificare);
             });
         }
     }

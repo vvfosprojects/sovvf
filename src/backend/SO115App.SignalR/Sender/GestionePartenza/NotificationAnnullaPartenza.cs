@@ -39,18 +39,16 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _listaMezziInServizioHandler;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly GetSediPartenze _getSediPartenze;
-        private readonly NotificationAggiornaBox _notificationAggiornaBox;
 
         public NotificationAnnullaPartenza(IHubContext<NotificationHub> notificationHubContext,
                                           IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
                                           GetGerarchiaToSend getGerarchiaToSend,
-                                          GetSediPartenze getSediPartenze, NotificationAggiornaBox notificationAggiornaBox)
+                                          GetSediPartenze getSediPartenze)
         {
             _notificationHubContext = notificationHubContext;
             _listaMezziInServizioHandler = listaMezziInServizioHandler;
             _getGerarchiaToSend = getGerarchiaToSend;
             _getSediPartenze = getSediPartenze;
-            _notificationAggiornaBox = notificationAggiornaBox;
         }
 
         public async Task SendNotification(AnnullaStatoPartenzaCommand command)
@@ -78,11 +76,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
                 var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(command.TargaMezzo));
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
-            });
-
-            var res = Task.Factory.StartNew(() =>
-            {
-                _notificationAggiornaBox.SendNotification(SediDaNotificare);
             });
         }
     }

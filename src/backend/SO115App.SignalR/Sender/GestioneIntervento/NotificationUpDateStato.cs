@@ -41,33 +41,22 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
     public class NotificationUpDateStato : INotifyUpDateStatoRichiesta
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
-        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
-        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetRichiesta _getRichiestaAssistenzaById;
         private readonly IGetRichiesteMarker _iGetListaRichieste;
-        private readonly NotificationAggiornaBox _notificationAggiornaBox;
 
         public NotificationUpDateStato(IHubContext<NotificationHub> notificationHubContext,
-                                          IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
-                                          IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
-                                          IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           IGetSintesiRichiestaAssistenzaByCodice getSintesiById,
                                           GetGerarchiaToSend getGerarchiaToSend,
                                           IGetRichiesta getRichiestaAssistenzaById,
-                                          IGetRichiesteMarker iGetListaRichieste, NotificationAggiornaBox notificationAggiornaBox)
+                                          IGetRichiesteMarker iGetListaRichieste)
         {
             _notificationHubContext = notificationHubContext;
-            _boxRichiesteHandler = boxRichiesteHandler;
-            _boxMezziHandler = boxMezziHandler;
-            _boxPersonaleHandler = boxPersonaleHandler;
             _getSintesiById = getSintesiById;
             _getGerarchiaToSend = getGerarchiaToSend;
             _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
             _iGetListaRichieste = iGetListaRichieste;
-            _notificationAggiornaBox = notificationAggiornaBox;
         }
 
         public async Task SendNotification(UpDateStatoRichiestaCommand command)
@@ -108,11 +97,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", notificaChangeState);
                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", ChiamataUpd);
            });
-
-            var res = Task.Factory.StartNew(() =>
-            {
-                _notificationAggiornaBox.SendNotification(SediDaNotificare);
-            });
 
             if (Richiesta.CodSOAllertate != null)
             {

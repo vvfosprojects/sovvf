@@ -47,7 +47,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetSedi _getSedi;
         private readonly GetSediPartenze _getSediPartenze;
-        private readonly NotificationAggiornaBox _notificationAggiornaBox;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
 
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
@@ -57,7 +56,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             IMapperRichiestaSuSintesi mapperSintesi,
             GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetMezziInServizio getListaMezzi,
-            IGetSedi getSedi, GetSediPartenze getSediPartenze, NotificationAggiornaBox notificationAggiornaBox)
+            IGetSedi getSedi, GetSediPartenze getSediPartenze)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getListaMezzi = getListaMezzi;
@@ -67,7 +66,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _getDistaccamentoUC = getDistaccamentoUC;
             _getSedi = getSedi;
             _getSediPartenze = getSediPartenze;
-            _notificationAggiornaBox = notificationAggiornaBox;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
@@ -153,12 +151,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             stopWatch.Stop();
             Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine invio Notifiche Conferma Partenza Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
-
-            var res = Task.Factory.StartNew(() =>
-            {
-                _notificationAggiornaBox.SendNotification(SediDaNotificare);
-            });
-            //await _notificationAggiornaBox.SendNotification(SediDaNotificare);
         }
     }
 }
