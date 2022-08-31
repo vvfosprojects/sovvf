@@ -133,10 +133,12 @@ namespace SO115App.API
 
             //Configuration.GetSection("UrlRedis").Value
             services.AddSignalR()
+#if !DEBUG
                 .AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, options =>
                 {
                     options.Configuration.ChannelPrefix = "SO115Web";
                 })
+#endif
                 .AddNewtonsoftJsonProtocol(opt =>
                 {
                     opt.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
