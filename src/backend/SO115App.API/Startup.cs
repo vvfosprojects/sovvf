@@ -135,29 +135,29 @@ namespace SO115App.API
                 });
 
             services.AddSignalR()
-                .AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, o =>
-                {
-                    o.Configuration.ChannelPrefix = "SO115Web";
-                    o.Configuration.Password = Configuration.GetSection("RedisPassword").Value;
-                    o.ConnectionFactory = async writer =>
-                    {
-                        var config = new ConfigurationOptions
-                        {
-                            AbortOnConnectFail = false
-                        };
-                        config.EndPoints.Add(IPAddress.Loopback, 0);
-                        config.SetDefaultPorts();
-                        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
-                        connection.ConnectionFailed += (_, e) =>
-                        {
-                            Console.WriteLine("Connection to Redis failed.");
-                        };
+                //.AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, o =>
+                //{
+                //    o.Configuration.ChannelPrefix = "SO115Web";
+                //    o.Configuration.Password = Configuration.GetSection("RedisPassword").Value;
+                //    o.ConnectionFactory = async writer =>
+                //    {
+                //        var config = new ConfigurationOptions
+                //        {
+                //            AbortOnConnectFail = false
+                //        };
+                //        config.EndPoints.Add(IPAddress.Loopback, 0);
+                //        config.SetDefaultPorts();
+                //        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                //        connection.ConnectionFailed += (_, e) =>
+                //        {
+                //            Console.WriteLine("Connection to Redis failed.");
+                //        };
 
-                        if (!connection.IsConnected) { Console.WriteLine("Did not connect to Redis."); }
+                // if (!connection.IsConnected) { Console.WriteLine("Did not connect to Redis."); }
 
-                        return connection;
-                    };
-                })
+                //        return connection;
+                //    };
+                //})
                 .AddNewtonsoftJsonProtocol(opt =>
                 {
                     opt.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
