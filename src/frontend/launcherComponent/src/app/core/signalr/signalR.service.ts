@@ -7,9 +7,9 @@ import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { ClearRichiestaAzioni, GetListaRichieste, SetRichiestaAzioni, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
-import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
-import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
-import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
+import { GetBoxPersonale, SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
+import { GetBoxMezzi, SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
+import { GetBoxRichieste, SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
@@ -135,7 +135,11 @@ export class SignalRService {
             this.store.dispatch([
                 new UpdateRichiesta(updateRichiesta),
                 new UpdateRichiestaSganciamento(),
-                new SetRichiestaAzioni(updateRichiesta.codice)
+                new SetRichiestaAzioni(updateRichiesta.codice),
+                // Aggiorno i box
+                new GetBoxMezzi(),
+                new GetBoxRichieste(),
+                new GetBoxPersonale()
             ]);
         });
 
