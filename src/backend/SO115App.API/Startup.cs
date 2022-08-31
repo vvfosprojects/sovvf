@@ -29,7 +29,6 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -38,12 +37,10 @@ using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
 using SO115App.CompositionRoot;
-using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Monitor;
 using SO115App.SignalR;
-using StackExchange.Redis;
 using System;
 using System.IO;
 using System.Net;
@@ -134,30 +131,14 @@ namespace SO115App.API
                     };
                 });
 
+            //Configuration.GetSection("UrlRedis").Value
             services.AddSignalR()
-                //.AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, o =>
-                //{
-                //    o.Configuration.ChannelPrefix = "SO115Web";
-                //    o.Configuration.Password = Configuration.GetSection("RedisPassword").Value;
-                //    o.ConnectionFactory = async writer =>
-                //    {
-                //        var config = new ConfigurationOptions
-                //        {
-                //            AbortOnConnectFail = false
-                //        };
-                //        config.EndPoints.Add(IPAddress.Loopback, 0);
-                //        config.SetDefaultPorts();
-                //        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
-                //        connection.ConnectionFailed += (_, e) =>
-                //        {
-                //            Console.WriteLine("Connection to Redis failed.");
-                //        };
-
-                // if (!connection.IsConnected) { Console.WriteLine("Did not connect to Redis."); }
-
-                //        return connection;
-                //    };
-                //})
+#if !DEBUG
+                .AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, options =>
+                {
+                    options.Configuration.ChannelPrefix = "SO115Web";
+                })
+#endif
                 .AddNewtonsoftJsonProtocol(opt =>
                 {
                     opt.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
