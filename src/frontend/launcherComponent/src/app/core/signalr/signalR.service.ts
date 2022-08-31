@@ -7,8 +7,8 @@ import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { ClearRichiestaAzioni, GetListaRichieste, SetRichiestaAzioni, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
-import { GetBoxPersonale, SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
-import { GetBoxMezzi, SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
+import { GetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
+import { GetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
 import { GetBoxRichieste, SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
@@ -23,8 +23,6 @@ import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLi
 import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
-import { BoxPersonale } from '../../features/home/boxes/boxes-model/box-personale.model';
-import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model';
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
 import { ChiamataMarker } from '../../features/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
@@ -205,18 +203,6 @@ export class SignalRService {
         /**
          * Box
          */
-        this.hubNotification.on('NotifyGetBoxPersonale', (data: BoxPersonale) => {
-            console.log('NotifyGetBoxPersonale', data);
-            this.store.dispatch([
-                new SetBoxPersonale(data)
-            ]);
-        });
-        this.hubNotification.on('NotifyGetBoxMezzi', (data: BoxMezzi) => {
-            console.log('NotifyGetBoxMezzi', data);
-            this.store.dispatch([
-                new SetBoxMezzi(data)
-            ]);
-        });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: BoxInterventi) => {
             console.log('NotifyGetBoxInterventi', data);
             this.store.dispatch([
