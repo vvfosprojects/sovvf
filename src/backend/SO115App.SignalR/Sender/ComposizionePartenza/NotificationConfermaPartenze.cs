@@ -101,7 +101,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 return sintesi.Result;
             });
 
-            Parallel.ForEach(_getSediPartenze.GetFromRichiesta(conferma.Richiesta), sede =>
+            Parallel.ForEach(conferma.ConfermaPartenze.Partenze, partenza =>
             {
                 var notificaModal = new DataModal()
                 {
@@ -123,9 +123,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     NotificaType = TipoNotifica.NuovaPartenzaDistaccamento
                 };
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAvvisoModal", notificaModal);
+                _notificationHubContext.Clients.Group(partenza.Mezzo.Distaccamento.Codice).SendAsync("NotifyAvvisoModal", notificaModal);
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifySound", notificaSound);
+                _notificationHubContext.Clients.Group(partenza.Mezzo.Distaccamento.Codice).SendAsync("NotifySound", notificaSound);
             });
 
             Parallel.ForEach(SediDaNotificare, sede =>
