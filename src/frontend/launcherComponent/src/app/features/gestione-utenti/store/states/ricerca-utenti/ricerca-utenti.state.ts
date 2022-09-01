@@ -12,6 +12,7 @@ import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetUtentiGestione } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { Ruolo } from '../../../../../shared/model/utente.model';
 import { Injectable } from '@angular/core';
+import { getProvinciaByCodProvincia } from '../../../../../shared/helper/function-province';
 
 export interface RicercaUtentiStateModel {
     ricerca: string;
@@ -42,7 +43,12 @@ export class RicercaUtentiState {
 
     @Selector()
     static sediFiltro(state: RicercaUtentiStateModel): Ruolo[] {
-        return state.sediFiltro;
+        return state.sediFiltro.map((s: Ruolo) => {
+            return {
+                ...s,
+                descSede: s.descSede.toLowerCase() === 'centrale' ? s.descSede + ' ' + getProvinciaByCodProvincia(s.codSede.split('.')[0]).toUpperCase() : s.descSede
+            };
+        });
     }
 
     @Selector()
