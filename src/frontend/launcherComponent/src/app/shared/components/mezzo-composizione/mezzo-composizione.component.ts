@@ -253,7 +253,7 @@ export class MezzoComposizioneComponent implements OnInit, OnChanges, OnDestroy 
     }
 
     getPartenzaMezzoInRichiestaComposizione(): boolean {
-        const partenza = this.richiesta.partenze.filter((p: Partenza) => p.mezzo.codice === this.mezzoComp.mezzo.codice && !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata)[0];
+        const partenza = this.richiesta.partenze.filter((p: Partenza) => p.codiceMezzo === this.mezzoComp.mezzo.codice && !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata)[0];
         return !!partenza;
     }
 

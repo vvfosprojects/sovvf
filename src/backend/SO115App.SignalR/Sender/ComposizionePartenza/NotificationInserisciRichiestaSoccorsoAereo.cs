@@ -45,13 +45,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAFM", sintesi);
 
                     _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", new { chiamata = sintesi });
-
-                    Task.Factory.StartNew(() =>
-                    {
-                        var boxRichieste = _getBoxRichieste.Get(command.CodiciSede.Select(p => new API.Models.Classi.Organigramma.PinNodo(p, true)).ToHashSet());
-
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
-                    });
                 }
                 else //FALLIMENTO
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyErrorAFM", ((RichiestaSoccorsoAereo)command.Richiesta.ListaEventi.LastOrDefault()).Note);
