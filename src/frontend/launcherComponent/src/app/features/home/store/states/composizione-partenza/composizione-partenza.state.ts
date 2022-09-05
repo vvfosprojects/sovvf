@@ -202,9 +202,9 @@ export class ComposizionePartenzaState {
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
             console.log('partenze', action.partenze);
             action.partenze.partenze.forEach((p: Partenza) => {
-                console.log('remove mezzo', p.mezzo.codice);
-                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.mezzo.codice]));
-                const idSquadre = p.squadre.map((s: Squadra) => s.idSquadra);
+                console.log('remove mezzo', p.partenza.mezzo.codice);
+                dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.codiceMezzo]));
+                const idSquadre = p.partenza.squadre.map((s: Squadra) => s.idSquadra);
                 dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));
             });
             if (state.composizioneMode === Composizione.Avanzata) {
