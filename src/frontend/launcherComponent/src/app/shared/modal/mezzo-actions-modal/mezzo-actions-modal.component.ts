@@ -98,8 +98,8 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
     initForm(): void {
         this.formatTime();
         this.timeActionForm = this.fb.group({
-            orarioAttuale: [this.title !== 'Modifica'],
-            orarioPersonalizzato: [this.title === 'Modifica'],
+            orarioAttuale: [!(this.modificaOrario)],
+            orarioPersonalizzato: [!!(this.modificaOrario)],
             nowDate: [this.dateSync],
             time: [this.time, Validators.required]
         });

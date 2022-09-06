@@ -14,6 +14,7 @@ import { Partenza } from '../../../model/partenza.model';
 import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { AddConcorrenza, DeleteConcorrenza } from '../../../store/actions/concorrenza/concorrenza.actions';
 import { Store } from '@ngxs/store';
+import { ClockService } from '../../../../features/navbar/clock/clock-service/clock.service';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -50,7 +51,8 @@ export class MezzoActionsComponent implements OnInit {
                 tooltipConfig: NgbTooltipConfig,
                 private modalService: NgbModal,
                 private lockedConcorrenzaService: LockedConcorrenzaService,
-                private store: Store) {
+                private store: Store,
+                private clockService: ClockService) {
         dropdownConfig.container = 'body';
         dropdownConfig.placement = 'top';
         tooltipConfig.container = 'body';
@@ -67,71 +69,95 @@ export class MezzoActionsComponent implements OnInit {
             if (event) {
                 event.stopPropagation();
             }
-            let modal;
-            const dataInViaggio = {
-                anno: '',
-                mese: '',
-                giorno: '',
-                ora: '',
-                minuti: ''
-            };
-            if (ora) {
-                const indexOra = ora.indexOf('T') + 1;
-                const indexMin = ora.indexOf(':') + 1;
-                const indexFirstCut = ora.indexOf('-') + 1;
-                const indexSecondCut = ora.lastIndexOf('-') + 1;
-                dataInViaggio.ora = ora.slice(indexOra, indexOra + 2);
-                dataInViaggio.minuti = ora.slice(indexMin, indexMin + 2);
-                dataInViaggio.anno = ora.slice(0, 4);
-                dataInViaggio.mese = ora.slice(indexFirstCut, indexSecondCut - 1);
-                dataInViaggio.giorno = ora.slice(indexSecondCut, indexOra - 1);
-            }
-            modal = this.modalService.open(MezzoActionsModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                size: 'lg',
-                centered: true
-            });
-            const data = {
-                value: this.mezzo.codice,
-                type: TipoConcorrenzaEnum.CambioStatoPartenza
-            } as AddConcorrenzaDtoInterface;
-            this.store.dispatch(new AddConcorrenza([data]));
-            modal.componentInstance.codicePartenza = this.codicePartenza;
-            modal.componentInstance.statoMezzo = this.mezzo.stato;
-            modal.componentInstance.codiceMezzo = this.mezzo.codice;
-            modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
-            modal.componentInstance.action = action;
-            modal.componentInstance.modificaOrario = !!ora;
-            modal.componentInstance.titleStato = ': ' + action;
-            modal.componentInstance.dataInViaggio = dataInViaggio;
-            modal.componentInstance.listaEventi = this.listaEventi;
-            modal.componentInstance.ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
-            modal.result.then((res: { status: string, result: any }) => {
-                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
-                switch (res.status) {
-                    case 'ok':
-                        if (action) {
-                            this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
-                            const orario = res.result.oraEvento;
-                            const dataEvento = res.result.dataEvento;
-                            const azioneIntervento = res.result.azioneIntervento;
-                            this.actionMezzo.emit({
-                                mezzoAction: this.statoMezzoActions,
-                                oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
-                                dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
-                                azioneIntervento,
-                                codicePartenza: this.codicePartenza,
-                                modificaOrario: res.result.modificaOrario
-                            });
-                        } else {
-                            this.actionMezzo.emit();
-                        }
-                        break;
-                    case 'ko':
-                        break;
+            const ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
+            if (!ora && (!(ultimoMezzo) || this.mezzo.stato !== StatoMezzo.InRientro)) {
+                const data = {
+                    value: this.mezzo.codice,
+                    type: TipoConcorrenzaEnum.CambioStatoPartenza
+                } as AddConcorrenzaDtoInterface;
+                this.store.dispatch(new AddConcorrenza([data]));
+                this.clockService.getClock().subscribe((dateSync: Date) => {
+                    if (dateSync) {
+                        const nowDate = dateSync;
+                        const orario = { hour: nowDate.getHours(), minute: nowDate.getMinutes(), second: nowDate.getSeconds() };
+                        const dataEvento = { day: nowDate.getDate(), month: (+nowDate.getMonth() + 1), year: nowDate.getFullYear() };
+                        this.actionMezzo.emit({
+                            mezzoAction: this.statoMezzoActions,
+                            oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
+                            dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
+                            codicePartenza: this.codicePartenza,
+                            modificaOrario: false
+                        });
+                    }
+                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
+                });
+            } else {
+                let modal;
+                const dataInViaggio = {
+                    anno: '',
+                    mese: '',
+                    giorno: '',
+                    ora: '',
+                    minuti: ''
+                };
+                if (ora) {
+                    const indexOra = ora.indexOf('T') + 1;
+                    const indexMin = ora.indexOf(':') + 1;
+                    const indexFirstCut = ora.indexOf('-') + 1;
+                    const indexSecondCut = ora.lastIndexOf('-') + 1;
+                    dataInViaggio.ora = ora.slice(indexOra, indexOra + 2);
+                    dataInViaggio.minuti = ora.slice(indexMin, indexMin + 2);
+                    dataInViaggio.anno = ora.slice(0, 4);
+                    dataInViaggio.mese = ora.slice(indexFirstCut, indexSecondCut - 1);
+                    dataInViaggio.giorno = ora.slice(indexSecondCut, indexOra - 1);
                 }
-            }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])));
+                modal = this.modalService.open(MezzoActionsModalComponent, {
+                    windowClass: 'modal-holder',
+                    backdropClass: 'light-blue-backdrop',
+                    size: 'lg',
+                    centered: true
+                });
+                const data = {
+                    value: this.mezzo.codice,
+                    type: TipoConcorrenzaEnum.CambioStatoPartenza
+                } as AddConcorrenzaDtoInterface;
+                this.store.dispatch(new AddConcorrenza([data]));
+                modal.componentInstance.codicePartenza = this.codicePartenza;
+                modal.componentInstance.statoMezzo = this.mezzo.stato;
+                modal.componentInstance.codiceMezzo = this.mezzo.codice;
+                modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
+                modal.componentInstance.action = action;
+                modal.componentInstance.modificaOrario = !!ora;
+                modal.componentInstance.titleStato = ': ' + action;
+                modal.componentInstance.dataInViaggio = dataInViaggio;
+                modal.componentInstance.listaEventi = this.listaEventi;
+                modal.componentInstance.ultimoMezzo = ultimoMezzo;
+                modal.result.then((res: { status: string, result: any }) => {
+                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
+                    switch (res.status) {
+                        case 'ok':
+                            if (action) {
+                                this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
+                                const orario = res.result.oraEvento;
+                                const dataEvento = res.result.dataEvento;
+                                const azioneIntervento = res.result.azioneIntervento;
+                                this.actionMezzo.emit({
+                                    mezzoAction: this.statoMezzoActions,
+                                    oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
+                                    dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
+                                    azioneIntervento,
+                                    codicePartenza: this.codicePartenza,
+                                    modificaOrario: res.result.modificaOrario
+                                });
+                            } else {
+                                this.actionMezzo.emit();
+                            }
+                            break;
+                        case 'ko':
+                            break;
+                    }
+                }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])));
+            }
         }
     }
 
