@@ -10,6 +10,7 @@
                    [listaEventi]="richiesta?.eventi"
                    [actionsAttive]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa"
                    [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
+                   [dateSync]="dateSync"
                    (actionMezzo)="onActionMezzo($event)">
         </app-mezzo>
     </div>

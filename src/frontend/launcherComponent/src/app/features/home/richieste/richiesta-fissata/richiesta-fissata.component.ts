@@ -21,6 +21,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() richiestaHover: SintesiRichiesta;
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
+    @Input() dateSync: Date;
 
     // Permessi
     @Input() disabledModificaRichiesta: boolean;

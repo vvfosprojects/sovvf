@@ -34,6 +34,7 @@ export class PartenzaComponent implements OnInit {
     @Input() annullaStatoMezzo: boolean;
     @Input() disabledModificaStatoMezzo: boolean;
     @Input() hideGestisciPartenza: boolean;
+    @Input() dateSync: Date;
 
     @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre, siglaMezzo: string, descMezzo: string }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre, siglaMezzo: string, descMezzo: string }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();

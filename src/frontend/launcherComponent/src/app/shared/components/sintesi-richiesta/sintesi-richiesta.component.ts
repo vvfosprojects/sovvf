@@ -71,6 +71,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
     @Input() annullaStatoMezzi: InfoMezzo[];
+    @Input() dateSync: Date;
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() clickIndirizzo = new EventEmitter<SintesiRichiesta>();

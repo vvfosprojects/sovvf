@@ -30,6 +30,7 @@ export class ListaPartenzeComponent {
     @Input() disabledModificaStatoMezzo: boolean;
     @Input() hideSostituzioneFineTurno: boolean;
     @Input() hideGestisciPartenza: boolean;
+    @Input() dateSync: Date;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();

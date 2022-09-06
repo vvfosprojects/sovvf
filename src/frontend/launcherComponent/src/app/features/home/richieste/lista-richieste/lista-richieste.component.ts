@@ -25,6 +25,7 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() listHeightClass: string;
     @Input() boxAttivi: boolean;
     @Input() listaEnti: EnteInterface[];
+    @Input() dateSync: Date;
 
     // Loading
     @Input() loading: boolean;

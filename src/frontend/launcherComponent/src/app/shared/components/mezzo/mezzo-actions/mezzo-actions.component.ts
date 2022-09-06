@@ -14,7 +14,6 @@ import { Partenza } from '../../../model/partenza.model';
 import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { AddConcorrenza, DeleteConcorrenza } from '../../../store/actions/concorrenza/concorrenza.actions';
 import { Store } from '@ngxs/store';
-import { ClockService } from '../../../../features/navbar/clock/clock-service/clock.service';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -30,6 +29,7 @@ export class MezzoActionsComponent implements OnInit {
     @Input() listaEventi: any;
     @Input() listaEventiMezzo: any;
     @Input() disabledModificaStatoMezzo: boolean;
+    @Input() dateSync: Date;
 
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
@@ -51,8 +51,7 @@ export class MezzoActionsComponent implements OnInit {
                 tooltipConfig: NgbTooltipConfig,
                 private modalService: NgbModal,
                 private lockedConcorrenzaService: LockedConcorrenzaService,
-                private store: Store,
-                private clockService: ClockService) {
+                private store: Store) {
         dropdownConfig.container = 'body';
         dropdownConfig.placement = 'top';
         tooltipConfig.container = 'body';
@@ -76,21 +75,17 @@ export class MezzoActionsComponent implements OnInit {
                     type: TipoConcorrenzaEnum.CambioStatoPartenza
                 } as AddConcorrenzaDtoInterface;
                 this.store.dispatch(new AddConcorrenza([data]));
-                this.clockService.getClock().subscribe((dateSync: Date) => {
-                    if (dateSync) {
-                        const nowDate = dateSync;
-                        const orario = { hour: nowDate.getHours(), minute: nowDate.getMinutes(), second: nowDate.getSeconds() };
-                        const dataEvento = { day: nowDate.getDate(), month: (+nowDate.getMonth() + 1), year: nowDate.getFullYear() };
-                        this.actionMezzo.emit({
-                            mezzoAction: this.statoMezzoActions,
-                            oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
-                            dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
-                            codicePartenza: this.codicePartenza,
-                            modificaOrario: false
-                        });
-                    }
-                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
+                const nowDate = this.dateSync;
+                const orario = { hour: nowDate.getHours(), minute: nowDate.getMinutes(), second: nowDate.getSeconds() };
+                const dataEvento = { day: nowDate.getDate(), month: (+nowDate.getMonth() + 1), year: nowDate.getFullYear() };
+                this.actionMezzo.emit({
+                    mezzoAction: this.statoMezzoActions,
+                    oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
+                    dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
+                    codicePartenza: this.codicePartenza,
+                    modificaOrario: false
                 });
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
             } else {
                 let modal;
                 const dataInViaggio = {

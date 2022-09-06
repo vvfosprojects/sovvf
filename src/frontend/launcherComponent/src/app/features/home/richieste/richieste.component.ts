@@ -35,6 +35,7 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { DeleteAllConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
+import { ClockService } from '../../navbar/clock/clock-service/clock.service';
 
 @Component({
     selector: 'app-richieste',
@@ -86,6 +87,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     loaderRichieste = true;
     listHeightClass = 'm-h-720';
 
+    dateSync: Date;
+
     // ENUM
     permessiFeature = PermissionFeatures;
     statoRichiesta = StatoRichiesta;
@@ -93,7 +96,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     private subscriptions = new Subscription();
 
-    constructor(private modalService: NgbModal,
+    constructor(private clockService: ClockService,
+                private modalService: NgbModal,
                 private filter: FilterPipe,
                 private store: Store) {
         this.getRichieste();
@@ -101,6 +105,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.store.dispatch(new GetListaRichieste());
+        this.getClock();
         this.heightControl();
         this.getRichiestaFissata();
         this.getRichiestaHover();
@@ -133,6 +138,16 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                 this.listHeightClass = 'm-h-840';
             }
         }
+    }
+
+    getClock(): void {
+        this.subscriptions.add(
+            this.clockService.getClock().subscribe((dateSync: Date) => {
+                if (dateSync) {
+                    this.dateSync = dateSync;
+                }
+            })
+        );
     }
 
     getRichieste(): void {
