@@ -145,6 +145,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var codMezziPreaccoppiati = result.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList();
                 lstMezziPreaccoppiati = _getMezzi.GetInfo(codMezziPreaccoppiati)?.Result;
+                lstMezziPreaccoppiati = lstMezziPreaccoppiati.Where(m => m != null).ToList();
 
                 return result.ToList().FindAll(s => s.spotType.Equals("WORKSHIFT"));
             })
@@ -156,26 +157,27 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     Log.Information($"COMPOSIZIONE SQUADRE- Inizio Mezzi in rientro {squadra.Codice}");
 
+                    var mezziInRientro = lstStatiSquadre != null ? lstMezziInRientro?.Where(m => lstStatiSquadre.FirstOrDefault(s => s.CodMezzo.Equals(m.CodiceMezzo))?.IdSquadra.Equals($"{squadra.Codice}_{codiceTurno}") ?? false).Select(m => new ComposizioneMezzi()
+                    {
+                        Id = m.CodiceMezzo,
+                        Mezzo = new Mezzo()
+                        {
+                            Codice = m.CodiceMezzo,
+                            Descrizione = m.Descrizione,
+                            Distaccamento = new Sede(m.CodiceDistaccamento),
+                            Genere = m.Genere,
+                            Stato = Costanti.MezzoInRientro
+                        }
+                    }).ToList() ?? null : null;
+
+                    Log.Information($"COMPOSIZIONE SQUADRE- Fine Mezzi in rientro {squadra.Codice}");
+
+                    Log.Information($"COMPOSIZIONE SQUADRE- Inizio Mezzi preaccoppiati {squadra.Codice}");
+
+                    List<ComposizioneMezzi> mezziPreaccoppiati = new List<ComposizioneMezzi>();
                     try
                     {
-                        var mezziInRientro = lstStatiSquadre != null ? lstMezziInRientro?.Where(m => lstStatiSquadre.FirstOrDefault(s => s.CodMezzo.Equals(m.CodiceMezzo))?.IdSquadra.Equals($"{squadra.Codice}_{codiceTurno}") ?? false).Select(m => new ComposizioneMezzi()
-                        {
-                            Id = m.CodiceMezzo,
-                            Mezzo = new Mezzo()
-                            {
-                                Codice = m.CodiceMezzo,
-                                Descrizione = m.Descrizione,
-                                Distaccamento = new Sede(m.CodiceDistaccamento),
-                                Genere = m.Genere,
-                                Stato = Costanti.MezzoInRientro
-                            }
-                        }).ToList() ?? null : null;
-
-                        Log.Information($"COMPOSIZIONE SQUADRE- Fine Mezzi in rientro {squadra.Codice}");
-
-                        Log.Information($"COMPOSIZIONE SQUADRE- Inizio Mezzi preaccoppiati {squadra.Codice}");
-
-                        var mezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Length > 0 ? lstMezziPreaccoppiati?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new ComposizioneMezzi()
+                        mezziPreaccoppiati = squadra.CodiciMezziPreaccoppiati?.Length > 0 ? lstMezziPreaccoppiati?.Where(m => squadra.CodiciMezziPreaccoppiati.Contains(m.CodiceMezzo)).Select(m => new ComposizioneMezzi()
                         {
                             Id = m.CodiceMezzo,
                             Mezzo = new Mezzo()
@@ -188,30 +190,29 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                                 Stato = lstStatiMezzi.FirstOrDefault(mezzo => mezzo.CodiceMezzo.Equals(m.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede
                             }
                         }).ToList() : null;
-
-                        Log.Information($"COMPOSIZIONE SQUADRE- Fine Mezzi preaccoppiati {squadra.Codice}");
-
-                        Log.Information($"COMPOSIZIONE SQUADRE- Inizio Add squadra {squadra.Codice}");
-
-                        lstSquadre.Add(new ComposizioneSquadra()
-                        {
-                            IdSquadra = squadra.spotId,
-                            Stato = MappaStato(lstStatiSquadre.Find(statosquadra => statosquadra.IdSquadra.Equals($"{squadra.Codice}_{codiceTurno}"))?.StatoSquadra ?? Costanti.MezzoInSede),
-                            Codice = squadra.Codice,
-                            Turno = squadra.TurnoAttuale.ToCharArray()[0],
-                            Nome = squadra.Descrizione,
-                            DiEmergenza = squadra.Emergenza,
-                            Distaccamento = lstSedi.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione() ?? null,
-                            Membri = MappaMembriOPInSO(squadra.Membri),
-                            MezziPreaccoppiati = mezziPreaccoppiati,
-                            MezziInRientro = mezziInRientro,
-                            Tipologia = squadra.spotType
-                        });
                     }
                     catch (Exception ex)
                     {
-                        Log.Error($"COMPOSIZIONE SQUADRE- {ex.Message}");
+                        mezziPreaccoppiati = null;
                     }
+                    Log.Information($"COMPOSIZIONE SQUADRE- Fine Mezzi preaccoppiati {squadra.Codice}");
+
+                    Log.Information($"COMPOSIZIONE SQUADRE- Inizio Add squadra {squadra.Codice}");
+
+                    lstSquadre.Add(new ComposizioneSquadra()
+                    {
+                        IdSquadra = squadra.spotId,
+                        Stato = MappaStato(lstStatiSquadre.Find(statosquadra => statosquadra.IdSquadra.Equals($"{squadra.Codice}_{codiceTurno}"))?.StatoSquadra ?? Costanti.MezzoInSede),
+                        Codice = squadra.Codice,
+                        Turno = squadra.TurnoAttuale.ToCharArray()[0],
+                        Nome = squadra.Descrizione,
+                        DiEmergenza = squadra.Emergenza,
+                        Distaccamento = lstSedi.FirstOrDefault(d => d.Codice.Equals(squadra.Distaccamento))?.MapDistaccamentoComposizione() ?? null,
+                        Membri = MappaMembriOPInSO(squadra.Membri),
+                        MezziPreaccoppiati = mezziPreaccoppiati,
+                        MezziInRientro = mezziInRientro,
+                        Tipologia = squadra.spotType
+                    });
 
                     Log.Information($"COMPOSIZIONE SQUADRE- Fine Add squadra {squadra.Codice}");
                 });

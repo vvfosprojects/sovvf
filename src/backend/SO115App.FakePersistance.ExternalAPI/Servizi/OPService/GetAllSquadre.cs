@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
         public async Task<List<ComposizioneSquadra>> GetByCodiceSede(string[] CodiciSede)
         {
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);
-            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(30));
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
 
             List<ComposizioneSquadra> lstSquadre = new List<ComposizioneSquadra>();
             List<ComposizioneSquadra> lstSquadreAppo = new List<ComposizioneSquadra>();
