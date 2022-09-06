@@ -114,7 +114,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                             }
                         },
                     text = "Nuova partenza distaccamento",
-                    timeToClose = 5000,
+                    timeToClose = 15000,
                     title = "Alert Distaccamento"
                 };
 
