@@ -78,7 +78,6 @@ export class FiltriComposizioneState {
 
     @Action(SetFiltriGeneriMezzoTriage)
     setFiltriGeneriMezzoTriage({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: SetFiltriGeneriMezzoTriage): void {
-        console.log('SetFiltriGeneriMezzoTriage', action.generiMezzo);
         patchState({
             tipoMezzo: action.generiMezzo
         });
@@ -102,7 +101,6 @@ export class FiltriComposizioneState {
 
     @Action(AddFiltroSelezionatoComposizione)
     addFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: AddFiltroSelezionatoComposizione): void {
-        console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipoFiltro);
         switch (action.tipoFiltro) {
             case 'turno':
                 ctx.setState(

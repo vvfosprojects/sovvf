@@ -1,4 +1,4 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 
 @Pipe({
@@ -32,7 +32,6 @@ export class FriendlyDatePipe implements PipeTransform {
         if ((diff <= 30) && (diff >= 0)) {
             diffTrue = true;
         }
-        // console.log(diffTrue);
 
         if (oreMin > 0 && moment(date).isAfter(dataMinima) && moment(date).isSame(Date.now(), 'day')) {
             return '';

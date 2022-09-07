@@ -509,10 +509,8 @@ export class SchedeContattoState {
 
     @Action(UndoMergeSchedeContatto)
     undoMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: UndoMergeSchedeContatto): void {
-        console.log('Id Scheda Contato Undo Merge', action.codiceScheda);
         const undoMergeSchedaContatto = getState().schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
         this.schedeContattoService.undoMergeSchedeContatto(undoMergeSchedaContatto).subscribe(() => {
-            console.log('Undo Merge Schede completata', undoMergeSchedaContatto);
             dispatch(new ClearMergeSchedeContatto());
         });
     }

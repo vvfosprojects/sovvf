@@ -41,7 +41,6 @@ export class AuthGuard implements CanActivate {
                 return true;
             }
         }
-        console.log('Not logged user', state.url);
         localStorage.setItem(LSNAME.redirectUrl, JSON.stringify(state.url));
         this.store.dispatch(new Navigate(['/' + RoutesPath.SelezioneSede]));
         return false;

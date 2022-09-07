@@ -151,7 +151,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
                     document.body.removeChild(a);
                     break;
             }
-        }, () => console.log('Errore Stampa POS'));
+        }, () => console.error('Errore Stampa POS'));
     }
 
     onViewPos(pos: PosInterface): void {
@@ -173,7 +173,7 @@ export class TriageSummaryComponent implements OnInit, OnChanges, OnDestroy {
                         modalVisualizzaPdf.componentInstance.blob = downloadedFile;
                         break;
                 }
-            }, () => console.log('Errore visualizzazione POS'));
+            }, () => console.error('Errore visualizzazione POS'));
         } else {
             this.onDownloadPos(pos);
         }

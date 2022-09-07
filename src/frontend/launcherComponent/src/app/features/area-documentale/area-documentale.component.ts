@@ -102,7 +102,6 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.codCategoria$.subscribe((codCategoria: string) => {
                 const codCategoriaAreaDocumentale = localStorage.getItem(LSNAME.areaDocumentale);
-                console.log('codCategoriaAreaDocumentale SESSION STORAGE', codCategoriaAreaDocumentale);
                 if (codCategoria) {
                     this.codCategoria = codCategoria;
                 } else if (codCategoriaAreaDocumentale) {
@@ -151,12 +150,9 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                     this.addDocumento(result.formData);
                 } else if (!result.success) {
                     this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
-                    console.log('Modal "addDocumento" chiusa con val ->', result);
                 }
-            },
-            (err: any) => {
+            }, () => {
                 this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
-                console.error('Modal "addDocumento" chiusa senza bottoni. Err ->', err);
             }
         );
     }
@@ -179,7 +175,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                     document.body.removeChild(a);
                     break;
             }
-        }, () => console.log('Errore Stampa Documento'));
+        }, () => console.error('Errore Stampa Documento'));
     }
 
     onViewDocumento(documento: DocumentoInterface): void {
@@ -201,7 +197,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                         modalVisualizzaPdf.componentInstance.blob = downloadedFile;
                         break;
                 }
-            }, () => console.log('Errore visualizzazione Documento'));
+            }, () => console.error('Errore visualizzazione Documento'));
         } else {
             this.onDownloadDocumento(documento);
         }
@@ -245,7 +241,6 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                                 this.editDocumento(documento.id, result?.formData);
                             } else if (!result.success) {
                                 this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
-                                console.log('Modal "editDocumento" chiusa con val ->', result);
                             }
                         }, (err: any) => {
                             switch (documento.descrizioneCategoria) {
@@ -259,7 +254,7 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                     );
                     break;
             }
-        }, () => console.log('Errore Stampa Documento'));
+        }, () => console.error('Errore Stampa Documento'));
     }
 
     onDeleteDocumento(event: { idDocumento: string, descrizioneDocumento: string, descrizioneCategoria: string }): void {
@@ -294,7 +289,6 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
                         break;
                     case 'ko':
                         this.store.dispatch(new ResetDocumentoAreaDocumentaleModal());
-                        console.log('Modal "deleteDocumento" chiusa con val ->', result);
                         break;
                 }
             }, (err: any) => {
@@ -336,8 +330,6 @@ export class AreaDocumentaleComponent implements OnInit, OnDestroy {
     getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
-                console.log('ricerca', ricerca);
-                console.log('this.descCategoria', this.descCategoria);
                 if ((ricerca || ricerca === '') && this.descCategoria) {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetDocumentiAreaDocumentale());

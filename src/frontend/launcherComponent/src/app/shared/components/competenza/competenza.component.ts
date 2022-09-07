@@ -19,7 +19,6 @@ export class CompetenzaComponent {
     }
 
     localizzazioneCompetenza(competenza): void {
-        // console.log('Sono il componente. Voglio localizzare la competenza', competenza);
         this.LocalizzazioneCompetenza.emit(competenza.coordinate);
     }
 }

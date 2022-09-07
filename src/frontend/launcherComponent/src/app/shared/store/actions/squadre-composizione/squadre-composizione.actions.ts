@@ -15,27 +15,6 @@ export class ClearIdSquadreSelezionate {
     static readonly type = '[SquadreComposizione] Clear Id Squadre Selezionate';
 }
 
-export class AddSquadraComposizione {
-    static readonly type = '[SquadreComposizione] Add Squadra Composizione';
-
-    constructor(public squadraComp: SquadraComposizione) {
-    }
-}
-
-export class RemoveSquadraComposizione {
-    static readonly type = '[SquadreComposizione] Remove Squadra Composizione';
-
-    constructor(public idSquadra: string) {
-    }
-}
-
-export class UpdateSquadraComposizione {
-    static readonly type = '[SquadreComposizione] Update Squadra Composizione';
-
-    constructor(public squadraComp: SquadraComposizione) {
-    }
-}
-
 export class SelectSquadraComposizione {
     static readonly type = '[SquadreComposizione] Select Squadra Composizione';
 

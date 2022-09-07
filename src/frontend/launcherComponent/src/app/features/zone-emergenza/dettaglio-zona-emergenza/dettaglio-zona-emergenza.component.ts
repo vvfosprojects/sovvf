@@ -105,7 +105,7 @@ export class DettaglioZonaEmergenzaComponent implements OnInit, OnChanges, OnDes
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.activeIdNavModuliAssegnati.currentValue) {
-            console.log('test');
+            console.log('changes?.activeIdNavModuliAssegnati.currentValue', changes?.activeIdNavModuliAssegnati.currentValue);
         }
     }
 

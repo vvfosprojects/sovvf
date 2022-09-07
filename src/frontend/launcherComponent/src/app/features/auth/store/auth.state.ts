@@ -108,7 +108,6 @@ export class AuthState {
     getAuth({ getState, dispatch }: StateContext<AuthStateModel>): void {
         const state = getState();
         if (state.currentTicket) {
-            console.log('getAuth');
             this.authService.ticketLogin(state.currentTicket, `${environment.casUrl.serviceName}auth`).subscribe(result => {
                     if (result.token) {
                         dispatch([
@@ -251,7 +250,6 @@ export class AuthState {
 
     @Action(CasResponse)
     casResponse({ getState, dispatch }: StateContext<AuthStateModel>, action: CasResponse): void {
-        console.log('CasResponse', action.ticket);
         if (!action.ticket) {
             dispatch(new CasLogin());
         } else {

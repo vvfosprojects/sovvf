@@ -135,7 +135,6 @@ export class ComposizionePartenzaState {
     reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: any): void {
         const state = getState();
         const compMode = state.composizioneMode;
-        console.log('ReducerFilterListeComposizione');
         if (compMode === Composizione.Avanzata) {
             if (action.tipo === 'tipoMezzo') {
                 dispatch(new GetListeComposizioneAvanzata(null, true));

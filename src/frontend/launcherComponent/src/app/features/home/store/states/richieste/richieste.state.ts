@@ -300,7 +300,6 @@ export class RichiesteState {
              * controllo che ci sia in pending una chiamata appena inserita da farci una composizione partenza
              */
             if (richiesta && richiesta.codice === state.chiamataInviaPartenza) {
-                console.log('Codice trovato:', richiesta.codice);
                 dispatch(new StartInviaPartenzaFromChiamata(richiesta));
             }
         }
@@ -372,9 +371,7 @@ export class RichiesteState {
     @Action(ActionRichiesta)
     actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta): void {
         dispatch(new StartLoadingActionRichiesta(action.richiestaAction.idRichiesta));
-        const obj = action.richiestaAction;
-        console.log('ActionRichiesta Obj', obj);
-        this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
+        this.richiesteService.aggiornaStatoRichiesta(action.richiestaAction).subscribe(() => {
         }, () => dispatch(new StopLoadingActionRichiesta(action.richiestaAction.idRichiesta)));
     }
 
@@ -458,8 +455,6 @@ export class RichiesteState {
         });
         modal.componentInstance.codiceMezzo = action.codiceMezzo;
         modal.componentInstance.listaSquadre = action.listaSquadre;
-        modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
-            () => console.log('Lista Squadre Partenza Chiusa'));
     }
 
     @Action(StartLoadingRichieste)

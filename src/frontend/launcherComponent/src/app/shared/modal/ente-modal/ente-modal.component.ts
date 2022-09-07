@@ -91,7 +91,6 @@ export class EnteModalComponent implements OnInit, OnDestroy {
     }
 
     updateEnteForm(editEnte: EnteInterface): void {
-        console.log('updateEnteForm', editEnte);
         this.store.dispatch(new UpdateFormValue({
             value: {
                 id: editEnte.id,

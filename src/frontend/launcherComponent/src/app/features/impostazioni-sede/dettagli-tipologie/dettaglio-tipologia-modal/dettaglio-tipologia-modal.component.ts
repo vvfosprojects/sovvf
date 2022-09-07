@@ -75,7 +75,6 @@ export class DettaglioTipologiaModalComponent implements OnInit, OnDestroy {
     }
 
     updateDettaglioTipologiaForm(editDettaglioTipologia: DettaglioTipologia): void {
-        console.log('updateDettaglioTipologiaForm', editDettaglioTipologia);
         this.store.dispatch(new UpdateFormValue({
             value: {
                 id: editDettaglioTipologia.id,

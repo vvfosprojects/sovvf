@@ -64,12 +64,9 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
                     this.store.dispatch(new RequestAddEnte());
                 } else if (!result.success) {
                     this.store.dispatch(new ClearFormEnte());
-                    console.log('Modal "addEnteModal" chiusa con val ->', result);
                 }
-            },
-            (err) => {
+            }, () => {
                 this.store.dispatch(new ClearFormEnte());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }

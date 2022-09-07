@@ -186,8 +186,7 @@ export class TriageCrudState {
         const state = getState();
         const codTipologia = state.dettaglioTipologia.codiceTipologia;
         const codDettaglioTipologia = state.dettaglioTipologia.codiceDettaglioTipologia;
-        this.triageService.delete(codTipologia, codDettaglioTipologia).subscribe((res: any) => {
-            console.log('Delete triage service response', res);
+        this.triageService.delete(codTipologia, codDettaglioTipologia).subscribe(() => {
         });
     }
 
