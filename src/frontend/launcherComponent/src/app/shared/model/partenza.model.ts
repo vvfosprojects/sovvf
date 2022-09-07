@@ -12,7 +12,9 @@ export class Partenza {
         public codicePartenza: string,
         public fuoriSede: boolean,
         public inviataStatri: boolean,
-        public coordinate: Coordinate
+        public coordinate: Coordinate,
+        public squadre?: Squadra[],
+        public mezzo?: Mezzo
     ) {
     }
 }
