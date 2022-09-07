@@ -159,7 +159,6 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     nuovaPartenza(richiesta: SintesiRichiesta): void {
         this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
-        console.log(richiesta);
     }
 
     onModificaRichiesta(richiesta: SintesiRichiesta): void {

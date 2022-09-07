@@ -52,13 +52,10 @@ export class HomeState {
 
     @Action(GetDataHome)
     getDataHome({ dispatch }: StateContext<HomeStateModel>): void {
-        this.concorrenzaService.deleteAll().subscribe((deleteAllResponse: any) => {
-            console.log('DeleteAll - Concorrenza', deleteAllResponse);
+        this.concorrenzaService.deleteAll().subscribe(() => {
             this.concorrenzaService.get().subscribe((getResponse: GetAllResponseInterface) => {
-                console.log('Get - Concorrenza', getResponse);
                 dispatch(new SetConcorrenza(getResponse.blocksList));
                 this.homeService.getHome().subscribe((getHomeResponse: Welcome) => {
-                    console.log('Get - Welcome', getHomeResponse);
                     dispatch([
                         new StopBigLoading(),
                         new SetCurrentUrl(RoutesPath.Home),

@@ -87,12 +87,10 @@ export class DettagliTipologieComponent implements OnDestroy {
                     this.addDettaglioTipologia(result.openAgain);
                 } else if (!result.success) {
                     this.store.dispatch(new ClearFormDettaglioTipologia());
-                    console.log('Modal "addDettaglioTipologia" chiusa con val ->', result);
                 }
             },
-            (err) => {
+            () => {
                 this.store.dispatch(new ClearFormDettaglioTipologia());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
@@ -105,7 +103,6 @@ export class DettagliTipologieComponent implements OnDestroy {
     }
 
     onEditDettaglioTipologia(dettaglioTipologia: DettaglioTipologia): void {
-        console.log('onEditDettaglioTipologia', dettaglioTipologia);
         let editVoceRubricaModal;
         editVoceRubricaModal = this.modalService.open(DettaglioTipologiaModalComponent, {
             windowClass: 'modal-holder ',
@@ -125,14 +122,12 @@ export class DettagliTipologieComponent implements OnDestroy {
                 this.updateDettaglioTipologia();
             } else if (!result.success) {
                 this.store.dispatch(new ClearFormDettaglioTipologia());
-                console.log('Modal "editDettaglioTipologia" chiusa con val ->', result);
             }
-        }, (err) => {
+        }, () => {
             this.store.dispatch([
                 new ClearFormDettaglioTipologia(),
                 new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaDettaglioTipologia, [dettaglioTipologia.id])
             ]);
-            console.error('Modal chiusa senza bottoni. Err ->', err);
         });
     }
 
@@ -177,7 +172,6 @@ export class DettagliTipologieComponent implements OnDestroy {
     }
 
     onFiltroTipologiaChange(tipologia: { codice: string, descrizione: string }): void {
-        console.log('onFiltroTipologiaChange => tipologia', tipologia);
         if (tipologia) {
             this.store.dispatch(new ReducerSelezioneFiltroTipologia(+tipologia.codice));
         } else {

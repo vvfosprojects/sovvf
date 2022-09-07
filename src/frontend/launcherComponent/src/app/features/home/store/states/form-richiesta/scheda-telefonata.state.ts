@@ -832,12 +832,10 @@ export class SchedaTelefonataState {
                                 ]);
                                 break;
                             case 'ko':
-                                console.log('[AnnullaChiamata] Azione annullata');
                                 break;
                         }
-                        console.log('Modal chiusa con val ->', val);
                     },
-                    (err) => console.log('[AnnullaChiamata] Modale chiusa senza bottoni. Err ->', err)
+                    (err) => console.error('[AnnullaChiamata] Modale chiusa senza bottoni. Err ->', err)
                 );
             });
         } else {

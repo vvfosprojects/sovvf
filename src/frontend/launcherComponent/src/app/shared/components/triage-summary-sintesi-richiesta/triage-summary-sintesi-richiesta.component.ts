@@ -65,7 +65,7 @@ export class TriageSummarySintesiRichiestaComponent implements OnInit, OnChanges
                     document.body.removeChild(a);
                     break;
             }
-        }, () => console.log('Errore Stampa POS'));
+        }, () => console.error('Errore Stampa POS'));
     }
 
     onViewPos(pos: PosInterface): void {
@@ -87,7 +87,7 @@ export class TriageSummarySintesiRichiestaComponent implements OnInit, OnChanges
                         modalVisualizzaPdf.componentInstance.blob = downloadedFile;
                         break;
                 }
-            }, () => console.log('Errore visualizzazione POS'));
+            }, () => console.error('Errore visualizzazione POS'));
         } else {
             this.onDownloadPos(pos);
         }

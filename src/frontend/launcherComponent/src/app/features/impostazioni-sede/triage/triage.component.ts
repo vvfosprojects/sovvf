@@ -432,7 +432,6 @@ export class TriageComponent implements OnDestroy {
     }
 
     addOtherData(res: any, item: TreeItem): void {
-        console.log('addOtherData', item);
         const itemData = {
             itemValue: item.value,
             soccorsoAereo: null,

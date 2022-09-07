@@ -84,7 +84,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     updatePosForm(editPos: PosInterface): void {
-        console.log('updatePosForm', editPos);
         this.posForm.patchValue({
             descrizionePos: editPos.descrizionePos,
             tipologie: this.getTipologieFromListaTipologie(editPos, this.tipologie),
@@ -113,7 +112,6 @@ export class PosModalComponent implements OnInit, OnDestroy {
     }
 
     getDettagliTipologieFromListaTipologie(pos: PosInterface, dettagliTipologie: DettaglioTipologia[]): DettaglioTipologia[] {
-        console.log('[POS-MODAL] getDettagliTipologieFromListaTipologie => function helper', getDettagliTipologieFromListaTipologie(pos, dettagliTipologie));
         return getDettagliTipologieFromListaTipologie(pos, dettagliTipologie);
     }
 

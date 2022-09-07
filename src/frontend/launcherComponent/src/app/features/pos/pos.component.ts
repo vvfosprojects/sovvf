@@ -148,12 +148,10 @@ export class PosComponent implements OnInit, OnDestroy {
                     this.addPos(result.formData);
                 } else if (!result.success) {
                     this.store.dispatch(new ResetPosModal());
-                    console.log('Modal "addPos" chiusa con val ->', result);
                 }
             },
-            (err: any) => {
+            () => {
                 this.store.dispatch(new ResetPosModal());
-                console.error('Modal "addPos" chiusa senza bottoni. Err ->', err);
             }
         );
     }
@@ -176,7 +174,7 @@ export class PosComponent implements OnInit, OnDestroy {
                     document.body.removeChild(a);
                     break;
             }
-        }, () => console.log('Errore Stampa POS'));
+        }, () => console.error('Errore Stampa POS'));
     }
 
     onViewPos(pos: PosInterface): void {
@@ -198,7 +196,7 @@ export class PosComponent implements OnInit, OnDestroy {
                         modalVisualizzaPdf.componentInstance.blob = downloadedFile;
                         break;
                 }
-            }, () => console.log('Errore visualizzazione POS'));
+            }, () => console.error('Errore visualizzazione POS'));
         } else {
             this.onDownloadPos(pos);
         }
@@ -236,18 +234,16 @@ export class PosComponent implements OnInit, OnDestroy {
                                 this.editPos(pos.id, result?.formData);
                             } else if (!result.success) {
                                 this.store.dispatch(new ResetPosModal());
-                                console.log('Modal "editPos" chiusa con val ->', result);
                             }
-                        }, (err: any) => {
+                        }, () => {
                             this.store.dispatch([
                                 new DeleteConcorrenza(TipoConcorrenzaEnum.ModificaPos, [pos.id]),
                                 new ResetPosModal()
                             ]);
-                            console.error('Modal "editPos" chiusa senza bottoni. Err ->', err);
                         });
                     break;
             }
-        }, () => console.log('Errore Stampa POS'));
+        }, () => console.error('Errore Stampa POS'));
     }
 
     onDeletePos(event: { idPos: string, descrizionePos: string }): void {
@@ -274,15 +270,13 @@ export class PosComponent implements OnInit, OnDestroy {
                     break;
                 case 'ko':
                     this.store.dispatch(new ResetPosModal());
-                    console.log('Modal "deletePos" chiusa con val ->', result);
                     break;
             }
-        }, (err: any) => {
+        }, () => {
             this.store.dispatch([
                 new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaPos, [event.idPos]),
                 new ResetPosModal()
             ]);
-            console.error('Modal "deletePos" chiusa senza bottoni. Err ->', err);
         });
     }
 

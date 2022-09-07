@@ -118,8 +118,6 @@ export class SostituzionePartenzaModalState {
             codiciDistaccamenti: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
             ricerca: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null
         } as FiltriComposizione;
-        console.log('***PAYLOAD MEZZI ', objMezzi);
-        console.log('***PAYLOAD SQUADRE ', objSquadre);
 
         this.compPartenzaService.getMezziComposizioneAvanzata(objMezzi).subscribe((listaMezziComposizioneAvanzata: MezziComposizioneAvanzata) => {
             if (listaMezziComposizioneAvanzata) {
@@ -151,7 +149,6 @@ export class SostituzionePartenzaModalState {
             }
         }, () => {
             dispatch(new StopListaComposizioneLoading());
-            console.log('***getMezziComposizioneAvanzata failed');
         });
 
         this.compPartenzaService.getSquadreComposizioneAvanzata(objSquadre).subscribe((listaSquadreComposizioneAvanzata: SquadreComposizioneAvanzata) => {
@@ -164,7 +161,6 @@ export class SostituzionePartenzaModalState {
             dispatch(new StopListaComposizioneLoading());
         }, () => {
             dispatch(new StopListaComposizioneLoading());
-            console.log('***getSquadreComposizioneAvanzata failed');
         });
     }
 

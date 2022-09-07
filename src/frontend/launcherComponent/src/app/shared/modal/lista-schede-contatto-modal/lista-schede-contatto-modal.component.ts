@@ -221,10 +221,7 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
                         this.store.dispatch(new ToggleModalitaMerge());
                         break;
                 }
-                console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
+            });
     }
 
     closeModal(res: string): void {

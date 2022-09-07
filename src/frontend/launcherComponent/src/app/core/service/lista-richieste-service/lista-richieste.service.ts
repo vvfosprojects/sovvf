@@ -78,32 +78,26 @@ export class SintesiRichiesteService {
     }
 
     public getCodiciRichieste(idRichiesta: string): Observable<{ listaCodiciRichiesta: string[] }> {
-        console.log('getCodiciRichieste', idRichiesta);
         return this.http.get<{ listaCodiciRichiesta: string[] }>(`${API_GESTIONE_RICHIESTA}/GetCodiciRichieste?idRichiesta=` + idRichiesta);
     }
 
     public aggiornaStatoMezzo(obj: any): Observable<any> {
-        console.log('SERVICE AggiornaStatoMezzo', obj);
         return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AggiornaPartenza`, obj);
     }
 
     public eliminaPartenzaRichiesta(obj: any): Observable<any> {
-        console.log('Annulla Stato Partenza', obj);
         return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AnnullaStatoPartenza`, obj);
     }
 
     public modificaStatoFonogrammaRichiesta(obj: any): Observable<any> {
-        console.log('modificaStatoFonogrammaRichiesta', obj);
         return this.http.post<any>(`${API_GESTIONE_FONOGRAMMA}/InfoFonogramma`, obj);
     }
 
     public allertaSede(obj: any): Observable<any> {
-        console.log('allertaSede', obj);
         return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AllertaAltreSedi`, obj);
     }
 
     public modificaEntiIntervenutiRichiesta(obj: any): Observable<any> {
-        console.log('modificaEntiIntervenutiRichiesta', obj);
         return this.http.post<any>(`${API_ENTI}/AddEnteIntervenuto`, obj);
     }
 }

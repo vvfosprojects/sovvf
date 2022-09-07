@@ -121,12 +121,9 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                     this.store.dispatch(new AddUtenteGestione());
                 } else if (!result.success) {
                     this.store.dispatch(new ClearDataModalAddUtenteModal());
-                    console.log('Modal "addUtente" chiusa con val ->', result);
                 }
-            },
-            (err) => {
+            }, () => {
                 this.store.dispatch(new ClearDataModalAddUtenteModal());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
@@ -157,14 +154,12 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                     this.store.dispatch(new AddRuoloUtenteGestione());
                 } else if (!result.success) {
                     this.store.dispatch(new ClearDataModalAddUtenteModal());
-                    console.log('Modal "addRuoloUtente" chiusa con val ->', result);
                 }
-            }, (err) => {
+            }, () => {
                 this.store.dispatch([
                     new DeleteConcorrenza(TipoConcorrenzaEnum.AggiungiRuoloUtente, [event.codFiscale]),
                     new ClearDataModalAddUtenteModal()
                 ]);
-                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
@@ -191,13 +186,10 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                         this.store.dispatch(new RemoveRuoloUtente(payload.codFiscale, payload.ruolo));
                         break;
                     case 'ko':
-                        // console.log('Azione annullata');
                         break;
                 }
-                // console.log('Modal chiusa con val ->', val);
-            }, (err) => {
+            }, () => {
                 this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaRuoloUtente, [payload.codFiscale]));
-                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
@@ -228,13 +220,10 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                         this.store.dispatch(new RemoveUtente(payload.codFiscale));
                         break;
                     case 'ko':
-                        // console.log('Azione annullata');
                         break;
                 }
-                // console.log('Modal chiusa con val ->', val);
-            }, (err) => {
+            }, () => {
                 this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.EliminaUtente, [payload.codFiscale]));
-                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }

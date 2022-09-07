@@ -189,12 +189,10 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
         //     sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify([...parents, ...leaves]));
         // }
         if (this.visualizzaTasti) {
-            // console.log(eventEmitter);
             this.patch(eventEmitter);
         } else {
             this.conferma();
         }
-        // console.log(this.treeViewSelection);
     }
 
     annulla(): void {

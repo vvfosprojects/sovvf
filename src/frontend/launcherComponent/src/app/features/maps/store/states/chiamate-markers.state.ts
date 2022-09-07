@@ -148,7 +148,6 @@ export class ChiamateMarkersState {
 
     @Action(RemoveChiamataMarker)
     removeChiamataMarker({ getState, setState }: StateContext<ChiamateMarkersStateModel>, { id }: RemoveChiamataMarker): void {
-        console.log(id);
         const state = getState();
         const chiamateMarkers = state.chiamateMarkers;
         if (chiamateMarkers) {

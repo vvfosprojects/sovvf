@@ -175,7 +175,7 @@ export class ComposizioneAvanzataState {
                 dispatch(new StopListaMezziComposizioneLoading());
             }, () => {
                 dispatch(new StopListaMezziComposizioneLoading());
-                console.log('Get Mezzi Composizione Avanzata failed');
+                console.error('Get Mezzi Composizione Avanzata failed');
             });
         }
 
@@ -195,7 +195,7 @@ export class ComposizioneAvanzataState {
                 dispatch(new StopListaSquadreComposizioneLoading());
             }, () => {
                 dispatch(new StopListaSquadreComposizioneLoading());
-                console.log('Get Squadre Composizione Avanzata failed');
+                console.error('Get Squadre Composizione Avanzata failed');
             });
         }
     }

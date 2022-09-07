@@ -135,7 +135,6 @@ export class ComposizionePartenzaState {
     reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: any): void {
         const state = getState();
         const compMode = state.composizioneMode;
-        console.log('ReducerFilterListeComposizione');
         if (compMode === Composizione.Avanzata) {
             if (action.tipo === 'tipoMezzo') {
                 dispatch(new GetListeComposizioneAvanzata(null, true));
@@ -200,9 +199,7 @@ export class ComposizionePartenzaState {
         const state = getState();
         dispatch(new StartInvioPartenzaLoading());
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
-            console.log('partenze', action.partenze);
             action.partenze.partenze.forEach((p: Partenza) => {
-                console.log('remove mezzo', p.partenza.mezzo.codice);
                 dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.codiceMezzo]));
                 const idSquadre = p.partenza.squadre.map((s: Squadra) => s.idSquadra);
                 dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));

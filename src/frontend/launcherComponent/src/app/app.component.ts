@@ -247,7 +247,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         );
         this.subscription.add(this.vistaSedi$.subscribe(r => {
             if (r) {
-                console.log('r', r);
                 this.store.dispatch(new PatchListaSediNavbar([...r]));
             }
         }));

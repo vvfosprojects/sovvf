@@ -24,7 +24,6 @@ export class NavbarService {
         return this.http.get<AppSettingsAPI>(API_URL_NAVBAR).pipe(
             map((data: AppSettingsAPI) => mapAppSettings(data)),
             tap(data => {
-                console.log('AppSettings from Api:', data);
                 this.store.dispatch(new SetContatoriSchedeContatto(data.infoNue));
             })
         );

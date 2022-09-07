@@ -114,18 +114,16 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
             centered: true,
             size: 'lg'
         });
-        addTrasferimentoChiamataModal.result.then((result: string) => {
+        addTrasferimentoChiamataModal.result.then(() => {
                 this.store.dispatch([
                     new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento),
                     new ClearFormTrasferimentoChiamata()
                 ]);
-                console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
-            }, (err) => {
+            }, () => {
                 this.store.dispatch([
                     new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento),
                     new ClearFormTrasferimentoChiamata()
                 ]);
-                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }

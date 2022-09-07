@@ -25,7 +25,6 @@ export class AzioniAreaDocumentaleModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('filtriAreaDocumentale', this.filtriAreaDocumentale);
     }
 
     ngOnDestroy(): void {
@@ -33,7 +32,6 @@ export class AzioniAreaDocumentaleModalComponent implements OnInit, OnDestroy {
     }
 
     visalizzaDocumentiByCategoria(codCategoria: string): void {
-        console.log('visalizzaDocumentiByCategoria codCategoria', codCategoria);
         localStorage.setItem(LSNAME.areaDocumentale, codCategoria);
         this.close('ok');
         this.store.dispatch([

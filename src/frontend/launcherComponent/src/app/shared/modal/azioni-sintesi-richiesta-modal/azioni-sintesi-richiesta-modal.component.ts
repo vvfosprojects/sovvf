@@ -242,19 +242,17 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 type: TipoConcorrenzaEnum.Trasferimento
             } as AddConcorrenzaDtoInterface;
             this.store.dispatch(new AddConcorrenza([data]));
-            addTrasferimentoChiamataModal.result.then((result: string) => {
+            addTrasferimentoChiamataModal.result.then(() => {
                     this.store.dispatch([
                         new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
                         new ClearRichiestaAzioni(),
                         new ClearFormTrasferimentoChiamata()
                     ]);
-                    console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
-                }, (err) => {
+                }, () => {
                     this.store.dispatch([
                         new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
                         new ClearFormTrasferimentoChiamata()
                     ]);
-                    console.error('Modal chiusa senza bottoni. Err ->', err);
                 }
             );
         }
@@ -282,7 +280,6 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                 this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice]));
                 switch (res.status) {
                     case 'ok' :
-                        console.log('Chiusa finestra di allerta comando => res.result', res.result);
                         this.store.dispatch(new AllertaSede(res.result));
                         break;
                     case 'ko':
@@ -313,7 +310,7 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
                     modalVisualizzaPdf.componentInstance.blob = downloadedFile;
                     break;
             }
-        }, () => console.log('Errore Stampa PDF'));
+        }, () => console.error('Errore Stampa PDF'));
     }
 
     onModificaEntiIntervenuti(): void {

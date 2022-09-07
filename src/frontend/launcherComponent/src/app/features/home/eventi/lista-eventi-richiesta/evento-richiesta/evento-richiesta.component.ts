@@ -77,7 +77,6 @@ export class EventoRichiestaComponent implements OnInit {
     }
 
     clickDettaglio(event: any): void {
-        console.log('EventoRichiestaComponent.clickDettaglio(): ', event, this.eventoRichiesta.id);
         this.mostraDettaglio.emit(this.eventoRichiesta);
         // alert("cliccato");
         event.preventDefault();

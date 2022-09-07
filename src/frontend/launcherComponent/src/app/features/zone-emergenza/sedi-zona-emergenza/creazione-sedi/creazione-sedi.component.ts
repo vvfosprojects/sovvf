@@ -225,7 +225,6 @@ export class CreazioneSediComponent implements OnInit, OnDestroy {
     }
 
     onSetIndirizzo(candidateValue: { candidate: AddressCandidate, candidateAttributes: any }): void {
-        console.log('onSetIndirizzo', candidateValue.candidate);
         const lat = roundToDecimal(candidateValue.candidate.location.latitude, 6);
         const lng = roundToDecimal(candidateValue.candidate.location.longitude, 6);
 
