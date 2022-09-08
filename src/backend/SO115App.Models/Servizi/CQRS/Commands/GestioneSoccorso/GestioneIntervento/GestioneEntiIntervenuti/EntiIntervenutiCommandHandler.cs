@@ -41,33 +41,40 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
 
         public void Handle(EntiIntervenutiCommand command)
         {
-            int[] listacodici = new int[1];
-            listacodici = command.idEnteIntervenuto;
-            var rublica = _getRurbica.GetBylstCodici(listacodici);
-
-            if (command.Richiesta.CodEntiIntervenuti != null)
-                command.Richiesta.CodEntiIntervenuti.Clear();
-
-            command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<int>();
-            command.Richiesta.CodEntiIntervenuti.AddRange(rublica.Select(x => x.Codice));
-
-            foreach (var ente in rublica)
+            if (command.idEnteIntervenuto.Length > 0)
             {
-                if (command.Richiesta.Eventi.ToList().FindAll(x => x is InserimentoEnteIntervenuto).Count > 0)
+                int[] listacodici = new int[1];
+                listacodici = command.idEnteIntervenuto;
+                var rublica = _getRurbica.GetBylstCodici(listacodici);
+
+                if (command.Richiesta.CodEntiIntervenuti != null)
+                    command.Richiesta.CodEntiIntervenuti.Clear();
+
+                command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<int>();
+                command.Richiesta.CodEntiIntervenuti.AddRange(rublica.Select(x => x.Codice));
+
+                foreach (var ente in rublica)
                 {
-                    var eventiPrecedenti = command.Richiesta.Eventi.ToList().FindAll(x => x is InserimentoEnteIntervenuto).ToList();
-                    bool nuovo = true;
-                    foreach (var evento in eventiPrecedenti)
+                    if (command.Richiesta.Eventi.ToList().FindAll(x => x is InserimentoEnteIntervenuto).Count > 0)
                     {
-                        if (((InserimentoEnteIntervenuto)evento).Note.Contains(ente.Codice.ToString()))
-                            nuovo = false;
+                        var eventiPrecedenti = command.Richiesta.Eventi.ToList().FindAll(x => x is InserimentoEnteIntervenuto).ToList();
+                        bool nuovo = true;
+                        foreach (var evento in eventiPrecedenti)
+                        {
+                            if (((InserimentoEnteIntervenuto)evento).Note.Contains(ente.Codice.ToString()))
+                                nuovo = false;
+                        }
+
+                        //if (nuovo)
+                        new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, ente.Descrizione + " (cod. " + ente.Codice + ")", command.CodSede);
                     }
-
-                    //if (nuovo)
-                    new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, ente.Descrizione + " (cod. " + ente.Codice + ")", command.CodSede);
-                }else
-                    new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, ente.Descrizione + " (cod. " + ente.Codice + ")", command.CodSede);
-
+                    else
+                        new InserimentoEnteIntervenuto(command.Richiesta, DateTime.Now, command.IdOperatore, ente.Descrizione + " (cod. " + ente.Codice + ")", command.CodSede);
+                }
+            }
+            else
+            {
+                command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<int>();
             }
 
             this._saveRichiestaAssistenza.UpDate(command.Richiesta);
