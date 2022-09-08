@@ -260,7 +260,7 @@ export class ListaRichiesteComponent implements OnChanges {
             }
             // se non è la richiesta espansa
             if (richiestaNonEspansa && !(this.richiestaFissata && (this.richiestaGestione.id === this.richiestaFissata.id))) {
-                output = output + ' opacity-50 z-index-none';
+                output = output + ' opacity-50';
             }
             // se è la richiesta espansa
             if (richiestaEspansa && !(this.richiestaFissata && (this.richiestaGestione.id === this.richiestaFissata.id))) {

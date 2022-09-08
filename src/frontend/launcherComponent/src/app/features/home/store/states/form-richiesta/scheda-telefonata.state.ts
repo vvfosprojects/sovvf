@@ -88,8 +88,8 @@ import { DistaccamentiState } from '../../../../../shared/store/states/distaccam
 import { getGeneriMezzoTriageSummary } from '../../../../../shared/helper/function-triage';
 import { makeIdChiamata } from '../../../../../shared/helper/function-richieste';
 import { makeCopy } from '../../../../../shared/helper/function-generiche';
-import * as data from '../../../../../../assets/province/province.json';
 import { OpenAlertModal } from '../../../../../shared/store/actions/alert-modal/alert-modal.actions';
+import * as data from '../../../../../../assets/province/province.json';
 
 export interface SchedaTelefonataStateModel {
     idChiamata: string;
