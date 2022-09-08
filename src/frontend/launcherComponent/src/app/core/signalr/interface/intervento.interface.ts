@@ -6,4 +6,5 @@ export interface InterventoInterface {
     codSede: string;
     chiamata?: SintesiRichiesta;
     richiesta?: SintesiRichiesta;
+    sintesiRichiesta?: SintesiRichiesta;
 }
