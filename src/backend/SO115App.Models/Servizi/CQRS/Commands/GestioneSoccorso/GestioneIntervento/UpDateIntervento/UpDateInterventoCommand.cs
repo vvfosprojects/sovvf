@@ -27,6 +27,6 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
         public Intervento Chiamata { get; set; }
         public string CodiceSede { get; set; }
         public string CodUtente { get; set; }
-        public SintesiRichiesta sintesiRichiesta { get; set; }
+        public SintesiRichiesta chiamata { get; set; }
     }
 }

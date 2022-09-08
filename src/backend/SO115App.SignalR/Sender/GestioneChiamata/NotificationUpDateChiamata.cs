@@ -61,7 +61,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         public async Task SendNotification(UpDateInterventoCommand intervento)
         {
             var SintesiRichiesta = _getSintesiById.GetSintesi(intervento.Chiamata.Codice);
-            intervento.sintesiRichiesta = SintesiRichiesta;
+            intervento.chiamata = SintesiRichiesta;
 
             var SediDaNotificare = _getGerarchiaToSend.Get(SintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
 
@@ -72,14 +72,14 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             foreach (var sede in SediDaNotificare.Distinct())
             {
-                var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                {
-                    CodiciSedi = new string[] { sede }
-                };
+                //var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+                //{
+                //    CodiciSedi = new string[] { sede }
+                //};
 
-                var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+                //var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice)).ConfigureAwait(false);
+                //await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice)).ConfigureAwait(false);
             }
         }
     }
