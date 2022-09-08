@@ -129,7 +129,7 @@ export class SignalRService {
          */
         this.hubNotification.on('ModifyAndNotifySuccess', (data: InterventoInterface) => {
             console.log('ModifyAndNotifySuccess:', data);
-            const updatedSintesiRichiesta = data.sintesiRichiesta;
+            const updatedSintesiRichiesta = data.sintesiRichiesta ? data.sintesiRichiesta : data.richiesta ? data.richiesta : data.chiamata;
             this.store.dispatch([
                 new UpdateRichiesta(updatedSintesiRichiesta),
                 new UpdateRichiestaSganciamento(),
