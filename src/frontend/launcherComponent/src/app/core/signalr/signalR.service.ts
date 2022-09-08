@@ -414,7 +414,11 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyAddTrasferimento', (response: ResponseAddTrasferimentoInterface) => {
             console.log('NotifyAddTrasferimento', response);
-            this.store.dispatch(new AddTrasferimentoChiamata());
+            this.store.dispatch([
+                new AddTrasferimentoChiamata(),
+                // Aggiorno i box
+                new GetBoxRichieste()
+            ]);
             const richiestaAzioni = this.store.selectSnapshot(RichiesteState.richiestaAzioni);
             if (richiestaAzioni.codice === response.data.codChiamata) {
                 this.store.dispatch(new ClearRichiestaAzioni());
