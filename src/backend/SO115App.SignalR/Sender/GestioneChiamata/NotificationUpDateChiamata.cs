@@ -71,16 +71,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
                 SediDaNotificare.AddRange(SintesiRichiesta.CodSediPartenze);
 
             foreach (var sede in SediDaNotificare.Distinct())
-            {
-                var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                {
-                    CodiciSedi = new string[] { sede }
-                };
-
-                var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice)).ConfigureAwait(false);
-            }
         }
     }
 }
