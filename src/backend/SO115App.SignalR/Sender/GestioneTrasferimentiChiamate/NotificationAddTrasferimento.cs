@@ -46,10 +46,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
         public async Task SendNotification(AddTrasferimentoCommand command)
         {
-
-
             Log.Information("TRASFERIMENTO - Inizio elaborazione notifiche");
-
 
             var mioComandoDes = _getSede.GetSede(command.CodiciSede[0]).Descrizione;
             var mioOperatore = _getUtenteById.GetUtenteByCodice(command.TrasferimentoChiamata.IdOperatore);
@@ -66,17 +63,16 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
             Log.Information("TRASFERIMENTO - Recuperate tutte le informazioni da spedire");
 
-
-
             foreach (var sede in SediDaNotificareAdd)
             {
-                var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                }).BoxRichieste;
+                Log.Information($"TRASFERIMENTO - ADD - Inizio invioa alla sede {sede}");
+                //var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
+                //{
+                //    CodiciSede = new string[] { sede }
+                //}).BoxRichieste;
 
                 Log.Information($"TRASFERIMENTO - ADD - Invio BoxInterventi alla sede {sede}");
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                //await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
 
                 Log.Information($"TRASFERIMENTO - ADD - Invio richiesta alla sede {sede}");
                 await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamataTrasferita", richiesta);
@@ -112,7 +108,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 var counterCodaChiamate = new CounterNotifica()
                 {
                     codDistaccamento = command.TrasferimentoChiamata.CodSedeA,
-                    count = boxInterventi.Chiamate
+                    //count = boxInterventi.Chiamate
                 };
 
                 Log.Information($"TRASFERIMENTO - ADD - Invio notifica coda chiamate alla sede {sede}");
@@ -123,13 +119,13 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
             var SediDaNotificareDelete = _getGerarchiaToSend.Get(command.TrasferimentoChiamata.CodSedeDa);
             foreach (var sede in SediDaNotificareDelete)
             {
-                var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                }).BoxRichieste;
+                //var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
+                //{
+                //    CodiciSede = new string[] { sede }
+                //}).BoxRichieste;
 
                 Log.Information($"TRASFERIMENTO - DELETE - Invio BoxInterventi alla sede {sede}");
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                //await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
 
                 Log.Information($"TRASFERIMENTO - DELETE - Invio richiesta alla sede {sede}");
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteChiamata", richiesta.Id);
