@@ -129,11 +129,11 @@ export class SignalRService {
          */
         this.hubNotification.on('ModifyAndNotifySuccess', (data: InterventoInterface) => {
             console.log('ModifyAndNotifySuccess:', data);
-            const updateRichiesta = data.chiamata ? data.chiamata : data.richiesta;
+            const updatedSintesiRichiesta = data.sintesiRichiesta;
             this.store.dispatch([
-                new UpdateRichiesta(updateRichiesta),
+                new UpdateRichiesta(updatedSintesiRichiesta),
                 new UpdateRichiestaSganciamento(),
-                new SetRichiestaAzioni(updateRichiesta.codice),
+                new SetRichiestaAzioni(updatedSintesiRichiesta.codice),
                 // Aggiorno i box
                 new GetBoxMezzi(),
                 new GetBoxRichieste(),
