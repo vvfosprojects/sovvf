@@ -74,7 +74,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             }
             else
             {
-                command.Richiesta.CodEntiIntervenuti = new System.Collections.Generic.List<int>();
+                command.Richiesta.CodEntiIntervenuti = null;
             }
 
             this._saveRichiestaAssistenza.UpDate(command.Richiesta);
