@@ -420,7 +420,7 @@ export class SignalRService {
                 new GetBoxRichieste()
             ]);
             const richiestaAzioni = this.store.selectSnapshot(RichiesteState.richiestaAzioni);
-            if (richiestaAzioni.codice === response.data.codChiamata) {
+            if (richiestaAzioni?.codice === response.data.codChiamata) {
                 this.store.dispatch(new ClearRichiestaAzioni());
             }
         });
