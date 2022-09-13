@@ -36,6 +36,7 @@ import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorren
 import { ClearRichiestaAzioni, SetRichiestaAzioni } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { InfoMezzo } from '../../store/states/loading/loading.state';
 import * as province from '../../../../assets/province/province.json';
+import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -96,6 +97,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     constructor(private modalService: NgbModal,
                 private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
+                private lockedConcorrenzaService: LockedConcorrenzaService,
                 private intl: TimeagoIntl,
                 private store: Store) {
 
@@ -207,7 +209,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     }
 
     _isSostituzioneFineTurnoActive(partenze: Partenza[]): boolean {
-        return partenze?.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
+        return partenze?.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato === StatoMezzo.SulPosto && !this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.partenza.mezzo.codice])).length >= 2;
     }
 
     checkNumeroPartenzeAttive(partenze: Partenza[]): number {

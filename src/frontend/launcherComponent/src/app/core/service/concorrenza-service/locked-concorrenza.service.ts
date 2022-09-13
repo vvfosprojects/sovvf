@@ -25,7 +25,8 @@ export class LockedConcorrenzaService {
                 break;
             case TipoConcorrenzaEnum.Mezzo:
                 blocks = [
-                    TipoConcorrenzaEnum.Mezzo
+                    TipoConcorrenzaEnum.Mezzo,
+                    TipoConcorrenzaEnum.SganciamentoMezzo
                 ];
                 break;
             case TipoConcorrenzaEnum.Squadra:
@@ -102,7 +103,8 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.GestisciPartenza,
-                    TipoConcorrenzaEnum.Sganciamento
+                    TipoConcorrenzaEnum.Sganciamento,
+                    TipoConcorrenzaEnum.SganciamentoMezzo
                 ];
                 break;
             case TipoConcorrenzaEnum.GestisciPartenza:
@@ -111,7 +113,8 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.CambioStatoPartenza,
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento,
-                    TipoConcorrenzaEnum.Sganciamento
+                    TipoConcorrenzaEnum.Sganciamento,
+                    TipoConcorrenzaEnum.SganciamentoMezzo
                 ];
                 break;
             case TipoConcorrenzaEnum.Sganciamento:
@@ -224,7 +227,16 @@ export class LockedConcorrenzaService {
                     TipoConcorrenzaEnum.ChiusuraChiamata,
                     TipoConcorrenzaEnum.ChiusuraIntervento,
                     TipoConcorrenzaEnum.GestisciPartenza,
-                    TipoConcorrenzaEnum.Sganciamento
+                    TipoConcorrenzaEnum.Sganciamento,
+                    TipoConcorrenzaEnum.SganciamentoMezzo
+                ];
+                break;
+            case TipoConcorrenzaEnum.SganciamentoMezzo:
+                blocks = [
+                    TipoConcorrenzaEnum.SganciamentoMezzo,
+                    TipoConcorrenzaEnum.CambioStatoPartenza,
+                    TipoConcorrenzaEnum.GestisciPartenza,
+                    TipoConcorrenzaEnum.AnnullaStatoMezzo
                 ];
                 break;
             case TipoConcorrenzaEnum.Sostituzione: // TODO: implementare nel DOM (requisiti mancanti)

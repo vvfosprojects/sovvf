@@ -28,5 +28,6 @@ export enum TipoConcorrenzaEnum {
     Sostituzione,
     Fonogramma,
     EntiIntervenuti,
-    AnnullaStatoMezzo
+    AnnullaStatoMezzo,
+    SganciamentoMezzo
 }
