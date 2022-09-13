@@ -74,6 +74,7 @@ namespace SO115App.SignalR.Utility
                 case TipoOperazione.Modifica: goto case TipoOperazione.Richiesta;
                 case TipoOperazione.Trasferimento: goto case TipoOperazione.Richiesta;
                 case TipoOperazione.Sganciamento: goto case TipoOperazione.Richiesta;
+                case TipoOperazione.SganciamentoMezzo: goto case TipoOperazione.Mezzo;
                 case TipoOperazione.InvioPartenza: goto case TipoOperazione.Richiesta;
                 case TipoOperazione.Allerta: goto case TipoOperazione.Richiesta;
                 case TipoOperazione.Fonogramma: goto case TipoOperazione.Richiesta;

@@ -29,9 +29,9 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                                             && !s.IdOperatore.Equals(idUtente) && (s.Type.Equals(TipoOperazione.RaggrauppamentoSchedeContatto)
                                             || s.Type.Equals(TipoOperazione.RegistrazioneSchedaContatto)));
 
-                    if (schedaContatto == null) 
+                    if (schedaContatto == null)
                         ret = true;
-                    else 
+                    else
                         ret = false;
                     break;
 
@@ -328,6 +328,34 @@ namespace SO115App.Persistence.MongoDB.GestioneConcorrenza
                                                                    || r.Type.Equals(TipoOperazione.EliminaUtente)));
 
                     if (eliminaUtente == null)
+                        ret = true;
+                    else
+                        ret = false;
+                    break;
+
+                case TipoOperazione.AnnullaStatoMezzo:
+                    var annullaStatoMezzo = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
+                                                                   && !r.IdOperatore.Equals(idUtente)
+                                                                   && (r.Type.Equals(TipoOperazione.CambioStatoPartenza)
+                                                                   || r.Type.Equals(TipoOperazione.ChiusuraChiamata)
+                                                                   || r.Type.Equals(TipoOperazione.ChiusuraIntervento)
+                                                                   || r.Type.Equals(TipoOperazione.GestisciPartenza)
+                                                                   || r.Type.Equals(TipoOperazione.Sganciamento)));
+
+                    if (annullaStatoMezzo == null)
+                        ret = true;
+                    else
+                        ret = false;
+                    break;
+
+                case TipoOperazione.SganciamentoMezzo:
+                    var sganciamentoMezzo = listaAzioniBloccateSede.Find(r => r.Value.Equals(codOggettoBloccato)
+                                                                   && !r.IdOperatore.Equals(idUtente)
+                                                                   && (r.Type.Equals(TipoOperazione.GestisciPartenza)
+                                                                   || r.Type.Equals(TipoOperazione.CambioStatoPartenza)
+                                                                   || r.Type.Equals(TipoOperazione.SganciamentoMezzo)));
+
+                    if (sganciamentoMezzo == null)
                         ret = true;
                     else
                         ret = false;
