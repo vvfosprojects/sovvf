@@ -98,6 +98,10 @@ export class ClearAuth {
     static readonly type = '[Auth] Clear Auth';
 }
 
+export class ClearUserDataService {
+    static readonly type = '[Auth] Clear User Data Service';
+}
+
 export class ClearDataUser {
     static readonly type = '[Auth] Clear Data User';
 }

@@ -115,8 +115,10 @@ export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
             } as AddConcorrenzaDtoInterface;
             this.store.dispatch(new AddConcorrenza([data]));
             sganciamentoMezziModal.result.then((result: string) => {
-                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
-                    if (result === 'ok') {
+                    if (result !== 'sganciamentoMezzo') {
+                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
+                    }
+                    if (result === 'ok' || result === 'sganciamentoMezzo') {
                         this.chiudiModalAzioniSintesi('ok');
                     }
                 }, (err: any) => {

@@ -111,7 +111,7 @@ export class ListaMezziSganciamentoModalComponent implements OnInit, OnDestroy {
             descrizione: mezzo.descrizione
         } as SganciamentoInterface;
         this.store.dispatch(new SganciamentoMezzoComposizione(objSganciamento));
-        this.close('ok');
+        this.close('sganciamentoMezzo');
     }
 
     close(esito: string): void {

@@ -5,7 +5,7 @@ import {
     CasResponse,
     ClearAuth,
     ClearCurrentUser,
-    ClearDataUser,
+    ClearDataUser, ClearUserDataService,
     GetAuth,
     Logout,
     RecoveryUrl,
@@ -267,6 +267,12 @@ export class AuthState {
         patchState(AuthStateDefaults);
         this.removeStorage();
         dispatch(new Navigate(['/login']));
+    }
+
+    @Action(ClearUserDataService)
+    clearUserDataService({}: StateContext<AuthStateModel>): void {
+        this.authService.clearUserData().subscribe(() => {
+        });
     }
 
     @Action(ClearDataUser)
