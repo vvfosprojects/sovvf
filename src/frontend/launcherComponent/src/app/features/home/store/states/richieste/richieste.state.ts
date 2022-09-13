@@ -62,6 +62,8 @@ import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { LSNAME } from '../../../../../core/settings/config';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { DeleteConcorrenza } from '../../../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -343,13 +345,19 @@ export class RichiesteState {
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
                 setAnnullaStatoMezzi();
-                dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
+                dispatch([
+                    new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [action.mezzoAction.mezzo.codice]),
+                    new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice)
+                ]);
             },
             (error: HttpErrorResponse) => {
                 if (error?.error?.message === 'Errore servizio ESRI') {
                     setAnnullaStatoMezzi();
                 }
-                dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
+                dispatch([
+                    new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [action.mezzoAction.mezzo.codice]),
+                    new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice)
+                ]);
             }
         );
 
