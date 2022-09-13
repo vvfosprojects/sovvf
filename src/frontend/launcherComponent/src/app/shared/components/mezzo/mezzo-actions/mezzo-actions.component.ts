@@ -12,7 +12,7 @@ import { TipoConcorrenzaEnum } from '../../../enum/tipo-concorrenza.enum';
 import { SintesiRichiesta } from '../../../model/sintesi-richiesta.model';
 import { Partenza } from '../../../model/partenza.model';
 import { AddConcorrenzaDtoInterface } from '../../../interface/dto/concorrenza/add-concorrenza-dto.interface';
-import { AddConcorrenza } from '../../../store/actions/concorrenza/concorrenza.actions';
+import { AddConcorrenza, DeleteConcorrenza } from '../../../store/actions/concorrenza/concorrenza.actions';
 import { Store } from '@ngxs/store';
 
 @Component({
@@ -108,6 +108,7 @@ export class MezzoActionsComponent implements OnInit {
             modal.componentInstance.listaEventi = this.listaEventi;
             modal.componentInstance.ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
             modal.result.then((res: { status: string, result: any }) => {
+                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice]));
                 switch (res.status) {
                     case 'ok':
                         if (action) {
@@ -130,7 +131,7 @@ export class MezzoActionsComponent implements OnInit {
                     case 'ko':
                         break;
                 }
-            });
+            }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])));
         }
     }
 
