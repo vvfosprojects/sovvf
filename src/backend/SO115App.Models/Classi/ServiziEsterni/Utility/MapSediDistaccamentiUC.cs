@@ -20,7 +20,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
         };
 
         public static Sede MapSede(this Distaccamento distaccamento) => new Sede
-        (            
+        (
             distaccamento.Id,
             distaccamento.Nome,
             distaccamento.Indirizzo,
@@ -37,7 +37,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             CodDistaccamento = int.Parse(distaccamento.Id.Split('.').Last()),
             CodSede = distaccamento.Id,
             Coordinate = distaccamento.Coordinate,
-            DescDistaccamento = distaccamento.CodDistaccamento,
+            DescDistaccamento = distaccamento.Descrizione,
             Indirizzo = distaccamento.Indirizzo,
             CoordinateString = !string.IsNullOrEmpty(distaccamento.coordinate) && distaccamento.coordinate.Contains(',') ? distaccamento.coordinate.Split(',') : new string[] { "", "" }
         };
