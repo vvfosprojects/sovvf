@@ -401,7 +401,7 @@ export class MezziComposizioneState {
                 modalSganciamento.componentInstance.codMezzoDaSganciare = action.sganciamentoObj.idMezzoDaSganciare;
                 const data = {
                     value: action.sganciamentoObj.idMezzoDaSganciare,
-                    type: TipoConcorrenzaEnum.Sganciamento
+                    type: TipoConcorrenzaEnum.SganciamentoMezzo
                 } as AddConcorrenzaDtoInterface;
                 this.store.dispatch(new AddConcorrenza([data]));
 
@@ -417,7 +417,10 @@ export class MezziComposizioneState {
                     idRichiesta = action.sganciamentoObj.idRichiesta;
                 }
                 modalSganciamento.result.then((val) => {
-                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [action.sganciamentoObj.idMezzoDaSganciare]));
+                    this.store.dispatch([
+                        new DeleteConcorrenza(TipoConcorrenzaEnum.SganciamentoMezzo, [action.sganciamentoObj.idMezzoDaSganciare]),
+                        new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [richiesta.codice])
+                    ]);
                     switch (val) {
                         case 'ok':
                             const partenzaObj: ConfermaPartenze = {
@@ -435,7 +438,12 @@ export class MezziComposizioneState {
                         case 'ko':
                             return;
                     }
-                }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [action.sganciamentoObj.idMezzoDaSganciare])));
+                }, () => {
+                    this.store.dispatch([
+                        new DeleteConcorrenza(TipoConcorrenzaEnum.SganciamentoMezzo, [action.sganciamentoObj.idMezzoDaSganciare]),
+                        new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [richiesta.codice])
+                    ]);
+                });
             }
         });
     }

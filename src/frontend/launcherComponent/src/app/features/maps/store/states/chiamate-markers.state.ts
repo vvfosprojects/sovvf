@@ -27,7 +27,7 @@ export interface ChiamateMarkersStateModel {
 
 export const ChiamateMarkersStateDefaults: ChiamateMarkersStateModel = {
     chiamateMarkers: null,
-    loading: false
+    loading: null
 };
 
 @Injectable()

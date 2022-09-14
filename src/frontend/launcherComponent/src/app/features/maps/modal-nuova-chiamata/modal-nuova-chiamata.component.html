@@ -13,6 +13,7 @@
                         [civico]="civico"
                         [enti]="enti$ | async"
                         [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
+                        [disabledChiudi]="loadingChiamateMarker === null || loadingChiamateMarker === true"
                         [competenze]="competenze$ | async"
                         [countInterventiProssimita]="countInterventiProssimita$ | async"
                         [interventiProssimita]="interventiProssimita$ | async"
