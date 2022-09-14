@@ -17,6 +17,7 @@ import { TriageSummary } from '../../../shared/interface/triage-summary.interfac
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { ViewComponentState } from '../../home/store/states/view/view.state';
 import { ToggleChiamata } from '../../home/store/actions/view/view.actions';
+import { ChiamateMarkersState } from '../store/states/chiamate-markers.state';
 
 @Component({
     selector: 'app-modal-nuova-chiamata',
@@ -25,6 +26,8 @@ import { ToggleChiamata } from '../../home/store/actions/view/view.actions';
 })
 export class ModalNuovaChiamataComponent implements OnDestroy {
 
+    @Select(ChiamateMarkersState.loading) loadingChiamateMarker$: Observable<boolean>;
+    loadingChiamateMarker: boolean;
     @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
     @Select(SchedaTelefonataState.countInterventiProssimita) countInterventiProssimita$: Observable<number>;
     @Select(SchedaTelefonataState.interventiProssimita) interventiProssimita$: Observable<SintesiRichiesta[]>;
@@ -62,6 +65,7 @@ export class ModalNuovaChiamataComponent implements OnDestroy {
     constructor(private activeModal: NgbActiveModal,
                 private store: Store) {
         this.getLoadingSchedaRichiesta();
+        this.getLoadingChiamateMarker();
         const formChiamataStatus = this.store.selectSnapshot(ViewComponentState.chiamataStatus);
         if (formChiamataStatus) {
             this.store.dispatch(new ToggleChiamata(false));
@@ -76,6 +80,14 @@ export class ModalNuovaChiamataComponent implements OnDestroy {
         this.subscriptions.add(
             this.loadingSchedaRichiesta$.subscribe((loading: boolean) => {
                 this.loadingSchedaRichiesta = loading;
+            })
+        );
+    }
+
+    getLoadingChiamateMarker(): void {
+        this.subscriptions.add(
+            this.loadingChiamateMarker$.subscribe((loading: boolean) => {
+                this.loadingChiamateMarker = loading;
             })
         );
     }
