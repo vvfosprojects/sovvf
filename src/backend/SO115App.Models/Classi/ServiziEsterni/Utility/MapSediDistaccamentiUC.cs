@@ -30,17 +30,21 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             CoordinateString = distaccamento.CoordinateString
         };
 
-        public static Distaccamento MapDistaccamento(this DistaccamentoUC distaccamento) => new Distaccamento()
+        public static Distaccamento MapDistaccamento(this DistaccamentoUC distaccamento)
         {
-            Id = distaccamento.Id,
-            Cap = distaccamento.Cap,
-            CodDistaccamento = int.Parse(distaccamento.Id.Split('.').Last()),
-            CodSede = distaccamento.Id,
-            Coordinate = distaccamento.Coordinate,
-            DescDistaccamento = distaccamento.Descrizione,
-            Indirizzo = distaccamento.Indirizzo,
-            CoordinateString = !string.IsNullOrEmpty(distaccamento.coordinate) && distaccamento.coordinate.Contains(',') ? distaccamento.coordinate.Split(',') : new string[] { "", "" }
-        };
+            int res;
+            return new Distaccamento()
+            {
+                Id = distaccamento.Id,
+                Cap = distaccamento.Cap,
+                CodDistaccamento = int.TryParse(distaccamento.Id.Split('.').Last(), out res) ? int.Parse(distaccamento.Id.Split('.').Last()) : int.Parse(distaccamento.Id.Split('.').First()),
+                CodSede = distaccamento.Id,
+                Coordinate = distaccamento.Coordinate,
+                DescDistaccamento = distaccamento.Descrizione,
+                Indirizzo = distaccamento.Indirizzo,
+                CoordinateString = !string.IsNullOrEmpty(distaccamento.coordinate) && distaccamento.coordinate.Contains(',') ? distaccamento.coordinate.Split(',') : new string[] { "", "" }
+            };
+        }
 
         public static Distaccamento MapDistaccamento(this Sede sede) => new Distaccamento()
         {
