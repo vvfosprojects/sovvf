@@ -6,6 +6,7 @@ import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { EnteInterface } from '../../../../shared/interface/ente.interface';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { InfoMezzo } from '../../../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-richiesta-fissata',
@@ -29,6 +30,8 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     @Input() loadingActionRichiesta: string[];
     @Input() loadingDettaglioSchedaContatto: string;
+    @Input() loadingActionMezzo: string[];
+    @Input() annullaStatoMezzi: InfoMezzo[];
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();

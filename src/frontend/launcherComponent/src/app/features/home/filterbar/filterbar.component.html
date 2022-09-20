@@ -72,7 +72,7 @@
                     <app-filtri-schede-contatto [nightMode]="nightMode"
                                                 [filtri]="filtriSchedeContatto$ | async"
                                                 [filtriSelezionati]="filtriSelezionatiSchedeContatto$ | async"
-                                                [disableFilters]="loadingSchedeContatto$ | async"
+                                                [disableFilters]="(loadingSchedeContatto$ | async) || (loadingContatoriSchedeContatto$ | async)"
                                                 (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
                                                 (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
                     </app-filtri-schede-contatto>

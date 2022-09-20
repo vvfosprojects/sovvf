@@ -38,7 +38,7 @@
     <div class="px-2">
         <div class="card bg-dark-light">
             <div class="card-header">
-                <span class="font-weight-bold">{{ richieste?.length }}</span> {{ (!richieste.length || richieste?.length > 1 ? 'Interventi' : 'Intervento') | uppercase }}
+                <span class="font-weight-bold">{{ richieste?.length }}</span> {{ (!richieste.length || richieste?.length > 1 ? 'Chiamate' : 'Chiamata') | uppercase }}
             </div>
             <div class="card-body p-2 scroll-y" style="max-height: 350px">
                 <ng-container *ngIf="richieste?.length">
