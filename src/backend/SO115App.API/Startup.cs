@@ -139,6 +139,7 @@ namespace SO115App.API
                 //{
                 //    options.Configuration.ChannelPrefix = "SO115Web";
                 //})
+#if !DEBUG
                 .AddStackExchangeRedis(o =>
                 {
                     o.ConnectionFactory = async writer =>
@@ -168,6 +169,7 @@ namespace SO115App.API
                         return connection;
                     };
                 })
+#endif
                 .AddNewtonsoftJsonProtocol(opt =>
                 {
                     opt.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
