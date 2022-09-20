@@ -150,7 +150,7 @@ export class UndoMergeSchedeContatto {
 export class SetTabAttivo {
     static readonly type = '[SchedeContatto] Set Tab Attivo';
 
-    constructor(public tabAttivo: ClassificazioneSchedaContatto) {
+    constructor(public tabAttivo: ClassificazioneSchedaContatto, public rangeVisualizzazione?: RangeSchedeContattoEnum) {
     }
 }
 
