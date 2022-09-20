@@ -147,8 +147,8 @@ namespace SO115App.API
                         {
                             AbortOnConnectFail = false
                         };
-                        config.EndPoints.Add(IPAddress.Parse("192.168.24.151"), 6379);
-                        config.Password = "SoVvF$$%%";
+                        config.EndPoints.Add(IPAddress.Parse(Configuration.GetSection("Redis").GetSection("EndPoint1").Value), Convert.ToInt32(Configuration.GetSection("Redis").GetSection("Port").Value));
+                        config.Password = Configuration.GetSection("Redis").GetSection("Password").Value;
                         config.ResolveDns = true;
                         config.AllowAdmin = true;
                         config.DefaultDatabase = 0;
