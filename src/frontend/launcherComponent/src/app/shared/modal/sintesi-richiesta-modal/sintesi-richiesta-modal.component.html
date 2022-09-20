@@ -20,6 +20,8 @@
                            [boxAzioni]="false"
                            [composizionePartenza]="false"
                            [borderTop]="false"
+                           [loadingActionMezzo]="loadingActionMezzo$ | async"
+                           [annullaStatoMezzi]="annullaStatoMezzi$ | async"
                            (actionMezzo)="onActionMezzo($event)">
     </app-sintesi-richiesta>
 </div>

@@ -1,6 +1,6 @@
 <div class="row"
      [class.mt-2]="!ricerca">
-    <app-partial-loader *ngIf="loadingSchedeContatto$ | async"></app-partial-loader>
+    <app-partial-loader *ngIf="(loadingSchedeContatto$ | async) || (loadingContatoriSchedeContatto$ | async)"></app-partial-loader>
     <div class="col-12">
         <app-lista-schede-contatto [ricerca]="ricerca"
                                    [page]="page$ | async"

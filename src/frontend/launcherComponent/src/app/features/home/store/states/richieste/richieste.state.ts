@@ -267,6 +267,10 @@ export class RichiesteState {
                 dispatch(new StopLoadingActionRichiesta(action.richiesta.id));
             }
 
+            if (state.richiestaById) {
+                dispatch(new SetRichiestaById(action.richiesta.codice));
+            }
+
             const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
 
             if (mezziInServizioActive) {

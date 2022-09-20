@@ -183,6 +183,14 @@ export class StopLoadingSchedeContatto {
     static readonly type = '[SchedeContatto] Stop Loading Schede Contatto';
 }
 
+export class StartLoadingContatoriSchedeContatto {
+    static readonly type = '[SchedeContatto] Start Loading contatori Schede Contatto';
+}
+
+export class StopLoadingContatoriSchedeContatto {
+    static readonly type = '[SchedeContatto] Stop Loading contatori Schede Contatto';
+}
+
 export class StartLoadingDettaglioSchedaContatto {
     static readonly type = '[SchedeContatto] Start Loading Dettaglio Scheda Contatto';
 

@@ -23,9 +23,9 @@ import {
     SetSchedaContattoHover,
     SetSchedaContattoSelezionata,
     SetSchedaContattoTelefonata,
-    SetTabAttivo,
+    SetTabAttivo, StartLoadingContatoriSchedeContatto,
     StartLoadingDettaglioSchedaContatto,
-    StartLoadingSchedeContatto,
+    StartLoadingSchedeContatto, StopLoadingContatoriSchedeContatto,
     StopLoadingDettaglioSchedaContatto,
     StopLoadingSchedeContatto,
     ToggleCollapsed,
@@ -72,6 +72,7 @@ export interface SchedeContattoStateModel {
     idCollapsed: string[];
     dettaglioSchedaContattoOpened: boolean;
     loadingSchedeContatto: boolean;
+    loadingContatoriSchedeContatto: boolean;
     loadingDettaglioSchedeContatto: string;
 }
 
@@ -80,7 +81,8 @@ export const SchedeContattoEmpty = {
     tabAttivo: ClassificazioneSchedaContatto.Competenza,
     idVisualizzati: [],
     idCollapsed: [],
-    loadingSchedeContatto: false
+    loadingSchedeContatto: false,
+    loadingContatoriSchedeContatto: false
 };
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
@@ -115,6 +117,11 @@ export class SchedeContattoState {
     @Selector()
     static loadingSchedeContatto(state: SchedeContattoStateModel): boolean {
         return state.loadingSchedeContatto;
+    }
+
+    @Selector()
+    static loadingContatoriSchedeContatto(state: SchedeContattoStateModel): boolean {
+        return state.loadingContatoriSchedeContatto;
     }
 
     @Selector()
@@ -194,13 +201,13 @@ export class SchedeContattoState {
 
     @Action(GetContatoriSchedeContatto)
     getContatoriSchedeContatto({ dispatch }: StateContext<SchedeContattoStateModel>, action: GetContatoriSchedeContatto): void {
-        dispatch(new StartLoadingSchedeContatto());
+        dispatch(new StartLoadingContatoriSchedeContatto());
         this.schedeContattoService.getContatoriSchedeContatto(action.filters).subscribe((data: { infoNue: ContatoriSchedeContatto }) => {
             dispatch([
                 new SetContatoriSchedeContatto(data.infoNue),
-                new StopLoadingSchedeContatto()
+                new StopLoadingContatoriSchedeContatto()
             ]);
-        });
+        }, () => dispatch(new StopLoadingContatoriSchedeContatto()));
     }
 
     @Action(SetContatoriSchedeContatto)
@@ -580,6 +587,20 @@ export class SchedeContattoState {
     stopLoadingSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
         patchState({
             loadingSchedeContatto: false
+        });
+    }
+
+    @Action(StartLoadingContatoriSchedeContatto)
+    startLoadingContatoriSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
+        patchState({
+            loadingContatoriSchedeContatto: true
+        });
+    }
+
+    @Action(StopLoadingContatoriSchedeContatto)
+    stopLoadingContatoriSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
+        patchState({
+            loadingContatoriSchedeContatto: false
         });
     }
 

@@ -7,6 +7,7 @@ import { ActionMezzo, ClearRichiestaById } from '../../../features/home/store/ac
 import { Observable, Subscription } from 'rxjs';
 import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
 import { defineChiamataIntervento } from '../../helper/function-richieste';
+import { InfoMezzo, LoadingState } from '../../store/states/loading/loading.state';
 
 @Component({
     selector: 'app-sintesi-richiesta-modal',
@@ -17,6 +18,8 @@ export class SintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
     @Select(RichiesteState.getRichiestaById) sintesiRichiesta$: Observable<SintesiRichiesta>;
     sintesiRichiesta: SintesiRichiesta = null;
+    @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string[]>;
+    @Select(LoadingState.annullaStatoMezzi) annullaStatoMezzi$: Observable<InfoMezzo[]>;
 
     private subscription = new Subscription();
 

@@ -8,7 +8,8 @@
     </button>
 </div>
 <div class="modal-body height py-4 px-5">
-    <app-partial-loader *ngIf="loadingSchedeContatto$ | async"></app-partial-loader>
+    <app-partial-loader
+            *ngIf="(loadingSchedeContatto$ | async) || (loadingContatoriSchedeContatto$ | async)"></app-partial-loader>
     <app-lista-schede-contatto [ricerca]="ricerca"
                                [page]="page$ | async"
                                [pageSize]="pageSize$ | async"
