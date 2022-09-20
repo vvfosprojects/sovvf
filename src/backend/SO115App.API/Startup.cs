@@ -41,6 +41,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Monitor;
 using SO115App.SignalR;
+using StackExchange.Redis;
 using System;
 using System.IO;
 using System.Net;
@@ -133,12 +134,40 @@ namespace SO115App.API
 
             //Configuration.GetSection("UrlRedis").Value
             services.AddSignalR()
-#if !DEBUG
-                .AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, options =>
+
+                //.AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, options =>
+                //{
+                //    options.Configuration.ChannelPrefix = "SO115Web";
+                //})
+                .AddStackExchangeRedis(o =>
                 {
-                    options.Configuration.ChannelPrefix = "SO115Web";
+                    o.ConnectionFactory = async writer =>
+                    {
+                        var config = new ConfigurationOptions
+                        {
+                            AbortOnConnectFail = false
+                        };
+                        config.EndPoints.Add(IPAddress.Parse("192.168.24.151"), 6379);
+                        config.Password = "SoVvF$$%%";
+                        config.ResolveDns = true;
+                        config.AllowAdmin = true;
+                        config.DefaultDatabase = 0;
+                        config.ConnectTimeout = 500;
+                        config.ConnectRetry = 3;
+                        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                        connection.ConnectionFailed += (_, e) =>
+                        {
+                            Console.WriteLine("Connection to Redis failed.");
+                        };
+
+                        if (!connection.IsConnected)
+                        {
+                            Console.WriteLine("Did not connect to Redis.");
+                        }
+
+                        return connection;
+                    };
                 })
-#endif
                 .AddNewtonsoftJsonProtocol(opt =>
                 {
                     opt.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
