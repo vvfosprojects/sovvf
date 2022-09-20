@@ -57,9 +57,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
                     var result = await _service.GetAsync(url);
 
                     if (result != null)
+                    {
                         lstSquadreAppo.AddRange(MappaOPSquadreSuSOSquadre(result, codice).Result);
-
-                    _memoryCache.Set("listaSquadre-" + codice, lstSquadreAppo, cacheEntryOptions);
+                        _memoryCache.Set("listaSquadre-" + codice, lstSquadreAppo, cacheEntryOptions);
+                    }
                 }
                 else
                 {

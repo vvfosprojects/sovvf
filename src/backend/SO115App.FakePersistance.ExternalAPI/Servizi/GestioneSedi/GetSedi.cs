@@ -25,7 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede,
         IGetSediMarker, IGetCoordinateByCodSede, IGetStringCoordinateByCodSede
     {
-        private const string URLProvvisorio = "http://wauc-test.dipvvf.it/api/Sedi";
+        private const string URLProvvisorio = "http://wauc.dipvvf.it/api/Sedi";
         private readonly IHttpRequestManager<List<SedeUC>> _serviceDirezioni;
         private readonly IHttpRequestManager<DistaccamentoUC> _serviceSedi;
         private readonly IConfiguration _config;
