@@ -85,9 +85,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     bool abilitato = false;
 
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
-                        abilitato = true;
-
+                    //if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                    //    abilitato = true;
 
                     var composizione = richiesta.Partenze.Where(m => m.CodiceMezzo.Equals(command.IdMezzo)).FirstOrDefault();
                     var codiceSedeMezzo = composizione.Partenza.Mezzo.Distaccamento.Codice;
