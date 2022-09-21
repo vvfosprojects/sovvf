@@ -69,9 +69,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
 
                     bool abilitato = false;
 
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiciSede[0], Costanti.GestoreChiamate))
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreChiamate))
                         abilitato = true;
-                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiciSede[0], Costanti.GestoreRichieste))
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreRichieste))
                         abilitato = true;
                     
 
