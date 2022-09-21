@@ -27,6 +27,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
@@ -87,21 +88,28 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
                         abilitato = true;
 
-                    if (richiesta.CodUOCompetenza!=null)
-                        foreach (var competenza in richiesta.CodUOCompetenza)
-                        {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
-                        }
 
-                    if (richiesta.CodSOAllertate != null)
-                    {
-                        foreach (var competenza in richiesta.CodSOAllertate)
-                        {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
-                        }
-                    }
+                    var composizione = richiesta.Partenze.Where(m => m.CodiceMezzo.Equals(command.IdMezzo)).FirstOrDefault();
+                    var codiceSedeMezzo = composizione.Partenza.Mezzo.Distaccamento.Codice;
+
+                    if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, codiceSedeMezzo, Costanti.GestoreRichieste))
+                        abilitato = true;
+
+                    //if (richiesta.CodUOCompetenza!=null)
+                    //    foreach (var competenza in richiesta.CodUOCompetenza)
+                    //    {
+                    //        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                    //            abilitato = true;
+                    //    }
+
+                    //if (richiesta.CodSOAllertate != null)
+                    //{
+                    //    foreach (var competenza in richiesta.CodSOAllertate)
+                    //    {
+                    //        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                    //            abilitato = true;
+                    //    }
+                    //}
 
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
