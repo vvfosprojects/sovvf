@@ -301,7 +301,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 .Select(m => MapMezzo(m, ListaPosizioneFlotta.Result, listaSediAlberate.Result, lstSedi))
                 .ToList();
 
-            return ListaMezzi;
+            return ListaMezzi.FindAll(m => m != null);
         }
 
         private IEnumerable<Sede> GetListaSediMezzi(List<MezzoDTO> lstMezzi, List<MessaggioPosizione> flotta, UnitaOperativa listaSediAlberate)
@@ -316,16 +316,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             {
                 var infoSede = _getSedi.GetInfoSede(sede).Result;
 
-                if (infoSede.Descrizione.ToLower().Contains("centrale"))
+                try
                 {
-                    infoSede.Descrizione = sedi.Find(s => s.Codice.Equals(sede)).Descrizione;
-                }
+                    if (infoSede.Descrizione.ToLower().Contains("centrale"))
+                    {
+                        infoSede.Descrizione = sedi.Find(s => s.Codice.Equals(sede)).Descrizione;
+                    }
 
-                Sede sedeMezzo = new Sede(sede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
-                {
-                    CoordinateString = infoSede.coordinate.Split(',')
-                };
-                listaSedi.Add(sedeMezzo);
+                    Sede sedeMezzo = new Sede(sede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
+                    {
+                        CoordinateString = infoSede.coordinate.Split(',')
+                    };
+                    listaSedi.Add(sedeMezzo);
+                }
+                catch (Exception ex) { }
             };
 
             return listaSedi.OrderBy(s => s.Codice).ToList();
@@ -348,25 +352,32 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 var coordinate = posizioneMezzo == null ? sede.Coordinate : posizioneMezzo.ToCoordinate();
                 var coordinateStrg = posizioneMezzo == null ? sede.CoordinateString : new string[2] { coordinate.Latitudine.ToString(), coordinate.Longitudine.ToString() };
 
-                return new Mezzo()
+                if (sede != null)
                 {
-                    DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                    CoordinateStrg = coordinateStrg ?? sede.CoordinateString,
-                    Codice = mezzoDto.CodiceMezzo,
-                    Descrizione = mezzoDto.Descrizione,
-                    Genere = mezzoDto.Genere,
-                    Stato = Costanti.MezzoInSede,
-                    Appartenenza = mezzoDto.CodiceDistaccamento,
-                    Distaccamento = sede,
-                    Coordinate = new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0),
-                    Istituto = mezzoDto.Istituto,
-                    Sigla = mezzoDto.Sigla,
-                    Modello = mezzoDto.Modello
-                };
+                    return new Mezzo()
+                    {
+                        DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
+                        CoordinateStrg = coordinateStrg ?? sede.CoordinateString,
+                        Codice = mezzoDto.CodiceMezzo,
+                        Descrizione = mezzoDto.Descrizione,
+                        Genere = mezzoDto.Genere,
+                        Stato = Costanti.MezzoInSede,
+                        Appartenenza = mezzoDto.CodiceDistaccamento,
+                        Distaccamento = sede,
+                        Coordinate = new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0),
+                        Istituto = mezzoDto.Istituto,
+                        Sigla = mezzoDto.Sigla,
+                        Modello = mezzoDto.Modello
+                    };
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception e)
             {
-                throw new Exception("Errore mapping mezzi.");
+                return null;
             }
         }
     }
