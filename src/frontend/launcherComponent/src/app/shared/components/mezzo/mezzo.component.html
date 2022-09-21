@@ -11,8 +11,8 @@
                 </div>
                 <ng-container *ngIf="mezzo.descrizione">
                     <div class="font-weight-bold mx-2"
-                         [ngbTooltip]="mezzo.descrizione.length > 8 ? mezzo.descrizione : ''">
-                        {{ mezzo.descrizione | truncate: 8 }}
+                         [ngbTooltip]="mezzo.descrizione.length > (!mezzoInServizioPage ? 8 : 4) ? mezzo.descrizione : ''">
+                        {{ mezzo.descrizione | truncate: (!mezzoInServizioPage ? 8 : 4) }}
                     </div>
                 </ng-container>
                 <ng-container *ngIf="mezzo.genere">

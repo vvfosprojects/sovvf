@@ -108,8 +108,7 @@ export class ActionRichiestaModalComponent implements OnInit {
         } else if (this.riapertura) {
             tipologiaRiapertura = 'Riapertura';
             return tipologiaRiapertura;
-        }
-          else {
+        } else {
             return null;
         }
     }

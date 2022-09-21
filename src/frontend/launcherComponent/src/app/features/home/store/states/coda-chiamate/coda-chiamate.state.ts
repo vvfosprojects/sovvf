@@ -52,7 +52,7 @@ export class CodaChiamateState {
             name: value.descDistaccamento,
             series: [
                 {
-                    name: 'Richieste',
+                    name: 'Chiamate',
                     value: value.numRichieste,
                     extra: {
                         code: value.codDistaccamento

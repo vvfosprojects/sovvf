@@ -24,6 +24,7 @@ using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DomainModel.CQRS.Commands.AllertaAltreSedi
@@ -49,13 +50,17 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
             var richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
 
             var lstSedi = command.CodSediAllertate.Select(s => _getSede.GetSede(s).Descrizione).ToList();
-            //if (!lstSedi.All(s => s.ToUpper().Contains("CENTRALE")))
-            //    throw new Exception("1* E' possibile allertare solo i comandi");
 
             if (richiesta.CodSOAllertate != null && richiesta.CodSOAllertate.Count > 0)
+            {
+                foreach (var sede in command.CodSediAllertate.ToHashSet())
+                {
+                    richiesta.CodSOAllertate.Add(sede);
+                }
                 command.CodSediAllertateOld = richiesta.CodSOAllertate.ToArray();
-
-            richiesta.CodSOAllertate = command.CodSediAllertate.ToHashSet();
+            }
+            else
+                richiesta.CodSOAllertate = command.CodSediAllertate.ToHashSet();
 
             new AllertaSedi(richiesta, DateTime.UtcNow, command.CodUtente, "Allerta", command.CodSediAllertate);
 

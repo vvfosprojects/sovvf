@@ -41,6 +41,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Monitor;
 using SO115App.SignalR;
+using StackExchange.Redis;
 using System;
 using System.IO;
 using System.Net;
@@ -134,10 +135,37 @@ namespace SO115App.API
             //Configuration.GetSection("UrlRedis").Value
             services.AddSignalR()
 #if !DEBUG
-                .AddStackExchangeRedis(Configuration.GetSection("UrlRedis").Value, options =>
+                .AddStackExchangeRedis(Configuration.GetSection("UrlRedisTest").Value, options =>
                 {
                     options.Configuration.ChannelPrefix = "SO115Web";
                 })
+
+                //.AddStackExchangeRedis(o =>
+                //{
+                //    o.ConnectionFactory = async writer =>
+                //    {
+                //        var config = new ConfigurationOptions
+                //        {
+                //            AbortOnConnectFail = false
+                //        };
+                //        config.EndPoints.Add(IPAddress.Parse(Configuration.GetSection("Redis").GetSection("EndPoint1").Value), Convert.ToInt32(Configuration.GetSection("Redis").GetSection("Port").Value));
+                //        config.Password = Configuration.GetSection("Redis").GetSection("Password").Value;
+                //        config.ResolveDns = true;
+                //        config.AllowAdmin = true;
+                //        config.DefaultDatabase = 0;
+                //        config.ConnectTimeout = 500;
+                //        config.ConnectRetry = 3;
+                //        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                //        connection.ConnectionFailed += (_, e) =>
+                //        {
+                //            Console.WriteLine("Connection to Redis failed.");
+                //        };
+
+                // if (!connection.IsConnected) { Console.WriteLine("Did not connect to Redis."); }
+
+                //        return connection;
+                //    };
+                //})
 #endif
                 .AddNewtonsoftJsonProtocol(opt =>
                 {

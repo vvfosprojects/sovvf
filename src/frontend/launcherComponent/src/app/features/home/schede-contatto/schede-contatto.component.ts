@@ -78,6 +78,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     idSelezionatiMerge: string[];
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
+    @Select(SchedeContattoState.loadingContatoriSchedeContatto) loadingContatoriSchedeContatto$: Observable<boolean>;
 
     permessiFeature = PermissionFeatures;
 

@@ -9,7 +9,7 @@
         <app-partial-loader></app-partial-loader>
     </ng-template>
     <!-- Mezzo -->
-    <div class="col-3">
+    <div class="col-3 pr-4">
         <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo"
                    [mezzoInServizioPage]="true"
                    [actionsAttive]="false"
@@ -22,7 +22,7 @@
     </ng-container>
     <!-- Squadra/e sul Mezzo -->
     <ng-container *ngIf="mezzoInServizio?.squadre?.length">
-        <div class="col-1">
+        <div class="col-1 pr-0">
             <div class="d-flex align-items-center justify-content-end font-weight-bold">
                 <div>
                     <i class="fas fa-users text-{{statoMezzoColor(mezzoInServizio.mezzo.mezzo.stato)}}"></i>
