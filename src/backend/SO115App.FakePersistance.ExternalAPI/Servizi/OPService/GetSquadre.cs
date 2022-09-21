@@ -40,7 +40,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
         {
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);
             var url = new Uri(baseurl, "api/v1/so-workshift/" + "?id_sede=" + Codice);
-            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(1));
 
             WorkShift result = new WorkShift();
 
