@@ -20,6 +20,7 @@
                            [boxAzioni]="false"
                            [composizionePartenza]="false"
                            [borderTop]="false"
+                           [nightMode]="nightMode$ | async"
                            [loadingActionMezzo]="loadingActionMezzo$ | async"
                            [annullaStatoMezzi]="annullaStatoMezzi$ | async"
                            (actionMezzo)="onActionMezzo($event)">

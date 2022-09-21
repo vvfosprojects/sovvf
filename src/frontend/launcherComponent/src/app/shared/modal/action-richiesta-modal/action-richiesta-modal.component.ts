@@ -55,7 +55,7 @@ export class ActionRichiestaModalComponent implements OnInit {
             });
         } else if (this.chiusuraIntervento) {
             this.actionRichiestaForm = this.formBuilder.group({
-                tipologiaChiusuraChiamata: ['Int. concluso'],
+                tipologiaChiusuraChiamata: ['Concluso'],
             });
         }
     }
@@ -102,14 +102,13 @@ export class ActionRichiestaModalComponent implements OnInit {
                     return MotivazioneChiusuraRichiestaEnum.InterventoNonNecessario;
                 case 'Falso Allarme':
                     return MotivazioneChiusuraRichiestaEnum.FalsoAllarme;
-                case 'Int. concluso':
+                case 'Concluso':
                     return MotivazioneChiusuraRichiestaEnum.InterventoConcluso;
             }
         } else if (this.riapertura) {
             tipologiaRiapertura = 'Riapertura';
             return tipologiaRiapertura;
-        }
-          else {
+        } else {
             return null;
         }
     }
