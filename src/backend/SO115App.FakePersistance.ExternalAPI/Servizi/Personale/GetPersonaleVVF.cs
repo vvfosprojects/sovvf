@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
@@ -23,6 +24,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         private readonly IHttpRequestManager<List<PersonaleUC>> _client;
         private readonly IConfiguration _configuration;
         private readonly IHttpRequestManager<List<AnagraficaPersonaleVVF>> _clientAnagrafica;
+        private readonly IMemoryCache _memoryCache;
 
         /// <summary>
         ///   costruttore della classe
@@ -31,11 +33,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         /// <param name="configuration"></param>
         public GetPersonaleVVF(IHttpRequestManager<List<PersonaleUC>> client,
                                IConfiguration configuration,
-                               IHttpRequestManager<List<AnagraficaPersonaleVVF>> clientAnagrafica)
+                               IHttpRequestManager<List<AnagraficaPersonaleVVF>> clientAnagrafica,
+                               IMemoryCache memoryCache)
         {
             _client = client;
             _configuration = configuration;
             _clientAnagrafica = clientAnagrafica;
+            _memoryCache = memoryCache;
         }
 
         /// <summary>
@@ -89,20 +93,33 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 parametriNominativo = $"Nome={query.Nome}&Cognome={query.Cognome}";
 
             string paramCodiceFiscale = "";
-            if (query.CodiceFiscale!=null)
+            if (query.CodiceFiscale != null)
                 paramCodiceFiscale = $"&codiciFiscali={query.CodiceFiscale}";
 
             var stringaGet = parametriNominativo + paramCodiceFiscale;
 
             var personaleUC = new ConcurrentQueue<PersonaleUC>();
 
+            List<PersonaleUC> rubrica = new List<PersonaleUC>();
+
             //Reperisco i dati
             try
             {
-                var uri = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?{stringaGet}");
-                var result = _client.GetAsync(uri).Result;
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(12));
 
-                result.ForEach(p => personaleUC.Enqueue(p));
+                var uri = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?{stringaGet}");
+
+                if (!_memoryCache.TryGetValue($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?{stringaGet}", out rubrica))
+                {
+                    var result = _client.GetAsync(uri).Result;
+                    rubrica = result;
+                    _memoryCache.Set($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?{stringaGet}", rubrica, cacheEntryOptions);
+                    result.ForEach(p => personaleUC.Enqueue(p));
+                }
+                else
+                {
+                    rubrica.ForEach(p => personaleUC.Enqueue(p));
+                }
             }
             catch (Exception e)
             {
@@ -140,16 +157,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         public List<PersonaleVVF> GetByCodiceSede(string[] codSede)
         {
             var personaleUC = new ConcurrentQueue<PersonaleUC>();
+            List<PersonaleUC> rubrica = new List<PersonaleUC>();
 
             //Reperisco i dati
             try
             {
-                _client.SetCache($"PersonaleApiUtenteComuni_{String.Join(",", codSede)}");
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(12));
+
 
                 var uri = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={String.Join(",", codSede)}");
-                var result = _client.GetAsync(uri).Result;
 
-                result.ForEach(p => personaleUC.Enqueue(p));
+                if (!_memoryCache.TryGetValue($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={String.Join(",", codSede)}", out rubrica))
+                {
+
+                    var result = _client.GetAsync(uri).Result;
+                    rubrica = result;
+                    _memoryCache.Set($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={String.Join(",", codSede)}", rubrica, cacheEntryOptions);
+                    result.ForEach(p => personaleUC.Enqueue(p));
+                }
+                else
+                {
+                    rubrica.ForEach(p => personaleUC.Enqueue(p));
+                }
             }
             catch (Exception e)
             {

@@ -253,7 +253,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         public async Task<List<Mezzo>> GetBySedi(string[] sedi)
         {
             var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct());
-            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+            //var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
             var codici = string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct());
 
             var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
