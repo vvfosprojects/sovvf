@@ -40,9 +40,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
-        private readonly IHttpRequestManager<MessaggioPosizione> _client2;
+        private readonly IHttpRequestManager<IEnumerable<MessaggioPosizione>> _client2;
 
-        public GetPosizioneFlotta(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IHttpRequestManager<MessaggioPosizione> client2)
+        public GetPosizioneFlotta(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IHttpRequestManager<IEnumerable<MessaggioPosizione>> client2)
         {
             _client = client;
             _configuration = configuration;
@@ -62,13 +62,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
             var nomeCache = "lstPosizioneFlotta";
             if (!_memoryCache.TryGetValue(nomeCache, out lstPosizioneFlotta))
             {
-                var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value}posizioneFlotta");
-                response.EnsureSuccessStatusCode();
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value}posizioneFlotta");
+                var response = await _client2.GetAsync(url, null);
 
-                using HttpContent content = response.Content;
-                string data = await content.ReadAsStringAsync();
+                //using HttpContent content = response.Content;
+                //string data = await content.ReadAsStringAsync();
 
-                lstPosizioneFlotta = JsonConvert.DeserializeObject<List<MessaggioPosizione>>(data);
+                lstPosizioneFlotta = response.ToList();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
                 _memoryCache.Set(nomeCache, lstPosizioneFlotta, cacheEntryOptions);
@@ -94,7 +94,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
                         var result = _client2.GetAsync(uri).Result;
 
                         if (result != null && result != default)
-                            lstPosizioni.Add(result);
+                            lstPosizioni.ToList().AddRange(result.ToList());
                     }
                     catch (Exception e) { }
                 });
