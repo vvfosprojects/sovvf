@@ -42,7 +42,7 @@ export interface GestioneUtentiStateModel {
         model?: {
             utente: string;
             ruolo: string;
-            sedi: string[];
+            sede: string;
             ricorsivo: boolean;
         };
         dirty: boolean;
@@ -184,12 +184,10 @@ export class GestioneUtentiState {
             codFiscale: form.utente,
             ruoli: []
         };
-        form.sedi.forEach((codice: string) => {
-            obj.ruoli.push({
-                descrizione: form.ruolo,
-                codSede: codice,
-                ricorsivo: form.ricorsivo
-            });
+        obj.ruoli.push({
+            descrizione: form.ruolo,
+            codSede: form.sede,
+            ricorsivo: form.ricorsivo
         });
 
         this.gestioneUtenti.addUtente(obj).subscribe((utente: Utente) => {
@@ -220,12 +218,10 @@ export class GestioneUtentiState {
             codFiscale: form.utente,
             ruoli: []
         };
-        form.sedi.forEach((codice: string) => {
-            obj.ruoli.push({
-                descrizione: form.ruolo,
-                codSede: codice,
-                ricorsivo: form.ricorsivo
-            });
+        obj.ruoli.push({
+            descrizione: form.ruolo,
+            codSede: form.sede,
+            ricorsivo: form.ricorsivo
         });
 
         this.gestioneUtenti.addRuoloUtente(obj).subscribe(() => {

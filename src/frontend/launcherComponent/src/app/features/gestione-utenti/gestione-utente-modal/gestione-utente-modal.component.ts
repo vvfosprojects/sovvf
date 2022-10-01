@@ -46,6 +46,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.initForm();
         this.getFormValid();
         this.getUtenteValueChanges();
+        this.getSedeValueChanges();
         this.getListaUtentiVVF();
         this.getDistaccamenti();
     }
@@ -53,24 +54,23 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     initForm(): void {
         this.addUtenteRuoloForm = new FormGroup({
             utente: new FormControl(),
-            sedi: new FormControl(),
+            sede: new FormControl(),
             ricorsivo: new FormControl(),
             ruolo: new FormControl()
         });
         this.addUtenteRuoloForm = this.fb.group({
             utente: [null, Validators.required],
-            sedi: [null, Validators.required],
+            sede: [null, Validators.required],
             ricorsivo: [true, Validators.required],
-            ruolo: [null, Validators.required]
+            ruolo: [{ value: null, disabled: true }, Validators.required]
         });
         // Init disabled input
         this.checkboxState = { id: 'ricorsivo', status: this.f.ricorsivo.value, label: 'Ricorsivo', disabled: true };
-        this.f.ruolo.disable();
     }
 
     ngOnInit(): void {
         if (this.codFiscaleUtenteVVF) {
-            this.setRuoli({ removeVisualizzatore: true });
+            this.setRuoli();
             this.f.utente.patchValue(this.codFiscaleUtenteVVF);
             this.f.utente.clearValidators();
         } else if (!this.codFiscaleUtenteVVF) {
@@ -124,13 +124,23 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    setRuoli(opts?: { removeVisualizzatore?: boolean }): void {
-        Object.values(Role).forEach((role: string) => {
-            if (opts && opts.removeVisualizzatore && role === Role.Visualizzatore) {
-                return;
-            }
-            this.ruoli.push(role);
-        });
+    setRuoli(): void {
+        const codSedeSelezionata = this.f.sede.value;
+        const sedeSelezionata = this.distaccamenti.filter((s: Sede) => s.codice === codSedeSelezionata)[0];
+        switch (sedeSelezionata?.tipo) {
+            case 'direzione':
+                this.ruoli = [...Object.values(Role)];
+                break;
+            case 'comando':
+                this.ruoli = [...Object.values(Role)];
+                break;
+            case 'distaccamento':
+                this.ruoli = [Role.Visualizzatore];
+                break;
+            default:
+                this.ruoli = [Role.Visualizzatore];
+                break;
+        }
     }
 
     setRicorsivoValue(value: { id: string, status: boolean }): void {
@@ -142,19 +152,26 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.f.utente.valueChanges.subscribe((value: any) => {
             if (value) {
                 this.checkboxState.disabled = false;
-                this.f.sedi.enable();
-                this.f.ruolo.enable();
+                this.f.sede.enable();
             } else {
                 this.checkboxState.disabled = true;
-                this.f.sedi.disable();
+                this.f.sede.patchValue(null);
+                this.f.sede.disable();
                 this.f.ruolo.disable();
             }
         });
     }
 
-    getSediValueChanges(): void {
-        this.f.sedi.valueChanges.subscribe((value: any) => {
-            this.checkboxState.disabled = !value;
+    getSedeValueChanges(): void {
+        this.f.sede.valueChanges.subscribe((value: any) => {
+            if (value) {
+                this.setRuoli();
+                this.f.ruolo.patchValue(null);
+                this.f.ruolo.enable();
+            } else {
+                this.f.ruolo.patchValue(null);
+                this.f.ruolo.disable();
+            }
         });
     }
 

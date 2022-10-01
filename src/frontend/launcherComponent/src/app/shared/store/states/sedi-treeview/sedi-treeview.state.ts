@@ -15,8 +15,6 @@ import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno.actions';
 import { Injectable } from '@angular/core';
 import { LSNAME } from '../../../../core/settings/config';
-import { getProvinciaByCodProvincia } from '../../../helper/function-province';
-import * as province from '../../../../../assets/province/province.json';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
@@ -72,10 +70,9 @@ export class SediTreeviewState {
 
     @Selector()
     static sediNavbarTastoConferma(state: SediTreeviewStateModel): boolean {
-        const provinceData = province['default']['province'][0];
         const sediNavbar = state.sediNavbarSelezionate;
         if (sediNavbar.correnti?.length > 0 && sediNavbar.correnti?.length < 2) {
-            return arraysEqual(sediNavbar.iniziali, sediNavbar.correnti) || Object.values(provinceData).includes(sediNavbar.correnti[0]);
+            return arraysEqual(sediNavbar.iniziali, sediNavbar.correnti);
         } else {
             return true;
         }
@@ -144,8 +141,7 @@ export class SediTreeviewState {
         let item = '';
         if (action.selected[0]) {
             if (!action.multi) {
-                const itemText = findItem(state.listaSediNavbar, action.selected[0]).text;
-                item = itemText.toLowerCase() === 'centrale' ? itemText + ' ' + getProvinciaByCodProvincia(action.selected[0].split('.')[0]).toUpperCase() : itemText;
+                item = findItem(state.listaSediNavbar, action.selected[0]).text;
             } else {
                 item = 'più sedi selezionate';
             }

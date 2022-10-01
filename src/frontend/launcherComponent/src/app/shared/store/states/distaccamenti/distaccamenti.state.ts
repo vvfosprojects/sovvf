@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Sede } from '../../../model/sede.model';
 import { GetDistaccamenti, GetSediAllerta, GetSediTrasferimenti, SetDistaccamenti, SetSediAllerta, SetSediTrasferimenti } from '../../actions/distaccamenti/distaccamenti.actions';
 import { DistaccamentiService } from '../../../../core/service/distaccamenti-service/distaccamenti-service';
-import { getProvinciaByCodProvincia } from '../../../helper/function-province';
 
 export interface DistaccamentiStateModel {
     distaccamenti: Sede[];
@@ -66,13 +65,7 @@ export class DistaccamentiState {
 
     @Action(SetDistaccamenti)
     setDistaccamenti({ patchState }: StateContext<DistaccamentiStateModel>, action: SetDistaccamenti): void {
-        let distaccamenti = action.distaccamenti;
-        distaccamenti = distaccamenti.map((d: Sede) => {
-            return {
-                ...d,
-                descrizione: d.descrizione.toLowerCase() === 'centrale' ? d.descrizione + ' ' + getProvinciaByCodProvincia(d.codice.split('.')[0]).toUpperCase() : d.descrizione
-            };
-        });
+        const distaccamenti = action.distaccamenti;
         patchState({
             distaccamenti
         });
@@ -83,12 +76,6 @@ export class DistaccamentiState {
         let sediAllertaFiltered = action.sediAllerta;
         // Filtro per avere solo i comandi, il BE restituisce tutte le sedi
         sediAllertaFiltered = sediAllertaFiltered.filter((s: Sede) => (s.codice.split('.')?.length === 2 && s.codice.split('.')[1] === '1000'));
-        sediAllertaFiltered = sediAllertaFiltered.map((d: Sede) => {
-            return {
-                ...d,
-                descrizione: d.descrizione + ' ' + getProvinciaByCodProvincia(d.codice.split('.')[0]).toUpperCase()
-            };
-        });
         patchState({
             sediAllerta: sediAllertaFiltered
         });
@@ -96,13 +83,7 @@ export class DistaccamentiState {
 
     @Action(SetSediTrasferimenti)
     setSediTrasferimenti({ patchState }: StateContext<DistaccamentiStateModel>, action: SetSediTrasferimenti): void {
-        let sediTrasferimenti = action.sediTrasferimenti;
-        sediTrasferimenti = sediTrasferimenti.map((d: Sede) => {
-            return {
-                ...d,
-                descrizione: d.descrizione + ' ' + getProvinciaByCodProvincia(d.codice.split('.')[0]).toUpperCase()
-            };
-        });
+        const sediTrasferimenti = action.sediTrasferimenti;
         patchState({
             sediTrasferimenti
         });
