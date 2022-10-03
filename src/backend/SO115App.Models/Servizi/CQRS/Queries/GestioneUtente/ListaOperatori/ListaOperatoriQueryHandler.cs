@@ -26,6 +26,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 {
@@ -104,72 +105,54 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             var utentiPaginati = utentiByCodSede.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
             query.Pagination.TotalItems = utentiByCodSede.Count;
 
-            var listaSediPresenti = new List<Role>();
+            // var listaSediPresenti = new List<Role>();
 
             //ORDINO PER CON PERCHE' IL CON HA IL BREAK NEL CICLO, QUINDI VIENE EFFETTUATO UN SINGOLO CICLO E QUINDI UN SINGOLO INSERIMENTO (TUTTE LE SEDI)
             var filtriSedi = query.Utente.Ruoli.Select(r => r.CodSede).Distinct().OrderByDescending(s => s == "00").ThenBy(s => s);
 
-            foreach (var filtroSede in listaCodiciSedeRuoloAdmin)
-            {
-                var ricorsivo = query.Utente.Ruoli.FirstOrDefault(s => s.CodSede.Equals(filtroSede) && s.Descrizione.Equals("Amministratore"))?.Ricorsivo;
+            var listaSediAdmin = lstSediAll.Result.Where(s => listaCodiciSedeRuoloAdmin.Any(c => c.Equals(s.Codice)));
 
-                if (filtroSede.Contains(".1000")) // COMANDO
-                {
-                    if (ricorsivo != null && ricorsivo.Value)
-                    {
-                        var lst = lstSediAll.Result
-                            .Where(p => p.Codice.Contains($"{filtroSede.Split('.')[0]}.") && !listaSediPresenti.Any(sede => sede.CodSede.Equals(p.Codice)))
-                            .Where(p => p.Codice.Contains('.'))
-                            .Select(p => new Role("", p.Codice) { DescSede = lstSediAll.Result.Find(s => s.Codice.Equals(p.Codice)).Descrizione })
-                            .ToList();
+            //foreach (var filtroSede in listaCodiciSedeRuoloAdmin)
+            //{
+            //    var ricorsivo = query.Utente.Ruoli.FirstOrDefault(s => s.CodSede.Equals(filtroSede) && s.Descrizione.Equals("Amministratore"))?.Ricorsivo;
 
-                        listaSediPresenti.AddRange(lst);
-                    }
-                    else
-                    {
-                        var lst = lstSediAll.Result
-                            .Select(p => new Role("", p.Codice) { DescSede = p.Descrizione })
-                            .FirstOrDefault(s => s.CodSede.Equals(filtroSede));
+            // if (filtroSede.Contains(".1000")) { if (ricorsivo != null && ricorsivo.Value) { var
+            // lst = lstSediAll.Result .Where(p => p.Codice.Contains($"{filtroSede.Split('.')[0]}.")
+            // && !listaSediPresenti.Any(sede => sede.CodSede.Equals(p.Codice))) .Where(p =>
+            // p.Codice.Contains('.')) .Select(p => new Role("", p.Codice) { DescSede =
+            // lstSediAll.Result.Find(s => s.Codice.Equals(p.Codice)).Descrizione }) .ToList();
 
-                        listaSediPresenti.Add(lst);
-                    }
-                }
-                else if (filtroSede.Contains('.')) // DISTACCAMENTO
-                {
-                    if (!listaSediPresenti.Any(sede => sede.CodSede.Equals(filtroSede)))
-                        listaSediPresenti.Add(new Role("", filtroSede) { DescSede = lstSediAll.Result.FirstOrDefault(s => s.Codice.Equals(filtroSede))?.Descrizione });
-                }
-                else if (filtroSede.Equals("00")) // CON
-                {
-                    if (ricorsivo != null && ricorsivo.Value)
-                        listaSediPresenti = lstSediAll.Result.Select(p => new Role("", p.Codice) { DescSede = p.Descrizione }).ToList();
-                    else
-                        listaSediPresenti = new List<Role> { lstSediAll.Result.Select(p => new Role("", p.Codice) { DescSede = p.Descrizione }).FirstOrDefault(s => s.CodSede.Equals(filtroSede)) };
+            // listaSediPresenti.AddRange(lst); } else { var lst = lstSediAll.Result .Select(p =>
+            // new Role("", p.Codice) { DescSede = p.Descrizione }) .FirstOrDefault(s => s.CodSede.Equals(filtroSede));
 
-                    break;
-                }
-                else // DIREZIONE REGIONALE
-                {
-                    var lst = lstSediAll.Result
-                            .Where(s => s.Codice.Equals(filtroSede) && !s.Codice.Contains('.') && !s.Codice.Contains("00"))
-                            .Select(s => new Role("", s.Codice) { DescSede = s.Descrizione })
-                            .ToList();
+            // listaSediPresenti.Add(lst); } } else if (filtroSede.Contains('.')) // DISTACCAMENTO {
+            // if (!listaSediPresenti.Any(sede => sede.CodSede.Equals(filtroSede)))
+            // listaSediPresenti.Add(new Role("", filtroSede) { DescSede =
+            // lstSediAll.Result.FirstOrDefault(s => s.Codice.Equals(filtroSede))?.Descrizione }); }
+            // else if (filtroSede.Equals("00")) // CON { if (ricorsivo != null && ricorsivo.Value)
+            // listaSediPresenti = lstSediAll.Result.Select(p => new Role("", p.Codice) { DescSede =
+            // p.Descrizione }).ToList(); else listaSediPresenti = new List<Role> {
+            // lstSediAll.Result.Select(p => new Role("", p.Codice) { DescSede = p.Descrizione
+            // }).FirstOrDefault(s => s.CodSede.Equals(filtroSede)) };
 
-                    listaSediPresenti.AddRange(lst);
+            // break; } else // DIREZIONE REGIONALE { var lst = lstSediAll.Result .Where(s =>
+            // s.Codice.Equals(filtroSede) && !s.Codice.Contains('.') && !s.Codice.Contains("00"))
+            // .Select(s => new Role("", s.Codice) { DescSede = s.Descrizione }) .ToList();
 
-                    if (ricorsivo != null && ricorsivo.Value) //Aggiungo figli
-                    {
-                        foreach (var sede in lst)
-                        {
-                            var figliRegionale = sediAlberate.Result.Figli.First(a => a.Codice.Equals(sede.CodSede)).Figli.Select(s => s.Codice).ToList();
+            // listaSediPresenti.AddRange(lst);
 
-                            var lst2 = lstSediAll.Result.Where(s => figliRegionale.Contains(s.Codice)).Select(s => new Role("", s.Codice) { DescSede = s.Descrizione }).ToList();
+            // if (ricorsivo != null && ricorsivo.Value) //Aggiungo figli { foreach (var sede in
+            // lst) { var figliRegionale = sediAlberate.Result.Figli.First(a =>
+            // a.Codice.Equals(sede.CodSede)).Figli.Select(s => s.Codice).ToList();
 
-                            listaSediPresenti.AddRange(lst2);
-                        }
-                    }
-                }
-            }
+            // var lst2 = lstSediAll.Result.Where(s => figliRegionale.Contains(s.Codice)).Select(s
+            // => new Role("", s.Codice) { DescSede = s.Descrizione }).ToList();
+
+            //                listaSediPresenti.AddRange(lst2);
+            //            }
+            //        }
+            //    }
+            //}
 
             var sediUtenti = utentiFull
                 .SelectMany(u => u.Ruoli.Where(r => r.Descrizione.Equals("Amministratore")).Select(r => r.CodSede))
@@ -181,7 +164,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 Pagination = query.Pagination,
                 ListaSediPresenti = lstSediAll.Result
                     //filtro le sedi senza utenti (non vengono visualizzate)
-                    .Where(s => sediUtenti.Contains(s.Codice) && listaSediPresenti.Select(p => p.CodSede).Contains(s.Codice))
+                    .Where(s => sediUtenti.Contains(s.Codice) && listaSediAdmin.ToHashSet().Select(p => p.Codice).Contains(s.Codice))
                     .Select(s => new Role("", s.Codice) { DescSede = s.Descrizione })
                     .ToList()
             };
