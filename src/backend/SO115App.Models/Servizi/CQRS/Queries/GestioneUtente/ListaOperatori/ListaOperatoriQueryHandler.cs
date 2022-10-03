@@ -87,7 +87,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 }
             }
 
-            var utentiFull = _getUtenteByCodiciSedi.Get(lstSediAll.Result.Select(s => s.Codice).Distinct().ToList());
+            //var utentiFull = _getUtenteByCodiciSedi.Get(lstSediAll.Result.Select(s => s.Codice).Distinct().ToList());
             var utentiByCodSede = _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search);
 
             if (query.Filters.CodSede != null)
@@ -154,7 +154,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             //    }
             //}
 
-            var sediUtenti = utentiFull
+            var sediUtenti = utentiByCodSede
                 .SelectMany(u => u.Ruoli.Where(r => r.Descrizione.Equals("Amministratore")).Select(r => r.CodSede))
                 .Distinct().ToList();
 
