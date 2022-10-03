@@ -136,7 +136,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.CodaChiamate,
-            roles: [Role.GestoreChiamate, Role.GestoreRichieste, Role.Visualizzatore]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
         },
         {
             feature: PermissionFeatures.DashboardPortale,
@@ -148,7 +148,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.AreaDocumentale,
-            roles: [Role.GestoreChiamate, Role.GestoreRichieste, Role.Visualizzatore]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
         },
         {
             feature: PermissionFeatures.AggiungiDocumento,
