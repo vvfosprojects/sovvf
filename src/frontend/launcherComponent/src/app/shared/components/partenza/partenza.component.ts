@@ -15,6 +15,7 @@ import { LockedConcorrenzaService } from '../../../core/service/concorrenza-serv
 import { StartLoadingActionMezzo, StopLoadingActionMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import { StatoMezzoActions } from '../../enum/stato-mezzo-actions.enum';
 
 @Component({
     selector: 'app-partenza',
@@ -43,6 +44,7 @@ export class PartenzaComponent implements OnInit {
 
     statoRichiestaEnum = StatoRichiesta;
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+    statoMezzoEnum = StatoMezzo;
 
     listaEventiMezzo: EventoMezzo[] = [];
 
@@ -84,7 +86,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     checkListaEventiMezzo(): void {
-        this.listaEventiMezzo = this.richiesta?.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
+        this.listaEventiMezzo = this.richiesta?.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === StatoMezzoActions.InViaggio || x.stato === StatoMezzoActions.SulPosto || x.stato === StatoMezzoActions.InRientro || x.stato === StatoMezzoActions.Rientrato));
         const statiMezzo = [];
         if (this.listaEventiMezzo?.length) {
             this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));

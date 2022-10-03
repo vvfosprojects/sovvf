@@ -33,18 +33,17 @@ export class MezzoActionsComponent implements OnInit {
 
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
-    statoMezzoActions: StatoMezzoActions;
     statoMezzoString: string[];
     listaEventiMezzoUnique: EventoMezzo[] = [
-        StatoMezzo.InViaggio,
-        StatoMezzo.SulPosto,
-        StatoMezzo.InRientro,
-        StatoMezzo.Rientrato
+        StatoMezzoActions.InViaggio,
+        StatoMezzoActions.SulPosto,
+        StatoMezzoActions.InRientro,
+        StatoMezzoActions.Rientrato
     ].map(e => ({
         codiceMezzo: '',
         note: '',
         ora: '',
-        stato: e,
+        stato: e
     }));
 
     constructor(dropdownConfig: NgbDropdownConfig,
@@ -63,13 +62,32 @@ export class MezzoActionsComponent implements OnInit {
         this.getListaEventiMezzo();
     }
 
-    onClick(action?: string, ora?: string, event?: MouseEvent): void {
+    onClick(action?: StatoMezzoActions, ora?: string, event?: MouseEvent): void {
         if (!this.disabledModificaStatoMezzo && !this.lockedConcorrenzaService.getLockedConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [this.mezzo.codice])) {
             if (event) {
                 event.stopPropagation();
             }
+
+            function isPrevious(mezzo: Mezzo, a?: StatoMezzoActions): boolean {
+                if (!a) {
+                    return false;
+                }
+
+                switch (a) {
+                    case StatoMezzoActions.SulPosto:
+                        return mezzo.stato === StatoMezzo.InRientro || mezzo.stato === StatoMezzo.Rientrato;
+                    case StatoMezzoActions.InRientro:
+                        return mezzo.stato === StatoMezzo.Rientrato;
+                    case StatoMezzoActions.Rientrato:
+                        return false;
+                    default:
+                        return true;
+                }
+            }
+
             const ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
-            if (!ora && (!(ultimoMezzo) || this.mezzo.stato !== StatoMezzo.InRientro)) {
+
+            if (!isPrevious(this.mezzo, action) && !ora && (!ultimoMezzo || this.mezzo.stato !== StatoMezzo.InRientro)) {
                 const data = {
                     value: this.mezzo.codice,
                     type: TipoConcorrenzaEnum.CambioStatoPartenza
@@ -79,7 +97,7 @@ export class MezzoActionsComponent implements OnInit {
                 const orario = { hour: nowDate.getHours(), minute: nowDate.getMinutes(), second: nowDate.getSeconds() };
                 const dataEvento = { day: nowDate.getDate(), month: (+nowDate.getMonth() + 1), year: nowDate.getFullYear() };
                 this.actionMezzo.emit({
-                    mezzoAction: this.statoMezzoActions,
+                    mezzoAction: action,
                     oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
                     dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
                     codicePartenza: this.codicePartenza,
@@ -117,6 +135,8 @@ export class MezzoActionsComponent implements OnInit {
                     type: TipoConcorrenzaEnum.CambioStatoPartenza
                 } as AddConcorrenzaDtoInterface;
                 this.store.dispatch(new AddConcorrenza([data]));
+                // TODO: quando si sta inserendo uno stato precendente ad uno stato già esistente
+                //      fare in modo che si possa selezionare un orario, va solo "cablato" il modale
                 modal.componentInstance.codicePartenza = this.codicePartenza;
                 modal.componentInstance.statoMezzo = this.mezzo.stato;
                 modal.componentInstance.codiceMezzo = this.mezzo.codice;
@@ -132,12 +152,11 @@ export class MezzoActionsComponent implements OnInit {
                     switch (res.status) {
                         case 'ok':
                             if (action) {
-                                this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
                                 const orario = res.result.oraEvento;
                                 const dataEvento = res.result.dataEvento;
                                 const azioneIntervento = res.result.azioneIntervento;
                                 this.actionMezzo.emit({
-                                    mezzoAction: this.statoMezzoActions,
+                                    mezzoAction: action,
                                     oraEvento: { ora: orario.hour, minuti: orario.minute, secondi: orario.second },
                                     dataEvento: { giorno: dataEvento.day, mese: dataEvento.month, anno: dataEvento.year },
                                     azioneIntervento,
@@ -167,7 +186,7 @@ export class MezzoActionsComponent implements OnInit {
         }));
     }
 
-    getBtnColor(stato: any): string {
+    getBtnColor(stato: StatoMezzoActions): string {
         return statoMezzoActionColor(stato);
     }
 }

@@ -2,9 +2,9 @@
     <div class="mt-1">Non sono presenti partenze.</div>
 </div>
 <ng-container *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0">
+    <!-- TODO: mettere una condizione per cui se si sta utilizzando il componente in composizione partenza non vengono mostrate le partenze annullate, sganciate, terminate ecc. -->
     <div *ngFor="let p of richiesta.partenze; let index = index">
-        <div *ngIf="!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata"
-             [class.border-bottom]="(index + 1) !== richiesta.partenze.length">
+        <div [class.border-bottom]="(index + 1) !== richiesta.partenze.length">
             <app-partial-loader
                     *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
             <app-partenza [richiesta]="richiesta"
@@ -24,15 +24,15 @@
                           (selezioneMezzo)="selezioneMezzo.emit($event)">
             </app-partenza>
         </div>
+        <ng-container *ngIf="getSostituzioneFineTurnoVisible()">
+            <button class="btn btn-sm btn-info"
+                    [class.cursor-not-allowed]="disabledModificaStatoMezzo"
+                    style="position: absolute; top: -14px; left: -14px"
+                    [disabled]="disabledModificaStatoMezzo"
+                    ngbTooltip="Sostituzione Fine Turno"
+                    (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </ng-container>
     </div>
-    <ng-container *ngIf="getSostituzioneFineTurnoVisible()">
-        <button class="btn btn-sm btn-info"
-                [class.cursor-not-allowed]="disabledModificaStatoMezzo"
-                style="position: absolute; top: -14px; left: -14px"
-                [disabled]="disabledModificaStatoMezzo"
-                ngbTooltip="Sostituzione Fine Turno"
-                (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
-            <i class="fas fa-sync-alt"></i>
-        </button>
-    </ng-container>
 </ng-container>

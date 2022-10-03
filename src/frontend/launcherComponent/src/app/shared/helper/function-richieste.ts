@@ -105,13 +105,5 @@ export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]): boo
 }
 
 export function checkNumeroPartenzeAttive(partenze: Partenza[]): number {
-    let count = 0;
-    if (partenze && partenze.length > 0) {
-        partenze.forEach((p: Partenza) => {
-            if (!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
-                count++;
-            }
-        });
-    }
-    return count;
+    return partenze?.length;
 }

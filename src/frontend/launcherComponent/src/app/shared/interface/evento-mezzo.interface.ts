@@ -1,8 +1,8 @@
-import { StatoMezzo } from '../enum/stato-mezzo.enum';
+import { StatoMezzoActions } from '../enum/stato-mezzo-actions.enum';
 
 export interface EventoMezzo {
     codiceMezzo: string;
     note: string;
     ora: string;
-    stato: StatoMezzo;
+    stato: StatoMezzoActions;
 }

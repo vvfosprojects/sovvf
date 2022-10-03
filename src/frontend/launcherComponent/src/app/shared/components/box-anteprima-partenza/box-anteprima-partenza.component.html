@@ -12,7 +12,7 @@
                 <i class="fas fa-truck fa-fw mr-2 text-{{ statoMezzoColor(partenza.mezzo.stato) }}"
                    [ngbTooltip]="partenza.mezzo.stato"></i>
                 <div class="d-inline-block font-weight-bold mr-2"
-                     [ngbTooltip]="partenza.mezzo.sigla.length <= 6 ? labelMezzo : labelMezzoSigla"
+                     [ngbTooltip]="partenza.mezzo.sigla?.length <= 6 ? labelMezzo : labelMezzoSigla"
                      [disableTooltip]="!partenza.mezzo.sigla && !partenza.mezzo.modello && partenza.mezzo.descrizione?.length <= 6"
                      placement="top">
                     <ng-container *ngIf="partenza.mezzo.sigla">

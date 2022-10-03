@@ -74,7 +74,7 @@
                     </div>
                 </button>
                 <ng-container
-                        *ngIf="!hideGestisciPartenza && inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa">
+                        *ngIf="!hideGestisciPartenza && inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa && partenza.mezzo.stato !== statoMezzoEnum.Rientrato">
                     <div [ngbTooltip]="tooltipLockedConcorrenza"
                          [disableTooltip]="!(tipoConcorrenzaEnum.GestisciPartenza | checkConcorrenzaLocked: [partenza.mezzo.codice])">
                         <button class="btn btn-sm btn-info d-inline-block"
