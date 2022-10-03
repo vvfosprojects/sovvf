@@ -2,9 +2,11 @@
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
 {
@@ -15,14 +17,16 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
     public class GetUtentiByCodiciSede : IGetUtentiByCodiciSedi
     {
         private readonly DbContext _dbContext;
+        private readonly IGetSedi _getSedi;
 
         /// <summary>
         ///   costruttore della classe
         /// </summary>
         /// <param name="dbContext">il contesto del db</param>
-        public GetUtentiByCodiciSede(DbContext dbContext)
+        public GetUtentiByCodiciSede(DbContext dbContext, IGetSedi getSedi)
         {
             _dbContext = dbContext;
+            _getSedi = getSedi;
         }
 
         /// <summary>
@@ -36,6 +40,12 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
             string[] lstSegmenti = new string[6];
             if (cercaBy != null)
                 lstSegmenti = cercaBy.ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+            //CREO INDICE SULLA TABELLA UTENTI SU TUTTI I CAMPI
+            var indexWildcardTextSearch = new CreateIndexModel<Utente>(Builders<Utente>.IndexKeys.Text("$**"));
+            List<CreateIndexModel<Utente>> indexes = new List<CreateIndexModel<Utente>>();
+            indexes.Add(indexWildcardTextSearch);
+            _dbContext.UtenteCollection.Indexes.CreateMany(indexes);
 
             var lista = string.IsNullOrEmpty(cercaBy)
                 ? _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
@@ -56,6 +66,18 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
                 filtroByKeySearch = lista.OrderByDescending(x => x.Nome)
                                          .ThenByDescending(x => x.Cognome)
                                          .ToList();
+
+
+            Parallel.ForEach(filtroByKeySearch, utente =>
+            {
+                foreach(var ruolo in utente.Ruoli)
+                {
+                    ruolo.DescSede = _getSedi.GetInfoSede(ruolo.CodSede).Result.Descrizione;
+                }
+            });
+
+
+
 
             return filtroByKeySearch;
 

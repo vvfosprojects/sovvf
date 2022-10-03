@@ -358,7 +358,7 @@ namespace SO115App.WSNue.Manager
                 provinciaMittente = scheda.provinciaMittente,
                 classificazione = classificazione,
                 classificazioneEvento = SchedaXml.SelectSingleNode("//nue:Classification", namespaces).InnerText,
-                codiceSede = scheda.provinciaDestinatario + ".1000",
+                codiceSede = scheda.provinciaDestinatario,
                 codiceScheda = SchedaXml.SelectSingleNode("//nue:ID", namespaces).InnerText,
                 dataInserimento = Convert.ToDateTime(SchedaXml.SelectSingleNode("//nue:CreateDate", namespaces).InnerText),
                 dettaglio = SchedaXml.SelectSingleNode("//nue:ClassificationDetail", namespaces).InnerText,

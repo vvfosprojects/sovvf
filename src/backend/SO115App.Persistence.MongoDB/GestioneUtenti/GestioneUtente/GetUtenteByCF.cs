@@ -2,6 +2,8 @@
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using System.Threading.Tasks;
 
 namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
 {
@@ -11,14 +13,16 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
     public class GetUtenteByCF : IGetUtenteByCF
     {
         private readonly DbContext _dbContext;
+        private readonly IGetSedi _getSedi;
 
         /// <summary>
         ///   costruttore della classe
         /// </summary>
         /// <param name="dbContext">il contesto del db</param>
-        public GetUtenteByCF(DbContext dbContext)
+        public GetUtenteByCF(DbContext dbContext, IGetSedi getSedi)
         {
             _dbContext = dbContext;
+            _getSedi = getSedi;
         }
 
         /// <summary>
@@ -30,6 +34,13 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
         {
             var utente = _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codiceFiscale)).SingleOrDefault();
 
+            if (utente != null)
+            {
+                Parallel.ForEach(utente.Ruoli, ruolo =>
+                {
+                    ruolo.DescSede = _getSedi.GetInfoSede(ruolo.CodSede).Result.Descrizione;
+                });
+            }
             return utente;
         }
     }
