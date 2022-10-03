@@ -34,11 +34,13 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
         {
             var utente = _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codiceFiscale)).SingleOrDefault();
 
-            Parallel.ForEach(utente.Ruoli, ruolo =>
+            if (utente != null)
             {
-                ruolo.DescSede = _getSedi.GetInfoSede(ruolo.CodSede).Result.Descrizione;
-            });
-
+                Parallel.ForEach(utente.Ruoli, ruolo =>
+                {
+                    ruolo.DescSede = _getSedi.GetInfoSede(ruolo.CodSede).Result.Descrizione;
+                });
+            }
             return utente;
         }
     }
