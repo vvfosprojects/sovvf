@@ -144,7 +144,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.RiepilogoInterventi,
-            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste, Role.Visualizzatore]
         },
         {
             feature: PermissionFeatures.AreaDocumentale,
