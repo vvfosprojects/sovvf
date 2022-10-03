@@ -174,6 +174,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Indirizzo = null
             }))));
 
+            result.AddRange(lstSedi.Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
+            {
+                Codice = fff.Codice,
+                Descrizione = fff.Nome,
+                Coordinate = fff.Coordinate,
+                Indirizzo = null
+            })))));
+
             return result.Distinct().ToList();
         }
 
@@ -227,7 +235,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                             {
                                 try
                                 {
-                                    var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ','))));
+                                    var unita = new UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ? comune.descrizione + " " + comune.id.Split('.')[0] : comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ','))));
                                     lstComunali.Add(unita);
                                 }
                                 catch
@@ -235,14 +243,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                                     if (comune.coordinate.Contains("°"))
                                     {
                                         comune.coordinate = comune.DmsToDdString(comune.coordinate);
-                                        var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ','))));
+                                        var unita = new UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ? comune.descrizione + " " + comune.id.Split('.')[0] : comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ','))));
                                         lstComunali.Add(unita);
                                     }
                                 }
                             }
                             else
                             {
-                                var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(0, 0));
+                                var unita = new UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ? comune.descrizione + " " + comune.id.Split('.')[0] : comune.descrizione, new Coordinate(0, 0));
                                 lstComunali.Add(unita);
                             }
                         }
@@ -256,7 +264,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                             {
                                 if (info.coordinate.Trim().Length > 0)
                                 {
-                                    var unitaComunali = new UnitaOperativa(centrale.Codice.Split('.')[0], provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ','))));
+                                    var unitaComunali = new UnitaOperativa(centrale.Codice.Split('.')[0], provinciale.descrizione + " " + centrale.Codice.Split('.')[0], new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ','))));
 
                                     lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
