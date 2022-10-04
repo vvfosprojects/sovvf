@@ -44,7 +44,7 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
         /// <param name="idRichiesta">l'id della richiesta</param>
         /// <param name="statoSquadra">lo stato della squadra</param>
         /// <param name="codMezzo">Il codice del mezzo nel quale si trova la squadra</param>
-        public void SetStato(string codice, string idSquadra, string idRichiesta, string statoSquadra, string codiceSede, string codMezzo, string TurnoSquadra, string turno)
+        public void SetStato(string codice, string idSquadra, string idRichiesta, string statoSquadra, string codiceSede, string codMezzo, string TurnoSquadra, string turno, string codicePartenza)
         {
             var statoOperativoSquadra = new StatoOperativoSquadra
             {
@@ -55,7 +55,8 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
                 CodMezzo = codMezzo,
                 TurnoSquadra = turno,
                 Turno = TurnoSquadra,
-                Codice = codice
+                Codice = codice,
+                codicePartenza = codicePartenza
             };
 
             if (statoOperativoSquadra.StatoSquadra.Equals(Costanti.MezzoInSede) || statoOperativoSquadra.StatoSquadra.Equals(Costanti.MezzoRientrato))

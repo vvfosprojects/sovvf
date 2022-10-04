@@ -56,6 +56,11 @@ namespace SO115App.Models.Classi.Condivise
         public string CodiceRichiesta { get; set; }
 
         /// <summary>
+        ///   il codice della richiesta
+        /// </summary>
+        public string CodicePartenza { get; set; }
+
+        /// <summary>
         ///   booleana per lo sblocco del mezzo
         /// </summary>
         public bool SbloccaMezzo { get; set; }
