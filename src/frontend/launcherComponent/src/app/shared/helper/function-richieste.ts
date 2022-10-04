@@ -105,5 +105,25 @@ export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]): boo
 }
 
 export function checkNumeroPartenzeAttive(partenze: Partenza[]): number {
+    let count = 0;
+    if (partenze && partenze.length > 0) {
+        partenze.forEach((p: Partenza) => {
+            if (!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+                count++;
+            }
+        });
+    }
+    return count;
+}
+
+export function checkNumeroPartenze(partenze: Partenza[]): number {
     return partenze?.length;
+}
+
+export function getPartenzeAttive(partenze: Partenza[]): Partenza[] {
+    return partenze.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata);
+}
+
+export function getPartenze(partenze: Partenza[]): Partenza[] {
+    return partenze;
 }
