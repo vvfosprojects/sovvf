@@ -62,7 +62,8 @@ const appRoutes: Routes = [
     {
         path: RoutesPath.TrasferimentoChiamata,
         loadChildren: () => import('./features/trasferimento-chiamata/trasferimento-chiamata.module').then(m => m.TrasferimentoChiamataModule),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: { roles: [Role.GestoreRichieste] }
     },
     {
         path: RoutesPath.Changelog,
@@ -72,17 +73,20 @@ const appRoutes: Routes = [
     {
         path: RoutesPath.ImpostazioniSede,
         loadChildren: () => import('./features/impostazioni-sede/impostazioni-sede.module').then(m => m.ImpostazioniSedeModule),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: { roles: [Role.GestoreChiamate, Role.GestoreRichieste] }
     },
     {
         path: RoutesPath.POS,
         loadChildren: () => import('./features/pos/pos.module').then(m => m.PosModule),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: { roles: [Role.GestoreChiamate, Role.GestoreRichieste] }
     },
     {
         path: RoutesPath.AreaDocumentale,
         loadChildren: () => import('./features/area-documentale/area-documentale.module').then(m => m.AreaDocumentaleModule),
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
+        data: { roles: [Role.GestoreChiamate, Role.GestoreRichieste] }
     },
     {
         path: RoutesPath.DashboardPortale,
