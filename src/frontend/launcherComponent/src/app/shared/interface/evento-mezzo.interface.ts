@@ -5,4 +5,5 @@ export interface EventoMezzo {
     note: string;
     ora: string;
     stato: StatoMezzoActions;
+    codicePartenza: string;
 }

@@ -428,7 +428,7 @@ export class MezziComposizioneState {
                                 idMezzoDaSganciare: action.sganciamentoObj.idMezzoDaSganciare
                             };
                             this.store.dispatch([
-                                new RemoveAnnullaStatoMezzi([partenzaObj.idMezzoDaSganciare]),
+                                new RemoveAnnullaStatoMezzi([partenzaObj.idMezzoDaSganciare], partenza.codice),
                                 new ConfirmPartenze(partenzaObj)
                             ]);
                             break;

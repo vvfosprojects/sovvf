@@ -13,7 +13,7 @@
                           [inGestione]="inGestione"
                           [idDaSganciare]="idDaSganciare"
                           [index]="'' + index"
-                          [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice))"
+                          [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice), p?.partenza.codice)"
                           [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
                           [hideGestisciPartenza]="hideGestisciPartenza"
                           [dateSync]="dateSync"

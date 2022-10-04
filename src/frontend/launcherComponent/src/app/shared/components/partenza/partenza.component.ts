@@ -86,7 +86,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     checkListaEventiMezzo(): void {
-        this.listaEventiMezzo = this.richiesta?.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === StatoMezzoActions.InViaggio || x.stato === StatoMezzoActions.SulPosto || x.stato === StatoMezzoActions.InRientro || x.stato === StatoMezzoActions.Rientrato));
+        this.listaEventiMezzo = this.richiesta?.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && x.codicePartenza === this.partenza.codice && (x.stato === StatoMezzoActions.InViaggio || x.stato === StatoMezzoActions.SulPosto || x.stato === StatoMezzoActions.InRientro || x.stato === StatoMezzoActions.Rientrato));
         const statiMezzo = [];
         if (this.listaEventiMezzo?.length) {
             this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));

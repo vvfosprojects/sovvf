@@ -362,9 +362,9 @@ export class RichiesteState {
                 ]);
             }
             if (!action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
-                dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, obj.statoMezzo));
+                dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, obj.statoMezzo, obj.codicePartenza));
             } else if (action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
-                dispatch(new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice]));
+                dispatch(new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice], obj.codicePartenza));
             }
         }
     }

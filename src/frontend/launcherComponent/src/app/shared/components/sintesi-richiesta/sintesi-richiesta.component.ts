@@ -21,8 +21,7 @@ import { DettaglioSoccorsoAereoModalComponent } from '../../modal/dettaglio-socc
 import { ApplyFiltriTipologiaSelezionatiRichieste } from '../../../features/home/store/actions/filterbar/filtri-richieste.actions';
 import { GetDettaglioSoccorsoAereo, GetEventiSoccorsoAereo } from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import { AzioniSintesiRichiestaModalComponent } from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
-import { defineChiamataIntervento } from '../../helper/function-richieste';
-import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
+import { checkNumeroPartenze, defineChiamataIntervento } from '../../helper/function-richieste';
 import { EnteInterface } from '../../interface/ente.interface';
 import { OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ClearMezzoInServizioSelezionato, SetMezzoInServizioSelezionato } from '../../../features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
@@ -211,8 +210,8 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         return partenze?.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
     }
 
-    checkNumeroPartenzeAttive(partenze: Partenza[]): number {
-        return checkNumeroPartenzeAttive(partenze);
+    checkNumeroPartenze(partenze: Partenza[]): number {
+        return checkNumeroPartenze(partenze);
     }
 
     _nomeStatiSquadra(statoSquadra: number): string {

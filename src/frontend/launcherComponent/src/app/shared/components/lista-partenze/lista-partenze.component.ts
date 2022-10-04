@@ -63,8 +63,8 @@ export class ListaPartenzeComponent {
         }
     }
 
-    checkAnnullaStatoMezzo(codMezzo: string, statoMezzo: StatoMezzo): boolean {
-        const annullaStatoMezzo = this.annullaStatoMezzi?.filter((iM: InfoMezzo) => iM.codMezzo === codMezzo && iM.stato === statoMezzo)[0];
+    checkAnnullaStatoMezzo(codMezzo: string, statoMezzo: StatoMezzo, codPartenza: string): boolean {
+        const annullaStatoMezzo = this.annullaStatoMezzi?.filter((iM: InfoMezzo) => iM.codMezzo === codMezzo && iM.stato === statoMezzo && iM.codicePartenza === codPartenza)[0];
         if (annullaStatoMezzo) {
             const unMinutoFa = new Date();
             unMinutoFa.setMinutes(unMinutoFa.getMinutes() - 1);

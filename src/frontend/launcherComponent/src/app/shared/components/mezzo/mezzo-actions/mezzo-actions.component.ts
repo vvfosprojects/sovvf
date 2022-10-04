@@ -43,7 +43,8 @@ export class MezzoActionsComponent implements OnInit {
         codiceMezzo: '',
         note: '',
         ora: '',
-        stato: e
+        stato: e,
+        codicePartenza: ''
     }));
 
     constructor(dropdownConfig: NgbDropdownConfig,
@@ -134,8 +135,6 @@ export class MezzoActionsComponent implements OnInit {
                     type: TipoConcorrenzaEnum.CambioStatoPartenza
                 } as AddConcorrenzaDtoInterface;
                 this.store.dispatch(new AddConcorrenza([data]));
-                // TODO: quando si sta inserendo uno stato precendente ad uno stato già esistente
-                //      fare in modo che si possa selezionare un orario, va solo "cablato" il modale
                 modal.componentInstance.codicePartenza = this.codicePartenza;
                 modal.componentInstance.statoMezzo = this.mezzo.stato;
                 modal.componentInstance.codiceMezzo = this.mezzo.codice;
@@ -176,6 +175,10 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     getListaEventiMezzo(): void {
+        console.log('codice partenza', this.codicePartenza);
+        console.log('codice mezzo', this.mezzo.codice);
+        console.log('listaEventi', this.listaEventi);
+        console.log('listaEventiMezzo', this.listaEventiMezzo);
         this.listaEventiMezzoUnique.forEach(x => x.codiceMezzo = this.listaEventiMezzo[0].codiceMezzo);
         this.listaEventiMezzoUnique.forEach(x => this.listaEventiMezzo.forEach(y => {
             if (x.stato === y.stato) {
