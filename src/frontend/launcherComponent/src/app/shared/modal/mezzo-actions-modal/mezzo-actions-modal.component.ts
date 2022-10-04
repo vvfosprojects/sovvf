@@ -30,6 +30,7 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
 
     action: string;
     modificaOrario: boolean;
+    isPrevious: boolean;
     codicePartenza: string;
     title: string;
     titleStato: string;

@@ -4,7 +4,7 @@ import { Partenza } from '../../model/partenza.model';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { Store } from '@ngxs/store';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
-import { checkNumeroPartenzeAttive } from '../../helper/function-richieste';
+import { checkNumeroPartenze, checkNumeroPartenzeAttive, getPartenze, getPartenzeAttive } from '../../helper/function-richieste';
 import { Mezzo } from '../../model/mezzo.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
@@ -30,6 +30,7 @@ export class ListaPartenzeComponent {
     @Input() disabledModificaStatoMezzo: boolean;
     @Input() hideSostituzioneFineTurno: boolean;
     @Input() hideGestisciPartenza: boolean;
+    @Input() onlyPartenzeAttive: boolean;
     @Input() dateSync: Date;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
@@ -46,8 +47,12 @@ export class ListaPartenzeComponent {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(codiceMezzo, listaSquadre, siglaMezzo, descMezzo));
     }
 
-    checkNumeroPartenzeAttive(partenze: Partenza[]): number {
-        return checkNumeroPartenzeAttive(partenze);
+    checkNumeroPartenze(partenze: Partenza[]): number {
+        return this.onlyPartenzeAttive ? checkNumeroPartenzeAttive(partenze) : checkNumeroPartenze(partenze);
+    }
+
+    getPartenze(partenze: Partenza[]): Partenza[] {
+        return this.onlyPartenzeAttive ? getPartenzeAttive(partenze) : getPartenze(partenze);
     }
 
     getUltimoStatoMezzo(codMezzo: string): StatoMezzo {

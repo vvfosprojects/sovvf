@@ -86,7 +86,6 @@ export class MezzoActionsComponent implements OnInit {
             }
 
             const ultimoMezzo = this.richiesta.partenze.filter((p: Partenza) => !p.partenza.partenzaAnnullata && !p.partenza.sganciata && !p.partenza.terminata)?.length === 1;
-
             if (!isPrevious(this.mezzo, action) && !ora && (!ultimoMezzo || this.mezzo.stato !== StatoMezzo.InRientro)) {
                 const data = {
                     value: this.mezzo.codice,
@@ -143,6 +142,7 @@ export class MezzoActionsComponent implements OnInit {
                 modal.componentInstance.title = !ora ? 'Conferma' : 'Modifica';
                 modal.componentInstance.action = action;
                 modal.componentInstance.modificaOrario = !!ora;
+                modal.componentInstance.isPrevious = isPrevious(this.mezzo, action);
                 modal.componentInstance.titleStato = ': ' + action;
                 modal.componentInstance.dataInViaggio = dataInViaggio;
                 modal.componentInstance.listaEventi = this.listaEventi;

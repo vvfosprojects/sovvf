@@ -1,9 +1,8 @@
-<div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) <= 0">
+<div *ngIf="checkNumeroPartenze(richiesta.partenze) <= 0">
     <div class="mt-1">Non sono presenti partenze.</div>
 </div>
-<ng-container *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0">
-    <!-- TODO: mettere una condizione per cui se si sta utilizzando il componente in composizione partenza non vengono mostrate le partenze annullate, sganciate, terminate ecc. -->
-    <div *ngFor="let p of richiesta.partenze; let index = index">
+<ng-container *ngIf="checkNumeroPartenze(richiesta.partenze) > 0">
+    <div *ngFor="let p of getPartenze(richiesta.partenze); let index = index">
         <div [class.border-bottom]="(index + 1) !== richiesta.partenze.length">
             <app-partial-loader
                     *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
