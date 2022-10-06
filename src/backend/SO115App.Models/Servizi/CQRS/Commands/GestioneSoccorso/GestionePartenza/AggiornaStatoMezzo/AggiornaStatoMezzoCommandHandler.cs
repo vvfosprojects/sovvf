@@ -315,7 +315,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     IdUtente = command.IdUtente,
                     DataOraAggiornamento = istante,
                     StatoMezzo = statoMezzoReale,
-                    IdMezzo = command.IdMezzo
+                    IdMezzo = command.IdMezzo,
+                    CodicePartenza = command.CodicePartenza
                 });
             }
         }

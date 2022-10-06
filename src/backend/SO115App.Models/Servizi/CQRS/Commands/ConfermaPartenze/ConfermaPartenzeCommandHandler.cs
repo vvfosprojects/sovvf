@@ -187,6 +187,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }
                 }
 
+
+                //GESTIONE CODICE PARTENZA
+                var turnoAttuale = _getTurno.Get().Codice;
+                int codpart = _getMaxCodicePartenza.GetMax();
+
+                codpart++;
+
+                if (partenza.Mezzo.Distaccamento.Codice != null)
+                    partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
+                else if (partenza.Mezzo.Appartenenza != null)
+                    partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codpart;
+
+                partenza.Turno = turnoAttuale;
+
+                //command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
+                //command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
+                
                 command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
                 {
                     CodMezzo = partenza.Mezzo.Codice,
@@ -212,23 +229,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             else
                 command.Richiesta.UtPresaInCarico = new List<string> { nominativo };
 
-            //GESTIONE CODICE PARTENZA
-            var turnoAttuale = _getTurno.Get().Codice;
-            int codpart = _getMaxCodicePartenza.GetMax();
-            foreach (var partenza in command.ConfermaPartenze.Partenze.Where(p => p.Codice == "0" || p.Codice == null))
-            {
-                codpart++;
 
-                if (partenza.Mezzo.Distaccamento.Codice != null)
-                    partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
-                else if (partenza.Mezzo.Appartenenza != null)
-                    partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codpart;
-
-                partenza.Turno = turnoAttuale;
-
-                command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
-                command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
-            }
 
             #region RIASSEGNAZIONE
 

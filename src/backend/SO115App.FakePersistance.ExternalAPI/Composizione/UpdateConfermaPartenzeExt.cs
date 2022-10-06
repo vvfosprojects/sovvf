@@ -86,7 +86,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
                     if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                     {
-                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodiceMezzo.Equals(partenza.Mezzo.Codice)).Istante;
+                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodicePartenza.Equals(partenza.Codice)).Istante;
 
                         _setRientroMezzo.Set(new RientroGAC()
                         {

@@ -83,7 +83,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             if (CheckStatoMezzoCronologicamenteOk(command))
             {
-                var partenzaRientro = command.Richiesta.Partenze.Last(p => p.CodiceMezzo.Equals(command.IdMezzo));
+                var partenzaRientro = command.Richiesta.Partenze.Last(p => p.CodicePartenza.Equals(command.CodicePartenza));
                 var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
 
                 var codiceSedeMezzo = partenzaRientro.Partenza.Mezzo.Distaccamento.Codice;
@@ -106,12 +106,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice, partenzaRientro.Partenza.Codice);
 
-                var ListaPartenzeDaAggiornare = new List<ComposizionePartenze>();
-
-                if (command.StatoMezzo.Equals(Costanti.MezzoRientrato))
-                    ListaPartenzeDaAggiornare = command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo).ToList();
-                else
-                    ListaPartenzeDaAggiornare = command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo && !c.Partenza.Terminata).ToList();
+                var ListaPartenzeDaAggiornare = command.Richiesta.Partenze.Where(c => c.Partenza.Codice == command.CodicePartenza).ToList();
 
                 foreach (var partenza in ListaPartenzeDaAggiornare)
                 {
@@ -128,7 +123,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private bool CheckStatoMezzoCronologicamenteOk(AggiornaStatoMezzoCommand command)
         {
-            var statoAttualeMezzo = command.Richiesta.Partenze.ToList().Find(p => p.CodiceMezzo.Equals(command.IdMezzo)).Partenza.Mezzo.Stato;
+            var statoAttualeMezzo = command.Richiesta.Partenze.ToList().Find(p => p.CodicePartenza.Equals(command.CodicePartenza)).Partenza.Mezzo.Stato;
 
             switch (statoAttualeMezzo)
             {

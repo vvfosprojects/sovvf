@@ -730,7 +730,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 foreach (var evento in listaComposizioni)
                 {
                     var UltimoEventoPartenza = listaPartenze
-                        .FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice) && m.TipoEvento != "AnnullamentoStatoPartenza")
+                        .FindAll(m => m.CodicePartenza.Equals(evento.Partenza.Codice) && m.TipoEvento != "AnnullamentoStatoPartenza")
                         .OrderBy(e => e.Istante).Last().TipoEvento;
 
                     if (UltimoEventoPartenza.Equals("ComposizionePartenza") || UltimoEventoPartenza.Equals("UscitaPartenza"))
@@ -767,33 +767,33 @@ namespace SO115App.API.Models.Classi.Soccorso
                         }
                     }
 
-                    if (listaPartenzeAnnullatePerNPN.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    if (listaPartenzeAnnullatePerNPN.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList().Count > 0)
                     {
-                        foreach (var annullamento in listaPartenzeAnnullatePerNPN.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        foreach (var annullamento in listaPartenzeAnnullatePerNPN.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
                                 evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
-                    if (listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    if (listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList().Count > 0)
                     {
-                        foreach (var annullamento in listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        foreach (var annullamento in listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
                                 evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
-                    if (listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    if (listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList().Count > 0)
                     {
-                        foreach (var annullamento in listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        foreach (var annullamento in listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
                                 evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
-                    if (listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    if (listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList().Count > 0)
                     {
-                        foreach (var annullamento in listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        foreach (var annullamento in listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
                                 evento.Partenza.PartenzaAnnullata = true;
