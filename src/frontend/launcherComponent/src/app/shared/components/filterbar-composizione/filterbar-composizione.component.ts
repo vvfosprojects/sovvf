@@ -73,7 +73,6 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
         }
 
         if (((changes?.competenze?.currentValue && changes?.competenze?.currentValue !== []) || changes?.competenze?.currentValue === []) && changes?.filtri?.currentValue) {
-            console.log('changes?.competenze?.currentValue', changes?.competenze?.currentValue);
             this.setDistaccamentiDefault();
             this.checkDistaccamenti();
         }
