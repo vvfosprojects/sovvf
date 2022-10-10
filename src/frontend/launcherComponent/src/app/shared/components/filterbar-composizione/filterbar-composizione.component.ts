@@ -73,6 +73,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
         }
 
         if (((changes?.competenze?.currentValue && changes?.competenze?.currentValue !== []) || changes?.competenze?.currentValue === []) && changes?.filtri?.currentValue) {
+            console.log('changes?.competenze?.currentValue', changes?.competenze?.currentValue);
             this.setDistaccamentiDefault();
             this.checkDistaccamenti();
         }
@@ -106,7 +107,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
         if (this.competenze?.length) {
             const vistaSedi = this.store.selectSnapshot(AppState.vistaSedi);
             const sedeSelezionata = vistaSedi[0];
-            if (sedeSelezionata.indexOf('.') !== -1) {
+            if (sedeSelezionata.indexOf('.') === -1) {
                 this.competenze.forEach(x => distaccamentiDefault.push({ id: x.codice }));
                 if (distaccamentiDefault?.length) {
                     const distaccamentiIds = this.filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => d.id);
@@ -136,6 +137,7 @@ export class FilterbarComposizioneComponent implements OnChanges, OnDestroy {
     }
 
     addFiltro(event: any, tipo: string): void {
+        console.log('event', event);
         if (event) {
             if (event?.id || event?.descrizione) {
                 this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
