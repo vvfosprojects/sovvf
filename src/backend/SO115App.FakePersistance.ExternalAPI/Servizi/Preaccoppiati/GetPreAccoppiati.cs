@@ -116,7 +116,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                                     Ruolo = m.Ruolo
                                 }).ToList(),
                             }).ToList(),
-                            StatoMezzo = lstStatoMezzi.Result.FirstOrDefault(m => squadraPreaccoppiata.CodiciMezziPreaccoppiati?.Any(c => c.Equals(m.CodiceMezzo)) ?? false)?.StatoOperativo ?? Costanti.MezzoInSede,
+                            StatoMezzo = lstStatoMezzi.Result.FirstOrDefault(m => squadraPreaccoppiata.CodiciMezziPreaccoppiati?.Any(c => c.Equals(m.CodiceMezzo) && !m.StatoOperativo.Equals("Rientrato")) ?? false)?.StatoOperativo ?? Costanti.MezzoInSede,
 
                             Distaccamento = mezzo.DescrizioneAppartenenza,
                             DescrizioneMezzo = mezzo.Descrizione,

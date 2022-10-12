@@ -174,7 +174,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         ListaSquadre = lstSquadreInRientro
                     };
 
-                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
+                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice) && !x.StatoOperativo.Equals(Costanti.MezzoRientrato));
 
                     if (statoMezzo != null)
                     {

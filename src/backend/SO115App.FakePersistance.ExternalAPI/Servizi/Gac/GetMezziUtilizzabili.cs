@@ -119,6 +119,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
 
             var lstStati = _getStatoMezzi.Get(sedi.ToArray());
+            lstStati = lstStati.FindAll(s => !s.StatoOperativo.Equals("Rientrato"));
 
             //MAPPING
             var ListaMezzi = lstMezziDto.Select(m =>
@@ -142,7 +143,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                         mezzo.CoordinateFake = false;
                     }
 
-                    var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
+                    var ListaStatoOperativoMezzo = lstStati.FindAll(s => s.CodiceMezzo.Equals(mezzo.Codice));  //_getStatoMezzi.Get(mezzo.Distaccamento.Codice,, mezzo.Codice);
                     if (ListaStatoOperativoMezzo.Count > 0)
                     {
                         mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;

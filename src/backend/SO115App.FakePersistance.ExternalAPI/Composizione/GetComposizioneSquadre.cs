@@ -122,7 +122,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var lstStatiSquadre = Task.Run(() => _getStatoSquadre.Get(codiceTurno.Substring(0, 1), _getSottoSedi.Get(CodiciSede.ToArray()).ToList()).ToList()).Result;
             var lstStatiMezzi = Task.Run(() => _getStatoMezzi.Get(query.Filtro.CodiciDistaccamenti ?? filtroCodiciSede.ToArray())).Result;
-            var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Where(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro)).Select(s => s.CodiceMezzo).ToList()))?.Result;
+            var lstMezziInRientro = Task.Run(() => _getMezzi.GetInfo(lstStatiMezzi.Where(stato => stato.StatoOperativo.Equals(Costanti.MezzoInRientro) && !stato.StatoOperativo.Equals("Rientrato")).Select(s => s.CodiceMezzo).ToList()))?.Result;
 
             List<MezzoDTO> lstMezziPreaccoppiati = null;
 

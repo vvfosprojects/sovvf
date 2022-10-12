@@ -36,23 +36,16 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
         /// <param name="idRichiesta">l'id della richiesta a cui è associato il mezzo</param>
         public void Set(string codiceSede, string codiceMezzo, string statoOperativo, string codRichiesta, string codicePartenza)
         {
-            if (statoOperativo.Equals(Costanti.MezzoRientrato) || statoOperativo.Equals(Costanti.MezzoInSede))
+            var statoMezzo = new StatoOperativoMezzo
             {
-                _dbContext.StatoMezzoCollection.DeleteOne(Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodiceMezzo, codiceMezzo));
-            }
-            else
-            {
-                var statoMezzo = new StatoOperativoMezzo
-                {
-                    CodiceMezzo = codiceMezzo,
-                    CodiceSede = codiceSede,
-                    CodiceRichiesta = codRichiesta,
-                    StatoOperativo = statoOperativo,
-                    CodicePartenza = codicePartenza
-                };
+                CodiceMezzo = codiceMezzo,
+                CodiceSede = codiceSede,
+                CodiceRichiesta = codRichiesta,
+                StatoOperativo = statoOperativo,
+                CodicePartenza = codicePartenza
+            };
 
-                _dbContext.StatoMezzoCollection.FindOneAndReplace(Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodiceMezzo, codiceMezzo), statoMezzo, new FindOneAndReplaceOptions<StatoOperativoMezzo> { IsUpsert = true });
-            }
+            _dbContext.StatoMezzoCollection.FindOneAndReplace(Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodiceMezzo, codiceMezzo), statoMezzo, new FindOneAndReplaceOptions<StatoOperativoMezzo> { IsUpsert = true });
         }
     }
 }
