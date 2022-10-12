@@ -58,8 +58,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             var lstProvinceSedi = query.CodiceSede.Select(sede => sede.Split('.')[0]).Distinct().ToList();
             var lstSedi = _getSedi.GetAll().Result;
             var codiceTurno = Task.Run(() => _getTurno.Get().Codice.Substring(0, 1));
-            var lstStatoMezzi = Task.Run(() => _getStatoMezzi.Get(query.CodiceSede));
-            var lstStatoSquadre = Task.Run(async () => _getStatoSquadre.Get(await codiceTurno, query.CodiceSede.ToList()));
+
+            var lstStatoMezzi = Task.Run(() => _getStatoMezzi.Get(query.CodiceSede)).Result;
+            lstStatoMezzi = lstStatoMezzi.FindAll(s => !s.StatoOperativo.Equals(Costanti.MezzoRientrato));
+
+            var lstStatoSquadre = Task.Run(async () => _getStatoSquadre.Get(await codiceTurno, query.CodiceSede.ToList())).Result;
+            lstStatoSquadre = lstStatoSquadre.FindAll(s => !s.StatoSquadra.Equals(Costanti.MezzoRientrato));
+
             var lstSquadreWS = lstProvinceSedi.Select(sede => _getSquadre.GetAllByCodiceDistaccamento(sede)).Where(s => s.Result != null).ToList();
 
             var lstSquadre = new List<SquadraOpService>();
@@ -105,7 +110,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                                 Distaccamento = lstSedi.FirstOrDefault(d => d.Codice.Equals(s.Distaccamento)) ?? null,
                                 Codice = s.Codice,
                                 Nome = s.Codice,
-                                Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(lstStatoSquadre.Result?.FirstOrDefault(ss => ss.IdSquadra.Equals($"{s.Codice}_{s.TurnoAttuale}"))?.StatoSquadra ?? Costanti.MezzoInSede),
+                                Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(lstStatoSquadre?.FirstOrDefault(ss => ss.IdSquadra.Equals($"{s.Codice}_{s.TurnoAttuale}"))?.StatoSquadra ?? Costanti.MezzoInSede),
                                 Turno = s.TurnoAttuale,
                                 DiEmergenza = s.Emergenza,
                                 Membri = lstSquadrePreaccoppiate.FirstOrDefault(sq => sq.Codice.Equals(s.Codice))?.Membri.Select(m => new Componente()
@@ -116,7 +121,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                                     Ruolo = m.Ruolo
                                 }).ToList(),
                             }).ToList(),
-                            StatoMezzo = lstStatoMezzi.Result.FirstOrDefault(m => squadraPreaccoppiata.CodiciMezziPreaccoppiati?.Any(c => c.Equals(m.CodiceMezzo) && !m.StatoOperativo.Equals("Rientrato")) ?? false)?.StatoOperativo ?? Costanti.MezzoInSede,
+                            StatoMezzo = lstStatoMezzi.FirstOrDefault(m => squadraPreaccoppiata.CodiciMezziPreaccoppiati?.Any(c => c.Equals(m.CodiceMezzo) && !m.StatoOperativo.Equals("Rientrato")) ?? false)?.StatoOperativo ?? Costanti.MezzoInSede,
 
                             Distaccamento = mezzo.DescrizioneAppartenenza,
                             DescrizioneMezzo = mezzo.Descrizione,

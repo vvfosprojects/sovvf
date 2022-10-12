@@ -121,7 +121,7 @@ namespace SO115App.SignalR.Utility
 
         private string[] getSedeSquadra(string value, string turno, string codSede)
         {
-            var lstSquadre = _getSquadra.Get(turno);
+            //var lstSquadre = _getSquadra.Get(turno);
 
             ComposizioneSquadreQuery query = new ComposizioneSquadreQuery()
             {
