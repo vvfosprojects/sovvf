@@ -68,7 +68,7 @@ namespace SO115App.ExternalAPI.Fake.Box
             });
 
             var statoSquadre = _getStatoSquadra.Get(_getTurno.Get().Codice.Substring(0, 1), listaCodiciSedeConSottoSedi);
-            statoSquadre = statoSquadre.FindAll(s => !s.StatoSquadra.Equals("Rientrato"));
+            statoSquadre = statoSquadre.FindAll(s => !s.StatoSquadra.Equals(Costanti.MezzoRientrato));
             var result = new BoxPersonale
             {
                 Funzionari = new ConteggioFunzionari
