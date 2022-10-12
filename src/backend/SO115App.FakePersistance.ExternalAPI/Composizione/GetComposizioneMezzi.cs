@@ -104,6 +104,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             #endregion Gestione turno preaccoppiati
 
             var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno.Substring(0, 1), lstCodiciPin);
+            lstStatiSquadre = lstStatiSquadre.FindAll(s => !s.StatoSquadra.Equals(Costanti.MezzoRientrato));
 
             var lstSquadrePreaccoppiate = new List<SquadraOpService>();
             if (lstSquadre.Count > 0)
@@ -174,7 +175,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         ListaSquadre = lstSquadreInRientro
                     };
 
-                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
+                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice) && !x.StatoOperativo.Equals(Costanti.MezzoRientrato));
 
                     if (statoMezzo != null)
                     {

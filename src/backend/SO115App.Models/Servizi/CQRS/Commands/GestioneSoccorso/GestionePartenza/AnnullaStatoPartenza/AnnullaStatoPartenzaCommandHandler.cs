@@ -56,7 +56,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             if (adesso >= ultimoMovimento.DataOraInserimento.AddMinutes(1))
                 throw new Exception($"1* Annullamento non più disponibile per il mezzo {command.CodicePartenza}.");
 
-            command.StatoMezzo = _getStatoMezzi.Get(command.CodiciSedi, command.TargaMezzo).First().StatoOperativo;
+            command.StatoMezzo = _getStatoMezzi.Get(command.CodiciSedi, command.CodicePartenza, command.TargaMezzo).First().StatoOperativo;
 
             if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(command.StatoMezzo))
             {
@@ -108,7 +108,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     IdMezzo = command.TargaMezzo,
                     IdUtente = command.IdOperatore,
                     StatoMezzo = statoPrecedente,
-                    AzioneIntervento = "AnnullamentoPartenza"
+                    AzioneIntervento = "AnnullamentoPartenza",
+                    CodicePartenza = command.CodicePartenza
                 };
 
                 _updateStatoPartenze.Update(commandStatoMezzo);

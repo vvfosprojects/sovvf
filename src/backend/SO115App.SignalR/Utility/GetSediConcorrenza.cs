@@ -98,7 +98,7 @@ namespace SO115App.SignalR.Utility
         {
             var lstMezzi = _getMezzo.Get(codSede);
 
-            var mezzo = lstMezzi.FirstOrDefault(m => m.CodiceMezzo.Equals(value));
+            var mezzo = lstMezzi.FirstOrDefault(m => m.CodiceMezzo.Equals(value) && !m.StatoOperativo.Equals("Rientrato"));
 
             var codiciSede = new List<string> { };
 
@@ -121,7 +121,7 @@ namespace SO115App.SignalR.Utility
 
         private string[] getSedeSquadra(string value, string turno, string codSede)
         {
-            var lstSquadre = _getSquadra.Get(turno);
+            //var lstSquadre = _getSquadra.Get(turno);
 
             ComposizioneSquadreQuery query = new ComposizioneSquadreQuery()
             {

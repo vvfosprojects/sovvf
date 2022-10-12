@@ -59,18 +59,10 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
                 codicePartenza = codicePartenza
             };
 
-            if (statoOperativoSquadra.StatoSquadra.Equals(Costanti.MezzoInSede) || statoOperativoSquadra.StatoSquadra.Equals(Costanti.MezzoRientrato))
-            {
-                _dbContext.StatoSquadraCollection.DeleteOne(Builders<StatoOperativoSquadra>.Filter.And(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra),
-                                                                                                       Builders<StatoOperativoSquadra>.Filter.Eq(x => x.CodMezzo, codMezzo)));
-            }
-            else
-            {
-                var findAndReplaceOptions = new FindOneAndReplaceOptions<StatoOperativoSquadra> { IsUpsert = true };
-                _dbContext.StatoSquadraCollection.FindOneAndReplace(Builders<StatoOperativoSquadra>.Filter.And(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra),
-                                                                                                               Builders<StatoOperativoSquadra>.Filter.Eq(x => x.CodMezzo, codMezzo)),
-                                                                                                               statoOperativoSquadra, findAndReplaceOptions);
-            }
+            var findAndReplaceOptions = new FindOneAndReplaceOptions<StatoOperativoSquadra> { IsUpsert = true };
+            _dbContext.StatoSquadraCollection.FindOneAndReplace(Builders<StatoOperativoSquadra>.Filter.And(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra),
+                                                                                                           Builders<StatoOperativoSquadra>.Filter.Eq(x => x.CodMezzo, codMezzo)),
+                                                                                                           statoOperativoSquadra, findAndReplaceOptions);
         }
     }
 }
