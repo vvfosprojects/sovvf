@@ -45,7 +45,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
                 CodicePartenza = codicePartenza
             };
 
-            _dbContext.StatoMezzoCollection.FindOneAndReplace(Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodiceMezzo, codiceMezzo), statoMezzo, new FindOneAndReplaceOptions<StatoOperativoMezzo> { IsUpsert = true });
+            _dbContext.StatoMezzoCollection.FindOneAndReplace(Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodicePartenza, codicePartenza), statoMezzo, new FindOneAndReplaceOptions<StatoOperativoMezzo> { IsUpsert = true });
         }
     }
 }

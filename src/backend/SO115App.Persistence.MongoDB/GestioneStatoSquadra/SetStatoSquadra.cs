@@ -60,8 +60,7 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
             };
 
             var findAndReplaceOptions = new FindOneAndReplaceOptions<StatoOperativoSquadra> { IsUpsert = true };
-            _dbContext.StatoSquadraCollection.FindOneAndReplace(Builders<StatoOperativoSquadra>.Filter.And(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra),
-                                                                                                           Builders<StatoOperativoSquadra>.Filter.Eq(x => x.CodMezzo, codMezzo)),
+            _dbContext.StatoSquadraCollection.FindOneAndReplace(Builders<StatoOperativoSquadra>.Filter.And(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.codicePartenza, codicePartenza)),
                                                                                                            statoOperativoSquadra, findAndReplaceOptions);
         }
     }
