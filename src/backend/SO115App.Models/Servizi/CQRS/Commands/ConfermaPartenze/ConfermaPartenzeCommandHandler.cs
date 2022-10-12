@@ -106,11 +106,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }
                 });
 
-                Parallel.ForEach(command.RichiestaDaSganciare.Partenze, composizione =>
-                {
-                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
-                        composizione.Partenza.Sganciata = true;
-                });
 
                 if (idComposizioneDaSganciare == 1)
                     command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
@@ -123,13 +118,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
 
                 new RevocaPerRiassegnazione(command.RichiestaDaSganciare, command.Richiesta, command.ConfermaPartenze.IdMezzoDaSganciare, dataAdesso, command.Utente.Id,
-                    command.ConfermaPartenze.Partenze.FirstOrDefault(p => p.Mezzo.Codice == command.ConfermaPartenze.IdMezzoDaSganciare).Codice);
+                    command.RichiestaDaSganciare.Partenze.FirstOrDefault(p => p.Partenza.Mezzo.Codice == command.ConfermaPartenze.IdMezzoDaSganciare && !p.Partenza.Terminata).CodicePartenza);
 
                 //SOSPENDO LA RICHIESTA SE LA PARTENZA DA SGANCIARE E' L'ULTIMA IN CORSO SU TALE RICHIESTA
                 //if (command.Richiesta.lstPartenze.Where(p => !p.Terminata && !p.PartenzaAnnullata && !p.Sganciata && p.Mezzo.Codice != command.ConfermaPartenze.IdMezzoDaSganciare).Count() == 0)
                 //    new RichiestaSospesa($"Scangio dell'ultima partenza {command.ConfermaPartenze.Partenze.First().Codice} sulla richiesta {command.Richiesta.Codice}", command.Richiesta, dataAdesso, command.Utente.Id);
 
                 //_set
+
+
+                Parallel.ForEach(command.RichiestaDaSganciare.Partenze, composizione =>
+                {
+                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare) && !composizione.Partenza.Terminata)
+                    {
+                        composizione.Partenza.Sganciata = true;
+                        composizione.Partenza.Terminata = true;
+                    }
+                });
 
                 _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
             }
