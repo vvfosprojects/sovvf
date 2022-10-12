@@ -142,6 +142,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             #endregion SGANCIAMENTO
 
             var PartenzaEsistente = false;
+            int codicePartenzaDiAppoggio = 0;
 
             //PARALLEL
             foreach (var partenza in command.ConfermaPartenze.Partenze)
@@ -192,16 +193,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }
                 }
 
-                //GESTIONE CODICE PARTENZA
                 var turnoAttuale = _getTurno.Get().Codice;
-                int codpart = _getMaxCodicePartenza.GetMax();
-
-                codpart++;
+                //GESTIONE CODICE PARTENZA
+                if (codicePartenzaDiAppoggio == 0)
+                {
+                    int codpart = _getMaxCodicePartenza.GetMax();
+                    codpart++;
+                    codicePartenzaDiAppoggio = codpart;
+                }
+                else
+                {
+                    codicePartenzaDiAppoggio++;
+                }
 
                 if (partenza.Mezzo.Distaccamento.Codice != null)
-                    partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
+                    partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codicePartenzaDiAppoggio;
                 else if (partenza.Mezzo.Appartenenza != null)
-                    partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codpart;
+                    partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codicePartenzaDiAppoggio;
 
                 partenza.Turno = turnoAttuale;
 
