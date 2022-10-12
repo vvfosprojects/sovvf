@@ -63,12 +63,12 @@ namespace SO115App.ExternalAPI.Fake.Box
             {
                 var w = _getSquadre.GetAllByCodiceDistaccamento(codice).Result;
 
-                if(w != null)
+                if (w != null)
                     workshift.Add(w);
             });
 
             var statoSquadre = _getStatoSquadra.Get(_getTurno.Get().Codice.Substring(0, 1), listaCodiciSedeConSottoSedi);
-
+            statoSquadre = statoSquadre.FindAll(s => !s.StatoSquadra.Equals("Rientrato"));
             var result = new BoxPersonale
             {
                 Funzionari = new ConteggioFunzionari
@@ -101,7 +101,7 @@ namespace SO115App.ExternalAPI.Fake.Box
                     Next = workshift.Select(w => w?.Successivo?.Squadre?.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Length).Sum() ?? 0).Sum(),
                     Previous = workshift.Select(w => w?.Precedente?.Squadre?.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT")).Select(s => s.Membri.Length).Sum() ?? 0).Sum(),
                 },
-                SquadreServizio =  new ConteggioPersonale
+                SquadreServizio = new ConteggioPersonale
                 {
                     Current = workshift.SelectMany(w => w?.Attuale?.Squadre.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT"))).Count(),
                     Next = workshift.SelectMany(w => w?.Successivo?.Squadre.Where(s => listaCodiciSedeConSottoSedi.Contains(s.Distaccamento) && s.spotType.Equals("WORKSHIFT"))).Count(),
