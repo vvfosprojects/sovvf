@@ -116,9 +116,9 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string CodOperatore, string[] coordinatePartenza = null, string codicePartenza = null)
         {
-            bool cambioOrarioUscita = partenza.Mezzo.Stato == stato.Stato;
+            bool cambioOrario = partenza.Mezzo.Stato == stato.Stato;
 
-            if (!cambioOrarioUscita)
+            if (!cambioOrario)
                 check.CheckCongruenza(stato, partenza.Codice, true);
             else
                 check.CheckCongruenza(stato, partenza.Codice, false);
@@ -141,7 +141,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoInViaggio:
 
-                    var dataComposizione = cambioOrarioUscita == true ? stato.Istante : stato.Istante.AddMinutes(1);
+                    var dataComposizione = cambioOrario == true ? stato.Istante : stato.Istante.AddMinutes(1);
 
                     if (coordinatePartenza != null)
                     {
