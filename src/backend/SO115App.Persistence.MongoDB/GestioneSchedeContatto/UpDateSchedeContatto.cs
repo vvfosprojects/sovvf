@@ -21,6 +21,7 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using System.Collections.Generic;
 
 namespace SO115App.Persistence.MongoDB
 {
@@ -39,6 +40,12 @@ namespace SO115App.Persistence.MongoDB
 
             var replaceOption = new ReplaceOptions();
             replaceOption.IsUpsert = true;
+
+            List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            var indexWildcardTextSearch = new CreateIndexModel<SchedaContatto>(Builders<SchedaContatto>.IndexKeys.Text("$**"));
+            List<CreateIndexModel<SchedaContatto>> indexes = new List<CreateIndexModel<SchedaContatto>>();
+            indexes.Add(indexWildcardTextSearch);
+            _dbContext.SchedeContattoCollection.Indexes.CreateMany(indexes);
 
             _dbContext.SchedeContattoCollection.ReplaceOne(filter, scheda, replaceOption);
 
