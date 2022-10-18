@@ -251,13 +251,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 foreach (var partenza in command.ConfermaPartenze.Partenze)
                 {
-                    var statoOperativoMezzo = mezziInRientro.Find(s => s.CodicePartenza == partenza.Codice);
+                    var statoOperativoMezzo = mezziInRientro.Find(s => s.CodiceMezzo.Equals(partenza.Mezzo.Codice));
                     var richiestaDaTerminare = richiesteDaTerminare.Select(r => r.CodRichiesta).Contains(statoOperativoMezzo.CodiceRichiesta)
                         ? richiesteDaTerminare.Find(r => r.CodRichiesta.Equals(statoOperativoMezzo.CodiceRichiesta))
                         : _getRichiestaById.GetByCodice(statoOperativoMezzo.CodiceRichiesta);
-                    var partenzaDaTerminare = richiestaDaTerminare.lstPartenze.Find(p => p.Mezzo.Codice == partenza.Mezzo.Codice);
+                    var partenzaDaTerminare = richiestaDaTerminare.lstPartenze.Find(p => p.Mezzo.Codice.Equals(partenza.Mezzo.Codice));
 
                     string note = $"La partenza {partenzaDaTerminare.Codice} con mezzo {partenza.Mezzo.Codice.Split('.').Last()} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {partenza.Codice}";
+
+                    command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
+                    {
+                        CodMezzo = partenza.Mezzo.Codice,
+                        Istante = dataAdesso,
+                        Stato = Costanti.MezzoRientrato
+                    }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id);
 
                     new MezzoRiassegnato(richiestaDaTerminare, partenza.Mezzo.Codice.Split('.').Last(), dataAdesso, command.Utente.Id, "MezzoRiassegnato", partenza.Codice, note);
 
