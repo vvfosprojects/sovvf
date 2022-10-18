@@ -312,7 +312,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             lstCodSedi = lstMezzi.Select(s => s.CodiceDistaccamento).ToList();
 
-            Parallel.ForEach(lstCodSedi.Distinct(), CodSede =>
+            foreach (var CodSede in lstCodSedi.Distinct())
             {
                 try
                 {
@@ -335,7 +335,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 catch (Exception ex)
                 {
                 }
-            });
+            };
 
             return listaSedi.OrderBy(s => s.Codice).ToList();
         }
