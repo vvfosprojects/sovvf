@@ -163,7 +163,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Codice = ff.Codice,
                 Descrizione = ff.Nome,
                 Coordinate = ff.Coordinate,
-                CoordinateString = f.CoordinateString.Split(','),
+                CoordinateString = ff.CoordinateString.Split(','),
                 Indirizzo = null
             }
              )));
@@ -173,7 +173,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Codice = fff.Codice,
                 Descrizione = fff.Nome,
                 Coordinate = fff.Coordinate,
-                CoordinateString = f.CoordinateString.Split(','),
+                CoordinateString = fff.CoordinateString.Split(','),
                 Indirizzo = null
             }))));
 
@@ -208,67 +208,36 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     var result = new UnitaOperativa(con.Id, con.Descrizione, con.Coordinate);
 
                     //REGIONI
-                    foreach (var regionale in lstRegionali)
+                    Parallel.ForEach(lstRegionali, regionale =>
                     {
                         var info = GetInfoSede(regionale.id).Result;
 
-                        result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = info.coordinate});
-                    };
+                        result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = info.coordinate });
+                    });
 
-                    //PROVINCE
-                    foreach (var provinciale in lstProvinciali)
+                    foreach (var regione in result.Figli)
                     {
-                        var info = GetInfoSede(provinciale.id).Result;
-
-                        var listaComuni = GetFigli(provinciale.id).Result;
-
-                        var lstComunali = new List<UnitaOperativa>();
+                        var listaComuni = GetFigli(regione.Codice).Result;
 
                         foreach (var comune in listaComuni)
                         {
-                            if (comune.coordinate.Trim().Length > 0)
-                            {
-                                try
-                                {
-                                    var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = comune.coordinate };
-                                    lstComunali.Add(unita);
-                                }
-                                catch
-                                {
-                                    if (comune.coordinate.Contains("°"))
-                                    {
-                                        comune.coordinate = comune.DmsToDdString(comune.coordinate);
-                                        var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = comune.coordinate };
-                                        lstComunali.Add(unita);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                var unita = new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(0, 0)) { CoordinateString = comune.coordinate };
-                                lstComunali.Add(unita);
-                            }
-                        }
-                        var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
-
-                        if (centrale != null)
-                        {
-                            lstComunali.Remove(centrale);
-
-                            try
-                            {
-                                if (info.coordinate.Trim().Length > 0)
-                                {
-                                    var unitaComunali = new UnitaOperativa(centrale.Codice, provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = info.coordinate };
-
-                                    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
-
-                                    result.Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
-                                }
-                            }
-                            catch { }
+                            var infoComune = GetInfoSede(comune.id).Result;
+                            regione.AddFiglio(new UnitaOperativa(comune.id, comune.descrizione, new Coordinate(Convert.ToDouble(infoComune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(infoComune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = infoComune.coordinate });
                         }
                     };
+
+                    foreach (var comune in result.Figli.ToList().SelectMany(r => r.Figli))
+                    {
+                        var listaDistaccamenti = GetFigli(comune.Codice).Result;
+                        foreach (var distaccamento in listaDistaccamenti)
+                        {
+                            if (distaccamento.tipologiaDistaccamento.codice.Equals(2))
+                            {
+                                var infoDistaccamento = GetInfoSede(distaccamento.id).Result;
+                                comune.AddFiglio(new UnitaOperativa(distaccamento.id, distaccamento.descrizione, new Coordinate(Convert.ToDouble(infoDistaccamento.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(infoDistaccamento.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = infoDistaccamento.coordinate });
+                            }
+                        }
+                    }
 
                     ListaSediAlberate = result;
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
