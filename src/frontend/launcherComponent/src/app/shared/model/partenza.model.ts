@@ -6,18 +6,15 @@ import { Coordinate } from './coordinate.model';
 export class Partenza {
     constructor(
         public partenza: DettaglioPartenza,
-        public codiceFonte: string,
         public codiceMezzo: string,
         public codiceRichiesta: string,
-        public dataOraInserimento: string,
         public istante: string,
-        public sedeOperatore: string,
-        public tipoEvento: string,
         public codicePartenza: string,
         public fuoriSede: boolean,
+        public inviataStatri: boolean,
         public coordinate: Coordinate,
-        public mezzo: Mezzo,
-        public squadre: Squadra[]
+        public squadre?: Squadra[],
+        public mezzo?: Mezzo
     ) {
     }
 }

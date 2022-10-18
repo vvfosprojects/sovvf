@@ -117,6 +117,13 @@ namespace SO115App.Persistence.MongoDB
             var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi.ToHashSet());
             var filtriSediPartenze = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSediPartenze, listaCodSedi.ToHashSet());
 
+            var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
+
+            List<CreateIndexModel<RichiestaAssistenza>> indexes = new List<CreateIndexModel<RichiestaAssistenza>>();
+            indexes.Add(indexWildcardTextSearch);
+
+            _dbContext.RichiestaAssistenzaCollection.Indexes.CreateMany(indexes);
+
             var lstRichieste = new List<RichiestaAssistenza>();
             if (filtro.SearchKey == null || filtro.SearchKey.Length == 0)
             {
@@ -148,12 +155,7 @@ namespace SO115App.Persistence.MongoDB
                     & Builders<RichiestaAssistenza>.Filter.Eq("listaEventi.partenza.sganciata", false)
                     & Builders<RichiestaAssistenza>.Filter.Eq("listaEventi.partenza.partenzaAnnullata", false)));
 
-                var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
 
-                List<CreateIndexModel<RichiestaAssistenza>> indexes = new List<CreateIndexModel<RichiestaAssistenza>>();
-                indexes.Add(indexWildcardTextSearch);
-
-                _dbContext.RichiestaAssistenzaCollection.Indexes.CreateMany(indexes);
                 lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroFullText & (filtroSediCompetenti | filtriSediAllertate | filtriSediPartenze)).ToList();
             }
 

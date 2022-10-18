@@ -6,6 +6,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneConcorrenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SostituzionePartenza
@@ -63,13 +64,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Richiesta.CodSOCompetente, Costanti.GestoreRichieste))
                         abilitato = true;
 
-                    if (command.Richiesta.CodUOCompetenza!=null)
-                        foreach (var competenza in command.Richiesta.CodUOCompetenza)
-                        {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
-                        }
-
                     if (command.Richiesta.CodSOAllertate != null)
                     {
                         foreach (var competenza in command.Richiesta.CodSOAllertate)
@@ -78,6 +72,24 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                                 abilitato = true;
                         }
                     }
+
+                    foreach (var sostituzione in command.sostituzione.Sostituzioni)
+                    {
+                        var composizione = command.Richiesta.Partenze.Where(m => m.CodiceMezzo.Equals(sostituzione.CodMezzo)).FirstOrDefault();
+                        var codiceSedeMezzo = composizione.Partenza.Mezzo.Distaccamento.Codice;
+
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, codiceSedeMezzo, Costanti.GestoreRichieste))
+                            abilitato = false;
+                    }
+
+                    //if (command.Richiesta.CodUOCompetenza!=null)
+                    //    foreach (var competenza in command.Richiesta.CodUOCompetenza)
+                    //    {
+                    //        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                    //            abilitato = true;
+                    //    }
+
+
 
                     if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

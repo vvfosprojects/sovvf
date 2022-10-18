@@ -14,7 +14,8 @@ import {
     RemoveSchedeContatto,
     ResetFiltriSelezionatiSchedeContatto,
     SaveMergeSchedeContatto,
-    SetContatoriSchedeContatto, SetDettaglioSchedaContattoOpened,
+    SetContatoriSchedeContatto,
+    SetDettaglioSchedaContattoOpened,
     SetFiltroGestitaSchedeContatto,
     SetFiltroSelezionatoSchedaContatto,
     SetListaSchedeContatto,
@@ -24,8 +25,10 @@ import {
     SetSchedaContattoSelezionata,
     SetSchedaContattoTelefonata,
     SetTabAttivo,
+    StartLoadingContatoriSchedeContatto,
     StartLoadingDettaglioSchedaContatto,
     StartLoadingSchedeContatto,
+    StopLoadingContatoriSchedeContatto,
     StopLoadingDettaglioSchedaContatto,
     StopLoadingSchedeContatto,
     ToggleCollapsed,
@@ -72,6 +75,7 @@ export interface SchedeContattoStateModel {
     idCollapsed: string[];
     dettaglioSchedaContattoOpened: boolean;
     loadingSchedeContatto: boolean;
+    loadingContatoriSchedeContatto: boolean;
     loadingDettaglioSchedeContatto: string;
 }
 
@@ -80,7 +84,8 @@ export const SchedeContattoEmpty = {
     tabAttivo: ClassificazioneSchedaContatto.Competenza,
     idVisualizzati: [],
     idCollapsed: [],
-    loadingSchedeContatto: false
+    loadingSchedeContatto: false,
+    loadingContatoriSchedeContatto: false
 };
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
@@ -115,6 +120,11 @@ export class SchedeContattoState {
     @Selector()
     static loadingSchedeContatto(state: SchedeContattoStateModel): boolean {
         return state.loadingSchedeContatto;
+    }
+
+    @Selector()
+    static loadingContatoriSchedeContatto(state: SchedeContattoStateModel): boolean {
+        return state.loadingContatoriSchedeContatto;
     }
 
     @Selector()
@@ -194,13 +204,13 @@ export class SchedeContattoState {
 
     @Action(GetContatoriSchedeContatto)
     getContatoriSchedeContatto({ dispatch }: StateContext<SchedeContattoStateModel>, action: GetContatoriSchedeContatto): void {
-        dispatch(new StartLoadingSchedeContatto());
+        dispatch(new StartLoadingContatoriSchedeContatto());
         this.schedeContattoService.getContatoriSchedeContatto(action.filters).subscribe((data: { infoNue: ContatoriSchedeContatto }) => {
             dispatch([
                 new SetContatoriSchedeContatto(data.infoNue),
-                new StopLoadingSchedeContatto()
+                new StopLoadingContatoriSchedeContatto()
             ]);
-        });
+        }, () => dispatch(new StopLoadingContatoriSchedeContatto()));
     }
 
     @Action(SetContatoriSchedeContatto)
@@ -316,7 +326,8 @@ export class SchedeContattoState {
         patchState({
             tabAttivo: action.tabAttivo,
         });
-        dispatch(new GetListaSchedeContatto());
+        const rangeVisualizzazione = action.rangeVisualizzazione ? action.rangeVisualizzazione : null;
+        dispatch(new GetListaSchedeContatto(null, rangeVisualizzazione));
     }
 
     @Action(ToggleCollapsed)
@@ -509,10 +520,8 @@ export class SchedeContattoState {
 
     @Action(UndoMergeSchedeContatto)
     undoMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: UndoMergeSchedeContatto): void {
-        console.log('Id Scheda Contato Undo Merge', action.codiceScheda);
         const undoMergeSchedaContatto = getState().schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
         this.schedeContattoService.undoMergeSchedeContatto(undoMergeSchedaContatto).subscribe(() => {
-            console.log('Undo Merge Schede completata', undoMergeSchedaContatto);
             dispatch(new ClearMergeSchedeContatto());
         });
     }
@@ -520,24 +529,8 @@ export class SchedeContattoState {
     @Action(OpenDettaglioSchedaContatto)
     openDettaglioSchedaContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDettaglioSchedaContatto): void {
         const state = getState();
-        const schedaContattoDetail = state.schedeContatto?.length ? state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0] : null;
         const dettaglioSchedaContattoOpened = state.dettaglioSchedaContattoOpened;
-        if (schedaContattoDetail && !dettaglioSchedaContattoOpened) {
-            dispatch(new SetDettaglioSchedaContattoOpened(true));
-            this.ngZone.run(() => {
-                const modal = this.modal.open(DettaglioSchedaContattoModalComponent, {
-                        windowClass: 'xxlModal modal-holder',
-                        backdropClass: 'light-blue-backdrop',
-                        centered: true,
-                        backdrop: true
-                    }
-                );
-                modal.componentInstance.schedaContatto = schedaContattoDetail;
-                modal.result.then(() => {
-                    dispatch(new SetDettaglioSchedaContattoOpened(false));
-                });
-            });
-        } else if (!dettaglioSchedaContattoOpened) {
+        if (!dettaglioSchedaContattoOpened) {
             dispatch(new StartLoadingDettaglioSchedaContatto(action.codiceScheda));
             this.schedeContattoService.getSchedaContatto(action.codiceScheda).subscribe((res: { schedaContatto: SchedaContatto }) => {
                 if (res?.schedaContatto) {
@@ -582,6 +575,20 @@ export class SchedeContattoState {
     stopLoadingSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
         patchState({
             loadingSchedeContatto: false
+        });
+    }
+
+    @Action(StartLoadingContatoriSchedeContatto)
+    startLoadingContatoriSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
+        patchState({
+            loadingContatoriSchedeContatto: true
+        });
+    }
+
+    @Action(StopLoadingContatoriSchedeContatto)
+    stopLoadingContatoriSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
+        patchState({
+            loadingContatoriSchedeContatto: false
         });
     }
 

@@ -85,13 +85,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 };
                 var listaSintesi = (List<SintesiRichiesta>)this._sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
 
-                //var boxRichiesteQuery = new BoxRichiesteQuery()
-                //{
-                //    CodiciSede = new string[] { intervento.CodSede }
-                //};
-                //var boxInterventi = this._boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
-                //await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-
                 var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
                 {
                     CodiciSedi = new string[] { sede }

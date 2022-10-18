@@ -81,7 +81,6 @@ export class DocumentoAreaDocumentaleModalComponent implements OnInit, OnDestroy
     }
 
     updateDocumentoAreaDocumentaleForm(editDocumento: DocumentoInterface): void {
-        console.log('updateDocumentoAreaDocumentaleForm', editDocumento);
         this.documentoAreaDocumentaleForm.patchValue({
             descrizioneDocumento: editDocumento.descrizioneDocumento,
             descrizioneCategoria: editDocumento.descrizioneCategoria,

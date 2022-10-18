@@ -28,10 +28,10 @@
         ModificaRuoloUtente,
         EliminaUtente,
         RaggrauppamentoSchedeContatto,
-
         Sostituzione,
         Fonogramma,
         EntiIntervenuti,
-        All
+        AnnullaStatoMezzo,
+        SganciamentoMezzo
     }
 }

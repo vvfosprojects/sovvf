@@ -8,6 +8,7 @@ using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.SignalR.Sender.AggiornamentoBox;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,15 +23,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly GetSediPartenze _getSediPartenze;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
-        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
-        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
-
         public NotificationModificaPartenza(IHubContext<NotificationHub> notificationHubContext,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
-            IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
-            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
             IMapperRichiestaSuSintesi mapperSintesi,
             GetSediPartenze getSediPartenze)
         {
@@ -38,9 +32,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _mapperSintesi = mapperSintesi;
             _getSediPartenze = getSediPartenze;
             _notificationHubContext = notificationHubContext;
-            _boxMezziHandler = boxMezziHandler;
-            _boxPersonaleHandler = boxPersonaleHandler;
-            _boxRichiesteHandler = boxRichiesteHandler;
         }
 
         public async Task SendNotification(ModificaPartenzaCommand command)
@@ -65,14 +56,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
             Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
-                var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery() { CodiciSede = new string[] { sede } }).BoxRichieste;
-                var boxMezzi = _boxMezziHandler.Handle(new BoxMezziQuery() { CodiciSede = new string[] { sede } }).BoxMezzi;
-                var boxPersonale = _boxPersonaleHandler.Handle(new BoxPersonaleQuery() { CodiciSede = new string[] { sede } }).BoxPersonale;
-
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-
                 _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", confermaPartenza);
 
                 foreach (var partenza in command.Richiesta.lstPartenze)

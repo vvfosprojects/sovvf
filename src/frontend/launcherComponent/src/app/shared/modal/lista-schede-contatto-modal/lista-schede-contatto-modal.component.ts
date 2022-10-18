@@ -12,7 +12,8 @@ import { MergeSchedeContattoState } from '../../../features/home/store/states/sc
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { PermissionFeatures } from '../../enum/permission-features.enum';
 import {
-    ClearFiltriSchedeContatto, ClearListaSchedeContatto,
+    ClearFiltriSchedeContatto,
+    ClearListaSchedeContatto,
     ClearSchedaContattoHover,
     GetListaSchedeContatto,
     OpenDettaglioSchedaContatto,
@@ -67,6 +68,7 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
     idSelezionatiMerge: string[];
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
+    @Select(SchedeContattoState.loadingContatoriSchedeContatto) loadingContatoriSchedeContatto$: Observable<boolean>;
 
     permessiFeature = PermissionFeatures;
 
@@ -192,7 +194,7 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
 
     onSelectTab($event: NgbTabChangeEvent): void {
         const classificazione = $event.nextId as ClassificazioneSchedaContatto;
-        this.store.dispatch(new SetTabAttivo(classificazione));
+        this.store.dispatch(new SetTabAttivo(classificazione, RangeSchedeContattoEnum.Ultimi30));
     }
 
     onCollapsed($event: string): void {
@@ -221,10 +223,7 @@ export class ListaSchedeContattoModalComponent implements OnInit, OnDestroy {
                         this.store.dispatch(new ToggleModalitaMerge());
                         break;
                 }
-                console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
+            });
     }
 
     closeModal(res: string): void {

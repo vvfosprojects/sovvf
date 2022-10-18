@@ -122,7 +122,6 @@ export class MezzoActionsModalComponent implements OnInit, OnDestroy {
                 this.time.minute = d.getMinutes();
                 this.time.second = d.getSeconds();
             } else if (this.dataInViaggio) {
-                console.log('this.dataInViaggio', this.dataInViaggio);
                 this.time.hour = (+this.dataInViaggio.ora) + 2;
                 this.time.minute = +this.dataInViaggio.minuti;
                 this.time.second = 0;

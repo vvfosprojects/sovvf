@@ -150,7 +150,7 @@ export class UndoMergeSchedeContatto {
 export class SetTabAttivo {
     static readonly type = '[SchedeContatto] Set Tab Attivo';
 
-    constructor(public tabAttivo: ClassificazioneSchedaContatto) {
+    constructor(public tabAttivo: ClassificazioneSchedaContatto, public rangeVisualizzazione?: RangeSchedeContattoEnum) {
     }
 }
 
@@ -181,6 +181,14 @@ export class StartLoadingSchedeContatto {
 
 export class StopLoadingSchedeContatto {
     static readonly type = '[SchedeContatto] Stop Loading Schede Contatto';
+}
+
+export class StartLoadingContatoriSchedeContatto {
+    static readonly type = '[SchedeContatto] Start Loading contatori Schede Contatto';
+}
+
+export class StopLoadingContatoriSchedeContatto {
+    static readonly type = '[SchedeContatto] Stop Loading contatori Schede Contatto';
 }
 
 export class StartLoadingDettaglioSchedaContatto {

@@ -11,12 +11,6 @@ export function calcolaTurnoCalendario(): TurnoCalendario {
     const attuale = roundTurni(turni);
     const successivo = scaleTurni(roundTurni(turni), 'next');
 
-    // console.log(nowUnix);
-    // const nowTest = 1554451200000;
-    // console.log(`precedente: ${precedente}`);
-    // console.log(`attuale: ${attuale}`);
-    // console.log(`successivo: ${successivo}`);
-
     function roundTurni(turniLength: number): number {
         if (turniLength > 8) {
             return (turniLength % 8);

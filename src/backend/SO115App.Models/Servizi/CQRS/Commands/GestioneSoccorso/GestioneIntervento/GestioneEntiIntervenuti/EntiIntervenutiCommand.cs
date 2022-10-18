@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneIntervento.GestioneEntiIntervenuti
 {
@@ -29,5 +30,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         public string CodSede { get; set; }
         public string IdOperatore { get; set; }
         public RichiestaAssistenza Richiesta { get; set; }
+        public SintesiRichiesta Chiamata { get; set; }
     }
 }

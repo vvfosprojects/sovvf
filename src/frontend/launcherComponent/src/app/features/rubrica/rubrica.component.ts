@@ -113,12 +113,9 @@ export class RubricaComponent implements OnInit, OnDestroy {
                     this.addVoceRubrica();
                 } else if (!result.success) {
                     this.store.dispatch(new ClearFormEnte());
-                    console.log('Modal "addVoceRubrica" chiusa con val ->', result);
                 }
-            },
-            (err) => {
+            }, () => {
                 this.store.dispatch(new ClearFormEnte());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
@@ -128,7 +125,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
     }
 
     onEditVoceRubrica(voceRubrica: EnteInterface): void {
-        console.log('onEditVoceRubrica', voceRubrica);
         let editVoceRubricaModal;
         editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder ',
@@ -143,12 +139,9 @@ export class RubricaComponent implements OnInit, OnDestroy {
                     this.updateVoceRubrica();
                 } else if (!result.success) {
                     this.store.dispatch(new ClearFormEnte());
-                    console.log('Modal "addVoceRubrica" chiusa con val ->', result);
                 }
-            },
-            (err) => {
+            }, () => {
                 this.store.dispatch(new ClearFormEnte());
-                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
@@ -168,20 +161,15 @@ export class RubricaComponent implements OnInit, OnDestroy {
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.descrizioneVoceRubrica;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di volerlo rimuovere dalla rubrica?';
 
-        modalConfermaAnnulla.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        this.deleteVoceRubrica(payload.idVoceRubrica);
-                        break;
-                    case 'ko':
-                        // console.log('Azione annullata');
-                        break;
-                }
-                // console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
+        modalConfermaAnnulla.result.then((val) => {
+            switch (val) {
+                case 'ok':
+                    this.deleteVoceRubrica(payload.idVoceRubrica);
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 
     deleteVoceRubrica(id: string): void {

@@ -61,6 +61,8 @@ import { setPageSession } from '../../../../../shared/helper/function-paginazion
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { LSNAME } from '../../../../../core/settings/config';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { DeleteConcorrenza } from '../../../../../shared/store/actions/concorrenza/concorrenza.actions';
+import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -264,6 +266,10 @@ export class RichiesteState {
                 dispatch(new StopLoadingActionRichiesta(action.richiesta.id));
             }
 
+            if (state.richiestaById) {
+                dispatch(new SetRichiestaById(action.richiesta.codice));
+            }
+
             const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
 
             if (mezziInServizioActive) {
@@ -299,7 +305,6 @@ export class RichiesteState {
              * controllo che ci sia in pending una chiamata appena inserita da farci una composizione partenza
              */
             if (richiesta && richiesta.codice === state.chiamataInviaPartenza) {
-                console.log('Codice trovato:', richiesta.codice);
                 dispatch(new StartInviaPartenzaFromChiamata(richiesta));
             }
         }
@@ -343,13 +348,19 @@ export class RichiesteState {
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
                 setAnnullaStatoMezzi();
-                dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
+                dispatch([
+                    new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [action.mezzoAction.mezzo.codice]),
+                    new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice)
+                ]);
             },
             (error: HttpErrorResponse) => {
                 if (error?.error?.message === 'Errore servizio ESRI') {
                     setAnnullaStatoMezzi();
                 }
-                dispatch(new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice));
+                dispatch([
+                    new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [action.mezzoAction.mezzo.codice]),
+                    new StopLoadingActionMezzo(action.mezzoAction.mezzo.codice)
+                ]);
             }
         );
 
@@ -365,9 +376,7 @@ export class RichiesteState {
     @Action(ActionRichiesta)
     actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta): void {
         dispatch(new StartLoadingActionRichiesta(action.richiestaAction.idRichiesta));
-        const obj = action.richiestaAction;
-        console.log('ActionRichiesta Obj', obj);
-        this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
+        this.richiesteService.aggiornaStatoRichiesta(action.richiestaAction).subscribe(() => {
         }, () => dispatch(new StopLoadingActionRichiesta(action.richiestaAction.idRichiesta)));
     }
 

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
@@ -30,13 +31,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly IGetComposizioneMezziDB _getComposizioneMezziDB;
         private readonly ISetComposizioneMezzi _setComposizioneMezziDB;
         private readonly IGetSedi _getSedi;
+        private readonly IMemoryCache _memoryCache;
         private readonly IGetToken _getToken;
         private readonly IHttpRequestManager<IEnumerable<MezzoDTO>> _clientMezzi;
 
         public GetMezziUtilizzabili(IHttpRequestManager<IEnumerable<MezzoDTO>> clientMezzi, IGetToken getToken,
             IConfiguration configuration, IGetStatoMezzi GetStatoMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetPosizioneFlotta getPosizioneFlotta, IGetStringCoordinateByCodSede getStringCoordinateByCodSede,
-            IGetComposizioneMezziDB getComposizioneMezziDB, ISetComposizioneMezzi setComposizioneMezziDB, IGetSedi getSedi)
+            IGetComposizioneMezziDB getComposizioneMezziDB, ISetComposizioneMezzi setComposizioneMezziDB, IGetSedi getSedi, IMemoryCache memoryCache)
         {
             _getStatoMezzi = GetStatoMezzi;
             _clientMezzi = clientMezzi;
@@ -48,6 +50,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _getComposizioneMezziDB = getComposizioneMezziDB;
             _setComposizioneMezziDB = setComposizioneMezziDB;
             _getSedi = getSedi;
+            _memoryCache = memoryCache;
         }
 
         /// <summary>
@@ -88,22 +91,44 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var lstSediQueryString = "";
 
-            if (!sedi.Contains("00"))
-                lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
-            else
-                lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
+            //if (!sedi.Contains("00"))
+            //    lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
+            //else
+            //    lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Select(s => s.Split('.')[0]).Distinct().ToArray());
 
-            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+            //var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
 
             try
             {
-                var resultApi = await _clientMezzi.GetAsync(url, token);
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+                List<MezzoDTO> result = new List<MezzoDTO>();
+                Parallel.ForEach(sedi, sede =>
+                {
+                    if (!_memoryCache.TryGetValue("SedeMezzi-" + sede.Split('.')[0], out result))
+                    {
+                        var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={sede.Split('.')[0]}");
+                        var resultApi = _clientMezzi.GetAsync(url, token);
 
-                if (!(resultApi?.Any()) ?? true)
-                    return new List<Mezzo>();
+                        result = resultApi.Result.ToList();
+                        _memoryCache.Set("SedeMezzi-" + sede.Split('.')[0], result, cacheEntryOptions);
 
-                foreach (var personale in resultApi)
-                    lstMezziDto.Enqueue(personale);
+                        foreach (var personale in resultApi.Result)
+                            lstMezziDto.Enqueue(personale);
+                    }
+                    else
+                    {
+                        foreach (var personale in result)
+                            lstMezziDto.Enqueue(personale);
+                    }
+                });
+
+                //var resultApi = await _clientMezzi.GetAsync(url, token);
+
+                //if (!(resultApi?.Any()) ?? true)
+                //    return new List<Mezzo>();
+
+                //foreach (var personale in resultApi)
+                //    lstMezziDto.Enqueue(personale);
             }
             catch (Exception e)
             {
@@ -173,15 +198,35 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var token = _getToken.GeneraToken();
 
             var lstMezziDto = new List<MezzoDTO>();
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+            List<MezzoDTO> result = new List<MezzoDTO>();
 
             try
             {
-                string queryString = string.Join("&codiciMezzo=", codiciMezzi.ToArray());
-                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetCodiceMezzo}?codiciMezzo={queryString}");
+                //string queryString = string.Join("&codiciMezzo=", codiciMezzi.ToArray());
+                //var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetCodiceMezzo}?codiciMezzo={queryString}");
 
-                var resultApi = await _clientMezzi.GetAsync(url, token);
+                Parallel.ForEach(codiciMezzi, mezzo =>
+                {
+                    if (!_memoryCache.TryGetValue("Mezzo-" + mezzo, out result))
+                    {
+                        var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetCodiceMezzo}?codiciMezzo={mezzo}");
+                        var resultApi = _clientMezzi.GetAsync(url, token);
 
-                resultApi?.ToList().ForEach(personale => lstMezziDto.Add(personale));
+                        result = resultApi.Result.ToList();
+                        _memoryCache.Set("Mezzo-" + mezzo, result, cacheEntryOptions);
+
+                        lstMezziDto.AddRange(resultApi.Result.ToList());
+                    }
+                    else
+                    {
+                        lstMezziDto.AddRange(result);
+                    }
+                });
+
+                //var resultApi = await _clientMezzi.GetAsync(url, token);
+
+                //resultApi?.ToList().ForEach(personale => lstMezziDto.Add(personale));
 
                 return lstMezziDto;
             }
@@ -192,7 +237,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 if (codiciMezzi != null && codiciMezzi.Count > 0)
                     lstMezzi = lstMezzi.Where(m => codiciMezzi.Contains(m.Mezzo.Codice)).ToList();
 
-                var result = lstMezzi.Select(s => new MezzoDTO()
+                var resultErr = lstMezzi.Select(s => new MezzoDTO()
                 {
                     Appartenenza = s.Mezzo.Distaccamento.Codice,
                     CodiceDistaccamento = s.Mezzo.Appartenenza,
@@ -202,14 +247,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     Genere = s.Mezzo.Genere
                 }).ToList();
 
-                return result;
+                return resultErr;
             }
         }
 
         public async Task<List<Mezzo>> GetBySedi(string[] sedi)
         {
             var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct());
-            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+            //var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
             var codici = string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct());
 
             var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
@@ -217,13 +262,30 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             var lstMezziDto = new List<MezzoDTO>();
 
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+            List<MezzoDTO> result = new List<MezzoDTO>();
+
             try
             {
                 var token = _getToken.GeneraToken();
 
-                var data = _clientMezzi.GetAsync(url, token).Result;
+                Parallel.ForEach(sedi, sede =>
+                {
+                    if (!_memoryCache.TryGetValue("SedeMezzi-" + sede.Split('.')[0], out result))
+                    {
+                        var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={sede.Split('.')[0]}");
+                        var resultApi = _clientMezzi.GetAsync(url, token);
 
-                lstMezziDto.AddRange(data);
+                        result = resultApi.Result.ToList();
+                        _memoryCache.Set("SedeMezzi-" + sede.Split('.')[0], result, cacheEntryOptions);
+
+                        lstMezziDto.AddRange(resultApi.Result.ToList());
+                    }
+                    else
+                    {
+                        lstMezziDto.AddRange(result);
+                    }
+                });
             }
             catch (Exception e)
             {
@@ -240,7 +302,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 .Select(m => MapMezzo(m, ListaPosizioneFlotta.Result, listaSediAlberate.Result, lstSedi))
                 .ToList();
 
-            return ListaMezzi;
+            return ListaMezzi.FindAll(m => m != null);
         }
 
         private IEnumerable<Sede> GetListaSediMezzi(List<MezzoDTO> lstMezzi, List<MessaggioPosizione> flotta, UnitaOperativa listaSediAlberate)
@@ -251,21 +313,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             lstCodSedi = lstMezzi.Select(s => s.CodiceDistaccamento).ToList();
 
-            foreach (var sede in lstCodSedi.Distinct())
+            Parallel.ForEach(lstCodSedi.Distinct(), sede =>
             {
-                var infoSede = _getSedi.GetInfoSede(sede).Result;
-
-                if (infoSede.Descrizione.ToLower().Contains("centrale"))
+                try
                 {
-                    infoSede.Descrizione = sedi.Find(s => s.Codice.Equals(sede)).Descrizione;
+                    if (sedi.Find(s => s.Codice.Equals(sede)) != null)
+                    {
+                        listaSedi.Add(sedi.Find(s => s.Codice.Equals(sede)));
+                    }
+                    else
+                    {
+                        var infoSede = _getSedi.GetInfoSede(sede).Result;
+                        Sede sedeMezzo = new Sede(sede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
+                        {
+                            CoordinateString = infoSede.coordinate.Split(',')
+                        };
+                        listaSedi.Add(sedeMezzo);
+                    }
                 }
-
-                Sede sedeMezzo = new Sede(sede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
+                catch (Exception ex)
                 {
-                    CoordinateString = infoSede.coordinate.Split(',')
-                };
-                listaSedi.Add(sedeMezzo);
-            };
+                }
+            });
 
             return listaSedi.OrderBy(s => s.Codice).ToList();
         }
@@ -287,25 +356,32 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                 var coordinate = posizioneMezzo == null ? sede.Coordinate : posizioneMezzo.ToCoordinate();
                 var coordinateStrg = posizioneMezzo == null ? sede.CoordinateString : new string[2] { coordinate.Latitudine.ToString(), coordinate.Longitudine.ToString() };
 
-                return new Mezzo()
+                if (sede != null)
                 {
-                    DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
-                    CoordinateStrg = coordinateStrg ?? sede.CoordinateString,
-                    Codice = mezzoDto.CodiceMezzo,
-                    Descrizione = mezzoDto.Descrizione,
-                    Genere = mezzoDto.Genere,
-                    Stato = Costanti.MezzoInSede,
-                    Appartenenza = mezzoDto.CodiceDistaccamento,
-                    Distaccamento = sede,
-                    Coordinate = new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0),
-                    Istituto = mezzoDto.Istituto,
-                    Sigla = mezzoDto.Sigla,
-                    Modello = mezzoDto.Modello
-                };
+                    return new Mezzo()
+                    {
+                        DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
+                        CoordinateStrg = coordinateStrg ?? sede.CoordinateString,
+                        Codice = mezzoDto.CodiceMezzo,
+                        Descrizione = mezzoDto.Descrizione,
+                        Genere = mezzoDto.Genere,
+                        Stato = Costanti.MezzoInSede,
+                        Appartenenza = mezzoDto.CodiceDistaccamento,
+                        Distaccamento = sede,
+                        Coordinate = new Coordinate(coordinate?.Latitudine ?? 0, coordinate?.Longitudine ?? 0),
+                        Istituto = mezzoDto.Istituto,
+                        Sigla = mezzoDto.Sigla,
+                        Modello = mezzoDto.Modello
+                    };
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception e)
             {
-                throw new Exception("Errore mapping mezzi.");
+                return null;
             }
         }
     }

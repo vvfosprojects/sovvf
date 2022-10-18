@@ -65,30 +65,13 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var SediDaNotificare = _getGerarchiaToSend.Get(SintesiRichiesta.CodSOCompetente, SintesiRichiesta.CodSOAllertate.ToArray());
 
-            SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
+            //SediDaNotificare.Add("00"); //AGGIUNGO IL CON ALLA NOTFICA
 
-            if(SintesiRichiesta.CodSediPartenze!=null)
+            if (SintesiRichiesta.CodSediPartenze != null)
                 SediDaNotificare.AddRange(SintesiRichiesta.CodSediPartenze);
 
             foreach (var sede in SediDaNotificare.Distinct())
-            {
-                var boxRichiesteQuery = new BoxRichiesteQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                };
-
-                var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
-
-                var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-                {
-                    CodiciSedi = new string[] { sede }
-                };
-
-                var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice)).ConfigureAwait(false);
-            }
         }
     }
 }

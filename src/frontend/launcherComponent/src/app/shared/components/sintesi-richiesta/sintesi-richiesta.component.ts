@@ -146,7 +146,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     }
 
     checkDettaglioSoccorsoAereo(): boolean {
-        if (this.richiesta.eventi) {
+        if (this.richiesta?.eventi) {
             const afmAccettato = this.richiesta.eventi.filter(x => x.note?.includes('Inserimento soccorso AFM accettato: Attesa assegnazione SOCAV'));
             const afmAnnullato = this.richiesta.eventi.filter(x => x.note?.includes('Annullamento soccorso AFM accettato: Annullato'));
             return afmAccettato.length > afmAnnullato.length;

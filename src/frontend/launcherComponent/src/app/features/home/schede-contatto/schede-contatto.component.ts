@@ -78,6 +78,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     idSelezionatiMerge: string[];
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
+    @Select(SchedeContattoState.loadingContatoriSchedeContatto) loadingContatoriSchedeContatto$: Observable<boolean>;
 
     permessiFeature = PermissionFeatures;
 
@@ -266,7 +267,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
                         this.store.dispatch(new ToggleModalitaMerge());
                         break;
                 }
-                console.log('Modal chiusa con val ->', val);
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );

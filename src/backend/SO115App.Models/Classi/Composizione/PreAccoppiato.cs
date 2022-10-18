@@ -50,10 +50,9 @@ namespace SO115App.API.Models.Classi.Composizione
     //    public Squadra(string codice, string nome, StatoSquadra stato, List<Componente> membri) =>
     //        (Codice, Nome, Stato, Membri) = (codice, nome, stato, membri);
 
-    //    public Squadra()
-    //    { }
+    // public Squadra() { }
 
-    //    public string IdSquadra { get; set; }
+    // public string IdSquadra { get; set; }
 
     //    public string Codice { get; set; }
     //    public StatoSquadra Stato { get; set; }

@@ -9,7 +9,7 @@
         <app-partial-loader></app-partial-loader>
     </ng-template>
     <!-- Mezzo -->
-    <div class="col-3">
+    <div class="col-3 pr-4">
         <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo"
                    [mezzoInServizioPage]="true"
                    [actionsAttive]="false"
@@ -22,7 +22,7 @@
     </ng-container>
     <!-- Squadra/e sul Mezzo -->
     <ng-container *ngIf="mezzoInServizio?.squadre?.length">
-        <div class="col-1">
+        <div class="col-1 pr-0">
             <div class="d-flex align-items-center justify-content-end font-weight-bold">
                 <i class="fas fa-users"
                    [ngClass]="_iconaStatiClass(_nomeStatiSquadra(mezzoInServizio.squadre[0].stato))"
@@ -134,10 +134,10 @@
         <div class="col-1">
             <div class="d-inline-block"
                  [ngbTooltip]="tooltipLockedConcorrenza"
-                 [disableTooltip]="!(tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice])">
+                 [disableTooltip]="!(tipoConcorrenzaEnum.SganciamentoMezzo | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice])">
                 <button class="btn btn-block btn-light btn-no-hover border-secondary"
-                        [class.cursor-not-allowed]="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice]"
-                        [disabled]="tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice]"
+                        [class.cursor-not-allowed]="tipoConcorrenzaEnum.SganciamentoMezzo | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice]"
+                        [disabled]="tipoConcorrenzaEnum.SganciamentoMezzo | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice]"
                         (click)="onSelect(mezzoInServizio)">
                     {{ 'info' | uppercase }}
                 </button>
@@ -148,5 +148,5 @@
 
 <ng-template #tooltipLockedConcorrenza>
     <i class="fas fa-lock mr-1"></i>
-    {{ tipoConcorrenzaEnum.Sganciamento | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice] }}
+    {{ tipoConcorrenzaEnum.SganciamentoMezzo | checkConcorrenzaLocked: [mezzoInServizio.mezzo.mezzo.codice] }}
 </ng-template>

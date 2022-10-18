@@ -86,6 +86,7 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     @Input() tastoChiamataMappaActive: boolean;
     @Input() tastoZonaEmergenzaMappaActive: boolean;
     @Input() filtriRichiesteSelezionati: VoceFiltro[];
+    @Input() chiamataStatus: boolean;
     @Input() schedeContattoStatus: boolean;
     @Input() composizionePartenzaStatus: boolean;
     @Input() mezziInServizioStatus: boolean;
@@ -428,6 +429,11 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                     }, 1500);
                     break;
             }
+            this.store.dispatch(new GetInitCentroMappa());
+        }
+
+        // Controllo se la feature "Nuova Chiamata" viene attivata
+        if (changes?.chiamataStatus?.currentValue) {
             this.store.dispatch(new GetInitCentroMappa());
         }
 

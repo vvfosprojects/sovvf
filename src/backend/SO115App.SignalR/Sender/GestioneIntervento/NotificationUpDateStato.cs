@@ -30,6 +30,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
+using SO115App.SignalR.Sender.AggiornamentoBox;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,27 +41,18 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
     public class NotificationUpDateStato : INotifyUpDateStatoRichiesta
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
-        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
-        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetRichiesta _getRichiestaAssistenzaById;
         private readonly IGetRichiesteMarker _iGetListaRichieste;
 
         public NotificationUpDateStato(IHubContext<NotificationHub> notificationHubContext,
-                                          IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
-                                          IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
-                                          IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           IGetSintesiRichiestaAssistenzaByCodice getSintesiById,
                                           GetGerarchiaToSend getGerarchiaToSend,
                                           IGetRichiesta getRichiestaAssistenzaById,
                                           IGetRichiesteMarker iGetListaRichieste)
         {
             _notificationHubContext = notificationHubContext;
-            _boxRichiesteHandler = boxRichiesteHandler;
-            _boxMezziHandler = boxMezziHandler;
-            _boxPersonaleHandler = boxPersonaleHandler;
             _getSintesiById = getSintesiById;
             _getGerarchiaToSend = getGerarchiaToSend;
             _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
@@ -90,23 +82,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                    },
                    CodiciSede = new string[] { sede }
                };
-               var boxRichiesteQuery = new BoxRichiesteQuery()
-               {
-                   CodiciSede = new string[] { sede }
-               };
-               var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
-
-               var boxMezziQuery = new BoxMezziQuery()
-               {
-                   CodiciSede = new string[] { sede }
-               };
-               var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
-
-               var boxPersonaleQuery = new BoxPersonaleQuery()
-               {
-                   CodiciSede = new string[] { sede }
-               };
-               var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
 
                var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
                {
@@ -120,9 +95,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
 
                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", notificaChangeState);
-               _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-               _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-               _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", ChiamataUpd);
            });
 

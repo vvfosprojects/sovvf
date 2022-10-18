@@ -142,7 +142,6 @@ export class FasterComponent implements OnChanges, OnDestroy {
     ngOnDestroy(): void {
         this.preAccoppiati?.forEach((p: BoxPartenzaPreAccoppiati) => {
             if (this.idPreAccoppiatiSelezionati.includes(p.id)) {
-                console.log('remove mezzo', p.codiceMezzo);
                 this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [p.codiceMezzo]));
                 const idSquadre = p.squadre.map((sC: SquadraComposizione) => sC.idSquadra);
                 this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));

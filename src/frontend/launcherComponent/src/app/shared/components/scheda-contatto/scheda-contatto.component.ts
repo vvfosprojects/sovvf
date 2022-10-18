@@ -137,7 +137,6 @@ export class SchedaContattoComponent implements OnChanges {
     }
 
     onEditSchedaSelezionata($event: CheckboxInterface): void {
-        console.log('click checkbox', $event);
         $event.object = this.scheda;
         this.editSelezionata.emit($event);
     }

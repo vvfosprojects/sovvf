@@ -55,6 +55,8 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
     // Richieste Status
     @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
+    // Nuova Chiamata Status
+    @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
     // Filtri Richieste Selezionati
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     // Status "Schede Contatto"

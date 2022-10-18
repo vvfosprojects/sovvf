@@ -16,7 +16,7 @@ import { SetAvailHeight, SetContentHeight, SetInnerWidth } from './shared/store/
 import { Images } from './shared/enum/images.enum';
 import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
-import { Logout, SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
+import { ClearUserDataService, Logout, SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
 import { ViewComponentState } from './features/home/store/states/view/view.state';
 import { ViewComponentStateModel, ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
@@ -131,7 +131,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     @HostListener('window:beforeunload')
     async ngOnDestroy(): Promise<any> {
-        this.store.dispatch(new DeleteAllConcorrenza());
+        this.store.dispatch([
+            new DeleteAllConcorrenza(),
+            new ClearUserDataService()
+        ]);
         this.subscription.unsubscribe();
     }
 
@@ -247,7 +250,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         );
         this.subscription.add(this.vistaSedi$.subscribe(r => {
             if (r) {
-                console.log('r', r);
                 this.store.dispatch(new PatchListaSediNavbar([...r]));
             }
         }));

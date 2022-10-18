@@ -138,7 +138,6 @@ export class ComposizioneVeloceState {
         if (preAccoppiato) {
             const dataSquadraList = [] as AddConcorrenzaDtoInterface[];
             preAccoppiato.squadre.forEach((sC: SquadraComposizione) => {
-                console.log('select squadra preaccoppiato', sC.idSquadra);
                 const dataSquadra = {
                     type: TipoConcorrenzaEnum.Squadra,
                     value: sC.idSquadra
@@ -146,7 +145,6 @@ export class ComposizioneVeloceState {
                 dataSquadraList.push(dataSquadra);
             });
             dispatch(new AddConcorrenza(dataSquadraList));
-            console.log('select mezzo preaccoppiato', preAccoppiato.codiceMezzo);
             const dataMezzo = {
                 type: TipoConcorrenzaEnum.Mezzo,
                 value: preAccoppiato.codiceMezzo
@@ -168,7 +166,6 @@ export class ComposizioneVeloceState {
         if (preAccoppiato) {
             const idSquadre = preAccoppiato.squadre.map((sC: SquadraComposizione) => sC.idSquadra);
             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Squadra, idSquadre));
-            console.log('remove mezzo preaccoppiato', preAccoppiato.codiceMezzo);
             dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Mezzo, [preAccoppiato.codiceMezzo]));
 
             setState(

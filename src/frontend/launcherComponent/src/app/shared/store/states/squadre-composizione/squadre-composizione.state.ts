@@ -1,13 +1,11 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import {
-    AddSquadraComposizione,
     ClearIdSquadreSelezionate,
     ClearListaSquadreComposizione,
     ClearSelectedSquadreComposizione,
     ClearSquadraComposizione,
     HoverInSquadraComposizione,
     HoverOutSquadraComposizione,
-    RemoveSquadraComposizione,
     SelectSquadraComposizione,
     SelectSquadraComposizioneInRientro,
     SelectSquadraComposizionePreAccoppiati,
@@ -15,8 +13,7 @@ import {
     SetListaSquadreComposizione,
     UnselectSquadraComposizione,
     UnselectSquadraComposizioneInRientro,
-    UnselectSquadraComposizionePreAccoppiati,
-    UpdateSquadraComposizione
+    UnselectSquadraComposizionePreAccoppiati
 } from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import {
@@ -119,21 +116,6 @@ export class SquadreComposizioneState {
         patchState({
             idSquadreSelezionate: []
         });
-    }
-
-    @Action(AddSquadraComposizione)
-    addSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: AddSquadraComposizione): void {
-        console.log(action.squadraComp);
-    }
-
-    @Action(RemoveSquadraComposizione)
-    removeSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: RemoveSquadraComposizione): void {
-        console.log(action.idSquadra);
-    }
-
-    @Action(UpdateSquadraComposizione)
-    updateSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: UpdateSquadraComposizione): void {
-        console.log(action.squadraComp);
     }
 
     @Action(SelectSquadraComposizione)

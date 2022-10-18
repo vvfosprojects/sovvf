@@ -108,7 +108,6 @@ export class EventiRichiestaState {
         const codice = getState().codiceRichiesta;
         dispatch(new StartLoadingEventiRichiesta());
         this.eventiRichiesta.getEventiRichiesta(codice).subscribe((data: EventoRichiesta[]) => {
-            console.log('Risposta Controller Eventi', data);
             dispatch(new SetEventiRichiesta(data));
             dispatch(new StopLoadingEventiRichiesta());
         });

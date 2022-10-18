@@ -71,11 +71,11 @@ export class RiepilogoInterventiModalComponent {
     getDataRiepilogoInterventi(): void {
         this.stampaRichiestaService.getSquadreRiepilogoIntervento().subscribe((data: any) => {
             this.squadre = data.dataArray;
-        }, () => console.log('Errore Get Squadre Riepilogo Interventi'));
+        }, () => console.error('Errore Get Squadre Riepilogo Interventi'));
 
         this.stampaRichiestaService.getDistaccamentiRiepilogoIntervento().subscribe((distaccamenti: Sede[]) => {
             this.distaccamenti = distaccamenti;
-        }, () => console.log('Errore Get Distaccamenti Riepilogo Interventi'));
+        }, () => console.error('Errore Get Distaccamenti Riepilogo Interventi'));
     }
 
     onShowFiltriInterventi(): void {
@@ -164,7 +164,7 @@ export class RiepilogoInterventiModalComponent {
                         modalVisualizzaPdf.componentInstance.blob = downloadedFile;
                         break;
                 }
-            }, () => console.log('Errore Stampa Riepilogo Interventi'));
+            }, () => console.error('Errore Stampa Riepilogo Interventi'));
         } else {
             this.modal.close({ status: 'ko' });
         }
@@ -178,7 +178,7 @@ export class RiepilogoInterventiModalComponent {
                     this.stampaRichiestaService.getSquadreRiepilogoIntervento(this.distaccamentoSelezionati).subscribe((data: any) => {
                         this.squadre = data.dataArray;
                         this.squadreSelezionate = [];
-                    }, () => console.log('Errore Get Squadre Riepilogo Interventi'));
+                    }, () => console.error('Errore Get Squadre Riepilogo Interventi'));
                 }
                 break;
 

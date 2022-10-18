@@ -79,6 +79,7 @@ namespace SO115App.API.Models.Classi.Organigramma
 
         public Coordinate Coordinate { get; set; }
 
+        public string CoordinateString { get; set; }
         public string sigla { get; set; }
 
         /// <summary>

@@ -76,7 +76,6 @@ export class AreaDocumentaleState {
             search: ricerca,
             descCategoria
         };
-        console.log('filters', filters);
         const pagination = {
             page: action.page ? action.page : 1,
             pageSize: this.store.selectSnapshot(PaginationState.pageSize)
@@ -99,7 +98,6 @@ export class AreaDocumentaleState {
 
     @Action(SetCodCategoriaAreaDocumentale)
     setCodCategoriaAreaDocumentale({ patchState, dispatch }: StateContext<AreaDocumentaleStateModel>, action: SetCodCategoriaAreaDocumentale): void {
-        console.log('SetCodCategoriaAreaDocumentale codCategoria', action.codCategoria);
         patchState({
             codCategoria: action.codCategoria
         });

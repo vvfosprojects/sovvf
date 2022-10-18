@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.ExternalAPI.Client;
 using SO115App.Models.Classi.Composizione;
@@ -24,32 +25,47 @@ namespace SO115App.ExternalAPI.Fake.Servizi.OPService
         private readonly IGetStatoSquadra _getStatoSquadre;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
+        private readonly IMemoryCache _memoryCache;
 
         public GetAllSquadre(IHttpRequestManager<WorkShift> service,
             IConfiguration config, IGetStatoSquadra getStatoSquadre,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IGetListaDistaccamentiByPinListaSedi getDistaccamenti)
+            IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
+            IMemoryCache memoryCache)
         {
             _service = service;
             _config = config;
             _getStatoSquadre = getStatoSquadre;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getDistaccamenti = getDistaccamenti;
+            _memoryCache = memoryCache;
         }
 
         public async Task<List<ComposizioneSquadra>> GetByCodiceSede(string[] CodiciSede)
         {
             var baseurl = new Uri(_config.GetSection("UrlExternalApi").GetSection("OPService").Value);
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(1));
 
             List<ComposizioneSquadra> lstSquadre = new List<ComposizioneSquadra>();
+            List<ComposizioneSquadra> lstSquadreAppo = new List<ComposizioneSquadra>();
 
             foreach (string codice in CodiciSede)
             {
-                var url = new Uri(baseurl, "api/v1/so-workshift/" + "?id_sede=" + codice.Split('.')[0]);
-                var result = await _service.GetAsync(url);
+                if (!_memoryCache.TryGetValue("listaSquadre-" + codice, out lstSquadreAppo))
+                {
+                    var url = new Uri(baseurl, "api/v1/so-workshift/" + "?id_sede=" + codice.Split('.')[0]);
+                    var result = await _service.GetAsync(url);
 
-                if (result != null)
-                    lstSquadre.AddRange(MappaOPSquadreSuSOSquadre(result, codice).Result);
+                    if (result != null)
+                    {
+                        lstSquadreAppo.AddRange(MappaOPSquadreSuSOSquadre(result, codice).Result);
+                        _memoryCache.Set("listaSquadre-" + codice, lstSquadreAppo, cacheEntryOptions);
+                    }
+                }
+                else
+                {
+                    lstSquadre.AddRange(lstSquadreAppo);
+                }
             }
 
             return lstSquadre;

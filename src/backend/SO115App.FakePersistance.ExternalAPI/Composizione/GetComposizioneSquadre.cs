@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Serilog;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
@@ -148,6 +149,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var codMezziPreaccoppiati = result.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).SelectMany(s => s.CodiciMezziPreaccoppiati).ToList();
                 lstMezziPreaccoppiati = _getMezzi.GetInfo(codMezziPreaccoppiati)?.Result;
+                lstMezziPreaccoppiati = lstMezziPreaccoppiati?.Where(m => m != null).ToList();
 
                 return result.ToList().FindAll(s => s.spotType.Equals("WORKSHIFT"));
             })
@@ -157,6 +159,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 Parallel.ForEach(squadre.Result, squadra =>
                 {
+                    Log.Information($"COMPOSIZIONE SQUADRE- Inizio Mezzi in rientro {squadra.Codice}");
+
                     var mezziInRientro = lstStatiSquadre != null ? lstMezziInRientro?.Where(m => lstStatiSquadre.FirstOrDefault(s => s.CodMezzo.Equals(m.CodiceMezzo))?.IdSquadra.Equals($"{squadra.Codice}_{codiceTurno}") ?? false).Select(m => new ComposizioneMezzi()
                     {
                         Id = m.CodiceMezzo,
@@ -200,6 +204,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         MezziInRientro = mezziInRientro,
                         Tipologia = squadra.spotType
                     });
+
+                    Log.Information($"COMPOSIZIONE SQUADRE- Fine Add squadra {squadra.Codice}");
                 });
 
                 return lstSquadre;

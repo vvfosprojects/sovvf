@@ -10,6 +10,8 @@
                            [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: richiestaFissata.codUOCompetenza : richiestaFissata.codSOCompetente : richiestaFissata.codSOAllertate) || (tipoConcorrenzaEnum.InvioPartenza | checkConcorrenzaLocked: [richiestaFissata.codice]) || richiestaFissata.stato === statoRichiesta.Chiusa"
                            [loadingActionRichiesta]="loadingActionRichiesta$ | async"
                            [loadingDettaglioSchedaContatto]="loadingDettaglioSchedaContatto$ | async"
+                           [loadingActionMezzo]="loadingActionMezzo$ | async"
+                           [annullaStatoMezzi]="annullaStatoMezzi$ | async"
                            [listaEnti]="enti$ | async"
                            [dateSync]="dateSync"
                            (selezione)="onSelezione($event)"

@@ -7,9 +7,9 @@ import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { ClearRichiestaAzioni, GetListaRichieste, SetRichiestaAzioni, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
-import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
-import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
-import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
+import { GetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
+import { GetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.actions';
+import { GetBoxRichieste, SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/form-richiesta/scheda-telefonata.actions';
@@ -23,8 +23,6 @@ import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLi
 import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
-import { BoxPersonale } from '../../features/home/boxes/boxes-model/box-personale.model';
-import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model';
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
 import { ChiamataMarker } from '../../features/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
@@ -152,11 +150,15 @@ export class SignalRService {
          */
         this.hubNotification.on('ModifyAndNotifySuccess', (data: InterventoInterface) => {
             console.log('ModifyAndNotifySuccess:', data);
-            const updateRichiesta = data.chiamata ? data.chiamata : data.richiesta;
+            const updatedSintesiRichiesta = data.sintesiRichiesta ? data.sintesiRichiesta : data.chiamata;
             this.store.dispatch([
-                new UpdateRichiesta(updateRichiesta),
+                new UpdateRichiesta(updatedSintesiRichiesta),
                 new UpdateRichiestaSganciamento(),
-                new SetRichiestaAzioni(updateRichiesta.codice)
+                new SetRichiestaAzioni(updatedSintesiRichiesta.codice),
+                // Aggiorno i box
+                new GetBoxMezzi(),
+                new GetBoxRichieste(),
+                new GetBoxPersonale()
             ]);
         });
 
@@ -222,18 +224,6 @@ export class SignalRService {
         /**
          * Box
          */
-        this.hubNotification.on('NotifyGetBoxPersonale', (data: BoxPersonale) => {
-            console.log('NotifyGetBoxPersonale', data);
-            this.store.dispatch([
-                new SetBoxPersonale(data)
-            ]);
-        });
-        this.hubNotification.on('NotifyGetBoxMezzi', (data: BoxMezzi) => {
-            console.log('NotifyGetBoxMezzi', data);
-            this.store.dispatch([
-                new SetBoxMezzi(data)
-            ]);
-        });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: BoxInterventi) => {
             console.log('NotifyGetBoxInterventi', data);
             this.store.dispatch([
@@ -445,9 +435,13 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyAddTrasferimento', (response: ResponseAddTrasferimentoInterface) => {
             console.log('NotifyAddTrasferimento', response);
-            this.store.dispatch(new AddTrasferimentoChiamata());
+            this.store.dispatch([
+                new AddTrasferimentoChiamata(),
+                // Aggiorno i box
+                new GetBoxRichieste()
+            ]);
             const richiestaAzioni = this.store.selectSnapshot(RichiesteState.richiestaAzioni);
-            if (richiestaAzioni.codice === response.data.codChiamata) {
+            if (richiestaAzioni?.codice === response.data.codChiamata) {
                 this.store.dispatch(new ClearRichiestaAzioni());
             }
         });

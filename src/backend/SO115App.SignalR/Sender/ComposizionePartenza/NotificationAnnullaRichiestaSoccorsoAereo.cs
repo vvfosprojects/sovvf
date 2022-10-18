@@ -17,6 +17,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IGetBoxRichieste _getBoxRichieste;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IMapperRichiestaSuSintesi _mapperSintesi;
+
         public NotificationAnnullaRichiestaSoccorsoAereo(IHubContext<NotificationHub> notificationHubContext, IGetBoxRichieste getBoxRichieste, GetGerarchiaToSend getGerarchiaToSend, IMapperRichiestaSuSintesi mapperSintesi)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
@@ -41,19 +42,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     var sintesi = _mapperSintesi.Map(command.Richiesta);
 
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifySuccessAnnullamentoAFM", sintesi);
-
                     _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", new { chiamata = sintesi });
-
-                    Task.Factory.StartNew(() =>
-                    {
-                        var boxRichieste = _getBoxRichieste.Get(command.CodiciSede.Select(p => new API.Models.Classi.Organigramma.PinNodo(p, true)).ToHashSet());
-
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxRichieste);
-                    });
                 }
                 else
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyErrorAFM", ((AnnullamentoRichiestaSoccorsoAereo)command.Richiesta.ListaEventi.LastOrDefault()).Note);
-
             });
         }
     }

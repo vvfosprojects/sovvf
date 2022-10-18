@@ -21,6 +21,7 @@
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Microsoft.AspNetCore.SignalR;
+using Serilog;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
@@ -30,8 +31,11 @@ using SO115App.Models.Classi.NotificaSoundModale;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.SignalR.Sender.AggiornamentoBox;
 using SO115App.SignalR.Utility;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,18 +48,12 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetSedi _getSedi;
         private readonly GetSediPartenze _getSediPartenze;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiestehandler;
-        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
-        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
 
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IGetMezziInServizio _getListaMezzi;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
-            IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
-            IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezzihandler,
-            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             IMapperRichiestaSuSintesi mapperSintesi,
             GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetMezziInServizio getListaMezzi,
@@ -64,9 +62,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _getGerarchiaToSend = getGerarchiaToSend;
             _getListaMezzi = getListaMezzi;
             _notificationHubContext = notificationHubContext;
-            _boxRichiestehandler = boxRichiestehandler;
-            _boxMezzihandler = boxMezzihandler;
-            _boxPersonalehandler = boxPersonalehandler;
             _sintesiRichiesteAssistenzaMarkerhandler = sintesiRichiesteAssistenzaMarkerhandler;
             _mapperSintesi = mapperSintesi;
             _getDistaccamentoUC = getDistaccamentoUC;
@@ -76,6 +71,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Inizio invio Notifiche Conferma Partenza {DateTime.Now} **************");
+            stopWatch.Start();
             //Sedi gerarchicamente superiori alla richiesta che dovanno ricevere la notifica
             var SediDaNotificare = new List<string>();
             if (conferma.Richiesta.CodSOAllertate != null)
@@ -90,7 +88,12 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             SediDaNotificare = SediDaNotificare.Distinct().ToList();
 
+            Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine Lista sedi da notificare Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
+
             var listaMezziInServizio = _getListaMezzi.MapPartenzeInMezziInServizio(conferma.Richiesta, SediDaNotificare.ToArray());
+
+            Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine Lista mezzi in servizio Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
+
             var result = listaMezziInServizio;
             var sintesi = Task.Factory.StartNew(() => _mapperSintesi.Map(conferma.Richiesta)).ContinueWith(sintesi =>
             {
@@ -144,24 +147,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     conferma.ConfermaPartenze.Chiamata = sintesi.Result;
                     _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
 
-                    var boxRichiesteQuery = new BoxRichiesteQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-
-                    var boxMezziQuery = new BoxMezziQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
-                    var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-
-                    var boxPersonaleQuery = new BoxPersonaleQuery()
-                    {
-                        CodiciSede = new string[] { sede }
-                    };
                     var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
@@ -188,7 +173,12 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyRemoveSquadreLibereCodaChiamate", counterCodaChiamate);
                    });
                 }
+
+                Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine invio Notifica Conferma Partenza sede {sede} Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
             });
+
+            stopWatch.Stop();
+            Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine invio Notifiche Conferma Partenza Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
         }
     }
 }
