@@ -17,6 +17,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
@@ -276,6 +277,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     };
 
                     ListaSediAlberate = result;
+
+                    ListaSediAlberate = GeneraSiglaSede(ListaSediAlberate);
+
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
                     _memoryCache.Set("ListaSediAlberate", ListaSediAlberate, cacheEntryOptions);
 
@@ -294,6 +298,40 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                 return ListaSediAlberate;
             }
+        }
+
+        private UnitaOperativa GeneraSiglaSede(UnitaOperativa listaSediAlberate)
+        {
+            foreach (var direzioni in listaSediAlberate.Figli)
+            {
+                //DIREZIONI REGIONALI
+
+                foreach (var comandi in direzioni.Figli)
+                {
+                    //COMANDI
+                    foreach (var distaccamenti in comandi.Figli.OrderBy(s => s.Nome))
+                    {
+                        //1 - TOLGO I CARATTERI SPECIALI
+                        string NomeNormalizzato = Regex.Replace(distaccamenti.Nome, @"[^\w\.@-]()", "", RegexOptions.None, TimeSpan.FromSeconds(1.5));
+
+                        //2 - PROVO A FORMARE LA SIGLA CON I PRIMI 4 CARATTERI DEL NOME
+                        string sigla = NomeNormalizzato.Length > 4 ? NomeNormalizzato.Trim().Substring(0, 4) : NomeNormalizzato.Trim();
+
+                        //3 - VERIFICO SE LA SIGLA GIA' ESISTE
+                        var siglaEsistente = comandi.Figli.ToList().Find(s => s.sigla.Equals(sigla));
+                    }
+                }
+            }
+
+            listaSediAlberate.Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
+            {
+                Codice = fff.Codice,
+                Descrizione = fff.Nome,
+                Coordinate = fff.Coordinate,
+                Indirizzo = null
+            })));
+
+            throw new NotImplementedException();
         }
 
         public async Task<UnitaOperativa> ListaSediAlberataTreeView()
