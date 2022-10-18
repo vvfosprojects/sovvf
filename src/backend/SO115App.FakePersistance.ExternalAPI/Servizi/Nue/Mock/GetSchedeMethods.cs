@@ -59,6 +59,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         public List<SchedaContatto> GetList(string codiceSede)
         {
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            var indexWildcardTextSearch = new CreateIndexModel<SchedaContatto>(Builders<SchedaContatto>.IndexKeys.Text("$**"));
+            List<CreateIndexModel<SchedaContatto>> indexes = new List<CreateIndexModel<SchedaContatto>>();
+            indexes.Add(indexWildcardTextSearch);
+            _context.SchedeContattoCollection.Indexes.CreateMany(indexes);
+
             DateTime giornoMassimo = DateTime.Now.AddDays(-2);
 
             if (codiceSede.Length > 0)
@@ -210,6 +215,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             var listaSchedeContatto = new List<SchedaContatto>();
             var giornoMassimo = DateTime.UtcNow.AddHours(-(double)(rangeOre ?? 48.0));
 
+            var indexWildcardTextSearch = new CreateIndexModel<SchedaContatto>(Builders<SchedaContatto>.IndexKeys.Text("$**"));
+            List<CreateIndexModel<SchedaContatto>> indexes = new List<CreateIndexModel<SchedaContatto>>();
+            indexes.Add(indexWildcardTextSearch);
+            _context.SchedeContattoCollection.Indexes.CreateMany(indexes);
+
             if (codiceSede.Length > 0)
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiceSede) && !s.Collegata && s.DataInserimento >= giornoMassimo).ToList();
             else
@@ -291,6 +301,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 
             var GiorniFiltrati = Filtri.RangeVisualizzazione != null ? Convert.ToInt32(Filtri.RangeVisualizzazione) : 48;
             DateTime giornoMassimo = DateTime.Now.AddHours(-GiorniFiltrati);
+
+            var indexWildcardTextSearch = new CreateIndexModel<SchedaContatto>(Builders<SchedaContatto>.IndexKeys.Text("$**"));
+            List<CreateIndexModel<SchedaContatto>> indexes = new List<CreateIndexModel<SchedaContatto>>();
+            indexes.Add(indexWildcardTextSearch);
+            _context.SchedeContattoCollection.Indexes.CreateMany(indexes);
 
             if (codiciSede.Length > 0)
                 listaSchedeContatto = _context.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(codiciSede[0]) && !s.Collegata && s.DataInserimento >= giornoMassimo && s.Gestita.Equals(Filtri.Gestita)).ToList();

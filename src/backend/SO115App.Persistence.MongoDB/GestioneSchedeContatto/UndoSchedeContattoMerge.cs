@@ -21,6 +21,7 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using System.Collections.Generic;
 
 namespace SO115App.Persistence.MongoDB.GestioneSchedeContatto
 {
@@ -35,6 +36,12 @@ namespace SO115App.Persistence.MongoDB.GestioneSchedeContatto
 
         public void Undo(SchedaContatto scheda)
         {
+            List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            var indexWildcardTextSearch = new CreateIndexModel<SchedaContatto>(Builders<SchedaContatto>.IndexKeys.Text("$**"));
+            List<CreateIndexModel<SchedaContatto>> indexes = new List<CreateIndexModel<SchedaContatto>>();
+            indexes.Add(indexWildcardTextSearch);
+            _dbContext.SchedeContattoCollection.Indexes.CreateMany(indexes);
+
             foreach (var schedaMergiata in scheda.Collegate)
             {
                 _dbContext.SchedeContattoCollection.DeleteOne(Builders<SchedaContatto>.Filter.Eq(x => x.CodiceScheda, schedaMergiata.CodiceScheda));
