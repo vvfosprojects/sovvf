@@ -147,8 +147,8 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     conferma.ConfermaPartenze.Chiamata = sintesi.Result;
                     _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
 
-                    var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+                    //var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
                     if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                     {
