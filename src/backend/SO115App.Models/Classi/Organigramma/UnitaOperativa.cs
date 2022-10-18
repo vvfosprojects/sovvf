@@ -77,6 +77,7 @@ namespace SO115App.API.Models.Classi.Organigramma
 
         public Coordinate Coordinate { get; set; }
 
+        public string CoordinateString { get; set; }
 
         /// <summary>
         ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa
