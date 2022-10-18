@@ -60,7 +60,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { setPageSession } from '../../../../../shared/helper/function-paginazione-session';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { LSNAME } from '../../../../../core/settings/config';
-import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 
 export interface RichiesteStateModel {
@@ -355,15 +354,9 @@ export class RichiesteState {
         );
 
         function setAnnullaStatoMezzi(): void {
-            if (obj.statoMezzo === StatoMezzo.Rientrato) {
-                dispatch([
-                    new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice], StatoMezzo.SulPosto),
-                    new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice], StatoMezzo.InRientro),
-                ]);
-            }
-            if (!action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
+            if (!action.mezzoAction.modificaOrario) {
                 dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, obj.statoMezzo, obj.codicePartenza));
-            } else if (action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
+            } else if (action.mezzoAction.modificaOrario) {
                 dispatch(new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice], obj.codicePartenza));
             }
         }
