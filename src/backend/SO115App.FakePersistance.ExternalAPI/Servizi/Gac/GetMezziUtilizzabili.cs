@@ -312,25 +312,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             lstCodSedi = lstMezzi.Select(s => s.CodiceDistaccamento).ToList();
 
-            foreach (var sede in lstCodSedi.Distinct())
+            Parallel.ForEach(lstCodSedi.Distinct(), sede =>
             {
-                var infoSede = _getSedi.GetInfoSede(sede).Result;
-
                 try
                 {
-                    if (infoSede.Descrizione.ToLower().Contains("centrale"))
+                    if (sedi.Find(s => s.Codice.Equals(sede)) != null)
                     {
-                        infoSede.Descrizione = sedi.Find(s => s.Codice.Equals(sede)).Descrizione;
+                        listaSedi.Add(sedi.Find(s => s.Codice.Equals(sede)));
                     }
-
-                    Sede sedeMezzo = new Sede(sede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
+                    else
                     {
-                        CoordinateString = infoSede.coordinate.Split(',')
-                    };
-                    listaSedi.Add(sedeMezzo);
+                        var infoSede = _getSedi.GetInfoSede(sede).Result;
+                        Sede sedeMezzo = new Sede(sede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
+                        {
+                            CoordinateString = infoSede.coordinate.Split(',')
+                        };
+                        listaSedi.Add(sedeMezzo);
+                    }
                 }
-                catch (Exception ex) { }
-            };
+                catch (Exception ex)
+                {
+                }
+            });
 
             return listaSedi.OrderBy(s => s.Codice).ToList();
         }
