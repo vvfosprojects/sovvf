@@ -7,6 +7,7 @@ import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interfa
 import { EnteInterface } from '../../../../shared/interface/ente.interface';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { InfoMezzo } from '../../../../shared/store/states/loading/loading.state';
+import { MezzoRientratoVisibileRichiesta } from '../../../../shared/interface/mezzo-rientrato-visibile-richiesta.interface';
 
 @Component({
     selector: 'app-richiesta-fissata',
@@ -23,6 +24,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() listaEnti: EnteInterface[];
     @Input() nightMode: boolean;
     @Input() dateSync: Date;
+    @Input() codMezziRientratiVisibili: MezzoRientratoVisibileRichiesta;
 
     // Permessi
     @Input() disabledModificaRichiesta: boolean;

@@ -21,7 +21,7 @@ import { DettaglioSoccorsoAereoModalComponent } from '../../modal/dettaglio-socc
 import { ApplyFiltriTipologiaSelezionatiRichieste } from '../../../features/home/store/actions/filterbar/filtri-richieste.actions';
 import { GetDettaglioSoccorsoAereo, GetEventiSoccorsoAereo } from '../../../features/home/store/actions/composizione-partenza/composizione-soccorso-aereo.actions';
 import { AzioniSintesiRichiestaModalComponent } from '../../modal/azioni-sintesi-richiesta-modal/azioni-sintesi-richiesta-modal.component';
-import { checkNumeroPartenze, defineChiamataIntervento } from '../../helper/function-richieste';
+import { checkNumeroPartenzeAttive, defineChiamataIntervento } from '../../helper/function-richieste';
 import { EnteInterface } from '../../interface/ente.interface';
 import { OpenDettaglioSchedaContatto } from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ClearMezzoInServizioSelezionato, SetMezzoInServizioSelezionato } from '../../../features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
@@ -32,9 +32,10 @@ import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { nomeStatiSquadra } from '../../helper/function-composizione';
 import { AddConcorrenzaDtoInterface } from '../../interface/dto/concorrenza/add-concorrenza-dto.interface';
 import { AddConcorrenza, DeleteConcorrenza } from '../../store/actions/concorrenza/concorrenza.actions';
-import { ClearRichiestaAzioni, SetRichiestaAzioni } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { ClearMezziRientratiVisibiliRichiesta, ClearRichiestaAzioni, SetRichiestaAzioni } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { InfoMezzo } from '../../store/states/loading/loading.state';
 import * as province from '../../../../assets/province/province.json';
+import { MezzoRientratoVisibileRichiesta } from '../../interface/mezzo-rientrato-visibile-richiesta.interface';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -71,6 +72,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     @Input() nightMode: boolean;
     @Input() annullaStatoMezzi: InfoMezzo[];
     @Input() dateSync: Date;
+    @Input() codMezziRientratiVisibili: MezzoRientratoVisibileRichiesta;
 
     @Output() clickRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() clickIndirizzo = new EventEmitter<SintesiRichiesta>();
@@ -194,6 +196,7 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
 
     onGestioneRichiesta(event: any): void {
         this.gestioneRichiesta.emit(this.richiesta);
+        this.store.dispatch(new ClearMezziRientratiVisibiliRichiesta(this.richiesta.codice));
         if (this.selezionata) {
             event.stopPropagation();
         }
@@ -210,8 +213,8 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
         return partenze?.filter((p: Partenza) => !p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata && p.partenza.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
     }
 
-    checkNumeroPartenze(partenze: Partenza[]): number {
-        return checkNumeroPartenze(partenze);
+    checkNumeroPartenzeAttive(partenze: Partenza[]): number {
+        return checkNumeroPartenzeAttive(partenze);
     }
 
     _nomeStatiSquadra(statoSquadra: number): string {

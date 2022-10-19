@@ -8,6 +8,7 @@ import { EnteInterface } from '../../../../shared/interface/ente.interface';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { TipoConcorrenzaEnum } from '../../../../shared/enum/tipo-concorrenza.enum';
 import { InfoMezzo } from '../../../../shared/store/states/loading/loading.state';
+import { MezzoRientratoVisibileRichiesta } from '../../../../shared/interface/mezzo-rientrato-visibile-richiesta.interface';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -26,6 +27,7 @@ export class ListaRichiesteComponent implements OnChanges {
     @Input() boxAttivi: boolean;
     @Input() listaEnti: EnteInterface[];
     @Input() dateSync: Date;
+    @Input() codMezziRientratiVisibili: MezzoRientratoVisibileRichiesta[];
 
     // Loading
     @Input() loading: boolean;
@@ -289,5 +291,9 @@ export class ListaRichiesteComponent implements OnChanges {
         const richiestaSelezionataId = this.idRichiestaSelezionata ? this.idRichiestaSelezionata : null;
         const richiestaHoverId = this.richiestaHover ? this.richiestaHover.id : null;
         return this.methods.cardClasses(r, richiestaSelezionataId, richiestaHoverId);
+    }
+
+    getCodMezziRientratiVisibili(codRichiesta: string): MezzoRientratoVisibileRichiesta {
+        return this.codMezziRientratiVisibili.filter((x: MezzoRientratoVisibileRichiesta) => x.codRichiesta === codRichiesta)[0];
     }
 }

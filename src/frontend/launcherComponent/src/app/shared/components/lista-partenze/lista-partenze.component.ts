@@ -4,7 +4,7 @@ import { Partenza } from '../../model/partenza.model';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { Store } from '@ngxs/store';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
-import { checkNumeroPartenze, checkNumeroPartenzeAttive, getPartenze, getPartenzeAttive } from '../../helper/function-richieste';
+import { checkNumeroPartenzeAttive, getPartenzeAttive } from '../../helper/function-richieste';
 import { Mezzo } from '../../model/mezzo.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
@@ -12,6 +12,7 @@ import { InfoMezzo } from '../../store/states/loading/loading.state';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
+import { MezzoRientratoVisibileRichiesta } from '../../interface/mezzo-rientrato-visibile-richiesta.interface';
 import * as moment from 'moment';
 
 @Component({
@@ -32,6 +33,7 @@ export class ListaPartenzeComponent {
     @Input() hideGestisciPartenza: boolean;
     @Input() onlyPartenzeAttive: boolean;
     @Input() dateSync: Date;
+    @Input() codMezziRientratiVisibili: MezzoRientratoVisibileRichiesta;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
@@ -48,11 +50,13 @@ export class ListaPartenzeComponent {
     }
 
     checkNumeroPartenze(partenze: Partenza[]): number {
-        return this.onlyPartenzeAttive ? checkNumeroPartenzeAttive(partenze) : checkNumeroPartenze(partenze);
+        const annullaStatoMezzoRientrato = this.annullaStatoMezzi?.filter((x: InfoMezzo) => x.stato === StatoMezzo.Rientrato)[0];
+        return this.onlyPartenzeAttive ? checkNumeroPartenzeAttive(partenze) : checkNumeroPartenzeAttive(partenze, this.codMezziRientratiVisibili, annullaStatoMezzoRientrato);
     }
 
     getPartenze(partenze: Partenza[]): Partenza[] {
-        return this.onlyPartenzeAttive ? getPartenzeAttive(partenze) : getPartenze(partenze);
+        const annullaStatoMezzoRientrato = this.annullaStatoMezzi?.filter((x: InfoMezzo) => x.stato === StatoMezzo.Rientrato)[0];
+        return this.onlyPartenzeAttive ? getPartenzeAttive(partenze) : getPartenzeAttive(partenze, this.codMezziRientratiVisibili, annullaStatoMezzoRientrato);
     }
 
     getUltimoStatoMezzo(codMezzo: string): StatoMezzo {

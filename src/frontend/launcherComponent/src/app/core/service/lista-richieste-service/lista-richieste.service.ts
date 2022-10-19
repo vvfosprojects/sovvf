@@ -85,7 +85,7 @@ export class SintesiRichiesteService {
         return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AggiornaPartenza`, obj);
     }
 
-    public eliminaPartenzaRichiesta(obj: any): Observable<any> {
+    public annullaStatoPartenza(obj: any): Observable<any> {
         return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AnnullaStatoPartenza`, obj);
     }
 

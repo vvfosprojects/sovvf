@@ -36,6 +36,7 @@ import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum'
 import { DeleteAllConcorrenza } from '../../../shared/store/actions/concorrenza/concorrenza.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { ClockService } from '../../navbar/clock/clock-service/clock.service';
+import { MezzoRientratoVisibileRichiesta } from '../../../shared/interface/mezzo-rientrato-visibile-richiesta.interface';
 
 @Component({
     selector: 'app-richieste',
@@ -69,6 +70,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiesteState.needRefresh) needRefresh$: Observable<boolean>;
     @Select(RichiesteState.loadingActionRichiesta) loadingActionRichiesta$: Observable<string[]>;
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string[]>;
+    @Select(RichiesteState.codMezziRientratiVisibiliRichieste) codMezziRientratiVisibiliRichieste$: Observable<MezzoRientratoVisibileRichiesta[]>;
+    codMezziRientratiVisibiliRichieste: MezzoRientratoVisibileRichiesta[];
 
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -107,6 +110,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetListaRichieste());
         this.getClock();
         this.heightControl();
+        this.getCodMezziRientratiVisibiliObseravble();
         this.getRichiestaFissata();
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
@@ -223,6 +227,15 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
+    // Restituisce i CodMezziRientratiVisibili
+    getCodMezziRientratiVisibiliObseravble(): void {
+        this.subscriptions.add(
+            this.codMezziRientratiVisibiliRichieste$.subscribe((codMezziRientratiVisibiliRichieste: MezzoRientratoVisibileRichiesta[]) => {
+                this.codMezziRientratiVisibiliRichieste = codMezziRientratiVisibiliRichieste;
+            })
+        );
+    }
+
     getRichiestaGestione(): void {
         this.subscriptions.add(
             this.richiestaGestione$.subscribe((richiestaGestione: SintesiRichiesta) => {
@@ -314,5 +327,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {
         this.store.dispatch(new ActionMezzo(actionMezzo));
+    }
+
+    getCodMezziRientratiVisibili(codRichiesta: string): MezzoRientratoVisibileRichiesta {
+        return this.codMezziRientratiVisibiliRichieste.filter((x: MezzoRientratoVisibileRichiesta) => x.codRichiesta === codRichiesta)[0];
     }
 }

@@ -7,12 +7,11 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composizione';
 import { Store } from '@ngxs/store';
-import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
 import { Mezzo } from '../../model/mezzo.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
-import { StartLoadingActionMezzo, StopLoadingActionMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { AnnullaStatoMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { StatoMezzoActions } from '../../enum/stato-mezzo-actions.enum';
@@ -68,21 +67,7 @@ export class PartenzaComponent implements OnInit {
     }
 
     onAnnullaStato(codiceMezzo: string, statoMezzo: StatoMezzo): void {
-        const obj = {
-            codiceRichiesta: this.infoPartenza ? this.infoPartenza.codiceRichiesta : null,
-            codicePartenza: this.infoPartenza ? this.infoPartenza.codicePartenza : null,
-            targaMezzo: this.infoPartenza.codiceMezzo ? this.infoPartenza.codiceMezzo : null,
-        };
-        this.store.dispatch(new StartLoadingActionMezzo(codiceMezzo));
-        this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
-            this.store.dispatch([
-                new RemoveAnnullaStatoMezzi([codiceMezzo], statoMezzo),
-                new StopLoadingActionMezzo(codiceMezzo)
-            ]);
-        }, () => {
-            console.error('Richiesta di annullamento cambio stato fallita');
-            this.store.dispatch(new StopLoadingActionMezzo(codiceMezzo));
-        });
+        this.store.dispatch(new AnnullaStatoMezzo(this.infoPartenza, codiceMezzo, statoMezzo));
     }
 
     checkListaEventiMezzo(): void {
