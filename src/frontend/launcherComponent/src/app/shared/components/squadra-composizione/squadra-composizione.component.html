@@ -173,7 +173,7 @@
                 <div class="d-inline-block py-0"
                      [ngClass]="badgeDistaccamentoClass()"
                      [ngbTooltip]="squadraComposizione?.distaccamento?.descrizione">
-                    {{ squadraComposizione?.distaccamento?.descrizione | competenzaFormat }}
+                    {{ squadraComposizione?.distaccamento?.sigla }}
                 </div>
             </div>
         </div>
@@ -182,7 +182,7 @@
                 <div class="d-inline-block"
                      [ngClass]="badgeDistaccamentoClass()"
                      [ngbTooltip]="squadraComposizione?.distaccamento?.descrizione">
-                    {{ squadraComposizione?.distaccamento?.descrizione | slice:0:3 }}
+                    {{ squadraComposizione?.distaccamento?.sigla }}
                 </div>
             </div>
         </ng-container>
