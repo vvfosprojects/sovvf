@@ -26,6 +26,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,44 +69,49 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var statoMezzi = _getStatoMezzi.Get(CodiciSede);
 
             var listaMezzoInServizio = new ConcurrentBag<MezzoInServizio>();
-
-            //Parallel.ForEach(mezzi, mezzo =>
-            foreach (var mezzo in mezzi)
+            try
             {
-                var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice) && !x.StatoOperativo.Equals("Rientrato"));
-                mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
-                mezzo.IdRichiesta = statoOperativoMezzi?.CodiceRichiesta;
-                var mezzoMarker = new MezzoMarker()
+                //Parallel.ForEach(mezzi, mezzo =>
+                foreach (var mezzo in mezzi)
                 {
-                    Mezzo = mezzo,
-                    InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromCodiceRichiestaMezzo(mezzo.IdRichiesta)
-                };
-                var mezzoInServizio = new MezzoInServizio()
-                {
-                    Mezzo = mezzoMarker
-                };
-
-                if (mezzo.IdRichiesta != null)
-                {
-                    var richiesta = _getRichiestaById.GetByCodice(mezzo.IdRichiesta);
-                    if (richiesta != null)
+                    var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice) && !x.StatoOperativo.Equals("Rientrato"));
+                    mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
+                    mezzo.IdRichiesta = statoOperativoMezzi?.CodiceRichiesta;
+                    var mezzoMarker = new MezzoMarker()
                     {
-                        foreach (var partenza in richiesta.Partenze)
+                        Mezzo = mezzo,
+                        InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromCodiceRichiestaMezzo(mezzo.IdRichiesta)
+                    };
+                    var mezzoInServizio = new MezzoInServizio()
+                    {
+                        Mezzo = mezzoMarker
+                    };
+
+                    if (mezzo.IdRichiesta != null)
+                    {
+                        var richiesta = _getRichiestaById.GetByCodice(mezzo.IdRichiesta);
+                        if (richiesta != null)
                         {
-                            if (partenza.Partenza.Mezzo.Codice == mezzo.Codice)
+                            foreach (var partenza in richiesta.Partenze)
                             {
-                                mezzoInServizio.Squadre = partenza.Partenza.Squadre;
+                                if (partenza.Partenza.Mezzo.Codice == mezzo.Codice)
+                                {
+                                    mezzoInServizio.Squadre = partenza.Partenza.Squadre;
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    mezzoInServizio.Squadre = null;
-                }
+                    else
+                    {
+                        mezzoInServizio.Squadre = null;
+                    }
 
-                listaMezzoInServizio.Add(mezzoInServizio);
-            };
+                    listaMezzoInServizio.Add(mezzoInServizio);
+                };
+            }
+            catch (Exception ex)
+            {
+            }
 
             var listaFiltrata = listaMezzoInServizio.Where(x => x != null);
 

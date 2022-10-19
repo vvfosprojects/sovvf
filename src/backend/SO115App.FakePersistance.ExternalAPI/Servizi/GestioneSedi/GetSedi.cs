@@ -164,7 +164,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Codice = ff.Codice,
                 Descrizione = ff.Nome,
                 Coordinate = ff.Coordinate,
-                CoordinateString = f.CoordinateString.Split(','),
+                CoordinateString = ff.CoordinateString.Split(','),
                 Indirizzo = null
             }
              )));
@@ -174,7 +174,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Codice = fff.Codice,
                 Descrizione = fff.Nome,
                 Coordinate = fff.Coordinate,
-                CoordinateString = f.CoordinateString.Split(','),
+                CoordinateString = fff.CoordinateString.Split(','),
                 Indirizzo = null
             }))));
 
@@ -221,7 +221,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     {
                         var info = GetInfoSede(regionale.id).Result;
 
-                        result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = info.coordinate});
+                        result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = info.coordinate });
                     };
 
                     //PROVINCE
@@ -431,12 +431,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
                     _memoryCache.Set("ListaSediAlberate", ListaSediAlberate, cacheEntryOptions);
 
-                    _setSediAlberate.Set(result);
+                    //_setSediAlberate.Set(result);
                     return result;
                 }
                 catch (Exception e)
                 {
-                    return readOffline();
+                    return null; // readOffline();
                 }
             }
             else

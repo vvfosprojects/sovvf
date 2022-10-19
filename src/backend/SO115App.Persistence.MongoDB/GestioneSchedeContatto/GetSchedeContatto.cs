@@ -25,6 +25,11 @@ namespace SO115App.Persistence.MongoDB.GestioneSchedeContatto
         public List<SchedaContatto> GetAllSchedeContatto(string CodiceSede)
         {
             List<SchedaContatto> listaSchedeContatto = new List<SchedaContatto>();
+            var indexWildcardTextSearch = new CreateIndexModel<SchedaContatto>(Builders<SchedaContatto>.IndexKeys.Text("$**"));
+            List<CreateIndexModel<SchedaContatto>> indexes = new List<CreateIndexModel<SchedaContatto>>();
+            indexes.Add(indexWildcardTextSearch);
+
+            _dbContext.SchedeContattoCollection.Indexes.CreateMany(indexes);
 
             if (CodiceSede.Length > 0)
                 listaSchedeContatto = _dbContext.SchedeContattoCollection.Find(s => s.CodiceSede.Equals(CodiceSede)).ToList();
