@@ -327,12 +327,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                         string sigla = ConsonantiNome.Length > 4 ? ConsonantiNome.Trim().Substring(0, 4) : ConsonantiNome.Trim();
 
                         //3 - VERIFICO SE LA SIGLA GIA' ESISTE
-                        if (comandi.Figli.ToList().FindAll(s => s.sigla != null && s.sigla.Equals(sigla)) != null)
-                        {
-                            distaccamenti.sigla = sigla + ConsonantiNome.Trim().Substring(4, 1);
-                        }
-                        else
-                            distaccamenti.sigla = sigla;
+                        //if (comandi.Figli.ToList().FindAll(s => s.sigla != null && s.sigla.Equals(sigla)) != null)
+                        //{
+                        //    distaccamenti.sigla = sigla + ConsonantiNome.Trim().Substring(4, 1);
+                        //}
+                        //else
+                        distaccamenti.sigla = sigla;
                     }
                 }
             }
