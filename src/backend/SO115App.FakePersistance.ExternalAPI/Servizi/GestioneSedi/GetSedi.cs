@@ -321,18 +321,24 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     {
                         //1 - TOLGO I CARATTERI SPECIALI
                         string NomeNormalizzato = Regex.Replace(distaccamenti.Nome, @"[^\w\.@-]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5));
+                        NomeNormalizzato = NomeNormalizzato.Replace(".", "");
                         string ConsonantiNome = Regex.Replace(distaccamenti.Nome, @"[aeiouAEIOU]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5));
 
                         //2 - PROVO A FORMARE LA SIGLA CON I PRIMI 4 CARATTERI DEL NOME
-                        string sigla = ConsonantiNome.Length > 4 ? ConsonantiNome.Trim().Substring(0, 4) : ConsonantiNome.Trim();
+                        //string sigla = ConsonantiNome.Length > 4 ? ConsonantiNome.Trim().Substring(0, 4) : ConsonantiNome.Trim();
+
+                        string sigla = NomeNormalizzato.Length > 4 ? NomeNormalizzato.Trim().Substring(0, 4) : NomeNormalizzato.Trim();
 
                         //3 - VERIFICO SE LA SIGLA GIA' ESISTE
-                        //if (comandi.Figli.ToList().FindAll(s => s.sigla != null && s.sigla.Equals(sigla)) != null)
-                        //{
-                        //    distaccamenti.sigla = sigla + ConsonantiNome.Trim().Substring(4, 1);
-                        //}
-                        //else
-                        distaccamenti.sigla = sigla;
+                        if (comandi.Figli.ToList().FindAll(s => s.sigla != null && s.sigla.Equals(sigla)).Count > 0)
+                        {
+                            if (NomeNormalizzato.Length > 4)
+                                distaccamenti.sigla = sigla + NomeNormalizzato.Trim().Substring(4, 1);
+                            else
+                                distaccamenti.sigla = sigla.Substring(0, sigla.Length - 1);
+                        }
+                        else
+                            distaccamenti.sigla = sigla;
                     }
                 }
             }
