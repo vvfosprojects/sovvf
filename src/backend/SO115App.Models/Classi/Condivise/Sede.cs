@@ -70,5 +70,7 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public string[] CoordinateString { get; set; }
 
+        public string sigla { get; set; }
+
     }
 }

@@ -156,7 +156,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Descrizione = f.Nome,
                 Coordinate = f.Coordinate,
                 CoordinateString = f.CoordinateString.Split(','),
-                Indirizzo = null
+                Indirizzo = null,
+                sigla = f.sigla ?? ""
             }));
 
             result.AddRange(lstSedi.Figli.ToList().SelectMany(f => f.Figli.Select(ff => new Sede()
@@ -165,9 +166,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Descrizione = ff.Nome,
                 Coordinate = ff.Coordinate,
                 CoordinateString = ff.CoordinateString.Split(','),
-                Indirizzo = null
-            }
-             )));
+                Indirizzo = null,
+                sigla = ff.sigla ?? ""
+            })));
 
             result.AddRange(lstSedi.Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
             {
@@ -175,7 +176,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Descrizione = fff.Nome,
                 Coordinate = fff.Coordinate,
                 CoordinateString = fff.CoordinateString.Split(','),
-                Indirizzo = null
+                Indirizzo = null,
+                sigla = fff.sigla ?? ""
             }))));
 
             result.AddRange(lstSedi.Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
@@ -184,7 +186,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                 Descrizione = fff.Nome,
                 Coordinate = fff.Coordinate,
                 CoordinateString = fff.CoordinateString.Split(','),
-                Indirizzo = null
+                Indirizzo = null,
+                sigla = fff.sigla ?? ""
             })))));
 
             return result.Distinct().ToList();
@@ -284,7 +287,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                     ListaSediAlberate = result;
 
-                    //ListaSediAlberate = GeneraSiglaSede(ListaSediAlberate);
+                    ListaSediAlberate = GeneraSiglaSede(ListaSediAlberate);
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
                     _memoryCache.Set("ListaSediAlberate", ListaSediAlberate, cacheEntryOptions);
@@ -308,32 +311,33 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
         private UnitaOperativa GeneraSiglaSede(UnitaOperativa listaSediAlberate)
         {
-            return null;
-            //foreach (var direzioni in listaSediAlberate.Figli)
-            //{
-            //    //DIREZIONI REGIONALI
+            foreach (var direzioni in listaSediAlberate.Figli)
+            {
+                //DIREZIONI REGIONALI
+                foreach (var comandi in direzioni.Figli)
+                {
+                    //COMANDI
+                    foreach (var distaccamenti in comandi.Figli.OrderBy(s => s.Nome))
+                    {
+                        //1 - TOLGO I CARATTERI SPECIALI
+                        string NomeNormalizzato = Regex.Replace(distaccamenti.Nome, @"[^\w\.@-]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5));
+                        string ConsonantiNome = Regex.Replace(distaccamenti.Nome, @"[aeiouAEIOU]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5));
 
-            // foreach (var comandi in direzioni.Figli) { //COMANDI foreach (var distaccamenti in
-            // comandi.Figli.OrderBy(s => s.Nome)) { //1 - TOLGO I CARATTERI SPECIALI string
-            // NomeNormalizzato = Regex.Replace(distaccamenti.Nome, @"[^\w\.@-]()", "",
-            // RegexOptions.None, TimeSpan.FromSeconds(1.5));
+                        //2 - PROVO A FORMARE LA SIGLA CON I PRIMI 4 CARATTERI DEL NOME
+                        string sigla = ConsonantiNome.Length > 4 ? ConsonantiNome.Trim().Substring(0, 4) : ConsonantiNome.Trim();
 
-            // //2 - PROVO A FORMARE LA SIGLA CON I PRIMI 4 CARATTERI DEL NOME string sigla =
-            // NomeNormalizzato.Length > 4 ? NomeNormalizzato.Trim().Substring(0, 4) : NomeNormalizzato.Trim();
+                        //3 - VERIFICO SE LA SIGLA GIA' ESISTE
+                        if (comandi.Figli.ToList().FindAll(s => s.sigla != null && s.sigla.Equals(sigla)) != null)
+                        {
+                            distaccamenti.sigla = sigla + ConsonantiNome.Trim().Substring(4, 1);
+                        }
+                        else
+                            distaccamenti.sigla = sigla;
+                    }
+                }
+            }
 
-            //            //3 - VERIFICO SE LA SIGLA GIA' ESISTE
-            //            var siglaEsistente = comandi.Figli.ToList().Find(s => s.sigla.Equals(sigla));
-            //        }
-            //    }
-            //}
-
-            //listaSediAlberate.Figli.ToList().SelectMany(f => f.Figli.SelectMany(ff => ff.Figli.Select(fff => new Sede()
-            //{
-            //    Codice = fff.Codice,
-            //    Descrizione = fff.Nome,
-            //    Coordinate = fff.Coordinate,
-            //    Indirizzo = null
-            //})));
+            return listaSediAlberate;
         }
 
         public async Task<UnitaOperativa> ListaSediAlberataTreeView()
