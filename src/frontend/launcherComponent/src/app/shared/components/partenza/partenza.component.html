@@ -8,7 +8,7 @@
                    [mezzo]="partenza.mezzo"
                    [listaEventiMezzo]="listaEventiMezzo"
                    [listaEventi]="richiesta?.eventi"
-                   [actionsAttive]="inGestione && richiesta.stato !== statoRichiestaEnum.Chiusa"
+                   [actionsAttive]="inGestione"
                    [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
                    [dateSync]="dateSync"
                    (actionMezzo)="onActionMezzo($event)">

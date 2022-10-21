@@ -87,7 +87,7 @@ export function checkNumeroPartenzeAttive(partenze: Partenza[], codMezziRientrat
     if (partenze && partenze.length > 0) {
         const partenzeNew = getUniqueLastPartenze(partenze);
         partenzeNew.forEach((p: Partenza) => {
-            if ((!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) || codMezziRientratiVisibili?.codMezzi?.includes(p.partenza.mezzo.codice) || annullaStatoMezzoRientrato?.codMezzo === p.partenza.mezzo.codice) {
+            if ((!p.partenza.sganciata && !p.partenza.partenzaAnnullata) || codMezziRientratiVisibili?.codMezzi?.includes(p.partenza.mezzo.codice) || annullaStatoMezzoRientrato?.codMezzo === p.partenza.mezzo.codice) {
                 count++;
             }
         });
@@ -97,7 +97,7 @@ export function checkNumeroPartenzeAttive(partenze: Partenza[], codMezziRientrat
 
 export function getPartenzeAttive(partenze: Partenza[], codMezziRientratiVisibili?: MezzoRientratoVisibileRichiesta, annullaStatoMezzoRientrato?: InfoMezzo): Partenza[] {
     const partenzeNew = getUniqueLastPartenze(partenze);
-    return partenzeNew.filter((p: Partenza) => (!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) || codMezziRientratiVisibili?.codMezzi?.includes(p.partenza.mezzo.codice) || annullaStatoMezzoRientrato?.codMezzo === p.partenza.mezzo.codice);
+    return partenzeNew.filter((p: Partenza) => (!p.partenza.sganciata && !p.partenza.partenzaAnnullata) || codMezziRientratiVisibili?.codMezzi?.includes(p.partenza.mezzo.codice) || annullaStatoMezzoRientrato?.codMezzo === p.partenza.mezzo.codice);
 }
 
 function getUniqueLastPartenze(partenze: Partenza[]): Partenza[] {
