@@ -22,7 +22,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
-        public List<StatoOperativoMezzo> Get(string[] codiciSede, string codiceMezzo = null)
+        public List<StatoOperativoMezzo> Get(string[] codiciSede, string codicePartenza = null, string codiceMezzo = null)
         {
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
@@ -51,7 +51,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
             }
             else
             {
-                var listaMezziPrenotati = _dbContext.StatoMezzoCollection.Find(Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodiceMezzo, codiceMezzo)).ToList();
+                var listaMezziPrenotati = _dbContext.StatoMezzoCollection.Find(s => s.CodiceMezzo.Equals(codiceMezzo) && s.CodicePartenza.Equals(codicePartenza)).ToList();
 
                 foreach (var mezzo in listaMezziPrenotati)
                 {
@@ -64,7 +64,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
             }
         }
 
-        public List<StatoOperativoMezzo> Get(string codiceSede, string codiceMezzo = null)
+        public List<StatoOperativoMezzo> Get(string codiceSede, string codicePartenza = null, string codiceMezzo = null)
         {
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
@@ -93,7 +93,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
             }
             else
             {
-                var listaMezziPrenotati = _dbContext.StatoMezzoCollection.Find(Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodiceMezzo, codiceMezzo)).ToList();
+                var listaMezziPrenotati = _dbContext.StatoMezzoCollection.Find(s => s.CodiceMezzo.Equals(codiceMezzo) && s.CodicePartenza.Equals(codicePartenza)).ToList();
 
                 foreach (var mezzo in listaMezziPrenotati)
                 {

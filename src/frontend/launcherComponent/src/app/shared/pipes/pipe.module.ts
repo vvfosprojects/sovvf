@@ -14,7 +14,6 @@ import { CheckPermissionPipe } from './check-permission.pipe';
 import { CheckPermissionCodSedeAppartenenzaPipe } from './check-permission-cod-sede-appartenenza.pipe';
 import { SelectedFilterTipologiaRichiestePipe } from './selected-filter-tipologia-richieste.pipe';
 import { ReplacePipe } from './replace.pipe';
-import { CompetenzaFormatPipe } from './competenza-format.pipe';
 import { TipoNotificaPipe } from './tipo-notifica.pipe';
 import { ReversePipe } from './reverse.pipe';
 import { ConcorrenzaLockedPipe } from './concorrenza-locked.pipe';
@@ -36,7 +35,6 @@ const COMPONENTS = [
     SelectedFilterRichiestePipe,
     SelectedFilterTipologiaRichiestePipe,
     ReplacePipe,
-    CompetenzaFormatPipe,
     TipoNotificaPipe,
     ReversePipe,
     ConcorrenzaLockedPipe,

@@ -70,11 +70,10 @@
                                placeholder="Seleziona una Sede"
                                bindValue="codice"
                                bindLabel="descrizione"
-                               formControlName="sedi"
-                               [multiple]="true">
+                               formControlName="sede">
                     </ng-select>
-                    <div *ngIf="submitted && f.sedi.errors" class="text-danger mt-1">
-                        <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
+                    <div *ngIf="submitted && f.sede.errors" class="text-danger mt-1">
+                        <div *ngIf="f.sede.errors.required">Campo Obbligatorio</div>
                     </div>
                 </div>
                 <div class="mb-3">

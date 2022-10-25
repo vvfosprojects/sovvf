@@ -69,18 +69,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         {
             Log.Debug("Inizio elaborazione Welcome Handler");
 
-            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata().Result;
 
             var pinNodi = new List<PinNodo>();
             var pinNodiNoDistaccamenti = new List<PinNodo>();
 
             foreach (var sede in query.CodiceSede)
             {
-                pinNodi.Add(new PinNodo(sede, true));
-                pinNodiNoDistaccamenti.Add(new PinNodo(sede, true));
+                var sedeCheck = sede;
+                if (sedeCheck.Contains("1000"))
+                    sedeCheck = sedeCheck.Split('.')[0];
+
+                pinNodi.Add(new PinNodo(sedeCheck, true));
+                pinNodiNoDistaccamenti.Add(new PinNodo(sedeCheck, true));
             }
 
-            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
 
             var filtri = _filtriHandler.Get();

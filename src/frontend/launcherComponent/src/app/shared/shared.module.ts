@@ -86,7 +86,7 @@ import { GestisciSchedaContattoModalComponent } from './modal/gestisci-scheda-co
 import { PosDettaglioModalComponent } from './modal/pos-dettaglio-modal/pos-dettaglio-modal.component';
 import { VisualizzaDocumentoModalComponent } from './modal/visualizza-documento-modal/visualizza-documento-modal.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import { UrgenzaSegnalataModalComponent } from './modal/urgenza-segnalata-modal/urgenza-segnalata-modal.component';
+import { AlertModalComponent } from './modal/alert-modal/alert-modal.component';
 import { LockedConcorrenzaComponent } from './components/locked-concorrenza/locked-concorrenza.component';
 import { ConcorrenzaService } from '../core/service/concorrenza-service/concorrenza.service';
 import { LockedConcorrenzaService } from '../core/service/concorrenza-service/locked-concorrenza.service';
@@ -167,7 +167,7 @@ const COMPONENTS = [
     GestisciSchedaContattoModalComponent,
     PosDettaglioModalComponent,
     VisualizzaDocumentoModalComponent,
-    UrgenzaSegnalataModalComponent,
+    AlertModalComponent,
     LockedConcorrenzaComponent
 ];
 const MODULES = [

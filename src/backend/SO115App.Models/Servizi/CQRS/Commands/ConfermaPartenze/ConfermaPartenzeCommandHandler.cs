@@ -106,11 +106,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }
                 });
 
-                Parallel.ForEach(command.RichiestaDaSganciare.Partenze, composizione =>
-                {
-                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare))
-                        composizione.Partenza.Sganciata = true;
-                });
 
                 if (idComposizioneDaSganciare == 1)
                     command.RichiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, command.RichiestaDaSganciare.StatoRichiesta, command.RichiestaDaSganciare.CodOperatore, "", dataAdesso, null);
@@ -123,7 +118,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
 
                 new RevocaPerRiassegnazione(command.RichiestaDaSganciare, command.Richiesta, command.ConfermaPartenze.IdMezzoDaSganciare, dataAdesso, command.Utente.Id,
-                    command.ConfermaPartenze.Partenze.FirstOrDefault(p => p.Mezzo.Codice == command.ConfermaPartenze.IdMezzoDaSganciare).Codice);
+                    command.RichiestaDaSganciare.Partenze.FirstOrDefault(p => p.Partenza.Mezzo.Codice == command.ConfermaPartenze.IdMezzoDaSganciare && !p.Partenza.Terminata).CodicePartenza);
 
                 //SOSPENDO LA RICHIESTA SE LA PARTENZA DA SGANCIARE E' L'ULTIMA IN CORSO SU TALE RICHIESTA
                 //if (command.Richiesta.lstPartenze.Where(p => !p.Terminata && !p.PartenzaAnnullata && !p.Sganciata && p.Mezzo.Codice != command.ConfermaPartenze.IdMezzoDaSganciare).Count() == 0)
@@ -131,18 +126,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 //_set
 
+
+                Parallel.ForEach(command.RichiestaDaSganciare.Partenze, composizione =>
+                {
+                    if (composizione.Partenza.Mezzo.Codice.Equals(command.ConfermaPartenze.IdMezzoDaSganciare) && !composizione.Partenza.Terminata)
+                    {
+                        composizione.Partenza.Sganciata = true;
+                        composizione.Partenza.Terminata = true;
+                    }
+                });
+
                 _updateRichiestaAssistenza.UpDate(command.RichiestaDaSganciare);
             }
 
             #endregion SGANCIAMENTO
 
             var PartenzaEsistente = false;
+            int codicePartenzaDiAppoggio = 0;
 
             //PARALLEL
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
                 //CHECK MEZZO OCCUPATO E PARTENZE ESISTENTI
-                var listaMezzi = _getStatoMezzi.Get(new string[] { command.ConfermaPartenze.CodiceSede }, partenza.Mezzo.Codice);
+                var listaMezzi = _getStatoMezzi.Get(new string[] { command.ConfermaPartenze.CodiceSede }, partenza.Codice, partenza.Mezzo.Codice);
                 if (listaMezzi.Count > 0)
                 {
                     if (listaMezzi[0].IdOpPrenotazione != null && !listaMezzi[0].IdOpPrenotazione.Equals(command.ConfermaPartenze.IdOperatore))
@@ -187,6 +193,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }
                 }
 
+                var turnoAttuale = _getTurno.Get().Codice;
+                //GESTIONE CODICE PARTENZA
+                if (codicePartenzaDiAppoggio == 0)
+                {
+                    int codpart = _getMaxCodicePartenza.GetMax();
+                    codpart++;
+                    codicePartenzaDiAppoggio = codpart;
+                }
+                else
+                {
+                    codicePartenzaDiAppoggio++;
+                }
+
+                if (partenza.Mezzo.Distaccamento.Codice != null)
+                    partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codicePartenzaDiAppoggio;
+                else if (partenza.Mezzo.Appartenenza != null)
+                    partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codicePartenzaDiAppoggio;
+
+                partenza.Turno = turnoAttuale;
+
+                //command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
+                //command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
+
                 command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
                 {
                     CodMezzo = partenza.Mezzo.Codice,
@@ -212,24 +241,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             else
                 command.Richiesta.UtPresaInCarico = new List<string> { nominativo };
 
-            //GESTIONE CODICE PARTENZA
-            var turnoAttuale = _getTurno.Get().Codice;
-            int codpart = _getMaxCodicePartenza.GetMax();
-            foreach (var partenza in command.ConfermaPartenze.Partenze.Where(p => p.Codice == "0" || p.Codice == null))
-            {
-                codpart++;
-
-                if (partenza.Mezzo.Distaccamento.Codice != null)
-                    partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codpart;
-                else if (partenza.Mezzo.Appartenenza != null)
-                    partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codpart;
-
-                partenza.Turno = turnoAttuale;
-
-                command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
-                command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
-            }
-
             #region RIASSEGNAZIONE
 
             var richiesteDaTerminare = new List<RichiestaAssistenza>();
@@ -240,13 +251,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 foreach (var partenza in command.ConfermaPartenze.Partenze)
                 {
-                    var statoOperativoMezzo = mezziInRientro.Find(s => s.CodiceMezzo == partenza.Mezzo.Codice);
-                    var richiestaDaTerminare = richiesteDaTerminare.Select(r => r.CodRichiesta).Contains(statoOperativoMezzo.CodiceRichiesta) 
+                    var statoOperativoMezzo = mezziInRientro.Find(s => s.CodiceMezzo.Equals(partenza.Mezzo.Codice));
+                    var richiestaDaTerminare = richiesteDaTerminare.Select(r => r.CodRichiesta).Contains(statoOperativoMezzo.CodiceRichiesta)
                         ? richiesteDaTerminare.Find(r => r.CodRichiesta.Equals(statoOperativoMezzo.CodiceRichiesta))
                         : _getRichiestaById.GetByCodice(statoOperativoMezzo.CodiceRichiesta);
-                    var partenzaDaTerminare = richiestaDaTerminare.lstPartenze.Find(p => p.Mezzo.Codice == partenza.Mezzo.Codice);
+                    var partenzaDaTerminare = richiestaDaTerminare.lstPartenze.Find(p => p.Mezzo.Codice.Equals(partenza.Mezzo.Codice));
 
                     string note = $"La partenza {partenzaDaTerminare.Codice} con mezzo {partenza.Mezzo.Codice.Split('.').Last()} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {partenza.Codice}";
+
+                    command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
+                    {
+                        CodMezzo = partenza.Mezzo.Codice,
+                        Istante = dataAdesso,
+                        Stato = Costanti.MezzoRientrato
+                    }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id);
 
                     new MezzoRiassegnato(richiestaDaTerminare, partenza.Mezzo.Codice.Split('.').Last(), dataAdesso, command.Utente.Id, "MezzoRiassegnato", partenza.Codice, note);
 
@@ -256,11 +274,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         richiesteDaTerminare.Add(richiestaDaTerminare);
 
                     _updateRichiestaAssistenza.UpDate(richiestaDaTerminare);
-
                 }
             }
 
-            #endregion
+            #endregion RIASSEGNAZIONE
 
             //SALVO SUL DB
 

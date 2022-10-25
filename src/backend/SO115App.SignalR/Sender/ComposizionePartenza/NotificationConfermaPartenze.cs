@@ -27,6 +27,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.CodaChiamate;
+using SO115App.Models.Classi.NotificaSoundModale;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -103,16 +104,40 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 return sintesi.Result;
             });
 
-            Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Fine reperimento Sintesi Richiesta da notificare Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
+            Parallel.ForEach(conferma.ConfermaPartenze.Partenze, partenza =>
+            {
+                var notificaModal = new DataModal()
+                {
+                    buttons = new List<Button>()
+                        {
+                            new Button()
+                            {
+                                bgColor = "danger",
+                                text = "chiudi"
+                            }
+                        },
+                    text = "Nuova partenza distaccamento",
+                    timeToClose = 15000,
+                    title = "Alert Distaccamento"
+                };
 
-            Log.Information($"NOTIFICA CONFERMA PARTENZA ********** Inizio ciclo invio notifiche da notificare Elapsed Time:{stopWatch.ElapsedMilliseconds} **************");
+                var notificaSound = new Notifica()
+                {
+                    NotificaType = TipoNotifica.NuovaPartenzaDistaccamento
+                };
+
+                _notificationHubContext.Clients.Group(partenza.Mezzo.Distaccamento.Codice).SendAsync("NotifyAvvisoModal", notificaModal);
+
+                _notificationHubContext.Clients.Group(partenza.Mezzo.Distaccamento.Codice).SendAsync("NotifySound", notificaSound);
+            });
+
             Parallel.ForEach(SediDaNotificare, sede =>
             {
                 if (sede != null)
                 {
-                    var CodSede = new string[] { sede };
-
                     _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+
+                    var CodSede = new string[] { sede };
 
                     foreach (var partenze in conferma.ConfermaPartenze.Partenze)
                     {
@@ -121,6 +146,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
                     conferma.ConfermaPartenze.Chiamata = sintesi.Result;
                     _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+
+                    //var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
+                    //_notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
                     if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                     {

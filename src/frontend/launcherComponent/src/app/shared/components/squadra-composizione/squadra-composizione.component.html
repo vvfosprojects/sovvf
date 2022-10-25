@@ -9,143 +9,182 @@
                 [nominativoOperatore]="tipoConcorrenzaEnum.Squadra | checkConcorrenzaLocked: [squadraComposizione.idSquadra]">
         </app-locked-concorrenza>
     </ng-container>
-    <div class="row px-3">
-        <div class="clearfix"
-             style="width: 67%">
-            <app-icona-stato [stato]="_nomeStatiSquadra(squadraComposizione?.stato)"></app-icona-stato>
-            <div class="badge mx-1 py-1"
-                 [ngClass]="autistaInSquadra ? 'badge-info' : 'badge-danger'"
-                 [ngbPopover]="componenti"
-                 placement="right"
-                 triggers="mouseenter:mouseleave"
-                 style="vertical-align: text-bottom;">
-                <i class="fas"
-                   [class.mr-1]="squadraComposizione.membri?.length"
-                   [class.fa-user]="autistaInSquadra"
-                   [class.fa-user-slash]="!autistaInSquadra"></i>
-                <div class="d-inline-block">
-                    {{ squadraComposizione.membri?.length }}
-                </div>
-            </div>
-            <ng-template #componenti>
-                <div [class.text-light]="nightMode">
-                    <h5 class="font-weight-bolder">
-                        {{ squadraComposizione.codice }} ({{ squadraComposizione?.turno }})
-                    </h5>
-                    <div *ngFor="let c of squadraComposizione?.membri">
-                        <div class="badge badge-secondary mr-1">
-                            {{ c.descrizioneQualifica | truncate: 18 }}
-                        </div>
-                        <div class="d-inline-block">
-                            {{ c.nominativo | replace: '.': ' ' | truncate: 20 }}
-                        </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="clearfix">
+                <app-icona-stato [stato]="_nomeStatiSquadra(squadraComposizione?.stato)"></app-icona-stato>
+                <!-- Componenti -->
+                <div class="badge mx-1 py-1"
+                     [ngClass]="autistaInSquadra ? 'badge-info' : 'badge-danger'"
+                     [ngbPopover]="componenti"
+                     placement="right"
+                     triggers="mouseenter:mouseleave"
+                     style="vertical-align: text-bottom;">
+                    <i class="fas"
+                       [class.mr-1]="squadraComposizione.membri?.length"
+                       [class.fa-user]="autistaInSquadra"
+                       [class.fa-user-slash]="!autistaInSquadra"></i>
+                    <div class="d-inline-block">
+                        {{ squadraComposizione.membri?.length }}
                     </div>
-                    <h6 *ngIf="!autistaInSquadra"
-                        class="text-danger font-weight-bolder mt-3">
-                        <i class="fas fa-user-slash mr-1"></i>
-                        Autista non presente
-                    </h6>
                 </div>
-            </ng-template>
-            <div *ngIf="squadraComposizione?.spotType === 'MODULE'"
-                 class="badge mr-1 py-1 badge-mod-warning" ngbTooltip="Colonna mobile">
-                <i class="fas fa-truck" style="font-size: 15px"></i>
-                <i class="fas fa-truck" style="font-size: 15px"></i>
-            </div>
-            <div class="d-inline-block font-weight-bolder mr-1"
-                 [ngbTooltip]="squadraComposizione?.nome">
-                {{ squadraComposizione?.codice | truncate: 7 }}
-            </div>
-
-            <div class="d-inline-block">({{ squadraComposizione?.turno }})</div>
-
-            <!-- Mezzo Preaccoppiato -->
-            <ng-template [ngIf]="squadraComposizione.mezziPreaccoppiati">
-                <div class="d-inline-block ml-2">
-                    <ng-container>
-                        <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
-                                [ngbPopover]="popMezzi"
-                                popoverClass="p-0 bg-light"
-                                placement="top"
-                                container="body"
-                                triggers="mouseenter:mouseleave"
-                                tabindex="0"
-                                style="cursor:pointer; vertical-align: baseline"
-                                [disabled]="getButtonPreaccoppiatoDisabled()"
-                                (click)="onClick(false, true); $event.stopPropagation()">
-                            <div class="d-inline-block font-weight-bold"
-                                 style="font-weight: 500">
-                                P
+                <ng-template #componenti>
+                    <div [class.text-light]="nightMode">
+                        <h5 class="font-weight-bolder">
+                            {{ squadraComposizione.codice }} ({{ squadraComposizione?.turno }})
+                        </h5>
+                        <div *ngFor="let c of squadraComposizione?.membri">
+                            <div class="badge badge-secondary mr-1">
+                                {{ c.descrizioneQualifica | truncate: 18 }}
                             </div>
-                            <i class="fas fa-truck fa-fw ml-1"></i>
-                        </button>
-                        <ng-template #popMezzi>
-                            <div [class.text-light]="nightMode">
-                                <h5 class="font-weight-bolder mb-0 mt-1">
-                                    Mezzo di {{ squadraComposizione.codice }}
-                                </h5>
-                                <hr class="my-2">
-                                <div class="h6 mb-0 text-center">
-                                    <div class="d-inline-block font-weight-bold mr-1">
-                                        {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.descrizione }}
-                                    </div>
-                                    <div class="d-inline-block">
-                                        {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.genere }}
-                                    </div>
-                                    <div class="d-inline">
-                                        - {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.stato }}
+                            <div class="d-inline-block">
+                                {{ c.nominativo | replace: '.': ' ' | truncate: 20 }}
+                            </div>
+                        </div>
+                        <h6 *ngIf="!autistaInSquadra"
+                            class="text-danger font-weight-bolder mt-3">
+                            <i class="fas fa-user-slash mr-1"></i>
+                            Autista non presente
+                        </h6>
+                    </div>
+                </ng-template>
+                <!-- Icona Colonna Mobile -->
+                <div *ngIf="squadraComposizione?.spotType === 'MODULE'"
+                     class="badge mr-1 py-1 badge-mod-warning" ngbTooltip="Colonna mobile">
+                    <i class="fas fa-truck" style="font-size: 15px"></i>
+                    <i class="fas fa-truck" style="font-size: 15px"></i>
+                </div>
+                <!-- Codice -->
+                <div class="d-inline-block font-weight-bolder mr-1"
+                     [ngbTooltip]="squadraComposizione?.codice?.length <= 7 ? labelSquadra : labelSquadraCodice">
+                    {{ squadraComposizione?.codice | truncate: 7 }}
+                </div>
+                <ng-template #labelSquadra>
+                    <div>
+                        {{ 'Nome: ' + squadraComposizione?.nome }}
+                    </div>
+                </ng-template>
+                <ng-template #labelSquadraCodice>
+                    <div>
+                        {{ 'Codice: ' + squadraComposizione?.codice }}
+                    </div>
+                    <div>
+                        {{ 'Nome: ' + squadraComposizione?.nome }}
+                    </div>
+                </ng-template>
+                <!-- Turno -->
+                <div class="d-inline-block">({{ squadraComposizione?.turno }})</div>
+                <!-- Mezzo Preaccoppiato -->
+                <ng-container *ngIf="squadraComposizione.mezziPreaccoppiati">
+                    <div class="d-inline-block ml-2">
+                        <ng-container>
+                            <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover"
+                                    [ngbPopover]="popMezzi"
+                                    popoverClass="p-0 bg-light"
+                                    placement="top"
+                                    container="body"
+                                    triggers="mouseenter:mouseleave"
+                                    tabindex="0"
+                                    style="cursor:pointer; vertical-align: baseline"
+                                    [disabled]="getButtonPreaccoppiatoDisabled()"
+                                    (click)="onClick(false, true); $event.stopPropagation()">
+                                <div class="d-inline-block font-weight-bold"
+                                     style="font-weight: 500">
+                                    P
+                                </div>
+                                <i class="fas fa-truck fa-fw ml-1"></i>
+                            </button>
+                            <ng-template #popMezzi>
+                                <div [class.text-light]="nightMode">
+                                    <h5 class="font-weight-bolder mb-0 mt-1">
+                                        Mezzo di {{ squadraComposizione.codice }}
+                                    </h5>
+                                    <hr class="my-2">
+                                    <div class="h6 mb-0 text-center">
+                                        <div class="d-inline-block font-weight-bold mr-2">
+                                            <ng-container
+                                                    *ngIf="squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.sigla">
+                                                {{ squadraComposizione.mezziPreaccoppiati[0].mezzo.sigla }}
+                                            </ng-container>
+                                            <ng-container
+                                                    *ngIf="!squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.sigla && squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.descrizione">
+                                                {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.descrizione }}
+                                            </ng-container>
+                                        </div>
+                                        <div class="d-inline-block">
+                                            {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.genere }}
+                                        </div>
+                                        <div class="d-inline">
+                                            - {{ squadraComposizione.mezziPreaccoppiati[0]?.mezzo?.stato }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </ng-template>
-                    </ng-container>
-                </div>
-            </ng-template>
-
-            <!-- Mezzi su cui è presente la squadra per Intervento -->
-            <!-- <ng-template [ngIf]="squadraComposizione.mezziInRientro?.length">
-                <div class="d-inline-block nowrap">
-                    <ng-container>
-                        <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover mx-1"
-                                [ngbPopover]="popMezziIntervento"
-                                [popoverTitle]="'Mezzi su cui è ' + squadraComposizione?.codice + ' per Intervento'"
-                                container="body"
-                                triggers="mouseenter:mouseleave"
-                                tabindex="0"
-                                style="cursor:pointer; vertical-align: baseline"
-                                (click)="onClick(true); $event.stopPropagation()"
-                                [disabled]="disableBtnFeature || loadingMezzi">
-                            <i class="fas fa-users fa-fw"></i>
-                            <i class="fas fa-arrow-right guida fa-fw mx-1"></i>
-                            <i class="fas fa-truck fa-fw"></i>
-                        </button>
-                        <ng-template #popMezziIntervento>
-                            <div *ngFor="let m of squadraComposizione.mezziInRientro" class="h6 text-center">
-                                <div class="d-inline font-weight-bold">{{ m.mezzo.descrizione }}</div>
-                                <div class="d-inline">({{ m.mezzo.genere }})</div>
-                                <div class="d-inline"> - {{ m.mezzo.stato }}</div>
-                            </div>
-                        </ng-template>
-                    </ng-container>
-                </div>
-            </ng-template> -->
-        </div>
-        <div *ngIf="viewState?.composizione?.active"
-             class="clearfix text-right pr-1"
-             style="width: 33%;">
-            <div class="d-inline-block py-0"
-                 [ngClass]="badgeDistaccamentoClass()"
-                 [ngbTooltip]="squadraComposizione?.distaccamento?.descrizione">
-                {{ squadraComposizione?.distaccamento?.descrizione | competenzaFormat }}
+                            </ng-template>
+                        </ng-container>
+                    </div>
+                </ng-container>
+                <!-- Mezzi su cui è presente la squadra per Intervento -->
+                <!-- <ng-template [ngIf]="squadraComposizione.mezziInRientro?.length">
+                    <div class="d-inline-block nowrap">
+                        <ng-container>
+                            <button class="btn btn-danger py-0 big_numbers font-double-monitor btn-no-hover mx-1"
+                                    [ngbPopover]="popMezziIntervento"
+                                    [popoverTitle]="'Mezzi su cui è ' + squadraComposizione?.codice + ' per Intervento'"
+                                    container="body"
+                                    triggers="mouseenter:mouseleave"
+                                    tabindex="0"
+                                    style="cursor:pointer; vertical-align: baseline"
+                                    (click)="onClick(true); $event.stopPropagation()"
+                                    [disabled]="disableBtnFeature || loadingMezzi">
+                                <i class="fas fa-users fa-fw"></i>
+                                <i class="fas fa-arrow-right guida fa-fw mx-1"></i>
+                                <i class="fas fa-truck fa-fw"></i>
+                            </button>
+                            <ng-template #popMezziIntervento>
+                                <div *ngFor="let m of squadraComposizione.mezziInRientro" class="h6 text-center">
+                                    <div class="d-inline font-weight-bold">{{ m.mezzo.descrizione }}</div>
+                                    <div class="d-inline">({{ m.mezzo.genere }})</div>
+                                    <div class="d-inline"> - {{ m.mezzo.stato }}</div>
+                                </div>
+                            </ng-template>
+                        </ng-container>
+                    </div>
+                </ng-template> -->
             </div>
         </div>
-        <div *ngIf="!viewState?.composizione?.active"
-             class="col-2 pl-0">1
-            <div class="d-inline-block"
-                 [ngClass]="badgeDistaccamentoClass()"
-                 [ngbTooltip]="squadraComposizione?.distaccamento?.descrizione">
-                {{ squadraComposizione?.distaccamento?.descrizione | slice:0:3 }}
+        <!-- Tipo (Emergenza) -->
+        <div class="col-1 pr-0">
+            <div *ngIf="viewState?.composizione?.active"
+                 class="clearfix text-right">
+                <div class="badge badge-light"
+                     ngbTooltip="Squadra di Emergenza">
+                    <ng-container *ngIf="squadraComposizione.diEmergenza">
+                        <i class="fas fa-exclamation-triangle"
+                           [class.text-danger]="!nightMode"
+                           [class.text-light]="nightMode">
+                        </i>
+                    </ng-container>
+                </div>
             </div>
         </div>
+        <!-- Badge Distaccamento -->
+        <div class="col-3">
+            <div class="clearfix text-right">
+                <div class="d-inline-block py-0"
+                     [ngClass]="badgeDistaccamentoClass()"
+                     [ngbTooltip]="squadraComposizione?.distaccamento?.descrizione">
+                    {{ squadraComposizione?.distaccamento?.sigla }}
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="!viewState?.composizione?.active">
+            <div class="col-2">
+                <div class="d-inline-block"
+                     [ngClass]="badgeDistaccamentoClass()"
+                     [ngbTooltip]="squadraComposizione?.distaccamento?.descrizione">
+                    {{ squadraComposizione?.distaccamento?.sigla }}
+                </div>
+            </div>
+        </ng-container>
     </div>
 </li>

@@ -5,34 +5,11 @@ import { Tipologia } from '../model/tipologia.model';
 import { Partenza } from '../model/partenza.model';
 import { Utente } from '../model/utente.model';
 import { makeID } from './function-generiche';
-
+import { MezzoRientratoVisibileRichiesta } from '../interface/mezzo-rientrato-visibile-richiesta.interface';
+import { InfoMezzo } from '../store/states/loading/loading.state';
 
 export function makeIdChiamata(operatore: Utente, sedeSelezionata: string): string {
     return `${sedeSelezionata}-${operatore.id}-${makeID(8)}`;
-}
-
-export function makeIDChiamata(): string {
-    let text = '';
-    const stringLength = 2;
-    const possible = '123456789';
-
-    for (let i = 0; i < stringLength; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return `RM-0${text}`;
-}
-
-export function wipeStatoRichiesta(stato: StatoRichiesta): string {
-    const stati: [StatoRichiesta, string][] = [
-        [StatoRichiesta.Chiamata, 'chiamate'],
-        [StatoRichiesta.Sospesa, 'sospesi'],
-        [StatoRichiesta.Assegnata, 'assegnati'],
-        [StatoRichiesta.Presidiata, 'presidiati'],
-        [StatoRichiesta.Chiusa, 'chiusi']
-    ];
-    const mapTipoStato: Map<StatoRichiesta, string> = new Map(stati);
-
-    return mapTipoStato.get(stato);
 }
 
 export function calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta): StatoRichiestaActions {
@@ -90,6 +67,7 @@ export function defineChiamataIntervento(codice: string, codiceRichiesta: string
     }
 }
 
+// TODO: valutare utilità
 export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]): boolean {
     let count = 0;
     let visualizza: boolean;
@@ -104,14 +82,33 @@ export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]): boo
     return visualizza;
 }
 
-export function checkNumeroPartenzeAttive(partenze: Partenza[]): number {
+export function checkNumeroPartenzeAttive(partenze: Partenza[], codMezziRientratiVisibili?: MezzoRientratoVisibileRichiesta, annullaStatoMezzoRientrato?: InfoMezzo): number {
     let count = 0;
     if (partenze && partenze.length > 0) {
-        partenze.forEach((p: Partenza) => {
-            if (!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata) {
+        const partenzeNew = getUniqueLastPartenze(partenze);
+        partenzeNew.forEach((p: Partenza) => {
+            if ((!p.partenza.sganciata && !p.partenza.partenzaAnnullata) || codMezziRientratiVisibili?.codMezzi?.includes(p.partenza.mezzo.codice) || annullaStatoMezzoRientrato?.codMezzo === p.partenza.mezzo.codice) {
                 count++;
             }
         });
     }
     return count;
+}
+
+export function getPartenzeAttive(partenze: Partenza[], codMezziRientratiVisibili?: MezzoRientratoVisibileRichiesta, annullaStatoMezzoRientrato?: InfoMezzo): Partenza[] {
+    const partenzeNew = getUniqueLastPartenze(partenze);
+    return partenzeNew.filter((p: Partenza) => (!p.partenza.sganciata && !p.partenza.partenzaAnnullata) || codMezziRientratiVisibili?.codMezzi?.includes(p.partenza.mezzo.codice) || annullaStatoMezzoRientrato?.codMezzo === p.partenza.mezzo.codice);
+}
+
+function getUniqueLastPartenze(partenze: Partenza[]): Partenza[] {
+    const partenzeNew = [] as Partenza[];
+    partenze.forEach((p: Partenza) => {
+        const partenzaAlreadyExists = partenzeNew.filter((x: Partenza) => x.partenza.mezzo.codice === p.partenza.mezzo.codice)?.length;
+        if (partenzaAlreadyExists) {
+            const indexPartenzaAlreadyExists = partenzeNew.findIndex((x: Partenza) => x.partenza.mezzo.codice === p.partenza.mezzo.codice);
+            partenzeNew.splice(indexPartenzaAlreadyExists, 1);
+        }
+        partenzeNew.push(p);
+    });
+    return partenzeNew;
 }

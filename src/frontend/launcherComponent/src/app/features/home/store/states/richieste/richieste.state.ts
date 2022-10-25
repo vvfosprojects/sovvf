@@ -6,7 +6,10 @@ import {
     AddRichiesta,
     AddRichieste,
     AllertaSede,
+    AnnullaStatoMezzo,
     ClearIdChiamataInviaPartenza,
+    ClearMezziRientratiVisibiliRichiesta,
+    ClearMezzoRientratoVisibile,
     ClearRichiestaAzioni,
     ClearRichiestaById,
     ClearRichieste,
@@ -60,10 +63,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { setPageSession } from '../../../../../shared/helper/function-paginazione-session';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { LSNAME } from '../../../../../core/settings/config';
-import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { DeleteConcorrenza } from '../../../../../shared/store/actions/concorrenza/concorrenza.actions';
 import { TipoConcorrenzaEnum } from '../../../../../shared/enum/tipo-concorrenza.enum';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { MezzoRientratoVisibileRichiesta } from '../../../../../shared/interface/mezzo-rientrato-visibile-richiesta.interface';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -75,6 +79,7 @@ export interface RichiesteStateModel {
     loadingActionRichiesta: string[];
     loadingModificaFonogramma: boolean;
     needRefresh: boolean;
+    codMezziRientratiVisibiliRichieste: MezzoRientratoVisibileRichiesta[];
 }
 
 export const RichiesteStateDefaults: RichiesteStateModel = {
@@ -86,7 +91,8 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     loadingActionMezzo: null,
     loadingActionRichiesta: null,
     loadingModificaFonogramma: false,
-    needRefresh: false
+    needRefresh: false,
+    codMezziRientratiVisibiliRichieste: []
 };
 
 @Injectable()
@@ -125,6 +131,11 @@ export class RichiesteState {
     @Selector()
     static needRefresh(state: RichiesteStateModel): boolean {
         return state.needRefresh;
+    }
+
+    @Selector()
+    static codMezziRientratiVisibiliRichieste(state: RichiesteStateModel): MezzoRientratoVisibileRichiesta[] {
+        return state.codMezziRientratiVisibiliRichieste;
     }
 
     @Selector()
@@ -335,7 +346,7 @@ export class RichiesteState {
     }
 
     @Action(ActionMezzo)
-    actionMezzo({ dispatch }: StateContext<RichiesteStateModel>, action: ActionMezzo): void {
+    actionMezzo({ getState, setState, dispatch }: StateContext<RichiesteStateModel>, action: ActionMezzo): void {
         dispatch(new StartLoadingActionMezzo(action.mezzoAction.mezzo.codice));
         const obj = {
             codRichiesta: action.mezzoAction.codRichiesta,
@@ -348,6 +359,9 @@ export class RichiesteState {
             obj.azioneIntervento = action.mezzoAction.azioneIntervento;
         }
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
+                if (obj.statoMezzo === StatoMezzo.Rientrato) {
+                    setMezzoRientratoVisibile();
+                }
                 setAnnullaStatoMezzi();
                 dispatch([
                     new DeleteConcorrenza(TipoConcorrenzaEnum.CambioStatoPartenza, [action.mezzoAction.mezzo.codice]),
@@ -365,19 +379,94 @@ export class RichiesteState {
             }
         );
 
-        function setAnnullaStatoMezzi(): void {
-            if (obj.statoMezzo === StatoMezzo.Rientrato) {
-                dispatch([
-                    new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice], StatoMezzo.SulPosto),
-                    new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice], StatoMezzo.InRientro),
-                ]);
-            }
-            if (!action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
-                dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, obj.statoMezzo));
-            } else if (action.mezzoAction.modificaOrario && obj.statoMezzo !== StatoMezzo.Rientrato) {
-                dispatch(new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice]));
+        function setMezzoRientratoVisibile(): void {
+            const state = getState();
+            const codMezziRientratiVisibiliRichieste = state.codMezziRientratiVisibiliRichieste;
+            let codRichiestaPresente = codMezziRientratiVisibiliRichieste.filter((x: MezzoRientratoVisibileRichiesta) => x.codRichiesta === obj.codRichiesta)[0];
+            if (codRichiestaPresente) {
+                codRichiestaPresente = {
+                    ...codRichiestaPresente,
+                    codMezzi: [...codRichiestaPresente.codMezzi, ...[obj.idMezzo]]
+                };
+                setState(
+                    patch({
+                        codMezziRientratiVisibiliRichieste: updateItem<MezzoRientratoVisibileRichiesta>(x => x.codRichiesta === obj.codRichiesta, codRichiestaPresente)
+                    })
+                );
+            } else {
+                setState(
+                    patch({
+                        codMezziRientratiVisibiliRichieste: insertItem<MezzoRientratoVisibileRichiesta>({ codRichiesta: obj.codRichiesta, codMezzi: [obj.idMezzo] })
+                    })
+                );
             }
         }
+
+        function setAnnullaStatoMezzi(): void {
+            if (!action.mezzoAction.modificaOrario) {
+                dispatch(new AddAnnullaStatoMezzi(action.mezzoAction.mezzo.codice, obj.statoMezzo, obj.codicePartenza));
+            } else if (action.mezzoAction.modificaOrario) {
+                dispatch(new RemoveAnnullaStatoMezzi([action.mezzoAction.mezzo.codice], obj.codicePartenza));
+            }
+        }
+    }
+
+    @Action(AnnullaStatoMezzo)
+    annullaStatoMezzo({ getState, setState, dispatch }: StateContext<RichiesteStateModel>, action: AnnullaStatoMezzo): void {
+        const infoPartenza = action.infoPartenza;
+        const codiceMezzo = action.codiceMezzo;
+        const statoMezzo = action.statoMezzo;
+        const obj = {
+            codiceRichiesta: infoPartenza ? infoPartenza.codiceRichiesta : null,
+            codicePartenza: infoPartenza ? infoPartenza.codicePartenza : null,
+            targaMezzo: infoPartenza.codiceMezzo ? infoPartenza.codiceMezzo : null,
+        };
+        dispatch(new StartLoadingActionMezzo(codiceMezzo));
+        this.richiesteService.annullaStatoPartenza(obj).subscribe(() => {
+            if (statoMezzo === StatoMezzo.Rientrato) {
+                dispatch(new ClearMezzoRientratoVisibile(infoPartenza, codiceMezzo));
+            }
+            dispatch([
+                new RemoveAnnullaStatoMezzi([codiceMezzo], statoMezzo),
+                new StopLoadingActionMezzo(codiceMezzo)
+            ]);
+        }, () => {
+            console.error('Richiesta di annullamento cambio stato fallita');
+            dispatch(new StopLoadingActionMezzo(codiceMezzo));
+        });
+    }
+
+    @Action(ClearMezzoRientratoVisibile)
+    clearMezzoRientratoVisibile({ getState, setState }: StateContext<RichiesteStateModel>, action: ClearMezzoRientratoVisibile): void {
+        const state = getState();
+        const codMezziRientratiVisibiliRichieste = state.codMezziRientratiVisibiliRichieste;
+        let codRichiestaPresente = codMezziRientratiVisibiliRichieste.filter((x: MezzoRientratoVisibileRichiesta) => x.codRichiesta === action.infoPartenza.codiceRichiesta)[0];
+        if (codRichiestaPresente?.codMezzi?.length > 1) {
+            codRichiestaPresente = {
+                ...codRichiestaPresente,
+                codMezzi: codRichiestaPresente.codMezzi.filter((x: string) => x !== action.codiceMezzo)
+            };
+            setState(
+                patch({
+                    codMezziRientratiVisibiliRichieste: updateItem<MezzoRientratoVisibileRichiesta>(x => x.codRichiesta === action.infoPartenza.codiceRichiesta, codRichiestaPresente)
+                })
+            );
+        } else {
+            setState(
+                patch({
+                    codMezziRientratiVisibiliRichieste: removeItem<MezzoRientratoVisibileRichiesta>(x => x.codRichiesta === action.infoPartenza.codiceRichiesta)
+                })
+            );
+        }
+    }
+
+    @Action(ClearMezziRientratiVisibiliRichiesta)
+    clearMezziRientratiVisibiliRichiesta({ getState, setState }: StateContext<RichiesteStateModel>, action: ClearMezziRientratiVisibiliRichiesta): void {
+        setState(
+            patch({
+                codMezziRientratiVisibiliRichieste: removeItem<MezzoRientratoVisibileRichiesta>(x => x.codRichiesta === action.codRichiesta)
+            })
+        );
     }
 
     @Action(ActionRichiesta)
@@ -467,6 +556,10 @@ export class RichiesteState {
         });
         modal.componentInstance.codiceMezzo = action.codiceMezzo;
         modal.componentInstance.listaSquadre = action.listaSquadre;
+        modal.componentInstance.siglaMezzo = action.siglaMezzo;
+        modal.componentInstance.descMezzo = action.descMezzo;
+        modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
+            () => console.log('Lista Squadre Partenza Chiusa'));
     }
 
     @Action(StartLoadingRichieste)

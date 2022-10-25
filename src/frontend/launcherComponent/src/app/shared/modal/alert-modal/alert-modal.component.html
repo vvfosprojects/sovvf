@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title font-weight-bold">
-        {{ titolo | uppercase }}
+        {{ title | uppercase }}
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="onClose()">
@@ -8,14 +8,14 @@
     </button>
 </div>
 <div class="modal-body py-4">
-    <div class="alert alert-danger m-0">
-        La chiamata urgente è stata correttamente registrata e condivisa in gestione
-    </div>
+    <div [innerHTML]="innerHTMLBody"></div>
 </div>
 <div class="modal-footer d-flex align-items-center justify-content-end">
-    <button type="button"
-            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
-            (click)="onClose()">
-        {{ 'chiudi' | uppercase }}
-    </button>
+    <ng-container *ngFor="let button of buttons">
+        <button type="button"
+                class="btn btn-lg btn-{{ button.bgColor }} btn-no-hover font-weight-bolder"
+                (click)="onClose()">
+            {{ button.text | uppercase }}
+        </button>
+    </ng-container>
 </div>

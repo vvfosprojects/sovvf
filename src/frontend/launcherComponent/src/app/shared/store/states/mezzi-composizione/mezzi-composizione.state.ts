@@ -381,6 +381,8 @@ export class MezziComposizioneState {
                     obj.mezzo.genere = partenza.mezzo.genere;
                     obj.mezzo.distaccamento.codice = partenza.mezzo.distaccamento.codice;
                     obj.mezzo.distaccamento.descrizione = partenza.mezzo.distaccamento.descrizione;
+                    obj.mezzo.sigla = partenza.mezzo.sigla;
+                    obj.mezzo.modello = partenza.mezzo.modello;
                 } else {
                     obj.mezzo = null;
                 }
@@ -431,7 +433,7 @@ export class MezziComposizioneState {
                                 idMezzoDaSganciare: action.sganciamentoObj.idMezzoDaSganciare
                             };
                             this.store.dispatch([
-                                new RemoveAnnullaStatoMezzi([partenzaObj.idMezzoDaSganciare]),
+                                new RemoveAnnullaStatoMezzi([partenzaObj.idMezzoDaSganciare], partenza.codice),
                                 new ConfirmPartenze(partenzaObj)
                             ]);
                             break;

@@ -1,37 +1,31 @@
-<div *ngIf="tipologieRichiesta?.length; then thenBlock else elseBlock"></div>
-<ng-template #thenBlock>
-    <div class="d-inline-block">
-        <i class="fa-fw mr-2 {{ methods.coloraIcona(getPrimaTipologia()) }}"
-           ngbTooltip="{{ tipologieRichiesta[0].descrizione }}"></i>
-    </div>
-</ng-template>
-<ng-template #elseBlock>
-    <div class="d-inline-block"
-         [ngbPopover]="popTipologie"
-         popoverTitle="Tipologie"
-         triggers="click"
-         tabindex="0">
-        <div class="d-inline-block position-relative">
-            <i class="fa-fw mr-2 {{ methods.coloraIcona(getPrimaTipologia()) }}"
-               ngbTooltip="{{ getDescrizionePrimaTipologia() }}"></i>
-            <div class="badge badge-notify text-light">
-                {{ tipologieRichiesta?.length }}
-            </div>
-        </div>
-    </div>
-</ng-template>
-<!-- ngbPopover tipologie intervento -->
-<ng-template #popTipologie>
-    <div *ngFor="let t of tipologieRichiesta">
-        <i class="fa-fw mr-1 {{ methods.coloraIcona(t) }}"></i>&nbsp
-        {{ t?.descrizione }}
-    </div>
-</ng-template>
-<div class="d-inline-block">
-    <span *ngIf="!!tipologieRichiesta?.length"
-       class="d-inline-block text-tipologia font-double-monitor"
-       ngbTooltip="{{ descrizioneRichiesta }}"
-       [disableTooltip]="descrizioneRichiesta?.length <= 45">
-        {{ !triage ? (getDescrizionePrimaTipologia() | truncate:45) : getDescrizionePrimaTipologia() | truncate:40 }}
+<ng-container *ngIf="dettaglioTipologia; then mostraDettaglioTipologia else mostraTipologia">
+</ng-container>
+
+<!-- Tipologia -->
+<ng-template #mostraTipologia>
+    <i class="fa-fw mr-1 {{ methods.coloraIcona(tipologia) }}"></i>
+    <span [ngbTooltip]="tipologia?.descrizione"
+          [disableTooltip]="tipologia?.descrizione?.length <= (!triage ? 45 : 40)">
+        {{ !triage ? (tipologia?.descrizione | truncate:45) : (tipologia?.descrizione | truncate:40) }}
     </span>
-</div>
+</ng-template>
+<!-- Dettaglio Tipologia -->
+<ng-template #mostraDettaglioTipologia>
+    <i class="fa-fw mr-1 {{ methods.coloraIcona(tipologia) }}"></i>
+    <span [ngbTooltip]="dettaglioTipologia?.descrizione?.length <= (!triage ? 45 : 40) ? labelTipologia : labelDettaglioTipologiaTipologia">
+        {{ !triage ? (dettaglioTipologia?.descrizione | truncate:45) : (dettaglioTipologia?.descrizione | truncate:40) }}
+    </span>
+    <ng-template #labelTipologia>
+        <div>
+            {{ 'Tipologia: ' + tipologia?.descrizione }}
+        </div>
+    </ng-template>
+    <ng-template #labelDettaglioTipologiaTipologia>
+        <div>
+            {{ 'Dettaglio Tipologia: ' + dettaglioTipologia?.descrizione }}
+        </div>
+        <div>
+            {{ 'Tipologia: ' + tipologia?.descrizione }}
+        </div>
+    </ng-template>
+</ng-template>

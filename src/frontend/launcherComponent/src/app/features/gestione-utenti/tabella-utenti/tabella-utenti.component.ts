@@ -4,6 +4,7 @@ import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { wipeStringUppercase } from '../../../shared/helper/function-generiche';
 import { TipoConcorrenzaEnum } from '../../../shared/enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
+import { getProvinciaByCodProvincia } from 'src/app/shared/helper/function-province';
 
 @Component({
     selector: 'app-tabella-utenti',
@@ -14,8 +15,6 @@ export class TabellaUtentiComponent {
 
     @Input() listaUtenti: Utente[];
     @Input() page: number;
-    @Input() pageSize: number;
-    @Input() pageSizes: number[];
     @Input() totalItems: number;
     @Input() loading: boolean;
     @Input() idUtenteLoggato: string;
@@ -24,7 +23,6 @@ export class TabellaUtentiComponent {
     @Output() removeRoleUser: EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }> = new EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }>();
     @Output() addRuoloUtente: EventEmitter<{ codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }> = new EventEmitter<{ codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
-    @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
@@ -48,6 +46,10 @@ export class TabellaUtentiComponent {
 
     wipeRoleString(text: string): string {
         return wipeStringUppercase(text);
+    }
+
+    getDescSedeRuolo(descSedeRuolo: string, codSedeRuolo: string): string {
+        return descSedeRuolo.toLowerCase() === 'centrale' ? descSedeRuolo + ' ' + getProvinciaByCodProvincia(codSedeRuolo.split('.')[0]).toUpperCase() : descSedeRuolo;
     }
 
     getTooltipConcorrenzaText(utente: Utente): string {

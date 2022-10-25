@@ -65,8 +65,9 @@ export class DistaccamentiState {
 
     @Action(SetDistaccamenti)
     setDistaccamenti({ patchState }: StateContext<DistaccamentiStateModel>, action: SetDistaccamenti): void {
+        const distaccamenti = action.distaccamenti;
         patchState({
-            distaccamenti: action.distaccamenti
+            distaccamenti
         });
     }
 
@@ -74,9 +75,7 @@ export class DistaccamentiState {
     setSediAllerta({ patchState }: StateContext<DistaccamentiStateModel>, action: SetSediAllerta): void {
         let sediAllertaFiltered = action.sediAllerta;
         // Filtro per avere solo i comandi, il BE restituisce tutte le sedi
-        sediAllertaFiltered = sediAllertaFiltered.filter((s: Sede) => s.codice.split('.')?.length === 2 && s.codice.split('.')[1] === '1000');
-        // Rimuovo la centrale
-        sediAllertaFiltered = sediAllertaFiltered.filter((s: Sede) => s.descrizione?.toLowerCase() !== 'centrale');
+        sediAllertaFiltered = sediAllertaFiltered.filter((s: Sede) => (s.codice.split('.')?.length === 2 && s.codice.split('.')[1] === '1000'));
         patchState({
             sediAllerta: sediAllertaFiltered
         });
@@ -84,11 +83,9 @@ export class DistaccamentiState {
 
     @Action(SetSediTrasferimenti)
     setSediTrasferimenti({ patchState }: StateContext<DistaccamentiStateModel>, action: SetSediTrasferimenti): void {
-        let sediTrasferimentiFiltered = action.sediTrasferimenti;
-        // Rimuovo la centrale
-        sediTrasferimentiFiltered = sediTrasferimentiFiltered.filter((s: Sede) => s.descrizione?.toLowerCase() !== 'centrale');
+        const sediTrasferimenti = action.sediTrasferimenti;
         patchState({
-            sediTrasferimenti: sediTrasferimentiFiltered
+            sediTrasferimenti
         });
     }
 }

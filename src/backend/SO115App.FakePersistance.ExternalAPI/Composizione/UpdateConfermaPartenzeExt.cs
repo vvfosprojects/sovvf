@@ -73,7 +73,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         /// <returns>ConfermaPartenze</returns>
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
-            string turnoAttuale = _getTurni.Get().Codice.Substring(0 ,1);
+            string turnoAttuale = _getTurni.Get().Codice.Substring(0, 1);
 
             var codiceSede = command.ConfermaPartenze.CodiceSede.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
 
@@ -86,7 +86,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
                     if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                     {
-                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodiceMezzo.Equals(partenza.Mezzo.Codice)).Istante;
+                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().Last(p => p.CodicePartenza.Equals(partenza.Codice)).Istante;
 
                         _setRientroMezzo.Set(new RientroGAC()
                         {
@@ -136,11 +136,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
 
                 if (partenza.Mezzo.Distaccamento?.Codice != null)
-                    _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento?.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
+                    _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento?.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice, partenza.Codice);
                 else if (partenza.Mezzo.Appartenenza != null)
-                    _setStatoOperativoMezzo.Set(partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice);
+                    _setStatoOperativoMezzo.Set(partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.Richiesta.Codice, partenza.Codice);
 
-                #endregion
+                #endregion GAC uscita/entrata
 
                 Parallel.ForEach(partenza.Squadre, squadra =>
                 {
@@ -189,12 +189,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         }
                     }
 
-                    #endregion
+                    #endregion OPSERVICE
 
                     if (partenza.Mezzo.Distaccamento.Codice != null)
-                        _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, turnoAttuale, squadra.Turno);
+                        _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{squadra.Turno}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, turnoAttuale, squadra.Turno, partenza.Codice);
                     else if (partenza.Mezzo.Appartenenza != null)
-                        _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{partenza.Turno.Substring(0, 1)}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, turnoAttuale, partenza.Turno.Substring(0, 1));
+                        _setStatoSquadra.SetStato(squadra.Codice, $"{squadra.Codice}_{partenza.Turno.Substring(0, 1)}", command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, partenza.Mezzo.Appartenenza, partenza.Mezzo.Codice, turnoAttuale, partenza.Turno.Substring(0, 1), partenza.Codice);
                 });
             });
 

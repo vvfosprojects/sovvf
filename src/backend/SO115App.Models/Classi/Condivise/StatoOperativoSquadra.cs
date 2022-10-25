@@ -63,5 +63,7 @@ namespace SO115App.Models.Classi.Condivise
         ///   Turno della squadra
         /// </summary>
         public string Turno { get; set; }
+
+        public string codicePartenza { get; set; }
     }
 }

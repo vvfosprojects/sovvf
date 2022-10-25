@@ -5,6 +5,8 @@ import { RichiestaActionInterface } from '../../../../../shared/interface/richie
 import { ListaSquadre } from '../../../../../shared/interface/lista-squadre';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../../../shared/interface/allerta-sede-emit.interface';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { Partenza } from '../../../../../shared/model/partenza.model';
 
 export class GetListaRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
@@ -78,6 +80,27 @@ export class ActionMezzo {
     }
 }
 
+export class AnnullaStatoMezzo {
+    static readonly type = '[Richieste] Annulla Stato Mezzo';
+
+    constructor(public infoPartenza: Partenza, public codiceMezzo: string, public statoMezzo: StatoMezzo) {
+    }
+}
+
+export class ClearMezzoRientratoVisibile {
+    static readonly type = '[Richieste] Clear MezzoRientratoVisibile';
+
+    constructor(public infoPartenza: Partenza, public codiceMezzo: string) {
+    }
+}
+
+export class ClearMezziRientratiVisibiliRichiesta {
+    static readonly type = '[Richieste] Clear Mezzi Rientrati Visibili Richiesta';
+
+    constructor(public codRichiesta: string) {
+    }
+}
+
 export class ActionRichiesta {
     static readonly type = '[Richieste] Action Richiesta';
 
@@ -124,7 +147,7 @@ export class ClearRichiestaAzioni {
 export class VisualizzaListaSquadrePartenza {
     static readonly type = '[Richieste] Visualizza Lista Squadre Partenza';
 
-    constructor(public codiceMezzo: string, public listaSquadre: ListaSquadre) {
+    constructor(public codiceMezzo: string, public listaSquadre: ListaSquadre, public siglaMezzo: string, public descMezzo: string) {
     }
 }
 

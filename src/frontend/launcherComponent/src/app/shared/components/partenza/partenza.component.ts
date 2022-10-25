@@ -7,14 +7,14 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { EventoMezzo } from '../../interface/evento-mezzo.interface';
 import { iconaStatiClass, nomeStatiSquadra } from '../../helper/function-composizione';
 import { Store } from '@ngxs/store';
-import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
 import { Mezzo } from '../../model/mezzo.model';
 import { TipoConcorrenzaEnum } from '../../enum/tipo-concorrenza.enum';
 import { LockedConcorrenzaService } from '../../../core/service/concorrenza-service/locked-concorrenza.service';
-import { StartLoadingActionMezzo, StopLoadingActionMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { AnnullaStatoMezzo } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import { StatoMezzoActions } from '../../enum/stato-mezzo-actions.enum';
 
 @Component({
     selector: 'app-partenza',
@@ -34,14 +34,16 @@ export class PartenzaComponent implements OnInit {
     @Input() annullaStatoMezzo: boolean;
     @Input() disabledModificaStatoMezzo: boolean;
     @Input() hideGestisciPartenza: boolean;
+    @Input() dateSync: Date;
 
-    @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre }>();
+    @Output() listaSquadre: EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre, siglaMezzo: string, descMezzo: string }> = new EventEmitter<{ codiceMezzo: string, listaSquadre: ListaSquadre, siglaMezzo: string, descMezzo: string }>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() selezioneMezzo: EventEmitter<Mezzo> = new EventEmitter<Mezzo>();
 
     statoRichiestaEnum = StatoRichiesta;
     tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+    statoMezzoEnum = StatoMezzo;
 
     listaEventiMezzo: EventoMezzo[] = [];
 
@@ -65,25 +67,11 @@ export class PartenzaComponent implements OnInit {
     }
 
     onAnnullaStato(codiceMezzo: string, statoMezzo: StatoMezzo): void {
-        const obj = {
-            codiceRichiesta: this.infoPartenza ? this.infoPartenza.codiceRichiesta : null,
-            codicePartenza: this.infoPartenza ? this.infoPartenza.codicePartenza : null,
-            targaMezzo: this.infoPartenza.codiceMezzo ? this.infoPartenza.codiceMezzo : null,
-        };
-        this.store.dispatch(new StartLoadingActionMezzo(codiceMezzo));
-        this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
-            this.store.dispatch([
-                new RemoveAnnullaStatoMezzi([codiceMezzo], statoMezzo),
-                new StopLoadingActionMezzo(codiceMezzo)
-            ]);
-        }, () => {
-            console.error('Richiesta di annullamento cambio stato fallita');
-            this.store.dispatch(new StopLoadingActionMezzo(codiceMezzo));
-        });
+        this.store.dispatch(new AnnullaStatoMezzo(this.infoPartenza, codiceMezzo, statoMezzo));
     }
 
     checkListaEventiMezzo(): void {
-        this.listaEventiMezzo = this.richiesta?.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && (x.stato === 'In Viaggio' || x.stato === 'Sul Posto' || x.stato === 'In Rientro'));
+        this.listaEventiMezzo = this.richiesta?.eventi?.filter((x: EventoMezzo) => x.codiceMezzo === this.partenza.mezzo.codice && x.codicePartenza === this.partenza.codice && (x.stato === StatoMezzoActions.InViaggio || x.stato === StatoMezzoActions.SulPosto || x.stato === StatoMezzoActions.InRientro || x.stato === StatoMezzoActions.Rientrato));
         const statiMezzo = [];
         if (this.listaEventiMezzo?.length) {
             this.listaEventiMezzo.forEach(x => statiMezzo.push(x.stato));
@@ -95,7 +83,7 @@ export class PartenzaComponent implements OnInit {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
         listaSquadre.squadre = this.partenza.squadre;
-        this.listaSquadre.emit({ codiceMezzo: this.partenza.mezzo.codice, listaSquadre });
+        this.listaSquadre.emit({ codiceMezzo: this.partenza.mezzo.codice, listaSquadre, siglaMezzo: this.partenza.mezzo.sigla, descMezzo: this.partenza.mezzo.descrizione });
     }
 
     onActionMezzo(mezzoAction: MezzoActionInterface): void {

@@ -10,6 +10,7 @@ export interface InfoMezzo {
     codMezzo: string;
     istante: Date;
     stato: StatoMezzo;
+    codicePartenza: string;
 }
 
 export interface LoadingStateModel {
@@ -48,7 +49,8 @@ export class LoadingState {
         const obj = {
             codMezzo: action.codMezzo,
             istante: data,
-            stato: action.stato
+            stato: action.stato,
+            codicePartenza: action.codPartenza
         };
         setState(
             patch({
@@ -64,7 +66,7 @@ export class LoadingState {
             if (action.stato) {
                 setState(
                     patch({
-                        annullaStatoMezzi: removeItem<InfoMezzo>(mezzo => mezzo.codMezzo === action.codMezzi[0] && mezzo.stato === action.stato)
+                        annullaStatoMezzi: removeItem<InfoMezzo>(mezzo => mezzo.codMezzo === action.codMezzi[0] && mezzo.stato === action.stato && mezzo.codicePartenza === action.codPartenza)
                     })
                 );
             } else {

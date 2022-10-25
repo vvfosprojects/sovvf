@@ -42,7 +42,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var lstMezzi = _clientMezzi.GetAsync(url, token).Result;
 
             var result = lstMezzi?.Select(mezzo =>
-            new KeyValuePair<string, string>(mezzo.CodiceMezzo, lstStatiMezzi.Result.FirstOrDefault(stato => stato.CodiceMezzo.Equals(mezzo.CodiceMezzo))?.StatoOperativo ?? Costanti.MezzoInSede))
+            new KeyValuePair<string, string>(mezzo.CodiceMezzo, lstStatiMezzi.Result.FirstOrDefault(stato => stato.CodiceMezzo.Equals(mezzo.CodiceMezzo) && !stato.StatoOperativo.Equals("Rientrato"))?.StatoOperativo ?? Costanti.MezzoInSede))
                 .Distinct()
                 .ToDictionary(mezzo => mezzo.Key, mezzo => mezzo.Value);
 

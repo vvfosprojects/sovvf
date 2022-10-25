@@ -20,7 +20,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.MezziInServizio,
-            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste, Role.Visualizzatore]
         },
         {
             feature: PermissionFeatures.ModificaRichiesta,
@@ -120,7 +120,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.Rubrica,
-            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste, Role.Visualizzatore]
         },
         {
             feature: PermissionFeatures.AggiungiVoceRubrica,
@@ -144,7 +144,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.RiepilogoInterventi,
-            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste, Role.Visualizzatore]
         },
         {
             feature: PermissionFeatures.AreaDocumentale,
@@ -164,7 +164,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.ServiziOperativi,
-            roles: [Role.GestoreChiamate, Role.GestoreRichieste]
+            roles: [Role.GestoreChiamate, Role.GestoreRichieste, Role.Visualizzatore]
         }
     ]
 };

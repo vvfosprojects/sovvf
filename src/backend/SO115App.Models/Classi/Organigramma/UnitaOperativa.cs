@@ -55,12 +55,14 @@ namespace SO115App.API.Models.Classi.Organigramma
         }
 
         public string Id { get; set; }
+
         /// <summary>
         ///   Codice dell'unità operativa
         /// </summary>
         public string Codice { get; set; }
 
         private string _nome;
+
         /// <summary>
         ///   Il nome dell'inità operativa
         /// </summary>
@@ -78,6 +80,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         public Coordinate Coordinate { get; set; }
 
         public string CoordinateString { get; set; }
+        public string sigla { get; set; }
 
         /// <summary>
         ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa

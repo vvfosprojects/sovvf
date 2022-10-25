@@ -31,6 +31,10 @@ export class Sede {
          */
         public provincia: string,
         /**
+         * sigla della sede
+         */
+        public sigla?: string,
+        /**
          * label (da decidere)
          */
         public label?: string,
