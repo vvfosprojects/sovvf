@@ -57,7 +57,9 @@ namespace SO115App.Models.Classi.Composizione
         public string Tipo { get; set; }
         public string Regione { get; set; }
         public string Provincia { get; set; }
+        public string Sigla { get; set; }
     }
 
-    public enum StatoSquadraComposizione { InSede, InRientro, InViaggio, SulPosto, Istituto, InUscita }
+    public enum StatoSquadraComposizione
+    { InSede, InRientro, InViaggio, SulPosto, Istituto, InUscita }
 }
