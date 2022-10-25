@@ -103,9 +103,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDB
             try
             {
                 _dbContext.UtenteCollection.DeleteMany(u => !u.Username.Equals("test")
-                                                    && !u.Cognome.Equals("TRIONFERA")
-                                                    && !u.Cognome.Equals("DRAGONETTI")
-                                                    && !u.Cognome.Equals("GIAMMICHELE"));
+                                                    && !u.Cognome.Equals("TRIONFERA"));
 
                 return true;
             }
