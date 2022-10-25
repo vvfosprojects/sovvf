@@ -62,6 +62,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             Coordinate = distaccamento.Coordinate,
             Descrizione = distaccamento.Descrizione,
             Indirizzo = distaccamento.Indirizzo,
+            Sigla = distaccamento.sigla
         };
     }
 }
