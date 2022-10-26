@@ -91,7 +91,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             var listaAttuale = boxPersonale.workShift.Select(s => s.Attuale).ToList();
             Parallel.ForEach(listaSedi, unita =>
             {
-                if (!unita.Nome.Equals("Centro Operativo Nazionale"))
+                if (!unita.Nome.Equals("Centro Operativo Nazionale") && !unita.Nome.ToLower().Contains("comando"))
                 {
                     var listaSquadre = new List<SquadraOpService>();
 
