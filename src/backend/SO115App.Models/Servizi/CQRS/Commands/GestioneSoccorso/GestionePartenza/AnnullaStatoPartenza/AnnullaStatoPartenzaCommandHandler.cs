@@ -20,11 +20,13 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using System;
 using System.Linq;
 
@@ -34,16 +36,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     {
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private readonly IGetStatoMezzi _getStatoMezzi;
-
+        private readonly ISendSTATRIItem _sendNewItemSTATRI;
+        private readonly ICheckCongruitaPartenze _checkCongruita;
         private readonly IMapperRichiestaSuSintesi _mapper;
         private readonly IGetRichiesta _getRichiesta;
 
         public AnnullaStatoPartenzaCommandHandler(IGetRichiesta getRichiesta, IUpdateStatoPartenze updateStatoPartenze, IMapperRichiestaSuSintesi mapper,
-                                             IGetStatoMezzi getStatoMezzi)
+                                             IGetStatoMezzi getStatoMezzi, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita)
         {
             _getRichiesta = getRichiesta;
             _updateStatoPartenze = updateStatoPartenze;
             _getStatoMezzi = getStatoMezzi;
+            _sendNewItemSTATRI = sendNewItemSTATRI;
+            _checkCongruita = checkCongruita;
             _mapper = mapper;
         }
 
@@ -58,9 +63,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             command.StatoMezzo = _getStatoMezzi.Get(command.CodiciSedi, command.CodicePartenza, command.TargaMezzo).First().StatoOperativo;
 
-            if (!new string[] { Costanti.MezzoInViaggio, Costanti.MezzoRientrato }.Contains(command.StatoMezzo))
+            if (!new string[] { Costanti.MezzoInViaggio }.Contains(command.StatoMezzo))
             {
                 string statoPrecedente = null;
+                string statoPrecedenteRichiesta = null;
 
                 var eventoPrecedente = command.Richiesta.ListaEventi.OfType<AbstractPartenza>()
                     .Where(e => e is not AnnullamentoStatoPartenza && e is not Revoca && e is not AggiornamentoOrarioStato)
@@ -72,10 +78,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     case Costanti.ArrivoSulPosto:
                         statoPrecedente = Costanti.MezzoSulPosto;
+                        statoPrecedenteRichiesta = Costanti.RichiestaPresidiata;
                         break;
 
                     case Costanti.MezzoInRientro:
                         statoPrecedente = Costanti.MezzoInRientro;
+
                         break;
 
                     case Costanti.EventoMezzoInRientro:
@@ -84,6 +92,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     case Costanti.ComposizionePartenza:
                         statoPrecedente = Costanti.MezzoInViaggio;
+                        statoPrecedenteRichiesta = Costanti.RichiestaAssegnata;
                         break;
                 }
 
@@ -92,10 +101,20 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 new AnnullamentoStatoPartenza(command.Richiesta, command.TargaMezzo, adesso, command.IdOperatore, Costanti.AnnullamentoStatoPartenza, command.CodicePartenza, note);
 
                 partenza.Partenza.Squadre.ForEach(squadra => squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statoPrecedente));
-
                 partenza.Partenza.Mezzo.Stato = statoPrecedente;
 
+                if (!statoPrecedente.Equals("Rientrato") && !statoPrecedente.Equals("In Rientro"))
+                    partenza.Partenza.Terminata = false;
+
                 command.Richiesta.DeleteEvento(ultimoMovimento);
+                command.Richiesta.SincronizzaStatoRichiesta(statoPrecedenteRichiesta, command.Richiesta.StatoRichiesta, command.IdOperatore, "Annullamento stato", adesso, null);
+
+                command.Richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                {
+                    CodMezzo = partenza.Partenza.Mezzo.Codice,
+                    Istante = adesso,
+                    Stato = statoPrecedente
+                }, _sendNewItemSTATRI, _checkCongruita, command.IdOperatore);
 
                 //AGGIORNO STATO MEZZO E RICHIESTA
                 var commandStatoMezzo = new AggiornaStatoMezzoCommand()
