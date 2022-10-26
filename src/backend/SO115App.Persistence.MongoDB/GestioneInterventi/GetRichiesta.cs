@@ -106,7 +106,7 @@ namespace SO115App.Persistence.MongoDB
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
             var filtroSediCompetenti = Builders<RichiestaAssistenza>.Filter
-                .In(richiesta => richiesta.CodSOCompetente, filtro.UnitaOperative.Select(uo => uo.Codice));
+                .In(richiesta => richiesta.CodSOCompetente, filtro.UnitaOperative.Distinct().Select(uo => uo.Codice));
 
             List<string> listaCodSedi = new List<string>();
             foreach (var sede in filtro.UnitaOperative)
@@ -114,8 +114,9 @@ namespace SO115App.Persistence.MongoDB
                 listaCodSedi.Add(sede.Codice);
             }
 
-            var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi.ToHashSet());
-            var filtriSediPartenze = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSediPartenze, listaCodSedi.ToHashSet());
+            var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi.Distinct().ToHashSet());
+            var filtriSediPartenze = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSediPartenze, listaCodSedi.Distinct().ToHashSet());
+            var filtriSediCompetenza = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodUOCompetenza, listaCodSedi.Distinct().ToHashSet());
 
             var indexWildcardTextSearch = new CreateIndexModel<RichiestaAssistenza>(Builders<RichiestaAssistenza>.IndexKeys.Text("$**"));
 
@@ -127,7 +128,10 @@ namespace SO115App.Persistence.MongoDB
             var lstRichieste = new List<RichiestaAssistenza>();
             if (filtro.SearchKey == null || filtro.SearchKey.Length == 0)
             {
-                lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate | filtriSediPartenze).ToList();
+                if(!filtro.CodaChiamate)
+                    lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate | filtriSediPartenze).ToList();
+                else
+                    lstRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti | filtriSediAllertate | filtriSediCompetenza).ToList();
             }
             else
             {

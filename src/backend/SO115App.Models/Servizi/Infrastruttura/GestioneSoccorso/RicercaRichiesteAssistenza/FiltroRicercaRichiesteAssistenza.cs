@@ -105,6 +105,8 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         public bool SoloboxRichieste { get; set; } = false;
 
         public int RichiesteTotali { get; set; }
+
+        public bool CodaChiamate { get; set; } = false;
     }
 
     public class PeriodoChiuse
