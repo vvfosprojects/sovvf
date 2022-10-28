@@ -39,11 +39,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
 
-            string codiceSedePadre = "";
-            if (query.IdSede[0].Contains("."))
-                codiceSedePadre = query.IdSede[0].Split('.')[0];  //_getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
-            else
-                codiceSedePadre = _getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
+            var codiceSedePadre = _getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
 
             lstCodiciPin.Add(codiceSedePadre);
 
