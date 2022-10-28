@@ -32,7 +32,7 @@ namespace SO115App.Persistence.MongoDB.GestionePOS
             var pinNodiNoDistaccamenti = new List<PinNodo>();
 
             if (filtri.CodiceSede.Contains("."))
-                filtri.CodiceSede = filtri.CodiceSede.Substring(0, filtri.CodiceSede.IndexOf(".")) + ".1000";
+                filtri.CodiceSede = filtri.CodiceSede.Substring(0, filtri.CodiceSede.IndexOf("."));
 
             pinNodi.Add(new PinNodo(filtri.CodiceSede, true));
             pinNodiNoDistaccamenti.Add(new PinNodo(filtri.CodiceSede, true));
