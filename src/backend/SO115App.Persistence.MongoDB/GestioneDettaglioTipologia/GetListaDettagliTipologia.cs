@@ -35,9 +35,9 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             if (query.Filters != null)
                 CodTipologia = query.Filters?.codTipologia;
 
-            var listaPin = GetGerarchia(query.IdSede);
+            //var listaPin = new List<PinNodo>();
 
-            var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
+            var lstCodiciPin = new List<string>(); ;
 
             string codiceSedePadre = "";
             if (query.IdSede[0].Contains("."))
@@ -45,6 +45,7 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             else
                 codiceSedePadre = _getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
 
+            lstCodiciPin.Add(query.IdSede[0]);
             lstCodiciPin.Add(codiceSedePadre);
 
             var lstEnti = new List<TipologiaDettaglio>();
