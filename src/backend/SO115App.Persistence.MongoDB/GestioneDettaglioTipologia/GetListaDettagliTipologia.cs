@@ -35,13 +35,19 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             if (query.Filters != null)
                 CodTipologia = query.Filters?.codTipologia;
 
-            var listaPin = GetGerarchia(query.IdSede);
+            //var listaPin = new List<PinNodo>();
 
-            var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
-            var codiceSedePadre = _getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
+            var lstCodiciPin = new List<string>(); ;
+
+            string codiceSedePadre = "";
+            if (query.IdSede[0].Contains("."))
+                codiceSedePadre = query.IdSede[0].Split('.')[0];  //_getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
+            else
+                codiceSedePadre = _getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
+
+            lstCodiciPin.Add(query.IdSede[0]);
             lstCodiciPin.Add(codiceSedePadre);
-            
-            
+
             var lstEnti = new List<TipologiaDettaglio>();
 
             if (CodTipologia != 0 && CodTipologia != null)
@@ -105,7 +111,6 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
 
                         return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
                     }
-
                 }).ToList();
             else
                 return lstTipologie;

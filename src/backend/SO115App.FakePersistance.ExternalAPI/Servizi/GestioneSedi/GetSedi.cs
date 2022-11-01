@@ -289,7 +289,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                     ListaSediAlberate = GeneraSiglaSede(ListaSediAlberate);
 
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(10));
+                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(30));
                     _memoryCache.Set("ListaSediAlberate", ListaSediAlberate, cacheEntryOptions);
 
                     //_setSediAlberate.Set(result);
