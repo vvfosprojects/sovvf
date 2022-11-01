@@ -3,9 +3,7 @@
 </div>
 <ng-container *ngIf="checkNumeroPartenze(richiesta.partenze) > 0">
   <div *ngFor="let p of getPartenze(richiesta.partenze); let index = index">
-
     <div
-      *ngIf="p.partenza.mezzo.stato !== statoMezzoEnum.Rientrato || checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice), p?.partenza.codice)"
       [class.border-bottom]="(index + 1) !== richiesta.partenze.length">
       <app-partial-loader *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
       <app-partenza [richiesta]="richiesta" [partenza]="p.partenza" [codicePartenza]="p.codicePartenza"
