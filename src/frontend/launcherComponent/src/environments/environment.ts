@@ -6,7 +6,7 @@ export const environment = {
     toastr: true,
     onlyCas: false,
     signalRHub: '/NotificationHub',
-    baseUrl: 'http://localhost:31497',
+    baseUrl: 'http://localhost:5220',
     signalR: true,
     versionCheckURL: 'version.json',
     apiUrl: {

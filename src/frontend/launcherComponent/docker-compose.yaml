@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+ sovvf-mongo:
+    image: mongo:4.2
+    container_name: sovvf-mongo-db
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: sovvf
+    volumes:
+      - ./mongo/:/docker-entrypoint-initdb.d/:ro
+ sovvf-mongo-express:
+   image: mongo-express:0.54
+   container_name: sovvf-mongo-express
+   depends_on:
+     - sovvf-mongo
+   ports:
+     - 8081:8081
+   environment:
+     ME_CONFIG_OPTIONS_EDITORTHEME: ambiance
+     ME_CONFIG_MONGODB_SERVER: sovvf-mongo
