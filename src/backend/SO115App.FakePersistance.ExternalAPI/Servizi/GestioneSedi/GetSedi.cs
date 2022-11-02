@@ -47,6 +47,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             _memoryCache = memoryCache;
             _getAllSediAlberate = getAllSediAlberate;
             _setSediAlberate = setSediAlberate;
+
+            ListaSediAlberata();
         }
 
         public async Task<List<SedeUC>> GetDirezioniProvinciali(string codSede = null)
