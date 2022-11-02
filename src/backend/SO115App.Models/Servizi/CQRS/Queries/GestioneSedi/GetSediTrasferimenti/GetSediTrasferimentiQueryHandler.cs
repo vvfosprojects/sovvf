@@ -8,6 +8,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSediTrasferimenti
     public class GetSediTrasferimentiQueryHandler : IQueryHandler<GetSediTrasferimentiQuery, GetSediTrasferimentiResult>
     {
         private readonly IGetSedi _service;
+
         public GetSediTrasferimentiQueryHandler(IGetSedi service)
         {
             _service = service;
@@ -17,7 +18,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSedi.GetSediTrasferimenti
         {
             var lstSedi = _service.GetAll().Result;
 
-            var result = lstSedi.FindAll(s=>s.Codice.Contains("1000")).OrderBy(s => s.Codice).ToList();
+            var result = lstSedi.FindAll(s => s.Descrizione.Contains("COMANDO")).OrderBy(s => s.Codice).ToList();
 
             return new GetSediTrasferimentiResult() { DataArray = result };
         }
