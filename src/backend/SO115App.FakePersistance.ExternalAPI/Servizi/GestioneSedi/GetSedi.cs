@@ -1,5 +1,7 @@
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
@@ -16,7 +18,11 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -33,13 +39,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         private readonly IMemoryCache _memoryCache;
         private readonly IGetAllSediAlberate _getAllSediAlberate;
         private readonly ISetSediAlberate _setSediAlberate;
+        private readonly IDistributedCache _distributedCache;
 
         public GetSedi(IHttpRequestManager<List<SedeUC>> serviceDirezioni,
                        IHttpRequestManager<DistaccamentoUC> serviceSedi,
                        IConfiguration config,
                        IMemoryCache memoryCache,
                        IGetAllSediAlberate getAllSediAlberate,
-                       ISetSediAlberate setSediAlberate)
+                       ISetSediAlberate setSediAlberate,
+                       IDistributedCache distributedCache)
         {
             _serviceDirezioni = serviceDirezioni;
             _serviceSedi = serviceSedi;
@@ -47,7 +55,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             _memoryCache = memoryCache;
             _getAllSediAlberate = getAllSediAlberate;
             _setSediAlberate = setSediAlberate;
-
+            _distributedCache = distributedCache;
             ListaSediAlberata();
         }
 
@@ -205,10 +213,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
 #endif
 
-            if (!_memoryCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
+            Log.Information("REDIS CACHE - Chiamo Redis per prendere i dati in cache");
+            var sediAlberate = _distributedCache.Get("ListaSediAlberate");
+            Log.Information($"REDIS CACHE - Risultato: {sediAlberate}");
+            if (sediAlberate != null)
             {
-                //OTTENGO TUTTE LE SEDI, PER OGNI LIVELLO
+                string stringData = Encoding.UTF8.GetString(sediAlberate);
 
+                Log.Information($"REDIS CACHE - Risultato IN STRINGA: {stringData}");
+                try
+                {
+                    UnitaOperativa result = JsonSerializer.Deserialize<UnitaOperativa>(stringData);
+                    Log.Information($"REDIS CACHE - Risultato DESERIALIZZATO: {stringData}");
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"REDIS CACHE - Errore REDIS: {ex.Message}");
+                    return null;
+                }
+            }
+            else
+            {
                 try
                 {
                     var lstRegionali = GetDirezioniRegionali().Result;
@@ -291,24 +317,34 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
 
                     ListaSediAlberate = GeneraSiglaSede(ListaSediAlberate);
 
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(30));
-                    _memoryCache.Set("ListaSediAlberate", ListaSediAlberate, cacheEntryOptions);
+                    var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(30));
+
+                    var objToString = JsonSerializer.Serialize(ListaSediAlberate);
+
+                    Log.Information($"REDIS CACHE - OGGETTO TO STRING: {objToString}");
+                    _distributedCache.Set("ListaSediAlberate", Encoding.ASCII.GetBytes(objToString), cacheEntryOptions);
 
                     //_setSediAlberate.Set(result);
                     return result;
                 }
                 catch (Exception e)
                 {
+                    Log.Error($"REDIS CACHE - OGGETTO TO STRING: {e.Message}");
                     return null; //readOffline();
                 }
             }
-            else
-            {
-                if (ListaSediAlberate == null)
-                    _memoryCache.Remove("ListaSediAlberate");
 
-                return ListaSediAlberate;
-            }
+            //if (!_distributedCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
+            //{
+            //    //OTTENGO TUTTE LE SEDI, PER OGNI LIVELLO
+            //}
+            //else
+            //{
+            //    if (ListaSediAlberate == null)
+            //        _memoryCache.Remove("ListaSediAlberate");
+
+            //    return ListaSediAlberate;
+            //}
         }
 
         private UnitaOperativa GeneraSiglaSede(UnitaOperativa listaSediAlberate)

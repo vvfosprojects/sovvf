@@ -51,7 +51,7 @@ namespace SO115App.API.Models.Classi.Organigramma
             this.Codice = codice;
             this.Nome = nome;
             this.Coordinate = coordinate;
-            this.Figli = new ConcurrentBag<UnitaOperativa>();
+            this.Figli = new List<UnitaOperativa>();
         }
 
         public string Id { get; set; }
@@ -75,7 +75,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// <summary>
         ///   Le unità operative figlie nell'organigramma
         /// </summary>
-        public ConcurrentBag<UnitaOperativa> Figli { get; set; }
+        public List<UnitaOperativa> Figli { get; set; }
 
         public Coordinate Coordinate { get; set; }
 
