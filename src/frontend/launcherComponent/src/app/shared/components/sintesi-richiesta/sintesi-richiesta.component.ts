@@ -214,7 +214,8 @@ export class SintesiRichiestaComponent implements OnInit, OnChanges {
     }
 
     checkNumeroPartenzeAttive(partenze: Partenza[]): number {
-        return checkNumeroPartenzeAttive(partenze);
+      const annullaStatoMezzoRientrato = this.annullaStatoMezzi?.filter((x: InfoMezzo) => x.stato === StatoMezzo.Rientrato)[0];
+      return checkNumeroPartenzeAttive(partenze, this.codMezziRientratiVisibili, annullaStatoMezzoRientrato);
     }
 
     _nomeStatiSquadra(statoSquadra: number): string {
