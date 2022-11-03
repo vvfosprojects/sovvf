@@ -131,14 +131,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             if (query.Filtro.CodiciDistaccamenti != null)
             {
             }
-            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()); //OTTENGO I DATI
-            stopWatch.Stop();
-            Log.Information($"--------------------------- FINE Composizione Mezzi F4 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
-
-            Log.Information($"--------------------------- INIZIO Composizione Mezzi F7 --------------------------- {DateTime.Now}");
-            stopWatch.Restart();
-            stopWatch.Start();
-            lstMezziComposizione.ContinueWith(mezzi => //MAPPING
+            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray())
+                .ContinueWith(mezzi => //MAPPING
             {
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
@@ -296,7 +290,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             stopWatch.Stop();
             Log.Information($"--------------------------- FINE Composizione Mezzi F7 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
-            return null;
+            return lstMezziComposizione.Result;
         }
     }
 }
