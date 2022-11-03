@@ -132,8 +132,6 @@ namespace SO115App.API
                     };
                 });
 
-            //Configuration.GetSection("UrlRedis").Value
-
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = Configuration.GetSection("UrlRedis").Value;
