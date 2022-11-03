@@ -1,4 +1,5 @@
-﻿using SO115App.API.Models.Classi.Composizione;
+﻿using Serilog;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Classi.Utenti;
@@ -19,6 +20,7 @@ using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -67,9 +69,17 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            Log.Information($"--------------------------- INIZIO Composizione Mezzi F2 --------------------------- {DateTime.Now}");
+            stopWatch.Start();
             var lstSedi = _getSedi.GetAll().Result;
             var lstCodiciPin = _getSottoSedi.Get(query.CodiciSedi).ToList();
+            stopWatch.Stop();
+            Log.Information($"--------------------------- FINE Composizione Mezzi F2 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
+            Log.Information($"--------------------------- INIZIO Composizione Mezzi F3 --------------------------- {DateTime.Now}");
+            stopWatch.Restart();
+            stopWatch.Start();
             //GESTIONE CODICI SEDI
             if (query.CodiciSedi.Contains("00") || query.CodiciSedi.Contains("001"))
                 query.CodiciSedi = lstSedi.Select(s => s.Codice).ToArray();
@@ -112,11 +122,29 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
-            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
-            .ContinueWith(mezzi => //MAPPING
+            stopWatch.Stop();
+            Log.Information($"--------------------------- FINE Composizione Mezzi F3 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
+
+            Log.Information($"--------------------------- INIZIO Composizione Mezzi F4 --------------------------- {DateTime.Now}");
+            stopWatch.Restart();
+            stopWatch.Start();
+            if (query.Filtro.CodiciDistaccamenti != null)
+            {
+            }
+            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()); //OTTENGO I DATI
+            stopWatch.Stop();
+            Log.Information($"--------------------------- FINE Composizione Mezzi F4 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
+
+            Log.Information($"--------------------------- INIZIO Composizione Mezzi F7 --------------------------- {DateTime.Now}");
+            stopWatch.Restart();
+            stopWatch.Start();
+            lstMezziComposizione.ContinueWith(mezzi => //MAPPING
             {
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
+                Log.Information($"--------------------------- INIZIO Composizione Mezzi F6 --------------------------- {DateTime.Now}");
+                stopWatch.Restart();
+                stopWatch.Start();
                 Parallel.ForEach(mezzi.Result, m =>
                 {
                     var lstSqPreacc = new List<SquadraSemplice>();
@@ -212,9 +240,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                     lstMezzi.Add(mc);
                 });
+                stopWatch.Stop();
+                Log.Information($"--------------------------- FINE Composizione Mezzi F6 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
+                Log.Information($"--------------------------- INIZIO Composizione Mezzi F5 --------------------------- {DateTime.Now}");
+                stopWatch.Restart();
+                stopWatch.Start();
                 var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList()).Result;
-
+                stopWatch.Stop();
+                Log.Information($"--------------------------- FINE Composizione Mezzi F5 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
                 //DA REIMPLEMENTARE SE SONO DA SALVARE IN LOCALE I MEZZI
                 //if (lstMezziNuova != null || lstMezziNuova.Count > 0 || mezzi.Result != null || mezzi.Result.Count > 0)
@@ -259,8 +293,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 //.ThenBy(mezzo => mezzo.Mezzo.Distaccamento?.Codice)
                 .ToList();
             });
+            stopWatch.Stop();
+            Log.Information($"--------------------------- FINE Composizione Mezzi F7 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
-            return lstMezziComposizione.Result;
+            return null;
         }
     }
 }
