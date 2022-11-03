@@ -212,11 +212,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             {
                 string stringData = Encoding.UTF8.GetString(sediAlberate);
 
-                Log.Information($"REDIS CACHE - Risultato IN STRINGA: {stringData}");
+                //Log.Information($"REDIS CACHE - Risultato IN STRINGA: {stringData}");
                 try
                 {
                     UnitaOperativa result = JsonSerializer.Deserialize<UnitaOperativa>(stringData);
-                    Log.Information($"REDIS CACHE - Risultato DESERIALIZZATO: {stringData}");
+                    //Log.Information($"REDIS CACHE - Risultato DESERIALIZZATO: {stringData}");
                     return result;
                 }
                 catch (Exception ex)

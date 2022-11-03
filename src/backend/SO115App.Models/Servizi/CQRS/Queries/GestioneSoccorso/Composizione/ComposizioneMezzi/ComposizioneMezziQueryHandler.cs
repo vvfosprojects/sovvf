@@ -23,6 +23,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
@@ -54,7 +55,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             try
             {
+                Stopwatch stopWatch = new Stopwatch();
+                Log.Information($"--------------------------- INIZIO Composizione Mezzi F1 --------------------------- {DateTime.Now}");
+                stopWatch.Start();
                 composizioneMezzi = _iGetComposizioneMezzi.Get(query);
+                stopWatch.Stop();
+
+                Log.Information($"--------------------------- FINE Composizione Mezzi F1 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
             }
             catch (Exception e)
             {
