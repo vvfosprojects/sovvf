@@ -18,9 +18,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -56,7 +54,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             _getAllSediAlberate = getAllSediAlberate;
             _setSediAlberate = setSediAlberate;
             _distributedCache = distributedCache;
-            ListaSediAlberata();
+            //var caricaCache = CaricaCacheListaSedi();
         }
 
         public async Task<List<SedeUC>> GetDirezioniProvinciali(string codSede = null)
@@ -337,6 +335,87 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
             //if (!_distributedCache.TryGetValue("ListaSediAlberate", out ListaSediAlberate))
             //{
             //    //OTTENGO TUTTE LE SEDI, PER OGNI LIVELLO
+            //try
+            //{
+            //    var lstRegionali = GetDirezioniRegionali().Result;
+
+            // var lstProvinciali = GetDirezioniProvinciali().Result;
+
+            // //Le coordinate sono fisse perchè il CON prende tutta italia var con =
+            // GetInfoSede("00").Result; con.coordinate = "42.28313392189123,11.682171591796926";
+
+            // //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON var result = new
+            // UnitaOperativa(con.Id, con.Descrizione, con.Coordinate);
+
+            // //REGIONI foreach (var regionale in lstRegionali) { var info = GetInfoSede(regionale.id).Result;
+
+            // result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new
+            // Coordinate(Convert.ToDouble(info.coordinate.Split(',',
+            // StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')),
+            // Convert.ToDouble(info.coordinate.Split(',',
+            // StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString =
+            // info.coordinate }); };
+
+            // //PROVINCE foreach (var provinciale in lstProvinciali) { var info = GetInfoSede(provinciale.id).Result;
+
+            // var listaComuni = GetFigli(provinciale.id).Result;
+
+            // var lstComunali = new List<UnitaOperativa>();
+
+            // foreach (var comune in listaComuni) { if (comune.coordinate.Trim().Length > 0) { try
+            // { var unita = new UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ?
+            // comune.descrizione + " " + comune.id.Split('.')[0] : comune.descrizione, new
+            // Coordinate(Convert.ToDouble(comune.coordinate.Split(',',
+            // StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')),
+            // Convert.ToDouble(comune.coordinate.Split(',',
+            // StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString =
+            // comune.coordinate }; lstComunali.Add(unita); } catch { if
+            // (comune.coordinate.Contains("°")) { comune.coordinate =
+            // comune.DmsToDdString(comune.coordinate); var unita = new UnitaOperativa(comune.id,
+            // comune.descrizione == "CENTRALE" ? comune.descrizione + " " + comune.id.Split('.')[0]
+            // : comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',',
+            // StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')),
+            // Convert.ToDouble(comune.coordinate.Split(',',
+            // StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString =
+            // comune.coordinate }; lstComunali.Add(unita); } } } else { var unita = new
+            // UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ? comune.descrizione + " "
+            // + comune.id.Split('.')[0] : comune.descrizione, new Coordinate(0, 0)) {
+            // CoordinateString = "0,0" }; lstComunali.Add(unita); } } var centrale =
+            // lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
+
+            // if (centrale != null) { //lstComunali.Remove(centrale); try { if
+            // (info.coordinate.Trim().Length > 0) { var unitaComunali = new
+            // UnitaOperativa(centrale.Codice.Split('.')[0], provinciale.descrizione, new
+            // Coordinate(Convert.ToDouble(info.coordinate.Split(',',
+            // StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')),
+            // Convert.ToDouble(info.coordinate.Split(',',
+            // StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString =
+            // info.coordinate };
+
+            // lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+
+            // result.Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ??
+            // false)?.AddFiglio(unitaComunali); } } catch (Exception e) { } } };
+
+            // ListaSediAlberate = result;
+
+            // ListaSediAlberate = GeneraSiglaSede(ListaSediAlberate);
+
+            // var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(30));
+
+            // var objToString = JsonSerializer.Serialize(ListaSediAlberate);
+
+            // Log.Information($"REDIS CACHE - OGGETTO TO STRING: {objToString}");
+            // _distributedCache.Set("ListaSediAlberate", Encoding.ASCII.GetBytes(objToString), cacheEntryOptions);
+
+            //    //_setSediAlberate.Set(result);
+            //    return result;
+            //}
+            //catch (Exception e)
+            //{
+            //    Log.Error($"REDIS CACHE - OGGETTO TO STRING: {e.Message}");
+            //    return null; //readOffline();
+            //}
             //}
             //else
             //{
