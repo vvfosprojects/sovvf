@@ -253,9 +253,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public async Task<List<Mezzo>> GetBySedi(string[] sedi)
         {
-            Stopwatch stopWatch = new Stopwatch();
-            Log.Information($"--------------------------- INIZIO Mezzi Utilzzabili Mezzi F1 --------------------------- {DateTime.Now}");
-            stopWatch.Start();
             var lstSediQueryString = string.Join("&codiciSedi=", sedi.Select(s => s.Split('.')[0]).Distinct());
             //var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
             var codici = string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct());
@@ -268,16 +265,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(2));
             List<MezzoDTO> result = new List<MezzoDTO>();
 
-            stopWatch.Stop();
-            Log.Information($"--------------------------- FINE Mezzi Utilzzabili Mezzi F1 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
-
             try
             {
                 var token = _getToken.GeneraToken();
-
-                Log.Information($"--------------------------- INIZIO Mezzi Utilzzabili Mezzi F2 --------------------------- {DateTime.Now}");
-                stopWatch.Restart();
-                stopWatch.Start();
                 Parallel.ForEach(sedi, sede =>
                 {
                     if (!_memoryCache.TryGetValue("SedeMezzi-" + sede.Split('.')[0], out result))
@@ -295,8 +285,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                         lstMezziDto.AddRange(result);
                     }
                 });
-                stopWatch.Stop();
-                Log.Information($"--------------------------- FINE Mezzi Utilzzabili Mezzi F2 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
             }
             catch (Exception e)
             {
@@ -306,12 +294,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     .ToList();
             }
 
-            Log.Information($"--------------------------- INIZIO Mezzi Utilzzabili Mezzi F3 --------------------------- {DateTime.Now}");
-            stopWatch.Restart();
-            stopWatch.Start();
             var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result).ToList();
-            stopWatch.Stop();
-            Log.Information($"--------------------------- FINE Mezzi Utilzzabili Mezzi F3 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             //MAPPING
             var ListaMezzi = lstMezziDto
