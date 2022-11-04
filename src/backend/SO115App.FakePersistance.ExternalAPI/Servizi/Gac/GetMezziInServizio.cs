@@ -72,7 +72,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             try
             {
                 //Parallel.ForEach(mezzi, mezzo =>
-                foreach (var mezzo in mezzi)
+                foreach (var mezzo in mezzi.FindAll(m => m != null))
                 {
                     var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice) && !x.StatoOperativo.Equals("Rientrato"));
                     mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;

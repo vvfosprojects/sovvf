@@ -113,7 +113,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
                     return m;
                 }
                 else return m;
-            }).OrderBy(m => m.Mezzo.Mezzo.Distaccamento.Codice).ToList();
+            }).OrderByDescending(m => m.Mezzo.Mezzo.Stato != "In Sede").ThenBy(m=> m.Mezzo.Mezzo.Distaccamento.Codice).ToList();
 
             //GESTISCO PAGINAZIONE
             if (query.Pagination != null) return new ListaMezziInServizioResult()
