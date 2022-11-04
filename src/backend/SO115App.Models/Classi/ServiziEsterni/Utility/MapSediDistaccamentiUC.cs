@@ -37,7 +37,7 @@ namespace SO115App.Models.Classi.ServiziEsterni.Utility
             {
                 Id = distaccamento.Id,
                 Cap = distaccamento.Cap,
-                CodDistaccamento = int.TryParse(distaccamento.Id.Split('.').Last(), out res) ? int.Parse(distaccamento.Id.Split('.').Last()) : int.Parse(distaccamento.Id.Split('.').First()),
+                CodDistaccamento = distaccamento.Id.Contains(".") ? int.TryParse(distaccamento.Id.Split('.').Last(), out res) ? int.Parse(distaccamento.Id.Split('.').Last()) : int.Parse(distaccamento.Id.Split('.').First()) : 0,
                 CodSede = distaccamento.Id,
                 Coordinate = distaccamento.Coordinate,
                 DescDistaccamento = distaccamento.Descrizione,
