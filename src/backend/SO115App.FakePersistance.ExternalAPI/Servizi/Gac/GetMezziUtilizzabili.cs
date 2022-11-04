@@ -67,8 +67,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             //var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
-            //if (posizioneFlotta == null)
-            //    ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
+            if (posizioneFlotta == null)
+                ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
 
             //foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
             //{
