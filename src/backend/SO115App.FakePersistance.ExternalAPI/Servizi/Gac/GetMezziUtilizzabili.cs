@@ -100,7 +100,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             try
             {
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
                 List<MezzoDTO> result = new List<MezzoDTO>();
                 Parallel.ForEach(sedi, sede =>
                 {
