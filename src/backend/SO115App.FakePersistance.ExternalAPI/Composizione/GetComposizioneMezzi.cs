@@ -263,8 +263,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 //.ThenBy(mezzo => mezzo.Mezzo.Distaccamento?.Codice)
                 .ToList();
             });
-            stopWatch.Stop();
-            Log.Information($"--------------------------- FINE Composizione Mezzi F7 --------------------------- Elapsed Time {stopWatch.ElapsedMilliseconds}");
 
             return lstMezziComposizione.Result;
         }
