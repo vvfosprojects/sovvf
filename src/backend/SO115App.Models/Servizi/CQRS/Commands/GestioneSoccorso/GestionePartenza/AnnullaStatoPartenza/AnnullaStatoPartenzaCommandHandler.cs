@@ -113,8 +113,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     CodMezzo = partenza.Partenza.Mezzo.Codice,
                     Istante = adesso,
-                    Stato = statoPrecedente
-                }, _sendNewItemSTATRI, _checkCongruita, command.IdOperatore);
+                    Stato = statoPrecedente,
+                }, _sendNewItemSTATRI, _checkCongruita, command.IdOperatore, new string[2] { partenza.Partenza.Coordinate.Latitudine, partenza.Partenza.Coordinate.Longitudine }, partenza.CodicePartenza);
 
                 //AGGIORNO STATO MEZZO E RICHIESTA
                 var commandStatoMezzo = new AggiornaStatoMezzoCommand()
