@@ -11,3 +11,7 @@
     cursor: default;
     transform: scale(1) !important;
 }
+
+.disabled:hover {
+  cursor: not-allowed !important
+}
