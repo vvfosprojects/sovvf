@@ -1,100 +1,71 @@
 <div class="modal-header">
-    <h4 class="modal-title font-weight-bold">
-        {{ 'Allerta Comando' | uppercase }}
-    </h4>
-    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
-            (click)="onDismiss()">
-        <i class="fas fa-times text-danger"></i>
-    </button>
+  <h4 class="modal-title font-weight-bold">
+    {{ 'Allerta Comando' | uppercase }}
+  </h4>
+  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+    (click)="onDismiss()">
+    <i class="fas fa-times text-danger"></i>
+  </button>
 </div>
 <div class="modal-body height pt-4 px-5">
-    <form [formGroup]="allertaSedeForm" ngxsForm="allertaSede.allertaSedeForm">
-        <div class="form-group">
-            <label for="sede">Quale Comando vuoi allertare?
-            </label>
-            <ng-select class="align-self-center"
-                       id="sede"
-                       [items]="distaccamenti"
-                       bindLabel="descrizione"
-                       bindValue="codice"
-                       [clearSearchOnAdd]="true"
-                       [closeOnSelect]="false"
-                       [hideSelected]="false"
-                       [multiple]="true"
-                       formControlName="sedi"
-                       [loading]="!distaccamenti"
-                       placeholder="Seleziona Comando">
-                <ng-template ng-option-tmp let-item="item">
-                    <input type="checkbox" [checked]="f?.sedi?.value?.includes(item.codice)"/>
-                    {{ item.descrizione }}
-                </ng-template>
-            </ng-select>
-        </div>
-        <label for="genereMezzo" class="mt-2">Genere mezzo necessario?
-        </label>
-        <ng-select class="align-self-center custom"
-                   style="max-height: 45px; overflow: auto"
-                   id="genereMezzo"
-                   [items]="generiMezzi"
-                   bindLabel="descrizione"
-                   bindValue="descrizione"
-                   [clearSearchOnAdd]="true"
-                   [multiple]="true"
-                   [closeOnSelect]="false"
-                   [hideSelected]="false"
-                   [ngModelOptions]="{standalone: true}"
-                   [appendTo]="'body'"
-                   [(ngModel)]="generiMezzoSelezionati"
-                   [loading]="!generiMezzi"
-                   placeholder="Seleziona Genere Mezzo">
-            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-                <input type="checkbox"
-                       [checked]="generiMezzoSelezionati && generiMezzoSelezionati?.includes(item.descrizione)"/>
-                {{item.descrizione}}
-            </ng-template>
-        </ng-select>
-        <div class="alert alert-warning mt-5">
-            <span class="mr-4">Scegli motivazione:</span>
-            <div class="form-check-inline">
-                <input class="form-check-input radio-custom" type="radio" id="conoscenza" name="conoscenza"
-                       [checked]="checkbox.conoscenza"
-                       (click)="onCheck('conoscenza')">
-                <label class="form-check-label" for="conoscenza">
-                    Per conoscenza
-                </label>
-            </div>
-            <div class="form-check-inline">
-                <input class="form-check-input radio-custom" type="radio" id="allerta" name="allerta"
-                       [checked]="checkbox.allerta"
-                       (click)="onCheck('allerta')">
-                <label class="form-check-label" for="allerta">
-                    Per allerta
-                </label>
-            </div>
-        </div>
-    </form>
+  <div class="form-group">
+    <label for="sede">Quale Comando vuoi allertare?
+    </label>
+    <ng-select class="align-self-center" id="sede" [items]="distaccamenti" bindLabel="descrizione" bindValue="codice"
+      [clearSearchOnAdd]="true" [closeOnSelect]="false" [hideSelected]="false" [multiple]="true"
+      [(ngModel)]="codSOAllertate" [loading]="!distaccamenti" placeholder="Seleziona Comando">
+      <ng-template ng-option-tmp let-item="item">
+        <input type="checkbox" [checked]="codSOAllertate?.includes(item.codice)" />
+        {{ item.descrizione }}
+      </ng-template>
+    </ng-select>
+  </div>
+  <label for="genereMezzo" class="mt-2">Genere mezzo necessario?
+  </label>
+  <ng-select class="align-self-center custom" style="max-height: 45px; overflow: auto" id="genereMezzo"
+    [items]="generiMezzi" bindLabel="descrizione" bindValue="descrizione" [clearSearchOnAdd]="true" [multiple]="true"
+    [closeOnSelect]="false" [hideSelected]="false" [ngModelOptions]="{standalone: true}" [appendTo]="'body'"
+    [(ngModel)]="generiMezzoSelezionati" [loading]="!generiMezzi" placeholder="Seleziona Genere Mezzo">
+    <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+      <input type="checkbox" [checked]="generiMezzoSelezionati && generiMezzoSelezionati?.includes(item.descrizione)" />
+      {{item.descrizione}}
+    </ng-template>
+  </ng-select>
+  <div class="alert alert-warning mt-5">
+    <span class="mr-4">Scegli motivazione:</span>
+    <div class="form-check-inline">
+      <input class="form-check-input radio-custom" type="radio" id="conoscenza" name="conoscenza"
+        [checked]="checkbox.conoscenza" (click)="onCheck('conoscenza')">
+      <label class="form-check-label" for="conoscenza">
+        Per conoscenza
+      </label>
+    </div>
+    <div class="form-check-inline">
+      <input class="form-check-input radio-custom" type="radio" id="allerta" name="allerta" [checked]="checkbox.allerta"
+        (click)="onCheck('allerta')">
+      <label class="form-check-label" for="allerta">
+        Per allerta
+      </label>
+    </div>
+  </div>
 </div>
 <div class="modal-footer">
-    <ng-container *ngIf="checkSediSelezionateError()">
-        <div class="w-100">
-            <div class="alert alert-danger">
-                Non puoi allertare sedi già allertate in precedenza
-            </div>
-        </div>
-    </ng-container>
+  <ng-container *ngIf="checkSediSelezionateError()">
     <div class="w-100">
-        <div class="d-flex align-items-center justify-content-between">
-            <button type="button"
-                    class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
-                    (click)="closeModal('ko')">
-                {{ 'Annulla' | uppercase }}
-            </button>
-            <button type="button"
-                    class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
-                    [disabled]="!formValid || checkSediSelezionateError()"
-                    (click)="onConferma()">
-                {{ 'Conferma Allerta' | uppercase }}
-            </button>
-        </div>
+      <div class="alert alert-danger">
+        Non puoi allertare sedi già allertate in precedenza
+      </div>
     </div>
+  </ng-container>
+  <div class="w-100">
+    <div class="d-flex align-items-center justify-content-between">
+      <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
+      </button>
+      <button type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
+        [disabled]="codSOAllertate.length == 0" (click)="onConferma()">
+        {{ 'Conferma Allerta' | uppercase }}
+      </button>
+    </div>
+  </div>
 </div>

@@ -40,7 +40,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
   codRichiesta: string;
   codSOCompetente: string;
   codSOAllertate: string[];
-
+  codSOAllertatePrecedentemente: string[];
   subscriptions: Subscription = new Subscription();
 
   constructor(private fb: FormBuilder,
@@ -59,8 +59,9 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     });
     this.allertaSedeForm = this.fb.group({
       codRichiesta: [null, Validators.required],
-      sedi: [null, Validators.required]
+      sedi: [[], Validators.required]
     });
+
   }
 
   ngOnInit(): void {
@@ -69,6 +70,9 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.f.sedi.patchValue([])
+    this.allertaSedeForm.reset()
+    console.log("onDestroy")
     this.subscriptions.unsubscribe();
   }
 
@@ -111,26 +115,29 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
   }
 
   checkSediSelezionateError(): boolean {
-    const sediSelezionate = this.f?.sedi?.value;
-    return sediSelezionate?.includes(this.codSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
+    const sediSelezionate = this.codSOAllertate;
+    return sediSelezionate?.includes(this.codSOCompetente) || this.codSOAllertatePrecedentemente.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
   }
 
   onConferma(): void {
     this.submitted = true;
     const obj = this.allertaSedeForm.value;
+    obj.sedi = this.codSOAllertate;
     obj.motivazione = this.motivazione;
     obj.generiMezzi = this.generiMezzoSelezionati;
-    if (!this.allertaSedeForm.valid) {
+    if (this.codSOAllertate?.length == 0) {
       return;
     }
     this.modal.close({ status: 'ok', result: obj });
   }
 
   onDismiss(): void {
+    this.allertaSedeForm.reset()
     this.modal.dismiss('ko');
   }
 
   closeModal(type: string): void {
+    this.allertaSedeForm.reset()
     this.modal.close(type);
   }
 
