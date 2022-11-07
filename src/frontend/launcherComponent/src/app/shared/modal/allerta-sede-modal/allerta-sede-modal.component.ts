@@ -117,7 +117,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     console.log("siglaComandoSediSelezionate", siglaComandoSediSelezionate)
     console.log("this.codSOAllertate", this.codSOAllertate)
     console.log("includes 1", siglaComandoSediSelezionate?.includes(siglaComandoSOCompetente))
-    console.log("includes 2", this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));)
+    console.log("includes 2", this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata)))
     return siglaComandoSediSelezionate?.includes(siglaComandoSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
   }
 
