@@ -112,13 +112,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
   checkSediSelezionateError(): boolean {
     const sediSelezionate = this.f?.sedi?.value;
-    const siglaComandoSOCompetente = this.codSOCompetente.split('.')?.length === 2 ? this.codSOCompetente.split('.')[0] : null;
-    const siglaComandoSediSelezionate = sediSelezionate?.map((codComando: string) => codComando.split('.')?.length === 2 ? codComando.split('.')[0] : null);
-    console.log("siglaComandoSediSelezionate", siglaComandoSediSelezionate)
-    console.log("this.codSOAllertate", this.codSOAllertate)
-    console.log("includes 1", siglaComandoSediSelezionate?.includes(siglaComandoSOCompetente))
-    console.log("includes 2", this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata)))
-    return siglaComandoSediSelezionate?.includes(siglaComandoSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
+    return sediSelezionate?.includes(this.codSOCompetente) || this.codSOAllertate.some((codSOAllertata: string) => sediSelezionate?.includes(codSOAllertata));
   }
 
   onConferma(): void {
