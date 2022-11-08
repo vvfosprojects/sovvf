@@ -17,7 +17,7 @@
             <div *ngFor="let p of partenze">
                 <div class="row mb-1">
                     <div class="col-9">
-                        <app-partenza [partenza]="p.partenza"></app-partenza>
+                        <app-partenza [partenza]="p.partenza" (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre, $event.siglaMezzo, $event.descMezzo)"></app-partenza>
                     </div>
                     <div class="col-3">
                         <button class="btn btn-block btn-primary btn-no-hover"
