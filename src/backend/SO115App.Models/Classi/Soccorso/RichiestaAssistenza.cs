@@ -165,8 +165,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoSulPosto:
 
-                    if (codicePartenza == null)
-                        new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
+                    new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
