@@ -149,7 +149,7 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     }
 
     getTitle(): string {
-        return 'Sostituzione Fine Turno - Richiesta ' + this.codRichiesta;
+        return 'Sostituzione - Richiesta ' + this.codRichiesta;
     }
 
     onDismiss(): void {

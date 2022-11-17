@@ -19,7 +19,7 @@
     <ng-container *ngIf="getSostituzioneFineTurnoVisible()">
       <button class="btn btn-sm btn-info" [class.cursor-not-allowed]="disabledModificaStatoMezzo"
         style="position: absolute; top: -14px; left: -14px" [disabled]="disabledModificaStatoMezzo"
-        ngbTooltip="Sostituzione Fine Turno" (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
+        ngbTooltip="Sostituzione" (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
         <i class="fas fa-sync-alt"></i>
       </button>
     </ng-container>
