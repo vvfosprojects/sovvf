@@ -31,6 +31,7 @@ using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -678,7 +679,12 @@ namespace SO115App.API.Models.Classi.Soccorso
                     if (contChiusura > contRiapertura)
                         return new Chiusa();
                     else if (CodRichiesta != null)
-                        return new Sospesa();
+                    {
+                        if (_eventi.Where(e => e is RichiestaSoccorsoAereo) != null)
+                            return new Assegnata();
+                        else
+                            return new Sospesa();
+                    }
                     else
                         return new InAttesa();
                 }

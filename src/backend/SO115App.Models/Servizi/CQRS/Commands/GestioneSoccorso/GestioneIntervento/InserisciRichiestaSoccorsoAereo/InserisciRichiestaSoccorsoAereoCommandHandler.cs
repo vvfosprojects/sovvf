@@ -3,6 +3,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.AFM;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -17,16 +18,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
         private readonly IUpDateRichiestaAssistenza _updateRichiesta;
         private readonly IGetCompetenzeByCoordinateIntervento _getComeptenze;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamento;
+        private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
 
         public InserisciRichiestaSoccorsoAereoCommandHandler(IAggiornaRichiestaSoccorsoAereo aggiorna,
             IUpDateRichiestaAssistenza updateRichiesta,
             IGetCompetenzeByCoordinateIntervento getComeptenze,
-            IGetDistaccamentoByCodiceSedeUC getDistaccamento)
+            IGetDistaccamentoByCodiceSedeUC getDistaccamento,
+            IGeneraCodiceRichiesta generaCodiceRichiesta)
         {
             _aggiorna = aggiorna;
             _updateRichiesta = updateRichiesta;
             _getComeptenze = getComeptenze;
             _getDistaccamento = getDistaccamento;
+            _generaCodiceRichiesta = generaCodiceRichiesta;
         }
 
         public void Handle(InserisciRichiestaSoccorsoAereoCommand command)
@@ -38,6 +42,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             //COMPONGO IL MODELLO PER AFM
             //var competenze = _getComeptenze.GetCompetenzeByCoordinateIntervento(new Coordinate((double)command.RichiestaSoccorsoAereo.lat, (double)command.RichiestaSoccorsoAereo.lng), command.CodiciSede[0].Split('.')[0]);
             //var codiceDistaccamentoCompetenza = competenze.Length > 0 ? competenze[0] : command.CodiciSede[0];
+
+            if (command.Richiesta.CodRichiesta == null)
+                command.Richiesta.CodRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(command.Richiesta.CodSOCompetente, DateTime.UtcNow.Year);
+
             var distaccamentoCompetenza = _getDistaccamento.Get(command.CodiciSede[0]);
 
             command.RichiestaSoccorsoAereo.datetime = date;
