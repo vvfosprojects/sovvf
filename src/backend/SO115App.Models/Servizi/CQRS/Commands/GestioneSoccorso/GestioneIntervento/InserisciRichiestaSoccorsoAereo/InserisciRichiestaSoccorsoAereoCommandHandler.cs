@@ -46,13 +46,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             if (command.Richiesta.CodRichiesta == null)
                 command.Richiesta.CodRichiesta = _generaCodiceRichiesta.GeneraCodiceIntervento(command.Richiesta.CodSOCompetente, DateTime.UtcNow.Year);
 
-            var distaccamentoCompetenza = _getDistaccamento.Get(command.CodiciSede[0]);
+            var SedeCompetenza = _getDistaccamento.Get(command.Richiesta.CodSOCompetente);
 
             command.RichiestaSoccorsoAereo.datetime = date;
             command.RichiestaSoccorsoAereo.requestKey = MapRequestKeyAFM.MapForAFM(command.RichiestaSoccorsoAereo.requestKey);
             command.RichiestaSoccorsoAereo.progressiveNumber = command.Richiesta.CodRichiesta?.Split('-')[2].TrimStart() ?? "";
             command.RichiestaSoccorsoAereo.locality = command.Richiesta.Localita.Indirizzo;
-            command.RichiestaSoccorsoAereo.venueInCharge = distaccamentoCompetenza.Result.DescDistaccamento;
+            command.RichiestaSoccorsoAereo.venueInCharge = SedeCompetenza.Result.DescDistaccamento;
             command.RichiestaSoccorsoAereo.onSiteContact = command.Richiesta.Richiedente.Nominativo;
             command.RichiestaSoccorsoAereo.onSiteContactPhoneNumber = command.Richiesta.Richiedente.Telefono;
             command.RichiestaSoccorsoAereo.requestTypeCode = "0";
@@ -61,34 +61,41 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
             command.RichiestaSoccorsoAereo.operatorSurname = command.Utente.Cognome;
             command.RichiestaSoccorsoAereo.operatorFiscalCode = command.Utente.CodiceFiscale;
 
-            //Comunico al servizio esterno
-            var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
-
-            string azione = "Inserimento";
-
-            if (command.Richiesta.ListaEventi.Last() is RichiestaSoccorsoAereo && !responseAFM.IsError())
+            try
             {
-                azione = "Aggiornamento motivazione ";
-            }
+                //Comunico al servizio esterno
+                var responseAFM = _aggiorna.Aggiorna(command.RichiestaSoccorsoAereo);
 
-            #endregion AFM Servizio
+                string azione = "Inserimento";
 
-            command.ResponseAFM = responseAFM;
+                if (command.Richiesta.ListaEventi.Last() is RichiestaSoccorsoAereo && !responseAFM.IsError())
+                {
+                    azione = "Aggiornamento motivazione ";
+                }
 
-            var note = command.ResponseAFM.GetNoteEvento(azione);
-            var targa = command.ResponseAFM.GetTargaEvento();
+                #endregion AFM Servizio
 
-            if (!responseAFM.IsError()) //OK INSERIMENTO
+                command.ResponseAFM = responseAFM;
+
+                var note = command.ResponseAFM.GetNoteEvento(azione);
+                var targa = command.ResponseAFM.GetTargaEvento();
+
+                if (!responseAFM.IsError()) //OK INSERIMENTO
+                {
+                    new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, targa, command.ResponseAFM.Locality);
+                    _updateRichiesta.UpDate(command.Richiesta);
+                }
+                else //ERRORE INSERIMENTO
+                {
+                    new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, targa);
+                    _updateRichiesta.UpDate(command.Richiesta);
+
+                    throw new Exception($"Inserimento richiesta soccorso aereo fallito: {command.ResponseAFM.errors[0].detail} ");
+                }
+            }catch (Exception ex)
             {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, targa, command.ResponseAFM.Locality);
+                throw new Exception($"Inserimento richiesta soccorso aereo fallito: {ex.Message} ");
             }
-            else //ERRORE INSERIMENTO
-            {
-                new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, targa);
-            }
-
-            //Salvo richiesta sul db
-            _updateRichiesta.UpDate(command.Richiesta);
         }
     }
 }
