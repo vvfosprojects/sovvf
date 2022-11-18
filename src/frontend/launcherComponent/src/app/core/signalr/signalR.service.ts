@@ -142,7 +142,7 @@ export class SignalRService {
         this.hubNotification.on('NotifyAvvisoModal', (data: { title: string, text: string, buttons: { bgColor: string, text: string }[], timeToClose: number }) => {
             console.log('NotifyAvvisoModal', data);
             const alertModalInnerHTMLBody = '<div class="alert alert-danger m-0">' + data.text + '</div>';
-            this.store.dispatch(new OpenAlertModal(data.title, alertModalInnerHTMLBody, data.buttons, data.timeToClose));
+            this.store.dispatch(new OpenAlertModal(data.title, alertModalInnerHTMLBody, data.buttons));
         });
 
         /**

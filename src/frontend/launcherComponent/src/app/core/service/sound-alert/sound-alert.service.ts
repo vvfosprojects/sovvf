@@ -25,8 +25,14 @@ export class SoundAlertService {
         this.audio = new Audio();
         this.audio.src = audioSrc;
         this.audio.load();
+        this.audio.loop = true
         this.audio.play().then(() => {
             console.log('File audio (' + audioSrc + ') riprodotto con successo.');
         });
     }
+
+    stopSound(): void {
+      this.audio.pause()
+
+  }
 }
