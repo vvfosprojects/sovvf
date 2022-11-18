@@ -32,7 +32,7 @@ export class SoundAlertService {
     }
 
     stopSound(): void {
-      this.audio.pause()
+      this.audio?.pause()
 
   }
 }
