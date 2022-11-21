@@ -90,9 +90,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneInterve
                     new RichiestaSoccorsoAereo(command.Richiesta, date, command.IdOperatore, note, targa);
                     _updateRichiesta.UpDate(command.Richiesta);
 
-                    throw new Exception($"Inserimento richiesta soccorso aereo fallito: {command.ResponseAFM.errors[0].detail} ");
+                    throw new Exception($"{command.ResponseAFM.errors[0].detail} ");
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"Inserimento richiesta soccorso aereo fallito: {ex.Message} ");
             }
