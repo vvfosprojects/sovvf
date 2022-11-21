@@ -64,7 +64,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     autistaUscita = partenza.Partenza.Squadre.First().Membri.FirstOrDefault(m => m.DescrizioneQualifica.Equals("DRIVER"))?.CodiceFiscale,
                     dataIntervento = command.Richiesta.dataOraInserimento,
                     dataRientro = adesso,
-                    dataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
+                    dataUscita = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().First(p => p.CodicePartenza.Equals(command.CodicePartenza)).DataOraInserimento,
                     idPartenza = command.CodicePartenza,
                     latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
                     longitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),

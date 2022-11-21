@@ -146,16 +146,13 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                     if (coordinatePartenza != null)
                     {
-                        CoordinateString coordinate = new CoordinateString(coordinatePartenza[0], coordinatePartenza[1]);
-
-                        if (codicePartenza == null)
+                            CoordinateString coordinate = new CoordinateString(coordinatePartenza[0], coordinatePartenza[1]);
                             new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza, coordinate);
+                        
                     }
                     else
-                    {
-                        if (codicePartenza == null)
                             new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
-                    }
+
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
@@ -166,6 +163,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 case Costanti.MezzoSulPosto:
 
                     new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
+                    
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
@@ -175,8 +173,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoInRientro:
 
-                    new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
-
+                        new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
+                    
                     if (this.lstPartenzeInCorso.Count == 0)
                         SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 

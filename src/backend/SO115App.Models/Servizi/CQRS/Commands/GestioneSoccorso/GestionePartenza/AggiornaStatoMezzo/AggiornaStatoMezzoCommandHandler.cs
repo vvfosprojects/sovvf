@@ -28,6 +28,7 @@ using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
@@ -47,11 +48,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IGetStatoMezzi _statoMezzi;
         private readonly IGetTipologieByCodice _getTipologie;
         private readonly IUpDateRichiestaAssistenza _upDateRichiesta;
+        private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
 
         public AggiornaStatoMezzoCommandHandler(IGetTipologieByCodice getTipologie, IGetStatoMezzi statoMezzi,
                                                 IModificaInterventoChiuso modificaGac, IUpdateStatoPartenze updateStatoPartenze,
                                                 ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita,
-                                                IUpDateRichiestaAssistenza upDateRichiesta)
+                                                IUpDateRichiestaAssistenza upDateRichiesta, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo)
         {
             _updateStatoPartenze = updateStatoPartenze;
             _sendNewItemSTATRI = sendNewItemSTATRI;
@@ -60,6 +62,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _statoMezzi = statoMezzi;
             _getTipologie = getTipologie;
             _upDateRichiesta = upDateRichiesta;
+            _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
         }
 
         public void Handle(AggiornaStatoMezzoCommand command)
@@ -203,12 +206,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     }
 
                     statoMezzoReale = command.StatoMezzo;
-                    richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
-                    {
-                        CodMezzo = command.IdMezzo,
-                        Istante = istante,
-                        Stato = statoMezzoReale
-                    }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
                 }
                 else if (statoAttuale.Equals("Sul Posto"))
                 {
@@ -221,12 +218,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             throw new System.Exception("1* L'orario inserito non può essere inferiore all'orario di arrivo sul posto del mezzo.");
 
                         statoMezzoReale = command.StatoMezzo;
-                        richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
-                        {
-                            CodMezzo = command.IdMezzo,
-                            Istante = istante,
-                            Stato = statoMezzoReale
-                        }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
                     }
 
                     if (command.StatoMezzo.Equals("Rientrato"))
@@ -241,12 +232,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             throw new System.Exception("1* L'orario inserito non può essere inferiore all'orario in rientro del mezzo.");
 
                         statoMezzoReale = command.StatoMezzo;
-                        richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
-                        {
-                            CodMezzo = command.IdMezzo,
-                            Istante = istante,
-                            Stato = statoMezzoReale
-                        }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
                     }
                 }
                 else if (statoAttuale.Equals("In Rientro"))
@@ -260,8 +245,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             throw new System.Exception("1* L'orario inserito non può essere inferiore all'orario del mezzo in viaggio.");
 
                         statoMezzoReale = statoAttuale;
-
-                        new ArrivoSulPosto(richiesta, command.IdMezzo, istante, command.IdUtente, partenza.CodicePartenza);
                     }
 
                     if (command.StatoMezzo.Equals("Rientrato"))
@@ -276,12 +259,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             throw new System.Exception("1* L'orario inserito non può essere inferiore all'orario in rientro del mezzo.");
 
                         statoMezzoReale = command.StatoMezzo;
-                        richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
-                        {
-                            CodMezzo = command.IdMezzo,
-                            Istante = istante,
-                            Stato = statoMezzoReale
-                        }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente);
                     }
                 }
                 else if (statoAttuale.Equals("Rientrato"))
@@ -299,7 +276,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                         statoMezzoReale = statoAttuale;
 
-                        new ArrivoSulPosto(richiesta, command.IdMezzo, istante, command.IdUtente, partenza.CodicePartenza);
                     }
 
                     if (command.StatoMezzo.Equals("In Rientro"))
@@ -316,6 +292,24 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         statoMezzoReale = command.StatoMezzo;
                     }
                 }
+
+                var posizione = _getPosizioneByCodiceMezzo.Get(partenza.Partenza.Mezzo.Codice).Result;
+                if (posizione != null)
+                {
+                    partenza.Partenza.Coordinate = posizione.ToCoordinate().ToCoordinateString();
+                    partenza.Partenza.Mezzo.Coordinate = posizione.ToCoordinate();
+                    partenza.Partenza.Mezzo.CoordinateStrg = new string[2] { posizione.ToCoordinate().ToCoordinateString().Latitudine, posizione.ToCoordinate().ToCoordinateString().Longitudine };
+                }
+
+
+
+                richiesta.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                {
+                    CodMezzo = command.IdMezzo,
+                    Istante = istante,
+                    Stato = statoMezzoReale
+                }, _sendNewItemSTATRI, _checkCongruita, command.IdUtente, new string[2] { partenza.Partenza.Coordinate.Latitudine, partenza.Partenza.Coordinate.Longitudine }, partenza.Partenza.Codice);
+
 
                 if (command.AzioneIntervento != null && richiesta.lstPartenzeInCorso.Where(p => p.Codice != partenza.Partenza.Codice).Count() == 0)
                 {

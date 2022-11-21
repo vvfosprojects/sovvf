@@ -66,10 +66,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 //Chiudo solo le partenze da sostituire. Le partenze non interessate dalla sostituzione non verranno lavorate
                 if (partenzeDaSostituire.Contains(partenza))
                 {
-                    richiestaOld.Partenze.ToList().Find(p => p.Partenza.PartenzaAnnullata == false
-                                                            && p.Partenza.Terminata == false
-                                                            && p.Partenza.Sganciata == false
-                                                            && p.CodiceMezzo.Equals(partenza.CodiceMezzo)).Partenza.Terminata = true;
+                    richiestaOld.Partenze.ToList().Find(p => p.CodicePartenza.Equals(partenza.CodicePartenza)).Partenza.Terminata = true;
 
                     partenza.Partenza.Terminata = true;
 
@@ -89,7 +86,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         CodMezzo = partenza.CodiceMezzo,
                         Istante = DateTime.UtcNow,
                         Stato = Costanti.MezzoRientrato
-                    }, _sendNewItemSTATRI, _checkCongruita, command.sostituzione.idOperatore);
+                    }, _sendNewItemSTATRI, _checkCongruita, command.sostituzione.idOperatore, new string[2] { partenza.Partenza.Coordinate.Latitudine, partenza.Partenza.Coordinate.Longitudine }, partenza.CodicePartenza);
 
                     _upDatePartenza.Update(statoMezzoPartenza);
                 }
@@ -114,7 +111,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     Squadre = ElencoSquadre,
                     Turno = _getTurno.Get().Codice,
                     Coordinate = richiestaOld.Localita.Coordinate.ToCoordinateString()
-                });
+                }, richiestaOld.Localita.Coordinate.ToCoordinateString());
 
                 new ArrivoSulPosto(richiestaOld, NuovaPartenza.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, NuovaPartenza.CodicePartenza);
 
@@ -131,10 +128,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
 
             //FASE 6
-            //Update Richiesta
-            //_updateRichiesta.UpDate(command.Richiesta);
-
-            //FASE 7
             //Invio a GAC degli aggiornamenti
             command.Richiesta = richiestaOld;
         }
