@@ -114,9 +114,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
-            if (query.Filtro.CodiciDistaccamenti != null)
-            {
-            }
             var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray())
                 .ContinueWith(mezzi => //MAPPING
             {
@@ -220,10 +217,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList()).Result;
 
-                //DA REIMPLEMENTARE SE SONO DA SALVARE IN LOCALE I MEZZI
-                //if (lstMezziNuova != null || lstMezziNuova.Count > 0 || mezzi.Result != null || mezzi.Result.Count > 0)
-                //    _setComposizioneMezzi.Set(lstMezziNuova);
-
                 return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
@@ -232,9 +225,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
                     mezzo.Mezzo.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
-                    mezzo.Mezzo.Descrizione.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
-                    mezzo.Mezzo.Genere.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
-                    mezzo.Mezzo.Sigla.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
+                    (!string.IsNullOrEmpty(mezzo.Mezzo.Sigla) && mezzo.Mezzo.Sigla.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()));
+
+                //if (mezzo.Mezzo.Sigla != null)
+                //    ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
+                //                       mezzo.Mezzo.Sigla.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
                 bool competenze = query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento?.Codice) ?? true;
 
