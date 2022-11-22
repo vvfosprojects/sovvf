@@ -30,15 +30,11 @@ namespace SO115App.SignalR.Sender.GestioneConcorrenza
 
             if (command.ListaConcorrenza.Count > 0)
             {
-                foreach (var concorrenza in command.ListaConcorrenza)
-                {
-                    SediDaAllertare.AddRange(_getSediConcorrenza.Get(concorrenza.Type, concorrenza.Value, concorrenza.CodComando));
-                }
+                SediDaAllertare = _getSediConcorrenza.Get(command.ListaConcorrenza[0].Type, command.ListaConcorrenza[0].Value, command.CodiceSede);
             }
 
             var SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede, SediDaAllertare.ToArray());
-            //SediDaNotificare.Add("00");
-
+            
             foreach (var sede in SediDaNotificare.Distinct())
             {
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyConcorrenza", command);
