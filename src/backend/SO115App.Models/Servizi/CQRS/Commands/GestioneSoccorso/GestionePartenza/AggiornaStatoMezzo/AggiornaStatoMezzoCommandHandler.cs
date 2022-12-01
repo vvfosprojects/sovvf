@@ -182,12 +182,29 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 string statoMezzoReale = "";
 
-                var posizione = _getPosizioneByCodiceMezzo.Get(partenza.Partenza.Mezzo.Codice).Result;
-                if (posizione != null)
+                try
                 {
-                    partenza.Partenza.Coordinate = posizione.ToCoordinate().ToCoordinateString();
-                    partenza.Partenza.Mezzo.Coordinate = posizione.ToCoordinate();
-                    partenza.Partenza.Mezzo.CoordinateStrg = new string[2] { posizione.ToCoordinate().ToCoordinateString().Latitudine, posizione.ToCoordinate().ToCoordinateString().Longitudine };
+                    var posizione = _getPosizioneByCodiceMezzo.Get(partenza.Partenza.Mezzo.Codice).Result;
+                    if (posizione != null)
+                    {
+                        partenza.Partenza.Coordinate = posizione.ToCoordinate().ToCoordinateString();
+                        partenza.Partenza.Mezzo.Coordinate = posizione.ToCoordinate();
+                        partenza.Partenza.Mezzo.CoordinateStrg = new string[2] { posizione.ToCoordinate().ToCoordinateString().Latitudine, posizione.ToCoordinate().ToCoordinateString().Longitudine };
+                    }
+                    else
+                    {
+                        partenza.Partenza.Coordinate = richiesta.Localita.Coordinate.ToCoordinateString();
+                        partenza.Partenza.Mezzo.Coordinate = richiesta.Localita.Coordinate;
+                        partenza.Partenza.Mezzo.CoordinateStrg = new string[2] { richiesta.Localita.Coordinate.ToCoordinateString().Latitudine, richiesta.Localita.Coordinate.ToCoordinateString().Longitudine };
+
+                    }
+                }
+                catch
+                {
+
+                    partenza.Partenza.Coordinate = richiesta.Localita.Coordinate.ToCoordinateString();
+                    partenza.Partenza.Mezzo.Coordinate = richiesta.Localita.Coordinate;
+                    partenza.Partenza.Mezzo.CoordinateStrg = new string[2] { richiesta.Localita.Coordinate.ToCoordinateString().Latitudine, richiesta.Localita.Coordinate.ToCoordinateString().Longitudine };
                 }
 
                 if (statoAttuale.Equals("In Viaggio"))
