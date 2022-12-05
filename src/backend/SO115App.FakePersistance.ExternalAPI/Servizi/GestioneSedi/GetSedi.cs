@@ -204,13 +204,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
         public async Task<UnitaOperativa> ListaSediAlberata()
         {
             UnitaOperativa ListaSediAlberate = null;//
-
-            Log.Information("REDIS CACHE - Chiamo Redis per prendere i dati in cache");
-            var sediAlberate = await _distributedCache.GetAsync("ListaSediAlberate");
-            Log.Information($"REDIS CACHE - Risultato: {sediAlberate}");
-            if (sediAlberate != null)
+            byte[] sedi = null;
+            try
             {
-                string stringData = Encoding.UTF8.GetString(sediAlberate);
+                Log.Information("REDIS CACHE - Chiamo Redis per prendere i dati in cache");
+                sedi = await _distributedCache.GetAsync("ListaSediAlberate");
+                Log.Information($"REDIS CACHE - Risultato: {sedi}");
+                string stringData = Encoding.UTF8.GetString(sedi);
 
                 //Log.Information($"REDIS CACHE - Risultato IN STRINGA: {stringData}");
                 try
@@ -225,105 +225,119 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GestioneSedi
                     return null;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                try
+                ListaSediAlberate = CaricaNuovaListaSedi().Result;
+            }
+
+            return ListaSediAlberate;
+        }
+
+        private async Task<UnitaOperativa> CaricaNuovaListaSedi()
+        {
+            UnitaOperativa ListaSediAlberate = null;//
+            try
+            {
+                var lstRegionali = GetDirezioniRegionali().Result;
+
+                var lstProvinciali = GetDirezioniProvinciali().Result;
+
+                //Le coordinate sono fisse perchè il CON prende tutta italia
+                var con = GetInfoSede("00").Result;
+                con.coordinate = "42.28313392189123,11.682171591796926";
+
+                //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
+                var result = new UnitaOperativa(con.Id, con.Descrizione, con.Coordinate);
+
+                //REGIONI
+                foreach (var regionale in lstRegionali)
                 {
-                    var lstRegionali = GetDirezioniRegionali().Result;
+                    var info = GetInfoSede(regionale.id).Result;
 
-                    var lstProvinciali = GetDirezioniProvinciali().Result;
+                    result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = info.coordinate });
+                };
 
-                    //Le coordinate sono fisse perchè il CON prende tutta italia
-                    var con = GetInfoSede("00").Result;
-                    con.coordinate = "42.28313392189123,11.682171591796926";
+                //PROVINCE
+                foreach (var provinciale in lstProvinciali)
+                {
+                    var info = GetInfoSede(provinciale.id).Result;
 
-                    //CREO L'ALNERATURA DELLE SEDI PARTENDO DAL CON
-                    var result = new UnitaOperativa(con.Id, con.Descrizione, con.Coordinate);
+                    var listaComuni = GetFigli(provinciale.id).Result;
 
-                    //REGIONI
-                    foreach (var regionale in lstRegionali)
+                    var lstComunali = new List<UnitaOperativa>();
+
+                    foreach (var comune in listaComuni)
                     {
-                        var info = GetInfoSede(regionale.id).Result;
-
-                        result.AddFiglio(new UnitaOperativa(regionale.id, regionale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = info.coordinate });
-                    };
-
-                    //PROVINCE
-                    foreach (var provinciale in lstProvinciali)
-                    {
-                        var info = GetInfoSede(provinciale.id).Result;
-
-                        var listaComuni = GetFigli(provinciale.id).Result;
-
-                        var lstComunali = new List<UnitaOperativa>();
-
-                        foreach (var comune in listaComuni)
+                        if (comune.coordinate.Trim().Length > 0)
                         {
-                            if (comune.coordinate.Trim().Length > 0)
+                            try
                             {
-                                try
+                                var unita = new UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ? comune.descrizione + " " + comune.id.Split('.')[0] : comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = comune.coordinate };
+                                lstComunali.Add(unita);
+                            }
+                            catch
+                            {
+                                if (comune.coordinate.Contains("°"))
                                 {
+                                    comune.coordinate = comune.DmsToDdString(comune.coordinate);
                                     var unita = new UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ? comune.descrizione + " " + comune.id.Split('.')[0] : comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = comune.coordinate };
                                     lstComunali.Add(unita);
                                 }
-                                catch
-                                {
-                                    if (comune.coordinate.Contains("°"))
-                                    {
-                                        comune.coordinate = comune.DmsToDdString(comune.coordinate);
-                                        var unita = new UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ? comune.descrizione + " " + comune.id.Split('.')[0] : comune.descrizione, new Coordinate(Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(comune.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = comune.coordinate };
-                                        lstComunali.Add(unita);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                var unita = new UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ? comune.descrizione + " " + comune.id.Split('.')[0] : comune.descrizione, new Coordinate(0, 0)) { CoordinateString = "0,0" };
-                                lstComunali.Add(unita);
                             }
                         }
-                        var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
-
-                        if (centrale != null)
+                        else
                         {
-                            //lstComunali.Remove(centrale);
+                            var unita = new UnitaOperativa(comune.id, comune.descrizione == "CENTRALE" ? comune.descrizione + " " + comune.id.Split('.')[0] : comune.descrizione, new Coordinate(0, 0)) { CoordinateString = "0,0" };
+                            lstComunali.Add(unita);
+                        }
+                    }
+                    var centrale = lstComunali.FirstOrDefault(c => c.Nome.ToLower().Contains("centrale") || c.Codice.Split('.')[1].Equals("1000"));
 
-                            try
+                    if (centrale != null)
+                    {
+                        //lstComunali.Remove(centrale);
+
+                        try
+                        {
+                            if (info.coordinate.Trim().Length > 0)
                             {
-                                if (info.coordinate.Trim().Length > 0)
-                                {
-                                    var unitaComunali = new UnitaOperativa(centrale.Codice.Split('.')[0], provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = info.coordinate };
+                                var unitaComunali = new UnitaOperativa(centrale.Codice.Split('.')[0], provinciale.descrizione, new Coordinate(Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Replace('.', ',')), Convert.ToDouble(info.coordinate.Split(',', StringSplitOptions.RemoveEmptyEntries)[1].Replace('.', ',')))) { CoordinateString = info.coordinate };
 
-                                    lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
+                                lstComunali.ForEach(c => unitaComunali.AddFiglio(c));
 
-                                    result.Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
-                                }
-                            }
-                            catch (Exception e)
-                            {
+                                result.Figli.FirstOrDefault(r => r.Codice?.Equals(info.IdSedePadre) ?? false)?.AddFiglio(unitaComunali);
                             }
                         }
-                    };
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                };
 
-                    ListaSediAlberate = result;
+                ListaSediAlberate = result;
 
-                    ListaSediAlberate = GeneraSiglaSede(ListaSediAlberate);
+                ListaSediAlberate = GeneraSiglaSede(ListaSediAlberate);
 
-                    var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(30));
+                var cacheEntryOptions = new DistributedCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(30));
 
-                    var objToString = JsonSerializer.Serialize(ListaSediAlberate);
+                var objToString = JsonSerializer.Serialize(ListaSediAlberate);
 
-                    Log.Information($"REDIS CACHE - OGGETTO TO STRING: {objToString}");
-                    await _distributedCache.SetAsync("ListaSediAlberate", Encoding.ASCII.GetBytes(objToString), cacheEntryOptions);
-
-                    //_setSediAlberate.Set(result);
-                    return result;
-                }
-                catch (Exception e)
+                Log.Information($"REDIS CACHE - OGGETTO TO STRING: {objToString}");
+                try
                 {
-                    Log.Error($"REDIS CACHE - OGGETTO TO STRING: {e.Message}");
-                    return null; //readOffline();
+                    await _distributedCache.SetAsync("ListaSediAlberate", Encoding.ASCII.GetBytes(objToString), cacheEntryOptions);
                 }
+                catch (Exception ex) 
+                {
+                    Log.Error($"REDIS CACHE - ERRORE COMUNICAZIONE REDIS: {ex.Message}");
+                }
+                //_setSediAlberate.Set(result);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"REDIS CACHE - OGGETTO TO STRING: {e.Message}");
+                return null; //readOffline();
             }
         }
 
