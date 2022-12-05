@@ -234,7 +234,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 //command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
                 //command.Richiesta.ListaEventi.OfType<UscitaPartenza>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
 
-                if (partenza.Mezzo.Coordinate == null)
+                //if (partenza.Mezzo.Coordinate == null)
+                //{
+                //    var posizione = _getPosizioneByCodiceMezzo.Get(partenza.Mezzo.Codice).Result;
+                //    if (posizione != null)
+                //    {
+                //        partenza.Coordinate = posizione.ToCoordinate().ToCoordinateString();
+                //        partenza.Mezzo.Coordinate = posizione.ToCoordinate();
+                //        partenza.Mezzo.CoordinateStrg = new string[2] { posizione.ToCoordinate().ToCoordinateString().Latitudine, posizione.ToCoordinate().ToCoordinateString().Longitudine };
+                //    }
+                //}
+
+                try
                 {
                     var posizione = _getPosizioneByCodiceMezzo.Get(partenza.Mezzo.Codice).Result;
                     if (posizione != null)
@@ -243,6 +254,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         partenza.Mezzo.Coordinate = posizione.ToCoordinate();
                         partenza.Mezzo.CoordinateStrg = new string[2] { posizione.ToCoordinate().ToCoordinateString().Latitudine, posizione.ToCoordinate().ToCoordinateString().Longitudine };
                     }
+                    else
+                    {
+                        partenza.Coordinate = command.Richiesta.Localita.Coordinate.ToCoordinateString();
+                        partenza.Mezzo.Coordinate = command.Richiesta.Localita.Coordinate;
+                        partenza.Mezzo.CoordinateStrg = new string[2] { command.Richiesta.Localita.Coordinate.ToCoordinateString().Latitudine, command.Richiesta.Localita.Coordinate.ToCoordinateString().Longitudine };
+                    }
+                }
+                catch
+                {
+                    partenza.Coordinate = command.Richiesta.Localita.Coordinate.ToCoordinateString();
+                    partenza.Mezzo.Coordinate = command.Richiesta.Localita.Coordinate;
+                    partenza.Mezzo.CoordinateStrg = new string[2] { command.Richiesta.Localita.Coordinate.ToCoordinateString().Latitudine, command.Richiesta.Localita.Coordinate.ToCoordinateString().Longitudine };
                 }
 
                 command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
