@@ -9,12 +9,43 @@
                     <i class="fas fa-truck fa-fw text-{{statoMezzoColor(mezzo?.stato)}}"
                        [ngbTooltip]="mezzo?.stato"></i>
                 </div>
-                <ng-container *ngIf="mezzo.descrizione">
-                    <div class="font-weight-bold mx-2"
-                         [ngbTooltip]="mezzo.descrizione.length > (!mezzoInServizioPage ? 8 : 4) ? mezzo.descrizione : ''">
-                        {{ mezzo.descrizione | truncate: (!mezzoInServizioPage ? 8 : 4) }}
+                <div class="font-weight-bold mx-2"
+                     [ngbTooltip]="mezzo.sigla?.length <= 6 ? labelMezzo : labelMezzoSigla"
+                     [disableTooltip]="!mezzo.sigla && !mezzo.modello && mezzo.descrizione?.length <= 6"
+                     placement="top">
+                    <ng-container *ngIf="mezzo.sigla">
+                        {{ mezzo.sigla | truncate: 6 }}
+                    </ng-container>
+                    <ng-container *ngIf="!mezzo.sigla && mezzo.descrizione">
+                        {{ mezzo.descrizione | truncate: 6 }}
+                    </ng-container>
+                </div>
+
+                <ng-template #labelMezzo>
+                    <div>
+                        {{ 'Targa: ' + mezzo.descrizione }}
                     </div>
-                </ng-container>
+                    <div>
+                        {{ 'Modello: ' + mezzo.modello }}
+                    </div>
+                    <div>
+                        {{ 'Sede: ' + mezzo.distaccamento.descrizione }}
+                    </div>
+                </ng-template>
+                <ng-template #labelMezzoSigla>
+                    <div>
+                        {{ 'Sigla: ' + mezzo.sigla }}
+                    </div>
+                    <div>
+                        {{ 'Targa: ' + mezzo.descrizione }}
+                    </div>
+                    <div>
+                        {{ 'Modello: ' + mezzo.modello }}
+                    </div>
+                    <div>
+                        {{ 'Sede: ' + mezzo.distaccamento.descrizione }}
+                    </div>
+                </ng-template>
                 <ng-container *ngIf="mezzo.genere">
                     <div [ngbTooltip]="mezzo.genere.length > 3 ? mezzo.genere : ''">
                         {{ mezzo.genere | truncate: 3 }}
@@ -36,6 +67,7 @@
                                        [listaEventi]="listaEventi"
                                        [listaEventiMezzo]="listaEventiMezzo"
                                        [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
+                                       [dateSync]="dateSync"
                                        (actionMezzo)="onActionMezzo($event)">
                     </app-mezzo-actions>
                 </div>
@@ -45,7 +77,7 @@
     <!-- Stato mezzo (presente in mezzi in servizio) -->
     <div class="float-right">
         <ng-container *ngIf="mezzoInServizioPage && mezzo?.istantiCambiStato">
-            <div class="d-flex align-items-center justify-content-start ml-3 px-2 border border-{{statoMezzoColor(mezzo.stato)}} text-{{statoMezzoColor(mezzo.stato)}}">
+            <div class="d-flex align-items-center justify-content-start px-1 border border-{{statoMezzoColor(mezzo.stato)}} text-{{statoMezzoColor(mezzo.stato)}}">
                 <div>
                     {{mezzo.istantiCambiStato[mezzo.istantiCambiStato.length - 1]?.stato}}
                 </div>

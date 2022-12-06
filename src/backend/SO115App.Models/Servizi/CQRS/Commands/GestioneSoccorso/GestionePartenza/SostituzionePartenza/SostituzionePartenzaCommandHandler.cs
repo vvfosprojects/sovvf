@@ -2,6 +2,7 @@
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Gac;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
@@ -9,6 +10,7 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.Ag
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Statri;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
@@ -26,10 +28,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IUpdateStatoPartenze _upDatePartenza;
         private readonly IGetRichiesta _getRichiestaById;
         private readonly IGetTurno _getTurno;
+        private readonly ISendSTATRIItem _sendNewItemSTATRI;
+        private readonly ICheckCongruitaPartenze _checkCongruita;
 
         public SostituzionePartenzaCommandHandler(IGetTipologieByCodice getTipologie, IUpDateRichiestaAssistenza updateRichiesta,
                                                   IGetMaxCodicePartenza getMaxCodicePartenza, IModificaInterventoChiuso modificaIntervento,
-                                                  IUpdateStatoPartenze upDatePartenza, IGetRichiesta getRichiestaById, IGetTurno getTurno)
+                                                  IUpdateStatoPartenze upDatePartenza, IGetRichiesta getRichiestaById, IGetTurno getTurno,
+                                                  ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze checkCongruita)
         {
             _updateRichiesta = updateRichiesta;
             _getMaxCodicePartenza = getMaxCodicePartenza;
@@ -38,6 +43,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _upDatePartenza = upDatePartenza;
             _getRichiestaById = getRichiestaById;
             _getTurno = getTurno;
+            _sendNewItemSTATRI = sendNewItemSTATRI;
+            _checkCongruita = checkCongruita;
         }
 
         public async void Handle(SostituzionePartenzaCommand command)
@@ -58,13 +65,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 //Chiudo solo le partenze da sostituire. Le partenze non interessate dalla sostituzione non verranno lavorate
                 if (partenzeDaSostituire.Contains(partenza))
-                { 
-                    richiestaOld.Partenze.ToList().Find(p => p.Partenza.PartenzaAnnullata == false
-                                                            && p.Partenza.Terminata == false
-                                                            && p.Partenza.Sganciata == false
-                                                            && p.CodiceMezzo.Equals(partenza.CodiceMezzo)).Partenza.Terminata = true;
-
-
+                {
+                    richiestaOld.Partenze.ToList().Find(p => p.CodicePartenza.Equals(partenza.CodicePartenza)).Partenza.Terminata = true;
 
                     partenza.Partenza.Terminata = true;
 
@@ -73,8 +75,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         CodiciSede = new string[] { partenza.Partenza.Mezzo.Appartenenza },
                         IdMezzo = partenza.CodiceMezzo,
                         Richiesta = richiestaOld,
-                        StatoMezzo = Costanti.MezzoRientrato
+                        StatoMezzo = Costanti.MezzoRientrato,
+                        CodicePartenza = partenza.CodicePartenza
                     };
+
+                    //new PartenzaRientrata(richiestaOld, partenza.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, partenza.CodicePartenza);
+
+                    richiestaOld.CambiaStatoPartenza(partenza.Partenza, new CambioStatoMezzo()
+                    {
+                        CodMezzo = partenza.CodiceMezzo,
+                        Istante = DateTime.UtcNow,
+                        Stato = Costanti.MezzoRientrato
+                    }, _sendNewItemSTATRI, _checkCongruita, command.sostituzione.idOperatore, new string[2] { partenza.Partenza.Coordinate.Latitudine, partenza.Partenza.Coordinate.Longitudine }, partenza.CodicePartenza);
 
                     _upDatePartenza.Update(statoMezzoPartenza);
                 }
@@ -86,14 +98,20 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 var ElencoSquadre = CheckElencoSquadre(command, partenzeDaSostituire, sostituzione.CodMezzo);
 
-                var NuovaPartenza = new ComposizionePartenze(richiestaOld, DateTime.UtcNow, command.sostituzione.idOperatore, false, new Partenza()
+                var codicePartenza = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString();
+                //FASE 5
+                //Creazione Note e Evento SostituzionePartenzaFineTurno
+                string note = $"Nel mezzo {sostituzione.CodMezzo} ora si trovano le squadre {String.Join(",", ElencoSquadre.Select(s => s.Codice))}";
+                SostituzionePartenzaFineTurno sos = new SostituzionePartenzaFineTurno(richiestaOld, sostituzione.CodMezzo, DateTime.UtcNow.AddSeconds(-2), command.sostituzione.idOperatore, note, codicePartenza);
+
+                var NuovaPartenza = new ComposizionePartenze(richiestaOld, DateTime.UtcNow.AddSeconds(-1), command.sostituzione.idOperatore, false, new Partenza()
                 {
-                    Codice = command.Richiesta.Codice.Substring(0, 2) + (_getMaxCodicePartenza.GetMax() + 1).ToString(),
+                    Codice = codicePartenza,
                     Mezzo = partenzeDaSostituire.Select(m => m.Partenza.Mezzo).Where(m => m.Codice.Equals(sostituzione.CodMezzo)).FirstOrDefault(),
                     Squadre = ElencoSquadre,
                     Turno = _getTurno.Get().Codice,
-                    Coordinate = richiestaOld.Localita.Coordinate.ToCoordinateString(),
-                });
+                    Coordinate = richiestaOld.Localita.Coordinate.ToCoordinateString()
+                }, richiestaOld.Localita.Coordinate.ToCoordinateString());
 
                 new ArrivoSulPosto(richiestaOld, NuovaPartenza.CodiceMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, NuovaPartenza.CodicePartenza);
 
@@ -103,21 +121,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     IdMezzo = sostituzione.CodMezzo,
                     Richiesta = richiestaOld,
                     StatoMezzo = Costanti.MezzoSulPosto,
+                    CodicePartenza = NuovaPartenza.CodicePartenza
                 };
-
-                //FASE 5
-                //Creazione Note e Evento SostituzionePartenzaFineTurno
-                string note = $"Nel mezzo {sostituzione.CodMezzo} ora si trovano le squadre {String.Join(",", ElencoSquadre.Select(s => s.Codice))}";
-                SostituzionePartenzaFineTurno sos = new SostituzionePartenzaFineTurno(richiestaOld, sostituzione.CodMezzo, DateTime.UtcNow, command.sostituzione.idOperatore, note);
 
                 _upDatePartenza.Update(AggStatoMezzo);
             }
 
             //FASE 6
-            //Update Richiesta
-            //_updateRichiesta.UpDate(command.Richiesta);
-
-            //FASE 7
             //Invio a GAC degli aggiornamenti
             command.Richiesta = richiestaOld;
         }

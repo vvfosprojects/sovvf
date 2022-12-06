@@ -23,17 +23,50 @@
         <ng-container *ngIf="nuovaPartenza.mezzoComposizione">
             <div class="col">
                 <div class="nowrap">
-                    <i class="fas fa-truck mr-1"
+                    <i class="fas fa-truck mr-2"
                        [ngClass]="_iconaStatiClass(nuovaPartenza.mezzoComposizione.mezzo?.stato)"
                        ngbTooltip="Mezzo {{ nuovaPartenza.mezzoComposizione.mezzo?.stato }}"
                        placement="top-left"></i>
-                    <div class="d-inline-block font-weight-bold mr-1"
-                         [ngbTooltip]="nuovaPartenza.mezzoComposizione.mezzo?.descrizione"
-                         [disableTooltip]="nuovaPartenza.mezzoComposizione.mezzo?.descrizione?.length <= 7">
-                        {{nuovaPartenza.mezzoComposizione.mezzo?.descrizione | slice: 0:7}}
+                    <div class="d-inline-block font-weight-bold mr-2"
+                         [ngbTooltip]="nuovaPartenza.mezzoComposizione.mezzo.sigla?.length <= 6 ? labelMezzo : labelMezzoSigla"
+                         [disableTooltip]="!nuovaPartenza.mezzoComposizione.mezzo.sigla && !nuovaPartenza.mezzoComposizione.mezzo.modello && nuovaPartenza.mezzoComposizione.mezzo.descrizione?.length <= 6">
+                        <ng-container *ngIf="nuovaPartenza.mezzoComposizione.mezzo.sigla">
+                            {{ nuovaPartenza.mezzoComposizione.mezzo.sigla | truncate: 6 }}
+                        </ng-container>
+                        <ng-container
+                                *ngIf="!nuovaPartenza.mezzoComposizione.mezzo.sigla && nuovaPartenza.mezzoComposizione.mezzo.descrizione">
+                            {{ nuovaPartenza.mezzoComposizione.mezzo.descrizione | truncate: 6 }}
+                        </ng-container>
                     </div>
-                    <div class="d-inline-block font-weight-normal">
-                        {{ nuovaPartenza?.mezzoComposizione.mezzo?.genere }}
+                    <ng-template #labelMezzo>
+                        <div>
+                            {{ 'Targa: ' + nuovaPartenza.mezzoComposizione.mezzo.descrizione }}
+                        </div>
+                        <div>
+                            {{ 'Modello: ' + nuovaPartenza.mezzoComposizione.mezzo.modello }}
+                        </div>
+                        <div>
+                            {{ 'Sede: ' + nuovaPartenza.mezzoComposizione.mezzo.distaccamento.descrizione }}
+                        </div>
+                    </ng-template>
+                    <ng-template #labelMezzoSigla>
+                        <div>
+                            {{ 'Sigla: ' + nuovaPartenza.mezzoComposizione.mezzo.sigla }}
+                        </div>
+                        <div>
+                            {{ 'Targa: ' + nuovaPartenza.mezzoComposizione.mezzo.descrizione }}
+                        </div>
+                        <div>
+                            {{ 'Modello: ' + nuovaPartenza.mezzoComposizione.mezzo.modello }}
+                        </div>
+                        <div>
+                            {{ 'Sede: ' + nuovaPartenza.mezzoComposizione.mezzo.distaccamento.descrizione }}
+                        </div>
+                    </ng-template>
+                    <div class="d-inline-block font-weight-normal"
+                         [ngbTooltip]="nuovaPartenza.mezzoComposizione.mezzo.genere"
+                         [disableTooltip]="nuovaPartenza.mezzoComposizione.mezzo.genere?.length <= 4">
+                        {{ nuovaPartenza.mezzoComposizione.mezzo.genere | truncate: 4 }}
                     </div>
                 </div>
             </div>
@@ -53,9 +86,28 @@
                        [ngClass]="_iconaStatiClass(_nomeStatiSquadra(nuovaPartenza.squadreComposizione[0].stato))"
                        ngbTooltip="Squadra {{ _nomeStatiSquadra(nuovaPartenza.squadreComposizione[0].stato) }}"></i>
                     <div class="d-inline-block"
-                         [ngbTooltip]="nuovaPartenza.squadreComposizione[0].nome">
+                         [ngbTooltip]="nuovaPartenza.squadreComposizione[0]?.codice?.length <= 8 ? labelSquadra : labelSquadraCodice">
                         {{ nuovaPartenza.squadreComposizione[0].codice | truncate: 8 }}
                     </div>
+                    <ng-template #labelSquadra>
+                        <div>
+                            {{ 'Nome: ' + nuovaPartenza.squadreComposizione[0]?.nome }}
+                        </div>
+                        <div>
+                            {{ 'Sede: ' + nuovaPartenza.squadreComposizione[0]?.distaccamento.descrizione }}
+                        </div>
+                    </ng-template>
+                    <ng-template #labelSquadraCodice>
+                        <div>
+                            {{ 'Codice: ' + nuovaPartenza.squadreComposizione[0]?.codice }}
+                        </div>
+                        <div>
+                            {{ 'Nome: ' + nuovaPartenza.squadreComposizione[0]?.nome }}
+                        </div>
+                        <div>
+                            {{ 'Sede: ' + nuovaPartenza.squadreComposizione[0]?.distaccamento.descrizione }}
+                        </div>
+                    </ng-template>
                     <ng-container
                             *ngIf="nuovaPartenza.mezzoComposizione && compPartenzaMode === 1 && nuovaPartenza.mezzoComposizione?.mezzo?.stato !== StatoMezzo.InRientro && !disableDividi">
                         <button class="btn btn-sm btn-primary btn-no-hover ml-2 px-1 py-0"

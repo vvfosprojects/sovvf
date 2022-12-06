@@ -38,6 +38,8 @@ import { DirectionTravelDataInterface } from '../maps-interface/direction-travel
 import { SetVisualizzaPercosiRichiesta } from '../../home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { environment } from '../../../../environments/environment';
 import { SetChiamataFromMappaStatus } from '../../home/store/actions/view/view.actions';
+import { PermessiService } from '../../../core/service/permessi-service/permessi.service';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { EsriService } from '../map-service/esri.service';
 import MapView from '@arcgis/core/views/MapView';
 import Map from '@arcgis/core/Map';
@@ -120,7 +122,8 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
                 private configModal: NgbModalConfig,
                 private renderer: Renderer2,
                 private travelModeService: TravelModeService,
-                private esriService: EsriService) {
+                private esriService: EsriService,
+                private permessiService: PermessiService) {
         this.configModal.backdrop = 'static';
         this.configModal.keyboard = false;
         this.mapService.getRefresh().subscribe(() => {
@@ -918,64 +921,66 @@ export class MapEsriComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     startNuovaChiamata(): void {
-        let lat: number;
-        let lon: number;
+        if (this.permessiService.checkUserPermissionByFeature(PermissionFeatures.SchedaTelefonata)) {
+            let lat: number;
+            let lon: number;
 
-        const mapPoint = this.eventClick.mapPoint;
+            const mapPoint = this.eventClick.mapPoint;
 
-        if (this.eventClick?.mapPoint) {
-            lat = mapPoint.latitude;
-            lon = mapPoint.longitude;
-        }
+            if (this.eventClick?.mapPoint) {
+                lat = mapPoint.latitude;
+                lon = mapPoint.longitude;
+            }
 
-        // Se il "contextMenu" è aperto lo chiudo
-        if (this.contextMenuVisible) {
-            this.setContextMenuVisible(false);
-        }
+            // Se il "contextMenu" è aperto lo chiudo
+            if (this.contextMenuVisible) {
+                this.setContextMenuVisible(false);
+            }
 
-        // Se il puntatore di "NuovaChiamtaMappa" è attivo posso aprire il "Form Chiamata"
-        const check = document.getElementById('idCheck');
-        // @ts-ignore
-        if (check && !check.checked) {
-            return;
-        }
-        this.view.popup.autoOpenEnabled = false;
+            // Se il puntatore di "NuovaChiamtaMappa" è attivo posso aprire il "Form Chiamata"
+            const check = document.getElementById('idCheck');
+            // @ts-ignore
+            if (check && !check.checked) {
+                return;
+            }
+            this.view.popup.autoOpenEnabled = false;
 
-        // Params per il servizio "locationToAddress"
-        const location = mapPoint;
-        const params = {
-            location
-        };
+            // Params per il servizio "locationToAddress"
+            const location = mapPoint;
+            const params = {
+                location
+            };
 
-        // Trovo l'indirizzo tramite le coordinate
-        this.esriService.getLocationToAddress(params).then((response) => {
-            this.changeCenter([lon, lat]).then(() => {
-                const zoom = 19;
-                this.changeZoom(zoom).then(() => {
+            // Trovo l'indirizzo tramite le coordinate
+            this.esriService.getLocationToAddress(params).then((response) => {
+                this.changeCenter([lon, lat]).then(() => {
+                    const zoom = 19;
+                    this.changeZoom(zoom).then(() => {
+                    });
+                });
+
+                // Apro il modale con FormChiamata con lat, lon e address
+                const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
+                    windowClass: 'xxlModal modal-holder',
+                });
+                modalNuovaChiamata.componentInstance.lat = lat;
+                modalNuovaChiamata.componentInstance.lon = lon;
+                modalNuovaChiamata.componentInstance.address = response.attributes.Match_addr;
+                modalNuovaChiamata.componentInstance.citta = response.attributes.City;
+                modalNuovaChiamata.componentInstance.provincia = response.attributes.Subregion;
+                modalNuovaChiamata.componentInstance.cap = response.attributes.Postal;
+                modalNuovaChiamata.componentInstance.regione = response.attributes.Region;
+                modalNuovaChiamata.componentInstance.civico = response.attributes.AddNum;
+
+                this.store.dispatch(new SetChiamataFromMappaStatus(true));
+                modalNuovaChiamata.result.then(() => {
+                    this.store.dispatch([
+                        new SetChiamataFromMappaStatus(false),
+                        new SetChiamataFromMappaActiveValue(false)
+                    ]);
                 });
             });
-
-            // Apro il modale con FormChiamata con lat, lon e address
-            const modalNuovaChiamata = this.modalService.open(ModalNuovaChiamataComponent, {
-                windowClass: 'xxlModal modal-holder',
-            });
-            modalNuovaChiamata.componentInstance.lat = lat;
-            modalNuovaChiamata.componentInstance.lon = lon;
-            modalNuovaChiamata.componentInstance.address = response.attributes.Match_addr;
-            modalNuovaChiamata.componentInstance.citta = response.attributes.City;
-            modalNuovaChiamata.componentInstance.provincia = response.attributes.Subregion;
-            modalNuovaChiamata.componentInstance.cap = response.attributes.Postal;
-            modalNuovaChiamata.componentInstance.regione = response.attributes.Region;
-            modalNuovaChiamata.componentInstance.civico = response.attributes.AddNum;
-
-            this.store.dispatch(new SetChiamataFromMappaStatus(true));
-            modalNuovaChiamata.result.then(() => {
-                this.store.dispatch([
-                    new SetChiamataFromMappaStatus(false),
-                    new SetChiamataFromMappaActiveValue(false)
-                ]);
-            });
-        });
+        }
     }
 
     // Imposta il "contextMenu" visibile o no in base al valore passato a "value"

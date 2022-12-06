@@ -35,12 +35,17 @@ namespace SO115App.Persistence.MongoDB.GestioneDettaglioTipologia
             if (query.Filters != null)
                 CodTipologia = query.Filters?.codTipologia;
 
-            var listaPin = GetGerarchia(query.IdSede);
+            //var listaPin = new List<PinNodo>();
 
-            var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
+            var lstCodiciPin = new List<string>(); ;
 
-            var codiceSedePadre = _getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
+            string codiceSedePadre = "";
+            if (query.IdSede[0].Contains("."))
+                codiceSedePadre = query.IdSede[0].Split('.')[0];  //_getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
+            else
+                codiceSedePadre = _getAlberaturaUnitaOperative.GetCodiceSedePadre(query.IdSede[0]);
 
+            lstCodiciPin.Add(query.IdSede[0]);
             lstCodiciPin.Add(codiceSedePadre);
 
             var lstEnti = new List<TipologiaDettaglio>();

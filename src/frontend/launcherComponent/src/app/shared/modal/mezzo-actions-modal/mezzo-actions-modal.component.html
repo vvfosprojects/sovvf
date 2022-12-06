@@ -10,21 +10,23 @@
 <div class="modal-body">
     <ng-container *ngIf="timeActionForm">
         <form [formGroup]="timeActionForm">
-            <div class="text-center mb-2">
-                <input id="orarioAttuale"
-                       type="checkbox"
-                       formControlName="orarioAttuale"
-                       (click)="onChangeCheckboxOrarioAttuale()">
-                <label for="orarioAttuale">Orario attuale</label>
-            </div>
-            <div class="text-center">
-                <input id="orarioPersonalizzato"
-                       type="checkbox"
-                       formControlName="orarioPersonalizzato"
-                       (click)="onChangeCheckboxOrarioPersonalizzato()">
-                <label for="orarioPersonalizzato">Orario personalizzato</label>
-            </div>
-            <ng-container *ngIf="f?.orarioPersonalizzato.value">
+            <ng-container *ngIf="modificaOrario || isPrevious">
+                <div class="text-center mb-2">
+                    <input id="orarioAttuale"
+                           type="checkbox"
+                           formControlName="orarioAttuale"
+                           (click)="onChangeCheckboxOrarioAttuale()">
+                    <label for="orarioAttuale">Orario attuale</label>
+                </div>
+                <div class="text-center">
+                    <input id="orarioPersonalizzato"
+                           type="checkbox"
+                           formControlName="orarioPersonalizzato"
+                           (click)="onChangeCheckboxOrarioPersonalizzato()">
+                    <label for="orarioPersonalizzato">Orario personalizzato</label>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="f?.orarioPersonalizzato.value && (modificaOrario || isPrevious)">
                 <hr>
                 <div class="d-flex align-items-center justify-content-center">
                     <div class="form-group">

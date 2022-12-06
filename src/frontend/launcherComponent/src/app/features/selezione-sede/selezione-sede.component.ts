@@ -12,6 +12,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSedeCurrentUser } from '../auth/store/auth.actions';
 import { LSNAME } from '../../core/settings/config';
+import { getProvinciaByCodProvincia } from 'src/app/shared/helper/function-province';
 
 @Component({
     templateUrl: 'selezione-sede.component.html',
@@ -92,6 +93,12 @@ export class SelezioneSedeComponent implements OnInit, OnDestroy {
                 }
                 this.ruoliUtente.push(ruolo);
             }
+        });
+        this.ruoliUtente = this.ruoliUtente.map((r: Ruolo) => {
+            return {
+                ...r,
+                descSede: r.descSede.toLowerCase() === 'centrale' ? r.descSede + ' ' + getProvinciaByCodProvincia(r.codSede.split('.')[0]).toUpperCase() : r.descSede
+            };
         });
     }
 

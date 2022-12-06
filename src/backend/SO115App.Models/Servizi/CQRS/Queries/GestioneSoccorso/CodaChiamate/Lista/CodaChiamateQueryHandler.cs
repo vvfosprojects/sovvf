@@ -91,7 +91,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             var listaAttuale = boxPersonale.workShift.Select(s => s.Attuale).ToList();
             Parallel.ForEach(listaSedi, unita =>
             {
-                if (!unita.Nome.Equals("Centro Operativo Nazionale"))
+                if (!unita.Nome.Equals("Centro Operativo Nazionale") && !unita.Nome.ToLower().Contains("comando"))
                 {
                     var listaSquadre = new List<SquadraOpService>();
 
@@ -99,6 +99,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
                         listaSquadre = listaAttuale[0].Squadre.Where(s => s.Distaccamento.Equals(unita.Codice)).ToList();
 
                     var statoSquadre = _getStatoSquadra.Get(turnoCorrente, new List<string> { unita.Codice });
+                    statoSquadre = statoSquadre.FindAll(s => !s.StatoSquadra.Equals("Rientrato"));
 
                     var infoDistaccamento = new Istogramma()
                     {

@@ -52,7 +52,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     IdUtente = command.IdOperatore,
                     IdMezzo = partenzaDaAnnullare.Partenza.Mezzo.Codice,
                     DataOraAggiornamento = command.ModificaPartenza.DataAnnullamento.Value,
-                    StatoMezzo = partenzaDaAnnullare.Partenza.Mezzo.Stato
+                    StatoMezzo = partenzaDaAnnullare.Partenza.Mezzo.Stato,
+                    CodicePartenza = partenzaDaAnnullare.Partenza.Codice
                 });
 
                 //COMPOSIZIONE ---
@@ -77,7 +78,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     IdUtente = command.IdOperatore,
                     IdMezzo = nuovaPartenza.Partenza.Mezzo.Codice,
                     DataOraAggiornamento = command.ModificaPartenza.DataAnnullamento.Value,
-                    StatoMezzo = nuovaPartenza.Partenza.Mezzo.Stato
+                    StatoMezzo = nuovaPartenza.Partenza.Mezzo.Stato,
+                    CodicePartenza = nuovaPartenza.CodicePartenza
                 });
             }
 
@@ -90,7 +92,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 foreach (var stato in command.ModificaPartenza.SequenzaStati.Where(c => c.CodMezzo != command.ModificaPartenza.CodMezzoDaAnnullare).OrderBy(c => c.Istante))
                 {
-                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, stato, _sendNewItemSTATRI, _checkCongruita, command.IdOperatore);
+                    Richiesta.CambiaStatoPartenza(partenzaDaLavorare.Partenza, stato, _sendNewItemSTATRI, _checkCongruita, command.IdOperatore, new string[2] { partenzaDaLavorare.Partenza.Coordinate.Latitudine, partenzaDaLavorare.Partenza.Coordinate.Longitudine }, partenzaDaLavorare.CodicePartenza);
 
                     _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                     {
@@ -100,7 +102,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         IdUtente = command.IdOperatore,
                         IdMezzo = stato.CodMezzo,
                         DataOraAggiornamento = stato.Istante,
-                        StatoMezzo = stato.Stato
+                        StatoMezzo = stato.Stato,
+                        CodicePartenza = partenzaDaLavorare.CodicePartenza
                     });
                 }
             }

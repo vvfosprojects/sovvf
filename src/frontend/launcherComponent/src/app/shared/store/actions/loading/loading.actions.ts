@@ -19,13 +19,13 @@ export class StopBigLoading {
 export class AddAnnullaStatoMezzi {
     static readonly type = '[Loading] Add Pb Mezzo';
 
-    constructor(public codMezzo: string, public stato: StatoMezzo) {
+    constructor(public codMezzo: string, public stato: StatoMezzo, public codPartenza: string) {
     }
 }
 
 export class RemoveAnnullaStatoMezzi {
     static readonly type = '[Loading] Remove Pb Mezzo';
 
-    constructor(public codMezzi: string[], public stato?: StatoMezzo) {
+    constructor(public codMezzi: string[], public codPartenza?: string, public stato?: StatoMezzo) {
     }
 }

@@ -31,6 +31,7 @@ using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.RubricaDTO;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Classi.Triage;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -116,9 +117,9 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <param name="stato">Lo stato che va attribuito alla partenza</param>
         internal void CambiaStatoPartenza(Partenza partenza, CambioStatoMezzo stato, ISendSTATRIItem sendNewItemSTATRI, ICheckCongruitaPartenze check, string CodOperatore, string[] coordinatePartenza = null, string codicePartenza = null)
         {
-            bool cambioOrarioUscita = partenza.Mezzo.Stato == stato.Stato;
+            bool cambioOrario = partenza.Mezzo.Stato == stato.Stato;
 
-            if (!cambioOrarioUscita)
+            if (!cambioOrario)
                 check.CheckCongruenza(stato, partenza.Codice, true);
             else
                 check.CheckCongruenza(stato, partenza.Codice, false);
@@ -141,20 +142,17 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoInViaggio:
 
-                    var dataComposizione = cambioOrarioUscita == true ? stato.Istante : stato.Istante.AddMinutes(1);
+                    var dataComposizione = cambioOrario == true ? stato.Istante : stato.Istante.AddMinutes(1);
 
                     if (coordinatePartenza != null)
                     {
-                        CoordinateString coordinate = new CoordinateString(coordinatePartenza[0], coordinatePartenza[1]);
-
-                        if (codicePartenza == null)
+                            CoordinateString coordinate = new CoordinateString(coordinatePartenza[0], coordinatePartenza[1]);
                             new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza, coordinate);
+                        
                     }
                     else
-                    {
-                        if (codicePartenza == null)
                             new ComposizionePartenze(this, dataComposizione, CodOperatore, false, partenza);
-                    }
+
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
@@ -164,8 +162,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoSulPosto:
 
-                    if (codicePartenza == null)
-                        new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
+                    new ArrivoSulPosto(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
+                    
 
                     SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
@@ -175,8 +173,8 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 case Costanti.MezzoInRientro:
 
-                    new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
-
+                        new PartenzaInRientro(this, partenza.Mezzo.Codice, stato.Istante, CodOperatore, partenza.Codice);
+                    
                     if (this.lstPartenzeInCorso.Count == 0)
                         SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.Istante, null);
 
@@ -678,7 +676,12 @@ namespace SO115App.API.Models.Classi.Soccorso
                     if (contChiusura > contRiapertura)
                         return new Chiusa();
                     else if (CodRichiesta != null)
-                        return new Sospesa();
+                    {
+                        if (_eventi.Where(e => e is RichiestaSoccorsoAereo) != null)
+                            return new Assegnata();
+                        else
+                            return new Sospesa();
+                    }
                     else
                         return new InAttesa();
                 }
@@ -730,7 +733,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 foreach (var evento in listaComposizioni)
                 {
                     var UltimoEventoPartenza = listaPartenze
-                        .FindAll(m => m.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice) && m.TipoEvento != "AnnullamentoStatoPartenza")
+                        .FindAll(m => m.CodicePartenza.Equals(evento.Partenza.Codice) && m.TipoEvento != "AnnullamentoStatoPartenza")
                         .OrderBy(e => e.Istante).Last().TipoEvento;
 
                     if (UltimoEventoPartenza.Equals("ComposizionePartenza") || UltimoEventoPartenza.Equals("UscitaPartenza"))
@@ -767,33 +770,33 @@ namespace SO115App.API.Models.Classi.Soccorso
                         }
                     }
 
-                    if (listaPartenzeAnnullatePerNPN.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    if (listaPartenzeAnnullatePerNPN.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList().Count > 0)
                     {
-                        foreach (var annullamento in listaPartenzeAnnullatePerNPN.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        foreach (var annullamento in listaPartenzeAnnullatePerNPN.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
                                 evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
-                    if (listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    if (listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList().Count > 0)
                     {
-                        foreach (var annullamento in listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        foreach (var annullamento in listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
                                 evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
-                    if (listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    if (listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList().Count > 0)
                     {
-                        foreach (var annullamento in listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        foreach (var annullamento in listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
                                 evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
-                    if (listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    if (listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList().Count > 0)
                     {
-                        foreach (var annullamento in listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        foreach (var annullamento in listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodicePartenza.Equals(evento.Partenza.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
                                 evento.Partenza.PartenzaAnnullata = true;

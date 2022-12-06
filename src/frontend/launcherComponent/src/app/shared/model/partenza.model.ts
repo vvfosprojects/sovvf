@@ -28,6 +28,7 @@ export class DettaglioPartenza {
         public sganciata: boolean,
         public partenzaAnnullata: boolean,
         public terminata: boolean,
+        public codice: string,
         public codicePartenza: string,
         public coordinate: { latitudine: string, longitudine: string }
     ) {

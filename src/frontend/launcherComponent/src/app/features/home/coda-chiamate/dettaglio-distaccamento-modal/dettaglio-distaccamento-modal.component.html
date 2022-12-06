@@ -20,8 +20,27 @@
                     <div *ngFor="let s of squadre"
                          class="d-flex justify-content-between align-items-center font-xxlarge px-3">
                         <div class="">
-                            {{ s.codice }} ({{ s?.turno }})
+                            <span [ngbTooltip]="s.codice?.length <= 7 ? labelSquadra : labelSquadraCodice">
+                                {{ s.codice | truncate: 7 }}
+                            </span>
+                            <span> ({{ s?.turno }})</span>
                         </div>
+                        <ng-template #labelSquadra>
+                            <div>
+                                {{ 'Nome: ' + s.nome }}
+                            </div>
+                        </ng-template>
+                        <ng-template #labelSquadraCodice>
+                            <div>
+                                {{ 'Codice: ' + s.codice }}
+                            </div>
+                            <div>
+                                {{ 'Nome: ' + s.nome }}
+                            </div>
+                            <div>
+                                {{ 'Sede: ' + s.distaccamento?.descrizione }}
+                            </div>
+                        </ng-template>
                         <div class="">
                             <app-icona-stato [stato]="_nomeStatiSquadra(s.stato)"></app-icona-stato>
                         </div>

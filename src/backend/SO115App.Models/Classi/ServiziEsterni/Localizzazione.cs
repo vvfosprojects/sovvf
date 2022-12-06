@@ -1,25 +1,20 @@
 ﻿using GeoCoordinatePortable;
+using System.Text.Json.Serialization;
 
 namespace SO115App.Models.Classi.ServiziEsterni
 {
     public class Localizzazione
     {
-        public Localizzazione(double lat, double lon) => coordinates = new double[2] { lat, lon };
-
-        public Localizzazione() => coordinates = new double[2] { 0, 0 };
-
-        private double[] coordinates { get; set; }
-
+        [JsonPropertyName("lat")]
         public double Lat
         {
-            get { return coordinates[1]; }
-            set { coordinates[1] = value; }
+            get;set;
         }
 
+        [JsonPropertyName("lon")]
         public double Lon
         {
-            get { return coordinates[0]; }
-            set { coordinates[0] = value; }
+            get;set;
         }
 
         /// <summary>

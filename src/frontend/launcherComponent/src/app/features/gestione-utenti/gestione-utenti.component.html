@@ -46,14 +46,12 @@
                     <app-tabella-utenti [listaUtenti]="listaUtenti$ | async"
                                         [idUtenteLoggato]="utente?.id"
                                         [totalItems]="totalItems$ | async"
-                                        [pageSize]="pageSize" [page]="page$ | async"
+                                        [page]="page$ | async"
                                         [loading]="loading$ | async"
-                                        [pageSizes]="pageSizes$ | async"
                                         (removeUser)="onRemoveUtente($event)"
                                         (removeRoleUser)="onRemoveRuoloUtente($event)"
                                         (addRuoloUtente)="onAddRuoloUtente($event)"
-                                        (pageChange)="onPageChange($event)"
-                                        (pageSizeChange)="onPageSizeChange($event)">
+                                        (pageChange)="onPageChange($event)">
                     </app-tabella-utenti>
                 </div>
             </div>

@@ -22,11 +22,11 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
 
         public void Set(SetMezzoPrenotatoCommand command)
         {
-            var mezzi = _getStatoMezzi.Get(new string[] { command.MezzoPrenotato.CodiceSede }, command.MezzoPrenotato.CodiceMezzo);
+            var mezzi = _getStatoMezzi.Get(new string[] { command.MezzoPrenotato.CodiceSede }, command.MezzoPrenotato.CodicePartenza, command.MezzoPrenotato.CodiceMezzo);
             if (mezzi != null
                 && command.MezzoPrenotato.SbloccaMezzo)
             {
-                _dbContext.StatoMezzoCollection.FindOneAndDelete(Builders<StatoOperativoMezzo>.Filter.Eq(s => s.CodiceMezzo, command.MezzoPrenotato.CodiceMezzo));
+                _dbContext.StatoMezzoCollection.FindOneAndDelete(Builders<StatoOperativoMezzo>.Filter.Eq(s => s.CodicePartenza, command.MezzoPrenotato.CodicePartenza));
             }
             else if (!command.MezzoPrenotato.SbloccaMezzo)
             {

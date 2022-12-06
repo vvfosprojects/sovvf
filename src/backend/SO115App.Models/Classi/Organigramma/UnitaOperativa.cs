@@ -51,16 +51,18 @@ namespace SO115App.API.Models.Classi.Organigramma
             this.Codice = codice;
             this.Nome = nome;
             this.Coordinate = coordinate;
-            this.Figli = new ConcurrentBag<UnitaOperativa>();
+            this.Figli = new List<UnitaOperativa>();
         }
 
         public string Id { get; set; }
+
         /// <summary>
         ///   Codice dell'unità operativa
         /// </summary>
         public string Codice { get; set; }
 
         private string _nome;
+
         /// <summary>
         ///   Il nome dell'inità operativa
         /// </summary>
@@ -73,11 +75,12 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// <summary>
         ///   Le unità operative figlie nell'organigramma
         /// </summary>
-        public ConcurrentBag<UnitaOperativa> Figli { get; set; }
+        public List<UnitaOperativa> Figli { get; set; }
 
         public Coordinate Coordinate { get; set; }
 
         public string CoordinateString { get; set; }
+        public string sigla { get; set; }
 
         /// <summary>
         ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa

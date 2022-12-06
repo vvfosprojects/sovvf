@@ -1,4 +1,5 @@
-﻿using SO115App.API.Models.Classi.Composizione;
+﻿using Serilog;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Classi.Utenti;
@@ -19,6 +20,7 @@ using SO115App.Models.Servizi.Infrastruttura.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -104,6 +106,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             #endregion Gestione turno preaccoppiati
 
             var lstStatiSquadre = _getStatoSquadre.Get(codiceTurno.Substring(0, 1), lstCodiciPin);
+            lstStatiSquadre = lstStatiSquadre.FindAll(s => !s.StatoSquadra.Equals(Costanti.MezzoRientrato));
 
             var lstSquadrePreaccoppiate = new List<SquadraOpService>();
             if (lstSquadre.Count > 0)
@@ -111,8 +114,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var statiOperativiMezzi = _getMezziPrenotati.Get(query.CodiciSedi);
 
-            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray()) //OTTENGO I DATI
-            .ContinueWith(mezzi => //MAPPING
+            var lstMezziComposizione = _getMezziUtilizzabili.GetBySedi(query.CodiciSedi.Distinct().ToArray())
+                .ContinueWith(mezzi => //MAPPING
             {
                 var lstMezzi = new ConcurrentBag<ComposizioneMezzi>();
 
@@ -174,7 +177,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         ListaSquadre = lstSquadreInRientro
                     };
 
-                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice));
+                    var statoMezzo = statiOperativiMezzi.Find(x => x.CodiceMezzo.Equals(mc.Mezzo.Codice) && !x.StatoOperativo.Equals(Costanti.MezzoRientrato));
 
                     if (statoMezzo != null)
                     {
@@ -182,6 +185,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                         switch (mc.Mezzo.Stato)
                         {
+                            // Per commit
                             case Costanti.MezzoInViaggio:
                                 mc.IndirizzoIntervento = _getRichiesta.GetByCodice(statoMezzo.CodiceRichiesta).Localita.Indirizzo;
                                 mc.Mezzo.IdRichiesta = statoMezzo.CodiceRichiesta;
@@ -213,11 +217,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var lstMezziNuova = _ordinamento.GetIndiceOrdinamento(query.Richiesta, lstMezzi.ToList()).Result;
 
-
-                //DA REIMPLEMENTARE SE SONO DA SALVARE IN LOCALE I MEZZI
-                //if (lstMezziNuova != null || lstMezziNuova.Count > 0 || mezzi.Result != null || mezzi.Result.Count > 0)
-                //    _setComposizioneMezzi.Set(lstMezziNuova);
-
                 return lstMezziNuova;
             }).ContinueWith(lstmezzi => lstmezzi.Result?.Where(mezzo => //FILTRAGGIO
             {
@@ -226,8 +225,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 bool ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
                     mezzo.Mezzo.Codice.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
-                    mezzo.Mezzo.Descrizione.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()) ||
-                    mezzo.Mezzo.Genere.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
+                    (!string.IsNullOrEmpty(mezzo.Mezzo.Sigla) && mezzo.Mezzo.Sigla.ToUpper().Contains(query.Filtro.Ricerca.ToUpper()));
+
+                //if (mezzo.Mezzo.Sigla != null)
+                //    ricerca = string.IsNullOrEmpty(query.Filtro?.Ricerca?.ToUpper()) ||
+                //                       mezzo.Mezzo.Sigla.ToUpper().Contains(query.Filtro.Ricerca.ToUpper());
 
                 bool competenze = query.Filtro.CodiciDistaccamenti?.Contains(mezzo.Mezzo.Distaccamento?.Codice) ?? true;
 

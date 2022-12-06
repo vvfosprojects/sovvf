@@ -57,6 +57,9 @@ import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/
 import { RicercaRubricaState } from '../../features/rubrica/store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { RichiesteState } from '../../features/home/store/states/richieste/richieste.state';
 import { GetPos } from '../../features/pos/store/actions/pos/pos.actions';
+import { SoundAlertService } from '../service/sound-alert/sound-alert.service';
+import { OpenAlertModal } from '../../shared/store/actions/alert-modal/alert-modal.actions';
+import { TipoNotificaSound } from '../../shared/enum/tipo-notifica-sound';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -70,7 +73,8 @@ export class SignalRService {
 
     private hubNotification: HubConnection;
 
-    constructor(private store: Store) {
+    constructor(private store: Store,
+                private soundAlertService: SoundAlertService) {
     }
 
     initSubscription(): void {
@@ -118,10 +122,27 @@ export class SignalRService {
         });
 
         /**
-         * Notifiche Navbar
+         * Navbar
          */
         this.hubNotification.on('NotifyNavbar', (data: NotificaInterface) => {
             this.store.dispatch(new AddNotifica(data));
+        });
+
+        /**
+         * Notifica Sound
+         */
+        this.hubNotification.on('NotifySound', (data: { notificaType: TipoNotificaSound }) => {
+            console.log('NotifySound', data);
+            this.soundAlertService.startSound(data.notificaType);
+        });
+
+        /**
+         * Modale Alert
+         */
+        this.hubNotification.on('NotifyAvvisoModal', (data: { title: string, text: string, buttons: { bgColor: string, text: string }[], timeToClose: number }) => {
+            console.log('NotifyAvvisoModal', data);
+            const alertModalInnerHTMLBody = '<div class="alert alert-danger m-0">' + data.text + '</div>';
+            this.store.dispatch(new OpenAlertModal(data.title, alertModalInnerHTMLBody, data.buttons));
         });
 
         /**

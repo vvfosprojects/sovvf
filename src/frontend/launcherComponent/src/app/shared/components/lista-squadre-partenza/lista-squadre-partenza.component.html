@@ -1,6 +1,11 @@
 <div class="modal-header">
     <h4 class="modal-title font-weight-bold">
-        {{ 'Squadre sul mezzo ' + codiceMezzo | uppercase }}
+        <ng-container *ngIf="siglaMezzo">
+            {{ 'Squadre sul mezzo ' + siglaMezzo | uppercase }}
+        </ng-container>
+        <ng-container *ngIf="!siglaMezzo && descMezzo">
+            {{ 'Squadre sul mezzo ' + descMezzo | uppercase }}
+        </ng-container>
     </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="close('ko')">
@@ -11,19 +16,21 @@
     <table class="table table-striped table-bordered mb-0">
         <thead class="thead-light">
         <tr>
+            <th scope="col">Codice</th>
             <th scope="col">Nome</th>
             <th scope="col">Componenti</th>
             <th scope="col">Turno</th>
             <th scope="col">Data</th>
+            <th scope="col">Sede</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let s of listaSquadre.squadre">
             <td>
-                <div [ngbTooltip]="s.nome"
-                     placement="top">
-                    {{ s.codice }}
-                </div>
+                {{ s.codice }}
+            </td>
+            <td>
+                {{ s.nome }}
             </td>
             <td>
                 <div *ngFor="let c of s.membri">
@@ -47,6 +54,7 @@
             </td>
             <td>{{ s.turno }}</td>
             <td>Non presente</td>
+            <td>{{ s.distaccamento.descrizione }}</td>
         </tr>
         </tbody>
     </table>

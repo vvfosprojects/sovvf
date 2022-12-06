@@ -172,10 +172,9 @@
                                     </a>
                                 </div>
                                 <div>
-                                    <app-tipologia-sintesi-richiesta
-                                            [tipologieRichiesta]="interventoProssimita?.tipologie"
-                                            [triage]="true"
-                                            [descrizioneRichiesta]="interventoProssimita?.descrizione">
+                                    <app-tipologia-sintesi-richiesta [tipologia]="interventoProssimita?.tipologie[0]"
+                                                                     [triage]="true"
+                                                                     [dettaglioTipologia]="interventoProssimita?.dettaglioTipologia">
                                     </app-tipologia-sintesi-richiesta>
                                 </div>
                                 <div>
@@ -230,10 +229,9 @@
                                     </a>
                                 </div>
                                 <div>
-                                    <app-tipologia-sintesi-richiesta
-                                            [tipologieRichiesta]="interventoStessaVia?.tipologie"
-                                            [triage]="true"
-                                            [descrizioneRichiesta]="interventoStessaVia?.descrizione">
+                                    <app-tipologia-sintesi-richiesta [tipologia]="interventoStessaVia?.tipologie[0]"
+                                                                     [triage]="true"
+                                                                     [dettaglioTipologia]="interventoStessaVia?.dettaglioTipologia">
                                     </app-tipologia-sintesi-richiesta>
                                 </div>
                                 <div>

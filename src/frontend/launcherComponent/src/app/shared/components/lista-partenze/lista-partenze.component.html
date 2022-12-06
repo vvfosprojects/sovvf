@@ -1,37 +1,27 @@
-<div *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) <= 0">
-    <div class="mt-1">Non sono presenti partenze.</div>
+<div *ngIf="checkNumeroPartenze(richiesta.partenze) <= 0">
+  <div class="mt-1">Non sono presenti partenze.</div>
 </div>
-<ng-container *ngIf="checkNumeroPartenzeAttive(richiesta.partenze) > 0">
-    <div *ngFor="let p of richiesta.partenze; let index = index">
-        <div *ngIf="!p.partenza.sganciata && !p.partenza.partenzaAnnullata && !p.partenza.terminata"
-             [class.border-bottom]="(index + 1) !== richiesta.partenze.length">
-            <app-partial-loader
-                    *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
-            <app-partenza [richiesta]="richiesta"
-                          [partenza]="p.partenza"
-                          [codicePartenza]="p.codicePartenza"
-                          [infoPartenza]="p"
-                          [inGestione]="inGestione"
-                          [idDaSganciare]="idDaSganciare"
-                          [index]="'' + index"
-                          [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice))"
-                          [disabledModificaStatoMezzo]="disabledModificaStatoMezzo"
-                          [hideGestisciPartenza]="hideGestisciPartenza"
-                          (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre)"
-                          (actionMezzo)="onActionMezzo($event)"
-                          (modificaPartenza)="modificaPartenza.emit($event)"
-                          (selezioneMezzo)="selezioneMezzo.emit($event)">
-            </app-partenza>
-        </div>
+<ng-container *ngIf="checkNumeroPartenze(richiesta.partenze) > 0">
+  <div *ngFor="let p of getPartenze(richiesta.partenze); let index = index">
+    <div [class.border-bottom]="(index + 1) !== richiesta.partenze.length">
+      <app-partial-loader *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
+      <app-partenza
+        [richiesta]="richiesta" [partenza]="p.partenza" [codicePartenza]="p.codicePartenza" [infoPartenza]="p"
+        [inGestione]="inGestione" [idDaSganciare]="idDaSganciare" [index]="'' + index"
+        [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice), p?.partenza.codice)"
+        [disabledModificaStatoMezzo]="disabledModificaStatoMezzo" [hideGestisciPartenza]="hideGestisciPartenza"
+        [dateSync]="dateSync"
+        (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre, $event.siglaMezzo, $event.descMezzo)"
+        (actionMezzo)="onActionMezzo($event)" (modificaPartenza)="modificaPartenza.emit($event)"
+        (selezioneMezzo)="selezioneMezzo.emit($event)">
+      </app-partenza>
     </div>
     <ng-container *ngIf="getSostituzioneFineTurnoVisible()">
-        <button class="btn btn-sm btn-info"
-                [class.cursor-not-allowed]="disabledModificaStatoMezzo"
-                style="position: absolute; top: -14px; left: -14px"
-                [disabled]="disabledModificaStatoMezzo"
-                ngbTooltip="Sostituzione Fine Turno"
-                (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
-            <i class="fas fa-sync-alt"></i>
-        </button>
+      <button class="btn btn-sm btn-info" [class.cursor-not-allowed]="disabledModificaStatoMezzo"
+        style="position: absolute; top: -14px; left: -14px" [disabled]="disabledModificaStatoMezzo"
+        ngbTooltip="Sostituzione" (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
+        <i class="fas fa-sync-alt"></i>
+      </button>
     </ng-container>
+  </div>
 </ng-container>

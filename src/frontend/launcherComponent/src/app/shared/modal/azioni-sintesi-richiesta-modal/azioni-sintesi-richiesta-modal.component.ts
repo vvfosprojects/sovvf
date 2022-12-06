@@ -34,363 +34,365 @@ import { RichiesteState } from '../../../features/home/store/states/richieste/ri
 import { Partenza } from '../../model/partenza.model';
 
 @Component({
-    selector: 'app-azioni-sintesi-richiesta-modal',
-    templateUrl: './azioni-sintesi-richiesta-modal.component.html',
-    styleUrls: ['./azioni-sintesi-richiesta-modal.component.css']
+  selector: 'app-azioni-sintesi-richiesta-modal',
+  templateUrl: './azioni-sintesi-richiesta-modal.component.html',
+  styleUrls: ['./azioni-sintesi-richiesta-modal.component.css']
 })
 
 export class AzioniSintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
-    @Select(AuthState.currentUser) user$: Observable<Utente>;
-    utente: Utente;
-    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
-    @Select(RichiesteState.richiestaAzioni) richiestaAzioni$: Observable<SintesiRichiesta>;
-    richiesta: SintesiRichiesta;
+  @Select(AuthState.currentUser) user$: Observable<Utente>;
+  utente: Utente;
+  @Select(RubricaState.vociRubrica) vociRubrica$: Observable<EnteInterface[]>;
+  @Select(RichiesteState.richiestaAzioni) richiestaAzioni$: Observable<SintesiRichiesta>;
+  richiesta: SintesiRichiesta;
 
-    statoRichiestaString: StatoRichiestaActions[];
+  statoRichiestaString: StatoRichiestaActions[];
 
-    tipoConcorrenzaEnum = TipoConcorrenzaEnum;
+  tipoConcorrenzaEnum = TipoConcorrenzaEnum;
 
-    private subscription: Subscription = new Subscription();
+  private subscription: Subscription = new Subscription();
 
-    constructor(private modal: NgbActiveModal,
-                private store: Store,
-                private modalService: NgbModal,
-                private stampaRichiestaService: StampaRichiestaService,
-                private lockedConcorrenzaService: LockedConcorrenzaService) {
-        this.getUtente();
-        this.getRichieste();
-    }
+  constructor(private modal: NgbActiveModal,
+    private store: Store,
+    private modalService: NgbModal,
+    private stampaRichiestaService: StampaRichiestaService,
+    private lockedConcorrenzaService: LockedConcorrenzaService) {
+    this.getUtente();
+    this.getRichieste();
+  }
 
-    ngOnInit(): void {
-    }
+  ngOnInit(): void {
+  }
 
-    ngOnDestroy(): void {
-        this.subscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
-    getUtente(): void {
-        this.subscription.add(
-            this.user$.subscribe((user: Utente) => {
-                this.utente = user;
-            })
-        );
-    }
+  getUtente(): void {
+    this.subscription.add(
+      this.user$.subscribe((user: Utente) => {
+        this.utente = user;
+      })
+    );
+  }
 
-    getRichieste(): void {
-        this.subscription.add(
-            this.richiestaAzioni$.subscribe((richiesta: SintesiRichiesta) => {
-                if (richiesta) {
-                    this.richiesta = richiesta;
-                    const exceptStati = [this.richiesta.stato, StatoRichiestaActions.Riaperta, calcolaActionSuggeritaRichiesta(this.richiesta)];
-                    this.statoRichiestaString = statoRichiestaActionsEnumToStringArray(exceptStati);
-                } else {
-                    this.chiudiModalAzioniSintesi('ko');
-                }
-            })
-        );
-    }
-
-    getCodMezziByPartenzeAttiveRichiesta(): string[] {
-        const partenzeAttiveRichiesta = this.richiesta.partenze?.filter((p: Partenza) => !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata);
-        let codMezzi = [];
-        if (partenzeAttiveRichiesta) {
-            codMezzi = partenzeAttiveRichiesta.map((p: Partenza) => p.partenza.mezzo.codice);
+  getRichieste(): void {
+    this.subscription.add(
+      this.richiestaAzioni$.subscribe((richiesta: SintesiRichiesta) => {
+        if (richiesta) {
+          this.richiesta = richiesta;
+          const exceptStati = [this.richiesta.stato, StatoRichiestaActions.Riaperta, calcolaActionSuggeritaRichiesta(this.richiesta)];
+          this.statoRichiestaString = statoRichiestaActionsEnumToStringArray(exceptStati);
+        } else {
+          this.chiudiModalAzioniSintesi('ko');
         }
-        return codMezzi;
-    }
+      })
+    );
+  }
 
-    onSganciamentoMezzo(richiesta: SintesiRichiesta): void {
-        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Sganciamento, this.richiesta.codice)) {
-            let sganciamentoMezziModal;
-            sganciamentoMezziModal = this.modalService.open(ListaMezziSganciamentoModalComponent, {
-                windowClass: 'xxlModal modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-            sganciamentoMezziModal.componentInstance.richiesta = richiesta;
+  getCodMezziByPartenzeAttiveRichiesta(): string[] {
+    const partenzeAttiveRichiesta = this.richiesta.partenze?.filter((p: Partenza) => !p.partenza.terminata && !p.partenza.partenzaAnnullata && !p.partenza.sganciata);
+    let codMezzi = [];
+    if (partenzeAttiveRichiesta) {
+      codMezzi = partenzeAttiveRichiesta.map((p: Partenza) => p.partenza.mezzo.codice);
+    }
+    return codMezzi;
+  }
+
+  onSganciamentoMezzo(richiesta: SintesiRichiesta): void {
+    if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Sganciamento, this.richiesta.codice)) {
+      let sganciamentoMezziModal;
+      sganciamentoMezziModal = this.modalService.open(ListaMezziSganciamentoModalComponent, {
+        windowClass: 'xxlModal modal-holder',
+        backdropClass: 'light-blue-backdrop',
+        centered: true
+      });
+      sganciamentoMezziModal.componentInstance.richiesta = richiesta;
+      const data = {
+        value: this.richiesta.codice,
+        type: TipoConcorrenzaEnum.Sganciamento
+      } as AddConcorrenzaDtoInterface;
+      this.store.dispatch(new AddConcorrenza([data]));
+      sganciamentoMezziModal.result.then((result: string) => {
+        if (result !== 'sganciamentoMezzo') {
+          this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
+        }
+        if (result === 'ok' || result === 'sganciamentoMezzo') {
+          this.chiudiModalAzioniSintesi('ok');
+        }
+      }, (err: any) => {
+        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
+        console.error('Modal chiusa senza bottoni. Err ->', err);
+      }
+      );
+    }
+  }
+
+  onClick(stato: StatoRichiestaActions): void {
+    if (this.richiesta.stato === StatoRichiesta.Chiamata ? !this.isLockedConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, this.richiesta.codice) : !this.isLockedConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, this.richiesta.codice)) {
+      const codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+      let modalConferma;
+      const modalOptions = {
+        windowClass: 'modal-holder',
+        backdropClass: 'light-blue-backdrop',
+        size: 'lg',
+        centered: true
+      };
+
+      switch (stato) {
+        case StatoRichiestaActions.Chiusa:
+          if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+            modalOptions.size = 'xl';
             const data = {
-                value: this.richiesta.codice,
-                type: TipoConcorrenzaEnum.Sganciamento
+              value: this.richiesta.codice,
+              type: TipoConcorrenzaEnum.ChiusuraChiamata
             } as AddConcorrenzaDtoInterface;
             this.store.dispatch(new AddConcorrenza([data]));
-            sganciamentoMezziModal.result.then((result: string) => {
-                    if (result !== 'sganciamentoMezzo') {
-                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
-                    }
-                    if (result === 'ok' || result === 'sganciamentoMezzo') {
-                        this.chiudiModalAzioniSintesi('ok');
-                    }
-                }, (err: any) => {
-                    this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Sganciamento, [this.richiesta.codice]));
-                    console.error('Modal chiusa senza bottoni. Err ->', err);
-                }
-            );
-        }
-    }
-
-    onClick(stato: StatoRichiestaActions): void {
-        if (this.richiesta.stato === StatoRichiesta.Chiamata ? !this.isLockedConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, this.richiesta.codice) : !this.isLockedConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, this.richiesta.codice)) {
-            const codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
-            let modalConferma;
-            const modalOptions = {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                size: 'lg',
-                centered: true
-            };
-
-            switch (stato) {
-                case StatoRichiestaActions.Chiusa:
-                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
-                        modalOptions.size = 'xl';
-                        const data = {
-                            value: this.richiesta.codice,
-                            type: TipoConcorrenzaEnum.ChiusuraChiamata
-                        } as AddConcorrenzaDtoInterface;
-                        this.store.dispatch(new AddConcorrenza([data]));
-                    } else {
-                        modalOptions.size = 'lg';
-                        const data = {
-                            value: this.richiesta.codice,
-                            type: TipoConcorrenzaEnum.ChiusuraIntervento
-                        } as AddConcorrenzaDtoInterface;
-                        this.store.dispatch(new AddConcorrenza([data]));
-                    }
-                    break;
-                case StatoRichiestaActions.Sospesa:
-                    modalOptions.size = 'lg';
-                    break;
-                case StatoRichiestaActions.Riaperta:
-                    modalOptions.size = 'lg';
-                    break;
-            }
-
-            modalConferma = this.modalService.open(ActionRichiestaModalComponent, modalOptions);
-            modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-
-            switch (stato) {
-                case StatoRichiestaActions.Chiusa:
-                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
-                        modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
-                        const enti = this.store.selectSnapshot(EntiState.enti) as EnteInterface[];
-                        modalConferma.componentInstance.chiusuraChiamata = true;
-                        modalConferma.componentInstance.enti = enti;
-                    } else {
-                        modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
-                        modalConferma.componentInstance.chiusuraIntervento = true;
-                        modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Non più necessario', 'Falso Allarme', 'Concluso'];
-                    }
-                    break;
-
-                case StatoRichiestaActions.Riaperta:
-                    modalConferma.componentInstance.titolo = 'Riapertura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
-                    modalConferma.componentInstance.riapertura = true;
-                    modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta + '?';
-                    break;
-
-                default:
-                    break;
-            }
-
-            const richiestaAction = {
-                idRichiesta: null,
-                stato,
-                motivazione: null,
-                entiIntervenuti: null
-            } as RichiestaActionInterface;
-
-            modalConferma.result.then((val) => {
-                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
-                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, [this.richiesta.codice]));
-                    } else {
-                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, [this.richiesta.codice]));
-                    }
-
-                    switch (val.esito) {
-                        case 'ok':
-                            richiestaAction.idRichiesta = this.richiesta.id;
-                            richiestaAction.motivazione = val?.motivazione;
-                            richiestaAction.entiIntervenuti = val?.entiIntervenuti;
-                            this.store.dispatch(new ActionRichiesta(richiestaAction));
-                            this.modal.close({ status: 'ko' });
-                            break;
-                        case 'ko':
-                            break;
-                    }
-                }, () => {
-                    if (this.richiesta.stato === StatoRichiesta.Chiamata) {
-                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, [this.richiesta.codice]));
-                    } else {
-                        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, [this.richiesta.codice]));
-                    }
-                }
-            );
-        }
-    }
-
-    onAddTrasferimentoChiamata(codiceRichiesta: string): void {
-        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Trasferimento, this.richiesta.codice)) {
-            let addTrasferimentoChiamataModal;
-            addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
-            });
-            addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
+          } else {
+            modalOptions.size = 'lg';
             const data = {
-                value: this.richiesta.codice,
-                type: TipoConcorrenzaEnum.Trasferimento
+              value: this.richiesta.codice,
+              type: TipoConcorrenzaEnum.ChiusuraIntervento
             } as AddConcorrenzaDtoInterface;
             this.store.dispatch(new AddConcorrenza([data]));
-            addTrasferimentoChiamataModal.result.then(() => {
-                    this.store.dispatch([
-                        new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
-                        new ClearRichiestaAzioni(),
-                        new ClearFormTrasferimentoChiamata()
-                    ]);
-                }, () => {
-                    this.store.dispatch([
-                        new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
-                        new ClearFormTrasferimentoChiamata()
-                    ]);
-                }
-            );
+          }
+          break;
+        case StatoRichiestaActions.Sospesa:
+          modalOptions.size = 'lg';
+          break;
+        case StatoRichiestaActions.Riaperta:
+          modalOptions.size = 'lg';
+          break;
+      }
+
+      modalConferma = this.modalService.open(ActionRichiestaModalComponent, modalOptions);
+      modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+
+      switch (stato) {
+        case StatoRichiestaActions.Chiusa:
+          if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+            modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
+            const enti = this.store.selectSnapshot(EntiState.enti) as EnteInterface[];
+            modalConferma.componentInstance.chiusuraChiamata = true;
+            modalConferma.componentInstance.enti = enti;
+          } else {
+            modalConferma.componentInstance.titolo = 'Chiusura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
+            modalConferma.componentInstance.chiusuraIntervento = true;
+            modalConferma.componentInstance.motivazioniChiusuraIntervento = ['Non più necessario', 'Falso Allarme', 'Concluso'];
+          }
+          break;
+
+        case StatoRichiestaActions.Riaperta:
+          modalConferma.componentInstance.titolo = 'Riapertura ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta;
+          modalConferma.componentInstance.riapertura = true;
+          modalConferma.componentInstance.messaggio = 'Sei sicuro di voler riaprire ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codiceRichiesta + '?';
+          break;
+
+        default:
+          break;
+      }
+
+      const richiestaAction = {
+        idRichiesta: null,
+        stato,
+        motivazione: null,
+        entiIntervenuti: null
+      } as RichiestaActionInterface;
+
+      modalConferma.result.then((val) => {
+        if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+          this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, [this.richiesta.codice]));
+        } else {
+          this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, [this.richiesta.codice]));
         }
-    }
 
-    onAllertaSede(): void {
-        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Allerta, this.richiesta.codice)) {
-            let modalAllertaSede;
-            modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg',
-                keyboard: false,
-            });
-            modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
-            modalAllertaSede.componentInstance.codSOCompetente = this.richiesta.codSOCompetente;
-            modalAllertaSede.componentInstance.codSOAllertate = this.richiesta.codSOAllertate;
-            const data = {
-                value: this.richiesta.codice,
-                type: TipoConcorrenzaEnum.Allerta
-            } as AddConcorrenzaDtoInterface;
-            this.store.dispatch(new AddConcorrenza([data]));
-            modalAllertaSede.result.then((res: { status: string, result: any }) => {
-                this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice]));
-                switch (res.status) {
-                    case 'ok' :
-                        this.store.dispatch(new AllertaSede(res.result));
-                        break;
-                    case 'ko':
-                        break;
-                }
-            }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice])));
+        switch (val.esito) {
+          case 'ok':
+            richiestaAction.idRichiesta = this.richiesta.id;
+            richiestaAction.motivazione = val?.motivazione;
+            richiestaAction.entiIntervenuti = val?.entiIntervenuti;
+            this.store.dispatch(new ActionRichiesta(richiestaAction));
+            this.modal.close({ status: 'ko' });
+            break;
+          case 'ko':
+            break;
         }
-    }
-
-    onVisualizzaPDF(): void {
-        const obj = {
-            idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
-            contentType: 'application/pdf'
-        };
-        this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
-            switch (data.type) {
-                case HttpEventType.DownloadProgress:
-                    break;
-                case HttpEventType.Response:
-                    const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
-                        windowClass: 'xxlModal modal-holder',
-                        backdropClass: 'light-blue-backdrop',
-                        centered: true
-                    });
-                    const downloadedFile = new Blob([data.body], { type: data.body.type });
-                    const codRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
-                    modalVisualizzaPdf.componentInstance.titolo = 'Stampa ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codRichiesta;
-                    modalVisualizzaPdf.componentInstance.blob = downloadedFile;
-                    break;
-            }
-        }, () => console.error('Errore Stampa PDF'));
-    }
-
-    onModificaEntiIntervenuti(): void {
-        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.EntiIntervenuti, this.richiesta.codice)) {
-            let modalModificaEntiIntervenuti;
-            modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-            // modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
-            modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta?.codEntiIntervenuti?.length ? this.richiesta.codEntiIntervenuti : null;
-            modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
-                switch (res.status) {
-                    case 'ok' :
-                        const idRichiesta = this.richiesta.id;
-                        const codEntiIntervenuti = res.result.listaEnti;
-                        this.store.dispatch(new PatchEntiIntervenutiRichiesta(idRichiesta, codEntiIntervenuti));
-                        this.chiudiModalAzioniSintesi('ok');
-                        break;
-                    case 'ko':
-                        break;
-                }
-            });
+      }, () => {
+        if (this.richiesta.stato === StatoRichiesta.Chiamata) {
+          this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraChiamata, [this.richiesta.codice]));
+        } else {
+          this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.ChiusuraIntervento, [this.richiesta.codice]));
         }
+      }
+      );
     }
+  }
 
-    onModificaStatoFonogramma(): void {
-        if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Fonogramma, this.richiesta.codice)) {
-            let modalModificaStatoFonogramma;
-            modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
-                windowClass: 'modal-holder',
-                backdropClass: 'light-blue-backdrop',
-                centered: true
-            });
-            modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
-            modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
-            modalModificaStatoFonogramma.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
-            modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
-            modalModificaStatoFonogramma.result.then((res: { status: string, result: any }) => {
-                switch (res.status) {
-                    case 'ok' :
-                        this.store.dispatch(new ModificaStatoFonogramma(res.result));
-                        break;
-                    case 'ko':
-                        break;
-                }
-            });
+  onAddTrasferimentoChiamata(codiceRichiesta: string): void {
+    if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Trasferimento, this.richiesta.codice)) {
+      let addTrasferimentoChiamataModal;
+      addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+        windowClass: 'modal-holder',
+        backdropClass: 'light-blue-backdrop',
+        centered: true,
+        size: 'lg'
+      });
+      addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
+      const data = {
+        value: this.richiesta.codice,
+        type: TipoConcorrenzaEnum.Trasferimento
+      } as AddConcorrenzaDtoInterface;
+      this.store.dispatch(new AddConcorrenza([data]));
+      addTrasferimentoChiamataModal.result.then(() => {
+        this.store.dispatch([
+          new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
+          new ClearRichiestaAzioni(),
+          new ClearFormTrasferimentoChiamata()
+        ]);
+      }, () => {
+        this.store.dispatch([
+          new DeleteConcorrenza(TipoConcorrenzaEnum.Trasferimento, [this.richiesta.codice]),
+          new ClearFormTrasferimentoChiamata()
+        ]);
+      }
+      );
+    }
+  }
+
+  onAllertaSede(): void {
+    if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Allerta, this.richiesta.codice)) {
+      let modalAllertaSede;
+      modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
+        windowClass: 'modal-holder',
+        backdropClass: 'light-blue-backdrop',
+        centered: true,
+        size: 'lg',
+        keyboard: false,
+      });
+      modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
+      modalAllertaSede.componentInstance.codSOCompetente = this.richiesta.codSOCompetente;
+      modalAllertaSede.componentInstance.codSOAllertatePrecedentemente = this.richiesta.codSOAllertate;
+      modalAllertaSede.componentInstance.codSOAllertate = [];
+      const data = {
+        value: this.richiesta.codice,
+        type: TipoConcorrenzaEnum.Allerta
+      } as AddConcorrenzaDtoInterface;
+      this.store.dispatch(new AddConcorrenza([data]));
+      modalAllertaSede.result.then((res: { status: string, result: any }) => {
+        this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice]));
+        switch (res.status) {
+          case 'ok':
+            console.log("res.result", res.result)
+            this.store.dispatch(new AllertaSede(res.result));
+            break;
+          case 'ko':
+            break;
         }
+      }, () => this.store.dispatch(new DeleteConcorrenza(TipoConcorrenzaEnum.Allerta, [this.richiesta.codice])));
     }
+  }
 
-    visualizzaEventiRichiesta(codice: string): void {
-        this.store.dispatch(new SetIdRichiestaEventi(codice));
-        let modal;
-        modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal',
+  onVisualizzaPDF(): void {
+    const obj = {
+      idRichiesta: this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice,
+      contentType: 'application/pdf'
+    };
+    this.stampaRichiestaService.getStampaRichiesta(obj).subscribe((data: any) => {
+      switch (data.type) {
+        case HttpEventType.DownloadProgress:
+          break;
+        case HttpEventType.Response:
+          const modalVisualizzaPdf = this.modalService.open(VisualizzaDocumentoModalComponent, {
+            windowClass: 'xxlModal modal-holder',
             backdropClass: 'light-blue-backdrop',
-            centered: true,
-            backdrop: true
-        });
-        modal.result.then(() => {
-            },
-            () => this.store.dispatch(new ClearEventiRichiesta()));
-    }
+            centered: true
+          });
+          const downloadedFile = new Blob([data.body], { type: data.body.type });
+          const codRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+          modalVisualizzaPdf.componentInstance.titolo = 'Stampa ' + defineChiamataIntervento(this.richiesta.codice, this.richiesta.codiceRichiesta) + ' ' + codRichiesta;
+          modalVisualizzaPdf.componentInstance.blob = downloadedFile;
+          break;
+      }
+    }, () => console.error('Errore Stampa PDF'));
+  }
 
-    chiudiModalAzioniSintesi(closeRes: string): void {
-        this.modal.close({ status: closeRes });
+  onModificaEntiIntervenuti(): void {
+    if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.EntiIntervenuti, this.richiesta.codice)) {
+      let modalModificaEntiIntervenuti;
+      modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
+        windowClass: 'modal-holder',
+        backdropClass: 'light-blue-backdrop',
+        centered: true
+      });
+      // modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
+      modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta?.codEntiIntervenuti?.length ? this.richiesta.codEntiIntervenuti : null;
+      modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
+        switch (res.status) {
+          case 'ok':
+            const idRichiesta = this.richiesta.id;
+            const codEntiIntervenuti = res.result.listaEnti;
+            this.store.dispatch(new PatchEntiIntervenutiRichiesta(idRichiesta, codEntiIntervenuti));
+            this.chiudiModalAzioniSintesi('ok');
+            break;
+          case 'ko':
+            break;
+        }
+      });
     }
+  }
 
-    calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta): StatoRichiestaActions {
-        return calcolaActionSuggeritaRichiesta(richiesta);
+  onModificaStatoFonogramma(): void {
+    if (!this.isLockedConcorrenza(TipoConcorrenzaEnum.Fonogramma, this.richiesta.codice)) {
+      let modalModificaStatoFonogramma;
+      modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
+        windowClass: 'modal-holder',
+        backdropClass: 'light-blue-backdrop',
+        centered: true
+      });
+      modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+      modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
+      modalModificaStatoFonogramma.componentInstance.titolo = !this.richiesta.codiceRichiesta ? 'Chiamata' : 'Intervento';
+      modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
+      modalModificaStatoFonogramma.result.then((res: { status: string, result: any }) => {
+        switch (res.status) {
+          case 'ok':
+            this.store.dispatch(new ModificaStatoFonogramma(res.result));
+            break;
+          case 'ko':
+            break;
+        }
+      });
     }
+  }
 
-    defineChiamataIntervento(codice: string, codiceRichiesta: string): string {
-        return defineChiamataIntervento(codice, codiceRichiesta);
-    }
+  visualizzaEventiRichiesta(codice: string): void {
+    this.store.dispatch(new SetIdRichiestaEventi(codice));
+    let modal;
+    modal = this.modalService.open(EventiRichiestaComponent, {
+      windowClass: 'xlModal',
+      backdropClass: 'light-blue-backdrop',
+      centered: true,
+      backdrop: true
+    });
+    modal.result.then(() => {
+    },
+      () => this.store.dispatch(new ClearEventiRichiesta()));
+  }
 
-    isLockedConcorrenza(type: TipoConcorrenzaEnum, value: string): string {
-        return this.lockedConcorrenzaService.getLockedConcorrenza(type, [value]);
-    }
+  chiudiModalAzioniSintesi(closeRes: string): void {
+    this.modal.close({ status: closeRes });
+  }
+
+  calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta): StatoRichiestaActions {
+    return calcolaActionSuggeritaRichiesta(richiesta);
+  }
+
+  defineChiamataIntervento(codice: string, codiceRichiesta: string): string {
+    return defineChiamataIntervento(codice, codiceRichiesta);
+  }
+
+  isLockedConcorrenza(type: TipoConcorrenzaEnum, value: string): string {
+    return this.lockedConcorrenzaService.getLockedConcorrenza(type, [value]);
+  }
 }

@@ -64,21 +64,24 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
                         abilitato = true;
 
-                    if (richiesta.CodUOCompetenza != null)
+                    if (!abilitato)
                     {
-                        foreach (var competenza in richiesta.CodUOCompetenza)
+                        if (richiesta.CodUOCompetenza != null)
                         {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
+                            foreach (var competenza in richiesta.CodUOCompetenza)
+                            {
+                                if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                                    abilitato = true;
+                            }
                         }
-                    }
 
-                    if (richiesta.CodSOAllertate != null)
-                    {
-                        foreach (var competenza in richiesta.CodSOAllertate)
+                        if (richiesta.CodSOAllertate != null)
                         {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                                abilitato = true;
+                            foreach (var competenza in richiesta.CodSOAllertate)
+                            {
+                                if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                                    abilitato = true;
+                            }
                         }
                     }
 

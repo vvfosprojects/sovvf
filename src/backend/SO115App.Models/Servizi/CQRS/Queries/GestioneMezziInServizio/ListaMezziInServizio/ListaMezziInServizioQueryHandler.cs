@@ -77,17 +77,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
                         if (query.Filters != null && query.Filters.StatiMezzo != null && query.Filters.StatiMezzo.Count() > 0
                             && query.Filters.StatiMezzo.Contains("Istituto"))
                         {
-                            if(query.Filters.StatiMezzo.Count() == 1)
+                            if (query.Filters.StatiMezzo.Count() == 1)
                                 return c.Mezzo.Mezzo.Istituto;
                             else
                             {
                                 if (query.Filters.StatiMezzo.Contains(c.Mezzo.Mezzo.Stato) || c.Mezzo.Mezzo.Istituto)
                                     return true;
                                 else
-                                    return false;                               
+                                    return false;
                             }
                         }
-                            
                         else
                             return true;
                     }
@@ -106,7 +105,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
             {
                 if (lstStati != null && lstStati.Count != 0)
                 {
-                    var lstStatiMezzo = lstStati.Where(s => s.CodiceMezzo.Equals(m.Mezzo.Mezzo.Codice))?
+                    var lstStatiMezzo = lstStati.Where(s => s.CodiceMezzo.Equals(m.Mezzo.Mezzo.Codice) && !s.StatoOperativo.Equals("Rientrato"))?
                         .Select(s => new IstanteCambioStato(s.StatoOperativo, s.IstantePrenotazione));
 
                     m.Mezzo.Mezzo.IstantiCambiStato = lstStatiMezzo?.Any() ?? 0 > 0 ? lstStatiMezzo.ToList() : null;
@@ -114,7 +113,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
                     return m;
                 }
                 else return m;
-            }).OrderBy(m => m.Mezzo.Mezzo.Distaccamento.Codice).ToList();
+            }).OrderByDescending(m => m.Mezzo.Mezzo.Stato != "In Sede").ThenBy(m=> m.Mezzo.Mezzo.Distaccamento.Codice).ToList();
 
             //GESTISCO PAGINAZIONE
             if (query.Pagination != null) return new ListaMezziInServizioResult()

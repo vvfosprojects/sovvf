@@ -87,6 +87,7 @@ export class FiltriComposizioneState {
     setFiltriComposizione({ patchState }: StateContext<FiltriComposizioneStateStateModel>): void {
         const filtri = makeCopy(this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche));
         if (filtri) {
+            filtri.distaccamenti = filtri.distaccamenti.filter(d => !d.descDistaccamento.startsWith("COMANDO"))
             filtri.distaccamenti = filtri.distaccamenti.map((d: TipologicaComposizionePartenza) => {
                 d.descDistaccamento = d.descDistaccamento.replace('Distaccamento di ', '');
                 d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');

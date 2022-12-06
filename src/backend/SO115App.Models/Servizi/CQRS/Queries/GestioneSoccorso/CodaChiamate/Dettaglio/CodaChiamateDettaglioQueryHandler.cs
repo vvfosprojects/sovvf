@@ -75,9 +75,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             }
 
             query.Filtro = new FiltroRicercaRichiesteAssistenza();
-            query.Filtro.UnitaOperative = pinNodi.ToHashSet();
+            query.Filtro.UnitaOperative = pinNodi.Distinct().ToHashSet();
             query.Filtro.IncludiRichiesteAperte = true;
             query.Filtro.IncludiRichiesteChiuse = false;
+            query.Filtro.CodaChiamate = true;
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
@@ -100,14 +101,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.CodaChiamate
             DettaglioDistaccamento dettaglio = new DettaglioDistaccamento()
             {
                 codDistaccamento = query.CodiceSede,
-                descDistaccamento = listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Codice.Contains("1000") ? 
-                    listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome 
-                    : listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome,
+                descDistaccamento = listaSedi.ToList().Find(x => x.Codice.Equals(query.CodiceSede)).Nome,
                 listaSintesi = listaSintesi != null ? listaSintesi.FindAll(x => x.CodUOCompetenza.Length > 0 && x.CodUOCompetenza[0].Equals(query.CodiceSede) && (x.Stato.Equals("Chiamata") || x.Sospesa)) : null,
                 listaSquadre = listaSquadre.FindAll(x => x.Distaccamento.Codice.Equals(query.CodiceSede) && x.Turno.Equals(char.Parse(turnoCorrente.Substring(0, 1)))).Select(x => new Squadra()
                 {
-                    Membri = x.Membri.Select(m => new Componente() 
-                    { 
+                    Membri = x.Membri.Select(m => new Componente()
+                    {
                         CodiceFiscale = m.CodiceFiscale,
                     }).ToList(),
                     Codice = x.Codice,

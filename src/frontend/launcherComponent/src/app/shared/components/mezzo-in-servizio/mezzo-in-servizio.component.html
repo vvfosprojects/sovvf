@@ -24,14 +24,32 @@
     <ng-container *ngIf="mezzoInServizio?.squadre?.length">
         <div class="col-1 pr-0">
             <div class="d-flex align-items-center justify-content-end font-weight-bold">
-                <div>
-                    <i class="fas fa-users text-{{statoMezzoColor(mezzoInServizio.mezzo.mezzo.stato)}}"></i>
-                </div>
+                <i class="fas fa-users"
+                   [ngClass]="_iconaStatiClass(_nomeStatiSquadra(mezzoInServizio.squadre[0].stato))"
+                   [ngbTooltip]="_nomeStatiSquadra(mezzoInServizio.squadre[0].stato)"></i>
                 <div class="mx-2"
-                     ngbTooltip="{{mezzoInServizio.squadre[0].codice}}"
-                     [disableTooltip]="mezzoInServizio.squadre[0].codice.length <= 4">
+                     [ngbTooltip]="mezzoInServizio.squadre[0].codice?.length <= 4 ? labelSquadra : labelSquadraCodice">
                     {{ mezzoInServizio.squadre[0].codice | truncate: 4}}
                 </div>
+                <ng-template #labelSquadra>
+                    <div>
+                        {{ 'Nome: ' + mezzoInServizio.squadre[0].nome }}
+                    </div>
+                    <div>
+                        {{ 'Sede: ' + mezzoInServizio.squadre[0].distaccamento?.descrizione }}
+                    </div>
+                </ng-template>
+                <ng-template #labelSquadraCodice>
+                    <div>
+                        {{ 'Codice: ' + mezzoInServizio.squadre[0].codice }}
+                    </div>
+                    <div>
+                        {{ 'Nome: ' + mezzoInServizio.squadre[0].nome }}
+                    </div>
+                    <div>
+                        {{ 'Sede: ' + mezzoInServizio.squadre[0].distaccamento?.descrizione }}
+                    </div>
+                </ng-template>
                 <button class="btn btn-sm btn-no-hover btn-light border ml-1" ngbTooltip="Elenco squadre"
                         (click)="onListaSquadrePartenza(); $event.stopPropagation()">
                     <div *ngIf="mezzoInServizio.squadre?.length"

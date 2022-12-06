@@ -18,6 +18,8 @@ import { SostituzionePartenzaFineTurnoDto } from '../../interface/dto/partenze/s
 import { RemoveAnnullaStatoMezzi } from '../../store/actions/loading/loading.actions';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
 import { makeCopy } from '../../helper/function-generiche';
+import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
+import { ListaSquadre } from '../../interface/lista-squadre';
 
 @Component({
     selector: 'app-sostituzione-partenze-modal',
@@ -59,6 +61,10 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
+    }
+
+    onListaSquadrePartenza(codiceMezzo: string, listaSquadre: ListaSquadre, siglaMezzo: string, descMezzo: string): void {
+      this.store.dispatch(new VisualizzaListaSquadrePartenza(codiceMezzo, listaSquadre, siglaMezzo, descMezzo));
     }
 
     getPartenze(): void {
@@ -107,10 +113,6 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
         this.store.dispatch(new SetPartenzaMontante(p));
     }
 
-    onModificaPartenzaMontante(): void {
-        this.store.dispatch(new SetPartenzaMontante(null));
-    }
-
     getSquadrePartenze(): any[] {
         return this.partenze?.filter((p: Partenza) => p.partenza.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.partenza.mezzo.stato === StatoMezzo.SulPosto).map((p: Partenza) => p.partenza.squadre);
     }
@@ -147,7 +149,7 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     }
 
     getTitle(): string {
-        return 'Sostituzione Fine Turno - Richiesta ' + this.codRichiesta;
+        return 'Sostituzione - Richiesta ' + this.codRichiesta;
     }
 
     onDismiss(): void {

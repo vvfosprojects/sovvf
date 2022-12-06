@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
@@ -15,6 +16,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -63,25 +65,23 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var ListaCodiciSedi = new List<string>();
             Task<List<MessaggioPosizione>> ListaPosizioneFlotta = null;
 
-            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            //var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
             if (posizioneFlotta == null)
                 ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
 
-            foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
-            {
-                var codice = figlio.Codice;
-                string codiceE = "";
-                codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
+            //foreach (var figlio in listaSediAlberate.Result.GetSottoAlbero(pinNodi))
+            //{
+            //    var codice = figlio.Codice;
+            //    string codiceE = "";
+            //    codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
 
-                if (string.IsNullOrEmpty(codiceE))
-                {
-                    if (!ListaCodiciComandi.Contains(codice.Split('.')[0]))
-                        ListaCodiciComandi.Add(codice.Split('.')[0]);
+            // if (string.IsNullOrEmpty(codiceE)) { if
+            // (!ListaCodiciComandi.Contains(codice.Split('.')[0])) ListaCodiciComandi.Add(codice.Split('.')[0]);
 
-                    ListaCodiciSedi.Add(codice);
-                }
-            }
+            //        ListaCodiciSedi.Add(codice);
+            //    }
+            //}
 
             #region LEGGO DA API ESTERNA
 
@@ -100,7 +100,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             try
             {
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromMinutes(5));
                 List<MezzoDTO> result = new List<MezzoDTO>();
                 Parallel.ForEach(sedi, sede =>
                 {
@@ -141,14 +141,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             #endregion LEGGO DA API ESTERNA
 
-            var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
+            var lstSedi = GetListaSediMezzi(lstMezziDto.ToList(), ListaPosizioneFlotta.Result).ToList();
 
             var lstStati = _getStatoMezzi.Get(sedi.ToArray());
+            lstStati = lstStati.FindAll(s => !s.StatoOperativo.Equals("Rientrato"));
 
             //MAPPING
             var ListaMezzi = lstMezziDto.Select(m =>
             {
-                var mezzo = MapMezzo(m, ListaPosizioneFlotta.Result, listaSediAlberate.Result, lstSedi);
+                var mezzo = MapMezzo(m, ListaPosizioneFlotta.Result, lstSedi);
 
                 if (mezzo != null)
                 {
@@ -167,7 +168,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                         mezzo.CoordinateFake = false;
                     }
 
-                    var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
+                    var ListaStatoOperativoMezzo = lstStati.FindAll(s => s.CodiceMezzo.Equals(mezzo.Codice));  //_getStatoMezzi.Get(mezzo.Distaccamento.Codice,, mezzo.Codice);
                     if (ListaStatoOperativoMezzo.Count > 0)
                     {
                         mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
@@ -257,17 +258,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var codici = string.Join(", ", sedi.Select(s => s.Split('.')[0]).Distinct());
 
             var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0);
-            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            //var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
             var lstMezziDto = new List<MezzoDTO>();
 
-            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(2));
             List<MezzoDTO> result = new List<MezzoDTO>();
 
             try
             {
                 var token = _getToken.GeneraToken();
-
                 Parallel.ForEach(sedi, sede =>
                 {
                     if (!_memoryCache.TryGetValue("SedeMezzi-" + sede.Split('.')[0], out result))
@@ -294,17 +294,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     .ToList();
             }
 
-            var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result, listaSediAlberate.Result).ToList();
+            var lstSedi = GetListaSediMezzi(lstMezziDto, ListaPosizioneFlotta.Result).ToList();
 
             //MAPPING
             var ListaMezzi = lstMezziDto
-                .Select(m => MapMezzo(m, ListaPosizioneFlotta.Result, listaSediAlberate.Result, lstSedi))
+                .Select(m => MapMezzo(m, ListaPosizioneFlotta.Result, lstSedi))
                 .ToList();
 
             return ListaMezzi.FindAll(m => m != null);
         }
 
-        private IEnumerable<Sede> GetListaSediMezzi(List<MezzoDTO> lstMezzi, List<MessaggioPosizione> flotta, UnitaOperativa listaSediAlberate)
+        private IEnumerable<Sede> GetListaSediMezzi(List<MezzoDTO> lstMezzi, List<MessaggioPosizione> flotta)
         {
             var sedi = _getSedi.GetAll().Result;
             var lstCodSedi = new List<string>();
@@ -312,7 +312,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
             lstCodSedi = lstMezzi.Select(s => s.CodiceDistaccamento).ToList();
 
-            foreach (var CodSede in lstCodSedi.Distinct())
+            Parallel.ForEach(lstCodSedi.Distinct(), CodSede =>
             {
                 try
                 {
@@ -324,29 +324,26 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                     }
                     else
                     {
-                        var infoSede = _getSedi.GetInfoSede(CodSede).Result;
-                        Sede sedeMezzo = new Sede(CodSede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
-                        {
-                            CoordinateString = infoSede.coordinate.Split(',')
-                        };
-                        listaSedi.Add(sedeMezzo);
+                        //var infoSede = _getSedi.GetInfoSede(CodSede).Result;
+                        //Sede sedeMezzo = new Sede(CodSede, infoSede.Descrizione, "", infoSede.Coordinate ?? null)
+                        //{
+                        //    CoordinateString = infoSede.coordinate.Split(',')
+                        //};
+                        //listaSedi.Add(sedeMezzo);
                     }
                 }
                 catch (Exception ex)
                 {
                 }
-            };
+            });
 
             return listaSedi.OrderBy(s => s.Codice).ToList();
         }
 
-        private Mezzo MapMezzo(MezzoDTO mezzoDto, List<MessaggioPosizione> ListaPosizioneFlotta, UnitaOperativa listaSediAlberate, List<Sede> lstSedi)
+        private Mezzo MapMezzo(MezzoDTO mezzoDto, List<MessaggioPosizione> ListaPosizioneFlotta, List<Sede> lstSedi)
         {
             if (ListaPosizioneFlotta == null)
                 ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
-
-            if (listaSediAlberate == null)
-                listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata().Result;
 
             try
             {

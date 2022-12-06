@@ -69,13 +69,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var statoMezzi = _getStatoMezzi.Get(CodiciSede);
 
             var listaMezzoInServizio = new ConcurrentBag<MezzoInServizio>();
-
             try
             {
                 //Parallel.ForEach(mezzi, mezzo =>
                 foreach (var mezzo in mezzi.FindAll(m => m != null))
                 {
-                    var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
+                    var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice) && !x.StatoOperativo.Equals("Rientrato"));
                     mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
                     mezzo.IdRichiesta = statoOperativoMezzi?.CodiceRichiesta;
                     var mezzoMarker = new MezzoMarker()
@@ -130,7 +129,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             foreach (var partenza in Partenze)
             {
                 var mezzo = partenza.Partenza.Mezzo;
-                var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
+                var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice) && !x.StatoOperativo.Equals("Rientrato"));
                 mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
                 mezzo.IdRichiesta = statoOperativoMezzi?.CodiceRichiesta;
                 var mezzoMarker = new MezzoMarker()

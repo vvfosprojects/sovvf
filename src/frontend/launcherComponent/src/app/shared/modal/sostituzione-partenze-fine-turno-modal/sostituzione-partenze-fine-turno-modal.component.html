@@ -13,11 +13,11 @@
 <div class="modal-body py-4">
     <div class="row">
         <div *ngIf="!partenzaMontante" class="col-12 col-xl-7 mx-auto">
-            <h4 class="text-center mb-4">Seleziona la partenza che arriverà sull'Intervento</h4>
+            <h4 class="text-center mb-4">Seleziona la partenza montante</h4>
             <div *ngFor="let p of partenze">
                 <div class="row mb-1">
                     <div class="col-9">
-                        <app-partenza [partenza]="p.partenza"></app-partenza>
+                        <app-partenza [partenza]="p.partenza" (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre, $event.siglaMezzo, $event.descMezzo)"></app-partenza>
                     </div>
                     <div class="col-3">
                         <button class="btn btn-block btn-primary btn-no-hover"
@@ -46,13 +46,13 @@
                         </h5>
                         <h5>
                             <i class="fas fa-truck guida mr-1"></i>
-                            {{ partenzaMontante?.mezzo?.descrizione }}
+                            {{ partenzaMontante?.mezzo?.sigla }}
                         </h5>
                     </div>
                     <div class="offset-2"></div>
                     <div class="col-6 text-center">
                         <h5 class="mb-3">
-                            Squadre Disponibili sulla Richiesta
+                            Squadre Disponibili sull'intervento
                         </h5>
                         <ng-template [ngIf]="getSquadrePartenze()?.length <= 0">
                             <div class="alert alert-danger mt-2 mb-0">
@@ -68,7 +68,7 @@
                                             <i class="fas fa-users guida mr-1"></i>
                                             {{ sS?.codice }}
                                             <i class="fas fa-truck guida mr-1"></i>
-                                            {{ p?.partenza?.mezzo?.descrizione }}
+                                            {{ p?.partenza?.mezzo?.sigla }}
                                         </h5>
                                     </div>
                                     <div class="float-right">

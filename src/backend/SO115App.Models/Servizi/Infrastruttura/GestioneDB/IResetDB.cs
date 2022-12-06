@@ -3,5 +3,9 @@
     public interface IResetDB
     {
         public bool Reset();
+
+        public bool ResetUtenti();
+
+        public bool BonificaCodSedeSchedeContatto();
     }
 }

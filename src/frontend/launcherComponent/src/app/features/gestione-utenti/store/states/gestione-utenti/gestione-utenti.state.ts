@@ -20,7 +20,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response/response.interface';
-import { Ruolo, Utente } from '../../../../../shared/model/utente.model';
+import { Utente } from '../../../../../shared/model/utente.model';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
@@ -42,7 +42,7 @@ export interface GestioneUtentiStateModel {
         model?: {
             utente: string;
             ruolo: string;
-            sedi: string[];
+            sede: string;
             ricorsivo: boolean;
         };
         dirty: boolean;
@@ -144,19 +144,13 @@ export class GestioneUtentiState {
             };
             const pagination = {
                 page: action.page ? action.page : 1,
-                pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+                pageSize: 4
             };
             this.gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
-                    let listaSediPresentiUnique = [];
-                    if (response?.listaSediPresenti?.length) {
-                        listaSediPresentiUnique = [
-                            ...new Map(response.listaSediPresenti.map((ruolo: Ruolo) => [ruolo.codSede, ruolo])).values(),
-                        ];
-                    }
                     dispatch([
                         new SetUtentiGestione(response.dataArray),
                         new PatchPagination(response.pagination),
-                        new SetSediFiltro(listaSediPresentiUnique),
+                        new SetSediFiltro(response.listaSediPresenti),
                         new StopLoadingGestioneUtenti()
                     ]);
                 },
@@ -184,12 +178,10 @@ export class GestioneUtentiState {
             codFiscale: form.utente,
             ruoli: []
         };
-        form.sedi.forEach((codice: string) => {
-            obj.ruoli.push({
-                descrizione: form.ruolo,
-                codSede: codice,
-                ricorsivo: form.ricorsivo
-            });
+        obj.ruoli.push({
+            descrizione: form.ruolo,
+            codSede: form.sede,
+            ricorsivo: form.ricorsivo
         });
 
         this.gestioneUtenti.addUtente(obj).subscribe((utente: Utente) => {
@@ -220,12 +212,10 @@ export class GestioneUtentiState {
             codFiscale: form.utente,
             ruoli: []
         };
-        form.sedi.forEach((codice: string) => {
-            obj.ruoli.push({
-                descrizione: form.ruolo,
-                codSede: codice,
-                ricorsivo: form.ricorsivo
-            });
+        obj.ruoli.push({
+            descrizione: form.ruolo,
+            codSede: form.sede,
+            ricorsivo: form.ricorsivo
         });
 
         this.gestioneUtenti.addRuoloUtente(obj).subscribe(() => {

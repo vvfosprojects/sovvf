@@ -29,10 +29,10 @@ namespace SO115App.API.Models.Classi.Composizione
     {
         public string Id => CodiceMezzo;
         public string CodiceMezzo { get; set; }
-
         public string Appartenenza { get; set; }
-
         public string GenereMezzo { get; set; }
+        public string Sigla { get; set; }
+        public string Modello { get; set; }
         public string StatoMezzo { get; set; }
         public string DescrizioneMezzo { get; set; }
         public string Distaccamento { get; set; }
@@ -45,21 +45,20 @@ namespace SO115App.API.Models.Classi.Composizione
     /// <summary>
     ///   Squadra del preaccoppiato
     /// </summary>
-    public class Squadra
-    {
-        public Squadra(string codice, string nome, StatoSquadra stato, List<Componente> membri) =>
-            (Codice, Nome, Stato, Membri) = (codice, nome, stato, membri);
+    //public class Squadra
+    //{
+    //    public Squadra(string codice, string nome, StatoSquadra stato, List<Componente> membri) =>
+    //        (Codice, Nome, Stato, Membri) = (codice, nome, stato, membri);
 
-        public Squadra()
-        { }
+    // public Squadra() { }
 
-        public string IdSquadra { get; set; }
+    // public string IdSquadra { get; set; }
 
-        public string Codice { get; set; }
-        public StatoSquadra Stato { get; set; }
-        public string Nome { get; set; }
-        public string Turno { get; set; }
-        public bool DiEmergenza { get; set; }
-        public List<Componente> Membri { get; set; }
-    }
+    //    public string Codice { get; set; }
+    //    public StatoSquadra Stato { get; set; }
+    //    public string Nome { get; set; }
+    //    public string Turno { get; set; }
+    //    public bool DiEmergenza { get; set; }
+    //    public List<Componente> Membri { get; set; }
+    //}
 }

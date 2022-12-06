@@ -11,6 +11,8 @@ import { ListaSquadre } from '../../interface/lista-squadre';
 export class ListaSquadrePartenzaComponent implements OnInit, OnDestroy {
 
     codiceMezzo: string;
+    siglaMezzo: string;
+    descMezzo: string;
     listaSquadre: ListaSquadre;
 
     constructor(private modal: NgbActiveModal) {
