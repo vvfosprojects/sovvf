@@ -18,8 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUtente
 {
@@ -29,12 +33,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
     public class DeleteUtenteCommandHandler : ICommandHandler<DeleteUtenteCommand>
     {
         private readonly IDeleteUtente _deleteUtente;
-        private readonly IGetUtenteByCF _getUtenteByCF;
+        private readonly IDeleteRuolo _deleteRuolo;
+        private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public DeleteUtenteCommandHandler(IDeleteUtente deleteUtente, IGetUtenteByCF getUtenteByCF)
+        public DeleteUtenteCommandHandler(IDeleteUtente deleteUtente, IDeleteRuolo deleteRuolo, IGetAutorizzazioni getAutorizzazioni)
         {
             _deleteUtente = deleteUtente;
-            _getUtenteByCF = getUtenteByCF;
+            _deleteRuolo = deleteRuolo;
+            _getAutorizzazioni = getAutorizzazioni;
         }
 
         /// <summary>
@@ -43,8 +49,24 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
         /// <param name="command">i parametri di ingresso</param>
         public void Handle(DeleteUtenteCommand command)
         {
-            command.UtenteRimosso = _getUtenteByCF.Get(command.CodFiscale);
-            _deleteUtente.Delete(command.CodFiscale);
+            //Se l'operatore è admin della sede dell'utente da cancellare, l'utente viene cancellato
+            if(command.CheckSedeAdmin)
+                _deleteUtente.Delete(command.CodFiscale);
+            else
+            {
+                //Se l'utente da cancellare ha solo dei ruoli appartenenti alla sede dove l'operatore è admin, l'utente viene cancellato
+                if(command.UtenteRimosso.Ruoli.Select(x=> x.CodSede).Distinct().Count() == 1)
+                    _deleteUtente.Delete(command.CodFiscale);
+                else
+                {
+                    //Altrimenti vengono cancellati solo i ruoli appartenenti alla sede dell'Admin
+                    foreach (var ruoloUserDelete in command.UtenteRimosso.Ruoli)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(command.UtenteOperatore.Ruoli, ruoloUserDelete.CodSede, Costanti.Amministratore))
+                            _deleteRuolo.Delete(command.CodFiscale, ruoloUserDelete);
+                    }
+                }
+            }
         }
     }
 }

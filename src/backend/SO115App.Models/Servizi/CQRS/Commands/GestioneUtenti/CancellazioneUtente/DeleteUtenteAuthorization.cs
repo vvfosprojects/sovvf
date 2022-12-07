@@ -58,9 +58,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
         {
             var username = currentUser.Identity.Name;
             var userOperatore = _findUserByUsername.FindUserByUs(username);
-
+            command.UtenteOperatore = userOperatore;
             var CFuser = command.CodFiscale;
             var utenteDelete = _findUserByCF.Get(CFuser);
+            command.UtenteRimosso = utenteDelete;
 
             if (currentUser.Identity.IsAuthenticated)
             {
@@ -78,11 +79,26 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
 
                     #endregion Concorrenza
 
+
+                    bool valido = false;
                     foreach (var ruolo in userOperatore.Ruoli)
                     {
                         if (!_getAutorizzazioni.GetAutorizzazioniUtente(userOperatore.Ruoli, utenteDelete.Sede.Codice, Costanti.Amministratore))
-                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                        {
+                            valido = true;
+                            command.CheckSedeAdmin = false;
+                        }
                     }
+
+                    foreach(var ruoloUserDelete in utenteDelete.Ruoli)
+                    {
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(userOperatore.Ruoli, ruoloUserDelete.CodSede, Costanti.Amministratore))
+                            valido = true;
+                    }
+
+                    if(!valido)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+
                 }
             }
             else

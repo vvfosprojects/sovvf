@@ -40,5 +40,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
         ///   l'utente rimosso. Serve per la notifica.
         /// </summary>
         public Utente UtenteRimosso { get; set; }
+
+        public Utente UtenteOperatore { get; set; }
+
+        /// <summary>
+        ///   True se l'operatore è admin della sede dell'utente che si vuole cancellare
+        /// </summary>
+        public bool CheckSedeAdmin { get; set; } = true;
     }
 }
