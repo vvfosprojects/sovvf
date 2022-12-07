@@ -1,3 +1,4 @@
+import { TagInputModule } from 'ngx-chips';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
@@ -1149,7 +1150,7 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
 
         modalConfermaReset.result.then(
             (val) => {
-                switch (val) {
+                 switch (val) {
                     case 'ok':
                         this.richiestaForm.reset();
                         this.store.dispatch([
@@ -1158,10 +1159,11 @@ export class FormRichiestaComponent implements OnInit, OnChanges, OnDestroy {
                             new ClearSchedaContattoTelefonata(),
                             new DelChiamataMarker(this.idChiamata)
                         ]);
+                        this.f.etichette = "";
                         this.reducerSchedaTelefonata('reset');
                         break;
                 }
-            },
+           },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
     }
