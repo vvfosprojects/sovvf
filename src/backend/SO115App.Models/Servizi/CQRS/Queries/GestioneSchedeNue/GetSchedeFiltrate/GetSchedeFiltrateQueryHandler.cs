@@ -45,10 +45,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
 
             var listaSchedeContatto = _getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, null, query.Filters.RangeVisualizzazione, query.CodiciSede[0], query.Filters.Classificazione, query.CodiciSede[0]);
 
-
             //foreach (var sede in lstSedi.Distinct())
             //{
-
             //    lstSchedeSede.ForEach(s => listaSchedeContatto.Add(s));
             //};
 
