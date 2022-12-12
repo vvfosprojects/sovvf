@@ -94,7 +94,7 @@ export class MezzoActionsComponent implements OnInit {
           type: TipoConcorrenzaEnum.CambioStatoPartenza
         } as AddConcorrenzaDtoInterface;
         this.store.dispatch(new AddConcorrenza([data]));
-        const nowDate = this.dateSync;
+        const nowDate = new Date();
         const orario = { hour: nowDate.getHours(), minute: nowDate.getMinutes(), second: nowDate.getSeconds() };
         const dataEvento = { day: nowDate.getDate(), month: (+nowDate.getMonth() + 1), year: nowDate.getFullYear() };
         this.actionMezzo.emit({
