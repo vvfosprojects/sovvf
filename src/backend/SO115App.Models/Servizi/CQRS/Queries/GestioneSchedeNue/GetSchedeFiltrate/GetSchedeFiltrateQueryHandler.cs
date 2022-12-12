@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.Utility;
@@ -40,16 +41,16 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
 
         public GetSchedeFiltrateResult Handle(GetSchedeFiltrateQuery query)
         {
-            var lstSedi = _getSottoSedi.Get(query.CodiciSede);
+            //var lstSedi = _getSottoSedi.Get(query.CodiciSede);
 
-            var listaSchedeContatto = new ConcurrentBag<SchedaContatto>();
+            var listaSchedeContatto = _getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, null, query.Filters.RangeVisualizzazione, query.CodiciSede[0], query.Filters.Classificazione, query.CodiciSede[0]);
 
-            foreach (var sede in lstSedi.Distinct())
-            {
-                var lstSchedeSede = _getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, null, query.Filters.RangeVisualizzazione, sede, query.Filters.Classificazione, sede);
 
-                lstSchedeSede.ForEach(s => listaSchedeContatto.Add(s));
-            };
+            //foreach (var sede in lstSedi.Distinct())
+            //{
+
+            //    lstSchedeSede.ForEach(s => listaSchedeContatto.Add(s));
+            //};
 
             var result = listaSchedeContatto.OrderByDescending(s => s.DataInserimento).ToList();
 
