@@ -227,8 +227,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 if (partenza.Mezzo.Distaccamento.Codice != null)
                     partenza.Codice = partenza.Mezzo.Distaccamento.Codice.Substring(0, 2) + codicePartenzaDiAppoggio;
                 else if (partenza.Mezzo.Appartenenza != null)
+                {
                     partenza.Codice = partenza.Mezzo.Appartenenza.Substring(0, 2) + codicePartenzaDiAppoggio;
-
+                    partenza.Mezzo.Distaccamento.Codice = partenza.Mezzo.Appartenenza;
+                }
                 partenza.Turno = turnoAttuale;
 
                 //command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().Last(e => e.CodiceMezzo.Equals(partenza.Mezzo.Codice)).CodicePartenza = partenza.Codice;
@@ -313,12 +315,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                     string note = $"La partenza {partenzaDaTerminare.Codice} con mezzo {partenza.Mezzo.Codice.Split('.').Last()} è stata riassegnata alla richiesta {command.Richiesta.Codice} con codice {partenza.Codice}";
 
-                    command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
-                    {
-                        CodMezzo = partenza.Mezzo.Codice,
-                        Istante = dataAdesso,
-                        Stato = Costanti.MezzoRientrato
-                    }, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id, new string[2] { partenza.Coordinate.Latitudine, partenza.Coordinate.Longitudine }, partenza.Codice);
+                    //command.Richiesta.CambiaStatoPartenza(partenza, new CambioStatoMezzo()
+                    //{
+                    //    CodMezzo = partenza.Mezzo.Codice,
+                    //    Istante = dataAdesso,
+                    //    Stato = Costanti.MezzoRientrato
+                    //}, _sendNewItemSTATRI, _checkCongruita, command.Utente.Id, new string[2] { partenza.Coordinate.Latitudine, partenza.Coordinate.Longitudine }, partenza.Codice);
 
                     new MezzoRiassegnato(richiestaDaTerminare, partenza.Mezzo.Codice.Split('.').Last(), dataAdesso, command.Utente.Id, "MezzoRiassegnato", partenza.Codice, note);
 
