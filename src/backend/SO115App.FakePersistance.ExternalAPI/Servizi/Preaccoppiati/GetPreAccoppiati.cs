@@ -83,7 +83,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 lstSquadre = lstSquadreWS.SelectMany(shift => shift.Result?.Attuale?.Squadre).ToList();
             }
 
-            var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false && !s.spotType.Equals("MODULE")).ToList();
+            lstSquadre = lstSquadre.ToList().FindAll(s => s.spotType.Equals("WORKSHIFT"));
+
+            var lstSquadrePreaccoppiate = lstSquadre.Where(s => s.CodiciMezziPreaccoppiati?.Any() ?? false).ToList();
 
             if (!lstSquadrePreaccoppiate.Any())
                 return new List<PreAccoppiato>();
