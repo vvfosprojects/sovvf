@@ -132,11 +132,19 @@ namespace SO115App.API
                     };
                 });
 
+#if !DEBUG
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = Configuration.GetSection("UrlRedis").Value;
                 options.InstanceName = "SoVVFWebDistributedCache";
             });
+#else
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetSection("UrlRedisLocal").Value;
+                options.InstanceName = "SoVVFWebDistributedCache";
+            });
+#endif
 
             services.AddSignalR()
 #if !DEBUG
