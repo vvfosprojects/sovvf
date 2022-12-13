@@ -1,146 +1,138 @@
 <div class="modal-header">
-    <h4 class="modal-title font-weight-bold">
-        {{ getTitle() | uppercase }}
-    </h4>
-    <button type="button"
-            class="btn btn-light close"
-            style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
-            [disabled]="loading"
-            (click)="onDismiss()">
-        <i class="fas fa-times text-danger"></i>
-    </button>
+  <h4 class="modal-title font-weight-bold">
+    {{ getTitle() | uppercase }}
+  </h4>
+  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+    [disabled]="loading" (click)="onDismiss()">
+    <i class="fas fa-times text-danger"></i>
+  </button>
 </div>
 <div class="modal-body py-4">
-    <div class="row">
-        <div *ngIf="!partenzaMontante" class="col-12 col-xl-7 mx-auto">
-            <h4 class="text-center mb-4">Seleziona la partenza montante</h4>
-            <div *ngFor="let p of partenze">
-                <div class="row mb-1">
-                    <div class="col-9">
-                        <app-partenza [partenza]="p.partenza" (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre, $event.siglaMezzo, $event.descMezzo)"></app-partenza>
-                    </div>
-                    <div class="col-3">
-                        <button class="btn btn-block btn-primary btn-no-hover"
-                                [disabled]="loading"
-                                (click)="onSelezionePartenza(p)">
-                            Seleziona
-                        </button>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div *ngIf="!partenzaMontante" class="col-12 col-xl-7 mx-auto">
+      <h4 class="text-center mb-4">Seleziona la partenza montante</h4>
+      <div *ngFor="let p of partenze">
+        <div class="row mb-1">
+          <div class="col-9">
+            <app-partenza [partenza]="p.partenza"
+              (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre, $event.siglaMezzo, $event.descMezzo)">
+            </app-partenza>
+          </div>
+          <div class="col-3">
+            <button class="btn btn-block btn-primary btn-no-hover" [disabled]="loading"
+              (click)="onSelezionePartenza(p)">
+              Seleziona
+            </button>
+          </div>
         </div>
-        <div *ngIf="partenzaMontante" class="col-12 col-xl-10 mx-auto">
-            <div class="shadow-sm mb-4">
-                <app-box-anteprima-partenza [partenza]="partenzaMontante"
-                                            [title]="'Partenza Montante'"
-                                            [testoModifica]="'Modifica Partenza Montante'">
-                </app-box-anteprima-partenza>
-            </div>
-            <div *ngFor="let s of partenzaMontante?.squadre; let i = index" class="py-2">
-                <div class="row">
-                    <div class="col-4 text-center">
-                        <h5 class="mb-3">Squadra Montante</h5>
-                        <h5>
-                            <i class="fas fa-users guida mr-1"></i>
-                            {{ s?.codice }}
-                        </h5>
-                        <h5>
-                            <i class="fas fa-truck guida mr-1"></i>
-                            {{ partenzaMontante?.mezzo?.sigla }}
-                        </h5>
-                    </div>
-                    <div class="offset-2"></div>
-                    <div class="col-6 text-center">
-                        <h5 class="mb-3">
-                            Squadre Disponibili sull'intervento
-                        </h5>
-                        <ng-template [ngIf]="getSquadrePartenze()?.length <= 0">
-                            <div class="alert alert-danger mt-2 mb-0">
-                                <span class="font-weight-bolder">Nessuna Squadra da Sostituire</span>
-                            </div>
-                        </ng-template>
-                        <div *ngFor="let p of getPartenzeSostituzione()">
-                            <div *ngFor="let sS of p.partenza.squadre" class="mb-1"
-                                 [class.alert-warning]="getSquadraSmontanteBySquadraMontante(s?.codice) && getSquadraSmontanteBySquadraMontante(s?.codice) === sS?.codice">
-                                <div class="clearfix">
-                                    <div class="float-left pt-1 pl-2">
-                                        <h5>
-                                            <i class="fas fa-users guida mr-1"></i>
-                                            {{ sS?.codice }}
-                                            <i class="fas fa-truck guida mr-1"></i>
-                                            {{ p?.partenza?.mezzo?.sigla }}
-                                        </h5>
-                                    </div>
-                                    <div class="float-right">
-                                        <ng-template
-                                                [ngIf]="!getSquadraSmontanteBySquadraMontante(s?.codice) || getSquadraSmontanteBySquadraMontante(s?.codice) !== sS?.codice">
-                                            <button class="btn btn-primary btn-no-hover"
-                                                    [disabled]="(getSostituzioneBySquadraMontante(s.codice)?.squadreSmontanti?.length > 0) || squadraSmontanteCheck.includes(sS?.codice) || loading"
-                                                    (click)="onSelezioneSquadraSmontate(s?.codice, sS?.codice, p?.partenza?.mezzo?.codice)">
-                                                Seleziona
-                                            </button>
-                                        </ng-template>
-                                        <ng-template
-                                                [ngIf]="getSquadraSmontanteBySquadraMontante(s?.codice) && getSquadraSmontanteBySquadraMontante(s?.codice) === sS?.codice">
-                                            <button class="btn btn-danger btn-no-hover"
-                                                    [disabled]="loading"
-                                                    (click)="onDeselezioneSquadraSmontate(s?.codice, sS?.codice)">
-                                                Deseleziona
-                                            </button>
-                                        </ng-template>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <ng-template [ngIf]="getSquadrePartenze()?.length > 0">
-                            <div class="alert alert-danger mt-2 mb-0"
-                                 [class.alert-danger]="!getSostituzioneBySquadraMontante(s?.codice) || getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti?.length <= 0"
-                                 [class.alert-info]="getSostituzioneBySquadraMontante(s?.codice) && getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti?.length > 0">
-                                <ng-template
-                                        [ngIf]="!getSostituzioneBySquadraMontante(s?.codice) || getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti?.length <= 0">
-                                    Seleziona una squadra da sostituire con
-                                    <span class="font-weight-bolder">{{ s?.codice }}</span>
-                                </ng-template>
-                                <ng-template
-                                        [ngIf]="getSostituzioneBySquadraMontante(s?.codice) && getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti?.length > 0">
-                                    La squadra
-                                    <span class="font-weight-bolder">{{ s?.codice }}</span>
-                                    sostituirà la squadra
-                                    <span *ngFor="let sS of getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti"
-                                          class="font-weight-bolder">
-                                    {{ sS }}
-                                </span>
-                                </ng-template>
-                            </div>
-                        </ng-template>
-                    </div>
-                    <ng-template [ngIf]="i !== partenzaMontante?.squadre?.length - 1">
-                        <div class="col-12">
-                            <hr class="my-2">
-                        </div>
-                    </ng-template>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div *ngIf="partenzaMontante" class="col-12 col-xl-10 mx-auto">
+      <div class="shadow-sm mb-4">
+        <app-box-anteprima-partenza [partenza]="partenzaMontante" [title]="'Partenza Montante'"
+          [testoModifica]="'Modifica Partenza Montante'" (listaSquadrePartenza)="onListaSquadrePartenzaMontante()">
+        </app-box-anteprima-partenza>
+      </div>
+      <div *ngFor="let s of partenzaMontante?.squadre; let i = index" class="py-2">
+        <div class="row">
+          <div class="col-4 text-center">
+            <h5 class="mb-3">Squadra Montante</h5>
+            <h5>
+              <i class="fas fa-users guida mr-1"></i>
+              {{ s?.codice }}
+            </h5>
+            <h5>
+              <i class="fas fa-truck guida mr-1"></i>
+              {{ partenzaMontante?.mezzo?.sigla }}
+            </h5>
+          </div>
+          <div class="offset-2"></div>
+          <div class="col-6 text-center">
+            <h5 class="mb-3">
+              Squadre Disponibili sull'intervento
+            </h5>
+            <ng-template [ngIf]="getSquadrePartenze()?.length <= 0">
+              <div class="alert alert-danger mt-2 mb-0">
+                <span class="font-weight-bolder">Nessuna Squadra da Sostituire</span>
+              </div>
+            </ng-template>
+            <div *ngFor="let p of getPartenzeSostituzione()">
+              <div *ngFor="let sS of p.partenza.squadre" class="mb-1"
+                [class.alert-warning]="getSquadraSmontanteBySquadraMontante(s?.codice) && getSquadraSmontanteBySquadraMontante(s?.codice) === sS?.codice">
+                <div class="clearfix">
+                  <div class="float-left pt-1 pl-2">
+                    <h5>
+                      <i class="fas fa-users guida mr-1"></i>
+                      {{ sS?.codice }}
+                      <i class="fas fa-truck guida mr-1"></i>
+                      {{ p?.partenza?.mezzo?.sigla }}
+                    </h5>
+                  </div>
+                  <div class="float-right">
+                    <ng-template
+                      [ngIf]="!getSquadraSmontanteBySquadraMontante(s?.codice) || getSquadraSmontanteBySquadraMontante(s?.codice) !== sS?.codice">
+                      <button class="btn btn-primary btn-no-hover"
+                        [disabled]="(getSostituzioneBySquadraMontante(s.codice)?.squadreSmontanti?.length > 0) || squadraSmontanteCheck.includes(sS?.codice) || loading"
+                        (click)="onSelezioneSquadraSmontate(s?.codice, sS?.codice, p?.partenza?.mezzo?.codice)">
+                        Seleziona
+                      </button>
+                    </ng-template>
+                    <ng-template
+                      [ngIf]="getSquadraSmontanteBySquadraMontante(s?.codice) && getSquadraSmontanteBySquadraMontante(s?.codice) === sS?.codice">
+                      <button class="btn btn-danger btn-no-hover" [disabled]="loading"
+                        (click)="onDeselezioneSquadraSmontate(s?.codice, sS?.codice)">
+                        Deseleziona
+                      </button>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template [ngIf]="getSquadrePartenze()?.length > 0">
+              <div class="alert alert-danger mt-2 mb-0"
+                [class.alert-danger]="!getSostituzioneBySquadraMontante(s?.codice) || getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti?.length <= 0"
+                [class.alert-info]="getSostituzioneBySquadraMontante(s?.codice) && getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti?.length > 0">
+                <ng-template
+                  [ngIf]="!getSostituzioneBySquadraMontante(s?.codice) || getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti?.length <= 0">
+                  Seleziona una squadra da sostituire con
+                  <span class="font-weight-bolder">{{ s?.codice }}</span>
+                </ng-template>
+                <ng-template
+                  [ngIf]="getSostituzioneBySquadraMontante(s?.codice) && getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti?.length > 0">
+                  La squadra
+                  <span class="font-weight-bolder">{{ s?.codice }}</span>
+                  sostituirà la squadra
+                  <span *ngFor="let sS of getSostituzioneBySquadraMontante(s?.codice)?.squadreSmontanti"
+                    class="font-weight-bolder">
+                    {{ sS }}
+                  </span>
+                </ng-template>
+              </div>
+            </ng-template>
+          </div>
+          <ng-template [ngIf]="i !== partenzaMontante?.squadre?.length - 1">
+            <div class="col-12">
+              <hr class="my-2">
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="modal-footer d-flex align-items-center justify-content-between">
-    <button type="button"
-            class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder"
-            [disabled]="loading"
-            (click)="closeModal('ko')">
-        {{ 'Annulla' | uppercase }}
-    </button>
-    <button type="button"
-            class="btn btn-lg btn-danger btn-no-hover font-weight-bolder"
-            (click)="onConferma()"
-            [disabled]="disableButtonConferma || loading">
-        <ng-container *ngIf="!loading">
-            {{ 'Conferma' | uppercase }}
-        </ng-container>
-        <ng-container *ngIf="loading">
-            <i class="fas fa-spinner fa-spin mr-1"></i>
-            {{ 'Sostituzione in corso' | uppercase }}
-        </ng-container>
-    </button>
+  <button type="button" class="btn btn-lg btn-secondary btn-no-hover font-weight-bolder" [disabled]="loading"
+    (click)="closeModal('ko')">
+    {{ 'Annulla' | uppercase }}
+  </button>
+  <button type="button" class="btn btn-lg btn-danger btn-no-hover font-weight-bolder" (click)="onConferma()"
+    [disabled]="disableButtonConferma || loading">
+    <ng-container *ngIf="!loading">
+      {{ 'Conferma' | uppercase }}
+    </ng-container>
+    <ng-container *ngIf="loading">
+      <i class="fas fa-spinner fa-spin mr-1"></i>
+      {{ 'Sostituzione in corso' | uppercase }}
+    </ng-container>
+  </button>
 </div>

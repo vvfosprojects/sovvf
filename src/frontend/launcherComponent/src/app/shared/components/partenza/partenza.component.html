@@ -15,7 +15,7 @@
         </app-mezzo>
     </div>
     <div class="d-flex justify-content-end align-items-center font-xxlarge">
-        <ng-container *ngIf="annullaStatoMezzo">
+        <ng-container *ngIf="annullaStatoMezzo && partenza.mezzo.stato !== statoMezzoEnum.Rientrato">
             <div class="d-inline-block"
                  [ngbTooltip]="tooltipLockedConcorrenza"
                  [disableTooltip]="!(tipoConcorrenzaEnum.AnnullaStatoMezzo | checkConcorrenzaLocked: [partenza.mezzo.codice])"
