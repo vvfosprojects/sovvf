@@ -148,7 +148,7 @@ namespace SO115App.Models.Servizi.CustomMapper
 
                 var filtro = new GetElencoPOSQuery()
                 {
-                    CodiceSede = codSede.Split('.')[0] + ".1000",
+                    CodiceSede = codSede.Split('.')[0],
                     Filters = filtroPos
                 };
 
