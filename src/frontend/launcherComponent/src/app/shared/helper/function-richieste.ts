@@ -88,7 +88,7 @@ export function checkNumeroPartenzeAttive(partenze: Partenza[], codMezziRientrat
   if (partenze && partenze.length > 0) {
     const partenzeNew = getUniqueLastPartenze(partenze);
     partenzeNew.forEach((p: Partenza) => {
-      if ((!p.partenza.sganciata && !p.partenza.partenzaAnnullata && p.partenza.mezzo.stato != StatoMezzo.Rientrato) || codMezziRientratiVisibili?.codMezzi?.includes(p.partenza.mezzo.codice) || annullaStatoMezzoRientrato?.codMezzo === p.partenza.mezzo.codice) {
+      if ((!p.partenza.sganciata && !p.partenza.partenzaAnnullata && p.partenza.mezzo.stato != StatoMezzo.Rientrato && !p.partenza.terminata) || codMezziRientratiVisibili?.codMezzi?.includes(p.partenza.mezzo.codice) || annullaStatoMezzoRientrato?.codMezzo === p.partenza.mezzo.codice) {
         count++;
       }
     });
