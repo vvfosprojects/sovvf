@@ -67,9 +67,19 @@ export class ListaPartenzeComponent {
     }
   }
 
-  checkAnnullaStatoMezzo(codMezzo: string, statoMezzo: StatoMezzo, codPartenza: string): boolean {
+  checkAltriStatiMezzo(eventi: EventoMezzo[], statoMezzo: StatoMezzo, codiceMezzo: string): boolean {
+    const eventoMezzo = eventi.filter((ev: EventoMezzo) => ev.codiceMezzo == codiceMezzo)
+    let result: boolean = true;
+    if (eventoMezzo.length > 2){
+      result = eventoMezzo[eventoMezzo.length - 1].ora > eventoMezzo[eventoMezzo.length - 2].ora;
+
+    }
+    return result
+  }
+
+  checkAnnullaStatoMezzo(codMezzo: string, statoMezzo: StatoMezzo, codPartenza: string, flag: boolean): boolean {
     const annullaStatoMezzo = this.annullaStatoMezzi?.filter((iM: InfoMezzo) => iM.codMezzo === codMezzo && iM.stato === statoMezzo && iM.codicePartenza === codPartenza)[0];
-    if (annullaStatoMezzo) {
+    if (annullaStatoMezzo && flag) {
       const unMinutoFa = new Date();
       unMinutoFa.setMinutes(unMinutoFa.getMinutes() - 1);
       if (!moment(annullaStatoMezzo.istante).isAfter(unMinutoFa)) {

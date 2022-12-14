@@ -8,7 +8,7 @@
       <app-partenza
         [richiesta]="richiesta" [partenza]="p.partenza" [codicePartenza]="p.codicePartenza" [infoPartenza]="p"
         [inGestione]="inGestione" [idDaSganciare]="idDaSganciare" [index]="'' + index"
-        [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice), p?.partenza.codice)"
+        [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice), p?.partenza.codice, checkAltriStatiMezzo(richiesta?.eventi, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice), p?.partenza?.mezzo?.codice))"
         [disabledModificaStatoMezzo]="disabledModificaStatoMezzo" [hideGestisciPartenza]="hideGestisciPartenza"
         [dateSync]="dateSync"
         (listaSquadre)="onListaSquadrePartenza($event.codiceMezzo, $event.listaSquadre, $event.siglaMezzo, $event.descMezzo)"
