@@ -5,9 +5,9 @@
   <div *ngFor="let p of getPartenze(richiesta.partenze); let index = index">
     <div [class.border-bottom]="(index + 1) !== richiesta.partenze.length">
       <app-partial-loader *ngIf="loadingActionMezzo?.includes(p?.partenza?.mezzo?.codice)"></app-partial-loader>
-      <app-partenza
-        [richiesta]="richiesta" [partenza]="p.partenza" [codicePartenza]="p.codicePartenza" [infoPartenza]="p"
-        [inGestione]="inGestione" [idDaSganciare]="idDaSganciare" [index]="'' + index"
+      <app-partenza *ngIf="!p.partenza.terminata && !p.partenza.sganciata" [richiesta]="richiesta"
+        [partenza]="p.partenza" [codicePartenza]="p.codicePartenza" [infoPartenza]="p" [inGestione]="inGestione"
+        [idDaSganciare]="idDaSganciare" [index]="'' + index"
         [annullaStatoMezzo]="checkAnnullaStatoMezzo(p?.partenza?.mezzo?.codice, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice), p?.partenza.codice, checkAltriStatiMezzo(richiesta?.eventi, getUltimoStatoMezzo(p?.partenza?.mezzo?.codice), p?.partenza?.mezzo?.codice))"
         [disabledModificaStatoMezzo]="disabledModificaStatoMezzo" [hideGestisciPartenza]="hideGestisciPartenza"
         [dateSync]="dateSync"
