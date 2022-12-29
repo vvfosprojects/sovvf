@@ -25,11 +25,11 @@
     "core-js": "^2.4.1",
     "moment": "^2.18.1",
     "rxjs": "^5.4.2",
-    "webpack": "^3.11.0",
+    "webpack": "^5.75.0",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
-    "@angular/cli": "^1.7.4",
+    "@angular/cli": "^15.0.4",
     "@angular/compiler-cli": "^5.2.10",
     "@types/jasmine": "2.8.6",
     "@types/node": "~10.0.2",
